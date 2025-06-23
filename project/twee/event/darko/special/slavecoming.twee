@@ -1,0 +1,57 @@
+:: EventSetup_slavecoming [nobr event]
+
+<<run new setup.Event(
+'slavecoming', /* key */
+"Slavecoming", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_slavecoming',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slave': 'new_game_plus_slaves',
+},
+[ /* outcomes */
+  setup.qc.Slave('slave', "", undefined),
+  setup.qc.IfThenElse(
+    setup.qres.UnitGroupHasUnit('new_game_plus_slaves'),
+    setup.qc.DoAll([
+      setup.qc.Event('slavecoming', 30, null)
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined)
+  ),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_slavecoming [nobr]
+<p>
+Today, you receive a large shipment of crate delivered straight into your fort.
+Curious, you decided to open the crate personally, and inside you found a slave tied and all ready for <<their $g.slave>> new home in the dungeons of your fort.
+</p>
+
+<<if $unit.player.isHasTitle('ex_leader')>>
+<p>
+You recognize the slave — it's the slave you've taken with you from your previous company and whom you have stored away safely until now. With the <<rep setup.buildingtemplate.veteranhall>> built, there was no more reason to keep <<them $g.slave>> a secret. You take the slave's leash by <<uhand $unit.player>> and <<uadv $unit.player>> guide <<them $g.slave>> to <<their $g.slave>> new living arrangements.
+</p>
+<<else>>
+<p>
+You do not recognize the slave, but you're not going to turn away a free gift such as this!
+</p>
+
+<<set _unit = setup.getUnit({title: 'ex_leader'})>>
+<<if _unit>>
+<p>
+Meanwhile, <<yourrep _unit>> smirked at seeing the familiar slave once more, no doubt planning to enjoy the slave in a cruel remembrance of <<their _unit>> pastbringing...
+</p>
+<</if>>
+<</if>>

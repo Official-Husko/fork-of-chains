@@ -1,0 +1,183 @@
+:: EventGenSetup [nobr]
+
+<<set $devtooltype = 'event'>>
+
+<<set $qcustomslaveorder = []>>
+<<set $qcustomcriteria = []>>
+<<set $qcustomunitgroup = []>>
+<<set $qcustomtitle = []>>
+
+<<set _ekey = '__devtool_event'>>
+<<set _epassage = 'DummyEventPassageDesc'>>
+
+<<set $edesc = "">>
+
+<<if _ekey in setup.event>>
+  <<run delete setup.event[_ekey]>>
+<</if>>
+
+<<if !_ebase>>
+  <<set $dtquest = new setup.Event(
+    _ekey,
+    "",  /* name */
+    {name: '', url: ''},  /* author */
+    [],  /* tags */
+    _epassage,  /* desc passage */
+    [],  /* unit restrictions */
+    {},  /* actors */
+    [],  /* outcomes */
+    [],  /* requirements */
+    setup.EVENT_DEFAULT_COOLDOWN, /* cooldown */
+    setup.rarity.never,   /* rarity */
+  )>>
+
+<<else>>
+  <<set $edesc = Story.get(_ebase.getPassage()).text>>
+
+  <<set $dtquest = new setup.Event(
+    _ekey,
+    _ebase.getName(),  /* name */
+    _ebase.getAuthor(),  /* author */
+    _ebase.getTags(),  /* tags */
+    _epassage,  /* desc passage */
+    _ebase.getUnitRestrictions(),  /* unit restrictions */
+    _ebase.getActorUnitGroups(),  /* actors */
+    _ebase.getRewards(),  /* outcomes */
+    _ebase.getRequirements(),  /* requirements */
+    _ebase.getCooldown(), /* cooldown */
+    _ebase.getRarity(), /* rarity */
+  )>>
+  <<set $dtquest.old_key = _ebase.key>>
+<</if>>
+
+
+
+:: EventGen [nobr]
+
+<<run setup.DevToolHelper.restoreScrollPos()>>
+
+<<dtauthor "$dtquest.author" $dtquest.author>>
+
+<<dtname "$dtquest.name" $dtquest.name>>
+
+<<dtrarity "$dtquest.rarity" $dtquest.rarity 'EGChooseRarity'>>
+
+<p>
+  <b>Cooldown</b>:
+  <<message '(?)'>>
+    <div class='helpcard'>
+      How many weeks before this event can be triggered again.
+      <br/>
+      <br/>
+      Recommended to put at least 200 weeks for random events, but 0 for chain events.
+    </div>
+  <</message>>
+  <<numberbox "$dtquest.cooldown" $dtquest.cooldown>>
+</p>
+
+<<dttags $dtquest>>
+
+/*
+<div class='card livingcard'>
+  Roles (max. 5)
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Your units that are participating in this event.
+      <br/>
+      <br/>
+      Maximum is 5 roles.
+    </div>
+  <</message>>
+  <<if Object.keys($dtquest.getUnitRestrictions()).length < 5>>
+    <br/>
+    Add new role with actor name: <<textbox '_newactorname' ''>>
+    <<link '(Add role)'>>
+      <<if !_newactorname || $dtquest.getAllActorNames().includes(_newactorname)>>
+        <<warning 'Duplicate actor name or missing actor name'>>
+      <<else>>
+        <<set $dtquest.unit_restrictions[_newactorname] = []>>
+        <<run setup.DevToolHelper.saveScrollPos()>>
+        <<goto 'EventGen'>>
+      <</if>>
+    <</link>>
+  <</if>>
+
+  <<for _irole, _role range $dtquest.unit_restrictions>>
+    <div class='marketobjectcard'>
+      <<= _irole>>
+      <<message '(?)'>>
+        <div class='helpcard'>
+          Restrictions for this unit
+          <br/>
+          <br/>
+          Only units that satisfies this will ever be assigned to this role.
+          The game will try to find an assignment that matches.
+          The most common requirement is Job: Slaver, which indicates that this role is for
+          slavers only.
+        </div>
+      <</message>>:
+      <<capture _irole, _role>>
+        <<link '(DELETE THIS ROLE)' 'EventGen'>>
+          <<run setup.DevToolHelper.saveScrollPos()>>
+          <<run delete $dtquest.unit_restrictions[_irole]>>
+        <</link>>
+      <</capture>>
+      <<set _listpath = '$dtquest.unit_restrictions[' + _irole + ']'>>
+      <<devlist _listpath '(Add new restriction)' 'QGAddRestrictionUnit' 'EventGen'>>
+      <br/>
+    </div>
+  <</for>>
+</div>
+*/
+
+<<dtactor $dtquest>>
+
+<<dtoutcome "$dtquest.rewards">>
+
+<<dtrestriction "$dtquest.requirements">>
+
+<hr/>
+
+<<dtstoryhelp>>
+
+<div class="overflow-story-container">
+
+<hr/>
+
+<p>
+<b>Event text</b>:
+<br/>
+<<codeeditor '$edesc' $edesc>>
+</p>
+
+<hr/> 
+
+<p class="center">
+<br/>
+<<button 'CREATE NEW EVENT!'>>
+  <<run setup.DOM.Menu.devtoolverifycreate()>>
+<</button>>
+</p>
+
+<<if $dtquest.old_key>>
+
+<p class='center'>
+<<link 'create event (override existing)'>>
+  <<run setup.DOM.Menu.devtoolverifycreate(true)>>
+<</link>>
+</p>
+
+<</if>>
+
+</div>
+
+
+:: EGChooseRarity [nobr]
+
+<<dtraritychoose 'EGChooseRarityDo'>>
+
+
+:: EGChooseRarityDo [nobr]
+
+<<set $dtquest.rarity = _raritychosen>>
+<<gotowipehistory 'EventGen'>>

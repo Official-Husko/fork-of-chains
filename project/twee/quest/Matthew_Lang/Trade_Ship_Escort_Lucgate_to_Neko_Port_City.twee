@@ -1,0 +1,334 @@
+:: QuestSetup_trade_ship_escort_lucgate_to_neko_port_city [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"a_merchant_s_revenge_caravan_raid_vale_0",
+"Ship Captain",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_seaman),
+],
+)>>
+
+
+<<set _criterialookout = new setup.UnitCriteria(
+null, /* key */
+'Scout (Sea)', /* name */
+[
+  setup.trait.race_lizardkin,
+  setup.trait.subrace_humansea,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.per_cautious,
+  setup.trait.per_loner,
+  setup.trait.per_attentive,
+  setup.trait.per_empath,
+  setup.trait.skill_flight,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.race_greenskin,
+  setup.trait.race_demon,
+  setup.trait.subrace_humandesert,
+  setup.trait.per_brave,
+  setup.trait.per_gregarious,
+  setup.trait.per_dreamy,
+  setup.trait.per_logical,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 2,
+  arcane: 1,
+}
+)>>
+
+<<set _criteriasailor = new setup.UnitCriteria(
+null, /* key */
+'Sailor', /* name */
+[
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.per_aggressive,
+  setup.trait.per_active,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_flight,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.subrace_humandesert,
+  setup.trait.subrace_orc,
+  setup.trait.height_short,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_studious,
+  setup.trait.per_serious,
+  setup.trait.per_masochistic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriahealer = new setup.UnitCriteria(
+null, /* key */
+'Defender Support', /* name */
+[
+  setup.trait.bg_healer,
+  setup.trait.bg_priest,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.per_calm,
+  setup.trait.per_kind,
+  setup.trait.per_chaste,
+  setup.trait.per_honorable,
+  setup.trait.skill_alchemy,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 1,
+  aid: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'trade_ship_escort_lucgate_to_neko_port_city', /* key */
+"Trade Ship Escort: Lucgate to Neko Port City", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'money',
+],
+2, /* weeks */
+7, /* expiration weeks */
+{ /* roles */
+  'lookout': [ _criterialookout, 1],
+  'sailor': [ _criteriasailor, 1],
+  'healer': [ _criteriahealer, 1],
+},
+{ /* actors */
+  'captain': 'a_merchant_s_revenge_caravan_raid_vale_0',
+},
+[ /* costs */
+],
+'Quest_trade_ship_escort_lucgate_to_neko_port_city',
+setup.qdiff.hard26, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_trade_ship_escort_lucgate_to_neko_port_cityCrit',
+    [
+      setup.qc.EquipmentDirect('weapon_rapier_normal'),
+      setup.qc.MoneyCustom(2000),
+      setup.qc.Favor('neko', 25),
+      setup.qc.Favor('humankingdom', 25),
+    ],
+  ],
+  [
+    'Quest_trade_ship_escort_lucgate_to_neko_port_cityCrit',
+    [
+      setup.qc.MoneyCustom(2000),
+      setup.qc.Favor('neko', 25),
+      setup.qc.Favor('humankingdom', 25),
+    ],
+  ],
+  [
+    'Quest_trade_ship_escort_lucgate_to_neko_port_cityCrit',
+    [
+      setup.qc.Ire('humankingdom', 2),
+      setup.qc.OneRandom([
+setup.qc.Injury('lookout', 1),
+setup.qc.Injury('sailor', 1),
+setup.qc.Injury('healer', 1)
+]),
+    ],
+  ],
+  [
+    'Quest_trade_ship_escort_lucgate_to_neko_port_cityCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.TraumatizeRandom('lookout', 5),
+      setup.qc.TraumatizeRandom('sailor', 5),
+      setup.qc.TraumatizeRandom('healer', 5),
+      setup.qc.OneRandom([
+setup.qc.MissingUnit('lookout'),
+setup.qc.MissingUnit('sailor'),
+setup.qc.MissingUnit('healer')
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_trade_ship_escort_lucgate_to_neko_port_city [nobr]
+<<if $gQuest.getSeed() % 4 == 0>>
+    <<set _goods = "iron">>
+<<elseif $gQuest.getSeed() % 4 == 1>>
+    <<set _goods = "bronze">>
+<<elseif $gQuest.getSeed() % 4 == 2>>
+    <<set _goods = "copper">>
+<<elseif $gQuest.getSeed() % 4 == 3>>
+    <<set _goods = "garum">>
+<</if>>
+
+
+<<dialogue $g.captain>>
+    <<if $gQuest.getSeed() % 3 == 0>>
+        It's a week's voyage to Neko Port City. Two if you're coming back with us.
+    <<elseif $gQuest.getSeed() % 3 == 1>>
+        You looking for work? I got a cargo hold full of _goods I need to get to Neko Port City. Gotta love the elven hostilities.
+    <<elseif $gQuest.getSeed() % 3 == 2>>
+        Yeah, I know who you are. Fancy some honest work for a change? Or should I be calling the guard?
+    <</if>>
+<</dialogue>>
+
+<p>
+    With trade between the Wood Elves and the Torans being minimal and the border an ongoing series of skirmishes, much of the trade with the Neko is done by sea. Of course, even hugging the coastline, the usual perils of sea travel still threaten. Pirates, kraken, the siren song of the merfolk and more mundane dangers like reefs and storms can all sink a ship, but at least some of that can be offset by hiring additional guards. Preferably those who can rig sail and swim. Captain <<name $g.captain>> is one such trader looking to hire additional guards. It's not normally a job for slavers, but it could also be easy money if nothing of note happens on the voyage.
+</p>
+
+
+:: Quest_trade_ship_escort_lucgate_to_neko_port_cityCrit [nobr]
+<<if $gQuest.getSeed() % 5 == 0>>
+    <<set _ship = "the Dikrotus" >>
+<<elseif $gQuest.getSeed() % 5 == 1>>
+    <<set _ship = "the Concordia" >>
+<<elseif $gQuest.getSeed() % 5 == 2>>
+    <<set _ship = "the Alexander" >>
+<<elseif $gQuest.getSeed() % 5 == 3>>
+    <<set _ship = "the Velancar" >>
+<<elseif $gQuest.getSeed() % 5 == 4>>
+    <<set _ship = "the Vitae" >>
+<</if>>
+
+<p>
+    The voyage started out with fresh winds and sunshine as _ship cut through the coastal waters along the southern coast of <<lore geo_mestia>>. <<Rep $g.lookout>> climbed up the rigging to the crow's nest, enjoying the view as the coast slipped along the starboard side of the ship, while <<rep $g.sailor>> pitched in with the crew,
+    <<if $g.sailor.isHasAnyTraitExact(["bg_pirate", "bg_seaman"])>>
+        happy to be back on the seas once more.
+    <<else>>
+        almost as if <<they $g.sailor>>'d been sailing <<their $g.sailor>> whole life.
+    <</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        The voyage was mostly uneventful,
+        <<if $g.lookout.isYou() or $g.sailor.isYou() or $g.healer.isYou()>>
+
+            <<set _notyou = []>>
+            <<if !$g.lookout.isYou()>>
+                <<run _notyou.push($g.lookout)>>
+            <</if>>
+            <<if !$g.sailor.isYou()>>
+                <<run _notyou.push($g.sailor)>>
+            <</if>>
+            <<if !$g.healer.isYou()>>
+                <<run _notyou.push($g.healer)>>
+            <</if>>
+            <<set _o1 = _notyou[0]>>
+            <<set _o2 = _notyou[1]>>
+
+            or at least, you considered it uneventful. A pirate ship did attempt to board _ship, but they proved no match for you and your slavers. It was barely even a fight, and you slaughtered the boarding party to a man. The pirate ship broke off and fled, leaving you to pick over the bodies. Unfortunately, the down on their luck pirates didn't have much of worth - but you did find a very nice rapier, which more than makes up for the lack of treasure—or slaves.
+
+        <<else>>
+            or at least, <<name $g.sailor>> reported it as uneventful. A pirate ship did attempt to board _ship, but they proved no match for your slavers. It was barely even a fight, and the boarding party was slaughtered to a man. The pirate ship broke off and fled, leaving your slavers to pick over the bodies. Unfortunately, the down on their luck pirates didn't have much of worth - but <<name $g.lookout>> did find a very nice rapier, which more than makes up for the lack of treasure—or slaves.
+
+        <</if>>
+    </p>
+
+<<elseif $gOutcome == 'success'>>
+    <p>
+        The voyage was mostly uneventful, and your slavers spent two days in Neko Port City, enjoying the sights, the food, and some time at <<lore location_purrloin>> before making the return journey back to Lucgate, _ship laden with fresh fruits, cured venison and carved statues of penis-like fertility gods. After collecting
+
+        <<if $g.lookout.isYou() or $g.sailor.isYou() or $g.healer.isYou()>>
+            <<set _notyou = []>>
+            <<if !$g.lookout.isYou()>>
+                <<run _notyou.push($g.lookout)>>
+            <</if>>
+            <<if !$g.sailor.isYou()>>
+                <<run _notyou.push($g.sailor)>>
+            <</if>>
+            <<if !$g.healer.isYou()>>
+                <<run _notyou.push($g.healer)>>
+            <</if>>
+            <<set _o1 = _notyou[0]>>
+            <<set _o2 = _notyou[1]>>
+            your payment from Captain <<name $g.captain>>, you gather your slavers and head back to the fort.
+        <<else>>
+            their payment from Captain <<name $g.captain>>, your slavers collect their belongings and head back to the fort.
+        <</if>>
+    </p>
+
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        The pirate ship that attacked _ship was larger—much larger— and your slavers were hopelessly outmatched. Thankfully the pirates were more interested in plunder than captives, and left you alone after taking everything of value on board—including the _goods in the cargo hold. _ship limped back to port, and
+        <<if $g.lookout.isYou() or $g.sailor.isYou() or $g.healer.isYou()>>
+            <<set _notyou = []>>
+            <<if !$g.lookout.isYou()>>
+                <<run _notyou.push($g.lookout)>>
+            <</if>>
+            <<if !$g.sailor.isYou()>>
+                <<run _notyou.push($g.sailor)>>
+            <</if>>
+            <<if !$g.healer.isYou()>>
+                <<run _notyou.push($g.healer)>>
+            <</if>>
+            <<set _o1 = _notyou[0]>>
+            <<set _o2 = _notyou[1]>>
+            you and your slavers
+        <<else>>
+            your slavers
+        <</if>>
+        staggered back home, battered, somewhat injured, but alive.
+    </p>
+<<elseif $gOutcome == 'disaster'>>
+    <p>
+        The pirate ship that attacked _ship was larger—much larger— and your slavers were hopelessly outmatched. It didn't even come to an actual melee, with _ship breaking apart in rough seas as it was rammed repeatedly by the pirate ship. Most of the crew washed up on sore, but as your slavers took stock and counted heads, one of them hadn't made it.
+    </p>
+<</if>>
+
+
+
+
+
+
+

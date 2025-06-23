@@ -1,0 +1,29 @@
+:: RestrictionHasUnitOnDuty [nobr]
+
+<p>Must have a unit on the following duty, and the unit must be <<successtext 'available'>>:</p>
+
+<<for _duty range Object.values(setup.dutytemplate)>>
+  <<= _duty.getName()>>
+  <<capture _duty>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.HasUnitOnDuty(_duty)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+:: RestrictionOnDuty [nobr]
+
+<p>Unit must be on this duty:</p>
+
+<<for _duty range Object.values(setup.dutytemplate)>>
+  <<= _duty.getName()>>
+  <<capture _duty>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.OnDuty(_duty)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+

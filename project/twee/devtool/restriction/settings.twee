@@ -1,0 +1,35 @@
+:: RestrictionAllowLoversHetero [nobr]
+
+<<set $qrestriction = setup.qres.AllowLovers('gender_male', 'gender_female')>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionAllowLoversGay [nobr]
+
+<<set $qrestriction = setup.qres.AllowLovers('gender_male', 'gender_male')>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionAllowLoversLesbian [nobr]
+
+<<set $qrestriction = setup.qres.AllowLovers('gender_female', 'gender_female')>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionTagNotBanned [nobr]
+
+<div>
+This tag is <<dangertext 'NOT'>> banned:
+</div>
+
+<<for _tag range setup.TagHelper.getAllTagsOfType('quest', 'fetish')>>
+  <<capture _tag>>
+    <div>
+      <<= _tag>>
+      <<button 'Select' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qres.TagNotBanned(_tag)>>
+      <</button>>
+    </div>
+  <</capture>>
+<</for>>
+

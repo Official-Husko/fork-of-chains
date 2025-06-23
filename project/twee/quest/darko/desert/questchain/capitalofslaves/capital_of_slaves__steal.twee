@@ -1,0 +1,141 @@
+:: QuestSetup_capital_of_slaves__steal_wares [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_capital_of_slaves__steal_wares1',
+"Trained Eastern Slave",
+'desert_all',  /* pools */
+0,
+[
+setup.qc.TraitReplace('unit', setup.trait.training_obedience_basic), ],
+)>>
+
+<<run new setup.QuestTemplate(
+'capital_of_slaves__steal_wares', /* key */
+"Capital of Slaves: Steal Wares", /* Title */
+"darko", /* Author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'thief2': setup.qu.thief,
+'thief1': setup.qu.thief,
+'muscle': setup.qu.carrier, },
+{ /* actors */
+'slave1': 'desert_all',
+'slave2': 'quest_capital_of_slaves__steal_wares1',
+'slave3': 'subrace_humansea', },
+[ /* costs */
+],
+'Quest_capital_of_slaves__steal_wares',
+setup.qdiff.hard40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_capital_of_slaves__steal_waresCrit',
+[
+setup.qc.Slave('slave1', "", false),
+setup.qc.Slave('slave2', "", false),
+setup.qc.Slave('slave3', "", false), ],
+], [
+'Quest_capital_of_slaves__steal_waresCrit',
+[
+setup.qc.Slave('slave1', "", false),
+setup.qc.Slave('slave2', "", false), ],
+], [
+'Quest_capital_of_slaves__steal_waresFailure',
+[
+setup.qc.Injury('thief2', 2),
+setup.qc.Injury('thief1', 2),
+setup.qc.Injury('muscle', 2), ],
+], [
+'Quest_capital_of_slaves__steal_waresDisaster',
+[
+setup.qc.MissingUnitRebuy('thief2', 1),
+setup.qc.MissingUnitRebuy('thief1', 1),
+],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_capital_of_slaves__steal_wares [nobr]
+
+<<include 'Opportunity_capital_of_slaves'>>
+
+<p>
+You have chosen to send a team of slavers to 
+sneak into the market at night and score yourself some slaves.
+</p>
+
+
+:: Quest_capital_of_slaves__steal_waresCrit [nobr]
+
+<p>
+The slave market of Qarma looked very different at night. Instead of naked
+bodies being displayed under the scorching sun of Qarma,
+there are instead plenty of crates covered in drapes, and you can hear soft
+moans coming from within these crates.
+But it was mostly quiet, as slave owners are required to gag their
+slaves overnight to maintain peace and quiet in the city.
+Some slave owners even use the night as an opportunity to further train their slaves —
+be it to enlarge their orifices by overnight rape or by putting several slaves together
+inside one crate to make them more horny.
+
+<<set _lust = setup.selectUnit([$g.thief1, $g.thief2, $g.muscle], {trait: 'per_lustful'})>>
+<<if _lust>>
+  And judging from
+  <<if _lust.isHasDick()>>
+    <<set _pants = _lust.getGenitalCovering()>>
+    <<if _pants>>
+      the tent forming on <<reps _lust>> <<rep _pants>>,
+    <<else>>
+      <<reps _lust>> rising naked erection,
+    <</if>>
+  <<else>>
+  the slight flush on <<reps _lust>> face,
+  <</if>>
+  the slaves were not the only one who got rather horny that night.
+<</if>>
+
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+After sneaking through the market, your slavers managed to find one
+cage containing three interlocked slaves, where the slaves were locked in position
+so that each one is forced to eat another's genitals.
+<<Yourrep $g.thief1>> <<uadv $g.thief1>>
+made quick work of the lock before <<rep $g.muscle>> carried the moaning trio of slaves
+safely outside the city and ultimately back into your camp.
+</p>
+
+<<else>>
+<p>
+Your slavers were anxious and <<uadv $g.thief1>>
+grabbed the nearest possible crate to steal. It happened to contain two slaves
+making love with each other. The pair of slaves were kidnapped and smuggled outside from the city
+without anyone noticing.
+</p>
+<</if>>
+
+
+:: Quest_capital_of_slaves__steal_waresFailure [nobr]
+<p>
+Unfortunately, your slavers were spotted by guards as they attempted to sneak
+into the city under the cover of the night, and was shot with arrows.
+Injured, your slavers decided the best way to proceed was to retreat home.
+</p>
+
+
+:: Quest_capital_of_slaves__steal_waresDisaster [nobr]
+<p>
+That night, <<rep $g.thief1>> and <<rep $g.thief2>> never made it out from the city.
+You later received a brochure about a slave sale in the Capital of Slaves and
+were not really surprised to see their names being listed next to the slaves they were
+supposed to steal. It is still not too late for you to buy their freedoms
+back, but it will cost quite a bit.
+</p>

@@ -1,0 +1,306 @@
+:: QuestSetup_fending_off_the_weres [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafighter1 = new setup.UnitCriteria(
+null, /* key */
+'Anti-Were Fighter', /* name */
+[
+  setup.trait.per_brave,
+  setup.trait.per_aggressive,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.per_serious,
+  setup.trait.skill_animal,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.subrace_humanvale,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.per_cautious,
+  setup.trait.per_calm,
+  setup.trait.per_gregarious,
+  setup.trait.per_loyal,
+  setup.trait.per_playful,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.eq_restrained,
+  setup.trait.eq_blind,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1.5,
+  brawn: 1.5,
+}
+)>>
+
+<<set _criteriafighter2 = new setup.UnitCriteria(
+null, /* key */
+'Anti-Were Fighter', /* name */
+[
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.skill_animal,
+  setup.trait.per_independent,
+  setup.trait.per_loner,
+  setup.trait.per_serious,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.eq_restrained,
+  setup.trait.eq_blind,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.height_dwarf,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.per_gregarious,
+  setup.trait.per_loyal,
+  setup.trait.per_masochistic,
+  setup.trait.per_playful,
+  setup.trait.subrace_humanvale,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1.5,
+  brawn: 1.5,
+}
+)>>
+
+<<set _criteriafighter3 = new setup.UnitCriteria(
+null, /* key */
+'Anti-Were Fighter', /* name */
+[
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.skill_animal,
+  setup.trait.per_independent,
+  setup.trait.per_loner,
+  setup.trait.per_serious,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.eq_restrained,
+  setup.trait.eq_blind,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.height_dwarf,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.per_gregarious,
+  setup.trait.per_loyal,
+  setup.trait.per_masochistic,
+  setup.trait.per_playful,
+  setup.trait.subrace_humanvale,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1.5,
+  brawn: 1.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'fending_off_the_weres', /* key */
+"Fending off the Weres", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'vale',
+  'money',
+  'favor',
+  'maleonly',
+  'furry',
+  'ire',
+],
+2, /* weeks */
+3, /* expiration weeks */
+{ /* roles */
+  'fighter1': [ _criteriafighter1, 1],
+  'fighter2': [ _criteriafighter2, 1],
+  'fighter3': [ _criteriafighter3, 1],
+},
+{ /* actors */
+  'slave': 'vale_all',
+},
+[ /* costs */
+],
+'Quest_fending_off_the_weres',
+setup.qdiff.harder40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_fending_off_the_weresCrit',
+    [
+      setup.qc.Slave('slave', "a|was captured and kept in one of the temporary werewolf attack outposts", undefined),
+      setup.qc.Favor('humanvale', 100),
+      setup.qc.Ire('werewolf', 2),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_fending_off_the_weresCrit',
+    [
+      setup.qc.Favor('humanvale', 100),
+      setup.qc.Ire('werewolf', 2),
+      setup.qc.MoneyCustom(2000),
+    ],
+  ],
+  [
+    'Quest_fending_off_the_weresFailure',
+    [
+      setup.qc.Injury('fighter1', 2),
+      setup.qc.Injury('fighter2', 2),
+      setup.qc.Injury('fighter3', 2),
+      setup.qc.Ire('werewolf', 2),
+    ],
+  ],
+  [
+    'Quest_fending_off_the_weresDisaster',
+    [
+      setup.qc.Injury('fighter1', 3),
+      setup.qc.Injury('fighter2', 3),
+      setup.qc.Injury('fighter3', 3),
+      setup.qc.Ire('werewolf', 2),
+      setup.qc.Ire('humanvale', 6),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.greathall),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_fending_off_the_weres [nobr]
+<p>
+A werewolf outpost has been spotted near one of the smaller settlements in the <<lore region_vale>>. This could only mean one thing: they are planning an assault towards the settlement in the very near future. A frantic messenger from the settlement has arrived at your fort, begging your company for help to eliminate this imminent threat.
+<<if $favor.getFavor($company.humanvale) >= 500>>
+Seeing how you've allied yourself with the <<rep $company.humanvale>>, they see your company as a potential source of help. They aren't wrong, if they got the coin.
+<<else>>
+They must be desperate to come to your company — known for raiding many nearby settlements — for help, and this could be a lucrative offer.
+<</if>>
+</p>
+
+<p>
+Assaulting such an encampment head-on will be a challenging task, but you will only need a very simple team for the task. Three experienced fighters to assault the encampment, and nothing more.
+</p>
+
+<<set _u = setup.getUnit({tag: 'half_werewolf_told_backstory', job: setup.job.slaver})>>
+<<if _u>>
+<p>
+You recalled that <<rep _u>> had personally asked to join this mission some time ago. If you want to send a team to go on this mission, you might consider sending the <<uadjgood _u>> slaver along...
+</p>
+<</if>>
+
+
+
+:: Quest_fending_off_the_weresCrit [nobr]
+
+<p>
+After scouting through the vale for several days, <<rep $g.fighter1>> <<uadv $g.fighter1>> spotted the encampment, some distance away from the settlement.
+
+<<if $g.fighter1.isHasTrait('per_cautious')>>
+<<Rep $g.fighter1>> double checked <<their $g.fighter1>> preparation,
+being cautious before doing <<their $g.fighter1>> duty of charging in alone into the
+<<else>>
+<<Rep $g.fighter1>> <<uadv $g.fighter1>> charged on alone into the
+<</if>>
+encampment, wielding <<their $g.fighter1>> <<uweapon $g.fighter1>> up high.
+Seeing such a bold assault, the werewolves too grabbed their weapons and
+attempted to fight your slaver. Meanwhile, <<rep $g.fighter2>> and
+<<utheirrel $g.fighter2 $g.fighter3>> <<rep $g.fighter3>> waited for the
+perfect opportunity, before jumping into the fray, causing panic to spread
+over the encampment and ultimately causing the werewolves to flee and abandon the
+encampment.
+</p>
+
+<p>
+Your slavers looted the encampment for what meager valuables were stashed there, before returning to the settlement to collect their pay and the gratitude of the northern folks.
+Your slavers' audacity will no doubt anger the werewolves however,
+and you should be prepared for any retaliation...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers never told the settlement about one of their villagers who was caught and caged inside the werewolf encampment.
+They took <<therace $g.slave>> prisoner home as a bonus hazard pay, to be trained properly as a sex slave.
+</p>
+<</if>>
+
+<<set _u2 = setup.getUnit({title: 'quest_shapeshifter__werewolf_1', job: setup.job.slaver})>>
+<<if _u2 && !_u2.isHasTitle(setup.title.quest_avenger_0)>>
+
+<<if
+!$varstore.get('half_werewolf_father_seen') &&
+[$g.fighter1, $g.fighter2, $g.fighter3].includes(_u2)>>
+/* met father */
+<p>
+During the mission, <<rep _u2>> somehow managed to pay attention to the combatants.
+In fact, <<they _u2>> was able to identify one of the werewolves as the one that sired <<them _u2>> personally -- <<their _u2>> father.
+You could see the anger burning in <<their _u2>> <<ueyes _u2>> as <<they _u2>> finished <<their _u2>> report to you, no doubt planning to exact <<their _u2>> revenge one way or another.
+Perhaps you could scout the <<lore region_vale>> again and see if such an opportunity come to pass...
+</p>
+
+<<run setup.qc.VarSet('half_werewolf_father_seen', 1, -1).apply($gQuest)>>
+
+<<elseif !$varstore.get('half_werewolf_father_encountered')>>
+/* encountered the father but not personally */
+<p>
+During the fight, <<rep $g.fighter1>> saw one werewolf that somehow reminded <<them $g.fighter1>> greatly of <<their $g.fighter1>> <<ufriend $g.fighter1 _u2>> <<rep _u2>>.
+<<if $g.fighter1.isYou()>>
+Having seen the werewolf yourself, you
+<<else>>
+As <<rep $g.fighter1>> finished <<their $g.fighter1>> report to you, you
+<</if>>
+started to wonder whether this was just a coincidence, or if there was something more to this.
+You made a mental note to ask <<yourrep _u2>> later.
+</p>
+<<run setup.qc.VarSet('half_werewolf_father_encountered', 1, 10).apply($gQuest)>>
+<</if>>
+
+<</if>>
+
+
+:: Quest_fending_off_the_weresFailure [nobr]
+
+<p>
+Your team was incompetent and unsuited for the battle. The werewolves easily
+overwhelmed your slavers, forcing them to retreat back injured. Fortunately,
+it seemed that your slavers' bold attack alerted the weres that their prey
+was aware of their presence. They ultimately decided to leave the area
+without risking the assault on the prepared settlement. The werewolves were able
+to identify your slavers as under your employ, however, and there is little doubt that they now view
+you and <<rep $company.player>> with more disdain than before...
+</p>
+
+
+:: Quest_fending_off_the_weresDisaster [nobr]
+
+<p>
+Your team was incompetent and unsuited for the battle. The werewolves easily
+overwhelmed your slavers, before capturing <<rep $g.fighter1>> and
+interrogated <<if $g.fighter1.isYou()>>you<<else>>the poor <<urace $g.fighter1>><</if>>.
+By the time your slavers came back home injured,
+you had already heard that the werewolves' attack on the settlement was
+a massive success, no small thanks to the information fed by <<rep $g.fighter1>> to
+the werewolves, including forces defending the village. As for you and
+your company, all you get from this endeavor is much disdain from all parties
+involved, thanks to your decision to send such an incompetent team for the job.
+</p>

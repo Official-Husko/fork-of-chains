@@ -1,0 +1,163 @@
+:: QuestSetup_harvesting_the_fields [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"harvesting_the_fields0",
+"Human (Vale): All gender",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_farmer),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'harvesting_the_fields', /* key */
+"Harvesting the Fields", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'vale',
+  'money',
+  'unit',
+  'favor',
+  'rare',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'labourer': [ setup.qu.carrier, 1],
+  'labourer2': [ setup.qu.carrier, 1],
+  'slaver': [ setup.qu.slavecapturer, 1],
+},
+{ /* actors */
+  'farmhand': 'harvesting_the_fields0',
+  'sexpartner': 'subrace_humanvale',
+},
+[ /* costs */
+],
+'Quest_harvesting_the_fields',
+setup.qdiff.easier2, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_harvesting_the_fieldsCrit',
+    [
+      setup.qc.Slave('farmhand', "a|was a farmhand", undefined),
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Favor('humanvale', 50),
+      setup.qc.SlaveMarker('sexpartner'),
+      setup.qc.SetCooldownQuest(null, 52),
+    ],
+  ],
+  [
+    'Quest_harvesting_the_fieldsCrit',
+    [
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Favor('humanvale', 50),
+      setup.qc.SetCooldownQuest(null, 52),
+    ],
+  ],
+  [
+    'Quest_harvesting_the_fieldsFailure',
+    [
+      setup.qc.MoneyCustom(200),
+      setup.qc.SetCooldownQuest(null, 52),
+    ],
+  ],
+  [
+    'Quest_harvesting_the_fieldsDisaster',
+    [
+      setup.qc.SetCooldownQuest(null, 52),
+      setup.qc.Ire('humanvale', 1),
+      setup.qc.Injury('slaver', 1),
+      setup.qc.DoAll([
+setup.qc.Injury('labourer', 1)
+], 0.5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+  [setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_harvesting_the_fields [nobr]
+<p>It's late autumn and the farmers of the <<lore region_vale>> are getting ready to harvest their crops before the winter snows set in. Harvest is, of course, traditionally a time when everyone pitches in the help—and get paid. It's not exactly adventure—or the flesh trade—but it is honest work and guaranteed pay—if your slavers are up to the physical labor.</p>
+<p>Of course, if your slavers make it through, farmers usually throw one hell of a harvest party. And who knows, you might even be able to pick up a drunken farmhand and bring them back to a new life that'll be even more profitable for you. And even if you don't, helping with the harvest will go some way to earning a bit of goodwill with your neighbors.</p>
+
+
+
+:: Quest_harvesting_the_fieldsCrit [nobr]
+<p>Your slavers grumbled at the job assignment—until they realized there was a party afterward. <<name $g.labourer>> and <<name $g.labourer2>> worked tirelessly cutting and stooking golden sheaves of wheat,
+<<if $g.slaver.isHasTrait('bg_farmer')>>
+easily keeping up with <<name $g.slaver>>, whose familiarity with the work saw <<them $g.slaver>> leading from the front of the pack.
+<<elseif $g.slaver.isHasTrait('muscle_strong')>>
+a task that <<name $g.slaver>> proved surprisingly adept at as well.
+<<else>>
+more than making up for <<name $g.slaver>>'s lack of experience with farmwork.
+<</if>>
+</p>
+<p>The harvest party was a loud and raucous affair, drenched in mead and cider, and your slavers were stuffed with roast pork, a range of pies, freshly baked bread and apples fresh off the tree. <<name $g.labourer2>> won the apple bobbing competition, and <<name $g.labourer>> proved to be very popular with the locals,
+<<if $g.labourer.isHasTrait('per_chaste')>>
+but politely declined the subtle—and not so subtle—invitations for sexual intimacy that game <<their $g.labourer>> way.
+<<elseif $g.labourer.isHasTrait('per_sexaddict')>>
+and <<they $g.labourer>> eventually led a group of <<their $g.labourer>> admirers into the barn where they celebrated late into the night.
+<<else>>
+and eventually <<they $g.labourer>> disappeared into the hayloft with a well endowed young <<woman $g.sexpartner>>, <<name $g.sexpartner>>. Soon cries of passion could be heard by the revelers, who toasted the lovers, following those on with increasingly absurd toasts to everyone and everything, including 'my dog bowser', 'that piglet wot won't let us hold 'em' and 'the nail in the door'.
+<</if>>
+</p>
+<<if $gOutcome == 'crit'>>
+<p>All the while, <<name $g.slaver>> waited, biding <<their $g.slaver>> time, and as the people started to drift home long after the sun had fallen, <<they $g.slaver>> captured one of the farmhands and brought <<them $g.farmhand>> back to your fort.</p>
+<</if>>
+<p>Overall, the harvest was a great success, and your slavers were paid handsomely for their work, both in coin and food, which they bring back with them to the fort.</p>
+
+
+
+:: Quest_harvesting_the_fieldsFailure [nobr]
+<p>Your slavers grumbled at the job assignment—until they realized there was a party afterward, and they set out with high hopes.
+<<set _unit = setup.selectUnit([$g.labourer, $g.labourer2, $g.slaver], {trait: 'bg_farmer'})>>
+<<if _unit>>
+However, it's been a long time since any of them had done serious farm work, and they didn't last beyond lunch time.
+<<else>>
+However, none of them were up to the physical demands of the harvest, and they didn't last beyond lunch time.
+<</if>>
+With the scornful laughs of the farmers ringing in their ears, your slavers slunk home with their tails between their legs, tired muscles, and a mere pittance for their pay. You just hope they'll be good for work next week...
+</p>
+
+
+
+:: Quest_harvesting_the_fieldsDisaster [nobr]
+<p>Your slavers grumbled at the job assignment—until they realized there was a party afterward. <<name $g.labourer>> and <<name $g.labourer2>> worked tirelessly cutting and stooking golden sheaves of wheat,
+<<if $g.slaver.isHasTrait('bg_farmer')>>
+easily keeping up with <<name $g.slaver>>, whose familiarity with the work saw <<them $g.slaver>> leading from the front of the pack.
+<<elseif $g.slaver.isHasTrait('muscle_strong')>>
+a task that <<name $g.slaver>> proved surprisingly adept at as well.
+<<else>>
+more than making up for <<name $g.slaver>>'s lack of experience with farmwork.
+<</if>>
+</p>
+<p>The harvest party was a loud and raucous affair, drenched in mead and cider, and your slavers were stuffed with roast pork, a range of pies, freshly baked bread and apples fresh off the tree. <<name $g.labourer2>> won the apple bobbing competition, and night started on a good note.</p>
+<p>
+<<if $g.slaver.isHasTrait('per_cautious')>>
+Unfortunately, <<name $g.slaver>> was too cautious to make a grab for any of the farmhands, and <<name $g.labourer>> got increasingly impatient with the whole affair. When <<they $g.labourer>> went off to find an outhouse
+<<if $g.labourer.isHasDick()>>
+—or a convenient bush—
+<<else>>
+
+<</if>>
+they stumbled across a very drunk farmhand, <<name $g.farmhand>>, and decided to nab them right then and there. However, <<name $g.farmhand>> turned out to be a much better fighter than <<name $g.labourer>> anticipated, and was able to bellow for help, leaving your slavers hopelessly outmatched.
+<<else>>
+Unfortunately, <<name $g.slaver>> got impatient and moved too quickly, and <<their $g.slaver>> attempts to single out one of the farmhands and lure <<them $g.farmhand>> away from the celebration went south when they proved to be a much better fighter than anticipated. When they called for help, the still mostly sober farmers rallied against your slavers, leaving them helplessly outmatched.
+<</if>>
+</p>
+<p>With no other options, your slavers legged it back to your fort, however, in the ensuing chase, <<name $g.slaver>> stepped into a rabbit hole and twisted <<their $g.slaver>> ankle. Your other slavers also received some superficial injuries as they made their escape, and you can only hope those don't prove to be too serious.</p>

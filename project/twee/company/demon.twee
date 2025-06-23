@@ -1,0 +1,34 @@
+:: InitCompanyDemon [nobr company]
+
+<<set _boon = setup.qc.Function(() => {
+  var unit = setup.rng.choice(State.variables.company.player.getUnits({job: setup.job.slaver}));
+  State.variables.trauma.boonize(unit, 5);
+})>>
+
+<<run new setup.CompanyTemplate(
+  'demon',
+  'The Great Mist',
+  'CompanyTemplateDemon',
+  [ /* favor effects */
+    [
+      _boon,
+    ],
+    [
+      _boon,
+      _boon,
+    ],
+    [
+      _boon,
+      _boon,
+      _boon,
+    ],
+  ],
+)>>
+
+:: CompanyTemplateDemon [nobr]
+
+Residents of the land beyond <<lore concept_mist>>, they are notorious for leading a perpetually
+debauched life.
+Befriending them will not be easy at all, but for those that managed such an impossible
+endeavor, they are said to be granted wondrous boons in their lives.
+

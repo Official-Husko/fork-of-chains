@@ -1,0 +1,242 @@
+:: QuestSetup_household_destruction [nobr quest]
+
+<<set _criteriadetective1 = new setup.UnitCriteria(
+null, /* key */
+'Detective', /* name */
+[
+  setup.trait.bg_informer,
+  setup.trait.per_smart,
+  setup.trait.per_proud,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_humble,
+  setup.trait.per_dreamy,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 2,
+  knowledge: 1,
+}
+)>>
+
+<<set _criteriadetective2 = new setup.UnitCriteria(
+null, /* key */
+'Detective', /* name */
+[
+  setup.trait.bg_informer,
+  setup.trait.per_smart,
+  setup.trait.per_proud,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_humble,
+  setup.trait.per_dreamy,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 2,
+  knowledge: 1,
+}
+)>>
+
+<<set _criteriadetective3 = new setup.UnitCriteria(
+null, /* key */
+'Detective', /* name */
+[
+  setup.trait.bg_informer,
+  setup.trait.per_smart,
+  setup.trait.per_proud,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_humble,
+  setup.trait.per_dreamy,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 2,
+  knowledge: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'household_destruction', /* key */
+"Household Destruction", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'rare',
+  'money',
+  'danger',
+],
+2, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'detective1': [ _criteriadetective1, 1],
+  'detective2': [ _criteriadetective2, 1],
+  'detective3': [ _criteriadetective3, 1],
+},
+{ /* actors */
+  'drow': 'escort_offer1',
+},
+[ /* costs */
+],
+'Quest_household_destruction',
+setup.qdiff.normal36, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_household_destructionCrit',
+    [
+      setup.qc.VarSet('quest_household_destroyer', '10', -1),
+      setup.qc.MoneyCustom(6000),
+    ],
+  ],
+  [
+    'Quest_household_destructionCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_household_destructionCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.Sluttify('detective1'),
+setup.qc.Sluttify('detective2'),
+setup.qc.Sluttify('detective3')
+]),
+    ],
+  ],
+  [
+    'Quest_household_destructionCrit',
+    [
+      setup.qc.Sluttify('detective1'),
+      setup.qc.Sluttify('detective2'),
+      setup.qc.Sluttify('detective3'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_household_destroyer'),
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_household_destruction [nobr]
+<p>
+    In the recent weeks, <<rep $company.drow>> had been wrecked with one of the weirdest incidents you have ever heard. Multiple households in the city had completely broke and ceased to function. The reason? All of the sudden, the entire household were suddenly converted into utter subs, and everybody knows that a house that consists entirely of submissives simply will not be able to function.
+</p>
+
+<p>
+    The issue has been so dire that the rulers of the city had issued a lucrative open bounty for whoever is able to solve this mistery. This seems like a job for your company indeed! You can try to send a group of slaver "detectives" to investigate the issue. Of course, your slavers have to be careful, for otherwise they might just ended up as the latest victim of whatever it is that's causing this incident...
+</p>
+
+
+
+
+:: Quest_household_destructionCrit [nobr]
+<<if $gQuest.getSeed() % 3 == 0>>
+    <<set $g.victim = $g.detective1>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    <<set $g.victim = $g.detective2>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    <<set $g.victim = $g.detective3>>
+<</if>>
+
+<p>
+    Your trio of detective slavers went into the city, digging for information regarding the incident. Indeed, multiple households had ceased to function, all their members entirely become complete submissive sluts.
+    Your slavers had decided to investigate some of these households, which prove rather interesting.
+    <<set _unit = setup.selectUnit([$g.detective1, $g.detective2, $g.detective3], {trait: 'per_dominant'})>>
+    <<if _unit>>
+        In fact, one of the household effectively prostrated themself in front of <<rep _unit>>, who you know to be rather dominant indeed.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.detective1, $g.detective2, $g.detective3], {trait: 'per_submissive'})>>
+    <<if _unit>>
+        <<Rep _unit>> secretly felt some kind of kindship with these people, being a submissive <<themself _unit>>.
+    <</if>>
+</p>
+
+<<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+    <p>
+        Unfortunately, your slavers were not able to find just what is causing all these incidents to occur.
+        Worse, seeing submissive after submissive were having a rather unfortunate effect on your slavers.
+        <<if $gOutcome == 'failure'>>
+            Fortunately, it only seemed to affect <<yourrep $g.victim>>, but <<they $g.victim>> had become noticably sluttier when <<they $g.victim>> finally returned home...
+        <<else>>
+            Indeed, by the time your slavers returned home, they all had become noticably sluttier...
+        <</if>>
+    </p>
+<<else>>
+    <p>
+        It was difficult to coax information out of these submissive sluts. However, your slavers had their way.
+        <<set _unit = setup.selectUnit([$g.detective1, $g.detective2, $g.detective3], {trait: 'per_dominant'})>>
+        <<if _unit>>
+            <<Rep _unit>> used <<their _unit>> most commanding tone to order the sluts to give your slavers as much information as possible — the dominant <<urace _unit>> quite natural in the role.
+        <</if>>
+
+        <<set _unit = setup.selectUnit([$g.detective1, $g.detective2, $g.detective3], {trait: 'per_attentive'})>>
+        <<if _unit>>
+            <<Rep _unit>>, being a rather attentive <<urace _unit>>, were able to spot numerous clues leading to a single perpetrator behind all these incidents.
+        <</if>>
+
+        <<set _unit = setup.selectUnit([$g.detective1, $g.detective2, $g.detective3], {trait: 'per_smart'})>>
+        <<if _unit>>
+            <<Rep _unit>> worked <<their _unit>> smart brain, connecting the dots and realizing that all these incidents were the work of a single perpetrator.
+        <</if>>
+
+        <<set _unit = setup.selectUnit([$g.detective1, $g.detective2, $g.detective3], {trait: 'per_logical'})>>
+        <<if _unit>>
+            <<Rep _unit>> logically deduced that whoever did all these must be a rather well-to-do denizen of <<rep $company.drow>>.
+        <</if>>
+    </p>
+
+    <p>
+        Your slavers were able to figure out the common point of all these incidents — right before getting subbified, a certain drow royal had come and visited all these households.
+        A drow known by the name of <<rep $g.drow>>, who reside in the very same city.
+        To confirm their theory, your slavers braved themselves and visited the drow's mansion.
+        They did not go in, however, but they managed to glance upon the drow walking around the mansion's vast garden.
+        A single glance was enough to convince your slaver — indeed, even from afar, a glance of the drow was enough to send dizzyingly submissive thoughts to all your slavers — thoughts they
+        barely manage to block.
+        <<if $gOutcome == 'success'>>
+            That is, except for <<yourrep $g.victim>>, who might had not succeeded in blocking them entirely.
+        <</if>>
+        A true dominant, one born with the uncanny ability of turning everyone else into a submissive slut...
+    </p>
+
+    <p>
+        Not wanting to become sluts themselves, your slavers hurriedly put everything into a large, compelling report, and submitted their findings to the city authorities. It was accepted, and your slavers returned home with the full bounty and a new understanding on the meaning of being a true dominant.
+    </p>
+
+<</if>>

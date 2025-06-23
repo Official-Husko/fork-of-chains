@@ -1,0 +1,193 @@
+:: QuestSetup_price_for_conundrum [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  combat: 0.3,
+  brawn: 0.3,
+  survival: 0.3,
+  intrigue: 0.3,
+  slaving: 0.3,
+  knowledge: 0.3,
+  social: 0.3,
+  aid: 0.3,
+  arcane: 0.3,
+  sex: 0.3,
+}
+)>>
+
+<<set _criteriabattery = new setup.UnitCriteria(
+null, /* key */
+'Battery', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTag('future_assassin_parent'),
+],
+{
+  combat: 0.3,
+  brawn: 0.3,
+  survival: 0.3,
+  intrigue: 0.3,
+  slaving: 0.3,
+  knowledge: 0.3,
+  social: 0.3,
+  aid: 0.3,
+  arcane: 0.3,
+  sex: 0.3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'price_for_conundrum', /* key */
+"Price for Conundrum", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea', 'unknown',
+],
+2, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'you': _criteriayou,
+  'battery': [ _criteriabattery, 2],
+},
+{ /* actors */
+  'child': 'all',
+  'wizard': 'magician_of_time0',
+},
+[ /* costs */
+  setup.qc.Money(-10000),
+],
+'Quest_price_for_conundrum',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_price_for_conundrumCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_price_for_conundrumCrit',
+    [
+      setup.qc.QuestDirect('future_assassin', {child: "child"}),
+    ],
+  ],
+  [
+    'Quest_price_for_conundrumCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_price_for_conundrumCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('future_assassin_parent'),
+  setup.qc.VarRemove('future_assassin_progress'),
+  setup.qc.VarSet('future_assassin_cooldown', '1', 100),
+],
+)>>
+
+:: Quest_price_for_conundrum [nobr]
+
+<p>
+They say what comes around, goes around. Per the suggestion of your slaver,
+you are to revisit the wizard of the southern islands, the one who some time
+ago asked for a supply of human batteries to fuel <<their $g.wizard>> ritual.
+But this time, you are to pay for <<their $g.wizard>> expertise to solve a
+conundrum you face.
+</p>
+
+<p>
+And you better get ready to bring your fattest purse, as it won't be cheap at
+all. In fact, most of the money you received from <<them $g.wizard>> last
+time would have to be returned, which will surely earn you a smirk from the
+<<uadjgood $g.wizard>> wizard.
+</p>
+
+<p>
+But at least <<they $g.wizard>> might reveal the answer to you, including the
+identity of the mysterious assailant. And what greater wealth is there than
+knowledge?
+</p>
+
+
+:: Quest_price_for_conundrumCrit [nobr]
+
+<p>
+You swore the wizard was expecting you coming back to <<their $g.wizard>>
+humble abode. A small cup of tea has been prepared for three people — one for
+<<themself $g.wizard>> and two for you and <<yourrep $g.battery>>. <<They
+$g.wizard>> <<uadv $g.wizard>> took your money, before making <<themself
+$g.wizard>> comfortable to begin the explanation.
+</p>
+
+<p>
+What you are most likely facing here is a time traveler, likely from the
+future. Although traveler is perhaps a misnomer here, as it is impossible for
+anyone to willingly go to the past even via magic. No, all travelers from the
+future are here because they were pulled from their timeline.
+Going from the description of <<their $g.child>> face, the wizard's best
+guess is that this would be the child of yours and <<yourrep $g.battery>> that
+somehow got pulled into this timeline.
+<<if $unit.player.getGender() == $g.battery.getGender()>>
+Even though in this timeline the both of you are of the same gender, it is
+not necessarily so in some other timeline.
+<</if>>
+</p>
+
+<p>
+To make matters worse, in this timeline you are not lovers with <<rep
+$g.battery>>. If this continues, then unfortunately the mysterious
+assailant would cease to be. This is probably why <<they $g.child>> child|was
+so intent on kidnapping your current lover, probably just to separate the two
+of you as much as possible to make <<their $g.child>> existence possible.
+</p>
+
+<p>
+By the time the wizard finished explaining, you and <<yourrep $g.battery>>
+got more confused than ever. But at least it was money well-spent — if the 
+was true, then surely the mysterious assailant would have no choice but to
+come to your fort should an imminent "accident" were to befall <<yourrep
+$g.battery>>. After some explaining, <<rep $g.battery>> reluctantly agree to
+fake a falling out with you, resulting in <<their $g.battery>> soon (faked)
+lynching...
+</p>
+
+<p>
+Before you leave, the wizard gave you a final (but at least it's free this time) warning.
+Sooner or later, you would have to choose between love or a life, for if you continue on with your
+current lover, then the law of time will rule that the child cannot exist, and hence will disappear from
+the world...
+</p>
+
+<p>
+That sounds like a big headache to think about, but at least you don't have to make the decision now.
+Time to get back to your fort and end this charade once and for all.
+</p>
+
+<p>
+The wizard never told you or your slavers that it was <<their $g.wizard>> own botched future box delivery
+that started the whole affair.
+</p>

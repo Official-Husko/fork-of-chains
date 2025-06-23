@@ -1,0 +1,119 @@
+:: QuestSetupHumanVsWereOffense [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _desc = `a|was a citizen in a settlement raided by you and the werewolf tribes`>>
+<<run new setup.QuestTemplate(
+  'human_vs_were_offense', /* key */
+  'Human vs Werewolf: Offense', /* Title */
+  'darko',   /* author */
+  ['furry', 'vale', 'unit'],  /* tags */
+  1,  /* weeks */
+  2,  /* quest expiration weeks */
+  { /* roles */
+    'raider1': setup.qu.raider,
+    'raider2': setup.qu.raider,
+    'raidersupport': setup.qu.raidersupport,
+  },
+  { /* actors */
+    'target': 'subrace_humanvale',
+    'target2': 'subrace_humanvale',
+  },
+  [ /* costs */
+  ],
+  'QuestHumanVsWereOffense', /* passage description */
+  setup.qdiff.normal14, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestHumanVsWereOffenseCrit',
+      [
+        setup.qc.Slave('target', _desc),
+        setup.qc.Slave('target2', _desc),
+      ],
+    ],
+    [
+      'QuestHumanVsWereOffenseCrit',
+      [
+        setup.qc.Slave('target', _desc),
+      ],
+    ],
+    [
+      'QuestHumanVsWereOffenseFailure',
+      [
+      ],
+    ],
+    [
+      'QuestHumanVsWereOffenseDisaster',
+      [
+        setup.qc.Injury('raider1', 1),
+        setup.qc.Injury('raider2', 1),
+        setup.qc.Injury('raidersupport', 1),
+      ],
+    ],
+  ],
+  [],  /* rarity and pool */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestHumanVsWereOffense [nobr]
+
+<<include 'OpportunityHumanVsWere'>>
+
+<p>
+You have chosen to launch a simultaneous attack with the werewolves, and kidnap yourself
+some fresh villagers.
+</p>
+
+
+:: QuestHumanVsWereOffenseCrit [nobr]
+
+<<if $g.target.isMale()>>
+<<else>>
+  <<questimage "human_vs_were_offense_female.jpg">>
+<</if>>
+
+<p>
+Your slavers waited in tow in a nearby shrubbery, until they finally heard the
+ringing sound of the village's alarm bells.
+Chaos ensued as the werewolves flung themselves into the village, raping the unsuspecting
+villagers and ransacking whatever
+valuable stored in it.
+<<set _calm = setup.selectUnit([$g.raider1, $g.raider2, $g.raidersupport], {trait: 'per_calm'})>>
+<<if _calm>>
+Despite the chaos, <<rep _calm>> remained calm, before seeing an opportunity to
+<<else>>
+During the chaos resulting from the werewolf assault,
+<<rep $g.raider1>> managed to <<uadv $g.raider1>>
+<</if>>
+nab
+<<if $gOutcome == 'crit'>>
+two unsuspecting victims and carried
+them
+back to fort. They are now in the slave pits,
+ready for their new lives as sexual playthings if you so choose.
+<<else>>
+an unsuspecting victim and carried
+<<them $g.target>>
+back to fort. <<They $g.target>> target|is now waiting in the slave pits,
+to begin <<their $g.target>> new life as a sexual plaything.
+<</if>>
+</p>
+
+
+:: QuestHumanVsWereOffenseFailure [nobr]
+
+<p>
+Unfortunately, the villagers managed to repel the werewolves' attack.
+As a result, your slavers did not find the opportunity to abduct any of the defenders.
+But at least they never found out about your degenerate of a plan.
+</p>
+
+
+:: QuestHumanVsWereOffenseDisaster [nobr]
+
+<p>
+Unfortunately, your slavers got caught in the fighting and ended up injuring themselves.
+Sustaining injuries, there was just no way for your slavers to be able to abduct
+a villager or two.
+</p>

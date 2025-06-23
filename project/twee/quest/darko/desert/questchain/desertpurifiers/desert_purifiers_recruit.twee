@@ -1,0 +1,121 @@
+:: QuestSetup_desert_purifiers_recruit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_desert_purifiers_apprentice',
+'Purifier Apprentice',
+'subrace_humandesert', /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_apprentice),
+setup.qc.TraitReplace('unit', setup.trait.magic_fire),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'desert_purifiers_recruit', /* key */
+'Desert Purifiers: Recruit', /* Title */
+'darko', /* Author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'corruptor': setup.qu.corruptor,
+'recruiter1': setup.qu.recruiter,
+'recruiter2': setup.qu.recruiter,
+},
+{ /* actors */
+'purifier': 'quest_desert_purifiers_enslave',
+'student': 'quest_desert_purifiers_apprentice',
+},
+[ /* costs */
+],
+'Quest_desert_purifiers_recruit',
+setup.qdiff.hardest41, /* difficulty */
+[ /* outcomes */
+[
+'Quest_desert_purifiers_recruitCrit',
+[
+setup.qc.Corrupt('purifier'),
+setup.qc.TraitReplace('purifier', setup.trait.per_evil),
+setup.qc.Slaver('purifier', 'a|was a kind purifier living on the eastern desert whom you corrupted in order to recruit'),
+setup.qc.MoneyNormal(0.5)
+ ],
+], [
+'Quest_desert_purifiers_recruitSuccess',
+[
+setup.qc.Corrupt('student'),
+setup.qc.TraitReplace('student', setup.trait.per_evil),
+setup.qc.Slaver('student', 'a|was the apprentice of a purifier living off the desert whom you corrupted in order to recruit'),
+setup.qc.MoneyNormal(0.5)
+ ],
+], [
+'Quest_desert_purifiers_recruitFailure',
+[
+setup.qc.Purify('corruptor'),
+setup.qc.Purify('recruiter1'),
+setup.qc.Purify('recruiter2'), ],
+], [
+'Quest_desert_purifiers_recruitFailure',
+[
+setup.qc.Purify('corruptor'),
+setup.qc.Purify('recruiter1'),
+setup.qc.Purify('corruptor'),
+setup.qc.Purify('recruiter1'),
+setup.qc.MoneyCrit(-1),
+setup.qc.Purify('recruiter2'),
+setup.qc.Purify('recruiter2'), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_desert_purifiers_recruit [nobr]
+
+<<include 'Opportunity_desert_purifiers'>>
+
+<p>
+You have chosen to forcefully recruit a purifier.
+</p>
+
+
+:: Quest_desert_purifiers_recruitCrit [nobr]
+<p>
+The purifier had settled camp near an oasis and provided services to surrounding settlements.
+Your slavers arrived at the compound pretending to be patrons, and negotiated
+with the purifier for a personal session.
+Once alone, <<rep $g.corruptor>> <<uadv $g.corruptor>>
+worked <<their $g.corruptor>> magic, corruption
+the once pure <<maiden $g.purifier>>'s mind into a twisted diabolical one,
+a far cry from what <<they $g.purifier>> purifier|was once.
+
+<<if $g.corruptor.isHasTrait('per_evil')>>
+  An evil smile grew at <<reps $g.corruptor>> face as <<they $g.corruptor>> took in <<their $g.corruptor>> work.
+<</if>>
+
+At the end of the private session, <<rep $g.purifier>> wholeheartedly agreed to join your company
+as a slaver, abandoning <<their $g.purifier>> previous life and companions.
+You have certainly recruited a powerful slaver, but at what cost?
+</p>
+
+:: Quest_desert_purifiers_recruitSuccess [nobr]
+
+<p>
+The purifier has settled camp near an oasis and provided services to surrounding settlements.
+Your slavers arrived at the compound pretending to be patrons, and waited until the lead
+purifier happened to be alone
+But they were unable to manipulate the encampment and was unable to find the right opportunity.
+In the end, your slavers settled with corrupting <<their $g.purifier>> student instead.
+The once innocent apprentice was <<uadv $g.corruptor>> twisted by <<reps $g.corruptor>> magic into
+an evil and devilish person who then wholeheartedly agreed to join your company as a slaver.
+A slaver proficient in fire magic such as <<rep $g.student>> will surely prove useful in your company.
+</p>
+
+
+:: Quest_desert_purifiers_recruitFailure [nobr]
+
+<<include 'Quest_desert_purifiers_enslaveFailure'>>

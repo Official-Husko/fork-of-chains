@@ -1,0 +1,23 @@
+:: EquipmentPickerDialog [nobr]
+
+<<unset _selequipment>>
+
+<div>
+  <<button 'Cancel'>>
+    <<run Dialog.close()>>
+  <</button>>
+</div>
+
+<div>
+  <<for _equipment range Object.values(setup.equipment)>>
+    <<capture _equipment>>
+      <div>
+      <<set _text = _equipment.rep()>>
+      <<button _text>>
+        <<set _selequipment = _equipment>>
+        <<run Dialog.close()>>
+      <</button>>
+      </div>
+    <</capture>>
+  <</for>>
+</div>

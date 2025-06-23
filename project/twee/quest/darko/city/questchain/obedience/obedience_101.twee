@@ -1,0 +1,170 @@
+:: QuestSetup_obedience_101 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriastudent = new setup.UnitCriteria(
+null, /* key */
+'Instructor Hopeful', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.per_smart,
+  setup.trait.per_studious,
+  setup.trait.per_stubborn,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.dick_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_slow,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+  setup.trait.per_lunatic,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+  setup.qres.Through(setup.qres.NoTitle('quest_certified_instructor_0')),
+],
+{
+  brawn: 1,
+  slaving: 1,
+  knowledge: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'obedience_101', /* key */
+"Obedience 101", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'city',
+  'trait',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'student': [ _criteriastudent, 1],
+  'clerk1': [ setup.qu.bureaucrat, 1],
+  'clerk2': [ setup.qu.bureaucrat, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-5000),
+],
+'Quest_obedience_101',
+setup.qdiff.hard39, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_obedience_101Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('humankingdom', 150),
+    ],
+  ],
+  [
+    'Quest_obedience_101Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+      setup.qc.VarRemove('obedience_lesson'),
+      setup.qc.AddTitle('student', 'quest_learning_instructor_0'),
+    ],
+  ],
+  [
+    'Quest_obedience_101Failure',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+    ],
+  ],
+  [
+    'Quest_obedience_101Failure',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+      setup.qc.MoneyCustom(-5000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoUnitWithTitle('quest_learning_instructor_0', {
+}),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_obedience_101 [nobr]
+
+<p>
+The <<lore region_city>> hosts the <<lore
+location_institute_of_higher_learning>>, very popular among many nobles.
+The institute boasts that all its graduates will become a productive member
+of the noble society, no matter how rowdy or undisciplined the tutee was once.
+</p>
+
+<p>
+A very rare opportunity has arrived for you and your slavers: the institute
+is hiring! Or more specifically, they are opening a class for people who are
+interested to be certified instructors in the academy. Graduates from this
+class will surely be capable of instilling obedience to even the most
+stubborn of students! A most beneficial skill to have for a slaving company.
+</p>
+
+<p>
+There is a matter of some registration fee and red tape to navigate through,
+however. Best to accompany the prospective instructor with some slavers adept
+at bureaucracy.
+</p>
+
+
+:: Quest_obedience_101Crit [nobr]
+
+<p>
+After many exchanges above and below, and sometimes even under the desk, <<yourrep
+$g.clerk1>> and <<utheirrel $g.clerk1 $g.clerk2>> <<rep $g.clerk2>> managed
+to finally contact the headmaster of the institution. With a knowing nod, the
+headmaster accepted <<yourrep $g.student>> as a candidate instructor. Lessons
+will begin shortly — after the full tuition fee was paid by your slavers of
+course.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+In fact, your slavers were so convincing that the school's opinion of your company
+even managed to improve.
+</p>
+<</if>>
+
+<p>
+Expect <<reps $g.student>> classes to begin soon...
+</p>
+
+
+:: Quest_obedience_101Failure [nobr]
+
+<p>
+<<Yourrep $g.clerk1>> and <<utheirrel $g.clerk1 $g.clerk2>> <<rep $g.clerk2>>
+were careless in their task, and information somehow leaked out that <<yourrep
+$g.student>> student|is working for your slaving company. Given the <<rep
+$company.humankingdom>>'s distate for slavery, the headmaster of the
+institution simply could not accept your slaver as a candidate, and had to turn
+the potential student away. But the explicit refusal only came after your slavers had
+spent a great deal of money bribing their way through, and there was no way to
+recoup these lost money...
+</p>

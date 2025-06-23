@@ -1,0 +1,113 @@
+:: ActivityGenSetup [nobr]
+
+<<set $devtooltype = 'activity'>>
+
+<<set $qcustomslaveorder = []>>
+<<set $qcustomcriteria = []>>
+<<set $qcustomunitgroup = []>>
+<<set $qcustomtitle = []>>
+
+<<set _akey = '__devtool_activity'>>
+<<set _apassage = 'DummyActivityPassageDesc'>>
+
+<<if _akey in setup.activitytemplate>>
+  <<run delete setup.activitytemplate[_akey]>>
+<</if>>
+
+<<if !_abase>>
+  <<set $dtquest = new setup.ActivityTemplate({
+    key: _akey,
+    name: '',
+    author: {name: '', url: ''},
+    tags: [],
+    actor_unitgroups: {
+      'a': [
+        setup.qres.Job(setup.job.slaver),
+      ],
+    },
+    critical_traits: [],
+    disaster_traits: [],
+    restrictions: [],
+    rarity: setup.rarity.rare,
+    dialogues: [
+      setup.DialogueHelper.createEmptyDialogue('a'),
+    ],
+    room_templates: [],
+    devtool: true,
+  })>>
+
+<<else>>
+  <<set $dtquest = new setup.ActivityTemplate({
+    key: _akey,
+    name: _abase.getName(),
+    author: _abase.getAuthor(),
+    tags: _abase.getTags(),
+    actor_unitgroups: _abase.getActorUnitGroups(),
+    critical_traits: _abase.getCriticalTraits(),
+    disaster_traits: _abase.getDisasterTraits(),
+    restrictions: _abase.getPrerequisites(),
+    rarity: _abase.getRarity(),
+    dialogues: _abase.getDialoguesDevTool(),
+    room_templates: _abase.getRoomTemplates(),
+    devtool: true,
+  })>>
+  <<set $dtquest.old_key = _abase.key>>
+<</if>>
+
+:: ActivityGen [nobr]
+
+<<run setup.DevToolHelper.restoreScrollPos()>>
+
+<<dtauthor "$dtquest.author" $dtquest.author>>
+
+<<dtname "$dtquest.name" $dtquest.name>>
+
+<<dtrarity "$dtquest.rarity" $dtquest.rarity 'AGChooseRarity'>>
+
+<<dttags $dtquest>>
+
+<<dtactor $dtquest>>
+
+<<dtrestriction "$dtquest.restrictions">>
+
+<<set _dom = setup.DOM.Menu.devtoolactivity($dtquest)>>
+<<attach _dom>>
+
+<hr/> 
+
+<p class="center">
+<<button 'CREATE NEW ACTIVITY!'>>
+  <<run setup.DOM.Menu.devtoolverifycreate()>>
+<</button>>
+</p>
+
+<<if $dtquest.old_key>>
+
+<p class='center'>
+<<link 'create activity (override existing)'>>
+  <<run setup.DOM.Menu.devtoolverifycreate(true)>>
+<</link>>
+</p>
+
+<</if>>
+
+
+:: AGChooseRarity [nobr]
+
+<<dtraritychoose 'AGChooseRarityDo'>>
+
+
+:: AGChooseRarityDo [nobr]
+
+<<set $dtquest.rarity = _raritychosen>>
+<<gotowipehistory 'ActivityGen'>>
+
+
+:: AGChooseRoom [nobr]
+
+<div>
+<<devtoolreturnbutton>>
+</div>
+
+<<set _dom = setup.DOM.Menu.devtoolactivityselectroom($dtquest)>>
+<<attach _dom>>

@@ -1,0 +1,64 @@
+:: EventSetup_the_shunned_kobold [nobr event]
+
+
+<<run new setup.UnitGroup(
+"the_shunned_kobold1",
+"The Shunned Kobold",
+'subrace_kobold', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTitle('unit', 'quest_the_shunned_kobold_0'),
+  setup.qc.ClearMentalTraits('unit'),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_unemployed),
+  setup.qc.TraitAndMakeInnate('unit', setup.trait.wings_dragonkin),
+  setup.qc.TraitReplace('unit', setup.trait.height_dwarf),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_brave, setup.trait.per_proud, setup.trait.per_independent, setup.trait.per_loyal, setup.trait.per_attentive, setup.trait.per_stubborn, setup.trait.per_dominant], 1, false, false),
+],
+)>>
+
+<<run new setup.Event(
+'the_shunned_kobold', /* key */
+"The Shunned Kobold", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'scaley',
+  'deep',
+  'unit',
+],
+'Event_the_shunned_kobold',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'kobold': 'the_shunned_kobold1',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_shunned_kobold_progress', '5', -1),
+  setup.qc.Injury('kobold', 40),
+  setup.qc.Slaver('kobold', "a|was a kobold that tried to find a better life in the surface after being shunned for having been born with wings", undefined),
+],
+[ /* restrictions */
+  setup.qres.NoUnitWithTitle('quest_the_shunned_kobold_0', {}),
+  setup.qres.NoUnitWithTitle('quest_the_ex_kobold_1', {}),
+  setup.qres.NoUnitWithTitle('quest_savior_kobold_0', {}),
+  setup.qres.Building(setup.buildingtemplate.scouttunnel),
+  setup.qres.HaveMetCompany('kobold'),
+],
+250, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_the_shunned_kobold [nobr]
+<p>
+    A kobold has arrived at your <<rep setup.buildingtemplate.prospectshall>>. But unlike most of your other prospects, the kobold is heavily injured, as well as gravely malnourished. From what you've gathered, the kobold has clawed <<their $g.kobold>> way to the surface, to find a better life from the one <<they $g.kobold>> had before. Apparently, the kobold is different from ordinary kobolds, which caused them to be shunned and bullied throughout their life below.
+</p>
+
+<p>
+    The kobold is indeed rather unique. <<They $g.kobold>> sports a pair of draconic wings, an extremely rare (but not unheard-of) thing to have on a kobold.
+</p>
+
+<p>
+    You can hire the kobold, if you wish, but you'll have to nurture <<them $g.kobold>> back to full health before <<they $g.kobold>> would be of any use.
+</p>

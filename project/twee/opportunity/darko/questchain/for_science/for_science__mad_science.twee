@@ -1,0 +1,165 @@
+:: OpportunitySetup_for_science__mad_science [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'for_science__mad_science', /* key */
+"For Science: Mad Science", /* Title */
+"darko", /* Author */
+[ 'veteran', 'city', 'money', 'item', 'unknown', 'special',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_for_science__mad_science',
+setup.qdiff.harder64, /* difficulty */
+[ /* options */
+[
+'Opportunity_for_science__mad_science_0',
+'Opportunity_for_science__mad_science_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.MoneyCustom(75000),
+],
+], [
+'Opportunity_for_science__mad_science_1',
+'Opportunity_for_science__mad_science_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Item(setup.item.f_object_master_fuckmachine), ],
+], [
+'Opportunity_for_science__mad_science_2',
+'Opportunity_for_science__mad_science_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.HasSlave(), ],
+[ /* outcomes */
+  setup.qc.AllUnitSatisfyDo(
+    [setup.qres.Job(setup.job.slave)],
+    [
+      setup.qc.TraitIncreaseExisting('unit', 'anus_gape'),
+      setup.qc.TraitIncreaseExisting('unit', 'anus_gape'),
+      setup.qc.TraitIncreaseExisting('unit', 'vagina_gape'),
+      setup.qc.TraitIncreaseExisting('unit', 'vagina_gape'),
+    ],
+  ),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'inventor': 'quest_for_science1', },
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_for_science__mad_science [nobr]
+<p>
+It is done. You have received the payment for your slavers' efforts in these
+past few months. The <<rep setup.item.f_object_master_fuckmachine>> is yours,
+to use as you see fit. But what use do you have for such a high-tech machine?
+</p>
+
+<p>
+First, you can auction it, which will fetch you so much more money compared to if
+you were to later sell it in your <<rep setup.buildingtemplate.bazaar>>.
+<<set _vice = $dutylist.getUnitIfAvailable('viceleader')>>
+<<if _vice>>
+Per your vice leader <<reps _vice>> calculation, auctioning it will net you at
+least a whopping <<money 70000>>.
+<<else>>
+If only you have a vice leader that can advise you how much you would get from selling it...
+<</if>>
+</p>
+
+<p>
+Alternatively, if your vanity eclipses your need of money,
+you can simply keep the contraption as a rare furniture for one of your bedchambers.
+</p>
+
+<p>
+Or, if you're feeling particularly degenerate, you can use it to gape all of
+your slaves... The fuckmachine will probably break down though from such
+misuse, and will be worth nothing afterwards. But your slaves will surely all
+end up with permanently gaping holes, for whatever it is that you are planning for them...
+</p>
+
+
+:: Opportunity_for_science__mad_science_0 [nobr]
+Auction it
+
+
+:: Opportunity_for_science__mad_science_0_flavor [nobr]
+
+<p>
+It is done. The <<rep setup.item.f_object_master_fuckmachine>> has been sold
+in one of the most busy auctions ever, with a very loud sequence of bids until
+a high noble decided to splurge a silly amount of gold for the contraption.
+</p>
+
+<p>
+Whatever the noble is planning to do with the <<rep
+setup.item.f_object_master_fuckmachine>>, you don't really care as you are
+swimming
+in your newfound gold. Perhaps you can ask the inventor <<rep $g.inventor>>
+for another adventure...
+</p>
+
+
+:: Opportunity_for_science__mad_science_1 [nobr]
+Keep it
+
+
+:: Opportunity_for_science__mad_science_1_flavor [nobr]
+<p>
+Even with so much money being dangled in front of you, you've decided to keep
+the prestigious machine for your own company. The <<rep
+setup.item.f_object_master_fuckmachine>> is now ready in your fort, to be
+installed in some lucky fellow's bedchamber.
+</p>
+
+
+:: Opportunity_for_science__mad_science_2 [nobr]
+Machine rape your slaves
+
+
+:: Opportunity_for_science__mad_science_2_flavor [nobr]
+<<set _slaves = $company.player.getUnits({job: setup.job.slave})>>
+<p>
+In a true act of degeneracy, you decided to use the machine to rape all of
+your slaves — no exceptions.
+You form your slaves into a line, with
+the unlucky slave <<rep _slaves[0]>> in front of the line. You command <<them
+_slaves[0]>> to approach you, before unveiling the <<rep
+setup.item.f_object_master_fuckmachine>>. The slaves immediately quiver in
+fear of what you are planning to do to them, and they do not have to imagine as
+you grabbed <<yourrep _slaves[0]>> and forcefully place <<them _slaves[0]>> atop
+the dildo sitting quietly over the machine.
+</p>
+
+<p>
+Sensing the inviting <<uhole _slaves[0]>> above it, the machine magically
+starts its raping procedure, moving its large dildo up and down
+<<if _slaves[0].isHasVagina()>>
+both of the slave's rear orifices until both gape permanently.
+<<else>>
+the slave's anus until it becomes a permanent gape.
+<</if>>
+After a while that must have been excruciatingly long for the slave,
+the machine finally release the spent <<rep _slaves[0]>> as
+you order the next slave to step onto the machine.
+</p>
+
+<p>
+Screams can be heard from all around your fort as the machine continues its
+mindless rape on your slaves. Once all the slaves are done and gaping, the
+machine finally break down, as if sensing that its horrific duties are finally over.
+</p>

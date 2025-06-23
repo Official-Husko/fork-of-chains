@@ -1,0 +1,279 @@
+:: QuestSetup_desert_spring [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"oasis_trap0",
+"Tentacle Victim",
+'desert_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Mindbreak('unit'),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_gape),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_gape),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.dick_huge),
+],
+)>> <<run new setup.UnitGroup(
+"quest_desert_spring2",
+"Guide",
+'desert_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_gape),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_gape),
+  setup.qc.Trait('unit', setup.trait.per_lustful),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_unemployed),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'desert_spring', /* key */
+"Desert Spring", /* Title */
+{ /* Author */
+  name: "darkofoc",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'item',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'alchemist': [ setup.qu.alchemist, 1],
+  'fighter1': [ setup.qu.fighter_desert, 1],
+  'fighter2': [ setup.qu.fighter_desert, 1],
+},
+{ /* actors */
+  'guide': 'quest_desert_spring2',
+  'victim2': 'oasis_trap0',
+  'victim1': 'oasis_trap0',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_desert_spring',
+setup.qdiff.hard44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_desert_springCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('victim1', "a|was captured by a mindless tentacle abomination in the desert, lured in by the sweet scent of nectar. a|They a|have been extensively used as an egg incubator by the horrifying monster", undefined),
+      setup.qc.Slave('victim2', "a|was captured by a mindless tentacle abomination in the desert, lured in by the sweet scent of nectar. a|They a|have been extensively used as an egg incubator by the horrifying monster", undefined),
+      setup.qc.Slave('guide', "a|was a poor resident of the Eastern Deserts hired as a \"guide\" by your slavers, only to be captured by a certain tentacle monster and processed into its personal breeding chamber", undefined),
+      setup.qc.IfThenElse(
+setup.qres.VarNull('desert_spring_progress'),
+setup.qc.DoAll([
+setup.qc.VarSet('desert_spring_progress', '1', -1)
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_desert_springCrit',
+    [
+      setup.qc.Item(setup.item.blank_potion, 1),
+    ],
+  ],
+  [
+    'Quest_desert_springCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_desert_springCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.MissingUnit('fighter1')
+], undefined),
+setup.qc.DoAll([
+setup.qc.MissingUnit('fighter2')
+], undefined)
+]),
+      setup.qc.TraitReplaceExisting('fighter1', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('fighter1', setup.trait.anus_gape),
+      setup.qc.TraitReplaceExisting('fighter2', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('fighter2', setup.trait.anus_gape),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_desert_spring [nobr]
+<p>
+    The <<lore region_desert>> is a mostly barren land, and water is a scarce resource. All too often, unprepared travelers would find themselves run out of water mid-journey, and would go to extreme lengths to secure themselves water. Some got lucky and found a hidden oasis here and there, but the fates of many others would remain unknown as they disappear in the vast unforgiving deserts.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    <<Yourrep _u>> has heard rumors about the sighting of a strange spring that would present itself to the most desperate of travelers. It would appear in the form of a single statue, with a single hole on its face. Intoxicatingly sweet smelling water wound drip freely from the hole and into the ground, a blessing for those travelers in need. It is unclear how and why such a mysterious oasis would appear, but the water must be magical, and it might be a good idea to send an alchemically experienced slaver to try and gather those mysterious liquid. They would need to hire someone as a bait, however, in order to try and make the spring appear. This incursion would incur a little money from your pockets.
+</p>
+
+
+
+
+:: Quest_desert_springCrit [nobr]
+<p>
+    <<Yourrep $g.alchemist>> <<uadv $g.alchemist>> hired one of the many desperate people in the desert. <<They $g.guide>>, a <<urace $g.guide>>, agreed quickly enough once your slavers dangled a bag of coins in front of <<them $g.guide>>, and didn't ask too many questions. A good thing too, for your slavers had evil plans for the poor <<urace $g.guide>> — they are going to lead <<them $g.guide>> into the desert and going to "accidentally spill out" <<their $g.guide>> portion of the water.
+    <<set _unit = setup.selectUnit([$g.alchemist, $g.fighter1, $g.fighter2], {trait: 'per_kind'})>>
+    <<if _unit>>
+        <<Reps _unit>> bleeding heart ached at the thoughts,
+
+        <<if _unit.isHasTrait('per_frugal')>>
+            but <<their _unit>> greed won in the end.
+        <<else>>
+            <<run setup.qc.TraumatizeRandom('unit', 5).apply(setup.costUnitHelper(_unit))>>
+            and <<they _unit>> ended up being a little distressed by the heinous act.
+        <</if>>
+
+    <</if>>
+</p>
+
+<p>
+    After a while, the poor <<urace $g.guide>> became thirsty, and soon became desperate for water.
+    Your slavers tried their best impression of desperation
+    <<set _unit = setup.selectUnit([$g.alchemist, $g.fighter1, $g.fighter2], {anytrait: ['skill_creative', 'per_playful']})>>
+    <<if _unit>>
+        <<rep _unit>> being particularly creative at the act.
+    <<else>>
+        .
+    <</if>>
+    They continued to walk and walk, with your slavers secretly hoping for the mysterious spring to appear...
+</p>
+
+<<if $gOutcome == 'failure'>>
+    <p>
+        Unfortunately, the spring never made an appearance. After a long hot trek under the desert sun, your slavers could not endure it any longer, and gave up the search. They came home, empty-handed.
+    </p>
+<<else>>
+    <p>
+        After a few more hours, <<rep $g.alchemist>> spotted something in the vast empty desert.
+        A protruding featureless statue, save for an intoxicatingly sweet smell coming out of it, and the sound of water falling into the ground.
+    </p>
+
+    <<if $gOutcome == 'disaster'>>
+        <p>
+            By this point, your slavers had made a grave miscalculation, and had also run out of their supply of water. With all of the party desperate, your slavers run after the watering hole and gulped down the oh-so-sweet heavenly water that might have just saved their lives.
+            They spent so many minutes, then hours, then day at the spring, doing nothing but drinking the water, their mind getting blanker and blanker...
+        </p>
+
+        <<if $gQuest.getSeed() % 2 == 0>>
+            <<set $g.gone = $g.fighter1>>
+            <<set $g.stay = $g.fighter2>>
+        <<elseif $gQuest.getSeed() % 2 == 1>>
+            <<set $g.gone = $g.fighter2>>
+            <<set $g.stay = $g.fighter1>>
+        <</if>>
+
+        <p>
+            When your slavers returned to consciousness, they were all naked in the middle of the desert,
+            with no recollection of what had transpired.
+            That is, save for <<reps $g.stay>> now gaping hole and the disappearance of both <<rep $g.gone>> as well as the little help they had hired before. Who knows what might had happened to these poor people? <<uneedrescue $g.gone>>, and hopefully nothing too bad had befallen them...
+        </p>
+
+    <<else>>
+
+        <p>
+            The desperate <<urace $g.guide>> helper your slavers had hired rushed for the water source, and greedily slurped down the water from the hole.
+            Within moments, <<their $g.guide>> desperate eyes changed, losing all signs of intelligence, becoming perfectly blank and malleable.
+            Tentacles then spawn from underneath the gazed <<urace $g.guide>>, hoisting <<them $g.guide>> up by <<their $g.guide>> <<uhole $g.guide>> by painfully inserting the appendage up the tight orifice. <<Their $g.guide>> <<umouth $g.guide>> is next, as another appendage inserted itself throat deep into <<their $g.guide>> <<umouth $g.guide>>. More appendage then sprung up, enveloping the poor <<man $g.guide>>, before dragging <<them $g.guide>> underground...
+        </p>
+
+        <p>
+            Silence then returned, and the spring stayed, water back flowing freely from the hole.
+            <<Yourrep $g.alchemist>> managed to stay focused.
+            <<if $g.alchemist.isHasTrait('per_lustful')>>
+                (Although the lusty <<urace $g.alchemist>> was a little aroused from the show!)
+            <</if>>
+            <<They $g.alchemist>> whipped out the beakers <<they $g.alchemist>> had been preparing, and carefully tapped some of the water into the container, making sure no tentacles would capture <<them $g.alchemist>> unaware.
+        </p>
+
+        <<if $gOutcome == 'success'>>
+            <p>
+                With the flask full, <<rep $g.alchemist>> put the now valuable potion back into <<their $g.alchemist>> backpack, and headed home. It's too bad they couldn't bring the guide back as a slave.
+                <<set _unit = setup.selectUnit([$g.alchemist, $g.fighter1, $g.fighter2], {trait: 'per_chaste'})>>
+                <<if _unit>>
+                    The chaste slaver <<rep _unit>> tried <<their _unit>> best not to think too hard what fate await the unfortunate <<urace $g.guide>>...
+                <</if>>
+            </p>
+        <<else>>
+            <<if $g.guide.isMale()>>
+                <<questimage "desert_spring_male.jpg">>
+            <<else>>
+                <<questimage "desert_spring_female.jpg">>
+            <</if>>
+
+            <p>
+                <<Rep $g.alchemist>> suggested to risk nothing and went back, but <<yourrep $g.fighter1>> convinced the team that there might be another opportunity hidden right here.
+                Besides, your slavers were a little too curious perhaps to know what might have happened to the poor <<urace $g.guide>>.
+                Drawing from
+                <<if $g.alchemist.isHasTrait('skill_animal')>>
+                    <<their $g.alchemist>> connection to animals.
+                <<elseif $g.alchemist.isHasTrait('bg_scholar')>>
+                    <<their $g.alchemist>> past as a scholar,
+                <<elseif $g.alchemist.isHasTrait('bg_wiseman')>>
+                    <<their $g.alchemist>> past as a wiseman,
+                <<elseif $g.alchemist.isHasTrait('per_studious')>>
+                    a book <<they $g.alchemist>> once read as a hobby,
+                <<elseif $g.alchemist.isHasTrait('per_gregarious')>>
+                    a particular conversation <<they $g.alchemist>> casually had in a party,
+                <<elseif $g.alchemist.isHasTrait('per_curious')>>
+                    an esoteric knowledge the curious <<urace $g.alchemist>> happened to know,
+                <<elseif $g.alchemist.isHasTrait('per_attentive')>>
+                    <<their $g.alchemist>> keen observation,
+                <<else>>
+                    an esoteric knowledge <<they $g.alchemist>> know by sheer luck,
+                <</if>>
+                <<yourrep $g.alchemist>>
+                recognized the signs all too well to point to a certain culprit.
+                A certain mindless tentacle abomination is said to exist in the deserts, luring unfortunate travelers
+                and enslaving them inside its body, to be used as an egg incubator.
+                If this is true, then this "watering hole" is nothing more than the top of its body, and underneath it is a vast body of a monstrous but mindless creature endlessly laying egg inside one of its surely many victims...
+            </p>
+
+            <p>
+                Your slavers got to work to verify the information. Digging a little deeper, they indeed found the pink fleshy body of a monster. It seems that <<rep $g.alchemist>> was correct! <<Rep $g.fighter1>> <<uadv $g.fighter1>> plunged <<their $g.fighter1>> <<uweapon $g.fighter1>> into the monster's body,
+                <<if !$settings.bannedtags.gore>>
+                    its blood spraying everywhere,
+                <</if>>
+                killing the beast once and for all.
+            </p>
+
+            <p>
+                Its victims were spitted above ground, all covered in rubbery slime and their stomach bulging with what your slavers suppose to be monster eggs.
+                Their eyes were already completely devoid of intelligence, their mind completely broken from the extreme treatment of being used as a monster breeding chamber — that is, save for the poor <<urace $g.guide>> who had just been freshly converted. Still, the monster had done quite a number of <<their $g.guide>> once virginally tight holes — it's now a lewd gape, and their asshole looks like a pussy now.
+            </p>
+
+            <p>
+                Your slavers spent the rest of the weeks pumping as much eggs as possible from their stomach, before bringing the poor and mindbroken victims back home, as well as the <<rep $g.guide>>, to be remade as your slavers.
+                Clearly being your slave is a much better predicament that whatever they had experienced inside the monster's body?
+            </p>
+
+        <</if>>
+
+    <</if>>
+
+<</if>>
+
+
+
+

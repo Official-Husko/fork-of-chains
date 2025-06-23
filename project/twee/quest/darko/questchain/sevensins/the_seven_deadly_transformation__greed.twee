@@ -1,0 +1,193 @@
+:: QuestSetup_the_seven_deadly_transformation__greed [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__greed', /* key */
+"The Seven Deadly Transformation: Greed", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'forest',
+'trait',
+'prep'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'fated': _criteriafated,
+'trainer': setup.qu.slavetrainer,
+'scout': setup.qu.scout_forest,
+'biologist': setup.qu.biologist, },
+{ /* actors */
+'elf': 'subrace_elf', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__greed',
+setup.qdiff.hard30, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__greedCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_the_seven_deadly_transformation__greedCrit',
+[
+setup.qc.Trait('fated', setup.trait.training_obedience_basic),
+setup.qc.Trait('fated', setup.trait.training_anal_basic),
+setup.qc.TraitReplace('fated', setup.trait.ears_elf), ],
+], [
+'Quest_the_seven_deadly_transformation__greedFailure',
+[
+],
+], [
+'Quest_the_seven_deadly_transformation__greedFailure',
+[
+setup.qc.Injury('fated', 5),
+setup.qc.Injury('trainer', 4),
+setup.qc.Injury('scout', 4),
+setup.qc.Injury('biologist', 4), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slave),
+  setup.qres.HasTitle('seven_deadly_transformation'),
+  setup.qres.NoTrait(setup.trait.ears_elf),
+]),
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__greed [nobr]
+<<set _headunit = setup.getUnit({job: setup.job.slave, title: "seven_deadly_transformation"})>>
+<<if !_headunit>>
+<<dangertext "Due to your company missing a slave important for this quest, this quest is no longer able to be completed.">>
+<<else>>
+<p>
+You had a very vivid dream where in which you saw one of your slaves <<rep
+_headunit>> ventures into the forest in search of the "Master Rod", hidden
+somewhere in the forest.
+</p>
+
+<p>
+Initially, you dismissed the dream as nothing but a dream. But it kept
+reoccurring to the point where you are now very certain that this dream is an omen
+— it is yet another step you need to take in order to complete <<reps _headunit>> supposed
+destiny. You could try to send a group of slavers to follow up on this
+extremely vague lead. You would need a good scout as well as a good biologist
+to get the best lay of the forest.
+</p>
+
+<</if>>
+
+
+:: Quest_the_seven_deadly_transformation__greedCrit [nobr]
+
+<p>
+Your scout <<rep $g.scout>> <<uadv $g.scout>> guided the rest of the team
+deep within the forest, until they arrived at a pristine grove.
+Inside the grove was a hollowed out tree, and within it they found nothing but a wooden
+phallus sticking out from a tree stump.
+Certain that the "phallus" must be the "Master Rod" in your dream,
+your slavers tried to make <<rep $g.fated>>
+do various lewd things to activate the master rod.
+But neither the forced deepthroating nor the assrape triggered anything within the slave and your slavers
+were at a lost.
+</p>
+
+<p>
+It was then that an elderly elf came upon your slavers. Introducing <<themself
+$g.elf>> as the grove keeper, <<they $g.elf>> revealed that another component
+was required in order to complete the ritual — the ritual demanded that the
+greed be satisfied, so one dildo was not enough.
+It was then that the elf reveals
+<<if $g.elf.isHasDick()>>
+his massive dick hidden beneath his clothes
+<<else>>
+her massive strap-on hidden beneath her clothes
+<</if>>.
+Your slavers, understanding what was supposed to be done,
+gagged and carried the poor slave <<rep $g.fated>> for what they anticipate
+to be an excruciatingly painful double penetration by an elf and the massive wooden
+phallus.
+<<if $g.fated.isHasTrait(setup.trait.anus_gape)>>
+Still, <<their $g.fated>> gaping anus had plenty of experience and will
+probably be able to withstood the rape.
+<<else>>
+Your slaver even doubted that the slave's relatively tight anus could possibly accomodate
+just the elf's member, let alone together with the wooden phallus.
+<</if>>
+But just as the head of the phallus grazed the slave's hole, a green-ish glow
+surrounded the asshole of the slave — within moments, both the phallus and the
+elf's <<if $g.elf.isHasDick()>> dick <<else>> strap-on<</if>> were deep
+within <<reps $g.fated>> ass, moving up and down, double penetrating <<them
+$g.fated>>, who kept muffling from great amount of pain. As the double penetration
+continued, <<reps $g.fated>> ears began to glow as well, morphing into sharp
+ears akin to those of elves. The ritual continued for quite some time and
+eventually, the green glow faded which signaled the end of the ritual.
+</p>
+
+<p>
+<<Rep $g.fated>> immediately collapsed, having been fully exhausted from
+<<their $g.fated>> ordeal. Having done <<their $g.elf>> duty, the elf bid
+your team farewell. Your slavers had a
+little fun with the fully used slave before heading back, successful in their
+mission.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+As your slavers headed back home, <<rep $g.biologist>> <<uadv $g.biologist>>
+collected several valuable plants along the way, earning you some extra coin.
+</p>
+<</if>>
+
+
+:: Quest_the_seven_deadly_transformation__greedFailure [nobr]
+
+<p>
+Your scout <<rep $g.scout>> <<uadv $g.scout>> guided the rest of the team
+deep within the forest, until they stumbled upon a pristine grove.
+Inside the grove is a hollowed out tree, and within they found nothing but a wooden
+phallus sticking out from a tree stump.
+
+<<if $gOutcome == 'failure'>>
+
+Certain that the "phallus" must be
+the "Master Rod" in your dream, your slavers tried to make <<rep $g.fated>>
+do various lewd things to activate the master rod.
+After your slavers subjected <<rep $g.fated>> to various degrading acts on
+the rod, including a forced deepthroat and painful assrape, nothing seemed to trigger any
+reaction.
+Your slavers eventually ran out of ideas, and decided to go home.
+Perhaps they could try this again sometime later.
+
+<<else>>
+
+But they were not alone in the grove.
+Wild animals guarded the grove, and they viciously attacked your
+team. Your slavers had to escape bearing injuries from the sudden and
+unexpected attack.
+
+<</if>>
+</p>

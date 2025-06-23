@@ -1,0 +1,49 @@
+:: EventSetup_hospital_visit_lover [nobr event]
+
+<<run new setup.Event(
+'hospital_visit_lover', /* key */
+"Hospital Visit (Lover)", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'unknown',
+],
+'Event_hospital_visit_lover',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'injured': [
+    setup.qres.IsInjured(1),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.YourLover(),
+  ],
+  'you': [
+    setup.qres.You(),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('visiting_the_injured', {
+covalescent: "injured",
+you: "you",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.hospital),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_hospital_visit_lover [nobr]
+
+<p>
+Your lover, <<rep $g.injured>>, has been hurt in the line of duty and is currently convalescing in the
+<<rep setup.buildingtemplate.hospital>>.
+<<They $g.injured>> surely have nothing better to do right now, and perhaps you could ditch some of
+your work to go visit the <<uadjgood $g.injured>> <<urace $g.injured>>...
+</p>

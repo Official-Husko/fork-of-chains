@@ -1,0 +1,27 @@
+:: EventSetup_lizardkins_at_your_doorstep [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'lizardkins_at_your_doorstep', /* key */
+"Lizardkin at Your Doorstep", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_lizardkins_at_your_doorstep',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('lizardkin', -20),
+setup.qc.QuestDirect('lizardkins_at_your_doorstep'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('lizardkin', 20),
+setup.qres.Building('veteranhall'),
+],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_lizardkins_at_your_doorstep [nobr]
+<<include 'Quest_lizardkins_at_your_doorstep'>>

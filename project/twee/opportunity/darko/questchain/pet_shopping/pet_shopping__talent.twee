@@ -1,0 +1,79 @@
+:: OpportunitySetup_pet_shopping__talent [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'pet_shopping__talent', /* key */
+"Pet Shopping: Talent", /* Title */
+"darko", /* Author */
+[ 'city',
+'veteran',
+'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_pet_shopping__talent',
+setup.qdiff.hardest43, /* difficulty */
+[ /* options */
+[
+'Opportunity_pet_shopping__talent_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.TraitReplace('pet', setup.trait.muscle_verystrong),
+setup.qc.Opportunity('pet_shopping__asset_size', {pet: 'pet'}), ],
+], [
+'Opportunity_pet_shopping__talent_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.TraitReplace('pet', setup.trait.face_beautiful),
+setup.qc.Opportunity('pet_shopping__asset_size', {pet: 'pet'}), ],
+], [
+'Opportunity_pet_shopping__talent_2',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.TraitReplace('pet', setup.trait.per_smart),
+setup.qc.Opportunity('pet_shopping__asset_size', {pet: 'pet'}), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+  pet: [],
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_pet_shopping__talent [nobr]
+<p>
+We still need some more information about your perfect pet. Which of these
+attribute do you value the most out of your pet?
+</p>
+
+
+:: Opportunity_pet_shopping__talent_0 [nobr]
+Strength
+
+
+
+:: Opportunity_pet_shopping__talent_1 [nobr]
+Beauty
+
+
+
+:: Opportunity_pet_shopping__talent_2 [nobr]
+Intelligence
+

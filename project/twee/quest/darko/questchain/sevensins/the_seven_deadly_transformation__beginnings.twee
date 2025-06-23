@@ -1,0 +1,235 @@
+:: QuestSetup_the_seven_deadly_transformation__beginnings [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'seven_deadly_transformation_complete',  /* key */
+  "Fallen Plaything",   /* name */
+  "An adventurer once destined to be a demon's plaything, but you saved instead",   /* name */
+  "used to be an adventurer fated to become a demon's plaything, but saved by your company",
+  5000,   /* slave value */
+  {
+  },
+)>>
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+setup.qres.NoTrait(setup.trait.arms_werewolf),
+setup.qres.NoTrait(setup.trait.arms_neko),
+setup.qres.NoTrait(setup.trait.arms_dragonkin),
+setup.qres.NoTrait(setup.trait.arms_demon),
+setup.qres.Trait(setup.trait.tail_werewolf),
+setup.qres.Trait(setup.trait.eyes_neko),
+setup.qres.Trait(setup.trait.ears_elf),
+setup.qres.Trait(setup.trait.mouth_orc),
+setup.qres.Trait(setup.trait.legs_demon),
+setup.qres.Trait(setup.trait.body_dragonkin),
+],
+{
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__beginnings', /* key */
+"The Seven Deadly Transformation: A New Beginnings", /* Title */
+"darko", /* Author */
+[
+  'transformation',
+  'sea',
+  'veteran',
+  'special',
+  'prep',
+  'unit'
+], /* tags */
+6, /* weeks */
+12, /* quest expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'fated': _criteriafated,
+'purifier': setup.qu.purify_head,
+'warrior': setup.qu.light_warrior, },
+{ /* actors */
+'demon': 'subrace_demon',
+'good': 'all', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__beginnings',
+setup.qdiff.abyss62, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__beginningsCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.Item(setup.item.potion_transformation), ],
+], [
+'Quest_the_seven_deadly_transformation__beginningsCrit',
+[
+setup.qc.SetCooldownQuest('the_seven_deadly_transformations__sloth', 100),
+setup.qc.Purify('fated'),
+setup.qc.Purify('fated'),
+setup.qc.Purify('fated'),
+setup.qc.ResetInnateTraits('fated'),
+setup.qc.AddHistory('fated', "a|was destined to become a demon lord's plaything, but a|was purified from a|their destiny by your company."),
+setup.qc.RemoveTitle('fated', 'seven_deadly_transformation'),
+setup.qc.AddTitle('fated', 'seven_deadly_transformation_complete'),
+],
+], [
+'Quest_the_seven_deadly_transformation__beginningsCrit',
+[
+  setup.qc.Outcomes('success'),
+setup.qc.Corrupt('trainer'),
+setup.qc.Corrupt('purifier'),
+setup.qc.Corrupt('warrior'),
+setup.qc.Injury('warrior', 2),
+setup.qc.Injury('trainer', 1),
+setup.qc.Injury('purifier', 1), ],
+], [
+'Quest_the_seven_deadly_transformation__beginningsCrit',
+[
+  setup.qc.Outcomes('success'),
+setup.qc.Corrupt('trainer'),
+setup.qc.Corrupt('purifier'),
+setup.qc.MissingUnit('warrior'),
+setup.qc.Corrupt('purifier'),
+setup.qc.Injury('trainer', 6),
+setup.qc.Injury('purifier', 8),
+setup.qc.SlaveMarker('good'),
+setup.qc.Corrupt('warrior'),
+setup.qc.Corrupt('warrior'), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__beginnings [nobr]
+
+<<include 'Opportunity_the_seven_deadly_transformation__virtue_or_sin'>>
+
+<p>
+You have foolishly chosen to attempt to try to save the slave.
+</p>
+
+
+:: Quest_the_seven_deadly_transformation__beginningsCrit [nobr]
+
+<p>
+Your slavers scoured the <<lore region_sea>> for ways to remove the curse, until in
+an exotic village far south of your fort, a sage told them of a ritual that can be used to
+undo the claim on <<reps $g.fated>> soul. A <<maiden $g.good>>
+with the purest heart must tug on <<reps $g.fated>> very soul, extracting
+virtue upon virtue to counteract each one of the seven deadly transformation
+<<rep $g.fated>> had been subjected to.
+</p>
+
+<p>
+Obviously, none of your slavers would qualify for such a role. But being
+slavers, they are experienced in appraising people and soon enough,
+<<if $gOutcome == 'disaster'>>
+they found a good-enough candidate who wasn't really willing to help and had
+to be kidnapped by your slavers and brought to the ritual site.
+<<elseif $gOutcome == 'failure'>>
+they found a good-enough candidate who was willing to help in exchange for
+some promised money — not exactly the paragon of good they were looking for
+but eh good enough.
+<<else>>
+they found a candidate who was willing to help out of the goodness of <<their
+$g.good>> heart — truly the paragon of good your slavers were looking for.
+<</if>>
+</p>
+
+<p>
+Once they are gathered in the ritual site, the <<maiden $g.good>>
+<<if $gOutcome == 'disaster'>>
+was forced to chant
+<<elseif $gOutcome == 'failure'>>
+suspiciously chanted
+<<else>>
+chanted
+<</if>>
+one by one the blessed words. First, a chant of diligence, to ward away the
+sloth. This is followed by a chant of temperance, chastity, kindness, peace,
+generosity, and finally humbleness.
+</p>
+
+<<if $gOutcome == 'failure' or $gOutcome == 'disaster'>>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+Unfortunately the ritual was not as effective with a <<maiden $g.good>> of
+not-so-pure heart —- instead of having all the wickedness transferred over
+from <<rep $g.fated>> into the poor unsuspecting <<maiden $g.good>>, it went
+awry and escaped outside — some even went into your slavers.
+Seeing the chaos, the <<maiden $g.good>> immediately abandoned the ritual and
+ran far away, leaving your slavers to deal with the spreading corruption. In
+the end, they were able to ward off most of the corruptions spreading out
+from <<rep $g.fated>> outside, and redirected the corruption towards the nearby village.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, with such a wicked-hearted <<maiden $g.good>>, the ritual
+backfired badly —- instead of having all the wickedness transferred over from
+<<rep $g.fated>> into the poor unsuspecting <<maiden $g.good>>, it went awry
+and escaped outside. While most of the corruption spread far outside
+and into the nearby settlements,a sizable portion of it went into your slavers.
+Your slavers writhed in agony as they are visibly transformed as well as
+receiving severe injuries from the experience.
+</p>
+
+<</if>>
+
+<p>
+Your slavers can no longer sense any fateful aura emanating from the slave,
+and the ritual appears to be somewhat successful.
+<<if $gOutcome == 'disaster'>>
+You just have to
+deal with the mess that is your current state of the slavers.
+<</if>>
+</p>
+
+<<else>>
+
+<p>
+With every chant, the wickedness visibly moved from <<rep $g.fated>> into the
+body of the poor unsuspecting <<maiden $g.good>>. Soon enough the <<maiden
+$g.good>> started to writhe as a wolf tail and demonic hooves started to
+appear on <<their $g.good>> previously pure body. To complete the ritual, your slave <<rep
+$g.fated>> <<uadv $g.fated>>
+<<if $g.fated.isHasDick()>>fucked the poor <<maiden $g.good>><<else>>forced the poor <<maiden $g.good>> to service their pussy<</if>> until the wickedness were fully transferred over to <<them $g.good>>.
+</p>
+
+<p>
+Eventually, both your slave and the <<maiden $g.good>> collapsed from sheer
+exhaustion — the formerly pure <<maiden $g.good>> now a chimeratic future
+plaything of the demon lord while <<yourrep $g.fated>> appeared
+somewhat purer than before.
+No longer your slavers can sense any fateful aura emanating from the slave,
+and the ritual appeared to have been successful.
+</p>
+
+<p>
+Your slavers left the writhing <<maiden $g.good>> in the ritual site and come back home. Mission complete.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Some time later, you found a bottle of <<rep setup.item.potion_transformation>> lying on your desk. How could such a rare and dangerous potion appeared on your desk out of thin air?
+</p>
+<</if>>
+
+<</if>>

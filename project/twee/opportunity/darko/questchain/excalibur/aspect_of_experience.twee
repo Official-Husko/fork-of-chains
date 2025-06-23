@@ -1,0 +1,225 @@
+:: OpportunitySetup_aspect_of_experience [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"aspect_of_experience", /* key */
+"Aspect of Experience", /* name */
+"Known far and wide for their vast experience (or at least they once were)", /* description */
+"a|was known far and wide to possess a vast amount of experience, at least at some point in a|their life", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+  sex: 2,
+},
+)
+>>
+<<run new setup.UnitGroup(
+'opportunity_aspect_of_experience1',
+"Aspect of Experience: Chief",
+'subrace_humanvale', /* pools */
+1, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_wiseman), ],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'aspect_of_experience', /* key */
+"Aspect of Experience", /* Title */
+"darko", /* Author */
+[ 'vale', 'veteran', 'special', 'order', 'unknown',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_aspect_of_experience',
+setup.qdiff.hardest51, /* difficulty */
+[ /* options */
+[
+'Opportunity_aspect_of_experience_0',
+'Opportunity_aspect_of_experience_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+  setup.qres.Actor('slave', setup.qres.IsCanBeSold()),
+],
+[ /* outcomes */
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_experience1'),
+setup.qc.Money(12000),
+setup.qc.MissingUnitForever('slave'), ],
+], [
+'Opportunity_aspect_of_experience_1',
+'Opportunity_aspect_of_experience_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.SlaveOrderAspectOfExperience(),
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_experience1'), ],
+], [
+'Opportunity_aspect_of_experience_2',
+'Opportunity_aspect_of_experience_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_experience1'),
+setup.qc.IfThenElse(
+setup.qres.Actor('knight', setup.qres.AnyTrait([setup.trait.join_senior, setup.trait.bg_slaver, setup.trait.bg_whore, setup.trait.bg_mist], true)),
+setup.qc.DoAll([
+setup.qc.RemoveTitleGlobal('aspect_of_experience'),
+setup.qc.AddTitle('knight', 'aspect_of_experience'),
+setup.qc.BoonizeRandom('knight', 30)
+]),
+setup.qc.DoAll([
+setup.qc.BoonizeRandom('knight', 30),
+setup.qc.BoonizeRandom('knight', 30),
+setup.qc.BoonizeRandom('knight', 30)
+])), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'knight': [
+],
+'slave': [
+],
+'chief': 'opportunity_aspect_of_experience1', },
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_aspect_of_experience [nobr]
+
+<p>
+Having spent weeks so thoroughly entertained by <<reps $g.knight>>
+surprisingly experienced handling of the slave <<rep $g.slave>>, the chief's
+now very worldly mind is very open on what kind of rewards your slavers can
+walk away with.
+</p>
+
+<p>
+As the first option, the chief generously offers a flat amount of <<money
+12000>> to buy <<yourrep $g.slave>> permanently, to be reassigned as the first
+member as <<their $g.chief>> no doubt soon growing harem.
+<<if $g.slave.getSlaveValue() < 6000>>
+Looking at the slave, you probably won't be able to get a better deal
+anywhere else.
+<<elseif $g.slave.getSlaveValue() < 12000>>
+It's a decent price, although it's understandable if you want to hold on to
+<<rep $g.slave>> to be sold elsewhere later.
+<<else>>
+Understandably the new chief-slaver still does not understand the true value
+of the slave, and accepting this deal will no doubt undersells <<rep
+$g.slave>> for <<their $g.slave>> true worth.
+<</if>>
+</p>
+
+<p>
+Alternatively, if you are not willing to part with <<yourrep $g.slave>>, <<they $g.chief>>
+chief|offer to buy a slave as similar as possible to <<rep $g.slave>> from your company.
+<<They $g.chief>> no doubt will pay very well for such an oddly specific request.
+</p>
+
+<p>
+Finally, there is always the option of taking the original offer of
+making <<yourrep $g.knight>> learn as much as "experience" as <<they $g.knight>> can from the
+chief. Surely such knowledge will prove invaluable in the future? After all,
+what greater gift is there than knowledge?
+</p>
+
+<<set _u = setup.getUnit({job: setup.job.slaver, title: 'aspect_of_experience'})>>
+<<if _u && _u != $g.knight>>
+<p>
+<<dangertext 'Warning'>>: Choosing the third option will remove <<rep
+setup.title.aspect_of_experience>> from <<rep _u>>!
+</p>
+<</if>>
+
+
+
+:: Opportunity_aspect_of_experience_0 [nobr]
+Sell the slave
+
+
+:: Opportunity_aspect_of_experience_0_flavor [nobr]
+<p>
+The deal made, <<yourrep $g.knight>> threw one last <<uadjgood $g.knight>> glance
+over to <<rep $g.slave>> before the overjoyed chief put a permanent collar around
+<<reps $g.slave>> neck, no doubt eager to introduce <<them $g.slave>> to the
+benefits of becoming the chieftain's personal sex toy.
+Your slavers tried not to dwell too much on the loss of <<rep $g.slave>> and
+assured themselves that the huge bag of money they returned with was much more
+than enough as a compensation for <<rep $g.slave>>.
+</p>
+
+
+:: Opportunity_aspect_of_experience_1 [nobr]
+Get the slave order
+
+
+:: Opportunity_aspect_of_experience_1_flavor [nobr]
+<p>
+<<Rep $g.knight>> finalized the slave order with the chieftain. The slave
+order detailed the almost exact likeliness with <<rep $g.slave>>, but with one key
+difference: the unit must be of a different race, no doubt to satisfy some
+perverse pleasure of the once-prude chieftain... Perhaps
+<<yourrep $g.knight>> knight|was a bit too successful in
+introducing the previously inexperienced chief to the world of carnal pleasure...
+</p>
+
+
+:: Opportunity_aspect_of_experience_2 [nobr]
+Get the knowledge
+
+
+:: Opportunity_aspect_of_experience_2_flavor [nobr]
+
+<p>
+Ah yes, the teachings of the chieftain. What other reward would your slavers ever wanted?
+Money? Slaves? Nothing could certainly compare with the chieftain's
+experience, or so <<yourrep $g.knight>> thought.
+</p>
+
+<p>
+The coming days passed in a blur as <<rep $g.knight>> spent every waking moment
+sitting in front of the chief, who had returned (at least for the time being)
+to their previous occupation as the wise<<man $g.chief>> of the encampment. <<Rep $g.knight>>
+<<uadv $g.knight>> listened to the lengthy stories from the chief, detailing
+the exploits, hardships, and other histories of the surrounding tribes.
+</p>
+
+<<if $g.knight.isHasTrait('join_senior') ||
+$g.knight.isHasTrait('bg_slaver') ||
+$g.knight.isHasTrait('bg_whore') ||
+$g.knight.isHasTrait('bg_mist')>>
+<p>
+<<if $g.knight.isHasTrait('bg_mist')>>
+Hailing from beyond <<lore concept_mist>>, <<rep $g.knight>> knight|was no
+stranger to the art of slaving and has plenty of experience in the field.
+<<elseif $g.knight.isHasTrait('bg_whore')>>
+Coming from a whorehouse, <<rep $g.knight>> surely qualified
+as an "experienced" slaver.
+<<elseif $g.knight.isHasTrait('bg_slaver')>>
+Having been a slaver long before joining your company,
+<<rep $g.knight>> no doubt qualified as an experienced slaver.
+<<else>>
+Having been with your company for over two years now,
+there was no doubt that <<rep $g.knight>> was an experienced slaver.
+<</if>>
+Their experiences combined with the new wealth of stories from the chief
+made <<rep $g.knight>> appeared much more experienced than before to anyone
+else, worthy of the title <<rep setup.title.aspect_of_experience>>.
+</p>
+<<else>>
+<p>
+Lacking much experience in slaving, having not coming from any of slaving
+related backgrounds
+<<rep setup.trait.bg_mist>><<rep setup.trait.bg_slaver>><<rep setup.trait.bg_whore>><<rep setup.trait.join_senior>>,
+there were only so much that <<reps $g.knight>> thick <<uhead $g.knight>>
+could absorb from the stories. Still, the stories were rather inspiring and you can
+definitely see a lighter step coming from <<yourrep $g.knight>> in the coming days.
+</p>
+<</if>>

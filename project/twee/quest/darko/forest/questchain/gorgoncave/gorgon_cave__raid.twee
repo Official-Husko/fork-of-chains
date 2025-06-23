@@ -1,0 +1,242 @@
+:: QuestSetup_gorgon_cave__raid [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_gorgon_cave__raid1',
+"Tentacled Slave",
+'forest_all',  /* pools */
+0,
+[
+setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape),
+setup.qc.TraitReplace('unit', setup.trait.per_sexaddict),
+setup.qc.TraitReplace('unit', setup.trait.training_anal_basic), ],
+)>>
+
+<<set _criteriafighter1 = new setup.UnitCriteria(
+null, /* key */
+'Anti-Tentacle Fighter', /* name */
+[
+setup.trait.race_elf,
+setup.trait.race_catkin,
+setup.trait.muscle_thin,
+setup.trait.per_logical,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.trait.muscle_strong,
+setup.trait.dick_huge,
+setup.trait.balls_huge,
+setup.trait.breast_huge,
+setup.trait.height_giant,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_sexaddict,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 2,
+arcane: 1,
+}
+)>>
+
+<<set _criteriafighter2 = new setup.UnitCriteria(
+null, /* key */
+'Anti-Tentacle Fighter', /* name */
+[
+setup.trait.race_elf,
+setup.trait.race_catkin,
+setup.trait.muscle_thin,
+setup.trait.per_logical,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.trait.muscle_strong,
+setup.trait.dick_huge,
+setup.trait.balls_huge,
+setup.trait.breast_huge,
+setup.trait.height_giant,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_sexaddict,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 2,
+arcane: 1,
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'gorgon_cave__raid', /* key */
+"Hydra Cave: Raid", /* Title */
+"darko", /* Author */
+[ 'forest', 'unit'
+], /* tags */
+2, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+'fighter1': _criteriafighter1,
+'fighter2': _criteriafighter2,
+'support': setup.qu.raidersupport, },
+{ /* actors */
+'leader': 'quest_gorgon_cave__recruit1',
+'slave': 'quest_gorgon_cave__raid1', },
+[ /* costs */
+],
+'Quest_gorgon_cave__raid',
+setup.qdiff.normal36, /* difficulty */
+[ /* outcomes */
+[
+'Quest_gorgon_cave__raidCrit',
+[
+setup.qc.Slave('slave', 'a|was a decoration slave in a cave full of tentacles whose orifices was permanently gaped by continuous rape', undefined),
+setup.qc.Equipment(setup.equipmentpool.arcane_good), ],
+], [
+'Quest_gorgon_cave__raidCrit',
+[
+setup.qc.Slave('slave', 'a|was a decoration slave in a cave full of tentacles whose orifices was permanently gaped by continuous rape', undefined),
+setup.qc.MoneyNormal(0.5), ],
+], [
+'Quest_gorgon_cave__raidFailure',
+[
+setup.qc.Injury('fighter1', 2),
+setup.qc.Injury('fighter2', 2),
+setup.qc.Injury('support', 1), ],
+], [
+'Quest_gorgon_cave__raidFailure',
+[
+setup.qc.Injury('fighter1', 4),
+setup.qc.Injury('fighter2', 4),
+setup.qc.SlaverMarker('leader'),
+setup.qc.Injury('support', 2), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_gorgon_cave__raid [nobr]
+
+<<include 'Opportunity_gorgon_cave'>>
+
+<p>You have chosen to try and raid the lair for riches.
+</p>
+
+:: GorgonCaveCommon2 [nobr]
+
+<p>
+Your slavers prepared as best as they could for the quest.
+<<Yourrep $g.fighter1>> and <<rep $g.fighter1>> <<uadv $g.fighter1>>
+practiced specialized techniques to slay tentacled guardians, while <<rep
+$g.support>> <<uadv $g.support>>
+prepared <<their $g.support>> best healing salves to support the team.
+</p>
+
+
+:: GorgonCaveCommon3 [nobr]
+
+<p>
+Once your slavers arrived at the caverns, they were immediately beset by the
+two hulking tentacled guardians.
+They appeared as an amalgamation of tentacles, vaguely resembling a demon, but tinted green.
+They moved eerily before
+suddenly stabbing out one of its tentacles into your slaver's directions, but
+<<yourrep $g.fighter1>> fighter1|was ready and skillfully blocked the attack.
+<<Rep $g.fighter2>> followed up by slashing right into the guardian, which easily
+cut the tentacles leaving them a slithering mess on the floor.
+But the fight was far from over -- <<rep $g.support>>
+healed the wounds throughout the fight as best as <<they $g.support>> could.
+
+<<set _fire = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'magic_fire'})>>
+<<if _fire>>
+Throughout the fight, <<rep _fire>> used <<their _fire>> fire magic to burn some away.
+<</if>>
+
+Eventually, with the combined mights of your slavers, they dispatched the guardians,
+and then pressed depeer into the caverns.
+</p>
+
+<<if $g.slave.isMale()>>
+    <<questimage "gorgon_cave_male.jpg">>
+<<else>>
+    <<questimage "gorgon_cave_female.jpg">>
+<</if>>
+
+<p>
+The slavers were met with a most debauched of scenery.
+Within the caves,
+many slaves were displayed along the corridors, most were moaning softly as
+all their cavities, be it mouth<<if $g.slave.isHasVagina()>>, anus, or vagina,<<else>> or anus<</if>>
+were filled to uncomfortable fullness with slithering tentacles.
+It seemed the wizard had a thing or two for tentacles sex --
+various tentacle sex actions were enacted with various slaves posted in nearby rooms —
+there was one where a slave is suspended in the air with nothing but
+tentacles inside <<their $g.slave>> ass,
+and another one where a caged slave begged as <<they $g.slave>> slave|was surrounded by what seemed
+to be a sea of tentacles.
+</p>
+
+
+:: Quest_gorgon_cave__raidCrit [nobr]
+<<include 'GorgonCaveCommon3'>>
+
+<p>
+Most of these slaves were already useless and far too gone from the relentless abuse, but your
+slavers managed to find a relatively newly caught slave who had only been
+ravaged bodily, but whose mind remained intact. They proceeded to "rescue" the slave from worse
+fate and into your gentle care.
+<<if $gOutcome == 'crit'>>
+They also found one of the wizard's prized belongings to take home before escaping the caverns.
+<<else>>
+They also grabbed whatever valuables they found lying nearby, before escaping from the caverns.
+<</if>>
+</p>
+
+:: Quest_gorgon_cave__raidFailure [nobr]
+<<include 'GorgonCaveCommon2'>>
+
+<p>
+Once your slavers arrived at the caverns, they were immediately beset by the
+two hulking tentacled guardians.
+They appeared as an amalgamation of tentacles, vaguely resembling a demon, but tinted green.
+They moved eerily before
+suddenly stabbing out one of its tentacles into your slaver's directions, which
+caught your slavers off guard.
+<<if $gOutcome == 'failure'>>
+<<Yourrep $g.fighter1>> fighter1|was knocked down,
+but before the guardian started to molest <<them $g.fighter1>>, <<rep
+$g.fighter2>> came to the rescue.
+<<Rep $g.fighter2>> managed to <<uadv $g.fighter2>> deflected all the attacks by <<themself $g.fighter2>>,
+but got severely injured in the process before your slavers managed to escape from the clutches of these
+tentacled guardians.
+<<else>>
+Having knocked <<rep $g.fighter1>> and the rest of the team to the ground,
+the guardians proceeded to mindlessly molest your slaver's cavities, filling
+their holes with their oversized tentacles over and over again until your
+slavers were uselessly moaning in a combination of pain and pleasure.
+After a brutal two hours of rough sodomy,
+the guardians returned to their dormant states with the threats to the lair
+completely neutralized.
+<</if>>
+</p>

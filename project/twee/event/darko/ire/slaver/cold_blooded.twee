@@ -1,0 +1,50 @@
+:: EventSetup_cold_blooded [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'cold_blooded', /* key */
+"Cold-Blooded", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_cold_blooded',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NotYou(),
+],
+
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('lizardkin', -20),
+setup.qc.MissingUnit('victim'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('lizardkin', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_cold_blooded [nobr]
+<p>
+  As you walk around the fort, you see <<yourrep $g.victim>> making <<their $g.victim>> way walking past
+  the river next to the fort, just after <<they $g.victim>> finish <<uhobbyverb $g.victim>>.
+  A ripple forms in the water and suddenly a lizardkin warrior leaps from the water.
+  You are too far to do anything but watch as <<rep $g.victim>> victim|is
+  dragged away from your fort and into the water.
+  By the time you arrive at the river, neither the lizardkin nor your <<urace $g.victim>> slaver
+  are anywhere to be seen.
+</p>
+
+<p>
+  This is no doubt a retaliation attempt from <<rep $company.lizardkin>> for
+  the relatively evil deeds you have performed against them.
+  No use in dwelling on that for now though -- <<uneedrescue $g.victim>>.
+</p>
+

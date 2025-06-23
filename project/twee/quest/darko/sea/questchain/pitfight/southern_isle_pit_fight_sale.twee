@@ -1,0 +1,137 @@
+:: QuestSetup_southern_isle_pit_fights_sale [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"pit_fight_sale0",
+"Lost Gladiator",
+[], /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'southern_isle_pit_fights_sale', /* key */
+"Southern Isle Pit Fights: Sale", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'gore',
+  'sea',
+  'unit',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'n': [ setup.qu.negotiator, 3],
+},
+{ /* actors */
+  'slave': 'pit_fight_sale0',
+},
+[ /* costs */
+],
+'Quest_southern_isle_pit_fights_sale',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_southern_isle_pit_fights_saleCrit',
+    [
+      setup.qc.EmptyUnitGroup('pit_fight_sale0'),
+      setup.qc.RemoveTagGlobal('pit_fight_final'),
+      setup.qc.RemoveTagGlobal('pit_fight_semifinal'),
+      setup.qc.RemoveTagGlobal('pit_fight_qual'),
+      setup.qc.VarRemove('pit_fight_result'),
+      setup.qc.Slave('slave', "a|was a gladiator in one of the southern isles pit fights who a|was sold after losing in a fight", true, 2),
+      setup.qc.SetCooldownQuest('southern_isle_pit_fights', 80),
+    ],
+  ],
+  [
+    'Quest_southern_isle_pit_fights_saleCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_southern_isle_pit_fights_saleCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_southern_isle_pit_fights_saleCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Not(setup.qres.VarNull('pit_fight_result')),
+],
+[ /* expiration outcomes */
+  setup.qc.EmptyUnitGroup('pit_fight_sale0'),
+  setup.qc.VarRemove('pit_fight_result'),
+  setup.qc.SetCooldownQuest('southern_isle_pit_fights', 100),
+],
+)>>
+
+:: Quest_southern_isle_pit_fights_sale [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+The Southern Isles pit fight had concluded some time ago.
+<<if $varstore.get('pit_fight_result') == 'win'>>
+Your slave has won the entire tournament.
+<<else>>
+Your slave might have lost, but not before going through the qualifications.
+<</if>>
+And <<yourrep _u>> is telling you that one of the opponents is currently being sold as punishment for <<their $g.slave>> failure.
+</p>
+
+<p>
+The slave in question is the <<urace $g.slave>> that your slave faced in the
+<<if $g.slave.isHasTag('pit_fight_final')>>
+final round of the competition — the hulking beast of a <<man $g.slave>> that your slave somehow managed to down. The owner is apparently rather rich, and having lost a tournament would tarnish their stock's reputation forever.
+<<elseif $g.slave.isHasTag('pit_fight_semifinal')>>
+<<set _bg = $g.slave.getTraitWithTag('bg')>>
+semi-final — the experienced <<= _bg.getName()>>-turned-obedient-slave that your slave managed to down back then. The owner is apparently trying to cash in on <<their $g.slave>> current fame of reaching the semi-finals of the competition.
+<<else>>
+qualification round — the joke of a fighter that was put on show simply for <<their $g.slave>> owner's cruel delight. It seems the owner perversity knows no bounds, and is selling the slave to hammer the fact that the slave is nothing but a useless little <<urace $g.slave>>.
+<</if>>
+</p>
+
+<p>
+Should you wish to purchase the slave, you could send a slaver to negotiate with the owner. It should be a rather easy affair, with minimal risks, but you'll certainly have to pay for the slave you are trying to purchase.
+</p>
+
+
+
+
+
+:: Quest_southern_isle_pit_fights_saleCrit [nobr]
+<p>
+<<Yourrep $g.n>> had managed to arrange for <<rep $g.slave>> to be brought over to your <<rep setup.buildingtemplate.slavepens>> for your inspection.
+
+<<if $g.slave.isHasTag('pit_fight_final')>>
+<<They $g.n>> did not meet <<their $g.n>> previous owner directly, as the owner was a rather busy person, and deemed the sale of <<their $g.n>> gladiator slave beneath <<their $g.n>> top concerns.
+<<elseif $g.slave.isHasTag('pit_fight_semifinal')>>
+<<They $g.n>> did meet with the slave's previous owner, who kept rubbing their hands in anticipating of money from the sales.
+<<else>>
+Throughout the negotiations, the previous owner kept goading the slave, no doubt hammering further obedience and humiliation into the lost gladiator.
+<</if>>
+
+</p>
+
+<p>
+The slave commands a higher than average price,
+<<if $g.slave.isHasTag('pit_fight_qual')>>
+even with <<their $g.slave>> non-existent fighting skills, simply
+<</if>>
+due to <<their $g.slave>> recent fame as a participant in the Southern Isles Pit Fights.
+</p>
+

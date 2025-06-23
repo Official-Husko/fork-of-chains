@@ -1,0 +1,97 @@
+:: QuestSetup_the_very_essence_of_life [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'you', /* name */
+[
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  arcane: 3.0,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_very_essence_of_life', /* key */
+"The Very Essence of Life", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'prep',
+  'trait',
+],
+1, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'you': [_criteriayou, 3],
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+  setup.qc.LoseItem('healing_potion_greater', 5),
+],
+'Quest_the_very_essence_of_life',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_very_essence_of_lifeCrit',
+    [
+      setup.qc.Event('the_sour_and_salty_taste', 15, {
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Quest_the_very_essence_of_lifeCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_very_essence_of_lifeCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_very_essence_of_lifeCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('withering_plant', 0, {
+slaver: "slaver",
+}),
+
+],
+)>>
+
+:: Quest_the_very_essence_of_life [nobr]
+<<include "PlantOfLewdityEssenceOfLifeCommon">>
+
+<p>
+You have chosen to supply 5 bottles of <<rep setup.item.healing_potion_greater>>. You'd have to deliver them yourself once you gathered enough of them, but it shouldn't take too long.
+</p>
+
+
+
+:: Quest_the_very_essence_of_lifeCrit [nobr]
+<<include "PlantOfLewdityEssenceOfLifeCommon">>

@@ -1,0 +1,152 @@
+:: OpportunitySetup_flickering_flame [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'flickering_flame', /* key */
+"Flickering Flame", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'unknown',
+  'fort',
+],
+1, /* expiration weeks */
+'Opportunity_flickering_flame',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_flickering_flame_0',
+    'Opportunity_flickering_flame_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.HookupWithYou('lover'),
+    ],
+  ],
+  [
+    'Opportunity_flickering_flame_1',
+    'Opportunity_flickering_flame_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.TraumatizeRandom('lover', 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'you': [
+  ],
+  'lover': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_flickering_flame [nobr]
+<p>
+In the recent days, you and <<yourrep $g.lover>> lover|have become rather
+close. You have always considered <<therace $g.lover>> slaver as your friend,
+but you never realized how much the <<uadjgood $g.lover>> slaver has lusted
+over you in the last few weeks.
+</p>
+
+<p>
+It culminated today when you find <<rep $g.lover>> waiting for you inside your office.
+
+<<if $g.lover.getSpeech() == setup.speech.friendly || $g.lover.getSpeech() == setup.speech.witty>>
+
+<<They $g.lover>> gently lover|grab your <<uhands $unit.player>>, while
+whispering to your <<uears $unit.player>> <<their $g.lover>> undying devotion
+to you, before asking you to become <<their $g.lover>> lover.
+
+<<elseif $g.lover.getSpeech() == setup.speech.bold || $g.lover.getSpeech() == setup.speech.cool>>
+
+<<They $g.lover>> wordlessly lover|grab your <<uhands $unit.player>>, stoically
+pronouncing <<their $g.lover>> devotion to you, and asking you to become
+<<their $g.lover>> lover.
+
+<<elseif $g.lover.getSpeech() == setup.speech.debauched>>
+
+<<They $g.lover>> suddenly lover|grab you by your <<uwaist $unit.player>>,
+putting you in an awkward position, with <<their $g.lover>> lips almost
+touching yours. <<They $g.lover>> then lover|profess their lust for your <<ubody
+$unit.player>>, before asking you to become <<their $g.lover>> lover.
+<</if>>
+
+</p>
+
+<p>
+How will you respond?
+</p>
+
+
+:: Opportunity_flickering_flame_0 [nobr]
+Accept
+
+
+:: Opportunity_flickering_flame_0_flavor [nobr]
+
+<p>
+Upon hearing the words coming out from your mouth, <<yourrep $g.lover>>
+
+<<if $g.lover.getSpeech() == setup.speech.friendly>>
+joyfully lover|close the distance between you and gently lover|kiss your <<umouth $unit.player>>.
+For a long moment both of you are locked tight in an embrace, time slowing down all
+around you.
+
+<<elseif $g.lover.getSpeech() == setup.speech.bold>>
+can't help but smirked a little, before
+<<if $g.lover.isFemale()>>
+leaping into your embrace.
+<<else>>
+pulling you deep for a possessive embrace.
+<</if>>
+The embrace lasts for a good warm moment, both in your heart and in your <<ugenital $unit.player>>.
+
+<<elseif $g.lover.getSpeech() == setup.speech.cool>>
+stoically lover|close the distance between you and, without saying a word, lover|kiss
+your <<umouth $unit.player>>. This is perhaps the most animated your cool slaver has ever been
+in <<their $g.lover>> life.
+
+<<elseif $g.lover.getSpeech() == setup.speech.witty>>
+visibly lover|raise a surprised eyebrow, before regaining <<their $g.lover>>
+composure and lover|give your acceptance a witty reply. But before you are allowed
+to respond, you find <<them $g.lover>> already very close to you before stealing your
+lips for a kiss.
+
+<<elseif $g.lover.getSpeech() == setup.speech.debauched>>
+lover|laugh maniacally before leaping towards you and giving you the deepest kiss
+you have ever experienced in your life. It will be quite an adventure having
+made the debauched slaver into your lover, one you are very much looking
+forward to.
+
+<</if>>
+</p>
+
+<p>
+You have never wanted the night to come as quickly as it was in that moment!
+</p>
+
+
+:: Opportunity_flickering_flame_1 [nobr]
+Reject
+
+
+:: Opportunity_flickering_flame_1_flavor [nobr]
+<p>
+Unfortunately, you have no interest in the <<man $g.lover>>. <<Rep $g.lover>>
+lover|look absolutely devastated by the refusal, and lover|leave your office without
+saying a word. <<They $g.lover>> will surely be traumatized by this, but
+nothing time cannot heal.
+</p>

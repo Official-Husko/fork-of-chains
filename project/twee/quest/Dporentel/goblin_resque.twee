@@ -1,0 +1,180 @@
+:: QuestSetup_goblin_resque2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_goblin_resque2',
+"quest_broken_by_goblins",
+'subrace_humankingdom_female',  /* pools */
+0, /* reuse chance */
+[
+  setup.qc.Mindbreak('unit'),
+  setup.qc.TraitReplace('unit', setup.trait.vagina_gape),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'goblin_resque2', /* key */
+"Goblin Rescue", /* Title */
+{  /* Author */
+  name: "Dporentel",
+  url: "https://www.reddit.com/r/FortOfChains/comments/jxmjhl/v110_is_here_submit_all_your_content_bug_report/gddbqex/",
+},
+[ 'femaleonly', 'breeding',
+'city', 'unit', 'favor',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'fighter': setup.qu.fighter_deep,
+'spotter': setup.qu.spotter,
+'healer': setup.qu.support, },
+{ /* actors */
+'toy1': 'quest_goblin_resque2',
+'toy2': 'quest_goblin_resque2', },
+[ /* costs */
+],
+'Quest_goblin_resque2',
+setup.qdiff.normal30, /* difficulty */
+[ /* outcomes */
+[
+'Quest_goblin_resque2Crit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.MoneyCustom(500),
+  setup.qc.Injury('toy2', 4),
+  setup.qc.Slave('toy2', "a|was captured by goblins and used for breeding", undefined), ],
+], [
+'Quest_goblin_resque2Crit',
+[
+setup.qc.MoneyCustom(500),
+setup.qc.Favor('humankingdom', 50),
+setup.qc.Injury('toy1', 4),
+setup.qc.Slave('toy1', "a|was captured by goblins and used for breeding", undefined), ],
+], [
+'Quest_goblin_resque2Crit',
+[
+setup.qc.Injury('fighter', 1),
+setup.qc.Injury('spotter', 1),
+setup.qc.Injury('healer', 1),
+setup.qc.Favor('humankingdom', 50), ],
+], [
+'Quest_goblin_resque2Disaster',
+[
+setup.qc.Injury('fighter', 3),
+setup.qc.Injury('spotter', 3),
+setup.qc.Injury('healer', 3), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.Building(setup.buildingtemplate.hospital), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_goblin_resque2 [nobr]
+
+<p>
+As a slaving company, your company does not usually get contracted for rescue missions.
+But rescuing people from the so-called <<lore race_goblin>> dens is a different deal.
+You see, these green squats are widely known to capture any women
+that are unfortunate enough to wander into their territory.
+The girls are used for breeding until they are no longer functional,
+as these distant relatives of the orc race themselves are almost always lacking in females.
+</p>
+
+<p>
+It seems some goblins are migrating right about now, and many groups
+formed (temporary?) dens in areas uncomfortably close to the city recently.
+You could try to send an extermination squad to clear out
+a couple of these dens under the guise of trying to rid the world of greater evil.
+You are sure to encounter some girls inside —- Your company can certainly
+put them under new management
+without telling the cityfolks anything.
+Truly a win-win situation.
+</p>
+
+
+:: Quest_goblin_resque2Crit [nobr]
+
+<<if $g.toy1.isMale()>>
+<<else>>
+<<questimage 'goblin_rescue_female.jpg'>>
+<</if>>
+
+<p>
+The cave den your slavers cleared out seemed abandoned at first,
+but still-armed traps inside told a different story.
+The den appeared to be a decoy that was made to hide the actual den where all the good stuffs
+were located.
+Fortunately,
+<<reps $g.spotter>> attention to detail allowed the group to
+eventually find a secret tunnel, which led them to the actual den.
+</p>
+
+<p>
+The fight inside was fierce.
+Narrow corridors combined with an overwhelming amount of opponents tested the limits of
+<<reps $g.fighter>> combat skills.
+
+<<if $g.fighter.isHasTrait('skill_ambidextrous')>>
+  Fortunately, <<they $g.fighter>> fighter|is ambidextrous, and fighter|was able to freely switch
+  between left and right <<uhand $g.fighter>> for wielding <<their $g.fighter>> <<uweapon $g.fighter>>.
+<</if>>
+
+<<if $g.fighter.isHasTrait('tough_nimble')>>
+  <<They $g.fighter>> fighter|is sufficiently nimble and could still move with ease in the small space.
+<</if>>
+
+Eventually, <<they $g.fighter>> managed to <<uadv $g.fighter>>
+vanquish all these green rodents.
+</p>
+
+<p>
+The captured girls are located in the final, innermost chamber of the den:
+the ominously-named breeding chamber.
+It was a large room with female bodies lining the walls,
+most already too broken to be profitable to capture<<if $gOutcome == 'crit'>>,
+with the exception of one that seemed quite alright<</if>>. The
+<<if $gOutcome == 'crit'>>only other<<elseif $gOutcome == 'success' || $gOutcome == 'failure'>>only<</if>>
+girl whose condition seemed fixable was strapped to a large (at least for a goblin)
+brute. The girl was seemingly being used as an armor for the brute sitting on something resembling a
+throne in the center of the chamber.
+The threat of needlessly hurting the merchandise made this fight significantly
+harder than it should've been,
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>but the team managed to prevail and
+defeated the brute without inflicting any heavy damage to the girl.
+<<elseif $gOutcome == 'failure'>>
+and unfortunately several stray hits met the "armor" girl, ultimately defeating both
+the brute and rendering the girl useless.
+<</if>>
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+With the fight over, the team surveyed the battlescene. All in all,
+they remained unscathed, surely no small thanks to <<reps $g.healer>> hard work.
+Their prize amounts to
+<<if $gOutcome == 'crit'>>two girls: <<rep $g.toy1>> and <<rep $g.toy2>><<elseif $gOutcome == 'success'>>one girl: <<rep $g.toy1>><</if>>.
+The girl<<if $gOutcome == 'crit'>>s<</if>> will surely need a lot of time to recover from their ordeal
+before you can put them to better use.
+<<elseif $gOutcome == 'failure'>>
+But the victory did not come free.
+The group suffered some injuries during the fight, and even worse, they
+weren't able to bring back any usable merchandise.
+Still though, they vanquished a den of evil, and saved many, many girls from terrible fate
+of being anchored and used as goblin's breeding bitches.
+Surely such a good deed warmed your slavers' hearts?
+Not to mention the grateful female citizens that will hopefully spread the good word about your company.
+<</if>>
+</p>
+
+
+:: Quest_goblin_resque2Disaster [nobr]
+<p>
+Your slavers were greeted with a giant fireball right to the face when they tried to enter the cave.
+It turned out that goblins can wield magic too, and with terrifying efficiency.
+They did manage to run away as soon as they understood the dangers,
+but the damn big fireball seriously wounded your slavers in the process.
+If not for <<reps $g.healer>> medical talents, they'd all be steak by now.
+</p>

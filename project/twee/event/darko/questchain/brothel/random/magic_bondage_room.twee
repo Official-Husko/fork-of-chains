@@ -1,0 +1,132 @@
+:: EventSetup_magic_bondage_room [nobr event]
+
+<<run new setup.Event(
+'magic_bondage_room', /* key */
+"Magic Bondage Room", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_magic_bondage_room',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 300),
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+  setup.qres.VarEqual('quest_brothel_attraction', 'bondage'),
+],
+53, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_magic_bondage_room [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+<<attach _describe>> is
+<<if _class >= 2>>
+a high-class establishment, drawing even nobles inside.
+<<elseif _class <= -2>>
+a debauched little brothel, drawing even the richest of criminals to the establishment.
+<<else>>
+a renowned brothel in the area, known for its skilled <<= _gender>> courtesans.
+<</if>>
+It is located in a large
+<<if _class >= 2>>
+palace-like
+<<elseif _class <= -2>>
+demonic palace-like
+<<else>>
+exotic palace-like
+<</if>>
+complex.
+The centerpiece of the complex is without doubt the Magic Bondage Room, secluded within its innermost chamber.
+The room hosts various enchanted sex toys, which can be activated to various effects by the resident whore-wizard <<name $g.slave>>.
+Paying customers can tailor their bondage experience by using these various enchanted toys.
+</p>
+
+<p>
+As the proprietor of the place, you can use the various sex toys on your head courtesan <<name $g.slave>> too. Of course, the fee is completely exempt for you.
+</p>
+
+<<choose>>
+
+<<opt 'Have some dominant fun'>>
+
+<p>
+You set <<name $g.slave>> all fours on the floor, and place the many dildo contraptions on the floor, surrounding <<therace $g.slave>>.
+You order <<them $g.slave>> to activate the enchantments, and the dildos come to live.
+One by one, they are moving rhythmically;
+<<if $g.slave.isHasTrait('vagina_gape')>>Two large dildo machines are working their way past <<their $g.slave>> gaping cunt, and <<elseif $g.slave.isHasTrait('vagina_loose')>>A large dildo machine is working its way past <<their $g.slave>> cunt, and <<elseif $g.slave.isHasVagina()>>
+a dildo machine is working its way past <<their $g.slave>> tight pussy, and
+<<else>>
+Soon after,
+<</if>>
+
+<<if $g.slave.isHasTrait('anus_gape')>>two large dildos are fucking <<their $g.slave>> enormous butthole. <<elseif $g.slave.isHasTrait('anus_loose')>>a large dildo is fucking <<their $g.slave>> butthole. <<else>>a dildo is fucking <<their $g.slave>> tight butt. <</if>>
+
+<<if $g.slave.isHasTrait('breast_huge')>>
+<<They $g.slave>>
+has lubricated <<their $g.slave>> cavernous cleavage to titfuck another,
+<<elseif $g.slave.isHasTrait('breast_medium')>>has lubricated <<their $g.slave>> cleavage to titfuck another.<</if>>
+In addition, <<they $g.slave>> is performing two <<uhand $g.slave>>jobs at once, to either side, and also
+<<if $g.slave.isHasTrait('training_oral_master')>>
+making use of <<their $g.slave>> masterful oral skills to suck off two more.
+<<elseif $g.slave.isHasTrait('training_oral_advanced')>>
+making use of <<their $g.slave>> outstanding oral skills to suck off two more.
+<<elseif $g.slave.isHasTrait('training_oral_basic')>>taking a throatfuck from one more.<<else>>giving a final one a blowjob.<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Just spectate and let them relax afterwards">>
+
+<p>
+You leave for a moment, but return quickly with a chair and a refreshing beverage from the brothel's bar so you can sit and enjoy the spectacle. The hard fucking however means that <<they $g.slave>> is unable to go for a long time, and eventually exhaustin takes them over and <<their $g.slave>> magic was depleted, but not before retracting all the phalli. <<name $g.slave>> collapses weakly to the sweat-stained floor. You gather the limp courtesan in your <<uarms $unit.player>> and carry <<them $g.slave>> to the brothel bath, which is all ready and filled with steaming water. <<name $g.slave>> groans with pleasure as you lower <<them $g.slave>> into the water.
+</p>
+
+<<opt "Tour <<their $g.slave>> holes">>
+
+<p>
+The polite thing to do would be to instruct <<them $g.slave>> to retract a dildo before replacing it with <<if !$unit.player.isHasDick()>>a strap-on<<else>>your dick<</if>>. You are not, however, feeling particularly polite.
+<<name $g.slave>> writhes in anguish when <<they $g.slave>> feels an additonal phallus forcing its way past <<their $g.slave>> lips. <<They $g.slave>> tries to relax but loses control and spasms; the throat fucking continues unmercifully and in short order <<they $g.slave>> is gagging desperately. Each of <<their $g.slave>> holes receives the same treatment in turn; all <<they $g.slave>> manages to do in response is writhe here and there, and squeal incoherently whenever <<their $g.slave>> <<umouth $g.slave>> isn't totally full.
+</p>
+
+<</choose>>
+
+
+<<opt 'Decline'>>
+
+<p>
+You're not in the mood for some dominant sex action right now, so you decline and get back to your mounting work. It turned out working makes you some money.
+</p>
+
+<<run setup.qc.Money(500).apply($gQuest)>>
+
+<</choose>>

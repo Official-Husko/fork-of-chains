@@ -1,0 +1,119 @@
+:: QuestSetupMilitiaMatters [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _desc = 'a|was a member of the militia in the northern lands who you joined your company hearing the prospect of gold and flesh'>>
+<<run new setup.QuestTemplate(
+  'militia_matters', /* key */
+  'Militia Matters', /* Title */
+  'darko',   /* author */
+  ['vale', 'unit'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'recruiter1': setup.qu.recruiter,
+    'recruiter2': setup.qu.recruiter,
+    'guard': setup.qu.raidersupport,
+  },
+  { /* actors */
+    'militia1': 'quest_humanvale_militia',
+    'militia2': 'quest_humanvale_militia',
+    'militia3': 'quest_humanvale_militia',
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-0.5)
+  ],
+  'QuestMilitiaMatters', /* passage description */
+  setup.qdiff.easy9, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestMilitiaMattersCrit',
+      [
+        setup.qc.Slaver('militia1', _desc),
+        setup.qc.Slaver('militia2', _desc),
+        setup.qc.Slaver('militia3', _desc),
+        
+      ],
+    ],
+    [
+      'QuestMilitiaMattersSuccess',
+      [
+        setup.qc.Slaver('militia1', _desc),
+        setup.qc.Slaver('militia2', _desc),
+        
+      ],
+    ],
+    [
+      'QuestMilitiaMattersFailure',
+      [
+        setup.qc.MoneyNormal(0.5)
+      ],
+    ],
+    [
+      'QuestMilitiaMattersDisaster',
+      [
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.QuestUnique(),
+    setup.qres.Building(setup.buildingtemplate.prospectshall),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestMilitiaMatters [nobr]
+
+<p>
+If your company is short on recruits, there are always potential recruits to be found on the <<lore region_vale>>.
+While you can always scout for them once you built the
+<<rep setup.buildingtemplate.hiringsquare>>,
+but it will cost some money to hire them into your company.
+An alternative way is to hire the potential slavers using a more direct approach.
+</p>
+
+<p>
+One of the northern villages maintained a sizable militia, but lately you have been hearing
+that the militia<<women $g.militia1>> were not treated well by their commander.
+You might be able to send a group of convincing slavers to make them abandon their allegiance
+and start a more lucrative career as slavers.
+Militias are generally well-trained in combat, surely a boon to a slaving company such as yours.
+</p>
+
+
+:: QuestMilitiaMattersCrit [nobr]
+
+<p>
+The rumors turned out to be correct.
+<<Rep $g.recruiter1>> recruiter1|was so <<uadv $g.recruiter1>> convincing that three of the militia<<women $g.militia1>>
+signed up for your company.
+They are now waiting in the prospects hall for your
+decision, for you to inspect before admitting them into the company.
+</p>
+
+
+:: QuestMilitiaMattersSuccess [nobr]
+
+<p>
+The rumors turned out to be correct.
+<<Rep $g.recruiter1>> managed to <<uadv $g.recruiter1>> found two militia<<women $g.militia1>> disgruntled over their wage, which made it easy to convince them to join your company.
+</p>
+
+
+:: QuestMilitiaMattersFailure [nobr]
+
+<p>
+Unfortunately, nobody in the militia had any interest in enslaving their fellow <<women $g.militia1>>.
+At least your slavers return back with the money intact and unused, miraculously avoiding spending
+them on frivolous matters.
+</p>
+
+
+:: QuestMilitiaMattersDisaster [nobr]
+
+<p>
+Your slavers were tricked by a particularly unscrupulous member of the militia, who feigned
+interest only to run away with the incentive money on the way back.
+It was a shame, such behavior might have actually made <<them $g.militia1>> a rather good slaver.
+</p>

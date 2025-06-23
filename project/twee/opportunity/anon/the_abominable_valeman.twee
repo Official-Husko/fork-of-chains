@@ -1,0 +1,282 @@
+:: OpportunitySetup_the_abominable_valeman [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  "quest_the_abominable_valeman_abominable_valeman", /* key */
+  "Abominable Valeman", /* name */
+  "A local legend of the North", /* description */
+  "a|was a local legend that menaced the towns in the <<lore region_vale>>", /* unit text */
+  0, /* slave value */
+  { /* skill additives */
+  },
+)
+>>
+
+<<run new setup.UnitGroup(
+"abominable_valeman",
+"valeman",
+[ /* pools */
+  [setup.unitpool.subrace_werewolf_male, 0.3125],
+  [setup.unitpool.subrace_werewolf_female, 0.3125],
+  [setup.unitpool.subrace_humanvale_male, 0.15625],
+  [setup.unitpool.subrace_humanvale_female, 0.15625],
+  [setup.unitpool.subrace_neko_male, 0.03125],
+  [setup.unitpool.subrace_neko_female, 0.03125],
+],
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Nickname('unit', 'The Abominable Valeman'),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_wildman),
+  setup.qc.TraitReplace('unit', setup.trait.per_independent),
+  setup.qc.Trait('unit', setup.trait.muscle_verystrong),
+  setup.qc.Trait('unit', setup.trait.height_giant),
+  setup.qc.Trait('unit', setup.trait.height_giant),
+],
+)>>
+
+<<run new setup.UnitGroup(
+"raider_valeman",
+"raiderman",
+[ /* pools */
+  [setup.unitpool.subrace_werewolf_male, 0.3125],
+  [setup.unitpool.subrace_werewolf_female, 0.3125],
+  [setup.unitpool.subrace_humanvale_male, 0.15625],
+  [setup.unitpool.subrace_humanvale_female, 0.15625],
+  [setup.unitpool.subrace_neko_male, 0.03125],
+  [setup.unitpool.subrace_neko_female, 0.03125],
+],
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_nomad),
+  setup.qc.Trait('unit', setup.trait.height_giant),
+  setup.qc.TraitReplace('unit', setup.trait.per_independent),
+],
+)>>
+
+<<set _desc1 = "raided livestock in the <<lore region_vale>>">>
+
+<<run new setup.OpportunityTemplate(
+'the_abominable_valeman', /* key */
+"The Abominable Valeman", /* Title */
+"", /* Author */
+[ /* tags */
+  'vale',
+  'unit',
+],
+1, /* expiration weeks */
+'Opportunity_the_abominable_valeman',
+setup.qdiff.easy5, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_the_abominable_valeman_0',
+    'Opportunity_the_abominable_valeman_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.IfThenElse(
+      setup.qres.NoUnitWithTitle('quest_the_abominable_valeman_abominable_valeman', {
+      }),setup.qc.DoAll([
+      setup.qc.AddTitle('valeman', 'quest_the_abominable_valeman_abominable_valeman'),
+      setup.qc.Slaver('valeman', _desc1, true)
+      ], undefined),
+      setup.qc.Slaver('raiderman', _desc1, undefined)), 
+    ], 
+  ],
+  [
+    'Opportunity_the_abominable_valeman_1',
+    'Opportunity_the_abominable_valeman_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.IfThenElse(
+      setup.qres.NoUnitWithTitle('quest_the_abominable_valeman_abominable_valeman', {
+      }),setup.qc.DoAll([
+      setup.qc.AddTitle('valeman', 'quest_the_abominable_valeman_abominable_valeman'),
+      setup.qc.Slave('valeman', _desc1, undefined)
+      ], undefined),
+      setup.qc.Slave('raiderman', _desc1, undefined)), 
+    ],
+  ],
+  [
+    'Opportunity_the_abominable_valeman_2',
+    'Opportunity_the_abominable_valeman_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'valeman': 'abominable_valeman',
+  'raiderman': 'raider_valeman',
+  'fighter': [
+  ],
+  'hunter': [
+  ],
+  'tracker': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_the_abominable_valeman [nobr]
+
+<p>
+After the slavers depart the village, the snowfall eases up to barely a
+dusting, then stops entirely. Looking back at the mountains, <<rep
+$g.tracker>> tracker|notice a barely-visible gap in the rocks, potentially the den
+of whatever beast the slavers were actually supposed to be searching for.
+Curiously, the other tracks they encountered while tracking the bear seemed
+to be heading in this general direction as well.
+</p>
+
+<<set _abom = setup.getUnit({title:'quest_the_abominable_valeman_abominable_valeman'})>>
+
+<<if _abom>>
+
+<<set _vman = $g.raiderman>>
+
+<p>
+Recalling a past quest, <<they $g.tracker>> tracker|lead <<rep $g.fighter>> and
+<<rep $g.hunter>> up the mountainside, to the entrance of <<rep _abom>>'s old
+den. The entrance shows signs of recent use, with a set of absolutely
+humongous footprints leading to and from the entrance. <<Rep $g.tracker>> and
+<<rep $g.hunter>> share a concerned glance at each other, but <<rep
+$g.fighter>> <<uadv $g.fighter>> fighter|step ahead of them and into the dark.
+</p>
+<p>
+The amount of fresh detritis suggests that something, or someone has been
+here recently. So it isn't a total surprise when <<they $g.fighter>> fighter|stumble
+across a starved-looking, but unusually large
+<<if _vman.isHasTrait('race_wolfkin')>>
+werewolf,
+<<elseif _vman.isHasTrait('race_human')>>
+human, wrapped in furs,
+<<elseif _vman.isHasTrait('race_catkin')>>
+lynx-eared neko,
+<</if>>
+muttering in their sleep. <<Rep $g.hunter>> vaguely hunter|recall bumping into
+<<them _vman>> at the town's farmers market a couple days ago. Beside <<them
+_vman>> are the ashes of an old campfire, as well as several sheep tied up in
+the corner. It seems as though the new "Abominable Valeman" is just a <<urace
+_vman>> that has been rustling up peoples' livestock. Recalling the valeman's
+name to be <<name _vman>>, <<rep $g.hunter>> hunter|confer with the other slavers,
+and they decide to:
+</p>
+<<else>>
+<<set _vman = $g.valeman>>
+<p>
+On a hunch, <<they $g.tracker>> tracker|lead <<rep $g.fighter>> and <<rep
+$g.hunter>> up the mountainside, where there is indeed a cave. The entrance
+shows signs of recent use, with a set of absolutely humongous footprints
+leading to and from the entrance. <<Rep $g.tracker>> and <<rep $g.hunter>>
+share a concerned glance at each other, but <<rep $g.fighter>> <<uadv
+$g.fighter>> fighter|step ahead of them and into the dark.
+</p>
+<p>
+What <<they $g.fighter>> fighter|find is a surprise to everyone: an incredibly large
+<<if _vman.isHasTrait('race_wolfkin')>>
+werewolf,
+<<elseif _vman.isHasTrait('race_human')>>
+human, wrapped in furs,
+<<elseif _vman.isHasTrait('race_catkin')>>
+lynx-eared neko,
+<</if>>
+sleeping on the cave floor. Beside <<them _vman>> are the ashes of an old campfire, as well as a mound of sheep bones picked clean of meat, most likely the remains of the stolen livestock. It seems the "Abominable Valeman" was actually a <<urace _vman>> who raided these villages for food. Seeing <<rep _vman>> in a helpless position, the slavers decide to:
+</p>
+<</if>>
+
+
+:: Opportunity_the_abominable_valeman_0 [nobr]
+Recruit <<them _vman>>
+
+
+:: Opportunity_the_abominable_valeman_0_flavor [nobr]
+<p>
+Certainly, someone with this much expertise in raiding villages would be
+welcome in the fort. Stepping back out of the cave, <<rep $g.tracker>> tracker|dig
+out a hunk of cured meat rations that the slavers had just purchased from the
+village. <<Rep $g.hunter>> hunter|watch in quiet trepidation as the caveman <<rep _vman>>
+sniffs at the air and begins to awaken at the scent of food.
+</p>
+<p>
+Eying <<rep $g.tracker>> suspiciously, <<rep _vman>> is initially wary upon
+seeing intruders in <<their _vman>> home, but the offering of food is too
+good to pass up. The slavers sit in silence as <<rep _vman>> digs into
+<<their _vman>> meal. Once <<they _vman>> is finished, <<rep $g.tracker>>
+<<uadv $g.tracker>> tracker|explain that they want to invite <<them _vman>> to join
+<<rep $company.player>>. The negotiations are terse and unproductive until
+<<rep $g.tracker>> tracker|make a promise to pay for <<rep _vman>>'s food and board,
+at which point <<their _vman>> eyes light up and <<they _vman>> agrees without
+reservations.
+</p>
+
+
+:: Opportunity_the_abominable_valeman_1 [nobr]
+Enslave <<them _vman>>
+
+
+:: Opportunity_the_abominable_valeman_1_flavor [nobr]
+<p>
+Sizing up <<rep _vman>>'s monstrous frame, the slavers decide that <<they
+_vman>> would make an excellent slave. While <<they _vman>> is asleep, <<rep
+$g.fighter>> discreetly fighter|signal <<rep $g.hunter>> and <<rep $g.tracker>>
+over, and they quickly bind and gag <<them _vman>>. <<Rep _vman>> wakes up in
+a fury, but can do nothing but wriggle like an irate, oversized worm while
+<<rep $g.fighter>> fighter|haul <<their _vman>> struggling <<if
+_vman.isHasTrait('race_wolfkin')>>
+furry
+<<else>>
+fur-wrapped
+<</if>> body down the mountainside.
+</p>
+<p>
+<<Rep $g.fighter>> <<uadv $g.fighter>> fighter|complain about the smell of
+<<if _vman.isHasTrait('race_wolfkin')>>
+wet dog
+<<elseif _vman.isHasTrait('race_human')>>
+sweaty human
+<<elseif _vman.isHasTrait('race_catkin')>>
+unwashed cat fur
+<</if>> the whole way back to the fort.
+</p>
+
+
+:: Opportunity_the_abominable_valeman_2 [nobr]
+Turn <<them _vman>> in
+
+
+:: Opportunity_the_abominable_valeman_2_flavor [nobr]
+<p>
+The slavers come to a consensus that <<rep _vman>> is too much trouble to
+even try to keep around. <<Rep $g.hunter>> quietly hunter|lead <<rep $g.fighter>>
+and <<rep $g.tracker>> back out of the cave, where they make haste back to
+the <<if _vman.isHasTrait('race_wolfkin')>>
+human
+<<run setup.qc.Favor('humanvale', 300).apply($gQuest)>>
+<<elseif _vman.isHasTrait('race_human')>>
+werewolf
+<<run setup.qc.Favor('werewolf', 300).apply($gQuest)>>
+<<else>>
+<run setup.qc.Favor('humanvale', 150).apply($gQuest)>>
+<run setup.qc.Favor('werewolf', 150).apply($gQuest)>>
+<</if>> village and alert the townsfolk of the <<their _vman>> presence. Armed with this information, the townsfolk rapidly assemble a mob, storm the cave, and seize the caveman.
+</p>
+<p>
+The townsfolk completely forgive the slavers' earlier deception, and instead
+decide to butcher some sheep to hold a feast in their honor.
+</p>

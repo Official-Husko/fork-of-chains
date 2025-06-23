@@ -1,0 +1,40 @@
+:: EventSetup_stolen_flame [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'stolen_flame', /* key */
+"Stolen Flame", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+],
+'Event_stolen_flame',
+{ /* roles */
+},
+{ /* actors */
+  'lover': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.YourLover(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('future_assassin_progress', '2', -1),
+  setup.qc.QuestDirect('stolen_flame', {
+lover: "lover",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('future_assassin_progress', '1'),
+  setup.qres.VarNull('future_assassin_cooldown'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTag('future_assassin_parent')
+]),
+],
+0, /* Cooldown */
+setup.rarity.common,  /* Rarity */
+)>>
+
+:: Event_stolen_flame [nobr]
+<<include "Quest_stolen_flame">>

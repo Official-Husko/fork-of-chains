@@ -1,0 +1,64 @@
+{
+  "name": "darkofoc",
+  "version": "1.8.4",
+  "description": "Fort of Chains: a text-only NSFW slaver and slaves management game",
+  "homepage": "https://gitgud.io/darkofocdarko/fort-of-chains",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitgud.io/darkofocdarko/fort-of-chains.git"
+  },
+  "bugs": {
+    "url": "https://gitgud.io/darkofocdarko/fort-of-chains/-/issues"
+  },
+  "main": "./dist/index.html",
+  "config": {
+    "format": "sugarcube-2"
+  },
+  "scripts": {
+    "open": "open-cli dist/index.html",
+    "sanity": "sh deploy.sh sanity",
+    "dev": "vite dev",
+    "build": "vite build --mode=development",
+    "build-watch": "vite build --watch --mode=development",
+    "build-dist": "vite build --mode=production",
+    "buildjs": "SKIP_TWEE=1 vite build",
+    "buildtwee": "sh compile.sh debug",
+    "buildtwee:win": "compile.bat debug",
+    "build-testmode": "npm run buildjs && sh compile.sh debug '-t'",
+    "build-testmode:win": "npm run buildjs && compile.bat debug '-t'",
+    "precompile": "sh deploy.sh precompiled",
+    "deployfull": "sh deploy.sh deployfull",
+    "deployitch": "sh deploy.sh deployitch",
+    "set-version": "node dev/setVersion.js"
+  },
+  "keywords": [
+    "twine",
+    "tweego",
+    "twee"
+  ],
+  "author": "darkofoc and friends",
+  "license": "GPL-3.0-only",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "prismjs": "^1.29.0",
+    "solid-js": "^1.9.4",
+    "split.js": "^1.6.5",
+    "tippy.js": "^6.3.7"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.32",
+    "@types/mousetrap": "^1.6.15",
+    "@types/prismjs": "^1.26.5",
+    "@types/twine-sugarcube": "2.36.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.18.0",
+    "eslint-plugin-solid": "^0.14.5",
+    "fast-glob": "^3.3.3",
+    "open-cli": "^8.0.0",
+    "postcss-nesting": "^13.0.1",
+    "vite": "^6.0.7",
+    "vite-plugin-solid": "^2.11.0"
+  }
+}

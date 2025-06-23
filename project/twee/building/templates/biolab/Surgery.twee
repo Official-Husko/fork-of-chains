@@ -1,0 +1,56 @@
+:: InitBuildingSurgery [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'surgery',
+  tags: [],
+  width: 5,
+  height: 5,
+  door_column: 2,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "aid",
+      room_keys: [
+        'surgeryanus',
+        'surgeryballs',
+        'surgerybreast',
+        'surgerydick',
+        'surgeryvagina',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'surgery',
+  name: 'Surgery',
+  tags: ['biolab', 'unlocker', ],
+  description_passage: 'BuildingSurgery',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_HIGH_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('biolab'),
+      setup.qres.Building('veteranhall'),
+      setup.qres.HasItem(setup.item.water_technology),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_water_master]),
+    ],
+  ],
+  main_room_template_key: 'surgery',
+})>>
+
+
+:: BuildingSurgery [nobr]
+
+<p>
+Unlocks limited muscle and height growing and shrinking on yourself and your slavers.
+Can build further improvements to unlock more physical changes options.
+
+</p>
+

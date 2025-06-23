@@ -1,0 +1,145 @@
+:: EventSetup_a_high_class_brothel [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'a_high_class_brothel', /* key */
+"A High-Class Brothel", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_a_high_class_brothel',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_brothel_progress', '500', -1),
+  setup.qc.VarSet('quest_brothel_high_income', '400', -1),
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '116'),
+],
+53, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_a_high_class_brothel [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<<if _class >= 20>>
+  <<if $g.head.isHasDick()>>
+    <<questimage 'a_high_class_brothel_male_classy.jpg'>>
+  <<else>>
+    <<questimage 'a_high_class_brothel_female_classy.jpg'>>
+  <</if>>
+<<else>>
+  <<if $g.head.isHasDick()>>
+  <<else>>
+  <</if>>
+<</if>>
+
+<p>
+By now, <<attach _describe>> has become one of the main attractions in the <<lore location_npc>>.
+<<if _class >= 20>>
+The brothel has a reputation for being one of the classiest brothels around, and occasionally some neko or even visiting nobles can be seen enjoying the luxury inside.
+<<elseif _class <= -20>>
+As a den of debauchery, the brothel draws many criminals into the venue, and
+occasionally infamous mafia bosses can be seen visiting the venue with
+<<their $g.owner>> entourage.
+<<else>>
+The brothel caters to a wide variety of audience, and it is balanced properly between class and debauchery. Various people can occasionally be seen patroning the venue, from low nobles to white collar criminals.
+<</if>>
+The many <<if $g.head.isHasDick()>>manly<<else>>feminine<</if>> courtesans found within are very well-versed in their arts too.
+<<if _dom == 'sub'>>
+These courtesans specialize in being submissive little sluts, and would satisfy even the most demanding tasks their dominant customers would require.
+<<elseif _dom == 'dom'>>
+These <<if $g.head.isHasDick()>>muscular<</if>> courtesans specialize in dominance, and they can satisfy clients wishing for another dominant to guide the sex through, or even those secretly submissive clients who keeps fantasizing about being sexually abused.
+<<else>>
+These courtesans are trained in a variety of roles, be it as a submissive little slut or a dominant. Sex with them could go either way, which draws in a wide variety of customers.
+<</if>>
+</p>
+
+<p>
+The venue itself is a wonder. The entire complex looks like
+<<if _class >= 20>>
+a royal palace, with the receptions designed like a throne room, complete with a grand red carpet to welcome customers.
+<<elseif _class <= -20>>
+a demonic palace, with fiery chandeliers hanging in the receptions, powered by magic.
+<<else>>
+an exotic palace, with bamboo trees surrounding the reception hall, their growth accelerated by magic.
+<</if>>
+Various amenities can be found inside, be it a bar, private rooms for rent, and a full-blown sex dungeons for the kinkier customers.
+But the main attraction in the grand brothel palace complex has to be the newly-built
+<<if _attraction == 'gravity'>>
+Magic Gravity Room.
+With the help of the slave-turned-head-courtesan <<name $g.slave>>, who is quite adept at using magic, the various magical crystals scattered throughout the room can be activated, which would send a steady stream of wind upwards, cancelling gravity out. This allows your courtesans to engage in positions that would normally be impossible with their customers.
+<<if _sub == 'sub'>>
+The customers can enjoy the unmatched feeling of fucking a well-behaving submissive slut while floating in the air. When they climax, their produce will even float harmlessly, which can be used for some kinky <<ucum $unit.player>> play.
+<<elseif _dom == 'dom'>>
+The customers can enjoy the unmatched feeling of being fucked by the masterful dominant courtesans in the air. When your courtesan
+<<if $g.head.isHasDick()>>cums<<else>>climaxes<</if>>,
+their <<ucum $g.head>> would float harmlessly in the air, which can be used for some exciting <<ucum $g.head>> play as well.
+<<else>>
+The customers can enjoy the unmatched feeling of either being fucked or fucking a courtesan in mid-air. When either climax, their produce will even float harmlessly, and a kinky enough customer could use this for some rather un-traditional cum play.
+<</if>>
+<<else>>
+Magic Bondage Room.
+With the help of the slave-turned-head-courtesan <<name $g.slave>>, who is quite adept at using magic, the various magical crystals scattered affixed throughout the walls and equipments within the room can be activated. The room's apparatus would then come to live — the restraints can be made to float in mid-air, which can be used to
+<<if _dom == 'sub'>>
+restrain the submissive courtesans in whatever sexy pose their clients desire.
+<<elseif _dom == 'dom'>>
+restrain the more submissive clients in whatever sexy pose your dominant courtesans come up with.
+<<else>>
+force either your courtesan or the client in some fixed mid-air position.
+<</if>>
+But that's not all — the sex toys scattered throughout the room are enchanted too. When they are channeled with magic, the dildos, buttplug, and even the nipple clamps would start to vibrate and shock its wearer, which allows for even kinkier rough play inside.
+<</if>>
+</p>
+
+<p>
+<<Yourrep $g.owner>> owner|have been serving as the manager of the place for quite some time by now, and <<they $g.owner>> owner|is very familiar with the place and its worker. Several bouncers are always posted near the entrance to keep the venue safe. Your <<urace $g.slave>> former-slave <<name $g.slave>> now serves as the head courtesan, and <<their $g.slave>> slave training holds strong. On <<reps $g.owner>> command, <<they $g.slave>> would obediently serve customers or use <<their $g.slave>> magical prowess to activate the various enchantments within the facility. The former head-whore <<name $g.head>> has been promoted as the
+<<if _promotion == 'money'>>
+business manager, and <<they $g.head>> works diligently ensuring that the brothel's financials are always in the green. <<They $g.head>> has not completely forgotten <<their $g.head>> past life, and can occasionally be seen employing <<their $g.head>> seduction and charm to negotiate a better deal for the various necessities in your brothel.
+<<else>>
+customer relations officer, and <<they $g.head>> works diligently ensuring that the brothel's customers always leave satisfied. <<They $g.head>> has not completely forgotten <<their $g.head>> whoring skills neither, and can occasionally be found giving a complimentary blowjob or two to the customers.
+<</if>>
+</p>
+
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+With all these upgrades, <<attach _describe>> is as complete as it could ever be.
+Nobody thought it was possible, but you and <<yourrep $g.owner>> have transformed a once decrepit brothel into the envy of the city,
+<<if _class >= 20>>
+a high-class brothel fit for a royal.
+<<elseif _class <= -20>>
+a paradise of debauchery.
+<<else>>
+an exotic sex complex.
+<</if>>
+It is making quite a bit of money every week now, and as long as <<yourrep $g.owner>> remains staffed as the brothel's manager, the revenue will keep on coming. Time to sit back and enjoy the results of your hard work!
+</p>

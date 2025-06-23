@@ -1,0 +1,139 @@
+:: QuestSetup_desert_purifiers_patron2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'desert_purifiers_patron2', /* key */
+'Desert Purifiers: Patron', /* Title */
+'darko', /* Author */
+[ 'desert', 'trait'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'repentant1': setup.qu.repentant,
+'repentant2': setup.qu.repentant,
+'repentant3': setup.qu.repentant, },
+{ /* actors */
+'purifier': 'subrace_humandesert', },
+[ /* costs */
+setup.qc.MoneyNormal(-1), ],
+'Quest_desert_purifiers_patron2',
+setup.qdiff.easy41, /* difficulty */
+[ /* outcomes */
+[
+'Quest_desert_purifiers_patron2Crit',
+[
+
+setup.qc.Purify('repentant1'),
+setup.qc.Purify('repentant1'),
+setup.qc.Purify('repentant2'),
+setup.qc.Purify('repentant2'),
+setup.qc.Purify('repentant3'),
+setup.qc.Purify('repentant3'),
+setup.qc.Purify('repentant1'),
+setup.qc.Purify('repentant2'),
+setup.qc.Purify('repentant3'), ],
+], [
+'Quest_desert_purifiers_patron2Crit',
+[
+
+setup.qc.Purify('repentant1'),
+setup.qc.Purify('repentant2'),
+setup.qc.Purify('repentant3'),
+setup.qc.Purify('repentant1'), ],
+], [
+'Quest_desert_purifiers_patron2Failure',
+[
+setup.qc.MoneyNormal(1), ],
+], [
+'Quest_desert_purifiers_patron2Failure',
+[
+setup.qc.Corrupt('repentant1'),
+setup.qc.Corrupt('repentant2'),
+setup.qc.Corrupt('repentant3'),
+setup.qc.Corrupt('repentant1'),
+setup.qc.Corrupt('repentant2'),
+setup.qc.Corrupt('repentant3'), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_desert_purifiers_patron2 [nobr]
+
+<<include 'Opportunity_desert_purifiers'>>
+
+<p>
+You have chosen to patron the purifiers and cleanse your slavers.
+</p>
+
+
+:: Quest_desert_purifiers_patron2Crit [nobr]
+<p>
+The purifier had settled camp near an oasis and provided services to
+surrounding settlements.
+<<if $gOutcome == 'crit'>>
+
+Your slavers arrived at the compound and managed to
+negotiate a very good amount of purifier work for the amount of money they
+bring.
+
+<<else>>
+Your slavers arrived at the compound, but somehow
+the purifiers were able to discern that your slavers were well,
+slavers and hence bad people.
+Still, they were low on funds and after much negotiations they agreed
+to do some work for the amount of money your slavers brought with them.
+<</if>>
+
+<<Rep $g.purifier>> chanted all the required magic and within moments corruptions were purified
+from your slavers, leaving their bodies
+<<if $gOutcome == 'crit'>>
+devoid of any corruption.
+<<else>>
+more pure.
+<</if>>
+<<if $gOutcome == 'crit'>>
+Your slavers had small talks with the rest of <<their $g.purifier>> camp
+followers before heading back home feeling renewed with positive energy.
+<<else>>
+Your slavers were
+not welcome in the camp and were forced to leave once the ritual was over, but
+they got their money's worth.
+<</if>>
+</p>
+
+
+:: Quest_desert_purifiers_patron2Failure [nobr]
+
+<p>
+The purifier had settled camp near an oasis and provided services to
+surrounding settlements.
+Your slavers arrived at the compound and somehow,
+the purifiers discerned that your slavers are well,
+slavers, which made them bad people.
+<<if $gOutcome == 'failure'>>
+The lead purifier were so stubborn about this fact that your slavers
+were not at all accepted anywhere near the camp.
+They contemplated assaulting
+the camp, but without enough preparation, assaulting such a well-defended camp
+was going to be suicide.
+<<else>>
+Still, they were low on funds and after much negotiations they agreed
+to do some work for the amount of money your slavers brought.
+But during the purification ritual, otherwordly tendrils suddenly appeared out of nowhere and
+ravaged the bodies of everyone in the purifier's compound, including your slavers.
+Soon, the place was turned into a place of debauchery with demons and raiders
+walking and owning around the place, while your slavers were continuously molested by
+the incoming tendrils. Your slavers saw what became of the purifier:
+crawling next to <<their $g.purifier>> new master: a
+demon who decided that the purifier would make a neat pet.
+After such night of debauchery, morning finally came and your slavers, after gaining their
+consciousness back, hurried back and escaped the compound before anything
+worse happened to them. Still, the experience had changed them
+and they are now more corrupt than ever.
+<</if>>
+</p>

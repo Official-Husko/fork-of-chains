@@ -1,0 +1,78 @@
+:: OpportunitySetup_gorgon_cave [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'gorgon_cave', /* key */
+"Hydra Cave", /* Title */
+"darko", /* Author */
+[ 'forest', 'item', 'unit', 'rare',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_gorgon_cave',
+setup.qdiff.hard36, /* difficulty */
+[ /* options */
+[
+'Opportunity_gorgon_cave_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('gorgon_cave__raid'), ],
+], [
+'Opportunity_gorgon_cave_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('gorgon_cave__recruit'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.epic],
+],
+[ /* restrictions to generate */
+setup.qres.NoQuest('gorgon_cave__recruit'),
+setup.qres.NoQuest('gorgon_cave__raid'),
+setup.qres.OpportunityUnique(), ],
+)>>
+
+:: Opportunity_gorgon_cave [nobr]
+
+<p>
+The domain of <<lore magic_earth>> grants their wielder control over
+growth, including the ability to accelerate the growth of plants and control
+over the earth. An exceptionally gifted wielder can use the magic to form tentacle aberrations,
+be it from clay or from vines.
+</p>
+
+<p>
+There are rumors of a particularly powerful wizard living in the <<lore region_forest>>
+whose mastery over the earth domain is so vast that they are able to conjure multiple tentacled guardians to
+watch over their lair. It is believed that those guardians makes the lair extremely
+dangerous and risky to invade,
+even though the lair contains the wizard's personal harem and many arcane and
+mystical treasures.
+</p>
+
+<p>
+Your scouts have recently located on the wizard's lairs, which gives you several options to choose from.
+The simplest option is to raid the caverns — according to the rumors, the wizard stores multiple
+powerful artifacts there, all ripe for stealing.
+There is also another option: you can
+attempt to contact the wizard instead, and recruit them into your company.
+Having a slaver with such proficiency of earth magic will surely prove
+very useful in a slaving company such as yours.
+</p>
+
+
+:: Opportunity_gorgon_cave_0 [nobr]
+Raid
+
+
+:: Opportunity_gorgon_cave_1 [nobr]
+Recruit
+

@@ -1,0 +1,196 @@
+:: QuestSetup_household_destroyer_rescue [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"household_destroyer_rescue2",
+"Subby Bandit",
+'vale_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+  setup.qc.TraitReplace('unit', setup.trait.per_submissive),
+  setup.qc.TraitReplace('unit', setup.trait.training_obedience_basic),
+  setup.qc.Trait('unit', setup.trait.per_sexaddict),
+  setup.qc.Trait('unit', setup.trait.per_dreamy),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.muscle_verystrong, setup.trait.face_hideous, setup.trait.height_giant], 1, true, false),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'household_destroyer_rescue', /* key */
+"Household Destroyer: Rescue", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'special',
+  'unknown',
+],
+4, /* weeks */
+999, /* expiration weeks */
+{ /* roles */
+  'fighter1': [ setup.qu.fighter_vale, 1],
+  'fighter2': [ setup.qu.fighter_vale, 1],
+  'support': [ setup.qu.support, 1],
+},
+{ /* actors */
+  'dom': [
+  ],
+  'bandit': 'household_destroyer_rescue2',
+},
+[ /* costs */
+],
+'Quest_household_destroyer_rescue',
+setup.qdiff.harder45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_household_destroyer_rescueCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('bandit', "a|was a former bandit leader who abducted the wrong drow and turned into a submissive slut", undefined),
+    ],
+  ],
+  [
+    'Quest_household_destroyer_rescueCrit',
+    [
+      setup.qc.Opportunity('household_destroyer_decision', {
+drow: "dom",
+}),
+    ],
+  ],
+  [
+    'Quest_household_destroyer_rescueFailure',
+    [
+      setup.qc.Injury('fighter1', 2),
+      setup.qc.Injury('fighter2', 3),
+      setup.qc.Injury('support', 2),
+    ],
+  ],
+  [
+    'Quest_household_destroyer_rescueFailure',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.MissingUnit('fighter1'),
+setup.qc.MissingUnit('fighter2')
+]),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_household_destroyer_rescue [nobr]
+<p>
+    <<set _u = setup.getUnit({duty: 'rescuer'})>>
+    <<if !_u>>
+        <<set _u = setup.getAnySlaver()>>
+    <</if>>
+    With a few bribes, a couple of booze, and errant whispers here and there, <<yourrep _u>> has tracked <<rep $g.dom>> down to a certain bandit camp on the vales. It's a rather notorious one too, led by infamously headstrong and
+    <<if $g.bandit.isHasTrait('face_hideous')>>
+        frighteningly intimidating
+    <<elseif $g.bandit.isHasTrait('muscle_verystrong')>>
+        hulkingly muscular
+    <<elseif $g.bandit.isHasTrait('height_giant')>>
+        gigantically tall
+    <</if>>
+    <<urace $g.dom>>.
+    You could try to rescue <<rep $g.dom>>, but raiding the camp will surely be much harder than the average bandit camp in the <<lore region_vale>>.
+</p>
+
+
+
+
+:: Quest_household_destroyer_rescueCrit [nobr]
+<p>
+    The camp was well fortified, and experienced bandit scouts were stationed on the lookouts. Fortunately, your slavers were even more experienced, and they knew just the right blindspots and trenches to stay hidden from view. They found a crack on the wall — a stroke of luck, and went inside with <<uweapon $g.fighter1>> in <<uhand $g.fighter1>>.
+</p>
+
+<p>
+    Once all three slavers were inside, they commenced the assault. <<Rep $g.fighter1>> <<uadv $g.fighter1>> took out the scouts by the alarm, and <<rep $g.fighter2>> took out all the other bandits in the vicinity unaware.
+    But before long, your slavers were discovered, and an all out fight ensued.
+
+    <<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'per_brave'})>>
+    <<if _unit>>
+        <<Rep _unit>> bravely charged into the foray, opening the fight.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'per_gregarious'})>>
+    <<if _unit>>
+        <<Rep _unit>> led the slavers with inspiring battle cries.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'muscle_verystrong'})>>
+    <<if _unit>>
+        <<Yourrep _unit>> downed multiple bandits in one stroke with a blow so powerful, no doubt thanks to their very strong muscles.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'face_scary'})>>
+    <<if _unit>>
+        Some of the bandits decided to flee the moment they saw <<reps _unit>> intimidating face.
+    <</if>>
+
+    The fight dragged on, but with <<reps $g.fighter1>> and <<reps $g.fighter2>> fighting skills, as well as <<reps $g.support>> supportive skills, your slavers endured and eventually managed to emerge victorious from the fight.
+    <<if $gOutcome == 'success'>>
+        Even the infamous bandit leader was given no choice but to flee and abandon <<their $g.bandit>> camp.
+    <<else>>
+        Strangely enough, the infamous bandit leader was nowhere to be seen during the fight...
+    <</if>>
+</p>
+
+<p>
+    Once the field is clear, your slavers made their way into the slave pits. They walked through the rows and rows of empty cages until they finally spotted <<rep $g.dom>>, blindfolded and naked, shivering from the cold of the vales.
+    Your slavers had a mind to enslave the drow, but decided that the wrath of the entire drow community is not worth the risk, and get to rescuing the drow.
+</p>
+
+<p>
+    The drow's infamy were already well known among your slavers, and your slavers hardened themselves to not be "subbified" by the drow's look as they were about to undo the blindfold.
+    But the drow's gaze did not have any such effect — it is the gaze of a hungry, scared drow, and any domineering effect it used to have were gone. Your slavers double checked that it was the right drow, and indeed it was. Perhaps having being dominated by others has mellowed the drow, and ended the curse.
+</p>
+
+<<if $gOutcome == 'critical'>>
+    <p>
+        In another cage, your slavers were surprised to find the bandit leader <<themself $g.bandit>> staying put within, slave collar around <<their $g.bandit>> neck. The cage was not locked, so the <<urace $g.bandit>> must had voluntarily went in.
+        There were many questions in your slavers' (not so smart) heads, but it was all answered when the former leader turned <<their $g.bandit>> gaze to your slavers'. The face was that of a slave: completely submissive and obedient. Perhaps <<they $g.bandit>> <<themself $g.bandit>> fell victim to the drow, and would be the last victim of the drow's dominance aura. Your slavers put a leash into the collar, and the obedient former bandit leader crawled outside of <<their $g.bandit>> cage, happy to have found masters to serve.
+    </p>
+<</if>>
+
+<p>
+    The drow quickly recovered on the way back, and <<they $g.dom>> returned to <<their $g.dom>> more confident, and perhaps dominant self. Still, <<their $g.dom>> gaze were not as domineering as before — the trauma of being kidnapped has a permanent effect on the formerly overly dominant drow...
+</p>
+
+
+
+
+
+:: Quest_household_destroyer_rescueFailure [nobr]
+<p>
+    Unfortunately, the bandits were experienced and no stranger to raids on their camp. Your slavers sloppy attempt at sneaking inside were discovered quickly by the bandit scouts, and your slavers were injured on the ensuing retreat.
+    <<if $gOutcome == 'failure'>>
+        Thankfully, all of them returned home.
+    <<else>>
+        <<if $gQuest.getSeed() % 2 == 0>>
+            <<set $g.kidnap = $g.fighter1>>
+        <<elseif $gQuest.getSeed() % 2 == 1>>
+            <<set $g.kidnap = $g.fighter2>>
+        <</if>>
+        <<Rep $g.kidnap>> fell to an arrow, and did not manage to retreat to safety with your other slavers.
+        <<uneedrescue $g.kidnap>>, perhaps after the bandits has sold the poor <<urace $g.kidnap>> to some lucky owner.
+    <</if>>
+</p>
+
+<p>
+    You still need to decide if you want to keep trying to rescue <<rep $g.dom>>, however.
+</p>

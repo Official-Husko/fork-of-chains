@@ -1,0 +1,363 @@
+:: QuestSetup_a_merchant_s_revenge_embarrass_a_rival_kidnap [nobr quest]
+
+
+<<run new setup.Title(
+"quest_merchant_s_plaything_0", /* key */
+"Merchant\'s Plaything", /* name */
+"A pawn in a Lucgate\'s Merchant\'s quest for revenge.", /* description */
+"a|was a noble in the city of Lucgate", /* unit text */
+1500, /* slave value */
+{ /* skill additives */
+},
+{
+ is_negative: false,
+},
+)
+>>
+<<run new setup.UnitGroup(
+"a_merchant_s_revenge_embarrass_a_rival_recycled_white_wine0",
+"Residents of the City of Lucgate: All gender",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+  setup.qc.AddTitle('unit', 'quest_merchant_s_plaything_0'),
+],
+)>>
+
+
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Roper', /* name */
+[
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_nimble,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1.5,
+  slaving: 1.5,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge_embarrass_a_rival_kidnap', /* key */
+"A Merchant\'s Revenge: Embarrass a Rival - Kidnap", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'rare',
+  'money',
+  'ire',
+],
+2, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'escort': [ setup.qu.highescort, 1],
+  'slaver': [ _criteriaslaver, 1],
+  'lookout': [ setup.qu.spotter, 1],
+},
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+  'artist': 'a_merchant_s_revenge_embarrass_a_rival_potion_of_lust0',
+  'target': 'a_merchant_s_revenge_embarrass_a_rival_recycled_white_wine0',
+},
+[ /* costs */
+],
+'Quest_a_merchant_s_revenge_embarrass_a_rival_kidnap',
+setup.qdiff.harder44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_kidnapCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Item(setup.item.f_tile_good, 1),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_kidnapCrit',
+    [
+      setup.qc.VarSet('mlangmerchantprincequest', '10', -1),
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Slave('target', "a|was a noble of Lucgate, captured by you as part of a revenge plot", undefined),
+      setup.qc.SlaveMarker('target'),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_kidnapFailure',
+    [
+      setup.qc.VarSet('mlang_merchantrevenge_caravancount', '0', -1),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_kidnapFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Injury('escort', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('mlang_merchantrevenge_caravancount', '0', -1),
+],
+)>>
+
+:: Quest_a_merchant_s_revenge_embarrass_a_rival_kidnap [nobr]
+/* Set target relation to rival */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<set _role = "close friend">>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _role = "business associate">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _role = "lackey">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _role = "favoured underling">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _role = "enforcer">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _role = "spymaster">>
+<</if>>
+
+<p>
+    After a lot of time and effort, <<name $g.merchant>> has uncovered the identity of <<their $g.merchant>> rival behind the attacks on <<their $g.merchant>> caravans, and has found a window of opportunity to strike back—and has asked to enlist your aid in doing so.
+</p>
+<p>
+    You have decided to kidnap someone close to <<name $g.merchant>>'s rival and take them as a slave.
+</p>
+<p>
+    <<name $g.merchant>> has pointed you to a wealthy, guarded compound in the cloud district of Lucgate.
+    <<dialogue $g.merchant>>
+        <<name $g.target>> will be alone with only a light guard presence due to...reasons. <<They $g.target>> is our primary target's _role and have a penchant for high class prostitutes.
+    <</dialogue>>
+    <<name $g.merchant>> has intercepted <<name $g.target>>'s most recent 'order' from <<their $g.target>> favourite brothel, and you have the opportunity to send a slaver at the appointed day and time instead. They'd then need to find an opportunity to let the rest of the team into the manor to subdue the <<woman $g.target>>. Of course, getting in is easy compared to getting out—with a slave past the guards.
+</p>
+<p>
+    This is a rare opportunity, and it may be a while before another one presents itself. Of course, if you or your slavers are identified, you will raise the ire of the Merchants of Tor. Best not be identified if at all possible.
+</p>
+
+
+:: Quest_a_merchant_s_revenge_embarrass_a_rival_kidnapCrit [nobr]
+/* Set target relation to rival */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<if $g.target.isHasTrait('gender_male')>>
+        <<set _role = "distant nephew">>
+    <<else>>
+        <<set _role = "distant neice">>
+    <</if>>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _role = "distant cousin">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _role = "lackey">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _role = "favoured underling">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _role = "enforcer">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _role = "spymaster">>
+<</if>>
+
+<<if $g.escort.isYou() or $g.slaver.isYou() or $g.lookout.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.escort.isYou()>>
+        <<run _notyou.push($g.escort)>>
+    <</if>>
+    <<if !$g.slaver.isYou()>>
+        <<run _notyou.push($g.slaver)>>
+    <</if>>
+    <<if !$g.lookout.isYou()>>
+        <<run _notyou.push($g.lookout)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    <<if $g.escort.isYou()>>
+        /* PC is on the quest and is the escort */
+        <p>
+            Walking up the path between the leering guards dressed in suggestive, yet tasteful clothing was
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                enough to make your skin crawl,
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                really too conservative for your tastes,
+            <<else>>
+                slightly chilly in the cool night air,
+            <</if>>
+            but it did the trick, and you soon found yourself having an extravagant but light meal while <<name $g.target>> spoke, in great detail, of the very kinky things <<they $g.target>> wanted you to do to <<them $g.target>>. In a sense, it's a pity you can't take <<them $g.target>> as a slave. <<They $g.target>>'d make you a lot of money in
+            <<if $fort.player.isHasBuilding("recreationwing")>>
+                your recreation wing.
+            <<else>>
+                a recreation wing.
+            <</if>>
+            Pulling a strip of thick black fabric from your belt you covered <<name $g.target>>'s eyes.<br>
+            "Are we taking your clothes off first?" you asked.
+            <<name $g.target>> shook <<their $g.target>> head rapidly. "No, I want to feel it soaking into me."<br>
+            <<if $unit.player.isHasTrait('gender_male')>>
+                Shrugging, you pulled your <<udick $unit.player>> out of your trousers and slipped your tip between <<their $g.target>> lips.<br>
+                "Suck." <br>
+                While <<their $g.target>> lips were
+            <<else>>
+                Shrugging, you lifted the hem of your dress, and brought your pussy lips to <<their $g.target>> mouth.<br>
+                "Lick."<br>
+                While <<their $g.target>> tongue was
+            <</if>>
+            busy you brought out a strip of black fabric and tied it across <<their $g.target>>'s eyes, eliciting a moan from <<name $g.target>>.<br>
+            "Is
+            <<if $g.target.isHasTrait('gender_male')>>
+                Daddy
+            <<else>>
+                Baby
+            <</if>>
+            hungry for me?" you asked as you
+            <<if $unit.player.isHasTrait('gender_male')>>
+                undid your trousers and smacked <<their $g.target>> face with your cock.<br>
+                "Don't tease me," <<they $g.target>> whined, and you obliged, shoving in until
+                <<if $unit.player.isHasTrait('race_wolfkin')>>
+                    <<their $g.target>> nose was buried in your fur.
+                <<elseif $unit.player.isHasTrait('race_catkin')>>
+                    <<their $g.target>> nose was buried in your fur.
+                <<elseif $unit.player.isHasTrait('race_lizardkin')>>
+                    <<their $g.target>> nose was pushed up against your scales.
+                <<else>>
+                    <<their $g.target>> nose was buried in your pubes.
+                <</if>>
+            <<else>>
+                <<their $g.target>> mouth was pressed up against your pussy.
+            <</if>>
+            <br>
+            Grabbing <<their $g.target>> wrists you pin them behind <<their $g.target>> head and then slip on the padded cuffs.<br>
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                "Um, j-just your mouth, no hands, got it?" You grit your teeth and turn your head away as <<they $g.target>> moans <<their $g.target>> assent.<br>
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                "Show me what you can do with your mouth babe. And no playing with yourself, got it?" Throwing your head back you sigh in contentment as <<their $g.target>> mouth worships your
+                <<if $g.target.isHasTrait('gender_male')>>
+                    cock.
+                <<else>>
+                    pussy.
+                <</if>>
+            <<else>>
+                "No touching yourself now," you say teasingly. "Don't want you to blow too soon, now do we?"
+            <</if>>
+        </p>
+        <p>
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                You stayed in place as long as you needed to, distracting <<name $g.target>> and blocking <<their $g.target>> view while <<rep _o1>> and <<rep _o2>> entered in quietly through the unlocked door.
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                You happily
+                <<if $g.target.isHasTrait('gender_male')>>
+                    fucked <<their $g.target>> mouth and throat as
+                <<else>>
+                    ground against <<their $g.target>> face as
+                <</if>>
+                <<rep _o1>> and <<rep _o2>> picked the lock on the couryard door and stole quietly into the room.
+            <<else>>
+                You
+                <<if $g.target.isHasTrait('gender_male')>>
+                    fucked <<their $g.target>> mouth and throat as
+                <<else>>
+                    ground against <<their $g.target>> face as
+                <</if>>
+                <<rep _o1>> and <<rep _o2>> picked the lock on the couryard door and stole quietly into the room.
+            <</if>>
+            Being blindfolded and cuffed, <<name $g.target>> was easy for <<name $g.slaver>> to subdue, and you soon had <<them $g.target>> bundled up in a rug for <<rep _o1>> and <<rep _o2>> to take out the back while you dressed and left the same way you entered, out past the guards and with
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                nowhere near enough gold for that experience in a pouch at your belt.
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                more gold than a prostitute would get paid for a job like this. But honestly, you'd have done it just for the sex. Assuming you'd had any real sex. Maybe you'll pay your new slave a visit in your dungeons.
+            <<else>>
+                more gold than a prostitute would get paid for a job like this.
+            <</if>>
+        </p>
+
+    <<else>>
+        /* PC is on the quest and is not the escort */
+        <p>
+            You loitered in the shadows while <<name $g.escort>> headed up the path to the door, passing two guards at the gate who eyed <<them $g.target>> up and down but let <<them $g.escort>> pass unobstructed. It was easy enough to sneak over the wall. Then it was just a matter of staying out of sight while <<name $g.escort>> flirted with, blindfolded and cuffed <<their $g.target>>'s hands behind <<their $g.target>> head. When <<rep $g.lookout>> saw <<name $g.escort>> had
+            <<if $g.escort.isHasTrait('gender_male')>>
+                stuffed <<name $g.target>>'s mouth with his cock,
+            <<else>>
+                wrapped her legs around <<name $g.target>>'s head,
+            <</if>>
+            <<they $g.lookout>> picked the lock on the garden door to gain access to the building.
+            Being blindfolded and cuffed, <<name $g.target>> was easy for <<name $g.slaver>> to subdue, and you soon had <<them $g.target>> bundled up in a rug for transport back to your fort. You waited with bated breath while <<name $g.escort>> dressed and left the same way <<they $g.escort>> entered, out past the guards and with the gold for <<their $g.escort>> services weighing down <<their $g.escort>> belt.
+        </p>
+        <p>
+            Getting your squirming cargo over the back fence and back out through the city was nerve wracking, but you'd planned for a wagonload of cheap rugs to be delivered to the fort, for sale on to the vales.
+            <<if $gOutcome == 'crit'>>
+                One thicker and much plusher rug hidden down the bottom of the pile drew no attention as you headed back to the fort.
+            <<elseif $gOutcome == 'success'>>
+                One borrowed and slightly stained rug would be overlooked in the eventual sale, and you were able to breathe easy once the city walls were out of sight behind you.
+            <</if>>
+        </p>
+    <</if>>
+
+<<else>>
+    /* PC is not on the quest */
+    <p>
+        <<rep $g.slaver>> and <<Rep $g.lookout>> scaled the compound wall and hid in the garden while <<name $g.escort>> headed up the path to the door, passing two guards at the gate who eyed <<them $g.target>> up and down but let <<them $g.escort>> pass unobstructed. It was easy enough to sneak over the wall. Then it was just a matter of staying out of sight while <<name $g.escort>> flirted with, blindfolded and cuffed <<their $g.target>>'s hands behind <<their $g.target>> head. When <<rep $g.lookout>> saw <<name $g.escort>> had
+        <<if $g.escort.isHasTrait('gender_male')>>
+            stuffed <<name $g.target>>'s mouth with his cock,
+        <<else>>
+            wrapped her legs around <<name $g.target>>'s head,
+        <</if>>
+        <<they $g.lookout>> picked the lock on the garden door to gain access to the building.
+        Being blindfolded and cuffed, <<name $g.target>> was easy for <<name $g.slaver>> to subdue, and your slavers soon had <<them $g.target>> bundled up in a rug for transport back to your fort. <<name $g.lookout>> and <<name $g.slaver>> waited with bated breath while <<name $g.escort>> dressed and left the same way <<they $g.escort>> entered, out past the guards and with the gold for <<their $g.escort>> services weighing down <<their $g.escort>> belt.
+    </p>
+    <p>
+        Getting their squirming cargo over the back fence and back out through the city was nerve wracking, but <<name $g.lookout>> had planned for a wagonload of cheap rugs to be delivered to the fort, for sale on to the vales.
+        <<if $gOutcome == 'crit'>>
+            One thicker and much plusher rug hidden down the bottom of the pile drew no attention as you headed back to the fort.
+        <<elseif $gOutcome == 'success'>>
+            One borrowed and slightly stained rug would be overlooked in the eventual sale, and they were able to breathe easy once the city walls were out of sight behind them.
+        <</if>>
+    </p>
+<</if>>
+
+
+
+:: Quest_a_merchant_s_revenge_embarrass_a_rival_kidnapFailure [nobr]
+<p>
+    Dressed in expensive but suggestive clothing, <<rep $g.escort>> walked nervously toward the gated compound.<br>
+    "Hey, where do you think you're going, slut?" the guard on the right asked, leering at <<them $g.escort>><br>
+    "Uh, I'm here to see <<name $g.target>>. <<They $g.target>>'s expecting me."<br>
+    The guards eyed <<rep $g.escort>> up and down carefully. "<<They $g.target>>'s expecting a
+    <<if $g.escort.isHasTrait('gender_male')>>
+        big breasted whore, not you pretty boy.
+    <<else>>
+        big dicked stud, not you little girl.
+    <</if>>
+    So why don't you come over her and spread your legs for me and my mate here?"<br>
+    <<if $gOutcome == 'failure'>>
+        The guards grabbed <<rep $g.escort>>, but <<rep $g.slaver>> came to <<their $g.escort>> defense and the team legged it from the manse. At least everyone escaped without injury.
+    <<elseif $gOutcome == 'disaster'>>
+        The guards grabbed <<rep $g.escort>>, but <<rep $g.slaver>> came to <<their $g.escort>> defense but the guards had got a number of blows in first, and unfortunately, <<rep $g.escort>> escort|is going to need a couple of weeks to recover from <<their $g.escort>> injuries.
+    <</if>>
+</p>
+
+
+

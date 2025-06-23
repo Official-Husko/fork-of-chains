@@ -1,0 +1,193 @@
+
+:: EventSetup_a_merchant_s_revenge_an_unfortunate_report [nobr event]
+
+
+
+
+<<run new setup.Event(
+'a_merchant_s_revenge_an_unfortunate_report', /* key */
+"A Merchant\'s Revenge: An Unfortunate Report", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'fort',
+],
+'Event_a_merchant_s_revenge_an_unfortunate_report',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+},
+[ /* outcomes */
+  setup.qc.Return('merchant'),
+  setup.qc.VarSet('mlang_merchantrevenge_caravancount', '0', -1),
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_a_merchant_s_revenge_an_unfortunate_report [nobr]
+/* Variable Notes
+mlang_merchantrevenge_questrival 1 = Player is aware of the rival. Will receive jobs from both
+mlang_merchantrevenge_questrival 5 = Player has decided not to take jobs from rival
+*/
+
+<<dialogue $g.merchant>>
+    You said this was urgent? How urgent, exactly?
+<</dialogue>>
+<<questimage "prince_of_cups.jpg">>
+
+/*Set Player Drink*/
+<<if $unit.player.isHasAnyTraitExact(['bg_farmer','bg_mercenary','bg_pirate','bg_seaman', 'bg_soldier', 'bg_thug', 'bg_unemployed', 'bg_wildman', 'bg_woodsman'])>>
+    <<set _pdrink = 'tankard of mead'>>
+<<elseif $unit.player.isHasAnyTraitExact(['bg_monk', 'bg_priest'])>>
+    <<set _pdrink = 'cup of tea'>>
+<<else>>
+    <<set _pdrink = 'glass of wine'>>
+<</if>>
+
+When<<name $g.merchant>> finally arrives at <<lore location_princeofcups>> <<they $g.merchant>> appear harried, and gesture curtly to the wait staff, who hurriedly bring over the usual amphora of wine for <<them $g.merchant>> and another _pdrink for you.<br>
+"All right," <<they $g.merchant>> says. "What's the emergency?"<br>
+<<if $unit.player.isHasTrait('per_slow')>>
+    "I raided one of your caravans."
+<<elseif $unit.player.isHasTrait('per_smart')>>
+    "I received a note asking me to attack one of your caravans—and I think it was meant to look like a note from you."
+<<else>>
+    "I got a job attacking a caravan—one of your caravans."
+<</if>>
+<br>
+<<Their $g.merchant>> face stills. "And you did it?" <<they $g.merchant>> asks.<br>
+"I didn't know it was yours," you say defensively. "Actually I still don't, but I think it was, right?"<br>
+You slide the documents over the table towards <<them $g.merchant>>, who takes them and glances down, <<their $g.merchant>> face blanching.<br>
+<<if $unit.player.isHasTrait('per_smart')>>
+    "And you say you got a note that looked like one of mine?"<br>
+    "Yes. Nice paper, expensive ink, unsigned. Said time was of the essence. The hand was a bit different, but that didn't mean it wasn't you."
+<<else>>
+    "Did someone tell you about my caravan specifically? It's not your normal thing, even with pay."<br>
+    You nod. "I got a note. Looked like yours."
+<</if>>
+"Do you bring it?"<br>
+Shoving a slice of fig into your mouth, you reach into your bag and pull out a folded sheet of parchment and slide it across the table. Unfolding it, <<name $g.merchant>> examines the message, <<their $g.merchant>> jaw clenching as their eyes dart over it. Turning it over, they examine the map.<br>
+<<if $unit.player.isHasTrait('per_smart')>>
+    "All right," <<they $g.merchant>> says, putting the note down. "If it's not in my hand, then it's not from me, got it?"
+<<else>>
+    "All right," <<they $g.merchant>> say with a sigh, placing the parchment down in front of you and turning it around so you can read the text. Taking out another sheet and lifting out a pen and inkwell <<they $g.merchant>> writes out the message again. "You see how that's not my writing?" <<they $g.merchant>> asks.
+    <<if $unit.player.isHasTrait('per_slow')>>
+        It takes a while for <<them $g.merchant>> to explain it to you, but an hour or so later you feel you're going to be able to recognise any more fake letters that get sent to you.
+    <<else>>
+        Laid out side by side as they are, the differences are obvious.<br>
+        "Yeah, I see it," you say, nodding. "I'll just keep an old note handy so I'll be able to see it if it happens again."<br>
+        "When it happens again," <<name $g.merchant>> says, taking a sip of <<their $g.merchant>> wine. "It'll happen again."
+    <</if>>
+    <br>
+<</if>>
+<br>
+Folding up the note you brought, <<name $g.merchant>> slips it into a jacket pocket. <br>
+"I'll take this," <<they $g.merchant>> says. "If they got sloppy, maybe I can use it to find them. You're going to get more of these," <<they $g.merchant>> adds seriously. "Can I trust that you won't take those?"
+
+<<choose>>
+<<opt "Of course not (Truth)">>
+
+    "Of course not," you say easily. "I don't see them wining and dining me, after all."<br>
+    <<name $g.merchant>> smiles. "I suppose not," <<they $g.merchant>> says, slipping out of the booth and rising to <<their $g.merchant>> feet. "I'll keep sending work your way. And if I do figure out who's behind this, you may find yourself with some lucrative merchandise to sell."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "You mean, you'll let me take them as sl—"<br>
+        "New indentured servants," <<name $g.merchant>> says, interrupting you.<br>
+        "Oh. Right."
+    <<else>>
+        "I look forward to meeting my new employees," you say, raising your _pdrink towards <<name $g.merchant>>.
+    <</if>>
+    <<run setup.qc.VarSet('mlang_merchantrevenge_questrival', '5', -1).apply($gQuest)>>
+
+<<opt "Of course not (Lie)">>
+
+    "Of course not," you say easily. "I don't see them wining and dining me, after all."<br>
+    <<name $g.merchant>> smiles. "I suppose not," <<they $g.merchant>> says, slipping out of the booth and rising to <<their $g.merchant>> feet. "I'll keep sending work your way. And if I do figure out who's behind this, you may find yourself with some lucrative merchandise to sell."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "You mean, you'll let me take them as sl—"<br>
+        "New indentured servants," <<name $g.merchant>> says, interrupting you.<br>
+        "Oh. Right."
+    <<else>>
+        "I look forward to meeting my new employees," you say, raising your _pdrink towards <<name $g.merchant>>.
+    <</if>>
+    <<run setup.qc.VarSet('mlang_merchantrevenge_questrival', '1', -1).apply($gQuest)>>
+
+<<optif $unit.player.isHasAnyTraitExact(["per_cautious", "per_frugal", "per_honorable"])>>
+<<opt "It's not in my interest to work against you">>
+
+    "You've already hired me on a longer term basis," you say with a shrug. "I'm not throwing that away for a small bribe."<br>
+    <<name $g.merchant>> eyes you carefully. "What about a big one?"<br>
+    <<if $unit.player.isHasTrait('per_honorable')>>
+        "It would have to be exceptionally large for me to go back on my word."
+    <<else>>
+        You sip your _pdrink and grin. "I don't know. They haven't offered me one yet."
+    <</if>>
+    <br>
+    "I see. Well. I guess I'd better get a move on then. If I do figure out who's behind this, you may find yourself with some lucrative merchandise to sell."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "You mean, you'll let me take them as sl—"<br>
+        "New indentured servants," <<name $g.merchant>> says, interrupting you.<br>
+        "Oh. Right."
+    <<else>>
+        "I look forward to meeting my new employees," you say, raising your _pdrink towards <<name $g.merchant>>.
+    <</if>>
+    <<run setup.qc.VarSet('mlang_merchantrevenge_questrival', '5', -1).apply($gQuest)>>
+
+<<optif $unit.player.isHasAnyTraitExact(["per_evil", "per_lavish"])>>
+<<opt "What would you pay me not to?">>
+    "What would you pay me not to?" you ask with a grin.<br>
+    "I wouldn't," <<name $g.merchant>> says cooly. "But I wouldn't send any further work your way if you did."<br>
+    "Is that a threat?" you ask.<br>
+    "No more than what you asked," <<name $g.merchant>> says with a shrug. "Consider it a statement of intent." Nodding <<their $g.merchant>> head to you, <<they $g.merchant>> slips out of the booth and leaves. Moments later, there is a cough at your elbow as the waiter presents you with the bill.
+    <<run setup.qc.Money(-50).apply($gQuest)>>
+    <<run setup.qc.VarSet('mlangmerchantprinceflirt', '0', -1).apply($gQuest)>>
+    <<run setup.qc.VarSet('mlang_merchantrevenge_questrival', '1', -1).apply($gQuest)>>
+
+<<opt "I'll make the decision that's best for my company">>
+    "I'll have to make the decision that's best for my company."<br>
+    <<name $g.merchant>> nods. "I can respect that. Let me put it this way then. Assuming you consider both myself and my rivals equal threats, especially in the absence of solid information telling you otherwise, perhaps ask which of us is willing to be seen with you in public and is therefore going to be more useful as contact down the line if things go well."<br>
+    "That's a very one sided argument," you note.<br>
+    "And if you were to meet the person who sent you the fake note, maybe they'd be able to make their pitch do you. Assuming they cared to."<br>
+    "And you're convinced they wouldn't?"
+    <<name $g.merchant>> takes a long drink from their cup. "There's a certain type of merchant in this city who likes to pretend that people who aren't like them don't exist. Or at least, they don't exist other than to serve the 'real' people. Them. I can't tell you for certain that this person is one of those. But then how they've interacted with you so far, I'd be surprised if they weren't."<br>
+    Draining <<their $g.merchant>> cup, <<they $g.merchant>> slip out of the booth and gesture to a waiter, handing him some gold to cover the bill. "Do right by me and I'll do right by you," <<they $g.merchant>> say. "And if I find out who is behind all this mess, you may find yourself with some lucrative merchandise to sell."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "You mean, you'll let me take them as sl—"<br>
+        "New indentured servants," <<name $g.merchant>> says, interrupting you.<br>
+        "Oh. Right."
+    <<else>>
+        "I look forward to meeting my new employees," you say, raising your _pdrink towards <<name $g.merchant>>.
+    <</if>>
+    <<run setup.qc.VarSet('mlang_merchantrevenge_questrival', '1', -1).apply($gQuest)>>
+
+<<optif setup.qres.VarLte("mlangmerchantprinceflirt", "0").isOk($gQuest)>>
+<<opt "And completely give up my chances of getting into your pants? Never.">>
+
+    <<name $g.merchant>> quirks an eyebrow. "And is that what's going to save my caravans? The fact that you think you're going to get into my trousers?"<br>
+    "Of course not. Mostly it's fact that you're paying me. And you treat me like a person. The fact that you're hot is just a bonus. As for actually getting into your pants, a <<girl $unit.player>> can dream, right?"<br>
+    A brief smile flashes across <<name $g.merchant>>'s face. "Dreams are wonderful things," <<they $g.merchant>> says. "And who knows? Sometimes they even come true." Winking at you, <<they $g.merchant>> slips out of the booth and heads out the door. Moments later, there is a cough at your elbow as the waiter presents you with the bill.
+    <<run setup.qc.Money(-50).apply($gQuest)>>
+    <<run setup.qc.VarSet('mlangmerchantprinceflirt', '1', -1).apply($gQuest)>>
+    <<run setup.qc.VarSet('mlang_merchantrevenge_questrival', '5', -1).apply($gQuest)>>
+
+<<optif setup.qres.VarGte("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+<<opt "Just when we have a good thing going? Why would I mess that up?">>
+    "Money, usually," <<they $g.merchant>> says seriously. "Or the promise of power. Those are the usual reasons."<br>
+    "Well, I'm not a usual person."<br>
+    <<name $g.merchant>> smiles. "That you aren't. And if we weren't in public I'd show you exactly how much I value that. I'll see you soon. And in the meantime, I'll keep sending work your way. If I find out who is behind all this mess, you may find yourself with some lucrative merchandise to sell."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "You mean, you'll let me take them as sl—"<br>
+        "New indentured servants," <<name $g.merchant>> says, interrupting you.<br>
+        "Oh. Right."
+    <<else>>
+        "I look forward to meeting my new employees," you say, raising your _pdrink towards <<name $g.merchant>>.
+    <</if>>
+    <<run setup.qc.VarSet('mlang_merchantrevenge_questrival', '5', -1).apply($gQuest)>>
+<</choose>>
+
+

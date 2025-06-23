@@ -1,0 +1,41 @@
+:: InitBuildingForge [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'forge',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'forge',
+  name: 'Forge',
+  tags: ['storage', 'unlocker',],
+  description_passage: 'BuildingForge',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('armory')],
+  ],
+  on_build: [
+    []
+  ],
+  main_room_template_key: 'forge',
+})>>
+
+
+:: BuildingForge [nobr]
+
+<p>
+An area with anvil and source of flame where blacksmiths and tailor can practice their craft.
+Unlocks buying non-sexual related equipments.
+Can build improvements which attracts vendors that makes more goods available to purchase.
+</p>

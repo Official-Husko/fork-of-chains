@@ -1,0 +1,71 @@
+
+.ToggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 2.6em;
+  height: 1.5em;
+
+  --toggleswitch-color: #35a;
+  &.ToggleSwitch-green {
+    --toggleswitch-color: #7be600;
+  }
+
+  & > input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+
+    &:checked + span {
+      background-color: var(--toggleswitch-color);
+
+      &:before {
+        transform: translateX(1.1em);
+      }
+    }
+
+    &:focus:not(:disabled) + span {
+      box-shadow: 0 0 1px var(--toggleswitch-color);
+    }
+
+    &:not(:disabled) + span {
+      cursor: pointer;
+    }
+
+    &:disabled + span:before {
+      opacity: 0.5;
+    }
+
+    &:disabled:not(:checked) + span {
+      background-color: #555;
+      &:before {
+        background-color: gray;
+      }
+    }
+  }
+
+  & > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+
+    border-radius: 34px;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 1.2em;
+      width: 1.2em;
+      left: 0.15em;
+      bottom: 0.15em;
+      background-color: white;
+      transition: .4s;
+
+      border-radius: 50%;
+    }
+  }
+
+}

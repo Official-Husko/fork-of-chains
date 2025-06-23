@@ -1,0 +1,47 @@
+:: EventSetup_out_of_character [nobr event]
+
+<<run new setup.Event(
+'out_of_character', /* key */
+"Out of Character", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_out_of_character',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.HasTag('quest_doppelganged'),
+  ],
+  'you': [
+    setup.qres.You(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_doppelganger_progress', '2', -1),
+  setup.qc.SetCooldownEvent('room_mate', 5),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_doppelganger_progress', '1'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_out_of_character [nobr]
+<p>
+In the recent days, <<yourrep $g.slaver>> occasionally act very strange around you and your slavers. When you greeted <<therace $g.slaver>>, for example, <<they $g.slaver>> instead just run away from you. Your other slavers often found <<therace $g.slaver>> skulking around in your fort too, seemingly trying to avoid attention although having the exact opposite effect. But on other occasions, <<therace $g.slaver>> is perfectly normal, and <<they $g.slaver>> can still often be found <<uhobbyverb $g.slaver>> in <<their $g.slaver>> free time.
+</p>
+
+<p>
+But maybe you're just imagining things, since you've been working a little too hard, and maybe just need a couple of weeks of rest.
+Still, you also recall hearing strange noises coming from somewhere in your fort during night,
+but perhaps it is again due to you being too tired...
+</p>

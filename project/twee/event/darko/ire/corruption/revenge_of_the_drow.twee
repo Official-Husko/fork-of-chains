@@ -1,0 +1,70 @@
+:: EventSetup_revenge_of_the_drow [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'revenge_of_the_drow', /* key */
+"Revenge of the Drow", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_revenge_of_the_drow',
+{ /* roles */
+},
+{ /* actors */
+  'drow': 'subrace_drow',
+},
+[ /* outcomes */
+setup.qc.Ire('drow', -20),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('drow', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_revenge_of_the_drow [nobr]
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Your workplace is usually quiet, save for the occassional paperwork sounds,
+the people working, or a slave screaming in agony.
+Okay, maybe it wasn't that quiet, but it usually let you work in peace.
+</p>
+
+<p>
+But throughout the good part of today, a low rumbling noise was heard throughout your fort.
+Initially, you thought it just the earthquake, until <<rep _u>> points out that
+earthquakes does not last for six hours straight. Not to mention that some of your slavers
+were getting transformed. Yup, dark magic is at hand, and it is corrupting your slavers somehow.
+You order an immediate investigation -- turning the entire fort upside down until <<rep _u>> happens
+to go to the basement.
+There, someone has setup a magical circle that most certainly is glowing strange purplish.
+<<if $unit.player.isHasTrait('magic_dark')>>
+You're quite proficient in dark magic, and you know straight away that these are
+corruption magic circles.
+<<else>>
+You don't know any sort of dark magic, but you know it is not a good magic.
+<</if>>
+You grab the nearest desk and throw it into the magic circle, and the magic visibly fizzles out
+as the inscriptions were destroyed by your masterful throw.
+</p>
+
+<p>
+After making sure the corruption magic no longer works, you surveyed the damage as well as the circle
+itself.
+<<if $unit.player.isHasTrait('per_slow')>>
+You're completely unsure who might have drawn such a... difficult to read (for you especially)
+circle, but you suspect it might be those drows you've angered recently...
+<<else>>
+The writings are definitely (according to your memory at least) elven, and some inscriptions looks
+slightly odd -- drow language perhaps?
+Given how you may have angered them recently, this could just be their way at retaliating against your company...
+<</if>>
+</p>

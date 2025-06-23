@@ -1,0 +1,195 @@
+:: EventSetup_like_me [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'like_me', /* key */
+"Like Me", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_like_me',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.training_none, setup.trait.training_obedience_basic], true),
+    setup.qres.FriendshipWithYouAtMost(-200),
+    setup.qres.BedchamberOtherSlave(setup.qres.And([
+setup.qres.Available(),
+setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true)
+])),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_like_me [nobr]
+<<set _o = $g.slave.getBedchamberOtherSlave()>>
+
+<<if !_o>>
+/* Should not happen, but nice for testing: */
+<<set _o = setup.getAnySlaver()>>
+<</if>>
+
+<p>
+<<Yourrep $g.slave>> approaches you, looking frightened.
+<<They $g.slave>> takes one hesitant step in and stops, wavering,
+<<their $g.slave>> <<uhands $g.slave>> balled into fists and <<their $g.slave>> lower lip caught behind <<their $g.slave>> <<uteeth $g.slave>>.
+<<Therace $g.slave>> slave|is getting used to <<their $g.slave>> place as chattel, but <<they $g.slave>> slave|is not sure of <<themself $g.slave>> yet.
+After a few moments, it becomes obvious that <<they $g.slave>>'s lost whatever mental momentum propelled <<their $g.slave>> to approach you, and can't muster the courage to back out, either. You rescue <<them $g.slave>> by <<uadv $unit.player>> but firmly ordering <<them $g.slave>> to tell you why <<they $g.slave>>'s coming to you. After two false starts, <<they $g.slave>>
+<<if !$g.slave.isCanTalk()>>
+uses shaky <<uhands $g.slave>> to ask you to fuck <<them $g.slave>>.
+<<else>>
+"P-please fuck me, <<Master $unit.player>>," <<they $g.slave>> chokes out.
+<</if>>
+To go by <<their $g.slave>> behavior, <<if $g.slave.isHasTail()>>not to mention <<their $g.slave>> completely stiff tail<</if>> the likelihood that <<they $g.slave>>'s actually eager to <<if !$unit.player.isHasDick()>>eat pussy<<else>>take a dick<</if>>, never mind yours, is vanishingly small.
+</p>
+
+<<choose>>
+
+<<opt "Fuck <<them $g.slave>>">>
+
+<p>
+<<They $g.slave>> asked for it, and <<they $g.slave>>'ll get it.
+<<include "EventLikeMeFuckThem">>
+</p>
+
+<<opt "Rape <<them $g.slave>>">>
+
+<p>
+<<They $g.slave>>'ll get more than <<they $g.slave>> asked for.
+<<include "EventLikeMeRapeThem">>
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<<opt "Get the truth out of <<them $g.slave>>">>
+
+<p>
+You ask <<them $g.slave>> why <<they $g.slave>>'s really here,
+with <<if $unit.player.isHasTrait('per_sly')>>a sinister tone<<else>>devastating directness and in a tone<</if>> that will brook no disobedience.
+<<They $g.slave>> quails, <<their $g.slave>> shoulders slumping as <<they $g.slave>> hugs <<themself $g.slave>>
+and <<their $g.slave>> knees turning inward as <<they $g.slave>> cringes, the perfect picture of the standard <<urace $g.slave>> fear response.
+It seems <<they $g.slave>> thought you would't notice <<their $g.slave>> insincerity.
+<<They $g.slave>> swallows nervously and makes no response, but then you <<if $g.slave.isCanSee()>>allow impatience to cloud your brow<<else>>cough with impatience<</if>> and <<they $g.slave>> hurriedly explains <<themself $g.slave>>.
+</p>
+
+<p>
+<<if !$g.slave.isCanTalk()>>
+
+<<They $g.slave>> uses sign language to communicate that <<they $g.slave>> asked your other personal slave <<rep _o>> what <<they $g.slave>> could do to improve <<their $g.slave>> life, and that <<name _o>> told <<them $g.slave>> to do <<their $g.slave>> best to win your favor.
+<<They $g.slave>> asked them <<them _o>> to do that, and <<name _o>> told <<their $g.slave>> to ask you to fuck <<them $g.slave>>.
+
+<<else>>
+
+<<dialogue $g.slave>>
+<<Master $unit.player>>, I, um, asked <<rep _o>> what I could do to, you know, do better here.
+<<They _o>> said to g-get you to like me. A-and when I asked <<them _o>> how to do that, <<name _o>> said t-to ask you to f-fuck me.
+<</dialogue>>
+
+<</if>>
+</p>
+
+<p>
+Then <<they $g.slave>> bites <<their $g.slave>> lip and <<if $g.slave.isCanSee()>>watches you<<else>>listens<</if>> anxiously.
+</p>
+
+<<choose>>
+<<opt "<<name _o>> isn't' wrong">>
+
+<p>
+You get to your feet, letting <<them $g.slave>> know that <<name _o>> wasn't 'wrong. <<Their $g.slave>> relief is palpable.
+<<include "EventLikeMeFuckThem">>
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 25).apply($gQuest)>>
+
+<<opt "Now rape <<them $g.slave>>">>
+
+<p>
+You get to your feet, letting <<them $g.slave>> know that <<name _o>> wasn't 'wrong. <<Their $g.slave>> relief is palpable, but <<they $g.slave>>'s getting ahead of <<themself $g.slave>>.
+<<include "EventLikeMeRapeThem">>
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -25).apply($gQuest)>>
+
+<<opt "It's not that simple">>
+
+<p>
+You tell <<them $g.slave>> <<uadv $unit.player>> that it isn't that simple, but that if <<they $g.slave>> obeys orders and does <<their $g.slave>> best, you will like <<them $g.slave>> just fine, and <<they $g.slave>> will do well as your personal slave.
+Relief floods through <<them $g.slave>>.
+<<if !$g.slave.isCanTalk()>>
+<<They $g.slave>> gestures <<their $g.slave>> thanks, and an apology for being silly.
+<<else>>
+"Thank you, <<Master $unit.player>> and I'm sorry for being silly," <<they $g.slave>> apologizes.
+<</if>>
+You dismiss <<them $g.slave>>, and <<they $g.slave>> goes, a strangely respectful look on <<their $g.slave>> face. <<They $g.slave>>'s no more confident of <<their $g.slave>> ability to find safety and stability here with you than <<they $g.slave>> slave|was before, but <<they $g.slave>> seems to like that it apparently isn't as simple as
+<<if $unit.player.isHasDick()>>taking your cock up <<their $g.slave>> butt<<if $unit.player.isHasVagina()>> or <</if>><</if>><<if $unit.player.isHasVagina()>>eating you out<</if>>.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<</choose>>
+
+<</choose>>
+
+
+:: EventLikeMeFuckThem [nobr]
+
+You get to your feet and snap your fingers, pointing
+<<if !$unit.player.isHasDick()>>
+
+at the <<utile $g.slave>> in front of you<<if !$g.slave.isCanSee()>> along with a commanding "floor"<</if>>.
+<<They $g.slave>> hurries over, but hesitates for an instant,
+unsure of what to do next. You help <<them $g.slave>> understand by grabbing <<them $g.slave>> on either side of <<their $g.slave>> <<uneck $g.slave>> and shoving <<them $g.slave>> down to kneel at your <<ufeet $unit.player>> with <<their $g.slave>> face level with your cunt. One of your <<uhands $unit.player>> shifts behind <<their $g.slave>> head and tilts it back as you step forward, grinding against <<their $g.slave>> <<umouth $g.slave>>. <<They $g.slave>> struggles involuntarily, but then perceptibly recollects <<themself $g.slave>>, relaxes, and starts to eat you out. Whatever internal turmoil <<they $g.slave>>'s working through, you don't care, and neither does your pussy. When you climax and release <<them $g.slave>>, <<they $g.slave>> stumbles off, looking oddly proud of <<themself $g.slave>>. It seems <<they $g.slave>> got something out of that: a confidence boost, at least.
+
+<<else>>
+
+at the <<uslaverbed $g.slave>><<if !$g.slave.isCanSee()>> along with a commanding "bed"<</if>>.
+<<They $g.slave>> hurries over and kneels,
+<<their $g.slave>> rear pointing at you, but hesitates for an instant, unsure of what to do next. You help <<them $g.slave>> understand by shoving <<them $g.slave>> down so <<their $g.slave>> collarbone is resting on the back of the <<uslaverbed $g.slave>>
+and <<their $g.slave>> ass is at just the right height.
+You <<if $g.slave.isHasTail()>>life <<their $g.slave>> <<utail $g.slave>> and <</if>> fuck <<if $g.slave.isHasVagina()>><<their $g.slave>> pussy and then <<their $g.slave>> ass in quick succession, plundering <<their $g.slave>> holes without much regard for <<their $g.slave>> pleasure. <<They $g.slave>> gasps and bucks at all the right parts, and even manages to moan almost authentically when you blow your load up <<their $g.slave>> butt<<else>><<their $g.slave>> ass hard, without cruelty but without much concern for <<their $g.slave>> pleasure, either. <<They $g.slave>> takes it obediently, and does <<their $g.slave>> best to act like <<they $g.slave>>'s enjoying being sodomized<</if>>. <<They $g.slave>> stumbles off to wash, looking oddly proud of <<themself $g.slave>>. It seems <<they $g.slave>> got something out of that: a confidence boost, at least.
+
+<</if>>
+
+:: EventLikeMeRapeThem [nobr]
+
+You get to your feet and snap your fingers, pointing
+
+<<if !$unit.player.isHasDick()>>
+
+at the <<utile $g.slave>> in front of you<<if !$g.slave.isCanSee()>> along with a commanding "floor"<</if>>. <<They $g.slave>> hurries over, but hesitates for an instant, unsure of what to do next. You help <<them $g.slave>> understand by <<uadv $unit.player>> slapping <<them $g.slave>>, and when <<they $g.slave>> instinctively cringes away from the blow, poking the back of one of <<their $g.slave>> knees with your <<ufoot $unit.player>>. <<They $g.slave>> collapses like a doll with its strings cut<<if $g.slave.isFemale()>>, already crying<</if>>.
+You seize <<their $g.slave>> head in both <<uhands $unit.player>> and ride <<their $g.slave>> sobbing <<umouth $g.slave>>. If <<they $g.slave>> thought that rape required a dick, <<they $g.slave>> slave|was wrong. If <<they $g.slave>> thought that you needed a strap-on to rape <<them $g.slave>>, <<they $g.slave>> slave|was wrong. Your fingers form claws, holding <<their $g.slave>> head in a terrifying grip as you enjoy the not unfamiliar sensation of a slave weeping into your cunt as you grind it against <<their $g.slave>> crying face.
+
+<<else>>
+
+at the <<uslaverbed $g.slave>><<if !$g.slave.isCanSee()>> along with a commanding "bed"<</if>>. <<They $g.slave>> hurries over and kneels,
+<<their $g.slave>> rear pointing at you, but hesitates for an instant, unsure of what to do next.
+You help <<them $g.slave>> understand by <<if $g.slave.isHasTail()>> raising <<their $g.slave>> <<utail $g.slave>>, before <</if>> jabbing a thumb into one of <<their $g.slave>> kidneys, forcing <<their $g.slave>> back to arch in involuntary response, and then grinding <<their $g.slave>> face into the couch cushions.
+<<if $g.slave.isHasVagina()>>
+<<Their $g.slave>> cunt isn't all that wet, and <<they $g.slave>> has cause to regret this, first when you fuck it without mercy, and then when you switch your barely-lubricated dick to <<their $g.slave>> anus.
+<<else>>
+You spit on <<their $g.slave>> asshole and then give <<them $g.slave>> some anal foreplay, if slapping your dick against <<their $g.slave>> anus twice before shoving it inside <<them $g.slave>> counts as anal foreplay.
+<</if>> <<They $g.slave>> tries to be brave and relax, but those are contradictory goals and <<they $g.slave>> manages neither as you assrape <<them $g.slave>> into <<if $g.slave.isFemale()>>inelegant, tearful<<else>>inelegant, desperate<</if>> begging for you to take your dick out of <<their $g.slave>> butt, because it hurts. It isn't the first time you've heard that<<if $unit.player.isHasTrait('join_senior')>>, or the hundredth<</if>>.
+<</if>>
+
+When you're done, you discard <<them $g.slave>> like the personal <<urace $g.slave>> sex toy <<they $g.slave>> is, and go outside to do some work.
+<<They $g.slave>> stumbles off, looking fearful but strangely complacent, as though <<they $g.slave>>'s accepted this to an extent.

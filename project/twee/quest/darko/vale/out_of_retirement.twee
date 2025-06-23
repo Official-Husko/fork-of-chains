@@ -1,0 +1,209 @@
+:: QuestSetup_out_of_retirement [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"out_of_retirement0",
+"Vale Bandit",
+'vale_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+],
+)>>
+
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+  setup.trait.per_brave,
+  setup.trait.per_loyal,
+  setup.trait.per_honorable,
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'out_of_retirement', /* key */
+"Out of Retirement", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'veteran',
+  'special',
+  'unknown',
+],
+2, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'you': _criteriayou,
+  'healer': [ setup.qu.healer, 1],
+  'tank': [ setup.qu.tank, 1],
+},
+{ /* actors */
+  'ex': [
+    setup.qres.Job(setup.job.retired),
+  ],
+  'bandit': 'out_of_retirement0',
+},
+[ /* costs */
+],
+'Quest_out_of_retirement',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_out_of_retirementCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.OneRandomSeed([
+setup.qc.Blessing('you', 1, 'blessing_life8', undefined),
+setup.qc.BoonizeRandom('you', 25),
+setup.qc.Favor('humanvale', 125)
+]),
+    ],
+  ],
+  [
+    'Quest_out_of_retirementCrit',
+    [
+      setup.qc.Slave('bandit', "a|was a vale raider who kidnapped the wrong person", undefined),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_out_of_retirementCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 500),
+    ],
+  ],
+  [
+    'Quest_out_of_retirementCrit',
+    [
+      setup.qc.Injury('you', 5),
+      setup.qc.Injury('healer', 3),
+      setup.qc.Injury('tank', 5),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+[ /* expiration outcomes */
+  setup.qc.AllUnitSatisfyDo([setup.qres.You()],
+[setup.qc.TraumatizeRandom('unit', 5)],
+),
+  setup.qc.SetCooldownQuest(null, 500),
+
+],
+)>>
+
+:: Quest_out_of_retirement [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+<<Rep $g.ex>>, who used to be a slaver, had informed you that <<they $g.ex>> was planning to visit your fort, to catch up news with you.
+<<They $g.ex>> was supposed to arrive by two weeks ago, however, and there are still no signs of <<therace $g.ex>> up until today.
+</p>
+
+<p>
+<<Yourrep _u>> has tracked the errant <<urace $g.ex>> into a certain bandit encampment on the <<lore region_vale>>. You could try to save your ex slaver, should you want to. Fortunately, the fortifications look weak and the bandits look incompetent, so it won't be a challenge at all. Furthermore, knowing <<rep $g.ex>>, you just know that the <<uadjgood $g.ex>> would be able to free <<themself $g.ex>> eventually, even without your help.
+Still, <<they $g.ex>> ex|was a former comrade, and would you leave <<them $g.ex>> be just like that?
+</p>
+
+
+
+
+
+
+:: Quest_out_of_retirementCrit [nobr]
+<<if $gOutcome == 'success' || $gOutcome == 'crit'>>
+<p>
+As expected, the inexperienced bandits were no match for yours as well as <<reps $g.healer>> and <<reps $g.tank>> prowess.
+In fact, the moment the bandits saw
+<<if $g.tank.isHasTrait('muscle_verystrong')>>
+<<reps $g.tank>> hulking figure,
+<<elseif $g.tank.isHasTrait('height_giant')>>
+<<reps $g.tank>> hulking figure,
+<<elseif $g.tank.isHasTrait('face_scary')>>
+<<reps $g.tank>> terrifying face,
+<<elseif $g.tank.isHasTrait('per_brave')>>
+<<rep $g.tank>> charging bravely alone,
+<<elseif $g.tank.isHasTrait('eq_veryvaluable')>>
+<<reps $g.tank>> valuable gear,
+<<else>>
+<<rep $g.tank>>,
+<</if>>
+most of the bandits already flee in terror, knowing that <<they $g.tank>> brought the name of <<name $company.player>> with <<them $g.tank>>.
+With the bandits routed, you found your ex-slaver in the dungeons, already almost free of <<their $g.ex>> binds, but grateful for your assistance nonetheless.
+</p>
+<<else>>
+<p>
+In some strange and unexpected twist, the bandits were far stronger than you anticipated.
+<<if $gOutcome == 'disaster'>>
+The three of you suffered some injuries during the fight.
+<</if>>
+When the battle seemingly about to turn for the worse,
+<<yourrep $g.ex>> suddenly appeared, seemingly having freed <<themself $g.ex>> from <<their $g.ex>> bondage somehow.
+Distracted by <<reps $g.ex>> sudden appearance, you and your slavers seized the opportunity to rout the bandit away.
+</p>
+<</if>>
+
+<<if $g.ex.isRetired()>>
+<p>
+You escorted <<rep $g.ex>> back to your fort, and you catch up with <<therace $g.ex>> along the way.
+<<They $g.ex>> ex|is working as
+<<= setup.Article($g.ex.getLiving().getName())>> now,
+and <<they $g.ex>> ex|spend <<their $g.ex>> days
+<<= $g.ex.getLiving().repBusiness($g.ex)>>.
+<<They $g.ex>> <<uadv $g.ex>> asked about the current state of affairs of your fort, how many new recruits, how much bigger the fort is, and so on, seemingly quite
+<<if $g.ex.isHasTrait('per_humble')>>
+humbled
+<<else>>
+proud
+<</if>>
+by your company's accomplishments.
+The time was spent away with the two of you catching up with each other, and before any of you know it, you've already arrived back at your fort.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Once back at your fort <<rep $g.ex>> suddenly remembered something and struggled to get something out of <<their $g.ex>> pockets.
+It's
+<<if $gQuest.getSeed() % 3 == 0>>
+Charm of Life, which could protect you from dangers.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+Charm of Competence, which should boost your skills for a while.
+<<elseif $gQuest.getSeed() % 3 == 2>>
+Charm of Attraction, which could make you popular.
+<</if>>
+You thank <<therace $g.ex>> for the thoughtful gift, and <<they $g.ex>>
+<<if $g.ex.isHasTrait('per_humble')>>
+blushed a little.
+<<elseif $g.ex.isHasTrait('per_proud')>>
+beamed proudly at <<their $g.ex>> choice of gift.
+<<else>>
+gave you a thumbs up.
+<</if>>
+</p>
+<</if>>
+
+<p>
+Before leaving, <<they $g.ex>> invited you to come over to <<their $g.ex>> <<= $g.ex.getLiving().getLocation()>> sometime. Perhaps you can consider doing so once it's your turn to retire.
+</p>
+<</if>>
+

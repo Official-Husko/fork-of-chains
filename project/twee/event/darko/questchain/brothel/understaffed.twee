@@ -1,0 +1,169 @@
+:: EventSetup_understaffed [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'understaffed', /* key */
+"Understaffed", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_understaffed',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.IfThenElse(
+setup.qres.Actor('head', setup.qres.AllTraits([setup.trait.gender_male], true)),
+setup.qc.DoAll([
+setup.qc.SlaveOrderFlex(
+'New Employee for your Brothel', /* name */
+'player', /* company */
+50, /* expires in */
+500, /* base price */
+500, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.skill_entertain,
+setup.trait.bg_courtesan,
+setup.trait.bg_whore,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[ /* disaster traits */
+setup.trait.anus_gape,
+setup.trait.vagina_gape,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_chaste,
+setup.trait.magic_dark_master,
+setup.trait.magic_dark,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AllTraits([setup.trait.gender_male], true),
+setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.HideAll([
+setup.qc.VarSet('quest_brothel_progress', '20', -1),
+setup.qc.VarSet('quest_brothel_wait', '4', -1)
+], "Increase your brothel\'s profits"),
+],
+[ /* unfulfilled outcomes */
+],
+)
+], undefined),
+setup.qc.DoAll([
+setup.qc.SlaveOrderFlex(
+'New Employee for your Brothel', /* name */
+'player', /* company */
+50, /* expires in */
+500, /* base price */
+500, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.skill_entertain,
+setup.trait.bg_courtesan,
+setup.trait.bg_whore,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[ /* disaster traits */
+setup.trait.anus_gape,
+setup.trait.vagina_gape,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_chaste,
+setup.trait.magic_dark_master,
+setup.trait.magic_dark,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AllTraits([setup.trait.gender_female], true),
+setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.HideAll([
+setup.qc.VarSet('quest_brothel_progress', '20', -1),
+setup.qc.VarSet('quest_brothel_wait', '4', -1)
+], "Increase your brothel\'s profits"),
+],
+[ /* unfulfilled outcomes */
+],
+)
+], undefined)),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_brothel_progress', '12'),
+  setup.qres.VarNull('quest_brothel_wait'),
+],
+53, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_understaffed [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+It's still very little, but <<attach _describe>> is starting to make some profit
+now. The various dockworkers and other low-class workers have started to
+flock to your little whorehouse. The number of customer is steadily growing,
+and in fact, it's starting to get somewhat unwieldy.
+</p>
+
+<p>
+One the whores in the place, <<name $g.head>>, (the one you recalled
+being particularly diligent last time), had asked the manager of the place,
+<<yourrep $g.owner>>, to provide more <<uhands $unit.player>> on deck. That is, it might finally be
+time to hire more whores into the place to help attend to the increasing
+demand. A problem with hiring new whores is that you'd need to pay them, so
+as a slaving company you are in a unique position and have a different option
+at <<uhand $unit.player>>: "hire" a new whore from among your obedient slaves instead. Whoever
+slave you choose will be "freed" to work there, but <<they $g.head>> needs to be already trained
+well enough so that even once <<they $g.head>> becomes freed, <<they $g.head>>'ll still be your slave at
+heart.
+</p>
+
+<p>
+You might not profit off the slave immediately, but it'll increase the brothel's profit little by little!
+</p>

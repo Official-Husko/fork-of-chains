@@ -1,0 +1,40 @@
+:: InitUnitGroups [nobr]
+
+<<set setup.unitgroup = {}>>
+
+/* Location Based */
+<<include InitUnitGroupAll>>
+<<include InitUnitGroupVale>>
+<<include InitUnitGroupForest>>
+<<include InitUnitGroupCity>>
+<<include InitUnitGroupDeep>>
+<<include InitUnitGroupDesert>>
+<<include InitUnitGroupSea>>
+
+/* Job Based */
+<<include InitUnitGroupSlaves>>
+<<include InitUnitGroupSlavers>>
+
+/* Race Based and Others */
+<<set _passages = Story.lookup('tags', 'unitgroup')>>
+<<for _ipassage, _passage range _passages>>
+  <<include _passage.title>>
+<</for>>
+
+/* Quest based */
+<<include 'LoadUnitGroupOthers'>>
+
+/* special "null" unit group */
+<<run new setup.UnitGroup(
+  'none',
+  'Special: Empty unit group',
+  [],
+  0,
+  []
+)>>
+
+/* set all basic unit groups as base */
+<<for _ug range Object.values(setup.unitgroup)>>
+  <<set _ug.is_base = true>>
+<</for>>
+

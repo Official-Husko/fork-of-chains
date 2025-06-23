@@ -1,0 +1,114 @@
+:: QuestSetupMilkFactoryKidnapMale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _desc = 'a|was a human cow installed in one of the factories in the undercity of Lucgate'>>
+
+<<set _infiltrator = new setup.UnitCriteria(
+  null, /* key */
+  'Infiltrator', /* title */
+  [
+    setup.trait.bg_thief,
+    setup.trait.tough_nimble,
+    setup.trait.per_sly,
+    setup.trait.per_loner,
+    setup.trait.per_lunatic,
+    setup.trait.per_evil,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+  ], /* critical traits */
+  [
+    setup.trait.subrace_humankingdom,
+    setup.trait.bg_slave,
+    setup.trait.per_direct,
+    setup.trait.per_gregarious,
+    setup.trait.per_masochistic,
+    setup.trait.per_honorable,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    intrigue: 2.0,
+    slaving: 1.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'milk_factory_kidnap_male', /* key */
+  'Factory: Kidnap Male Specimen', /* Title */
+  'darko',   /* author */
+  ['city', 'unit', 'maleonly'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'seducer': setup.qu.seducer,
+    'infil1': _infiltrator,
+    'infil2': _infiltrator,
+  },
+  { /* actors */
+    'cow': 'quest_humankingdom_cow_male',
+    'bigcow': 'quest_humankingdom_cow_male_titanic',
+  },
+  [ /* costs */
+  ],
+  'QuestMilkFactoryKidnapMale', /* passage description */
+  setup.qdiff.normal29, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestMilkFactoryKidnapMaleCrit',
+      [
+        setup.qc.Slave('bigcow', _desc),
+        
+      ],
+    ],
+    [
+      'QuestMilkFactoryKidnapMaleCrit',
+      [
+        setup.qc.Slave('cow', _desc),
+        
+      ],
+    ],
+    [
+      'QuestMilkFactoryKidnapMaleFailure',
+      [
+      ],
+    ],
+    [
+      'QuestMilkFactoryKidnapMaleDisaster',
+      [
+        setup.qc.Injury('seducer', 4),
+        setup.qc.TraitReplaceExisting('seducer', setup.trait.anus_gape),
+        setup.qc.TraitReplaceExisting('seducer', setup.trait.vagina_gape),
+      ],
+    ],
+  ],
+  [], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestMilkFactoryKidnapMale [nobr]
+
+<<include 'OpportunityMilkFactory'>>
+
+<p>
+You have chosen to steal some of the female sla-, err, "employees".
+You can follow-up on this idea by sending a team of slavers there.
+</p>
+
+
+:: QuestMilkFactoryKidnapMaleCrit [nobr]
+
+<<include 'QuestMilkFactoryKidnapFemaleCrit'>>
+
+
+:: QuestMilkFactoryKidnapMaleFailure [nobr]
+
+<<include 'QuestMilkFactoryKidnapFemaleFailure'>>
+
+
+:: QuestMilkFactoryKidnapMaleDisaster [nobr]
+
+<<include 'QuestMilkFactoryKidnapFemaleDisaster'>>

@@ -1,0 +1,97 @@
+:: InitBuildingMissionControl [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'lockerroom',
+  tags: [],
+  description_passage: 'RoomLockerRoom',
+  name: 'Locker room',
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'missioncontrol',
+  tags: [],
+  width: 4,
+  height: 2,
+  door_column: 1,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "aid",
+      room_keys: [
+        'lockerroom',
+      ],
+    },
+    {
+      type: "near",
+      skill_key: "survival",
+      room_keys: [
+        'greathall',
+        'questoffice',
+        'insureroffice',
+        'rescueroffice',
+        'armory',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'missioncontrol',
+  name: 'Mission control',
+  tags: ['critical', 'misc',],
+  description_passage: 'BuildingMissionControl',
+  costs: [
+    [setup.qc.Money(-800)],
+    [setup.qc.Money(-1200)],
+    [setup.qc.Money(-2000)],
+    [setup.qc.Money(-10000)],
+    [setup.qc.Money(-1000000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('questoffice'),
+      setup.qres.Building('lodgings'),
+    ],
+    [setup.qres.Building('greathall')],
+    [],
+    [
+      setup.qres.Building('veteranhall'),
+    ],
+    [],
+  ],
+  main_room_template_key: 'missioncontrol',
+  sub_room_template_key: 'lockerroom',
+})>>
+
+
+:: BuildingMissionControl [nobr]
+
+<p>
+Unlocks team management.
+Allows you to assign units to permanent team, as well as automatically
+assigning units to quests.
+Also allows more teams to be sent concurrently on a quest.
+Can be upgraded to send even more teams concurrently on a quest,
+as well as unlocking more permanent team slots.
+</p>
+
+
+:: RoomLockerRoom [nobr]
+
+<p>
+A place for your team to plan and strategize for their missions.
+</p>

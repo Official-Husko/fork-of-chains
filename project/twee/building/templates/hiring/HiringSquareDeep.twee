@@ -1,0 +1,44 @@
+:: InitBuildingHiringSquareDeep [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'hiringsquaredeep',
+  tags: [],
+  width: 2,
+  height: 2,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'hiringsquaredeep',
+  name: 'Recruitment Booth: Deeprealm',
+  tags: ['hiring', ],
+  description_passage: 'BuildingHiringSquareDeep',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('hiringsquare'),
+      setup.qres.Building('scouttunnel'),
+    ],
+  ],
+  on_build: [
+    [setup.qc.Contact(setup.contacttemplate.recruiterdeep),]
+  ],
+  main_room_template_key: 'hiringsquaredeep',
+})>>
+
+
+:: BuildingHiringSquareDeep [nobr]
+
+<p>
+A booth in the <<rep setup.buildingtemplate.hiringsquare>> where you can attempt
+to recruit the people native to <<lore region_deep>> into your company.
+Unlocks a contact which gives you a quest for hiring new slavers from <<lore region_deep>>.
+</p>
+

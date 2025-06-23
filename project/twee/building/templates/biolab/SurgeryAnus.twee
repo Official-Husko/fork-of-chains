@@ -1,0 +1,41 @@
+:: InitBuildingSurgeryAnus [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'surgeryanus',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+
+<<run new setup.BuildingTemplate({
+  key: 'surgeryanus',
+  name: 'Surgery: Anus Operating Room',
+  tags: ['biolab'],
+  description_passage: 'BuildingSurgeryAnus',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_HIGH_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('surgery'),
+      setup.qres.HasItem(setup.item.rear_technology),
+    ],
+  ],
+  main_room_template_key: 'surgeryanus',
+})>>
+
+
+:: BuildingSurgeryAnus [nobr]
+
+<p>
+Unlocks tightening and loosening of you and your slavers' anus.
+
+</p>

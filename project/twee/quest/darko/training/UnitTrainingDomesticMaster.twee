@@ -1,0 +1,104 @@
+:: QuestSetupUnitTrainingDomesticMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_domestic_master',  /* id */
+  'Domestic Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingDomesticMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingDomesticMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_domestic_master),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingDomesticMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_domestic_master),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingDomesticMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingDomesticMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_domestic_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingDomesticMaster [nobr]
+<p>
+This training transforms the trainee into a living embodiment of
+housework. Garding, cooking, cleaning, fixing broken appliances,
+and sex
+are all necessary skills in order to graduate from this class.
+The graduates of this training are envies of all maids abound.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingDomesticMasterCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+<<else>>
+    <<questimage 'unit_training_domestic_master_female.jpg'>>
+<</if>>
+
+
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into a complete package of a
+maid/butler
+has been completed.
+</p>
+
+:: QuestUnitTrainingDomesticMasterSuccess [nobr]
+<p>
+It is done. <<Reps $g.trainee>> transformation into a perfect maid/butler
+has been done. <<Rep $g.trainee>> now yearns for a master to order <<them $g.trainee>>
+around and a mansion to keep clean.
+</p>
+
+:: QuestUnitTrainingDomesticMasterFailure [nobr]
+<p>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to wipe out all sense of deviancy
+from the slave.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingDomesticMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

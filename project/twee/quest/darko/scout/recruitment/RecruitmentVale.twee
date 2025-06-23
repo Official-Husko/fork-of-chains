@@ -1,0 +1,133 @@
+:: QuestSetupRecruitmentVale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'recruitmentvale', /* key */
+  'Recruitment: Vale', /* Title */
+  'darko',   /* author */
+  ['vale', 'unit'],  /* tags */
+  1,  /* weeks */
+  setup.INFINITY,  /* quest expiration weeks */
+  { /* roles */
+    'recruiter1': setup.qu.recruiter,
+    'recruiter2': setup.qu.recruiter,
+    'convincer': setup.qu.convincer,
+  },
+  { /* actors */
+    'recruit1': 'vale_all',
+    'recruit2': 'vale_all',
+    'recruit3': 'vale_all',
+    'recruit4': 'vale_all',
+    'recruit5': 'vale_all',
+    'recruit6': 'vale_all',
+    'recruit7': 'vale_all',
+  },
+  [ /* costs */
+  ],
+  'QuestRecruitmentVale', /* passage description */
+  setup.qdiff.easy10, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestRecruitmentValeCrit',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit5', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit6', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit7', "", /* is mercenary = */ true),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentValeSuccess',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentValeFailure',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true),
+      ],
+    ],
+    [
+      'QuestRecruitmentValeDisaster',
+      [
+        setup.qc.Injury('recruiter1', 1),
+        setup.qc.Injury('recruiter2', 1),
+        setup.qc.Injury('convincer', 1),
+      ],
+    ],
+  ],
+  [[setup.questpool.recruitmentvale, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.QuestAvailableUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestRecruitmentVale [nobr]
+
+<p>
+The <<lore region_vale>> are inhabited by honest, hardy <<rep setup.trait.subrace_humanvale>>,
+and also by several <<rep setup.trait.subrace_werewolf>> clans.
+Many potential recruits can be found among these people --
+Both races are used to the cold areas of the north, giving them an affinity for
+<<rep setup.trait.magic_water>>.
+In addition, the northerners are often gifted with ambidexterity, while
+some werewolves are known to be able to communicate with animals.
+You can try to send a group of slavers over to the vales
+to find potential recruits for your company.
+They will need to be paid a hiring fee, however.
+</p>
+
+<p>
+This quest is available thanks to your <<rep setup.buildingtemplate.hiringsquarevale>>.
+</p>
+
+
+:: QuestRecruitmentValeCrit [nobr]
+
+<p>
+The team's recruiters <<rep $g.recruiter1>> and <<rep $g.recruiter2>> were relentless
+during their recruitment drive. Thanks to that,
+seven potential slavers signed up for your company.
+They are now waiting in the prospects hall for your
+decision, and need to be paid if you want to hire them.
+</p>
+
+
+:: QuestRecruitmentValeSuccess [nobr]
+
+<p>
+The team's recruiters <<rep $g.recruiter1>> and <<rep $g.recruiter2>> scoured through the
+settlements both humans and (some of the friendlier) werewolves, and managed
+to find four potential slavers amongs the people living there.
+They are now awaiting your decision in the prospects hall.
+</p>
+
+
+:: QuestRecruitmentValeFailure [nobr]
+
+<p>
+There was a cold snap during most of your slavers' adventure in the north,
+which prevented them from visiting as many settlements as they would have liked.
+Still, 
+<<rep $g.recruiter1>> managed to find one potential slaver to bring back home.
+</p>
+
+
+:: QuestRecruitmentValeDisaster [nobr]
+
+<p>
+Unfortunately, nobody seemed interested in joining your company.
+Well either that, or your slavers slacked off during their job.
+</p>
+

@@ -1,0 +1,116 @@
+:: QuestSetupUnitTrainingAnalBasic [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_anal_basic',  /* id */
+  'Anal Training: Basic',  /* Title */
+  'FCdev and darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_dick_normal,
+    'trainer2': setup.qu.training_trainer_dick_normal,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingAnalBasic',  /* description */
+  setup.qdiff.easy16,
+  [
+    [
+      'QuestUnitTrainingAnalBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_anal_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingAnalBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_anal_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingAnalBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingAnalBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingAnalBasic [nobr]
+<p>
+A slave must learn how to use all their possible orifices to satisfy their masters.
+In addition to the traditional options of pussies and mouth,
+a slave's anus is also another orifice that should be used to give pleasure with.
+This training will introduce to the slave to the art of taking it up their
+butt, which will start simple using fingers, then a dildo, until they're familiar enough to 
+take in the actual shaft.
+</p>
+
+:: QuestUnitTrainingAnalBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<if $g.trainee.isHasTrait('race_catkin')>>
+    <<questimage 'unit_training_anal_basic_male_neko.jpg'>>
+  <<else>>
+    <<questimage 'unit_training_anal_basic_male_humankingdom.jpg'>>
+  <</if>>
+<<else>>
+  <<if $g.trainee.isHasTrait('race_catkin')>>
+    <<questimage 'unit_training_anal_basic_female_neko.jpg'>>
+  <<else>>
+    <<questimage 'unit_training_anal_basic_female.jpg'>>
+  <</if>>
+<</if>>
+
+<p>
+<<Rep $g.head>> trained <<rep $g.trainee>> with a good combination of reward and punishment.
+<<Rep $g.trainee>> learned to relax as <<rep $g.head>>
+<<if !$g.head.isHasDick()>>pushed a strap-on into<<else>>enter<</if>> <<their $g.trainee>> ass,
+and even learned how to enjoy <<themself $g.trainee>> all the way after the initial pain.
+After the many times <<rep $g.head>> and <<their $g.head>> assistants climaxed while inside
+the trainee, <<rep $g.trainee>> finally, in one final session,
+climaxed hard to
+<<if !$g.head.isHasDick()>>the phallus<<else>>the cock<</if>> invading
+<<their $g.trainee>> asshole.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The training was a complete success. <<Rep $g.trainee>> trainee|have
+learned the basics of being assfucked,
+while your slavers gain a lot of experience from the training.
+</p>
+<<else>>
+<p>
+At the end of the week, <<rep $g.trainee>>
+trainee|is now able to take dicks up their asses, and give back sufficient
+pleasure in return to be passable as an anal bottom.
+</p>
+<</if>>
+
+:: QuestUnitTrainingAnalBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> continues to refuse
+taking dick up their asses even until the end of the training.
+</p>
+
+:: QuestUnitTrainingAnalBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

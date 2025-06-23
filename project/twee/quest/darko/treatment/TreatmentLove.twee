@@ -1,0 +1,112 @@
+:: QuestSetupTreatmentLove [nobr quest]
+
+<<set _target = new setup.UnitCriteria(
+  null, /* key */
+  'TARGET SLAVER', /* title */
+  [ /* critical traits */
+  ],
+  [
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'treatment_love',  /* id */
+  'Treatment: Friendship',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'target': _target,
+    'head': [setup.qu.heal_head, 2],
+    'assistant1': [setup.qu.heal_assistant, 1],
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.love_potion),
+  ],  /* costs */
+  'TreatmentLove',  /* description */
+  setup.qdiff.hard55,
+  [
+    [
+      'TreatmentLoveCrit',
+      [
+        setup.qc.Friendship('trainee', 'target', 500),
+      ],
+    ],
+    [
+      'TreatmentLoveSuccess',
+      [
+        setup.qc.Friendship('trainee', 'target', 500),
+        setup.qc.Injury('trainee', 2),
+        setup.qc.Injury('target', 2),
+      ],
+    ],
+    [
+      'TreatmentLoveFailure',
+      [
+        setup.qc.Friendship('trainee', 'target', 500),
+        setup.qc.Injury('trainee', 5),
+        setup.qc.Injury('target', 5),
+      ],
+    ],
+    [
+      'TreatmentLoveDisaster',
+      [
+        setup.qc.Friendship('trainee', 'target', 500),
+        setup.qc.Injury('trainee', 8),
+        setup.qc.Injury('target', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentLove [nobr]
+<p>
+Forcefully make two units like each other, by using a <<rep setup.item.love_potion>>.
+While this procedure always succeeds, it usually cause injuries to the patients.
+</p>
+
+<p>
+<<dangertext 'IMPORTANT'>>: The unit assigned to the TARGET SLAVER role will be the unit
+that gains affection for the patient.
+</p>
+
+:: TreatmentLoveCrit [nobr]
+<p>
+<<Rep $g.head>> directed the procedure with such skill that both <<rep $g.trainee>>
+and <<rep $g.target>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+
+:: TreatmentLoveSuccess [nobr]
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>>
+and <<rep $g.target>>
+will need some time to recover from the procedure.
+</p>
+
+:: TreatmentLoveFailure [nobr]
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>>
+and <<rep $g.target>>
+were severely injured during the procedure.
+</p>
+
+:: TreatmentLoveDisaster [nobr]
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>>
+and <<rep $g.target>>
+were heavily injured during the procedure.
+</p>

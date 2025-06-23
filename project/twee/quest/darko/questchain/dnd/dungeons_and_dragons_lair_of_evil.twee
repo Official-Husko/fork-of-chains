@@ -1,0 +1,244 @@
+:: QuestSetup_dungeons_and_dragons_lair_of_evil [nobr quest]
+
+<<run new setup.Title(
+"quest_heroic_withdrawal_0", /* key */
+"Heroic Withdrawal", /* name */
+"Suffers from withdrawal from lack of heroic questing", /* description */
+"a|is having a heroic withdrawal, curable only by going into an epic quest or two", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.UnitGroup(
+"dungeons_and_dragons_lair_of_evil0",
+"Demonkin Raider",
+'subrace_demonkin', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+],
+)>> <<run new setup.UnitGroup(
+"dungeons_and_dragons_lair_of_evil1",
+"Lizardkin Raider",
+'subrace_lizardkin', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+],
+)>>
+
+
+<<set _criteriahero = new setup.UnitCriteria(
+null, /* key */
+'Hero', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.per_brave,
+  setup.trait.per_active,
+  setup.trait.per_lunatic,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cautious,
+  setup.trait.per_studious,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_heroic_withdrawal_0'),
+],
+{
+  combat: 2,
+  survival: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'dungeons_and_dragons_lair_of_evil', /* key */
+"Dungeons and Dragons: Lair of Evil", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'prep',
+  'unknown',
+],
+4, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'hero': [ _criteriahero, 1],
+  'healer': [ setup.qu.healer, 1],
+  'dps': [ setup.qu.dps, 1],
+},
+{ /* actors */
+  'boss': [
+  ],
+  'prince': [
+  ],
+  'demonkin': 'dungeons_and_dragons_lair_of_evil0',
+  'lizardkin': 'dungeons_and_dragons_lair_of_evil1',
+},
+[ /* costs */
+],
+'Quest_dungeons_and_dragons_lair_of_evil',
+setup.qdiff.harder45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_dungeons_and_dragons_lair_of_evilCrit',
+    [
+      setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+      setup.qc.Slave('demonkin', "a|was an \"evildoer\" defeated by one of your more \"heroic\" slaver, but for all you know a|they could be just a simple a|race minding a|their own business unlucky enough to be found by your adventure-crazed slaver", undefined),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_lair_of_evilCrit',
+    [
+      setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+      setup.qc.Slave('lizardkin', "a|was an \"evildoer\" defeated by one of your more \"heroic\" slaver, but for all you know a|they could be just a simple a|race minding a|their own business unlucky enough to be found by your adventure-crazed slaver", undefined),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_lair_of_evilFailure',
+    [
+      setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+      setup.qc.MissingUnit('hero'),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_lair_of_evilFailure',
+    [
+      setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+      setup.qc.MissingUnitRecapture('hero', 'capturedhard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.AllUnitSatisfyDo([setup.qres.HasTitle('quest_heroic_withdrawal_0')],
+[setup.qc.TraumatizeRandom('unit', 100)],
+),
+  setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+
+],
+)>>
+
+:: Quest_dungeons_and_dragons_lair_of_evil [nobr]
+<<set _u = setup.getUnit({title: 'quest_heroic_withdrawal_0'})>>
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+<<Yourrep _u>> has come to demand the last quest to prove <<their _u>>
+heroism once and for all, to your great dismay.
+Having decided to exploit <<therace _u>>'s uncanny knack in finding impossible quests,
+you've wrote one final quest for <<them _u>>...
+</p>
+
+<p>
+You clear your throat, before you begin your elaborate tale.
+In a nameless land, far, far to the south of <<lore geo_mestia>>,
+live a <<princess $g.prince>>
+of unimaginable
+<<if $g.prince.isFemale()>>
+beauty.
+<<else>>
+handsomeness.
+<</if>>
+But not only that -- the <<princess $g.prince>> is famous also for <<their $g.prince>> kindness,
+and the beauty of both <<their $g.prince>> appearance and heart appeals to many.
+Unfortunately, such a beacon of purity also attract unwanted attention from a terrible
+<<if $g.boss.isHasTrait('race_lizardkin')>>
+dragon,
+<<else>>
+demon,
+<</if>>
+who kidnapped the innocent <<princess $g.prince>> from <<their $g.prince>> tower.
+The kingdom is now looking for brave heroes, who would venture forth and save the <<princess $g.prince>>...
+</p>
+
+<p>
+You then give the quest a little more detail to make it more believe-able, but
+you are intentionally vague with the details.
+This time, however, you pay careful attention to the details of the <<prince $g.prince>>; judging from
+the past experiences, your slaver has a knack of finding the reward even though it does not exist,
+and surely it couldn't hurt if the <<prince $g.prince>> in your quest just happens to be the perfect
+slave material, including possessing otherwordly beauty,
+<<if $g.prince.isMale()>>tasteful muscles<<else>>sexy waist<</if>>, a stunning voice, and a secretly submissive tendencies too (just in case you need to break <<them $g.prince>> later).
+</p>
+
+<p>
+A journey south to the <<lore region_sea>> is not a joke, however much farce your quest is, so careful preparation is still required. A healer and a damager to accompany your "hero" would be prudent to have.
+</p>
+
+<p>
+There's also the alternative of just simply refusing this absurd request.
+The slaver might be downed for a while, but nothing time can't heal.
+Surely there's just no way the world would aligns itself so that your slaver is able to find
+this very specifically detailed <<prince $g.prince>>?
+</p>
+
+<</if>>
+
+
+
+:: Quest_dungeons_and_dragons_lair_of_evilCrit [nobr]
+
+<p>
+After four long weeks searching and venturing in the <<lore region_sea>>, <<yourrep $g.hero>> finally came back home. Unlike all the previous ventures, however, this time <<they $g.hero>> hero|was met with failure. <<They $g.hero>> hero|was not able to find the supposed kingdom whose settlement is in dire need of a hero. In fact, most of the settlements <<they $g.hero>> visited was perfectly alright, having no need for a hero in these times.
+</p>
+
+<p>
+The failure finally make the reality sinks in into the <<urace $g.hero>>. While books and tales tell of heroes of legends, in reality, there are much less opportunity for such heroism. Faced with this reality, <<their $g.hero>> mind is finally grounded back to reality, that <<they $g.hero>> hero|is a slaver now — not some damsel-saving sword-crossing hero of legends.
+<<if $g.hero.isHasTrait('per_brave')>>
+<<Their $g.hero>> excessive bravery will only get <<themself $g.hero>> killed or worse in this uncaring world.
+<<elseif $g.hero.isHasTrait('per_cautious')>>
+<<Their $g.hero>> cowardice may be an actually good thing to have, and may save <<them $g.hero>> from fate worse than death.
+<</if>>
+</p>
+
+<p>
+Somewhere within you, you are disappointed that your plan to get your <<uhands $unit.player>> on the perfect
+little slave has failed. Then again, you have nobody to blame but yourself -- the quest is completely made-up,
+after all, and there is just no way the world aligns itself to fit your fantasies so perfectly.
+Still, your slaver is finally back to normal, and that's good.
+</p>
+
+<p>
+Right when <<rep $g.hero>> is about to exit your office,
+you notice that your slavers had carried an extra cargo with them —
+<<if $gOutcome == 'crit'>>
+a demonkin
+<<else>>
+a lizardkin
+<</if>>
+fully bound and gagged and currently stored within your slave pens. When asked about it, <<rep $g.hero>> just shrugged it off, saying that <<they $g.hero>> slayed a couple of evildoers here and there without managing to find the <<prince $g.hero>> in distress. Nothing worthy of mention.
+</p>
+
+<p>
+...Perhaps <<they $g.hero>> might actually have what it takes to be a real hero,
+but you're not going to be the <<urace $unit.player>> that tell <<them $g.hero>> so!
+</p>
+
+
+:: Quest_dungeons_and_dragons_lair_of_evilFailure [nobr]
+<p>
+<<Yourrep $g.hero>> got too excited — way too excited for the adventure south. <<They $g.hero>> managed to indeed find a southern kingdom in need of a hero, for their <<prince $g.prince>> prince|have been kidnapped by a truly menacing
+<<urace $g.boss>>.
+</p>
+
+<p>
+Only <<yourrep $g.healer>> and <<utheirrel $g.healer $g.dps>> returned to your fort. In a fit of crazed bravery, <<rep $g.hero>> foolishly decided to assault the mighty <<urace $g.boss>> fort alone, and <<they $g.hero>> never returned.
+Still, your other two slavers were not completely useless for once, and they were able to track your slaver should you wish to rescue the foolish <<urace $g.hero>>.
+<<urescuenow $g.hero>>.
+</p>

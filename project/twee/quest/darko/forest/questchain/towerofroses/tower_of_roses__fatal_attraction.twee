@@ -1,0 +1,152 @@
+:: QuestSetup_tower_of_roses__fatal_attraction [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaadmirer = new setup.UnitCriteria(
+null, /* key */
+'Admirer', /* name */
+[
+setup.trait.bg_noble,
+setup.trait.bg_knight,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_smart,
+setup.trait.per_lavish,
+setup.trait.per_honorable,
+setup.trait.skill_entertain,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.bg_laborer,
+setup.trait.bg_farmer,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_slow,
+setup.trait.per_frugal,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('tower_of_roses_admirer'),
+],
+{
+knowledge: 1,
+social: 1,
+sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'tower_of_roses__fatal_attraction', /* key */
+"Tower of Roses: Fatal Attraction", /* Title */
+"darko", /* Author */
+[
+  'forest',
+  'prep',
+  'unit',
+  'ire',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'admirer': _criteriaadmirer,
+'kidnapper2': setup.qu.kidnapper,
+'kidnapper1': setup.qu.kidnapper, },
+{ /* actors */
+'prince': 'quest_tower_of_roses1', },
+[ /* costs */
+],
+'Quest_tower_of_roses__fatal_attraction',
+setup.qdiff.hardest37, /* difficulty */
+[ /* outcomes */
+[
+'Quest_tower_of_roses__fatal_attractionCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyCustom(3000),
+],
+], [
+'Quest_tower_of_roses__fatal_attractionCrit',
+[
+setup.qc.Ire('elf', 3),
+setup.qc.VarRemove('tower_of_roses_affection'),
+setup.qc.AddTitle('prince', 'tower_of_roses_obtained'),
+setup.qc.RemoveTitle('admirer', 'tower_of_roses_admirer'),
+setup.qc.Slave('prince', "a|was a hopeless romantic who a|was betrayed by a|their true love and enslaved", undefined),
+setup.qc.RemoveFromUnitGroup('prince'),
+setup.qc.MoneyCustom(1500),
+setup.qc.TraumatizeRandom('admirer', 20),
+setup.qc.TraumatizeRandom('admirer', 20), ],
+], [
+'Quest_tower_of_roses__fatal_attractionFailure',
+[
+setup.qc.RemoveFromUnitGroup('prince'),
+setup.qc.RemoveTitle('admirer', 'tower_of_roses_admirer'), ],
+], [
+'Quest_tower_of_roses__fatal_attractionFailure',
+[
+setup.qc.RemoveFromUnitGroup('prince'),
+setup.qc.RemoveTitle('admirer', 'tower_of_roses_admirer'),
+setup.qc.MissingUnit('admirer'), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_tower_of_roses__fatal_attraction [nobr]
+<<include 'Opportunity_tower_of_roses__point_of_love'>>
+
+<p>
+You have chosen to kidnap the <<princess $g.prince>>.
+</p>
+
+
+:: Quest_tower_of_roses__fatal_attractionCrit [nobr]
+
+<p>
+<<Yourrep $g.admirer>> reluctantly recited the love poem prewritten by your
+slavers. Even though it was a half-hearted effort, the <<prince $g.prince>>
+still swooned over. Before your slavers' eyes, the rose thorns surrounding
+the tower slowly retreated, revealing the entrance to the tower.
+<<Rep $g.kidnapper1>> and <<rep $g.kidnapper2>> immediately got to work,
+entering the tower silently up to the top level and subdued the surprised 
+<<prince $g.prince>>. Gagged and bound, your slavers brought the <<prince
+$g.prince>> home to be introduced to <<their $g.prince>> new life as a slave,
+a proper ending to <<their $g.prince>> journey of love.
+</p>
+
+<p>
+Having betrayed the <<princess $g.prince>>, <<yourrep $g.admirer>>
+admirer|was deeply traumatized and will need a lot of time to recover.
+</p>
+
+
+:: Quest_tower_of_roses__fatal_attractionFailure [nobr]
+
+<p>
+Right before your slavers executed the plan, something snapped inside <<reps
+$g.admirer>> head. In the middle of the night, <<they $g.admirer>> vanished
+from the team, before reaching the tower clearing alone. There, <<they $g.admirer>>
+sincerely begged for the <<princess $g.prince>> forgiveness, and tell <<them
+$g.prince>> about the degenerate plan. By the time the rest of your slavers
+arrived,
+<<if $gOutcome == 'failure'>>
+the <<prince $g.prince>> were already nowhere to be seen...
+<<else>>
+neither the <<prince $g.prince>> nor <<rep $g.admirer>> admirer|was
+anywhere to be seen...
+Perhaps you will see <<yourrep $g.admirer>> again one day, if <<they
+$g.admirer>> admirer|is not too busy eloping with <<their $g.admirer>> <<prince
+$g.prince>>.
+<</if>>
+</p>

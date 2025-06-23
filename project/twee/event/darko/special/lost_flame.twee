@@ -1,0 +1,47 @@
+:: EventSetup_lost_flame [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'lost_flame', /* key */
+"Lost Flame", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Event_lost_flame',
+{ /* roles */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+  ],
+  'lover': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.YourLover(),
+    setup.qres.FriendshipWithYouAtMost(setup.LOVERS_BREAKUP_FRIENDSHIP - 1),
+  ],
+},
+[ /* outcomes */
+  setup.qc.BreakupWithYou('lover'),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_lost_flame [nobr]
+
+<p>
+You never realized how you and your <<urace $g.lover>> lover <<rep $g.lover>>
+have grown distant over the past few weeks. No longer you feel the heat
+rising within you when you look into <<their $g.lover>> <<ueyes $g.lover>>,
+and lately you almost see a stranger inside the <<man $g.lover>> you once
+loved.
+</p>
+
+<p>
+It was not really a surprise then when <<rep $g.lover>> lover|come to you to
+declare the relationship over. It was doomed to happen sooner or later, and
+you both just have to get over it as quickly as possible.
+</p>

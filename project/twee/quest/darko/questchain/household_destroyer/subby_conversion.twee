@@ -1,0 +1,199 @@
+:: QuestSetup_subby_conversion [nobr quest]
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.NoTraits([setup.trait.training_mindbreak], true),
+],
+{
+}
+)>>
+
+<<set _criteriatrainer = new setup.UnitCriteria(
+null, /* key */
+'Trainer', /* name */
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_loner,
+  setup.trait.per_stubborn,
+  setup.trait.per_empath,
+  setup.trait.per_dominant,
+],
+[
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_gregarious,
+  setup.trait.per_curious,
+  setup.trait.per_logical,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  slaving: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'subby_conversion', /* key */
+"Subby Conversion", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'trait',
+  'danger',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'trainer': [ _criteriatrainer, 3],
+},
+{ /* actors */
+  'drow': setup.contacttemplate.quest_household_destroyer_host,
+},
+[ /* costs */
+],
+'Quest_subby_conversion',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_subby_conversionCrit',
+    [
+      setup.qc.Sluttify('slave'),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_subby_conversionCrit',
+    [
+      setup.qc.Sluttify('slave'),
+      setup.qc.SetCooldownQuest(null, 50),
+      setup.qc.SetCooldownEvent('household_destroyer_sudden_abduction', 20),
+      setup.qc.VarAdd('quest_household_destroyer_progress', 1, -1),
+    ],
+  ],
+  [
+    'Quest_subby_conversionCrit',
+    [
+      setup.qc.Sluttify('trainer'),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_subby_conversionCrit',
+    [
+      setup.qc.Sluttify('trainer'),
+      setup.qc.VarAdd('quest_household_destroyer_progress', 1, -1),
+      setup.qc.SetCooldownEvent('household_destroyer_sudden_abduction', 20),
+      setup.qc.SetCooldownQuest(null, 25),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.VarEqual('quest_household_destroyer', '110'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_subby_conversion [nobr]
+<p>
+    <<Rep $g.drow>> now lives just outside your fort. From past experience, including some very personal one, you have experienced firsthand that <<their $g.drow>> dominant tendencies did not diminish whatsoever after the time <<they $g.drow>> spent outside the <<lore region_deep>>.
+    <<if $unit.player.isSubmissive()>>
+        In fact, it took your best self control not to simply walk out of your fort and submit yourself to the drow, offering your neck to be collared and-
+        Whoops, your now submissive mind is trying to distract you there, but you digress.
+    <<elseif $unit.player.isDominant()>>
+        Thankfully, you were too dominant to be affected by those thoughts.
+    <</if>>
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    <<Yourrep _u>> suggested that it might just be possible to make use of the drow's "services".
+    You can try to send a slave together with a slaver to "spend some time" with the drow, hoping that the drow's influence could affect the slave. You'll never know what might just happen to the slave, but they will definitely come out meeker and more submissive than ever.
+    <<if _u.isSubmissive()>>
+        Knowing how submissive <<rep _u>> is, however, you have your doubts about <<their _u>> true motivation of telling you this information...
+    <<elseif _u.isDominant()>>
+        No doubt the dominant <<urace _u>> that is <<rep _u>> derived some pleasure from seeing others being transformed into an utter, true, submissive.
+    <</if>>
+</p>
+
+<p>
+    <<dangertext "Warning">>: You will never know just what sort of changes await your slave, and maybe even your slaver if you are unlucky...
+</p>
+
+
+
+
+:: Quest_subby_conversionCrit [nobr]
+<p>
+    <<Yourrep $g.trainer>> bought <<rep $g.slave>> into the drow's abode, and spent much of their time inside. Given the drow's "influence", it would be wise for your slaver to keep <<their $g.trainer>> distance from the drow throughout the stay. But is <<rep $g.trainer>> wise enough to do so?
+    <<if $g.trainer.isHasTrait('per_smart')>>
+        <<They $g.trainer>> trainer|is smart enough to know that, of course.
+    <</if>>
+    <<if $g.trainer.isHasTrait('per_slow')>>
+        <<They $g.trainer>> might be a little too dumb to understand that...
+    <</if>>
+    <<if $g.trainer.isHasTrait('face_scary')>>
+        <<Reps $g.trainer>> intimidating face made the drow less likely to strike up small talk and conversation with <<them $g.trainer>>.
+    <</if>>
+    <<if $g.trainer.isHasTrait('face_attractive')>>
+        <<Rep $g.trainer>> trainer|have just the right face that draws other people to <<them $g.trainer>>, making it harder to avoid getting the drow's attention.
+    <</if>>
+    <<if $g.trainer.isHasTrait('per_empath')>>
+        <<Rep $g.trainer>> got swayed by emotion all too easily, clouding <<their $g.trainer>> judgments.
+    <</if>>
+    <<if $g.trainer.isHasTrait('per_logical')>>
+        Thankfully, <<rep $g.trainer>> trainer|know how to think objectively, and could reason for not talking with the drow at least during the stay.
+    <</if>>
+    <<if $g.trainer.isHasTrait('per_curious')>>
+        <<They $g.trainer>> trainer|have a little curiosity streak, which might just bite the <<urace $g.trainer>> in the ass...
+    <</if>>
+    <<if $g.trainer.isHasTrait('per_stubborn')>>
+        <<They $g.trainer>> trainer|is not know for being too curious, which might just have saved <<their $g.trainer>> sanity this time.
+    <</if>>
+    <<if $g.trainer.isHasTrait('per_gregarious')>>
+        <<They $g.trainer>> trainer|enjoy the company of others, perhaps even too much in this case...
+    <</if>>
+    <<if $g.trainer.isHasTrait('per_loner')>>
+        <<They $g.trainer>> trainer|is a loner by nature, a certainly good thing to have in this case.
+    <</if>>
+</p>
+
+<<if $gOutcome == 'disaster'>>
+    <p>
+        Unfortunately, <<rep $g.trainer>> might just had spent too much personal time with the drow. Instead of your slave coming out sluttier than before, it was your <<rep $g.trainer>> who came out as a slut. Such is the power of the drow, a truly dangerous guest you decided to keep close to your fort...
+    </p>
+<<else>>
+    <p>
+        As expected, the drow managed to make <<yourrep $g.slave>> sluttier than before.
+        <<if $gOutcome == 'crit'>>
+            Even more than you expected, in fact.
+            You
+        <<elseif $gOutcome == 'failure'>>
+            Although <<yourrep $g.trainer>> might had spent too much time around the drow as well, being visibly affected...
+            Still, you
+        <<else>>
+            You
+        <</if>>
+        are now left with one pretty slutty slave, to mold as you see fit.
+    </p>
+<</if>>

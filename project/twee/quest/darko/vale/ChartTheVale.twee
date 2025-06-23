@@ -1,0 +1,176 @@
+:: QuestSetupChartTheVale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _charter = new setup.UnitCriteria(
+  null, /* key */
+  'Cartographer', /* title */
+  [
+    setup.trait.per_cautious,
+    setup.trait.per_studious,
+    setup.trait.per_curious,
+    setup.trait.per_logical,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* critical traits */
+  [
+    setup.trait.per_aggressive,
+    setup.trait.per_active,
+    setup.trait.per_stubborn,
+    setup.trait.per_empath,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    knowledge: 2.0,
+    survival: 1.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'chartthevale', /* key */
+  'Chart the Northern Vale', /* Title */
+  'darko',   /* author */
+  ['vale', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'scout': setup.qu.scout_vale,
+    'charter1': _charter,
+    'charter2': _charter,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestChartTheVale', /* passage description */
+  setup.qdiff.easier4, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestChartTheValeCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestChartTheValeSuccess',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestChartTheValeSuccess',
+      [
+
+      ],
+    ],
+    [
+      'QuestChartTheValeDisaster',
+      [
+        setup.qc.Injury('charter1', 2),
+        setup.qc.Injury('charter2', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestChartTheVale [nobr]
+
+<<questimage 'chart_the_vale.jpg'>>
+
+<p>
+Many parts of the vast <<lore region_vale>> is still uncharted.
+To remedy this,
+several wealthy denizens of the vale would occasionally offer
+mouth-watering rewards for brave or foolish adventurers to venture into these
+unknown territories, and report of their findings.
+Foolish adventurers is certainly a title your slavers can wear proudly, and
+you can consider letting your slavers take this job.
+</p>
+
+
+:: QuestChartTheValeCrit [nobr]
+
+<p>
+Your slavers were given a choice of either finding the source of a river,
+or finding a way to cross the mountains to the other side.
+<<Rep $g.scout>> <<uadv $g.scout>> offered to scout the mountains.
+But as they started to cross the mountain, they realized that the mountains
+are not as uninhabited as they had thought.
+Some animalistic noises can be heard, which became clearer the further they venture
+into the mountains.
+</p>
+
+<p>
+Given the choice of either going further or retreat, <<rep $g.scout>> <<uadv $g.scout>>
+assured the rest of the team that there was nothing to worry about.
+And for once, <<yourrep $g.scout>> spoke truly.
+<<They $g.scout>> expertly guided the team through the narrow passes, while
+<<rep $g.charter1>> and <<rep $g.charter2>> busily took notes of the route and oddities they found
+along the way.
+They eventually managed to reach the other side of the mountain without encountering any incident,
+much to their relief.
+</p>
+
+<p>
+The team went back to report their success, and was rewarded greatly. Of course, they
+took the discretion of not mentioning the strange noises they kept hearing while they
+were there. After all, it was probably nothing but simple, animal noises.
+</p>
+
+
+:: QuestChartTheValeSuccess [nobr]
+
+<p>
+Your slavers were given a choice of either finding the source of a river,
+or finding a way to cross the mountains to the other side.
+While <<rep $g.scout>> <<uadv $g.scout>> offered to scout the mountains,
+the rest of the team voted to select the safer option and just get the job
+<<if $gOutcome == 'success'>>
+done.
+Finding the source of a river simply meant they just needed to follow the river
+to the end, which turned out to be an easy task and was completed in no time.
+The slavers spent the rest of the time before going back in the local tavern
+trying to lift <<reps $g.scout>> downed spirit.
+<<else>>
+done quickly.
+But the river dried up in the middle of the scouting mission -- given
+<<reps $g.scout>> lack of skill,
+there was no way <<they $g.scout>> scout|was going to be able to track down the water spring.
+They decided to abandon the mission and return back to the fort.
+<</if>>
+</p>
+
+
+:: QuestChartTheValeDisaster [nobr]
+
+<p>
+Your slavers were given a choice of either finding the source of a river,
+or finding a way to cross the mountains to the other side.
+<<Rep $g.scout>> <<uadv $g.scout>> offered to scout the mountains,
+and your other slavers did not feel the need to disagree.
+But as they started to cross the mountain, they realized that the mountains
+were not as uninhabited as they had thought.
+Some animalistic noises can be heard, becoming louder the further they venture into the mountain.
+</p>
+
+<p>
+<<Rep $g.scout>> <<uadv $g.scout>>
+assured the rest of the team that there were nothing to worry, which turned out to be a grave error.
+Halfway through, they were ambushed by feral werewolves.
+It turned out that these mountains were used by feral werewolves as breeding location during mating season,
+which was happening... right about when your slavers crossed the mountains.
+Overcame with their lust, these werewolves were unable to distinguish your slavers with potential
+mates, and proceeded to violate your slavers.
+This lasted a couple of days, according to your slavers --- but their memory was understandably vague
+about this.
+Eventually, your slavers were discarded outside of the mountains after they were no longer
+responsive -- It will take several weeks for your slavers to recover from such ordeal.
+</p>

@@ -1,0 +1,45 @@
+:: MarketSlave [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.slavepens)>>
+<<set _slaves = $market.slavemarket.getMarketObjects()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>The slave pens are located outside your fort's outer wall.
+<<if _slaves.length>>
+  There are <<successtext _slaves.length>> slaves chained in the pens right now.
+  <<if $company.player.isCanAddUnitWithJob(setup.job.slave)>>
+    You can take some of them as your slaves.
+    If you decide not to, some of them might be gone by the next week.
+  <<else>>
+    You <<dangertextlite 'do not have any more space'>> for a slave in your company right now.
+    Consider expanding your dungeons by building more cells.
+  <</if>>
+<<else>>
+  It is empty at the moment.
+  When your slavers capture some slaves during a quest, or when someone
+  bring some slaves for you to buy, they will be placed here.
+  You can then decide whether to take them as your slaves.
+<</if>>
+<<set _favor = $favor.getFavor($company.outlaws)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  A slave trader can be seen resting in a nearby hut.
+  Thanks to your excellent relations with <<rep $company.outlaws>>, a steady
+  supply of slaves is being delivered to the pits each week.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  A slave trader can be seen resting in a nearby hut.
+  Thanks to your good relations with <<rep $company.outlaws>>,
+  some freshly caught slaves are being delivered to the pits each week.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  Since the <<rep $company.outlaws>> view your company in a good light,
+  they usually send a freshly-caught slave here each week for you to purchase, if you choose.
+<</if>>
+</p>
+
+<<set _dom = setup.DOM.Card.market({
+  market: $market.slavemarket,
+  is_can_delete: true,
+})>>
+<<attach _dom>>

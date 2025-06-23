@@ -1,0 +1,54 @@
+:: EventSetup_good_slaver_bad_slaver [nobr event]
+
+<<run new setup.Event(
+'good_slaver_bad_slaver', /* key */
+"Good Slaver Bad Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_good_slaver_bad_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'good': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.AllTraits([setup.trait.per_kind], true),
+  ],
+  'bad': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.AllTraits([setup.trait.per_cruel], true),
+  ],
+  'slave': [
+    setup.qres.NotBusy(),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AllTraits([setup.trait.training_none, setup.trait.join_junior], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('good_slaver_bad_slaver', {
+good: "good",
+bad: "bad",
+slave: "slave",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.trainingchamber),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_good_slaver_bad_slaver [nobr]
+<<include "Opportunity_good_slaver_bad_slaver">>

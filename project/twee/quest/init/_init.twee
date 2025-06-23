@@ -1,0 +1,38 @@
+:: InitQuestTemplate [nobr]
+
+<<set setup.questtemplate = {}>>
+
+<<set _passages = Story.lookup('tags', 'quest')>>
+<<for _ipassage, _passage range _passages>>
+  <<include _passage.title>>
+<</for>>
+
+
+/* Special quest pool containing only veteran quests */
+<<run new setup.QuestPool('veteran', 'Veteran Quests')>>
+
+<<set _basequestpools = [
+  setup.questpool.vale,
+  setup.questpool.forest,
+  setup.questpool.city,
+  setup.questpool.deep,
+  setup.questpool.desert,
+  setup.questpool.sea,
+]>>
+
+<<set _done = {}>>
+<<for _qp range _basequestpools>>
+  <<for _q range _qp.getAllQuestsAndOpportunities()>>
+    <<if _q.template.getTags().includes('veteran')>>
+      <<if !(_q.template.key in _done)>>
+        <<set _done[_q.template.key] = true>>
+        <<if _q.template.TYPE == 'quest'>>
+          <<run setup.questpool.veteran.registerQuest(_q.template, _q.rarity)>>
+        <<else>>
+          <<run setup.questpool.veteran.registerOpportunity(_q.template, _q.rarity)>>
+        <</if>>
+      <</if>>
+    <</if>>
+  <</for>>
+<</for>>
+

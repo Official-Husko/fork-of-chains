@@ -1,0 +1,141 @@
+:: QuestSetup_betray_the_lizardkins [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"betray_the_lizardkins0",
+"pirate",
+'subrace_humansea',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+],
+)>> <<run new setup.UnitGroup(
+"betray_the_lizardkins2",
+"reg",
+'subrace_humankingdom',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+],
+)>> <<run new setup.UnitGroup(
+"betray_the_lizardkins3",
+"Wizard",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+  setup.qc.Trait('unit', setup.trait.magic_dark),
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'betray_the_lizardkins', /* key */
+"Betray the Lizardkin", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+  'scaley',
+  'danger',
+  'unit',
+  'veteran',
+  'ire',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'healer': [ setup.qu.healer, 1],
+  'archer': [ setup.qu.archer, 1],
+  'defender': [ setup.qu.defender, 1],
+},
+{ /* actors */
+  'lizardkin': 'subrace_lizardkin',
+  'lizardkin2': 'subrace_lizardkin',
+  'pirate': 'betray_the_lizardkins0',
+  'reg': 'betray_the_lizardkins2',
+  'wiz': 'betray_the_lizardkins3',
+},
+[ /* costs */
+],
+'Quest_betray_the_lizardkins',
+setup.qdiff.hardest56, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_stand_with_the_lizardkinsCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Ire('lizardkin', 6),
+      setup.qc.Slave('lizardkin2', 'a|was a lizardkin that your slavers kidnapped in the middle of a pirate raid'),
+      setup.qc.SlaveMarker('pirate'),
+      setup.qc.SlaveMarker('reg'),
+      setup.qc.SlaveMarker('wiz'),
+    ],
+  ],
+  [
+    'Quest_stand_with_the_lizardkinsCrit',
+    [
+      setup.qc.Ire('lizardkin', 6),
+      setup.qc.Slave('lizardkin', 'a|was a lizardkin that your slavers kidnapped in the middle of a pirate raid'),
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.Slave('pirate', "a|was a crew member of a fierce pirate company of the Southern Seas who chose the wrong timing to attack a lizardkin settlement whom your slavers fiercely defended", undefined),
+setup.qc.Injury('defender', 6),
+setup.qc.Injury('archer', 3),
+setup.qc.Injury('healer', 3)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('reg', "a|was a wanna-be pirate from the City of Lucgate who read too much romanticized pirate tales", undefined)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('wiz', "a|was a pirate-wizard who raided settlements in the southern seas in search for more slave crews for a|their ship", undefined),
+setup.qc.Corrupt('defender', null, 2),
+setup.qc.Corrupt('healer', null, 1)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_stand_with_the_lizardkinsFailure',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.MissingUnitRecapture('defender', 'capturedmedium'),
+setup.qc.Injury('healer', 4),
+setup.qc.Injury('archer', 4)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MissingUnit('archer')
+], undefined),
+setup.qc.DoAll([
+setup.qc.MissingUnit('healer'),
+setup.qc.Corrupt('healer', null, 2),
+setup.qc.Corrupt('archer', null, 1),
+setup.qc.Corrupt('defender', null, 1)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_stand_with_the_lizardkinsFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Ire('lizardkin', 12),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_betray_the_lizardkins [nobr]
+
+<p>
+You've decided to <b>pretend</b> to stand with the sturdy lizardkin folks,
+only to kidnap some of them during the no-doubt intense fight...
+</p>

@@ -1,0 +1,91 @@
+:: QuestSetupSlaverCorruptAll [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'slavercorrupt_all',  /* id */
+  'Slaver Corruption: Any',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.corruption_head_master,
+    'assistant1': setup.qu.corruption_assistant,
+    'assistant2': setup.qu.corruption_assistant,
+    'offering': setup.qu.offeringslave,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SlaverCorruptAll',  /* description */
+  setup.qdiff.hard50,
+  [
+    [
+      'SlaverCorruptAllCrit',
+      [
+        setup.qc.Corrupt('trainee'),
+        setup.qc.Corrupt('trainee'),
+        setup.qc.Corrupt('trainee'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ]
+    ],
+    [
+      'SlaverCorruptAllSuccess',
+      [
+        setup.qc.Corrupt('trainee'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaverCorruptAllFailure',
+      [
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaverCorruptAllDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SlaverCorruptAll [nobr]
+<p>
+Corrupt a slaver safely.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: the offered slave will be lost forever as they are offered to the powers beyond <<lore concept_mist>>...
+</p>
+
+:: SlaverCorruptAllCrit [nobr]
+<p>
+The corruption went much better than expected, with the dark powers looking favorable on your company.
+<<Rep $g.offering>> offering|was lost forever to <<lore concept_mist>>.
+</p>
+
+:: SlaverCorruptAllSuccess [nobr]
+<p>
+The corruption attempt was successful.
+<<Rep $g.offering>> offering|was lost forever to <<lore concept_mist>>.
+</p>
+
+:: SlaverCorruptAllFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+<<Rep $g.offering>> offering|was lost forever to <<lore concept_mist>>.
+</p>
+
+:: SlaverCorruptAllDisaster [nobr]
+<p>
+The power behind <<lore concept_mist>> were not pleased with the corruption attempt. It attempted to take both
+<<rep $g.trainee>> and <<rep $g.offering>> as punishment, but the prince you've bargained
+with prevented <<rep $g.trainee>> from being taken.
+</p>

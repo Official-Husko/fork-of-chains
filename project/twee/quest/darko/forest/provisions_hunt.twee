@@ -1,0 +1,134 @@
+:: QuestSetup_provisions_hunt [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'provisions_hunt', /* key */
+'Provisions Hunt', /* Title */
+'darko', /* Author */
+[ 'forest', 'money' ], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'hunter1': setup.qu.hunter,
+'hunter2': setup.qu.hunter,
+'trader': setup.qu.trader, },
+{ /* actors */
+'whore': 'subrace_elf', },
+[ /* costs */
+],
+'Quest_provisions_hunt',
+setup.qdiff.normal22, /* difficulty */
+[ /* outcomes */
+[
+'Quest_provisions_huntCrit',
+[
+setup.qc.MoneyCrit(), ],
+], [
+'Quest_provisions_huntCrit',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_provisions_huntFailure',
+[
+],
+], [
+'Quest_provisions_huntFailure',
+[
+setup.qc.SlaveMarker('whore'),
+setup.qc.Injury('hunter2', 2),
+setup.qc.Injury('hunter1', 2), ],
+], ],
+[
+[setup.questpool.forest, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_provisions_hunt [nobr]
+
+<p>
+The <<lore region_forest>> is a ripe hunting grounds, be it for artifacts, potions, or even
+the occassional neko slaves.
+But on a more mundane level, the forests are also rich with
+wild game and edible fruits.
+This makes it an ideal place for people to forage food, which
+can be consumed or sold to others.
+</p>
+
+<p>
+You have heard that a nearby settlement is currently suffering from a drought.
+This gives you an opportunity for making a profit by a little "philantrophy" act:
+send a group of slavers into the forest to forage for food, and sell them at
+an exorbitant price to the unfortunate villagers.
+Grinning maliciously, you set up a plan for two of your best hunters and a trader
+to go on this mission.
+</p>
+
+<p>
+The forest still have its own dangers though, and you should be wary of it...
+</p>
+
+
+:: Quest_provisions_huntCrit [nobr]
+
+<p>
+After several days of hunting and foraging in the forest,
+<<rep $g.hunter1>> and <<utheirrel $g.hunter1 $g.hunter2>> <<rep $g.hunter2>>
+managed to stuff a carriage full with food.
+
+<<set _animal = setup.selectUnit([$g.hunter1, $g.hunter2], {trait: 'skill_animal'})>>
+
+<<if _animal>>
+  <<Rep _animal>> had <<their _animal>> way with animals, which helped in the hunt quite a bit.
+<</if>>
+
+<<set _att = setup.selectUnit([$g.hunter1, $g.hunter2], {trait: 'per_attentive'})>>
+
+<<if _att>>
+  <<Reps _att>> attentiveness ensured <<they _att>> spotted the more obscured food sources in the forest.
+<</if>>
+
+<<set _dreamy = setup.selectUnit([$g.hunter1, $g.hunter2], {trait: 'per_dreamy'})>>
+
+<<if _dreamy>>
+  <<Reps _dreamy>> limited attention span hindered the hunt.
+<</if>>
+
+In the end, berries, boars, and the occasional questionably-shaped fruits were all packed-up,
+ready to be delivered to the needy.
+<<if $gOutcome == 'crit'>>
+  Throw in some of the rarer fruits in, and you got yourself a valuable stash of food.
+<</if>>
+They will be made available to the villagers, for a price, of course.
+</p>
+
+<p>
+<<Rep $g.trader>> <<uadv $g.trader>>
+sold the supplies to the villagers.
+<<if $g.trader.isHasTrait('per_kind') || $g.trader.isHasTrait('per_honorable')>>
+  Unfortunately for you, <<rep $g.trader>> cut a better deal for the villagers
+  behind your back, out of the kindness of their heart. You still managed to make
+  a decent sum, just not as much as you would have liked. Perhaps you should have sent a less
+  morally upright <<man $g.trader>> for the job next time...
+  <<run $company.player.substractMoney(1000)>>
+<<else>>
+  The supplies were sold for an exorbitant price, and the villager were in no position
+  to decline and your slavers turned in a tidy amount of profit out of the suffering of others.
+  Just a regular day in your office.
+<</if>>
+</p>
+
+
+:: Quest_provisions_huntFailure [nobr]
+<p>
+Unfortunately, your slavers arrived during the forest boars' mating seasons. The sounds
+of animalistic boar grunts could be heard everywhere in the forest and there were even
+occasional elvish moans to accompany it. Not
+willing to risk such a dangerous venture, your slavers chose to return back
+to fort in shame.
+<<if $gOutcome == 'disaster'>>
+But not before your slavers were charged by one of the crazed boars, injuring them slightly.
+<</if>>
+</p>

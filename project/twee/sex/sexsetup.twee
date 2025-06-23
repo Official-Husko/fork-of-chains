@@ -1,0 +1,34 @@
+:: SexSetup [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _units = $gInteractiveSexUnitIds.map(key => $unit[key])>>
+<<set _location = null>>
+<<if $gInteractiveSexLocation_key>>
+  <<set _location = setup.sexlocation[$gInteractiveSexLocation_key]>>
+<</if>>
+
+<<set _dom = setup.DOM.Menu.interactivesex(_units, _location)>>
+<<attach _dom>>
+
+<div>
+<<message "(Interactive Sex Scene Credits and Lilith's Throne)">>
+  <div class='helpcard'>
+    Many texts here are a borrowed from the free, excellent and very fun
+    [[Lilith's Throne|https://github.com/Innoxia/liliths-throne-public/]] game,
+    made by
+    [[Innoxia|https://subscribestar.adult/innoxia]].
+    If you want more of these actions, please consider giving Lilith's Throne a try!
+    See <<message '(here)'>>
+    <<include 'InnoxiaCredits'>>
+    <</message>>
+    for more details.
+  </div>
+<</message>>
+
+<<if $gDebug>>
+  <<foclink '(debug refresh)'>>
+    <<focgoto>>
+  <</foclink>>
+<</if>>
+</div>

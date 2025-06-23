@@ -1,0 +1,245 @@
+:: QuestSetup_mastery_of_magic [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'Student', /* name */
+[
+setup.trait.per_smart,
+setup.trait.per_studious,
+setup.trait.per_curious,
+],
+[
+setup.trait.per_slow,
+setup.trait.per_active,
+setup.trait.per_stubborn,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.You(),
+setup.qres.Or([
+  setup.qres.TraitExact(setup.trait.magic_fire),
+  setup.qres.TraitExact(setup.trait.magic_water),
+  setup.qres.TraitExact(setup.trait.magic_wind),
+  setup.qres.TraitExact(setup.trait.magic_earth),
+  setup.qres.TraitExact(setup.trait.magic_light),
+  setup.qres.TraitExact(setup.trait.magic_dark),
+]),
+],
+{
+arcane: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'mastery_of_magic', /* key */
+"Mastery of Magic", /* Title */
+"darko", /* Author */
+[ 'sea',
+'veteran',
+'trait',
+'prep',
+'rare',
+], /* tags */
+8, /* weeks */
+16,  /* expiration weeks */
+{ /* roles */
+'you': [_criteriayou, 3.0], },
+{ /* actors */
+'sage': 'all', },
+[ /* costs */
+],
+'Quest_mastery_of_magic',
+setup.qdiff.hard51, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mastery_of_magicCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.ItemPool(setup.itempool.all_good), ],
+], [
+'Quest_mastery_of_magicCrit',
+[
+setup.qc.TraitIncreaseExisting('you', setup.trait.magic_fire_master),
+setup.qc.TraitIncreaseExisting('you', setup.trait.magic_water_master),
+setup.qc.TraitIncreaseExisting('you', setup.trait.magic_wind_master),
+setup.qc.TraitIncreaseExisting('you', setup.trait.magic_earth_master),
+setup.qc.TraitIncreaseExisting('you', setup.trait.magic_dark_master),
+setup.qc.TraitIncreaseExisting('you', setup.trait.magic_light_master),
+],
+], [
+'Quest_mastery_of_magicFailure',
+[
+],
+], [
+'Quest_mastery_of_magicDisaster',
+[
+setup.qc.TraumatizeRandom('you', 12), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.uncommon],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.Player(setup.qres.Or([
+  setup.qres.TraitExact(setup.trait.magic_fire),
+  setup.qres.TraitExact(setup.trait.magic_water),
+  setup.qres.TraitExact(setup.trait.magic_wind),
+  setup.qres.TraitExact(setup.trait.magic_earth),
+  setup.qres.TraitExact(setup.trait.magic_light),
+  setup.qres.TraitExact(setup.trait.magic_dark),
+])),
+],
+)>>
+
+:: Quest_mastery_of_magicCommon [nobr]
+<<set _magic = null>>
+<<for _ixmagic, _xmagic range setup.TraitHelper.getAllTraitsOfTags(['magic', 'rare'])>>
+<<if $unit.player.isHasRemovableTrait(_xmagic)>>
+<<set _magic = _xmagic>>
+<<set _target = _magic.getTraitGroup().getLargestTrait()>>
+<</if>>
+<</for>>
+
+:: Quest_mastery_of_magic [nobr]
+
+<<include 'Quest_mastery_of_magicCommon'>>
+
+<<if !_magic>>
+<<dangertext 'You do not have any magic abilities that can be enhanced right now.'>>
+<<else>>
+
+<p>
+You have always been gifted in the art of
+<<rep _magic>>, which grants you some
+control over <<= _magic.text().noun>>. When mastered, this domain of magic
+would grant its wielder control over <<= _target.text().noun>>, which will
+surely be beneficial for your career. Normally, it would be impossible for
+anyone to increase their natural gift of using such magic. But you have heard
+of a retired sage living across the <<lore region_sea>> who now spend most of <<their
+$g.sage>> time helping others unlock their full mastery of their magic.
+</p>
+
+<p>
+You could try to find the sage and seek to become <<their $g.sage>> pupil.
+You will likely need to go alone however, and this endeavor will surely take
+a really long time.
+</p>
+<</if>>
+
+
+:: Quest_mastery_of_magicCrit [nobr]
+
+<<include 'Quest_mastery_of_magicCommon'>>
+
+<<if !_magic>>
+  <<dangertext 'You do not have any magic talent that can be improved further'>>
+<<else>>
+
+<p>
+After finding the sage living alone in a secluded island, you <<uadv $g.you>>
+implored the sage to teach you how to master your <<rep
+_magic>>. Moved by your eagerness to learn, the sage took you as a student in
+a mentorship that lasted for almost two months.
+</p>
+
+<p>
+Within these two months, you learned so much about the nuances of your <<rep
+_magic>> magic that you never know was always there.
+You learned that
+<<if _magic == setup.trait.magic_fire>>
+<<lore magic_fire>> is capable than much more than simple
+destruction —- With proper focus, you learned how to channel holy fire that can
+drive away demons and corruptions alike like paladins of legends.
+<<elseif _magic == setup.trait.magic_water>>
+<<lore magic_water>> is so much more than simple nourishing
+spells — Humanlike bodies are made of water after all, and it would only be
+natural that control over water grants you control over shaping flesh.
+<<elseif _magic == setup.trait.magic_wind>>
+<<lore magic_wind>> is so much more than just controlling the flow of wind —
+with proper focus, you can alter the shape of air itself and conjure
+electricity out of nowhere, zapping foes and slaves alike.
+<<elseif _magic == setup.trait.magic_earth>>
+<<lore magic_earth>> can be so much more than just control over earth and
+growth -- With proper focal point, you can focus the shapes and directions of
+the growth creating tentacle aberrations like dark wizards of legends.
+<<elseif _magic == setup.trait.magic_dark>>
+<<lore magic_dark>> is so much more than simple concealment
+tricks — When applied en masse, it could transform the body and minds of
+others, corrupting them into darkness.
+<<elseif _magic == setup.trait.magic_light>>
+<<lore magic_light>> is so much more than just summoning blinding lights —
+With the right mind and heart, it could be used to heal even the most severe
+of wounds.
+<</if>>
+You spent the rest of the months practicing away your magic, unlocking the
+hidden depths of talent you always have for them, but you never realized.
+</p>
+
+<p>
+The two months you spent with the sage flied past like an arrow, and before
+you knew it, you are now able to effortlessly
+<<if _magic == setup.trait.magic_fire>>
+summon purifying flames.
+<<elseif _magic == setup.trait.magic_water>>
+shape flesh.
+<<elseif _magic == setup.trait.magic_wind>>
+summon electricity.
+<<elseif _magic == setup.trait.magic_earth>>
+conjure tentacles.
+<<elseif _magic == setup.trait.magic_dark>>
+corrupt others.
+<<elseif _magic == setup.trait.magic_light>>
+heal others.
+<</if>>
+The tutelage at an end, you thanked your mentor for the two months of
+guidance and finally headed back home to your family of slavers.
+</p>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+It seemed that you have greatly impressed your mentor and <<they $g.sage>>
+gave you an incredibly rare potion as a parting gift.
+</p>
+
+<</if>>
+
+
+:: Quest_mastery_of_magicFailure [nobr]
+
+<<include 'Quest_mastery_of_magicCommon'>>
+<<if !_magic>>
+
+  <<dangertext 'You do not have any magic talent that can be improved further'>>
+
+<<else>>
+
+  <p>
+  After finding the sage living alone in a secluded island, you <<uadv $g.you>>
+  implored the sage to teach you how to master your <<rep
+  _magic>>. Moved by your eagerness to learn, the sage took you as a student in
+  a mentorship that lasted for almost two months.
+  </p>
+
+  <p>
+  You underwent a rigorous studying regime under the mentorship, but even
+  after all these hard work you did not feel as if your control over <<rep
+  _magic>> had improve the slightest. Finally after two months of what felt
+  like an eternity, you gave up and bid your mentor farewell before returning
+  back home, the same person as you were before you begin the journey.
+  </p>
+
+<</if>>
+
+
+:: Quest_mastery_of_magicDisaster [nobr]
+
+<p>
+Traveling alone in the <<lore region_sea>> turned out to be an incredibly foolish and dangerous
+affair, as you learned the hard way. Your ship was attacked by
+unspeakable creatures of the sea, which left you stranded alone in an
+uninhabited island. It took you two months before you were rescued by your
+slavers.
+</p>

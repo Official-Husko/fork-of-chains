@@ -1,0 +1,42 @@
+:: InitBuildingTreatmentRoomHate [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'treatmentroomhate',
+  tags: [],
+  width: 4,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'treatmentroomhate',
+  name: 'Solitary Room',
+  tags: ['heal'],
+  description_passage: 'BuildingTreatmentRoomHate',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_HIGH_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('treatmentroom'),
+      setup.qres.Building('veteranhall'),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_light]),
+    ],
+  ],
+  main_room_template_key: 'treatmentroomhate',
+})>>
+
+
+:: BuildingTreatmentRoomHate [nobr]
+
+<p>
+Unlocks a treatment option that can forcefully make two units hate each other.
+Each treatment will consume a <<rep setup.item.hate_potion>>.
+
+</p>

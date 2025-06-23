@@ -1,0 +1,44 @@
+:: EventSetup_brothel_training [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'brothel_training', /* key */
+"Brothel Training", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_brothel_training',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('brothel_training', {
+owner: "owner",
+head: "head",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '20'),
+  setup.qres.NoQuest('brothel_training'),
+  setup.qres.NoOpportunity('intense_brothel_training'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_brothel_training [nobr]
+<<include "Quest_brothel_training">>

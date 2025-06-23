@@ -1,0 +1,83 @@
+:: OpportunitySetup_pet_shopping__gender [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_pet_shop_of_wonders1',
+"Pet (Male)",
+'allmale',  /* pools */
+0, /* reuse chance */
+[
+setup.qc.TraitReplace('unit', setup.trait.training_obedience_advanced),
+setup.qc.TraitReplace('unit', setup.trait.training_pet_advanced),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'quest_pet_shop_of_wonders1_female',
+"Pet (Female)",
+'allfemale',  /* pools */
+0, /* reuse chance */
+[
+setup.qc.TraitReplace('unit', setup.trait.training_obedience_advanced),
+setup.qc.TraitReplace('unit', setup.trait.training_pet_advanced),
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'pet_shopping__gender', /* key */
+"Pet Shopping: Gender", /* Title */
+"darko", /* Author */
+[ 'city',
+'veteran',
+'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_pet_shopping__gender',
+setup.qdiff.hardest43, /* difficulty */
+[ /* options */
+[
+'Opportunity_pet_shopping__gender_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.Opportunity('pet_shopping__talent', {pet: 'petmale'}),
+],
+], [
+'Opportunity_pet_shopping__gender_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.Opportunity('pet_shopping__talent', {pet: 'petfemale'}),
+],
+],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+  petmale: 'quest_pet_shop_of_wonders1',
+  petfemale: 'quest_pet_shop_of_wonders1_female',
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_pet_shopping__gender [nobr]
+<p>
+Thank you for shopping with us! What kind of pet are you looking for today?
+</p>
+
+:: Opportunity_pet_shopping__gender_0 [nobr]
+Male
+
+:: Opportunity_pet_shopping__gender_1 [nobr]
+Female

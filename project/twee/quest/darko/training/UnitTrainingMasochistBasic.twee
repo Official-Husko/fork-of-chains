@@ -1,0 +1,128 @@
+:: QuestSetupUnitTrainingMasochistBasic [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_masochist_basic',  /* id */
+  'Masochist Training: Basic',  /* Title */
+  'FCdev and darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_masochist,
+    'trainer2': setup.qu.training_trainer_masochist,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingMasochistBasic',  /* description */
+  setup.qdiff.easy20,
+  [
+    [
+      'QuestUnitTrainingMasochistBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_masochist_basic),
+      ]
+    ],
+    [
+      'QuestUnitTrainingMasochistBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_masochist_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingMasochistBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingMasochistBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingMasochistBasic [nobr]
+<p>
+While some sadistic masters prefer their slaves to suffer from punishments,
+some masters prefer slaves who are addicted to punishments.
+This training teaches slaves that pleasure and pain are one and the same.
+The final exam of this training is testing whether the slave can reach climax
+from being tortured alone.
+An intense session of reward and punishment must be applied to rewire their
+brain to associate pain with pleasure.
+</p>
+
+:: QuestUnitTrainingMasochistBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_masochist_basic_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+Training a slave to be a pain slut is not an easy, gentle task, and it takes multiple training
+to relink pain into pleasure.
+In one of the training sessions,
+<<rep $g.head>> shoved <<rep $g.trainee>> over a bench,
+rubbed <<their $g.head>> <<uhand $g.head>> over
+<<reps $g.trainee>> ass,
+who was quivering with anticipation and fear.
+<<Rep $g.trainee>> trainee|was almost beside <<themself $g.trainee>>,
+shuddering at the titillation, and <<rep $g.head>> used <<their $g.head>> other <<uhand $g.head>>
+to strike <<their $g.trainee>>
+<<if $g.trainee.isHasDick()>>cockhead<<else>>pussylips<</if>>.
+As <<rep $g.trainee>> writhed in agony, <<rep $g.head>> told <<them $g.trainee>> to get used to it
+while
+<<if $g.trainee.isHasDick()>>simultaneously jacking off <<their $g.trainee>> dick<<else>>
+stimulating <<their $g.trainee>> clit<</if>>.
+<<They $g.trainee>>'s a pain slut now, and pain sluts must get used to pain and derive pleasure from it.
+<<Rep $g.trainee>> hadn't recovered from the mixture of pain and pleasure before
+<<they $g.trainee>> felt the still more urgent pain of rough anal, which was overlaid by another
+stimulation,
+which was then overlaid by rough spanking,
+gratification,
+nipple pinching, orgasm, <<if $g.trainee.isHasDick()>>dick abuse<<else>>clit torture<</if>>, and the cycle
+continued for an entire week.
+In the end, <<their $g.trainee>> brain starts to write pain to pleasure,
+and <<they $g.trainee>> trainee|have started to get off on pain, although <<their $g.trainee>> training
+to be the perfect painslut is still far from over.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The training was a complete success. <<Reps $g.trainee>> body now subconciously associates pain with pleasure,
+and will involuntarily get <<hard $g.trainee>> whenever pain was inflicted on <<them $g.trainee>>.
+Your slavers also gain much experience from the session.
+</p>
+
+<<else>>
+
+<p>
+At the end of the week, <<rep $g.trainee>> can now (or at least pretend
+sufficiently) derive pleasure from being inflicted with pain.
+However, <<their $g.trainee>> pain threshold and <<their $g.trainee>> dedication to pain
+will still need to be worked on in future sessions.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingMasochistBasicFailure [nobr]
+<p>
+Unfortunately, <<reps $g.trainee>> thick skull means that
+rewiring their brain will need extra efforts.
+</p>
+
+:: QuestUnitTrainingMasochistBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

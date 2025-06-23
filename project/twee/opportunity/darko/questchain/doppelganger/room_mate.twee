@@ -1,0 +1,107 @@
+:: OpportunitySetup_room_mate [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'room_mate', /* key */
+"Room Mate", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'money',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_room_mate',
+setup.qdiff.normal53, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_room_mate_0',
+    'Opportunity_room_mate_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTagGlobal('quest_doppelganged'),
+      setup.qc.MoneyCustom(10000),
+      setup.qc.VarRemove('quest_doppelganger_progress'),
+      setup.qc.TraumatizeRandom('slaver', 5),
+      setup.qc.SetCooldownQuest('the_virgin_raider', 100),
+    ],
+  ],
+  [
+    'Opportunity_room_mate_1',
+    'Opportunity_room_mate_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTagGlobal('quest_doppelganged'),
+      setup.qc.VarSet('quest_doppelganger_progress', '3', -1),
+      setup.qc.AddTitle('slaver', 'quest_doppelganged'),
+      setup.qc.AddTitle('dop', 'quest_doppelganger'),
+      setup.qc.Contact(setup.contacttemplate.quest_doppelganger, 'dop', null),
+      setup.qc.BoonizeRandom('slaver', 20),
+      setup.qc.SetCooldownEvent('blame_on_you', 15),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+  'dop': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_room_mate [nobr]
+<p>
+After accidentally witnessing something you won't be forgetting anytime soon, it is time to decide what to do with <<reps $g.slaver>> doppelganger friend.
+</p>
+
+<p>
+<<Their $g.dop>> bounty in the <<lore region_desert>> is still active, so you could turn <<them $g.dop>> in for a quick nice profit.
+</p>
+
+<p>
+Alternatively, you could allow <<them $g.dop>> to stay as your guest for the time being. <<Rep $g.slaver>> will probably be happy about this decision. You'll just have to figure out a way to determine who is who, everytime you meet <<rep $g.slaver>> or <<their $g.slaver>> doppelganger <<rep $g.dop>>...
+</p>
+
+
+:: Opportunity_room_mate_0 [nobr]
+Fulfill bounty
+
+
+:: Opportunity_room_mate_0_flavor [nobr]
+<p>
+As the leader of a slaving company, kind-heartedness is not part of the job description<<if $unit.player.isHasTrait('per_kind')>>
+despite how much your actually kind heart wishes for<</if>>.
+Claiming a bounty is surprisingly not dissimilar to selling a slave — the flesh is exchanged, and the money switched <<uhands $unit.player>>. <<Rep $g.slaver>> will be slightly downed that <<their $g.slaver>> friend was sold away, but give <<therace $g.slaver>> a month or two and you're sure <<they $g.slaver>> will be back to <<their $g.slaver>> usual <<uadjgood $g.slaver>> self.
+</p>
+
+
+:: Opportunity_room_mate_1 [nobr]
+Let <<them $g.dop>> stay as a guest
+
+
+:: Opportunity_room_mate_1_flavor [nobr]
+<p>
+Against your better judgment, you let <<rep $g.dop>> stay as your guest for the time being. <<They $g.dop>> will take one of the empty rooms in the basement of your fort — it's not the most comfortable room around, but it's livable and certainly better than the slave dungeons.
+</p>
+
+<p>
+<<Rep $g.slaver>> slaver|is overjoyed at your decision, and <<therace $g.slaver>> slaver|look much more cheerful in the coming days. The "strange noises" coming from <<reps $g.slaver>> room would occasionally continue to be heard in the coming days...
+</p>

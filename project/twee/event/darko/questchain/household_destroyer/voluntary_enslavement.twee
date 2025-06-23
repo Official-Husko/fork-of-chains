@@ -1,0 +1,104 @@
+:: EventSetup_voluntary_enslavement [nobr event]
+
+
+<<run new setup.UnitGroup(
+"voluntary_enslavement0",
+"Submissive",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitsReplace('unit', [setup.trait.bg_royal, setup.trait.training_obedience_basic, setup.trait.per_submissive]),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+  setup.qc.TraitRemove('unit', setup.trait.bg_royal),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.bg_farmer, setup.trait.bg_whore, setup.trait.bg_laborer, setup.trait.bg_soldier, setup.trait.bg_thug], 1, false, false),
+],
+)>>
+
+<<run new setup.Event(
+'voluntary_enslavement', /* key */
+"Voluntary Enslavement", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+],
+'Event_voluntary_enslavement',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'drow': setup.contacttemplate.quest_household_destroyer_nearby,
+  'slave': 'voluntary_enslavement0',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_household_destroyer', '205', -1),
+  setup.qc.Ire('humanvale', 4),
+  setup.qc.Slave('slave', "a|was a villager who had the misfortune of meeting a certain overly dominant drow and got subbed", undefined),
+  setup.qc.Event('submissive_conflict', 15, null, false),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_voluntary_enslavement [nobr]
+<<dialogue $g.slave>>
+    Please, make me your slave! Abuse me!
+<</dialogue>>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    It's not everyday that someone would just voluntarily come to your office and beg you to enslave them, but it does make your job easier. And today is one such a lucky day. A desperate villager from nearby has just come into your fort, begging to be made into a slave.
+    While your slavers would have been all happily oblige, you
+    <<if $unit.player.isHasTrait('per_cautious')>>
+        being the careful <<urace $unit.player>> that you are,
+    <<else>>
+        being a responsible leader for once,
+    <</if>>
+    would just make sure that nothing suspicious is going on with the slave.
+    Indeed, <<they $g.slave>> slave|seem to be just a lowly
+    <<if $g.slave.isHasTrait('bg_thug')>>
+        thug
+        <<set _job = 'thug'>>
+    <<elseif $g.slave.isHasTrait('bg_laborer')>>
+        miner
+        <<set _job = 'miner'>>
+    <<elseif $g.slave.isHasTrait('bg_farmer')>>
+        farmer
+        <<set _job = 'farmer'>>
+    <<elseif $g.slave.isHasTrait('bg_whore')>>
+        whore
+        <<set _job = 'whore'>>
+    <<elseif $g.slave.isHasTrait('bg_foodworker')>>
+        cook
+        <<set _job = 'cook'>>
+    <</if>>
+    from a nearby village.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    <<if $unit.player.isHasTrait('per_attentive')>>
+        Given how attentive you are, you did not miss the fact that the prospective slave is from the very same village that the overly dominant drow <<rep $g.drow>> currently reside.
+    <<else>>
+        <<Yourrep _u>> pointed out to you that the village appears to be the very same village that you had sent the overly dominant drow <<rep $g.drow>> to take residence in.
+    <</if>>
+    This might have just be a side effect of the arrangement. It's unclear if the drow and the <<= _job>> met by chance, or if the drow
+    <<if $g.slave.isHasTrait('bg_thug')>>
+        had got roughed up by the former thug.
+    <<elseif $g.slave.isHasTrait('bg_laborer')>>
+        bought a mineral from the former miner.
+    <<elseif $g.slave.isHasTrait('bg_farmer')>>
+        bought fresh produce from the former farmer.
+    <<elseif $g.slave.isHasTrait('bg_whore')>>
+        made use of the former's whore services.
+    <<elseif $g.slave.isHasTrait('bg_foodworker')>>
+        ate at the former cook's establishment.
+    <</if>>
+    One thing for certain, however, is that nobody will miss one missing <<= _job>> too much. With the background cleared, you made the order to enslave <<them $g.slave>>, to the slave's great joy. Finally their fantasies of being dominated with dominant, powerful slavers will soon come true. A win-win solution for all, maybe except to the village who might have heard rumors that your company might just have enslaved one of their own.
+</p>
+
+

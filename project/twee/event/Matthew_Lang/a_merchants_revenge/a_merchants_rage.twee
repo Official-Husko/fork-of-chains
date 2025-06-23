@@ -1,0 +1,94 @@
+:: EventSetup_a_merchant_s_rage [nobr event]
+
+<<run new setup.Event(
+'a_merchant_s_rage', /* key */
+"A Merchant\'s Rage", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'fort',
+  'city',
+],
+'Event_a_merchant_s_rage',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+},
+[ /* outcomes */
+  setup.qc.Return('merchant'),
+  setup.qc.VarSet('mlang_merchantrevenge_caravancount', '0', -1),
+  setup.qc.VarSet('mlang_merchantrevenge_questrival', '1', -1),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_a_merchant_s_rage [nobr]
+<<dialogue $g.merchant>>
+    You raided one of MY caravans! What were you thinking!?
+<</dialogue>>
+<<questimage "prince_of_cups.jpg">>
+
+/*Set Player Drink*/
+<<if $unit.player.isHasAnyTraitExact(['bg_farmer','bg_mercenary','bg_pirate','bg_seaman', 'bg_soldier', 'bg_thug', 'bg_unemployed', 'bg_wildman', 'bg_woodsman'])>>
+    <<set _pdrink = 'tankard of mead'>>
+<<elseif $unit.player.isHasAnyTraitExact(['bg_monk', 'bg_priest'])>>
+    <<set _pdrink = 'cup of tea'>>
+<<else>>
+    <<set _pdrink = 'glass of wine'>>
+<</if>>
+
+The air at the table is tense, despite the wine in front of <<name $g.merchant>> and the _pdrink before you.<br>
+"Take me through it again. You got a message that you thought was from me telling you about a new caravan?"<br>
+<<if $unit.player.getSpeech() == setup.speech.bold>>
+    "Yeah. Said to destroy it as usual."
+<<elseif $unit.player.getSpeech() == setup.speech.cool>>
+    "Yep."
+<<else>>
+    "Yes, one leaving the city," you say.<br>
+    You both pause as a server places a platter of bread, cheese, honey and figs at your table, withdrawing speedily and quietly. Reaching out you prepare a plate and slide it over to <<name $g.merchant>>'s side of the table.
+<</if>>
+<br>
+"And it looked like one of my notes?"<br>
+<<if $unit.player.isHasTrait('per_slow')>>
+    You frown. "Yes?"
+<<elseif $unit.player.isHasTrait('per_smart')>>
+    "Nice paper, expensive ink, unsigned. Said time was of the essence. The hand was a bit different, but that didn't mean it wasn't you."
+<<else>>
+    "Nice paper, expensive ink, unsigned. Said time was of the essence. I mean, sure."
+<</if>>
+<br>
+"Do you bring it?"<br>
+Shoving a slice of fig into your mouth, you reach into your bag and pull out a folded sheet of parchment and slide it across the table. Unfolding it, <<name $g.merchant>> examines the message, <<their $g.merchant>> jaw clenching as their eyes dart over it. Turning it over, they examine the map.<br>
+<<if $unit.player.isHasTrait('per_smart')>>
+    "All right," <<they $g.merchant>> says, putting the note down. "If it's not in my hand, then it's not from me, got it?"
+<<else>>
+    "All right," <<they $g.merchant>> say with a sigh, placing the parchment down in front of you and turning it around so you can read the text. Taking out another sheet and lifting out a pen and inkwell <<they $g.merchant>> writes out the message again. "You see how that's not my writing?" <<they $g.merchant>> asks.
+    <<if $unit.player.isHasTrait('per_slow')>>
+        It takes a while for <<them $g.merchant>> to explain it to you, but an hour or so later you feel you're going to be able to recognise any more fake letters that get sent to you.
+    <<else>>
+        Laid out side by side as they are, the differences are obvious.<br>
+        "Yeah, I see it," you say, nodding. "I'll just keep an old note handy so I'll be able to see it if it happens again."<br>
+        "When it happens again," <<name $g.merchant>> says, taking a sip of <<their $g.merchant>> wine. "It'll happen again."
+    <</if>>
+    <br>
+<</if>>
+<br>
+Folding up the note you brought, <<name $g.merchant>> slips it into a jacket pocket. <br>
+"I'll take this," <<they $g.merchant>> says. "If they got sloppy, maybe I can use it to find them."<br>
+Draining <<their $g.merchant>> wine, <<they $g.merchant>> slips out of the booth an rises to <<their $g.merchant>> feet. "I need to get onto this. Enjoy the libations."
+<p>
+    As you sit there using the bread to dredge up the last of the honey and cheese,
+    <<if $unit.player.isHasTrait('per_evil')>>
+        you wonder if it's worth taking the other raiding jobs anyway. After all, you're a mercenary and you get paid either way. There's a good chance you can play both <<name $g.merchant>> and <<their $g.merchant>> rival off against one another and profit handsomely from doing so. At least for a while.
+    <<elseif $unit.player.isHasTrait('per_honorable')>>
+        you idly wonder if it's worth taking the jobs <<name $g.merchant>>'s rival is going to send your way. It wasn't ever stated that <<they $g.merchant>> was hiring you exclusively. However, that does appear to be the expectation. And you haven't at any point stated that you'd take whatever job came your way. Despite what <<rep $company.player>> does, you've always prided yourself in keeping your sense of honour. And now you'll have to decide what it really means.
+    <<else>>
+        you reflect on the fact that <<name $g.merchant>> seems certain <<their $g.merchant>> rival is going to keep sending you jobs. It certainly seems like you could make some quick money raiding both sides, but you can't be certain what the longer term repercussions of that would be.
+    <</if>>
+</p>

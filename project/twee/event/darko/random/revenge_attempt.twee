@@ -1,0 +1,113 @@
+:: EventSetup_revenge_attempt [nobr event]
+
+<<run new setup.Event(
+'revenge_attempt', /* key */
+"Revenge Attempt", /* Title */
+{ /* Author */
+  name: "darko and FCdev",
+  url: "",
+},
+[ /* tags */
+],
+'Event_revenge_attempt',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slave': 'soldslavesuntrained',
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Home(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.NotYou(),
+  ],
+  'you': [
+    setup.qres.You(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('revenge_attempt', {
+slave: "slave",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.trainingchamber),
+  setup.qres.UnitGroupHasUnit('soldslavesuntrained'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_revenge_attempt [nobr]
+<p>
+    One fine day, you're strolling down your fort, making your usual combined inspection and public rounds. These walks are triply useful, since they allow you to keep a finger on the pulse of your fort, identify any problems, and socialize with your fellow slavers. <<Yourrep $g.slaver>> accompanies you for today, <<uadv $g.slaver>> making small talk about <<topic>> with you as you walk around.
+</p>
+
+<p>
+    <<if $g.slaver.isHasTrait('per_playful')>>
+        As you move into the fort square, <<yourrep $g.slaver>> made a joke on a certain scruffy individual you found sitting idly on the square.
+    <<else>>
+        Suddenly, <<yourrep $g.slaver>> nudged you in your elbow, highlighting a certain suspicious looking individual sitting idly in your fort square.
+    <</if>>
+    Upon closer inspection, the person is indeed acting oddly — hooded, and seemingly agitated by nothing. Without warning, the stranger suddenly charges at you, brandishing a hidden knife directed obviously towards you.
+</p>
+
+<<if $g.slaver.isHasTrait('magic_earth_master')>>
+    <p>
+        Thankfully, <<yourrep $g.slaver>> didn't just sit idly. <<They $g.slaver>> conjured tentacles to subdue the attacker before <<their $g.slave>> errant knife could have injured you.
+    </p>
+<<elseif $g.slaver.isHasTrait('magic_wind')>>
+    <p>
+        Thankfully, <<yourrep $g.slaver>> was able to think fast. <<They $g.slaver>> summon strong gale of wind, strong enough to knock the attacker down for <<them $g.slaver>> to then subdue.
+    </p>
+<<elseif $g.slaver.isHasTrait('skill_flight')>>
+    <p>
+        Sensing danger, <<yourrep $g.slaver>> grabbed you tightly before taking flight, bringing you away from the danger. Meanwhile the attack has alerted the rest of the onlookers who then quickly subdued the attacker.
+    </p>
+<<elseif $g.slaver.isHasTrait('body_dragonkin')>>
+    <p>
+        Sensing danger, <<yourrep $g.slaver>> simply stepped in front of you and took the brunt of the attack. The knife failed to pierce <<their $g.slaver>> thick draconic skin, and <<rep $g.slaver>> used the opportunity to subdue <<them $g.slave>>.
+    </p>
+<<elseif $g.slaver.isHasTrait('per_masochistic')>>
+    <<run setup.qc.Injury('slaver', 2).apply($gQuest)>>
+    <p>
+        <<Rep $g.slaver>> then selflessly throw <<themself $g.slaver>> in front of you, taking the brunt of the attack. As much as you want to commend <<them $g.slaver>> for <<their $g.slaver>> selflessness, you know that the only reason <<they $g.slaver>> decided to shield you is because <<they $g.slaver>> is a true, utter masochist, craving the pain the knife would bring. Still, <<they $g.slaver>> did save you this time.
+    </p>
+<<elseif $g.slaver.isHasTrait('per_attentive')>>
+    <p>
+        <<Rep $g.slaver>> noticed the knife way early, however, and the attentive <<urace $g.slaver>> was prepared for the attack. <<They $g.slaver>> managed to subdue the attacker before <<they $g.slave>> even got close to you.
+    </p>
+<<elseif $g.slaver.isHasTrait('magic_fire')>>
+    <p>
+        Sensing danger, <<yourrep $g.slaver>> cast a fireball straight at the attacker's face. It stopped the attack, but the attacker was already way too close to you, and you get singed a little as well.
+    </p>
+    <<run setup.qc.Injury('you', 1).apply($gQuest)>>
+<<elseif $g.slaver.isHasTrait('magic_light')>>
+    <p>
+        Sensing danger, <<yourrep $g.slaver>> used <<their $g.slaver>> mastery over light magic to cast a dazzling spell, blinding the attacker and using the opportunity to subdue <<them $g.slaver>>.
+    </p>
+<<else>>
+    <p>
+        Unfortunately, <<yourrep $g.slaver>> was just as bewildered as you were, and was unable to stop the attack. The knife hits you, and you got injured, but thankfully it was not a mortal wound. <<Yourrep $g.slaver>> took the opportunity to subdue the attacker.
+        <<run setup.qc.Injury('you', 5).apply($gQuest)>>
+    </p>
+<</if>>
+
+<p>
+    Even when subdued, the attacker glared defiantly at you, eyes full of revenge. <<They $g.slave>> seemed to hold a grudge to you. Upon closer inspection, you seem to recall the <<urace $g.slave>> as one of the slaves you used to own, but then sold away. From further questioning, it seemed that <<they $g.slaver>> was sold to a rather sadistic owner.
+    <<if $g.slave.isHasTrait('anus_tight')>>
+        <<run setup.qc.TraitReplace('slave', setup.trait.anus_gape).apply($gQuest)>>
+        Indeed, <<their $g.slave>> once tight hole was ruined beyond repair. It seemed the owner delighted to anally torture the poor <<urace $g.slaver>>, fitting multiple dildos up and enjoying the scream of pain that comes aftewards.
+    <<elseif $g.slave.isHasTrait('breast_large')>>
+        Indeed, <<their $g.slave>> <<ubreasts $g.slave>> and nipples show signs of being abused, making you wonder if they can still produce milk in those conditions.
+    <<elseif $g.slave.isHasTrait('dick_large')>>
+        Indeed, <<their $g.slave>> <<udick $g.slave>> and balls show signs of being used and abused, making you wonder if <<they $unit.player>> still remain a functional sexual organ.
+    <<else>>
+        Indeed, the <<urace $g.slave>> shows signs of having being tortured orally, <<their $g.slave>> mouth is slightly agape as a sign of being constantly gagged.
+    <</if>>
+</p>
+
+<p>
+    You'll have to decide what to do with the unruly slave.
+</p>
+
+

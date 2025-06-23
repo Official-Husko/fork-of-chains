@@ -1,0 +1,43 @@
+:: LIVINGSETUP_assassin [nobr living]
+
+<<run new setup.Living({
+  key: 'assassin',
+  name: 'Assassin',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_assassin: setup.LIVING_COMMON_PREFERENCE,
+    bg_thief: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_cruel: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_kind: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'skulking around a|their target',
+    'claiming bounties',
+    'stealthily poisoning a|their bounties',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_assassin [nobr]
+
+<p>
+<<Rep $g.a>>
+<<if $g.a.isHasTrait('bg_assassin')>>
+resumes a|their old occupation as
+<<else>>
+takes up the occupation of
+<</if>>
+being an assassin.
+Unlike most other assassins, however, a|they has the luxury of not doing it for the pay.
+Instead, a|they would a|take up the most
+<<if $g.a.isHasTrait('per_cruel')>>
+devilish
+<<else>>
+challenging
+<</if>>
+contracts for fun.
+Sometimes, a|they would simply make a|their target disappear, which would then appear
+in a|their personal sex dungeons.
+</p>

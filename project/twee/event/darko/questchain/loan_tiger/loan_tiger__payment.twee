@@ -1,0 +1,42 @@
+:: EventSetup_loan_tiger__payment [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'loan_tiger__payment', /* key */
+"Loan Tiger: Payment", /* Title */
+"darko", /* Author */
+[ 'special',
+], /* tags */
+'Event_loan_tiger__payment',
+{ /* roles */
+},
+{ /* actors */
+'tiger': 'quest_event_loan_tiger1', },
+[ /* outcomes */
+setup.qc.SlaverMarker('tiger'),
+setup.qc.Money(-15000), ],
+[ /* restrictions to generate */
+],
+1,
+setup.rarity.never,  /* Rarity */
+)>>
+
+:: Event_loan_tiger__payment [nobr]
+
+<p>
+A year ago, you borrowed some money from the <<rep $company.bank>>. Today,
+the charming representative of the bank is back at your company to collect the loan together with the interest.
+<<if $company.player.getMoney() >= 15000>>
+You have allocated some funds for this purpose, which <<rep $g.tiger>>
+happily takes.
+"<<name $g.tiger>> is pleased to do business with you." - <<they $g.tiger>>
+cordially tiger|say as they tiger|leave your fort with the bag of money.
+<<else>>
+Paying the money unfortunately puts your company in significant debt, but a promise is a
+promise and <<rep $g.tiger>> takes the money away.
+"<<name $g.tiger>> is pleased to do business with you, but <<name $g.tiger>>
+hopes your company will continue doing well." - <<they $g.tiger>> apologetically
+tiger|say as they leave your fort with the bag of money.
+<</if>>
+</p>

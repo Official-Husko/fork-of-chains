@@ -1,0 +1,26 @@
+:: RestrictionNoEvent [nobr]
+
+This event must NOT already been scheduled: <br/>
+
+<<for _ievent, _event range setup.event>>
+  <<capture _event>>
+    <<link _event.getName() 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.NoEvent(_event)>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: RestrictionEventOnCooldown [nobr]
+
+This following event must be ON COOLDOWN: <br/>
+
+<<for _ievent, _event range setup.event>>
+  <<capture _event>>
+    <<link _event.getName() 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.EventOnCooldown(_event)>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>

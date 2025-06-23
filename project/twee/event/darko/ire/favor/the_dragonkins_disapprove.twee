@@ -1,0 +1,38 @@
+:: EventSetup_the_dragonkin_disapprove [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'the_dragonkin_disapprove', /* key */
+"The Dragonkin Disapprove", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_the_dragonkin_disapprove',
+{ /* roles */
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('dragonkin', -20),
+setup.qc.Favor('dragonkin', -500),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('dragonkin', 20),
+setup.qres.FavorAtLeast('dragonkin', 500), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_the_dragonkin_disapprove [nobr]
+
+<p>
+Your company has maintained a friendly relationship with the elusive <<rep $company.dragonkin>> --
+a truly remarkable feat. But due to recent events, your company has simultaneously irked
+these aloof species, and they have finally have enough of you.
+It seems that they've cut relations with you, and you'll have to rebuild it
+should you still with to regain their trust...
+</p>

@@ -1,0 +1,221 @@
+:: QuestSetup_totally_pirates [nobr quest]
+
+<<set _criteriaferry = new setup.UnitCriteria(
+null, /* key */
+'ferry', /* name */
+[
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  knowledge: 1,
+  social: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'totally_pirates', /* key */
+"Totally Pirates", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'money',
+  'unit',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'pirate1': [ setup.qu.pirate, 1],
+  'pirate2': [ setup.qu.pirate, 1],
+  'ferry': [ _criteriaferry, 1],
+},
+{ /* actors */
+  'companion1': 'city_all',
+  'companion2': 'city_all',
+  'traveler': 'all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1000),
+],
+'Quest_totally_pirates',
+setup.qdiff.hard48, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_totally_piratesCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('companion1', "a|was a traveling companion of an unfortunate traveler who tried to venture south into the seas but got nabbed by totally random pirates", undefined),
+      setup.qc.Slave('companion2', "a|was a traveling companion of an unfortunate traveler who tried to venture south into the seas but got nabbed by totally random pirates", undefined),
+    ],
+  ],
+  [
+    'Quest_totally_piratesCrit',
+    [
+      setup.qc.Slave('traveler', "a|was an unfortunate traveler who tried to venture south into the seas but got nabbed by totally random pirates", undefined),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_totally_piratesCrit',
+    [
+      setup.qc.MoneyCustom(2000),
+      setup.qc.Injury('pirate1', 4),
+      setup.qc.Injury('pirate2', 4),
+    ],
+  ],
+  [
+    'Quest_totally_piratesCrit',
+    [
+      setup.qc.MissingUnit('ferry'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_totally_pirates [nobr]
+<p>
+The <<lore region_sea>> is extremely dangerous, and everyone in <<lore geo_mestia>> knows that. Anyone who dares travel south must accept the risk that it might be their last, and ferry services going into the south usually accept that one or two of its passengers will be unfortunately lost in the sea — be it to the pirates, the weather, or even to the various sea monsters that infest the ocean.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+<p>
+<<Yourrep _u>> has pointed out to you that this could be an opportunity for your company to get some new slaves. Have one of your more charismatic slavers open up shop and run an underpriced ferry trip south, while two other slavers will board the ship mid-journey and kidnap a passenger or two. Given how rampant this occurrence is in the seas, nobody will suspect your company has anything to do with the incident. Plus, you'll still get paid honest money for the ferry service.
+</p>
+
+<p>
+Of course, with anything involving <<lore region_sea>> there is bound to be an assortment of very real risks involved...
+</p>
+
+
+
+
+
+:: Quest_totally_piratesCrit [nobr]
+<p>
+With a small capital to fund off the ship, <<yourrep $g.ferry>> went into the <<lore region_city>> and started to find people interested in going south using <<their $g.ferry>> cheap ferry service.
+
+<<if $g.ferry.isHasTrait('bg_seaman')
+or
+$g.ferry.isHasTrait('bg_pirate')>>
+<<They $g.ferry>> used to be an authentic <<man $g.ferry>>-of-the-sea, which was reflected in <<their $g.ferry>> sales pitch.
+<</if>>
+
+<<if $g.ferry.isHasTrait('face_attractive')>>
+<<Their $g.ferry>>
+<<if $g.ferry.isHasTrait('face_beautiful')>>
+absolutely stunning
+<<else>>
+attractive
+<</if>>
+looks helped draw potential customers in.
+<</if>>
+
+<<if $g.ferry.isHasTrait('face_scary')>>
+Unfortunately, <<their $g.ferry>>
+<<if $g.ferry.isHasTrait('face_hideous')>>
+terrifying visage
+<<else>>
+ugly face
+<</if>>
+shooed some potential customers away.
+<</if>>
+
+<<if $g.ferry.isHasTrait('per_direct')>>
+<<They $g.ferry>> might have been too honest with <<their $g.ferry>> intentions, overemphasizing the danger part and warding some customers away.
+<</if>>
+
+<<if $g.ferry.isHasTrait('per_sly')>>
+<<They $g.ferry>> slyly goaded customers to sign up, not really emphasizing the dangers of the journey.
+<</if>>
+
+<<if $g.ferry.isHasTrait('per_loner')>>
+<<Their $g.ferry>> lack of eloquence was problematic for drawing customers in.
+<</if>>
+<<if $g.ferry.isHasTrait('per_gregarious')>>
+<<Their $g.ferry>> eloquence won <<them $g.ferry>> even more customers.
+<</if>>
+
+In the end <<rep $g.ferry>> managed to found
+<<if $gOutcome == 'success' or $gOutcome == 'crit'>>
+a good chunk of customers
+<<else>>
+some customers
+<</if>>
+and set sail into the south.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+
+<p>
+Unfortunately, <<rep $g.ferry>> was instead met with a real rowdy pirate of the south. The ship was completely unprepared against such a danger, and the ship never returned back to <<lore geo_mestia>>.
+<<uneedrescue $g.ferry>>, preferably before the pirates sold <<therace $g.ferry>> away to some distant land...
+</p>
+
+<<else>>
+
+<p>
+Once the ship is out in the open ocean, <<rep $g.ferry>> <<uadv $g.ferry>> steered the ship into the location where the other two slavers were lying in wait. Soon enough, the "pirate ship" came into view, and
+<<rep $g.ferry>> did <<their $g.ferry>> best to act as naturally as <<they $g.ferry>> could when having <<their $g.ferry>> ship about to be boarded by pirates. Before long the "pirate" ship boarded the defenseless little ship and <<yourrep $g.pirate1>> and <<utheirrel $g.pirate1 $g.pirate2>> <<rep $g.pirate2>> jumped into the foray.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+Fortunately, among the passengers were some seasoned fighters. With their help the pirates were routed and the ship were saved from piracy. While the rest of the passenger rejoiced and praised their hero, <<rep $g.ferry>> stared in disbelief at the result, before ushering the "pirates" back to the ship before worse befall them by the rowdy passengers.
+</p>
+
+<p>
+In the end, <<rep $g.ferry>> came back home with a little profit from the endeavor, but nowhere near enough to cover the cost of healing both your "pirates" back to full health.
+</p>
+<<else>>
+
+<p>
+The defenseless ship was of course no match for the scary and rowdy pirates
+of the south, and <<rep $g.ferry>> "made" the wise decision to surrender. The
+"pirates" were thus free to select among the passengers to kidnap, before
+settling on
+a
+<<rep $g.traveler.getTraitWithTag('bg')>><<if $gOutcome == 'crit'>>, as well as two of <<their $g.traveler>> traveling companions<</if>>.
+With the captives in tow, the pirates were satisfied and "mercifully" left the rest of the ship alone.
+</p>
+
+<p>
+Still, with only
+<<if $gOutcome == 'crit'>>
+three passengers
+<<else>>
+one passenger
+<</if>>
+lost, the trip was deemed a success by the <<lore region_sea>> standards, and <<yourrep $g.ferry>> received <<their $g.ferry>> promised pay. <<Therace $g.ferry>> also <<uadv $g.ferry>> helped <<themself $g.ferry>> with whatever belongings the poor pirate captive had before being kidnapped by the damnable "pirates".
+</p>
+
+<</if>>
+
+<</if>>

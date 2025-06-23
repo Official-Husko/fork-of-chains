@@ -1,0 +1,50 @@
+:: EventSetup_whorebaited [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'whorebaited', /* key */
+"Whorebaited", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_whorebaited',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NotYou(),
+],
+
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+'neko': 'subrace_neko', },
+[ /* outcomes */
+setup.qc.Ire('neko', -20),
+setup.qc.MissingUnit('victim'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('neko', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_whorebaited [nobr]
+
+<p>
+Recently, you noticed <<yourrep $g.victim>> spending more and more time with
+a certain neko <<lady $g.neko>> from the <<lore location_npc>>. You given it
+no notice since it sounds harmless enough, but today marks the fifth day that
+<<rep $g.victim>> victim|have been missing from your compound.
+</p>
+
+<p>
+Given the pristine state of <<their $g.victim>> room, it seems that <<rep
+$g.victim>> had been lured into voluntarily quitting from your company. You
+start to wonder if this is the work of some people in <<rep
+$company.neko>>, whom you have angered recently. If it does, then whatever
+fate awaits the <<uadjgood $g.victim>> slaver will not be a good one.
+<<uneedrescue $g.victim>> from <<their $g.victim>> fake lover...
+</p>

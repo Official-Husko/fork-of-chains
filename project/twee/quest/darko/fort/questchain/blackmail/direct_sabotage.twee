@@ -1,0 +1,156 @@
+:: QuestSetup_direct_sabotage [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"direct_sabotage0",
+"Former Slaver",
+'vale_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slaver),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.muscle_strong, setup.trait.face_attractive, setup.trait.per_smart], 1, false, false),
+  setup.qc.TraitReplace('unit', setup.trait.per_independent),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'direct_sabotage', /* key */
+"Direct Sabotage", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'special',
+  'unit',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'convincer': [ setup.qu.convincer, 1],
+  'briber': [ setup.qu.briber, 1],
+  'seducer': [ setup.qu.seducer, 1],
+},
+{ /* actors */
+  'slaver': [
+  ],
+  'boss': [
+  ],
+  'recruit': 'direct_sabotage0',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-5000),
+],
+'Quest_direct_sabotage',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_direct_sabotageCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slaver('recruit', "a|was a slaver under your rival\'s employ who a|was convinced to switch sides", undefined),
+    ],
+  ],
+  [
+    'Quest_direct_sabotageCrit',
+    [
+      setup.qc.Event('sabotage_success', 4, {
+        slaver: "slaver",
+        boss: "boss",
+      }),
+    ],
+  ],
+  [
+    'Quest_direct_sabotageFailure',
+    [
+      setup.qc.Outcomes("disaster"),
+      setup.qc.MoneyCustom(5000),
+    ],
+  ],
+  [
+    'Quest_direct_sabotageFailure',
+    [
+      setup.qc.Opportunity('subtle_retaliation', {
+slaver: "slaver",
+boss: "boss",
+}),
+      setup.qc.MoneyCustom(2500),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Opportunity('subtle_retaliation', {
+slaver: "slaver",
+boss: "boss",
+}),
+
+],
+)>>
+
+:: Quest_direct_sabotage [nobr]
+
+<p>
+If you choose not to ask any of your contacts to do the dirty work for you,
+then your slavers would have to do it themselves.
+If you want to subtly sabotage your rival <<rep $g.boss>>,
+then this is a task best suited for your most golden-tongued slavers.
+Perhaps they can convince one or two of your rival's slavers to desert —
+A convincer and a briber to play a good cop bad cop, assisted by a seducer to lure the target out...
+</p>
+
+
+
+:: Quest_direct_sabotageCrit [nobr]
+
+<p>
+After a few days of scouting, your slavers identified one potential target from among <<reps $g.boss>> many slavers: a disloyal <<urace $g.recruit>> who looked a little unsure about <<their $g.recruit>> job, preferring to spend <<their $g.recruit>> time <<uhobbyverb $g.recruit>> instead.
+</p>
+
+<p>
+<<Rep $g.seducer>> <<uadv $g.seducer>>
+<<if $g.seducer.isHasTrait('dick_large')>>
+brandished <<their $g.seducer>> <<udick $g.seducer>> like a weapon
+<<elseif $g.seducer.isHasTrait('breast_large')>>
+utilized <<their $g.seducer>> <<ubreast $g.seducer>> like a bargaining chip
+<<else>>
+used <<their $g.seducer>>
+<<ubody $g.seducer>>
+<</if>>
+and there was no way the target slaver <<rep $g.recruit>> was
+able to resist the alluring hips.
+Once alone, <<rep $g.convincer>> and <<utheirrel $g.convincer $g.briber>>
+<<rep $g.briber>> used both their wits and the bribe money to convince the slaver to quit <<their $g.recruit>> job.
+</p>
+
+<p>
+With the deadly combination of a golden tongue sensuously licking over a golden coin,
+there was really no way <<rep $g.recruit>> could refuse the offer.
+<<if $gOutcome == 'crit'>>
+In fact, your slavers were so convincing that <<they $g.recruit>> offered to join your company instead,
+although ultimately it's your decision whether you would have a use for such a disloyal slaver...
+<</if>>
+</p>
+
+<p>
+That's one less slaver in <<reps $g.boss>> employ — one less problem for you. The sabotage is successful.
+</p>
+
+
+:: Quest_direct_sabotageFailure [nobr]
+<p>
+Despite having managed to get some alone time with one of <<reps $g.boss>> slavers, your slavers had chosen the wrong target. <<Therace $g.recruit>> proved to be too loyal, and plainly refused all offers of bribe, convincing, and thing as simple as a night stand.
+Eventually your slavers had to give up on <<therace $g.recruit>>, and returned home with failure and shame.
+<<if $gOutcome == 'disaster'>>
+Worse, your slavers already spent half of the bribe money along the way, and given their failure they were unable to hide how they had "misplaced" the money from you.
+Perhaps you could consider a strict punishment for them later, but for now you
+<<else>>
+At least the money they brought with them remained intact, although you still
+<</if>>
+need to plan your next actions against your rival...
+</p>

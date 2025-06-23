@@ -1,0 +1,231 @@
+:: QuestSetup_seasonal_cleaning [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'seasonal_cleaning_head',  /* key */
+  "A Noble's Trustee",   /* name */
+  'A trustee of a certain lonely noble in the city',   /* name */
+  'a|have gained the trust of a certain lonely noble in the city',
+  0,   /* slave value */
+  {
+    social: 1,
+  },
+)>>
+
+<<run new setup.Title(
+  'seasonal_cleaning_head_full',  /* key */
+  "A Noble's Master",   /* name */
+  'Has full control over a certain submissive noble in the city',   /* name */
+  'a|have effectively enslaved a certain submissive noble in the city',
+  0,   /* slave value */
+  {
+    social: 2,
+    knowledge: 1,
+  },
+)>>
+
+<<run new setup.UnitGroup(
+'quest_seasonal_cleaning1',
+"Inheritor",
+'subrace_humankingdom', /* pools */
+1,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+setup.qc.TraitReplace('unit', setup.trait.per_chaste),
+setup.qc.TraitReplace('unit', setup.trait.per_loner), ],
+)>>
+<<set _criteriahead = new setup.UnitCriteria(
+null, /* key */
+'Head Maid / Butler', /* name */
+[
+setup.trait.dick_large,
+setup.trait.breast_large,
+setup.trait.muscle_strong,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_proud,
+setup.trait.per_playful,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.skill_hypnotic,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+setup.trait.eq_slutty,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.muscle_thin,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.per_humble,
+setup.trait.per_serious,
+setup.trait.per_chaste,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+aid: 1,
+social: 1,
+sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'seasonal_cleaning', /* key */
+"Seasonal Cleaning", /* Title */
+"darko", /* Author */
+[ 'city', 'money'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'head': _criteriahead,
+'maid1': setup.qu.maid,
+'maid2': setup.qu.maid, },
+{ /* actors */
+'rich': 'quest_seasonal_cleaning1', },
+[ /* costs */
+],
+'Quest_seasonal_cleaning',
+setup.qdiff.hard32, /* difficulty */
+[ /* outcomes */
+[
+'Quest_seasonal_cleaningCrit',
+[
+setup.qc.MoneyCrit(),
+setup.qc.AddTitle('head', 'seasonal_cleaning_head'), ],
+], [
+'Quest_seasonal_cleaningSuccess',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_seasonal_cleaningFailure',
+[
+setup.qc.MoneyNormal(),
+setup.qc.TraumatizeRandom('head', 5),
+setup.qc.TraumatizeRandom('maid1', 5),
+setup.qc.TraumatizeRandom('maid2', 5), ],
+], [
+'Quest_seasonal_cleaningFailure',
+[
+setup.qc.MoneyNormal(),
+setup.qc.TraumatizeRandom('head', 10),
+setup.qc.TraumatizeRandom('maid1', 10),
+setup.qc.SlaveMarker('rich'),
+setup.qc.TraumatizeRandom('maid2', 10), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoUnitWithTitle('seasonal_cleaning_head'),
+setup.qres.NoUnitWithTitle('seasonal_cleaning_head_full'), ],
+)>>
+
+:: Quest_seasonal_cleaning [nobr]
+
+<p>
+The nobles of the <<rep $company.humankingdom>> often live in grand mansions staffed full with
+maids of various origins. occasionally, these mansion hires part-time maids
+to help clean up after particularly debauched parties being held in the mansion. These jobs
+often pay well, and well deservedly considering the various kinds of questionable mess they
+will have to clean.
+</p>
+
+<p>
+These kinds of job usually do not interest your company at all, but one such
+offer came from a particularly well-known noble: the <<lord $g.rich>> <<name $g.rich>>.
+<<They $g.rich>> rich|is the sole inheritor of an estate, and to the best of your
+knowledge <<they $g.rich>> rich|have no other relative nor <<they $g.rich>>
+rich|have married. In fact, if the rumors were to be believed, the main reason
+<<they $g.rich>> looked for a maid is to search for a life-long companion to
+serve <<them $g.rich>> both formally and informally.
+</p>
+
+<p>
+If you have a particularly convincing slaver, you could try to send them on
+this job. Given the prudeness of the noble, the most likely scenario is that
+nothing happens and your slavers just get paid for their job. But with a
+particularly convincing and sexy slaver, who knows what might happen...
+</p>
+
+
+:: Quest_seasonal_cleaningCrit [nobr]
+
+<p>
+Throughout their stay in the mansion, <<rep $g.head>> somehow managed to
+secure the attention of the mansion's <<lord $g.rich>>.
+It probably is thanks to <<their $g.head>> <<upraisenoun $g.head>>.
+Oftentimes, <<rep
+$g.rich>> would request for <<rep $g.head>> to privately clean <<their
+$g.rich>> bedchamber, and the two would disappear for hours to come. When
+asked about it, <<yourrep $g.head>> <<uadv $g.head>> refused to answer, but
+promised that the company would benefit greatly from whatever was happening
+there. Only time will tell if this promise will actually be fulfilled in
+the future...
+</p>
+
+<p>
+Still, there was much work to be done cleaning all the questionable stains
+left on the sofas and the floor. With the help of your experienced slavers
+the work was done efficiently, restoring the mansion back to a pristine state.
+For such splendid work your slavers were paid greatly by the <<lord
+$g.rich>>.
+</p>
+
+
+:: Quest_seasonal_cleaningSuccess [nobr]
+
+<p>
+The amount of work in the mansion were so much more than your slavers had
+anticipated, and <<yourrep $g.head>> had no time to attempt to seduce or even
+befriend the <<lord $g.rich>> of the mansion. Numerous questionable stains of
+various smells littered the entire mansion, be it on the sofas in the living
+room, the piano, or even from inside the extinguished fireplace.
+</p>
+
+<p>
+Using their knowledge and wit your slavers managed to
+<<uadv $g.head>> clean up all the mess, while trying their best not to
+imagine how these stains came to be in the first place.
+</p>
+
+<p>
+Your slaver were paid well for the job, although a little disappointed for
+not being able to execute the degenerate plan of yours. Perhaps there will be
+another chance.
+</p>
+
+
+:: Quest_seasonal_cleaningFailure [nobr]
+
+<p>
+The amount of work in the mansion were so much more than your slavers had
+anticipated, and <<yourrep $g.head>> had no time to
+seduce or befriend the <<lord $g.rich>> of the mansion.
+Numerous questionable stains emitting various
+stench littered the entire mansion, be it on the sofas in the living room, the
+piano, or even from inside the extinguished fireplace.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+Your slavers managed to finish the job, but they were clearly shaken by the experience.
+</p>
+<<else>>
+<p>
+Your slavers did not have to imagine hard what happened as one of the guests
+appeared to not have left the mansion yet. Given no choice, your slavers were forced to service
+the guest. In the end, although your slavers were paid well for the job, they
+were clearly shaken by the entire ordeal.
+</p>
+<</if>>

@@ -1,0 +1,148 @@
+:: OGCreate [autosave]
+<<nobr>>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_begin()>>
+<<attach _dom>>
+
+<<link '(Test your opportunity)'>>
+  <<set setup.opportunitytemplate[$dtquest.key] = $dtquest>>
+  <<if $qpool>>
+    <<run $qpool.registerOpportunity($dtquest, $qrarity)>>
+  <</if>>
+
+  <<set setup.DEVTOOL_odesc = $odesc>>
+  <<set setup.DEVTOOL_ooptiondesc = $ooptiondesc>>
+  <<set setup.DEVTOOL_ooptiontitle = $ooptiontitle>>
+
+  <<for _ioption, _option range $ooptiondesc>>
+    <<set $dtquest.options[_ioption].description_passage = `DummyOpportunityPassage${_ioption}`>>
+    <<set $dtquest.options[_ioption].outcome_passage = `DummyOpportunityPassageFlavor${_ioption}`>>
+  <</for>>
+
+  <<set $qDebugOpportunityTemplate_key = $dtquest.key>>
+
+  <<focgoto 'OpportunityDebugDo'>>
+<</link>>
+[[(Back to edit opportunity)|OpportunityGen]]
+
+<br/>
+<br/>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_middle()>>
+<<attach _dom>>
+
+<</nobr>>
+<div id='devtoolcoderesult' class='companycard'> <code>"""::""" <<= $opassagesetup >> [nobr opportunity]
+
+<<dtprintmeta>>
+"""<<run new setup.OpportunityTemplate("""
+  '<<= $okey>>', """/* key */"""
+  <<dtprinttitle>>
+  <<dtprintauthor>>
+  <<dtprinttags>>
+  <<dtprintdeadlineweeks>>
+  '<<= $opassagedesc>>',
+  <<dtprintdifficulty>>
+  [ """/* options */""" <<nobr>>
+    <<for _ioption, _option range $dtquest.options>>
+      <br>
+      &nbsp;
+      {
+        <br/>
+        &nbsp; &nbsp;
+        description_passage: 'Opportunity_<<= $okey>>_<<= _ioption>>',
+        <br/>
+        &nbsp; &nbsp;
+        <<if $ooptiondesc[_ioption]>>
+          outcome_passage: 'Opportunity_<<= $okey>>_<<= _ioption>>_flavor',
+        <<else>>
+          outcome_passage: null,
+        <</if>>
+      <br/>
+      &nbsp;
+      &nbsp;
+      costs: [ """/* costs */"""
+        <<for _icost, _cost range _option.costs>>
+          <br/>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <<= _cost.text()>>,
+        <</for>>
+      <br/>
+      &nbsp;
+      &nbsp;
+      ], 
+      <br/>
+      &nbsp;
+      &nbsp;
+      restrictions: [ """/* restrictions */"""
+        <<for _irestriction, _restriction range _option.restrictions>>
+          <br/>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <<= _restriction.text()>>,
+        <</for>>
+      <br/>
+      &nbsp;
+      &nbsp;
+      ], 
+      <br/>
+      &nbsp;
+      &nbsp;
+      outcomes: [ """/* outcomes */"""
+        <<for _ioutcome, _outcome range _option.outcomes>>
+          <br/>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <<= _outcome.text()>>,
+        <</for>>
+      <br/>
+      &nbsp;
+      &nbsp;
+      ], 
+      <br/>
+      &nbsp;
+      &nbsp;
+      visibility_restrictions: [
+        <<for _irestriction, _restriction range _option.visibility_restrictions>>
+          <br/>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <<= _restriction.text()>>,
+        <</for>>
+      <br/>
+      &nbsp;
+      &nbsp;
+      ], 
+    <br/>
+    &nbsp;
+    },
+    <</for>>
+  <</nobr>>
+  ],
+  <<dtprintquestpool $opool $orarity>>
+  <<dtprintrestrictions 'prerequisites'>>
+  <<dtprintactors>>
+  <<dtprintexpirationoutcomes>>
+  <<= $dtquest.isMustBeAnswered()>>, """ /* is must be answered */ """
+)>>
+
+"""::""" <<= $opassagedesc >> [nobr]
+<<= setup.devToolFormat($odesc)>>
+
+
+<<for _ioption, _option range $dtquest.options>>
+"""::""" Opportunity_<<= $okey>>_<<= _ioption>> [nobr]
+<<= setup.devToolFormat($ooptiontitle[_ioption])>>
+
+<<if $ooptiondesc[_ioption]>>
+  """::""" Opportunity_<<= $okey>>_<<= _ioption>>_flavor [nobr]
+  <<= setup.devToolFormat($ooptiondesc[_ioption])>>
+<</if>>
+
+<</for>>
+</code></div>

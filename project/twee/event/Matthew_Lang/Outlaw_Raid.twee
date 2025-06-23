@@ -1,0 +1,83 @@
+:: EventSetup_outlaw_raid [nobr event]
+
+<<run new setup.Event(
+'outlaw_raid', /* key */
+"Outlaw Raid", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+],
+'Event_outlaw_raid',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'lostslave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.ZeroTitle(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.MissingUnit('lostslave'),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_outlaw_raid [nobr]
+<<set _guard = setup.getAnySlaver()>>
+
+<p>
+You awaken to shouts of alarm and the sounds of running footsteps.
+<<if $unit.player.isHasTrait('per_brave')>>
+Shoving your feet into your <<uequipslot $unit.player 'feet'>>, you grab a weapon and head out into the corridor.<br>"What's going on?" you demand.
+<<elseif $unit.player.isHasTrait('per_aggressive')>>
+Shoving your feet into your <<uequipslot $unit.player 'feet'>>, you grab a weapon and head out into the corridor.<br>"What's going on?" you demand.
+<<elseif $unit.player.isHasTrait('per_calm')>>
+You don't hear the sounds of combat though, so you calmly get dressed and head out into the corridor.<br>
+"What's going on?" you ask.
+<<elseif $unit.player.isHasTrait('per_cautious')>>
+You don't hear the sounds of combat though, so you calmly get dressed and head out into the corridor.<br>
+"What's going on?" you ask.
+<<elseif $unit.player.isHasTrait('per_submissive')>>
+Hurriedly you jam your feet into your <<uequipslot $unit.player 'feet'>> and walk out into the corridor.<br>
+"Um, what's going on?" you ask.
+<<else>>
+Jamming your feet into your <<uequipslot $unit.player 'feet'>>, you head out into the corridor.<br>
+"What's happening?" you ask.
+<</if>>
+</p>
+
+<p>
+<<name _guard>> is the first person you see, apparently <<they _guard>> were heading to your room anyway.<br>
+"We have a slave missing," <<name _guard>> says <<uadv _guard>>.<br>
+That gets your attention. "Did they escape?"<br>
+<<name _guard>> shakes their head. "No, they were taken. We found this in their cell.
+</p>
+
+<p>
+Unfolding the dirty slip of paper, you find a short note in scratchy handwriting.
+</p>
+<p>
+<i>Thanks for the fucktoy. Since you didn't send one we thought we'd come and help ourselves. You should really do something about your guards. Someone could get in and kill you all in your sleep.</i>
+</p>
+<p>
+"Boss?" <<name _guard>> asks, taking a step back.<br>
+<<if $unit.player.isHasTrait('per_aggressive')>>
+"Fucking bandits," you say, crumpling the paper in your fist. "Should have fucked them up when I had the chance."
+<<elseif $unit.player.isHasTrait('per_calm')>>
+"Bandits took them," you say, turning the paper over to ensure there's nothing else written on the back. "I suppose we should have anticipated that."
+<<else>>
+"Bandits," you say shortly. "We really should do something about them."
+<</if>>
+</p>
+
+<p>
+<<if $fort.player.isHasBuilding('rescueroffice')>>
+Hopefully you'll be able to track the bandits down and find your slave again. On the other hand, a free spot in the cells isn't necessarily a bad thing. You'll have to think about that.
+<</if>>
+You know you have some good trackers amongst your slavers. Maybe you should officially give one of them the duty of recovering slaves—or slavers, should it come to that in the future. Building a <b><<rep setup.buildingtemplate.rescueroffice>></b> would be a good start.
+</p>

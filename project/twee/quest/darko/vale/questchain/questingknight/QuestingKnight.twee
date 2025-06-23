@@ -1,0 +1,227 @@
+:: QuestSetupQuestingKnight [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _desc = "a|was a knight of the Kingdom of Tor, who tried to rescue a|their squire but ended up joining a|them in slavery instead">>
+
+<<set _antiknight = new setup.UnitCriteria(
+  null, /* key */
+  'Anti-Knight Fighter', /* title */
+  [
+    setup.trait.per_brave,
+    setup.trait.per_aggressive,
+    setup.trait.per_sly,
+    setup.trait.per_cruel,
+    setup.trait.per_dominant,
+    setup.trait.per_evil,
+    setup.trait.skill_ambidextrous,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+    setup.trait.eq_veryvaluable,
+  ], /* critical traits */
+  [
+    setup.trait.per_cautious,
+    setup.trait.per_calm,
+    setup.trait.per_direct,
+    setup.trait.per_kind,
+    setup.trait.per_submissive,
+    setup.trait.per_masochistic,
+    setup.trait.per_honorable,
+    setup.trait.magic_light,
+    setup.trait.magic_light_master,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+  ], /* disaster traits */
+  [
+    setup.qres.Job(setup.job.slaver)
+  ], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    combat: 2.0,
+    slaving: 1.0,
+  }
+)>>
+
+
+<<run new setup.Title(
+  'questing_knight_title',  /* key */
+  "Questing Knight of Tor",   /* name */
+  'A famous knight of the Kingdom of Tor who ventured north in search for a|their squire',   /* name */
+  'a|was a famous knight of the Kingdom of Tor who made an unfortunate error in searching for a|their squire alone',
+  15000,   /* slave value */
+  {
+    combat: 3,
+    aid: 3,
+  },
+)>>
+
+
+<<run new setup.UnitGroup(
+  'quest_humankingdom_knight',
+  'knight of the kingdom',
+  [
+    [setup.unitpool.subrace_humankingdom_male, 0.7],
+    [setup.unitpool.subrace_humankingdom_female, 0.3],
+  ],
+  0,
+  [
+    setup.qc.BgTraitReset('unit', setup.trait.bg_knight),
+    setup.qc.TraitReplace('unit', setup.trait.per_honorable),
+    setup.qc.TraitReplace('unit', setup.trait.per_chaste),
+    setup.qc.TraitReplace('unit', setup.trait.will_defiant),
+    setup.qc.AddTitle('unit', 'questing_knight_title'),
+  ]
+)>>
+
+<<run new setup.QuestTemplate(
+  'questing_knight', /* key */
+  'Questing Knight', /* Title */
+  'darko',   /* author */
+  ['vale', 'unit', 'prep', 'ire', 'rare',],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'fighter1': _antiknight,
+    'fighter2': _antiknight,
+    'healer': setup.qu.healer,
+  },
+  { /* actors */
+    'knight': 'quest_humankingdom_knight',
+  },
+  [ /* costs */
+  ],
+  'QuestQuestingKnight', /* passage description */
+  setup.qdiff.hardest31, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestQuestingKnightCrit',
+      [
+        setup.qc.Equipment(setup.equipmentpool.combat_good),
+        setup.qc.Equipment(setup.equipmentpool.combat_good),
+        setup.qc.Slave('knight', _desc),
+        setup.qc.Ire('royal', 5),
+        setup.qc.Ire('royal', 5),
+      ],
+    ],
+    [
+      'QuestQuestingKnightCrit',
+      [
+        setup.qc.Equipment(setup.equipmentpool.combat_good),
+        setup.qc.Ire('humankingdom', 1),
+        setup.qc.Ire('royal', 1),
+        setup.qc.Injury('fighter1', 1),
+        setup.qc.Injury('fighter2', 1),
+      ],
+    ],
+    [
+      'QuestQuestingKnightCrit',
+      [
+        setup.qc.Injury('fighter1', 2),
+        setup.qc.Injury('fighter2', 2),
+        setup.qc.Injury('healer', 2),
+      ],
+    ],
+    [
+      'QuestQuestingKnightDisaster',
+      [
+        setup.qc.Injury('fighter1', 4),
+        setup.qc.Injury('fighter2', 4),
+        setup.qc.Injury('healer', 4),
+        setup.qc.EscapedSlaveRandom(),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.epic],], /* quest pool and rarity */
+  [
+    setup.qres.QuestUnique(),
+    setup.qres.HasUnitWithTitle('quest_knight_in_training_squire', {job_key: 'slave'}),
+    setup.qres.NoUnitWithTitle('questing_knight_title'),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestQuestingKnight [nobr]
+
+<p>
+The Kingdom of Tor has a full order of knighthood, in service to their king.
+These knights often take on squires as apprentices.
+Recently, you have just acquired one such unfortunate squires as a slave,
+who currently resides in your dungeon.
+</p>
+
+<p>
+You have heard rumors about a famous knight that have been asking questions around in the nearby tavern
+about the whereabouts of your slave.
+Apparently, the knight is on a mission to rescue the squire.
+Your fort location is not a well-guarded secret, so it is only a matter of time before the knight
+arrives at your doorstep, but it might be possible to send a team of slaver to ambush the knight
+and perhaps capture <<them $g.knight>> instead.
+Of course, besting a knight is a very difficult task, and you would need a team of specialized
+anti-knight fighters, together with a healer to keep them healthy throughout the fight.
+By using underhanded tactic, together with utilizing your familiarity with the terrain,
+this might be one of those rare chances where you could get your <<uhands $unit.player>> on a truly rare
+and valuable slave-knight, who will also be extremely challenging to break to your will.
+</p>
+
+
+:: QuestQuestingKnightCrit [nobr]
+
+<p>
+  The knight left a lot of trails in <<their $g.knight>> enquiries,
+  and your slavers had no problem at all locating the knight.
+  They waited until the knight is moving to another town, traveling alone.
+  There, in the middle of the night when the knight had encamped alone,
+  your slavers,
+
+  <<set _dark = setup.selectUnit([$g.fighter1, $g.fighter2, $g.healer], {trait: 'magic_dark'})>>
+  <<set _nimble = setup.selectUnit([$g.fighter1, $g.fighter2, $g.healer], {trait: 'tough_nimble'})>>
+  <<if _dark>>
+  covered by the shroud of darkness from <<reps _dark>> dark magic, <<uadv _dark>>
+  <<elseif _nimble>>
+  led from stealth by the nimble <<reps _nimble>>, <<uadv _nimble>>
+  <<else>>
+  spearheaded by <<yourrep $g.fighter1>>, <<uadv $g.fighter1>>
+  <</if>>
+
+  launched an ambush on the knight.
+
+  <<if $gOutcome == 'crit'>>
+
+  Having the advantage of surprise on their side, together with your slaver's
+  overall combat prowess, your slavers narrowly managed to subdue the knight before an actual fight began.
+  Immediately your slavers robustly tied the knight so tight the only movement
+  the knight could do is to breathe.
+  Your slavers then proceeded to loot the temporary camp, together with the still usable
+  part of the knight's armor,
+  to bring back home together with the main trophy.
+
+  <<elseif $gOutcome == 'success'>>
+
+  But apparently the knight was not as defenseless as they had thought, for <<they $g.knight>>
+  kept <<their $g.knight>> sword close all the time.
+  An intense battle ensued.
+  The knight fought fiercely, but ultimately was forced to retreat from the sheer combination
+  of number advantage and terrain advantage that your slavers had.
+  Still, that meant your slavers were unable to capture the knight as planned, but they were
+  able to thoroughly loot the camp, which apparently still contained some of the knight's valuable
+  armor pieces.
+
+  <<else>>
+
+  But apparently the knight already sensed their presence and was ready for a fight --
+  in the ensuing chaos, the knight fought like the true hero of legend <<they $g.knight>> knight|was, and
+  badly injured your slavers, who were forced to retreat.
+
+  <</if>>
+</p>
+
+
+:: QuestQuestingKnightDisaster [nobr]
+
+<p>
+Your slavers were unable to follow the trails leading to the knight. When they headed
+back to the fort in defeat, the knight apparently trailed them back into the fort instead.
+The knight proceeded to knock your slavers out before launching a formidable solo assault on
+your fort, freeing one of your slaves.
+</p>

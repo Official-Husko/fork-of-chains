@@ -1,0 +1,148 @@
+:: QuestSetupFatefulAuction [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'fateful_auction', /* key */
+  'Fateful Auction', /* Title */
+  'darko',   /* author */
+  [
+    'special', 'unit', 'city',
+  ],  /* tags */
+  1,  /* weeks */
+  8,  /* quest expiration weeks */
+  { /* roles */
+    'bidder1': setup.qu.bidder,
+    'bidder2': setup.qu.bidder,
+    'escort': setup.qu.escort,
+  },
+  { /* actors */
+    'target': 'missingslavers',
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-0.5),
+  ],
+  'QuestFatefulAuction', /* passage description */
+  setup.qdiff.easy35, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestFatefulAuctionCrit',
+      [
+        setup.qc.Slaver('target'),
+        setup.qc.RemoveFromUnitGroup('target'),
+      ],
+    ],
+    [
+      'QuestFatefulAuctionCrit',
+      [
+        setup.qc.TraumatizeRandom('target', setup.TRAUMA_MEDIUM),
+        setup.qc.TraumatizeRandom('target', setup.TRAUMA_MEDIUM),
+        setup.qc.Slaver('target'),
+        setup.qc.RemoveFromUnitGroup('target'),
+      ],
+    ],
+    [
+      'QuestFatefulAuctionCrit',
+      [
+        setup.qc.Trait('target', setup.trait.per_masochistic),
+        setup.qc.TraitReplaceExisting('target', setup.trait.anus_gape),
+        setup.qc.TraitReplaceExisting('target', setup.trait.vagina_gape),
+        setup.qc.Slaver('target'),
+      ],
+    ],
+    [
+      'QuestFatefulAuctionCrit',
+      [
+      ],
+    ],
+  ],
+  [ /* quest pool and rarity */
+    [setup.questpool.rescue, setup.rarity.uncommon],
+  ],
+  [ /* prerequisites to generate */
+    setup.qres.QuestUnique(),
+    setup.qres.UnitGroupHasUnit(setup.unitgroup.missingslavers),
+  ],
+  [ /* expiration outcomes */
+    setup.qc.RemoveFromUnitGroup('target'),
+  ],
+)>>
+
+
+:: QuestFatefulAuction [nobr]
+
+<p>
+You have been invited to an underground slave auction in the <<lore region_city>>.
+Unusually, you are invited as a bidder this time, not as a seller.
+Normally, such offer would not interest you or your company, but on a closer
+look at the list of slaves being offered, you notice something very interesting.
+<<Rep $g.target>> target|is one of the items on sale -- surely you remember
+<<rep $g.target>>? <<They $g.target>> target|was one of your slavers who
+tragically disappeared some time ago.
+</p>
+
+<p>
+You spread the great news to all members of your company. They are all
+cheering for you to send a team for this important mission.
+This could be your chance to rescue <<rep $g.target>> from their terrible fate.
+</p>
+
+
+:: QuestFatefulAuctionCrit [nobr]
+
+<p>
+Your slavers enthusiastically went to the <<lore region_city>>, with the sole
+goal of rescuing their former mate.
+They began by deriving a plan.
+First, they needed to be sufficiently presentable to attend the auction.
+<<Yourrep $g.escort>> would then need to lead them into the auction, and hopefully
+<<reps $g.escort>> grace would be enough to convince the guards to let
+them in. Once they were in, they would finally need to ensure that they win
+the bid for <<rep $g.target>>.
+</p>
+
+<p>
+Your slavers managed to find their way into the auction, and once inside
+they slavers waited. One by one, many slaves were being auctioned, ranging
+from the standard fare of human slaves freshly captured from the
+<<lore region_vale>>, to the rather exotic slaves such as a former orc
+warlord from the <<lore region_desert>>.
+Until finally, <<rep $g.target>> target|was being auctioned.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Via careful bidding, <<rep $g.bidder1>> and <<rep $g.bidder2>> were able
+to outbid all the other competitors to win <<rep $g.target>> back.
+Upon seeing <<their $g.target>> buyer, <<rep $g.target>> target|was completely
+taken by surprise, and soon a tearful reunion took place in the auction hall.
+Together, they came back into your fort.
+</p>
+
+<p>
+Luckily, it the experience of being a slave did not affect <<rep $g.target>>.
+<<They $g.target>> target|remain fit both mentally and physically as <<they
+$g.target>> target|was before.
+</p>
+
+<<elseif $gOutcome == 'success' or $gOutcome == 'failure'>>
+
+<p>
+<<Rep $g.bidder1>> and <<rep $g.bidder2>> were able
+to outbid all the other competitors to win <<rep $g.target>> back.
+But upon seeing <<them $g.target>>, your slavers realized that being a slave
+had taken a permanent toll on <<rep $g.target>>.
+Soon a tearful reunion both of joy and regret took place in the auction hall.
+Together, they came back to your fort, unsure of their success.
+</p>
+
+<<else>>
+
+<p>
+<<Rep $g.bidder1>> and <<rep $g.bidder2>> sloppily attended the auction,
+and were unable to outbid a fellow competitor, who bought <<rep $g.target>> and
+took <<them $g.target>> somewhere away...
+</p>
+
+<</if>>

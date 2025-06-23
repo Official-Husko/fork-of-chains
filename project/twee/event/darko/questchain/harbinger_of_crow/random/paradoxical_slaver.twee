@@ -1,0 +1,136 @@
+:: EventSetup_paradoxical_slaver [nobr event]
+
+<<run new setup.Event(
+'paradoxical_slaver', /* key */
+"Paradoxical Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_paradoxical_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.AllTraits([setup.trait.perk_harbinger_of_chaos], true),
+    setup.qres.Available(),
+    setup.qres.Home(),
+  ],
+  'you': [
+    setup.qres.You(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_harbinger_of_crows_radiant', '1', 250),
+  setup.qc.Blessing('a', 1, null, true),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_harbinger_of_crows_radiant'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_paradoxical_slaver [nobr]
+<p>
+<<Yourrep $g.a>> a|is a particularly unlucky slaver, and despite your efforts in the past, the bad luck that haunts <<rep $g.a>> never went away. In fact, you can sense <<they $g.a>> had somehow got cursed yet again. However,
+<<they $g.a>> a|is also, and simultaneously, blessed with great amount of luck.
+At one moment, they would trip over nothing,
+<<if $g.a.isHasTrait('muscle_thin')>>
+accidentally eat a stale bread,
+<</if>>
+<<if $g.a.isHasTrait('per_lustful')>>
+got cuckolded,
+<</if>>
+<<if $g.a.isHasTrait('per_direct')>>
+got scammed,
+<</if>>
+or just happened to be in the way of a rampaging goat.
+But at other times, they easily win small lotteries,
+<<if $g.a.isHasTrait('per_frugal')>>
+find a ridiculously good deal in the markets,
+<</if>>
+<<if $g.a.isHasTrait('per_chaste')>>
+have <<their $g.a>> armor torn to pieces without revealing <<their $g.a>> genitals,
+<</if>>
+<<if $g.a.isHasTrait('face_attractive')>>
+got a present from a secret admirer,
+<</if>>
+and just happened to be in the right place at the right time during a rain, avoiding being wet.
+<<Their $g.a>> existence is quite a paradox.
+</p>
+
+<p>
+<<Their $g.a>> luck would sometimes even rub off other people too, especially those <<they $g.a>> respects. That small group of people happens to include you, and in fact, since you both have some free time today, you can consider spending your time today with <<therace $g.a>>. How are you feeling today?
+</p>
+
+<<choose>>
+
+<<opt "Powerful">>
+<<set _blessing = setup.trait.blessing_protection8>>
+<<set _powerful = "powerful">>
+<<set _take = "take on the most risky missions">>
+
+<<includereplace "EventParadoxicalSlaverCommon">>
+
+<<opt 'Focused'>>
+
+<<set _blessing = setup.trait.blessing_sanity8>>
+<<set _powerful = "focused">>
+<<set _take = "face the greatest of horrors">>
+
+<<includereplace "EventParadoxicalSlaverCommon">>
+
+<<opt 'Pure'>>
+
+<<set _blessing = setup.trait.blessing_purity8>>
+<<set _powerful = "pure">>
+<<set _take = "delve deep into the demonic realm">>
+
+<<includereplace "EventParadoxicalSlaverCommon">>
+
+<<opt 'Safe'>>
+
+<<set _blessing = setup.trait.blessing_life8>>
+<<set _powerful = "safe">>
+<<set _take = "take on the most dangerous missions">>
+
+<<includereplace "EventParadoxicalSlaverCommon">>
+
+<<opt 'Lucky'>>
+
+<<set _blessing = setup.trait.blessing_luck8>>
+<<set _powerful = "lucky">>
+<<set _take = "take on the most difficult missions">>
+
+<<includereplace "EventParadoxicalSlaverCommon">>
+
+<<opt 'Tight'>>
+
+<<set _blessing = setup.trait.blessing_virginity8>>
+<<set _powerful = "tight">>
+<<set _take = "take even by the largest phallus without being stretched">>
+
+<<opt 'Dominant'>>
+
+<<set _blessing = setup.trait.blessing_wolf8>>
+<<set _powerful = "dominant">>
+<<set _take = "take on the most rebellious slave">>
+
+<<includereplace "EventParadoxicalSlaverCommon">>
+
+<</choose>>
+
+
+:: EventParadoxicalSlaverCommon [nobr]
+
+<p>
+After staying, chatting, and <<uhobbyverb $g.you>> together with <<rep $g.a>> for the entire day, you do feel a little more <<= _powerful>>, ready to <<= _take>>.
+</p>
+
+<<run setup.qc.Blessing('you', 1, _blessing).apply($gQuest)>>
+

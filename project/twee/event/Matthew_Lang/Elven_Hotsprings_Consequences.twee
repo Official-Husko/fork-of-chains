@@ -1,0 +1,75 @@
+:: EventSetup_elven_hot_springs_consequences [nobr event]
+
+
+<<run new setup.Event(
+'elven_hot_springs_consequences', /* key */
+"Elven Hot Springs: Consequences", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'fort',
+],
+'Event_elven_hot_springs_consequences',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'elf': [
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.race_elf], true),
+    setup.qres.AnyTrait([setup.trait.per_kind, setup.trait.per_honorable], true)
+  ],
+},
+[ /* outcomes */
+  setup.qc.MissingUnitForever('elf'),
+  setup.qc.AllUnitSatisfyDo([
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Available(),
+    setup.qres.AllTraits([setup.trait.subrace_elf, setup.trait.training_none,], true),
+    setup.qres.ZeroTitle(),
+  ],
+  [
+    setup.qc.OneRandom([
+      setup.qc.MissingUnit('unit'),
+      setup.qc.MissingUnit('unit'),
+      setup.qc.MissingUnitRecapture('unit', 'escapeeasy'),
+      setup.qc.MissingUnitRecapture('unit', 'escapemedium'),
+      setup.qc.MissingUnitRecapture('unit', 'escapehard'),
+    ])
+  ],
+),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_elven_hot_springs_consequences [nobr]
+When you enter your office today it's obvious that someone else has been here. A potted plant has been tipped over, scattering dirt all over the floor. There is also a note on your desk.
+<div class='lettercard'>
+    <p>
+        <<name $unit.player>>,
+    </p>
+    <p>
+        After a lot of soul searching I cannot continue on with <<rep $company.player>> any longer. Your transgression against the sacred rites of the Wood Elves is
+        <<if $g.elf.isHasTrait('per_honorable')>>
+          dishonorable, and
+        <<elseif $g.elf.isHasTrait('per_kind')>>
+          cruel, and
+        <</if>>
+        not something I will be party to any longer.
+        By the time you see this I will have returned to my people, along with as many wood elf slaves as I have had the chance to free.
+    </p>
+    <p>
+        Should we ever meet again, it will be with my <<uweapon $g.elf>> at your throat.
+    </p>
+    <p>
+        Do not try to follow me,
+    </p>
+    <p>
+        <<name $g.elf>>
+    </p>
+</div>
+

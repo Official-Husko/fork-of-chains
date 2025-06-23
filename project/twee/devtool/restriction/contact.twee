@@ -1,0 +1,31 @@
+:: RestrictionNoContact [nobr]
+
+<p>Must <<dangertext 'NOT'>> have the following contact:</p>
+
+<<for _ibt, _bt range setup.contacttemplate>>
+  <<rep _bt>>
+  <<capture _bt>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.NoContact(_bt)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+
+:: RestrictionHasContact [nobr]
+
+<p>Must have the following contact:</p>
+
+<<for _ibt, _bt range setup.contacttemplate>>
+  <<rep _bt>>
+  <<capture _bt>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.HasContact(_bt)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+
+

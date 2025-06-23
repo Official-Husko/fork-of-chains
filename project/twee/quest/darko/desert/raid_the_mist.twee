@@ -1,0 +1,154 @@
+:: QuestSetup_raid_the_mist [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'raid_the_mist', /* key */
+"Raid the Mist", /* Title */
+"darko", /* Author */
+[ 'desert',
+'veteran',
+'unit',
+'danger'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'gatekeeper': setup.qu.corruptor,
+'warrior1': setup.qu.dark_warrior,
+'warrior2': setup.qu.light_warrior, },
+{ /* actors */
+'slave': 'subrace_demonkin',
+'slaver': 'subrace_demonkin', },
+[ /* costs */
+],
+'Quest_raid_the_mist',
+setup.qdiff.hardest57, /* difficulty */
+[ /* outcomes */
+[
+'Quest_raid_the_mistCrit',
+[
+setup.qc.Slave('slave', "a|was a demonkin your slavers abducted from beyond the mist", false),
+setup.qc.Slaver('slaver', "a|was a demonkin from beyond <<lore concept_mist>> who took interest in your slavers and followed them out", false), ],
+], [
+'Quest_raid_the_mistCrit',
+[
+setup.qc.Slave('slave', "a|was a demonkin your slavers somehow abducted from beyond the mist", false),
+setup.qc.Corrupt('warrior1'), ],
+], [
+'Quest_raid_the_mistCrit',
+[
+setup.qc.Injury('warrior1', 3),
+setup.qc.Injury('warrior2', 2),
+setup.qc.Corrupt('warrior1'),
+setup.qc.Corrupt('warrior2'), ],
+], [
+'Quest_raid_the_mistCrit',
+[
+setup.qc.MissingUnit('warrior1'),
+setup.qc.MissingUnit('warrior2'), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.uncommon],
+], /* quest pool and rarity */
+[
+setup.qres.Building(setup.buildingtemplate.veteranhall), ], /* restrictions to generate */
+)>>
+
+:: Quest_raid_the_mist [nobr]
+
+<p>
+Some corners of the <<lore region_desert>> is thick with <<lore concept_mist>>.
+Normal people (whose common sense is still intact) would avoid these places at all costs.
+You on the other hand think that with a sufficiently powerful dark magi, it might be possible to rip
+apart the boundary between this world and the next from these thickly misted areas.
+The land beyond is inhabited by many <<rep setup.trait.race_demon>> -- and although
+pureblood demons would probably be too difficult for your slavers to capture, it might 
+be possible to capture their underlings, the <<rep setup.trait.subrace_demonkin>>.
+This still pose incredible risk to whoever are unlucky enough to be
+sent on this mission however. The stuffs the demons would do to whoever become trapped there is beyond degrading.
+</p>
+
+
+:: Quest_raid_the_mistCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+  <<if $g.slave.isMale()>>
+  <<else>>
+    <<questimage "raid_the_mist_female.jpg">>
+  <</if>>
+<</if>>
+
+<p>
+Once your slavers arrived at the area, <<yourrep $g.warrior1>> and
+<<utheirrel $g.warrior1 $g.warrior2>> <<rep $g.warrior2>> <<uadv $g.warrior1>>
+put their trusts in <<rep $g.gatekeeper>>.
+<<Rep $g.gatekeeper>> opened the gate to the land beyond <<lore
+concept_mist>> and must keep it open until your slavers finished their
+duties there.
+<<if $g.gatekeeper.isHasTrait('per_dreamy')>>
+<<Rep $g.gatekeeper>> may gatekeeper|have trouble focusing, but <<they $g.gatekeeper>>
+will just have to do <<their $g.gatekeeper>> utmost to keep <<their $g.gatekeeper>> allies
+safe.
+<<elseif $g.gatekeeper.isHasTrait('per_attentive')>>
+Fortunately, <<rep $g.gatekeeper>> gatekeeper|is a rather attentive <<urace $g.gatekeeper>>,
+and should have no problem holding down the fort.
+<</if>>
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+Your slavers were not ready at all for the sights they encountered inside.
+Dumbstruck, your slavers failed to notice the corruption spell
+that were cast on them by a nearby demon. After being hit by the spell,
+your slavers regained their focus, and decided that
+escape was the only correct option at that point, and managed to exit back to the gate
+although sustaining heavy injuries in the process.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+But the trust were misplaced.
+Just right when the other two slavers entered the gate,
+demons came out from the very same gate, assaulting <<yourrep $g.gatekeeper>>.
+<<Their $g.gatekeeper>> gatekeeper|was broken, and the gate prematurely closed,
+trapping both <<rep $g.warrior1>>
+and <<rep $g.warrior2>> inside <<lore concept_mist>> with no way out.
+</p>
+
+
+<<else>>
+
+<p>
+Once inside, <<yourrep $g.warrior1>> and <<rep $g.warrior2>> managed to maintain their
+focuses, despite the numerous distractions presented to them within,
+be it the voluptuous nightmarish boob that appeared out of nowhere,
+or the literal dick fountain.
+<<if $gOutcome == 'crit'>>
+Ultimately, they found a suitable looking demonkin in the middle of using a
+slave that they managed to subdue and carry back into the gate and onto the mortal plane.
+<<else>>
+Ultimately, they found a suitable looking demonkin that they somehow managed to subdue,
+although not without a cost.
+<<Yourrep $g.warrior1>> warrior1|was caught in a corruption spell when
+carrying back their prize back into the gate and towards the mortal plane.
+<</if>>
+</p>
+
+
+<<if $gOutcome == 'crit'>>
+<p>
+Once back at the desert with the new potential demonkin slave, your slavers
+were completely caught by surprise as they were greeted by a second,
+unfamiliar demonkin.
+The masterless demonkin took interest in your slavers, and apparently
+followed <<rep $g.warrior1>> and <<rep $g.warrior2>> out of the gate and into
+the mortal realm.
+As your slavers prepared to fight, <<rep $g.slaver>> instead assured your slavers that <<they $g.slaver>>
+meant no harm, and only wished to join your company out of pure curiosity.
+</p>
+<</if>>
+
+<</if>>

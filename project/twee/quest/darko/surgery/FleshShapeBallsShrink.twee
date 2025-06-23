@@ -1,0 +1,74 @@
+:: QuestSetupSurgeryBallsShrink [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_balls_shrink',  /* id */
+  'Surgery: Balls Shrinking',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SurgeryBallsShrink',  /* description */
+  setup.qdiff.extreme50,
+  [
+    [
+      'SurgeryBallsShrinkCrit',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.balls_large.getTraitGroup()),
+        
+      ]
+    ],
+    [
+      'SurgeryBallsShrinkSuccess',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.balls_large.getTraitGroup()),
+        
+      ],
+    ],
+    [
+      'SurgeryBallsShrinkFailure',
+      [],
+    ],
+    [
+      'SurgeryBallsShrinkDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryBallsShrink [nobr]
+<p>
+Shrinks the slaver's balls.
+</p>
+
+:: SurgeryBallsShrinkCrit [nobr]
+<p>
+The surgery went off without a hitch.
+</p>
+
+:: SurgeryBallsShrinkSuccess [nobr]
+<p>
+The surgery was successful.
+</p>
+
+:: SurgeryBallsShrinkFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SurgeryBallsShrinkDisaster [nobr]
+<p>
+The surgery failed catastrophically, badly injuring <<rep $g.trainee>>.
+</p>

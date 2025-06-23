@@ -1,0 +1,46 @@
+:: RestrictionJob [nobr]
+
+Unit must have the following job: <br/>
+
+<<for _ibt, _bt range setup.job>>
+  <<rep _bt>>
+  <<capture _bt>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.Job(_bt)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+
+:: RestrictionJobSlaver [nobr]
+
+<<set $qrestriction = setup.qres.Job(setup.job.slaver)>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionJobSlave [nobr]
+
+<<set $qrestriction = setup.qres.Job(setup.job.slave)>>
+<<include 'QGRestrictionDone'>>
+
+:: RestrictionJobRetired [nobr]
+
+<<set $qrestriction = setup.qres.Job(setup.job.retired)>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionHasFamilyWithJobSlaver [nobr]
+
+<<set $qrestriction = setup.qres.HasFamilyWithJob(setup.job.slaver)>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionHasFamilyWithJobSlave [nobr]
+
+<<set $qrestriction = setup.qres.HasFamilyWithJob(setup.job.slave)>>
+<<include 'QGRestrictionDone'>>
+
+
+
+

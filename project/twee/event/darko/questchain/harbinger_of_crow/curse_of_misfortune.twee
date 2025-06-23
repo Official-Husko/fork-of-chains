@@ -1,0 +1,55 @@
+:: EventSetup_curse_of_misfortune [nobr event]
+
+<<run new setup.Event(
+'curse_of_misfortune', /* key */
+"Curse of Misfortune", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_curse_of_misfortune',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTag('quest_harbinger_of_luck_tagged'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.RemoveTagGlobal('quest_harbinger_of_luck_tagged'),
+  setup.qc.AddTitle('a', 'quest_harbinger_of_misfortune_0'),
+  setup.qc.VarSet('quest_harbinger_of_luck_progress', '3', -1),
+  setup.qc.SetCooldownEvent('luck_chaser', 5),
+  setup.qc.Blessing('a', 1, null, true),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_harbinger_of_luck_progress', '2'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_curse_of_misfortune [nobr]
+<p>
+Being unlucky is one thing, but having found a stuck piece of rock in <<their $g.a>> meal, after having a bird dropped right on top of <<their $g.a>> head during the same day an errant arrow from a practice session grazed
+<<if $g.a.getTail()>>
+<<their $g.a>> <<utail $g.a>>
+<<elseif $g.a.getWings()>>
+<<their $g.a>> <<uwings $g.a>>
+<<else>>
+on top of <<their $g.a>> head
+<</if>>
+simply could not be explained by sheer coincidence. <<Yourrep $g.a>> is cursed, there is no other way around it, and <<therace $g.a>> a|know it too.
+</p>
+
+<p>
+According to <<therace $g.a>>, they had been rather "unlucky", to put it mildly, throughout <<their $g.a>> entire life. This would just not do, especially for a slaver, and you finally urge <<them $g.a>> to try and spend a couple of weeks investigating whether there are ways to undo this accursed luck of <<them $g.a>>.
+</p>
+
+<p>
+You will probably hear back from <<rep $g.a>> in a couple of weeks...
+</p>

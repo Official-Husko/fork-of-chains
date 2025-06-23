@@ -1,0 +1,101 @@
+:: QuestSetupUnitTrainingPonyMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_pony_master',  /* id */
+  'Pony Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingPonyMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingPonyMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pony_master),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingPonyMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pony_master),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingPonyMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingPonyMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_pony_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingPonyMaster [nobr]
+<p>
+This final training will allow pony slaves to be used alongside animal horses
+--- after all, they occupy the same stables and must learn how to work together.
+These slaves must learn how to keep up with their fellow equines, and even learn how
+to take those equine dicks up their holes.
+Some masters like to replace the standard whip lash with the dildo lash that they plug
+deep inside the pony's ass, and thrust whenever they would whip the slave.
+A true pony slave must learn and capable of doing all these difficult tasks, and hence
+the training will be difficult.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingPonyMasterCrit [nobr]
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into a permanent and dedicated pony slave
+has been completed.
+</p>
+
+:: QuestUnitTrainingPonyMasterSuccess [nobr]
+<p>
+It is done. <<Reps $g.trainee>> transformation into a parmanent and dedicated pony slave
+has been completed.
+With the proper pony suit,
+<<rep $g.trainee>> can now be assigned to carriages right with other animal horses,
+be it as an independent mule or mounted as a dicksleeve for the horse.
+</p>
+
+:: QuestUnitTrainingPonyMasterFailure [nobr]
+<p>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into the ultimate pony.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingPonyMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

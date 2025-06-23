@@ -1,0 +1,214 @@
+:: QuestSetup_nearby_violations [nobr quest]
+
+<<set _criteriavirgin = new setup.UnitCriteria(
+null, /* key */
+'Totally Virgin', /* name */
+[
+  setup.trait.bg_courtesan,
+  setup.trait.bg_whore,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.breast_large,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.per_humble,
+  setup.trait.per_sly,
+  setup.trait.per_chaste,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.dick_small,
+  setup.trait.breast_tiny,
+  setup.trait.breast_small,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_proud,
+  setup.trait.per_direct,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTraits([setup.trait.vagina_loose, setup.trait.vagina_gape, setup.trait.anus_loose, setup.trait.anus_gape], true),
+],
+{
+  sex: 3,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'nearby_violations', /* key */
+"Nearby Violations", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'virgin': [ _criteriavirgin, 1],
+  'kidnapper1': [ setup.qu.kidnapper, 1],
+  'kidnapper2': [ setup.qu.kidnapper, 1],
+},
+{ /* actors */
+  'dop': [
+  ],
+  'slaver': [
+  ],
+  'violated': [
+  ],
+},
+[ /* costs */
+],
+'Quest_nearby_violations',
+setup.qdiff.hard58, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_nearby_violationsCrit',
+    [
+      setup.qc.Opportunity('nearby_violations', {
+dop: "dop",
+slaver: "slaver",
+}),
+      setup.qc.Slave('violated', "a|was an unfortunate resident of the vale who got violated by the Virgin Raider", undefined),
+    ],
+  ],
+  [
+    'Quest_nearby_violationsCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.TraitIncreaseExisting('virgin', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('virgin', setup.trait.anus_gape),
+      setup.qc.Injury('virgin', 2),
+    ],
+  ],
+  [
+    'Quest_nearby_violationsCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.TraitReplaceExisting('virgin', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('virgin', setup.trait.anus_gape),
+      setup.qc.Injury('virgin', 4),
+    ],
+  ],
+  [
+    'Quest_nearby_violationsCrit',
+    [
+      setup.qc.TraitReplaceExisting('virgin', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('virgin', setup.trait.anus_gape),
+      setup.qc.Injury('virgin', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_nearby_violations [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+As you work in your office as usual, you receive another complaint from
+the surrounding villagers about your slavers actions. Apparently, another one of the village elder's many virgin <<daughter $g.violated>>s was found broken yet again, having been mercilessly violated by an unknown assailant. Since your fort is the only thing around dealing in sex slavery and organized raping, the blame again falls to you and your slavers, regardless whether or not one of your <<men $g.slaver>> actually did the act.
+</p>
+
+<p>
+To prevent further ire, your only option is to uncover this mystery once and for all. <<Yourrep $g.slaver>> had volunteered for the task, and <<they $g.slaver>> somehow found a lead — the culprit, the so-called Virgin Raider of the Vale, is expected to make a certain village their next target very soon. You could try to send a group of slavers to capture whoever the culprit is and end this charade — a particularly "tight" slaver to server as a bait and two other slavers ready to kidnap whoever assailant it might be. Who knows, maybe the virgin raider is actually one of your own <<men $g.slaver>> and you'll get the awkward experience of having captured one of your own...
+</p>
+
+
+
+:: Quest_nearby_violationsCrit [nobr]
+<p>
+After arriving at the village where the Virgin Raider was supposed to raid next, <<yourrep $g.virgin>> flaunted <<their $g.virgin>> supposed virginity, hoping to attract <<their $g.dop>> attention tonight.
+<<if $g.virgin.isHasTrait('bg_whore') or $g.virgin.isHasTrait('bg_courtesan')>>
+Having a wealth of experience in selling <<their $g.virgin>> own bodies from <<their $g.virgin>> past, <<rep $g.virgin>> had no issues accosting the nearest passing stranger and lewdly pointing to <<their $g.virgin>> holes.
+<</if>>
+<<if $g.virgin.isHasTrait('dick_large')>>
+<<Their $g.virgin>> <<ucgenital $g.virgin>> attracted quite the attention.
+<</if>>
+<<if $g.virgin.isHasTrait('breast_large')>>
+<<Their $g.virgin>> <<ubreasts $g.virgin>> attracted quite the attention.
+<</if>>
+<<if $g.virgin.isHasTrait('muscle_thin')>>
+The rather thin-waisted <<urace $g.virgin>> virgin|was quite the attraction.
+<</if>>
+<<if $g.virgin.isHasTrait('per_humble')>>
+<<Their $g.virgin>> humility added to <<their $g.virgin>> story of being a reclusive virgin.
+<</if>>
+<<if $g.virgin.isHasTrait('per_sly')>>
+<<They $g.virgin>> virgin|was sly enough to lie through being a total virgin.
+<</if>>
+<<if $g.virgin.isHasTrait('per_chaste')>>
+<<Their $g.virgin>> natural chastity corroborated <<their $g.virgin>> claim of being a total virgin.
+<</if>>
+<<if $g.virgin.isHasTrait('per_lustful')>>
+<<They $g.virgin>> virgin|was unable to fully contain <<their $g.virgin>> not-so-hidden libido, making <<their $g.virgin>> virginity claims weaker.
+<</if>>
+<<if $g.virgin.isHasTrait('per_proud')>>
+<<They $g.virgin>> virgin|was too proud to sell <<their $g.virgin>> virginity outright.
+<</if>>
+<<if $g.virgin.isHasTrait('per_direct')>>
+<<They $g.virgin>> virgin|was too blunt to lie through the masses about <<their $g.virgin>> actual virginity status.
+<</if>>
+</p>
+
+<p>
+<<Rep $g.virgin>> waited and waited, together with <<rep $g.kidnapper1>> and <<rep $g.kidnapper2>> who lied in ambush.
+A few days passed, and there was still no signs of the Virgin Raider.
+<<if $gOutcome == 'crit'>>
+But your slavers kept their vigilance throughout, somehow avoiding the lulls and drags of waiting. Their patience was rewarded as after three full weeks, someone incredibly suspicious finally approached <<rep $g.virgin>>.
+The raider roughly shoved <<rep $g.virgin>> into the ground, ass up in the sky,
+but thanks to your slavers' vigilance, before <<they $g.dop>> could slither <<their $g.dop>> oversized <<if $g.dop.isHasDick()>>dong<<else>>fake dong<</if>> into the tight hole, <<rep $g.kidnapper1>> and <<rep $g.kidnapper2>> came into rescue and knocked the raider out, saving the "virginity" of <<rep $g.virgin>>.
+Your slavers then tied the unconscious <<man $g.dop>> tightly before hauling <<them $g.dop>> back into your fort the same day.
+<<else>>
+The waiting was incredibly boring, and your lazy slavers decided to doze off during the mission. It was a grave mistake, as the Virgin Raider chose that weak moment to strike against <<rep $g.virgin>>.
+With nobody else to defend <<their $g.virgin>> "virginity", the raider had all the time in the world to violate <<rep $g.virgin>> with <<their $g.dop>> oversized
+<<if $g.dop.isHasDick()>>dong<<else>>fake don<</if>>.
+The size difference meant excruciating pain for <<rep $g.virgin>>, whose holes were visibly gaped by the experience, and <<they $g.virgin>> let out many bloodcurling screams throughout the night.
+<<if $gOutcome == 'success' or $gOutcome == 'failure'>>
+Fortunately, the scream finally awakened the other two dozing slavers, who came to the rescue and knocked the violator out. While they succeeded in their mission to capture the culprit, <<rep $g.virgin>> virgin|was left a broken mess on the floor, <<their $g.virgin>> once virgin-tight holes now
+<<if $gOutcome == 'success'>>
+exceedingly accomodating.
+<<else>>
+cavernous to a fault.
+<</if>>
+<<else>>
+Unfortunately, <<rep $g.kidnapper1>> and <<rep $g.kidnapper2>> were far too deep in their sleep, and they only discovered what happened the next morning when they found <<reps $g.virgin>> badly violated body on the floor of their temporary abode.
+<</if>>
+<</if>>
+
+<<if $gOutcome != 'disaster'>>
+Your slavers also found another well-bred villager next door -- no doubt another victim of the Virgin Raider.
+They wisely decided to pick up the slave as well to bring back home. If your company is already taking
+the blame for the act, might as well act like on!
+<</if>>
+
+</p>
+
+<<if $gOutcome != 'disaster'>>
+<p>
+Your slavers returned home by the morning, and as they were about to drop the struggling slave in the <<rep setup.buildingtemplate.slavepens>> and go for their well-deserved rest, something odd happened. The raider transformed before their eyes, going from a desert human into what appears to be <<yourrep $g.slaver>>. As you recall, <<reps $g.slaver>> doppelganger is also living currently in your fort, and while you found the real <<rep $g.slaver>> still soundly sleeping in <<their $g.slaver>> room, the doppelganger was nowhere to be found in your fort.
+</p>
+
+<p>
+It turned out that <<rep $g.dop>>, the doppelganger, was the culprit after all in the night violations. Indeed, as you recall, you completed a similar mission some time ago in the deserts where you're supposed to drive off a similarly sex-crazed raider, without knowing how. You have a solid guess now, and to confirm your suspicion, you tied the doppelganger securely for the night and watched. Indeed, once <<rep $g.slaver>> fell asleep, the doppelganger transformed back into the desert raider visage. It seemed somehow <<they $g.dop>> transformed every night, probably involuntarily too.
+</p>
+
+<p>
+You must decide what to do with the doppelganger next.
+</p>
+<</if>>

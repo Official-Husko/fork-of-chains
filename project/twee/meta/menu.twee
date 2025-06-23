@@ -1,0 +1,76 @@
+:: StoryCaption [nobr]
+
+<<if $gUpdatePostProcess>>
+  <<run setup.updatePostProcess()>>
+<</if>>
+
+<<focwidget 'loadmenu'>>
+
+<<if $gMenuVisible>>
+  <<set _dom = setup.DOM.Menu.mainmenu()>>
+  <<attach _dom>>
+<<elseif $devtooltype>>
+  <<set _dom = setup.DOM.Menu.devmainmenu()>>
+  <<attach _dom>>
+<</if>>
+
+<</focwidget>>
+
+<div id='menudiv'>
+  <<loadmenu>>
+</div>
+
+
+:: StoryDisplayTitle [nobr]
+/* Used for titlebar */
+
+<<if $calendar>>
+  <<= State.variables.company.player.getName()>> / Week <<= $calendar.getWeek() >>
+<<else>>
+  Fort of Chains <<= setup.VERSION>>
+<</if>>
+
+
+:: StoryBanner [nobr]
+
+<<focwidget 'loadmenutopdata'>>
+  <<set _dom = setup.DOM.Menu.endweekmenu()>>
+  <<attach _dom>>
+<</focwidget>>
+
+<<focwidget 'refreshmenu'>>
+  <<replace "#menutopdata">>
+    <<loadmenutopdata>>
+  <</replace>>
+
+  <<replace "#notifheader">>
+    <<if $notification>>
+      <<loadnotification>>
+    <</if>>
+  <</replace>>
+
+  <<replace "#notiffooter">>
+  <</replace>>
+
+  <<replace "#menudiv">>
+    <<loadmenu>>
+  <</replace>>
+
+  <<run setup.DOM.Menu.refreshRightSidebar()>>
+<</focwidget>>
+
+<span id='menutopdata'>
+  <<loadmenutopdata>>
+</span>
+
+
+
+:: StoryRightSidebar [nobr]
+
+<div id='menurightdata'>
+  <<timed 0s>>
+    <<set _dom = setup.DOM.Menu.rightsidebar()>>
+    <<attach _dom>>
+  <</timed>>
+</div>
+

@@ -1,0 +1,269 @@
+:: OpportunitySetup_rival_interaction [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'rival_interaction', /* key */
+"Rival Interaction", /* Title */
+"Kyiper", /* Author */
+[ 'fort', 'special', 'unknown', ], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_rival_interaction',
+setup.qdiff.normal20, /* difficulty */
+[ /* options */
+[
+'Opportunity_rival_interaction_0',
+'Opportunity_rival_interaction_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.TraumatizeRandom('you', 2), ],
+], [
+'Opportunity_rival_interaction_1',
+'Opportunity_rival_interaction_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+],
+], [
+'Opportunity_rival_interaction_2',
+'Opportunity_rival_interaction_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'rival': [],
+'you': [
+setup.qres.You(),
+], },
+[ /* expiration outcomes */
+],
+false,  /* is must be answered */
+)>>
+
+:: Opportunity_rival_interaction [nobr]
+<p>
+While out and about on your rounds in the fort, you notice your <<ufriend $unit.player $g.rival>> <<rep $g.rival>> approaching you. Without warning, <<they $g.rival>> slip past you and smack your ass; and then just continue on like nothing happened! As <<they $g.rival>> continue to walk past, you can hear a chuckle or two coming from the slavers<<if $company.player.getUnits({job: setup.job.slave}).length>> and slaves<</if>> who happened to be nearby.
+</p>
+
+<p>
+As <<rep $g.rival>> continued to <<uadv $g.rival>> walked away, you contemplate to yourself what would be the best course of action.
+<<if $unit.player.isHasTrait('per_submissive') || $unit.player.isHasTrait('per_masochistic')>>
+Or that's what you would like to think —- but your
+<<if $unit.player.isHasDick()>>erect <<udick $unit.player>>
+<<else>>wet pussy<</if>>
+tells a very different tale...
+<<else>>
+You could just walk away, after all there are plenty of more important things for you to solve. Alternatively, you could try to "return the favor" to the slaver, but this will require you to be sufficiently high in <<rep setup.skill.intrigue>>. Finally, if you are confident in your <<rep setup.skill.combat>> skill, there is always the option of teaching your <<ufriend $unit.player $g.rival>> in the good ol' fashioned way...
+<</if>>
+</p>
+
+
+
+:: Opportunity_rival_interaction_0 [nobr]
+Walk on like nothing happened
+
+
+:: Opportunity_rival_interaction_0_flavor [nobr]
+<<if $unit.player.isHasTrait('per_submissive') || $unit.player.isHasTrait('per_masochistic')>>
+<p>
+You decided to walk away. In the coming days the thought of having <<rep $g.rival>> spank you harder occasionally comes into your <<if $unit.player.isHasTrait('per_masochistic')>>masochistic<<else>>submissive<</if>> mind, which never fails to get you <<wet $unit.player>>
+and unfocused for your tasks...
+</p>
+<<else>>
+<p>
+You decided to walk on for now, but you make sure to keep in mind to assign <<rep $g.rival>> into the most dangerous missions in the days to come... Still, the audacity of <<rep $g.rival>>  remained in the forefront of your thoughts in the days to come, which occasionally disrupt you from your tasks.
+</p>
+<</if>>
+
+
+:: Opportunity_rival_interaction_1 [nobr]
+Spank them back
+
+
+:: Opportunity_rival_interaction_1_flavor [nobr]
+<<set _res = setup.Skill.skillCheckCompare($unit.player, $g.rival, setup.skill.intrigue)>>
+
+/* submissive PC can't win */
+<<if $g.you.isSubmissive() || $g.you.isMasochistic()>>
+<<set _res = -1>>
+<</if>>
+
+<p>
+That <<uadjbad $g.rival>> <<ufriend $g.you $g.rival>> of yours <<rep $g.rival>> must be thinking <<they $g.rival>> could just come smack your ass in front of everyone like that.
+As a leader of this fort, this is not something you should just take lying
+down. You look back at <<theslaver $g.rival>> and resolved to get <<them $g.rival>> back
+for this attempt.
+</p>
+
+<<if _res > 0>>
+<p>
+You move quickly, before <<they $g.rival>> are able to stop you, and deliver a good, hard, authoritative smack back to that ass of <<them $g.rival>>. As your <<uhand $g.you>> connects to <<their $g.rival>> flesh with a loud clap to get the attention of the nearby slavers, <<they $g.rival>> yelp out and spin around.
+<<if $g.you.isHasTrait('muscle_strong')>>
+You made sure to fully use your muscles to deliver the spank: extra hard, as they say!
+<<else>>
+You may have smacked <<their $g.rival>> ass a little too hard though.
+<</if>>
+Despite still defiantly looking at you,
+your <<uadjgood $g.rival>> <<ufriend $g.you $g.rival>> decided the best way to proceed is to heal <<their $g.rival>> existing wounds first, before limping back to the lodgings area, no doubt to come up with another plan to get back at you. Still, it feels good to smack your <<ufriend $g.you $g.rival>> like that for once.
+</p>
+
+<<run setup.qc.BoonizeRandom('you', 2).apply($gQuest)>>
+
+<<else>>
+<p>
+You run up to smack <<their $g.rival>> ass back. Just as your <<uhand $g.you>> about to connect to <<their $g.rival>> ass, <<they $g.rival>> turns around and skillfully catches your <<uhand $g.you>>, while grabbing the other and holds your wrists together.
+</p>
+
+<p>
+"Well that was rude.", <<they $g.rival>> says with a cocky grin,
+and raises your <<uhands $g.you>> up so that you are standing there at <<their $g.rival>> mercy.
+<<if $unit.player.isSubmissive()>>
+<<They $g.rival>> chuckles and turns you around, ass towards <<them $g.rival>>, and delivers a few more smacks on your ass as punishment for trying to get back at <<them $g.rival>> while a few of your slavers watch. $i.he spanks you and makes your whole body recoil from the spanks<<if $g.you.isHasBreasts()>>, making sure that there's jiggle to your tits when you do<</if>>.
+<<They $g.rival>> rival|is merciful though; only after ten spanks does <<they $g.rival>> let you go again with a stern warning that you aren't to touch <<they $g.rival>> ass again, even wagging his finger at you like you are a disobedient child. It's demeaning being talked to like this, but deep down you know this is what your little submissive mind has always wanted...
+
+<<run setup.qc.BoonizeRandom('you', 3).apply($gQuest)>>
+
+<<else>>
+Still, <<they $g.rival>> knows challenging the top dog of the company could put <<their $g.rival>> life in danger, and <<they $g.rival>> lets you go and continue <<their $g.rival>> day.
+You rubbed your ass a little, knowing that while the pain there is temporary, the pain in your pride will take longer to heal.
+
+<<run setup.qc.TraumatizeRandom('you', 3).apply($gQuest)>>
+
+<</if>>
+</p>
+
+<</if>>
+
+
+
+:: Opportunity_rival_interaction_2 [nobr]
+Teach them a lesson
+
+
+:: Opportunity_rival_interaction_2_flavor [nobr]
+<<set _res = setup.Skill.skillCheckCompare($unit.player, $g.rival, setup.skill.combat)>>
+
+/* submissive PC can't win */
+<<if $g.you.isSubmissive() || $g.you.isMasochistic()>>
+<<set _res = Math.min(_res, -1)>>
+<</if>>
+
+<p>
+Puffing out your chest, you start at the dumbass that just picked a fight with you. You silently marched towards <<them $g.rival>>,
+your stare straight.
+<<if $g.you.isSubmissive() || $g.you.isMasochistic()>>
+Your intention appears clear to anyone who is watching, although deep down you know in your <<if $g.you.isMasochistic()>>masochistic<<else>>submissive<</if>> mind you are aiming for something completely different...
+<</if>>
+You take a swing directly at <<their $g.rival>> <<ubody $g.rival>>.
+</p>
+
+<<if _res == 2>> /* non-sub PC wins hard */
+<p>
+The swing hits square at <<their $g.rival>> back, send him spiraling down the ground. Your other slavers watching held their breaths as you checked on <<rep $g.rival>>, ensuring that <<they $g.rival>> rival|is still alive after that. This injures <<rep $g.rival>>, but this should be a clear message for everyone not to ever mess with you. And damn, that felt good.
+</p>
+
+<<run setup.qc.BoonizeRandom('you', 3).apply($gQuest)>>
+<<run setup.qc.Injury('rival', 1).apply($gQuest)>>
+
+<<elseif _res == 1>> /* non sub PC wins barely */
+<p>
+Your <<ufriend $g.you $g.rival>> hear you approaching, and turned around in a defensive position.
+Narrowly <<they $g.rival>> avoided the blow, which would have taken <<them $g.rival>> down quickly. But you follow up with a flurry of attacks —- including a cheeky revenge slap on <<their $g.rival>> ass. Against your masterful (at least compared to <<them $g.rival>>) strikes, your <<ufriend $g.you $g.rival>> were unable to fully defend against those. The dust eventually settled, with <<rep $g.rival>> flat on the ground. This injures <<rep $g.rival>>, but this should be a clear message for everyone not to ever mess with you. And damn, that felt good.
+</p>
+
+<<run setup.qc.BoonizeRandom('you', 2).apply($gQuest)>>
+<<run setup.qc.Injury('rival', 1).apply($gQuest)>>
+
+<<else>>
+
+<<if !$g.you.isSubmissive() && !$g.you.isMasochistic()>> /* non sub PC "loses" */
+<p>
+You growl at the <<uadjbad $g.rival>> slaver and turn to face <<them $g.rival>>. Thanks to your audible growl however, <<they $g.rival>> turned around, ready for whatever you were planning to bring to <<them $g.rival>>. Crack a <<uadjgood $g.rival>> grin, <<they $g.rival>> cracked their knuckles in preparation for a good fight. You go and attempt a swing on their body, but <<they $g.rival>> ducks and launched a counter-attacks, getting you in the ribs. Not before you kick <<them $g.rival>> back in retaliation, however!
+</p>
+
+<p>
+The fight goes on for some time, with neither of you gaining an upper hand.
+<<set _vice = $dutylist.getUnitIfAvailable('viceleader')>>
+Eventually
+<<if _vice && _vice != $g.rival>>
+your vice leader <<rep _vice>>
+<<else>>
+the other slavers in the fort
+<</if>>
+break the fight up between the both of you before any of you sustain meaningful damage. Though you were not able to get them back for their folly; you did show that you will at least defend yourself, and hopefully this lesson will not be lost on your <<ufriend $g.you $g.rival>>'s thick skull.
+</p>
+
+<<elseif !$g.rival.isDominant()>> /* sub PC loses to a non dominant slaver */
+
+<p>
+The gauntlet is thrown and you go to fight against your <<ufriend $g.you $g.rival>> to avenge your pride; but it soon becomes obvious that you are not a match for <<them $g.rival>>. Deep in your <<if $g.you.isMasochistic()>>masochistic<<else>>submissive<</if>> mind, you wonder if this is really due to you lacking the skill to win, or your mind playing a little mind game with your body. But either way, for every punch, kick, spank, and slap you get in, they get just as many. And every hit excites you, making you less and less focused on the fight. Sensing an opening, <<rep $g.rival>> slammed you face first into the dirt, ass up, and get a good slap to the ass.
+</p>
+
+<p>
+Putting <<their $g.rival>> knee on your back, <<theslaver $g.rival>> pinned you there, while removing your and giving several spanks to your ass as your face is in the dirt.
+After <<they $g.rival>>  had spanked you into the ground, <<they $g.rival>> gets off of your back, but grabs both of your wrists and pulls you up like a suspended doll. You get turned around, like you are on display for the slavers. Your helpless form and red ass shown to them, as well as your shameless <<if $g.you.isHasDick()>>erection<<else>>wet pussy<</if>>.
+Thankfully; there's not much after that. <<They $g.rival>> takes mercy on you and lets you go with a stern warning not to try that again... accompanied by another slap to your ass.
+</p>
+
+<p>
+After such a disgraceful display surely everyone in the fort will be painfully aware of your
+not-so-secret
+<<if $unit.player.isSubmissive()>>submissive<<else>>masochistic<</if>> tendencies...
+</p>
+
+<<run setup.qc.BoonizeRandom('rival', 2).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('you', 1).apply($gQuest)>>
+
+<<else>> /* sub PC loses to dominant rival */
+
+<p>
+With your <<if $g.you.isMasochistic()>>masochistic<<else>>submissive<</if>> mind taking control, there was really no other outcome of the fight other than being thrown around and humiliated. You keep getting up after being thrown into the dirt, being more excited each time as your <<ufriend $g.you $g.rival>> rival continues to toy with you.
+</p>
+
+<p>
+<<Rep $g.rival>> takes your <<uhands $g.you>> together and strips you simply; taking your pants while your <<uarms $g.you>> are bound. Ignoring your strugges, <<they $g.rival>> stripped all of your other clothings as well, including your underwear. Stripped down naked, you are taken over by your slaver's knee for 'punishment time'.
+</p>
+
+<p>
+The first spank hurt. So did the tenth. And by the time they get to fifty; it stings so bad you may or may not be a crying mess.
+<<if $unit.player.isMasochistic()>>
+(Although you secretly orgasmed for that.)
+<</if>>
+You may also be a begging mess, as well...
+</p>
+
+<p>
+Taking your whip, <<rep $g.rival>> takes you for a little walk around the fort. <<They $g.rival>> binds your wrists and makes good use of your whip, having your back and backside tanned if you ever try to speed up. It's a slow... torturous walk around, and you aren't allowed to hide your shame either. And the crack of the whip just grabs more and more attention too.
+</p>
+
+<p>
+And right when you think that you are finishing the lap around the fort... you're taken for another lap. And this time, each time you get whipped, you are supposed to apologize to <<them $g.rival>> and promise not to impede <<their $g.rival>> right to your ass whenever <<they $g.rival>> wish... and you're going to continue doing laps until you say it for a full round.
+</p>
+
+<p>
+But finally, at the end... you are granted your clothes and your whip back. Once you agree to get on your knees to accept them in front of your other slavers. Seeing you being so utterly degraded by your <<ufriend $g.you $g.rival>> <<rep $g.rival>> rival|is going to be something very difficult to live down...
+</p>
+
+<p>
+If you ever want to live that down, that is.
+</p>
+
+<<run setup.qc.BoonizeRandom('rival', 3).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('you', 3).apply($gQuest)>>
+
+<</if>>
+
+<</if>>

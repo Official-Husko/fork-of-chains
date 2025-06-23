@@ -1,0 +1,23 @@
+:: RestrictionExistUnit [nobr]
+
+<p>
+Must exist at least <<numberbox '_amount' 1>> units that satisfy some conditions:
+</p>
+
+<<link '(Continue)' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.ExistUnit([], _amount)>>
+<</link>>
+
+
+:: RestrictionExistUnitHeader [nobr]
+Must exist at least <<= _entry.amount >> units that satisfies all of these:
+
+
+
+:: RestrictionNotExistUnit [nobr]
+
+<<set $qrestriction = setup.qres.NotExistUnit([])>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+:: RestrictionNotExistUnitHeader [nobr]
+Must <<dangertext 'NOT'>> exist some unit that satisfies all of these:

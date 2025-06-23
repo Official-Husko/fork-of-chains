@@ -1,0 +1,160 @@
+:: QuestSetup_the_fruit_of_sluttiness [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_the_fruit_of_sluttiness1',
+'Slutted (Mild)',
+'subrace_elf', /* pools */
+0,
+[
+setup.qc.TraitReplace('unit', setup.trait.per_sexaddict), ],
+)>>
+<<run new setup.UnitGroup(
+'quest_the_fruit_of_sluttiness3',
+'Slutted (Plus)',
+'subrace_elf', /* pools */
+0,
+[
+setup.qc.TraitReplace('unit', setup.trait.per_sexaddict),
+setup.qc.TraitReplace('unit', setup.trait.training_obedience_basic), ],
+)>>
+
+<<run new setup.QuestTemplate(
+'the_fruit_of_sluttiness', /* key */
+'The Fruit of Sluttiness', /* Title */
+'darko', /* Author */
+[ 'forest', 'unit', 'ire',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'whore1': setup.qu.whore,
+'whore2': setup.qu.whore,
+'biologist': setup.qu.biologist, },
+{ /* actors */
+'slut': 'quest_the_fruit_of_sluttiness1',
+'plus': 'quest_the_fruit_of_sluttiness3', },
+[ /* costs */
+],
+'Quest_the_fruit_of_sluttiness',
+setup.qdiff.normal21, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_fruit_of_sluttinessCrit',
+[
+setup.qc.Slave('plus', 'a|was an elf whose mind you fully transform into that of a sex slave', undefined),
+setup.qc.Ire('elf', 1),
+],
+], [
+'Quest_the_fruit_of_sluttinessCrit',
+[
+setup.qc.Slave('slut', 'a|was an elf whose mind you transform into that of a sex slave', undefined),
+setup.qc.Ire('elf', 1),
+],
+], [
+'Quest_the_fruit_of_sluttinessFailure',
+[
+],
+], [
+'Quest_the_fruit_of_sluttinessDisaster',
+[
+setup.qc.Trait('whore1', setup.trait.per_lustful),
+setup.qc.Trait('whore2', setup.trait.per_lustful), ],
+], ],
+[
+[setup.questpool.forest, setup.rarity.common],
+], /* quest pool and rarity */
+[ /* restrictions to generate */
+  setup.qres.QuestUnique(),
+],
+)>>
+
+:: Quest_the_fruit_of_sluttiness [nobr]
+
+<p>
+The <<lore region_forest>> houses dangers of many kind: wild beasts, tentacle
+monsters, and even the occassional slaver company, but
+among these, a particularly nasty threat is the so called Fruit of Sluttiness.
+These fruit disguises itself as an ordinary edible fruit, almost indistinguishable
+from other delicious fruit in the forests.
+But a particularly sensitive individual can sense the strange, arousing
+odors coming out of the fruit, earning it the name.
+When eaten, this fruit bestows absolute sluttiness to its host,
+instilling sex addiction that is impossible to cure by any normal means.
+</p>
+
+<p>
+It occurs to you that it might be possible to use this fruit to your advantage.
+You need a particularly sensitive slaver to locate these fruits, and collect some of them.
+Then, you need to lure an unsuspecting elf into consuming the fruit.
+Once gulped down, with the full extent of the fruit's power and some encouragement from your slaves,
+no matter what the elf's previous life and preferences was,
+their mind will be fully transformed into that of a natural sex slave.
+The slave will then surely beg to be made into your obedient little slut.
+</p>
+
+
+:: Quest_the_fruit_of_sluttinessCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+  <<set _plus = $g.plus>>
+<<else>>
+  <<set _plus = $g.slut>>
+<</if>>
+
+<p>
+<<if $g.biologist.isHasTrait('per_attentive')>>
+  Thanks to <<reps $g.biologist>> keen sense,
+<<else>>
+  Probably by pure luck,
+<</if>>
+your slavers were able to successfully harvest the correct fruits from the forests.
+With the fruits sealed tight, it was just a matter of finding the right elf to enslave.
+With both <<rep $g.whore1>> and <<utheirrel $g.whore1 $g.whore2>> <<rep $g.whore2>> exuding their combined
+sexual charm,
+an unsuspecting elf was seductively lured into eating the fruit offered by your slavers.
+Only when <<they _plus>> was already a few bites in that
+<<they _plus>> started to realize that something was very wrong.
+<<if $gOutcome == 'crit'>>
+But by then, it was already far too late.
+In an attempt to minimize <<their _plus>> resistance,
+<<rep $g.whore1>> and <<rep $g.whore2>> molested and manhandled
+<<reps _plus>> <<= setup.Text.genital(_plus)>>,
+eliciting needy moans until <<their _plus>> mind was fully transformed
+from an ordinary hard-working elf into that of a natural sex slave.
+Once <<rep _plus>> finished gorging on the fruit, <<they _plus>> was
+practically begging for your slavers to enslave <<them _plus>> and more,
+which your slavers happily obliged.
+<<else>>
+In a show of resistance, <<they _plus>> tried to vomit the flesh <<they _plus>>
+had eaten, but <<rep $g.whore1>> and <<rep $g.whore2>> were prepared for this turn of event.
+<<if !$g.whore1.isHasDick()>>Donning a strap-on, <</if>>
+<<rep $g.whore1>> shoved <<their $g.whore1>>
+<<if $g.whore1.isHasDick()>><<udick $g.whore1>><<else>>strap-on<</if>>
+down the poor elf's throat until <<they _plus>> swallowed
+the fruit<<if $g.whore1.isHasDick()>> together with <<their $g.whore1>> cum<</if>>.
+The deed done, <<rep _plus>> became one mess of a slutty elf who did not resist at all
+as your slavers tied and carried the slave back home.
+<</if>>
+</p>
+
+
+:: Quest_the_fruit_of_sluttinessFailure [nobr]
+<p>
+Your slavers failed the mission simply because <<rep $g.biologist>> was
+unable to find the Fruit of Sluttiness in the first place. Well, at least no damage is done —
+it could have been so much worse. Perhaps they can try again sometime.
+</p>
+
+
+:: Quest_the_fruit_of_sluttinessDisaster [nobr]
+<p>
+<<Rep $g.biologist>> managed to find the fruits they were looking for, but was
+sloppy in picking and storing them. The odors somehow permeated out of their
+bags and after some time, <<rep $g.whore1>> and <<rep $g.whore2>> began to
+feel much more aroused than they normally would. By the time <<rep $g.biologist>>
+realized what was happening, it was already too late, and <<rep $g.biologist>>
+had to quickly ditch the fruits and restored whatever mind left back to both <<rep
+$g.whore1>> and <<rep $g.whore2>>.
+</p>

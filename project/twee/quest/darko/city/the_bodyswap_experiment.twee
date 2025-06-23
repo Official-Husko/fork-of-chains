@@ -1,0 +1,191 @@
+:: QuestSetup_the_bodyswap_experiment [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'the_bodyswap_experiment', /* key */
+"The Bodyswap Experiment", /* Title */
+"darko", /* Author */
+[ 'city', 'trait', 'transformation', 'rare',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'slave': setup.qu.slave,
+'scientist1': setup.qu.scientist,
+'scientist2': setup.qu.scientist,
+'negotiator': setup.qu.negotiator, },
+{ /* actors */
+'swapper': 'all', },
+[ /* costs */
+],
+'Quest_the_bodyswap_experiment',
+setup.qdiff.harder35, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_bodyswap_experimentCrit',
+[
+setup.qc.Bodyswap('slave', 'swapper'),
+setup.qc.Slave('swapper', "a|was a test subject in an underground laboratory who swapped bodies with one of your slaves", undefined),
+setup.qc.MoneyCustom(2000), ],
+], [
+'Quest_the_bodyswap_experimentCrit',
+[
+setup.qc.Bodyswap('slave', 'swapper'),
+setup.qc.MoneyCustom(2000),
+setup.qc.Injury('slave', 2), ],
+], [
+'Quest_the_bodyswap_experimentCrit',
+[
+setup.qc.Bodyswap('slave', 'swapper'),
+setup.qc.Corrupt('slave'),
+setup.qc.PermanentlyCorrupt('slave'),
+setup.qc.MoneyCustom(1000), ],
+], [
+'Quest_the_bodyswap_experimentCrit',
+[
+setup.qc.Bodyswap('slave', 'swapper'),
+setup.qc.RemoveRandomTraitWithTag('slave', 'per'),
+setup.qc.AddRandomTraitWithTags('slave', ['per']),
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.epic],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+],
+)>>
+
+:: Quest_the_bodyswap_experiment [nobr]
+
+<p>
+A laboratory in the undercity of Lucgate is looking for a "volunteer" to
+participate in one of their experiments. This time, they are looking to try
+out the new bodyswapping machine they had constructed with a combination of magic and
+science. Allegedly, this machine is capable of swapping the bodies of
+two creatures, each retaining their own memories and personalities but not their bodies.
+</p>
+
+<p>
+Of course, there is a good reason why they are paying well for such job. The
+bodyswapping mechanism is still in early prototype, and who knows what kind
+of side effect it could have on the participants. You can force one of your
+slaves as an unwilling participate, if you choose to collect the promised money. You
+will never know who the slave will swap bodies with, however.
+</p>
+
+
+:: Quest_the_bodyswap_experimentCrit [nobr]
+<p>
+The laboratory was filled with strange contraptions,
+
+<<set _inv = setup.selectUnit([$g.scientist1, $g.scientist2, $g.negotiator], {trait: 'bg_engineer'})>>
+<<set _curious = setup.selectUnit([$g.scientist1, $g.scientist2, $g.negotiator], {trait: 'per_curious'})>>
+<<set _stubborn = setup.selectUnit([$g.scientist1, $g.scientist2, $g.negotiator], {trait: 'per_stubborn'})>>
+
+<<if _inv>>
+  a familiar settings for the ex-inventor <<rep _inv>>.
+<<elseif _curious>>
+  drawing much curiosity from <<yourrep _curious>>.
+<<elseif _stubborn>>
+  although it still fail to attract the curiosity from the stubborn <<rep _stubborn>>.
+<<else>>
+  but your slavers kept their focus instead of <<uadv $g.scientist1>> gazing upon the curiosities.
+<</if>>
+
+Within the laboratory, sits the bodyswapper machine.
+It looked pretty innocuous from the outside -- just two simple compartments that were
+connected with a pipe, each having a chair inside.
+<<Yourrep $g.scientist1>> <<uadv $g.scientist1>> strapped <<yourrep
+$g.slave>> tight on one of the chairs, making sure to gag the slave to maintain silence
+in the laboratory.
+On the other tube is another "volunteer" that was also being tied tightly into the chair.
+Once both slaves were in place, with a few click of buttons the doors of the
+compartments slowly closed, trapping the slaves together with their muffles inside each compartment.
+</p>
+
+<p>
+With few more presses of the buttons, the tubes started to glow strange colors.
+The scientists as well as your slavers watched the experiment for quite
+a while until the glowing subsided.
+<<if $gOutcome == 'crit'>>
+Your slavers could see a slight transparent smoke coming out from both compartments, but
+it did not seem to be anything significant.
+<<elseif $gOutcome == 'success'>>
+Your slavers could see a black-ish smoke coming from both compartments, certainly did
+not look like anything that was supposed to happen!
+<<elseif $gOutcome == 'failure'>>
+But then a loud explosion could be heard from inside the compartment that's holding
+<<yourrep $g.slave>>.
+<<else>>
+Your slavers could see a purple-ish smoke coming from both compartments,
+a clear indicator that something went absolutely wrong.
+<</if>>
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+when the door suddenly open, <<yourrep $g.slave>> had occupied
+a new, but corrupted body.
+It appeared that although the bodyswap was successful, the procedure somehow
+misfired and corrupted their participants. This was clearly a computation
+fault from the scientists side.
+Thanking your slavers, they immediately got
+back to work, trying to figure out the bug in their computation.
+Your slavers took their pay and the transformed, bodyswapped
+wreck of a slave home.
+</p>
+
+<<else>>
+
+<p>
+The compartments slowly opened their doors revealing their participants whose bodies were
+completely switched — on the compartment that used to house <<yourrep $g.slave>>
+sat <<reps $g.swapper>> body instead, and vice versa.
+<<if $gOutcome == 'disaster'>>
+
+Both "volunteers" were completely dazed —
+upon closer examination, it seemed that not only
+their bodies had been swapped — their personalities had somewhat mixed together too.
+This was clearly not within the desired specification of the bodyswap machine, and the
+scientists had nothing to celebrate for.
+Your slavers were paid the promised amount and sent home together with the
+bodyswapped and personality-altered wreck of a slave.
+
+<<else>>
+
+<<if $gOutcome == 'crit'>>
+The slaves were barely
+conscious having undergone such a painful procedure, but upon questioning it
+was clear that the bodyswapping procedure was successful.
+<<else>>
+But both slaves were
+unconscious — it seemdd the procedure was so taxing on their bodies that the
+two slaves passed out from the pain.
+Once they regained consciousness, via
+questioning it was clear that the bodyswapping was successful, albeit
+injuring the participants.
+<</if>>
+The scientists celebrated
+with your slavers afterwards.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers were paid the promised amount, as well as given the now useless
+"volunteer" <<rep $g.swapper>>, who now occupies <<reps $g.slave>> original body,
+to "help bring back home".
+Your slavers couldn't wait to explore the new bodies of their toys.
+</p>
+<<else>>
+
+<p>
+Your slavers were paid the promised amount, as well as being returned
+<<yourrep $g.slave>> who now occupied an entirely new body.
+Your slavers couldn't wait to explore the new body of their toy.
+</p>
+<</if>>
+
+<</if>>

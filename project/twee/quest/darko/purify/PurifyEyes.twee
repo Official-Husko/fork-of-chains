@@ -1,0 +1,57 @@
+:: QuestSetupPurifyEyes [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'purify_eyes',  /* id */
+  'Purify: Eyes',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.purify_head_master,
+    'assistant1': setup.qu.purify_assistant,
+    'assistant2': setup.qu.purify_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.MoneyMult(-5),
+  ],  /* costs */
+  'PurifyEyes',  /* description */
+  setup.qdiff.hard46,
+  [
+    [
+      'PurifyAllCrit',
+      [
+        setup.qc.Purify('trainee', 'eyes'),
+        
+      ]
+    ],
+    [
+      'PurifyAllSuccess',
+      [
+        setup.qc.Purify('trainee', 'eyes'),
+        
+      ],
+    ],
+    [
+      'PurifyAllFailure',
+      [
+      ],
+    ],
+    [
+      'PurifyAllDisaster',
+      [
+        setup.qc.Injury('trainee', 4),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: PurifyEyes [nobr]
+<p>
+Purify a unit's eyes.
+</p>

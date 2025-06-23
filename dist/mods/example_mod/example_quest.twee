@@ -1,0 +1,82 @@
+:: example_mod_QuestSetupWelcomeToModding [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'example_mod:welcometomodding', /* key */
+  'Example Mod: Welcome to Modding', /* Title */
+  'yourself',   /* author */
+  ['city', 'money', 'unit'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'coder': [ setup.qu.scientist, 1],
+    'writer': [ setup.qu.writer, 1],
+    'proofreader': [ setup.qu.whore, 1],
+  },
+  { /* actors */
+    'fan': 'quest_humanvale_farmer',
+  },
+  [ /* costs */
+  ],
+  'QuestWelcomeToModding', /* passage description */
+  setup.qdiff.easy3, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestWelcomeToModdingCrit',
+      [
+        setup.qc.Slave(
+          'fan',
+          'a|was a die hard fan of your latest popular mod'),
+        setup.qc.MoneyNormal(),
+      ],
+    ],
+    [
+      'QuestWelcomeToModdingCrit',
+      [
+        setup.qc.MoneyNormal(),
+      ],
+    ],
+    [
+      'QuestWelcomeToModdingFailure',
+      [
+
+      ],
+    ],
+    [
+      'QuestWelcomeToModdingFailure',
+      [
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestWelcomeToModding [nobr]
+
+<p>
+Welcome to the world of modding! All modders must begin somewhere, and what better
+place to start than to send your slavers to create an example mod with a new quest!
+</p>
+
+
+:: QuestWelcomeToModdingCrit [nobr]
+
+<p>
+After a lot of work, your slavers managed to develop a mod which greatly enriched the game with new content. Congratulations!
+</p>
+<p>
+Some players liked the mod so much that made some donations.
+<<if $gOutcome == 'crit'>>
+In addition, $g.fan liked it so much that asked to be taken <<themself $g.fan>> as a slave.
+<</if>>
+</p>
+
+
+:: QuestWelcomeToModdingFailure [nobr]
+
+<p>
+Unfortunately, after some hard work, no one seemed to notice your mod exists. You should probably have announced it
+beyond <<lore concept_mist>> into the public Discord and other channels.
+</p>
+

@@ -1,0 +1,66 @@
+:: EventSetup_the_fire_giveth [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'the_fire_giveth', /* key */
+"The Fire Giveth", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'veteran',
+  'trait',
+],
+'Event_the_fire_giveth',
+{ /* roles */
+},
+{ /* actors */
+  'student': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_consumed_by_fire_0'),
+  ],
+  'wizard': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AnyTrait([setup.trait.magic_fire_master,
+    setup.trait.magic_water_master, setup.trait.magic_wind_master,
+    setup.trait.magic_earth_master, setup.trait.magic_light_master,
+    setup.trait.magic_dark_master, setup.trait.magic_fire,
+    setup.trait.magic_water, setup.trait.magic_wind, setup.trait.magic_earth,
+    setup.trait.magic_light, setup.trait.magic_dark], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('the_fire_taketh', null),
+],
+[ /* restrictions */
+  setup.qres.NoQuest('the_fire_taketh'),
+  setup.qres.VarNull('be_cleansed_in_fire_event_timeout'),
+],
+0, /* Cooldown */
+setup.rarity.common,  /* Rarity */
+)>>
+
+:: Event_the_fire_giveth [nobr]
+<p>
+As <<rep $g.student>> pass by, gazing emptily, you are reminded by how much
+you miss the old <<urace $g.student>>, before <<they $g.student>> had <<their
+$g.student>> spirit taken away from them. You used to have fun together with
+<<theslaver $g.student>>, but it felt like such a distant memory by now.
+</p>
+
+<p>
+As you <<uadv $unit.player>> sighed at the predicament, you are approached by
+<<yourrep $g.wizard>>. <<Therace $g.wizard>> wizard|is a fairly powerful
+magic user, and <<they $g.wizard>> wizard|share your despair towards <<rep
+$g.student>>. But in a good news, <<rep $g.wizard>> wizard|claim to have found a
+possible cure for what plagues <<rep $g.student>> — a ritual to restore some
+semblance of personality back to <<therace $g.student>>.
+</p>
+
+<p>
+<<Rep $g.wizard>> wizard|have promised to drop the details of the ritual
+later in your office, for you to take a better look at. Today might not be so
+bad at all, after all, and you went on with your day with a slightly lighter
+step in your feet.
+</p>

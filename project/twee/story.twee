@@ -1,0 +1,120 @@
+:: StoryTitle [nobr]
+Fort of Chains
+
+:: Start [nobr]
+
+<<include 'GameVersion'>>
+
+<<set $gVersion = setup.VERSION>>
+
+<<include 'Init' >>
+
+:: Init [nobr]
+
+<img class='game-banner' src="./assets/logo.png"/>
+
+<p>
+Welcome to <b>Fort of Chains</b>.
+</p>
+
+<p>
+<<include 'StoryShare'>>
+</p>
+
+<p>
+<b>Contribute!</b>
+If you want to support this game,
+you too are invited to add your stories to the game:
+whenever you feel like it,
+check out the GUI-based <<successtext 'Content Creation Tool'>> below.
+''No programming knowledge whatsoever required.''
+</p>
+
+<p>
+This game is a passion project and will <<successtext 'always be a free game'>>.
+Contributing content is the preferred way to support this game -- you can contribute
+story, code, art, anything
+[[(more information)|https://gitgud.io/darkofocdarko/fort-of-chains#how-to-contribute-content]]!
+</p>
+
+<hr/>
+
+<p>
+<b>Fort of Chains</b> is an
+[[open source|https://gitgud.io/darkofocdarko/fort-of-chains]] |
+<b>TEXT-ONLY</b> fantasy game set in an entirely fictional world.
+The game contains explicit sexual content. By proceeding, you consent that
+you are of legal age, and it is legal for you to play this game in your demesne.
+The game is entirely fictional, and in no way depicts any of the contributor's views.
+</p>
+
+<div>
+The game would like to express its deepest gratitude to the various contributors to this project:
+</div>
+<div>
+<<focmove "(Artist Credits - Portraits)" "PortraitCredits">> · 
+<<focmove "(Artist Credits - Content Images)" "ContentImagesCredits">> · 
+<<focmove "(Artist Credits - Rooms)" "RoomCredits">> · 
+<<focmove "(Artist Credits - Tilesets)" "TilesetCredits">> · 
+<<focmove "(Author Credits)" "AuthorCredits">> · 
+<<focmove "(Coder Credits)" "CoderCredits">> · 
+<<focmove "(Other Credits)" "OtherCredits">> · 
+[[(License)|https://gitgud.io/darkofocdarko/fort-of-chains#license]]
+</div>
+
+<hr/>
+
+<<if setup.is_itch_io() >>
+  <div>
+    <<dangertext 'WARNING'>>: You are playing on the version compiled specifically
+    to be played directly on the web in
+    [[itch.io|https://darkofoc.itch.io/fort-of-chains]].
+    This version has <<dangertext 'less content'>> and contains
+    <<dangertext 'less than half of the images'>> compared to the download-able full version,
+    because itch.io has a strict 1000 files limit, which this game has exceeded.
+    Consider downloading the
+    [[full version with source code here|https://gitgud.io/darkofocdarko/fort-of-chains#how-to-play-the-latest-version-of-the-game]] or
+    [[just the full version here|https://darkofoc.itch.io/fort-of-chains#download]].
+  </div>
+
+  <hr>
+<</if>>
+
+<div class="StoryStart-buttons">
+  <<focbutton "<<icon play>> Start a New Game" "ProloguePlayerGen">><</focbutton>>
+
+  <<button '<<icon magic>> Contribute: Content Creation Tool' 'DevToolLobby'>>
+    <<run setup.DebugInit.contentCreatorInit()>>
+    <<run $menufilter.set('unit', 'display', 'compact')>>
+  <</button>>
+
+  <<button "<<icon tags>> In-Game Database" "WikiLobby">>
+    <<run setup.DebugInit.contentCreatorInit()>>
+    <<run $menufilter.set('unit', 'display', 'compact')>>
+  <</button>>
+</div>
+
+<hr/>
+
+<div>
+<<link '(Debug Start)'>>
+  <<run setup.DebugInit.debugModeInit()>>
+  <<focsavestategoto 'PrologueDebugGen'>>
+<</link>>
+·
+<<link '(Compute debug statistics in javascript console and then debug start)'>>
+  <<run setup.DebugInit.debugModeInit()>>
+  <<run setup.DOM.Menu.debugComputeStats()>>
+  <<focsavestategoto 'PrologueDebugGen'>>
+<</link>>
+</div>
+
+
+
+:: StoryShare [nobr]
+
+[[(Download latest version)|https://gitgud.io/darkofocdarko/fort-of-chains#how-to-play-the-latest-version-of-the-game]] ·
+[[(Play on browser)|https://darkofoc.itch.io/fort-of-chains]] ·
+[[(Contribute)|https://gitgud.io/darkofocdarko/fort-of-chains#how-to-contribute-content]] ·
+[[(F.A.Q)|https://gitgud.io/darkofocdarko/fort-of-chains/-/blob/master/docs/faq.md]] ·
+[[(Official Discord server)|https://discord.com/invite/PTD9D7mZyg]]

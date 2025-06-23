@@ -1,0 +1,341 @@
+:: QuestSetup_library_of_wisdomglade [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_wise_as_an_ancient_elf_0", /* key */
+"Wise as an Ancient Elf", /* name */
+"Perfectly solved an ancient elven puzzle to open access to the Library of Wisdomglade", /* description */
+"perfectly solved an ancient elven puzzle in the western forests during a|their adventure to locate the Library of Wisdomglade", /* unit text */
+3000, /* slave value */
+{ /* skill additives */
+knowledge: 4,arcane: 2,},
+)
+>>
+
+<<run new setup.QuestTemplate(
+'library_of_wisdomglade', /* key */
+"Library of Wisdomglade", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'forest', 'unknown'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'knight': setup.qu.knight,
+'scholar': setup.qu.scientist,
+'scout': setup.qu.scout_forest, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_library_of_wisdomglade',
+setup.qdiff.hardest52, /* difficulty */
+[ /* outcomes */
+[
+'Quest_library_of_wisdomgladeCrit',
+[
+setup.qc.IfThenElse(
+setup.qres.Actor('knight', setup.qres.NoTraits([setup.trait.per_stubborn, setup.trait.per_slow, setup.trait.magic_wind, setup.trait.magic_wind_master], true)),
+setup.qc.DoAll([
+setup.qc.Opportunity('aspect_of_wisdom', {knight: 'knight'}),
+setup.qc.Item(setup.item.f_lighting_good),
+]),
+setup.qc.DoAll([
+setup.qc.MoneyNormal(),
+setup.qc.Item(setup.item.f_lighting_good),
+])),
+setup.qc.IfThenElse(
+setup.qres.Actor('knight', setup.qres.And([
+setup.qres.AnyTrait([setup.trait.skill_creative, setup.trait.per_curious], true),
+setup.qres.AllTraits([setup.trait.magic_earth, setup.trait.per_smart], false),
+])),
+setup.qc.DoAll([
+setup.qc.AddTitle('knight', 'quest_wise_as_an_ancient_elf_0')
+]),
+setup.qc.DoAll([
+])),
+],
+], [
+'Quest_library_of_wisdomgladeCrit',
+[
+setup.qc.IfThenElse(
+setup.qres.Actor('knight', setup.qres.NoTraits([setup.trait.per_stubborn, setup.trait.per_slow, setup.trait.magic_wind, setup.trait.magic_wind_master], true)),
+setup.qc.DoAll([
+setup.qc.Opportunity('aspect_of_wisdom', {knight: 'knight'}),
+]),
+setup.qc.DoAll([
+setup.qc.MoneyNormal(),
+])),
+setup.qc.IfThenElse(
+setup.qres.Actor('knight', setup.qres.And([
+setup.qres.AnyTrait([setup.trait.skill_creative, setup.trait.per_curious], true),
+setup.qres.AllTraits([setup.trait.magic_earth, setup.trait.per_smart], false),
+])),
+setup.qc.DoAll([
+setup.qc.AddTitle('knight', 'quest_wise_as_an_ancient_elf_0')
+]),
+setup.qc.DoAll([
+])),
+],
+], [
+'Quest_library_of_wisdomgladeFailure',
+[
+setup.qc.MissingUnit('knight'), ],
+], [
+'Quest_library_of_wisdomgladeFailure',
+[
+setup.qc.MissingUnit('scout'),
+setup.qc.MissingUnitRecapture('knight', 'capturedmedium'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.Cooldown(12),
+setup.qres.QuestUnique(), ],
+[ /* expiration outcomes */
+],
+)>>
+
+
+:: Quest_library_of_wisdomglade [nobr]
+
+<p>
+The elven race is known for both their beauty and their keen mind. Both
+traits are apparently mainly attributed to their ancestors, who spent
+centuries practicing magic to enhance both their wit and their physical perfection.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+You have heard information that an ancient elven library lies somewhere in
+the <<lore region_forest>>, apparently remaining untouched for centuries. That
+certainly does not bode well for your company's chance to find it,
+but rumors say that the library will
+open itself for any adventurer who thirsts for knowledge. If you think you
+have any such adventurer, you could try to risk it and let a group of slavers
+spend an entire month in the <<lore region_forest>>, looking for this mythical
+place. Why, <<yourrep _u>> thinks it's a very good idea, if anything else!
+</p>
+
+<p>
+A good scout is always required in the <<lore region_forest>> or else you risk your
+slavers getting lost in the vast landscape. A scholar is also good to have,
+considering it's a library you're looking for and it's most likely protected
+by some sort of elven puzzle. Finally and most importantly, a true paragon of
+wisdom — a knight with a particular hunger for knowledge.
+</p>
+
+
+:: Quest_library_of_wisdomgladeCrit [nobr]
+
+<p>
+After weeks searching and exploring the <<lore region_forest>>, their perseverance
+was rewarded when <<rep $g.scout>> found an empty clearing in the middle of
+the forest, with ruins scattered all about. After scrutinizing the inscriptions on
+the walls, <<rep $g.scholar>> scholar|was confident that this must be the
+elven library complex they were looking for. Only, there did not seem to be
+anything there but a large, empty space.
+</p>
+
+<p>
+Thanks to <<reps $g.scholar>> vast knowledge, <<they $g.scholar>> scholar|was
+able to decipher the elven writings scattered throughout the area. Apparently,
+the entire area forms an otherworldly portal, which opens the gateway into
+the library. Normally, one would need to offer a sacrificial slave to open
+the gate — which would be easy for your company to do, except that the slave
+must be bathed for one month straight in a water distilled from seven
+different types of flowers, including one already extinct.
+Thankfully, there is another simpler way — a paragon of wisdom simply must
+bear the risk and stand within the portal while chanting some elven gibberish.
+</p>
+
+<p>
+As <<rep $g.knight>> <<uadv $g.knight>> prepared <<themself $g.knight>> for
+the ritual, <<rep $g.scout>> and <<rep $g.scholar>> scoured the area for any
+extra information they can get their <<uhands $g.scout>> on. The preparations complete (or
+as complete as it could be), <<rep $g.knight>> stood at the center of the
+area, chanting from a hastily written script.
+</p>
+
+<<if $g.knight.isHasTrait('per_slow') ||
+$g.knight.isHasTrait('per_stubborn') ||
+$g.knight.isHasTrait('magic_wind')>>
+<p>
+<<if $g.knight.isHasTrait('per_slow')>>
+Halfway through however, the script became much more complex. Unfortunately
+<<yourrep $g.knight>> knight|was simply too dumb to be able to finish
+the chant.
+<<elseif $g.knight.isHasTrait('per_stubborn')>>
+Halfway through however, the script started to magically sway and move,
+putting blank spaces here and there apparently as a test for your slaver's wit. But the
+stubborn slaver <<rep $g.knight>> lacked the inquisitive mind required to
+solve such a puzzle.
+<<elseif $g.knight.isHasTrait('magic_wind')>>
+Halfway through however, <<reps $g.knight>> <<rep setup.trait.magic_wind>>
+magic suddenly blared out of control — the magic scattered <<their
+$g.knight>> notes to the wind. This must be an old enchantment of the elves
+to ward against their enemies of the past, the wielders of <<lore
+magic_wind>>. Without the notes,
+<</if>>
+<<reps $g.knight>> reading speed slowed down to a crawl, even with <<reps
+$g.scholar>> helpful notes annotated the script all over the place. Ultimately, it was
+obvious that the ritual failed. At least none of your slavers were harmed by
+this adventure.
+</p>
+
+<p>
+Your slavers were able to scavenge some ancient elven valuables from the
+ritual site, so the quest was not a complete loss.
+<<if $gOutcome == 'crit'>>
+They even managed to find an ancient elven <<rep
+setup.item.f_lighting_good>>, which will certainly fetch for a good price.
+<</if>>
+If you still desire that wisdom, perhaps you can try again with a more...
+suitable slaver some other time.
+</p>
+
+<<else>>
+
+<p>
+The chanting itself turned out to be a puzzle in itself. As <<rep $g.knight>>
+continued to chant, the script itself changed and twisted, demanding answers
+from <<reps $g.knight>> sharp mind.
+As the first challenge, the phrases became harder and intricate.
+<<set _wins = 0>>
+<<if $g.knight.isHasTrait('per_smart')>>
+<<set _wins = _wins + 1>>
+While it would have certainly stifled any other <<man $g.knight>>, it was not a
+problem at all for <<rep $g.knight>>, thanks to <<their $g.knight>> brilliant
+mind.
+<<else>>
+It greatly challenged <<reps $g.knight>> ordinary mind, but <<rep $g.knight>>
+knight|was not dumb and <<they $g.knight>> knight|was able to continue no
+small part due to the helpful hints that <<rep $g.scholar>> wrote on the
+script.
+<</if>>
+But it was far from the only challenge. The words started to disappear next,
+forcing <<rep $g.knight>> to improvise on the spot.
+<<if $g.knight.isHasTrait('skill_creative')>>
+Luckily, creativity is perhaps <<reps $g.knight>> biggest virtue, and <<they
+$g.knight>> knight|was able to pass the test with complete ease.
+<<elseif $g.knight.isHasTrait('per_curious')>>
+Fortunately, it was not a problem at all for the inquisitive slaver, who
+improvised seemingly with great ease and familiarity.
+<<else>>
+This greatly challenged <<rep $g.knight>>, but since <<they $g.knight>>
+knight|was not a stubborn slaver, <<rep $g.knight>> managed to overcome the
+challenge still.
+<</if>>
+Finally, a failsafe mechanism was initiated where <<reps $g.knight>> magical
+prowess was tested.
+<<if $g.knight.isHasTrait('magic_earth')>>
+The earth immediately rose around <<rep $g.knight>>. Sensing the familiar
+earth spell emanating form <<theslaver $g.knight>>, the puzzle completed its
+task of verifying that the entity before them was not an enemy.
+<<elseif $g.knight.isHasTrait('magic_water')>>
+The sky immediately turned dark as a torrent of rain engulfed the
+forests. While this had no noticable effects on the magical scripts, it
+seemed that it was satisfied by the lack of <<lore magic_wind>>.
+<<elseif $g.knight.isHasTrait('magic_fire')>>
+The sky immediately turned crimson as fire circled <<rep $g.knight>>. While
+this had no noticable effects on the magical scripts, it seemed that it was
+satisfied by the lack of <<lore magic_wind>>.
+<<elseif $g.knight.isHasTrait('magic_light')>>
+<<Rep $g.scout>> and <<utheirrel $g.scout $g.scholar>> <<rep $g.scholar>>
+watched as <<reps $g.knight>> innate <<lore magic_light>> covered <<their
+$g.knight>> entire body, glowing brightly. While this had no noticable
+effects on the magical scripts, it seemed that it was satisfied by the lack of
+<<lore magic_wind>>.
+<<elseif $g.knight.isHasTrait('magic_dark')>>
+<<Rep $g.knight>> winced in pain as <<they $g.knight>> felt the corrupted
+energy flew from within <<their $g.knight>> body and into the script, but seemingly with no
+noticable effect. Either way, it seemed that the puzzle was satisfied by the
+lack of <<lore magic_wind>>.
+<<else>>
+But <<rep $g.knight>> knight|was not known for <<their $g.knight>> magical
+talents, and nothing happened. But it seemed that this was a passable grade for
+the puzzle — perhaps it was only checking for the <<lore magic_wind>>, which
+was wielded by the elf's ancient enemy?
+<</if>>
+</p>
+
+<<if $g.knight.isHasTrait('per_smart') &&
+$g.knight.isHasTrait('magic_earth') &&
+($g.knight.isHasTrait('per_curious') || $g.knight.isHasTrait('skill_creative'))>>
+<p>
+<<Rep $g.knight>> passed the test with such a flying color that the script
+visibly enhanced <<them $g.knight>>, bestowing <<them $g.knight>> with ancient
+knowledge. <<Yourrep $g.knight>> came out wiser than ever<<if
+!$g.knight.isYou()>>, perhaps even wiser than you if <<they $g.knight>>
+knight|was not already before<</if>>.
+</p>
+<</if>>
+
+<p>
+As the trial completed, your slavers gazed in awe as the Library of
+Wisdomglade that magically materialized before them, standing in the once open
+space in the forests. <<Rep $g.knight>> <<uadv $g.knight>> led the rest of
+the team into the library...
+<<if $gOutcome == 'crit'>>
+  (Although not before looting the rare elven <<rep setup.item.f_lighting_good>> <<rep $g.scout>> spotted earlier!)
+<</if>>
+</p>
+
+<</if>>
+
+
+
+
+
+:: Quest_library_of_wisdomgladeFailure [nobr]
+
+<p>
+After weeks searching and exploring the <<lore region_forest>>, their perseverance
+was rewarded when <<rep $g.scout>> found an empty clearing in the middle of
+the forest, with ruins scattered all about. After scrutinizing the inscriptions on
+the walls, <<rep $g.scholar>> scholar|was confident that this must be the
+elven library complex they were looking for. Only, there did not seem to be
+anything there but a large, empty space.
+</p>
+
+<p>
+As your slavers scoured for more information about this mysterious place, the
+<<uadjbad $g.knight>> <<urace $g.knight>> <<rep $g.knight>> found a
+mysterious small circle within the clearings. <<They $g.knight>> <<uadv
+$g.knight>> (but also stupidly) stepped in as if <<they $g.knight>> had no care in the
+world. Apparently the ancient elven magical enchantments still held to this
+very day, and the portal trap activated, teleporting <<rep $g.knight>> to a
+land unknown.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Taking it as a challenge on their skills, <<rep $g.scout>> promised
+<<utheirrel $g.scout $g.scholar>> <<rep $g.scholar>> that <<they $g.scout>>
+had a plan to save <<rep $g.knight>>. Before <<rep $g.scholar>> had
+a time to react, however, <<rep $g.scout>> found another portal and <<uadv
+$g.scout>> stepped in, teleporting yet another one of your slavers into a
+faraway land. In the end, the team was left with only the <<uadjgood
+$g.scholar>> <<urace $g.scholar>> left...
+</p>
+
+<p>
+Several days later, you receive a letter in your office hinting on where you
+could possibly rescue <<yourrep $g.knight>>. Oddly enough, it was signed
+seemingly by <<rep $g.scout>>, who as you remembered was also nowhere to be
+seen. <<uneedrescue $g.scout>>, before <<they $g.scout>> get <<themself
+$g.scout>> into even deeper trouble.
+</p>
+<<else>>
+<p>
+Seeing as many other similar portal traps were spread around the area, your
+remaining slavers wisely decided to retreat back.
+<<uneedrescue $g.knight>>.
+</p>
+<</if>>
+

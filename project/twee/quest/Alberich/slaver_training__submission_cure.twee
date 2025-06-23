@@ -1,0 +1,517 @@
+:: QuestSetup_slaver_training__submission_cure [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriadiscipliner = new setup.UnitCriteria(
+null, /* key */
+'Anti-Submission Trainer', /* name */
+[
+setup.trait.bg_thug,
+setup.trait.bg_slaver,
+setup.trait.per_aggressive,
+setup.trait.per_proud,
+setup.trait.per_cruel,
+setup.trait.per_stubborn,
+setup.trait.per_dominant,
+setup.trait.per_attentive,
+setup.trait.per_aggressive,
+setup.trait.per_serious,
+setup.trait.skill_hypnotic,
+],
+[
+setup.trait.per_dreamy,
+setup.trait.bg_slave,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.per_lavish,
+setup.trait.per_calm,
+setup.trait.per_humble,
+setup.trait.per_kind,
+setup.trait.per_masochistic,
+setup.trait.per_empath,
+],
+[
+setup.qres.NoTrait(setup.trait.per_submissive),
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+{
+slaving: 3.0,
+}
+)>>
+
+<<set _criteriatrainee = new setup.UnitCriteria(
+null, /* key */
+'Trainee-Patient', /* name */
+[
+setup.trait.bg_royal,
+setup.trait.bg_knight,
+setup.trait.bg_noble,
+setup.trait.bg_slaver,
+setup.trait.bg_pirate,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.per_aggressive,
+setup.trait.per_aggressive,
+setup.trait.per_brave,
+setup.trait.per_cruel,
+setup.trait.per_independent,
+setup.trait.per_stubborn,
+setup.trait.tough_tough,
+setup.trait.per_proud,
+setup.trait.skill_intimidating,
+],
+[
+setup.trait.bg_slave,
+setup.trait.bg_maid,
+setup.trait.bg_whore,
+setup.trait.per_lavish,
+setup.trait.per_humble,
+setup.trait.per_cautious,
+setup.trait.per_kind,
+setup.trait.per_masochistic,
+setup.trait.per_loyal,
+setup.trait.per_empath,
+setup.trait.per_calm,
+],
+[
+setup.qres.Trait(setup.trait.per_submissive),
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+{
+slaving: 3.0,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'slaver_training__submission_cure', /* key */
+"Slaver Training: Submission Cure", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/jxmjhl/v110_is_here_submit_all_your_content_bug_report/gd6i8cx/',
+},
+[
+  'fort', 'trait', 'special',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'discipliner': [_criteriadiscipliner, 1.5],
+  'trainee': [_criteriatrainee, 1.5],
+},
+{ /* actors */
+},
+[ /* costs */
+setup.qc.Money(-1000),
+],
+'Quest_slaver_training__submission_cure',
+setup.qdiff.harder44, /* difficulty */
+[ /* outcomes */
+[
+'Quest_slaver_training__submission_cureCrit',
+[
+setup.qc.TraitReplace('trainee', setup.trait.per_dominant), ],
+], [
+'Quest_slaver_training__submission_cureCrit',
+[
+setup.qc.TraitRemove('trainee', setup.trait.per_submissive),
+],
+], [
+'Quest_slaver_training__submission_cureFailure',
+[
+setup.qc.Equipment(setup.equipmentpool.sex),
+],
+], [
+'Quest_slaver_training__submission_cureDisaster',
+[
+setup.qc.MissingUnit('trainee'),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_slaver_training__submission_cure [nobr]
+<p>
+Submissiveness is not a survival trait in your business. The cruel and the kind, the friendly and the distant, the noble and the peasant, may come to wield the whip if destiny takes them that way. But a natural “bottom” is not an obvious choice for the slavers' life.
+</p>
+<p>
+Now a highly unusual slaver leader might find a use for a subbie on staff, but most want nothing to do with them, except as inmates of the slave pens. And it seems you have at least one submissive slaver on your staff now. The question is whether you want to do anything about it.
+</p>
+<p>
+<<set _trainer = $dutylist.getUnitIfAvailable('trainer')>>
+<<if _trainer>>
+Your Drill Sergeant, <<rep _trainer>>,
+<<else>>
+Your former drill sergeant
+<</if>>
+has recently acquired a book of slaving technique and believes
+<<if _trainer>>
+<<they _trainer>> has
+<<else>>
+they have
+<</if>>
+the answer.
+The exercise is radical and there are no guarantees it'll work, but if you're willing to invest
+some coin
+and assign a slaver to do the training,
+<<if _trainer>>
+<<rep _trainer>>
+<<else>>
+your former drill sergeant
+<</if>>
+is ready to instruct (or be)
+that trainer.
+</p>
+<p>
+A strong slaver is best for the task, and a background in hypnosis is a plus.  You will also need a special potion...
+</p>
+
+
+
+
+:: Quest_slaver_training__submission_cureCrit [nobr]
+<<set _potion = setup.item.potion_submissive_cure.rep()>>
+<<set _trainer = $dutylist.getUnitIfAvailable('trainer')>>
+<p>As <<if _trainer>> <<rep _trainer>> <<else>> your former Drill Sergeant <</if>> explained it to you, the theory is simple enough. Begin to give the submissive the domination he craves. Push it further than he wants. Push it <i>much</i> further than he wants. Dominate and abuse, and force a reaction. Use potions and hypnotic techniques to enhance the effects of the abuse, and (hopefully) the slaver's reaction to it. This exercise is called “conversion by chastisement” or—<<if _trainer>> <<rep _trainer>> <<else>> your former Drill Sergeant <</if>>'s preferred term—“club away the sub.”
+</p>
+<p>
+You assign <<rep $g.trainee>> to your training hall for the week. <<They $g.trainee>> had a light breakfast (liberally infused with the <<= _potion>>) and a bath, but no hints as to what <<they $g.trainee>>'s facing from <<their $g.trainee>> assigned trainer.
+</p>
+<p>
+If you respected your slavers' privacy, you would leave what happens between trainer and trainee. Since you don't, you've got a convenient spy hole, where
+<<set _viceleader = $dutylist.getUnitIfAvailable('viceleader')>>
+<<if $unit.player.isHome()>> you
+<<elseif _viceleader>> your vice leader (since you are away)
+<<else>> one of your more discreet slavers (since you are away) <</if>>
+can check in on things.
+<<if $unit.player.isHome()>> You decide
+<<elseif _viceleader>> <<They _viceleader>> decides
+<<else>> Your spy decides <</if>>
+to watch the opening moments of the training.
+</p>
+<p>
+<<Rep $g.trainee>> trainee|is fifteen minutes early, and finds the room without furniture, with only a few of the supplies from Domestic Training: Basic scattered around. There are no restraints in sight, but that is as it should be—the point is that <<rep $g.trainee>> trainee|is able to fight back, if <<they $g.trainee>> can muster the will to do it.
+</p>
+<p>
+<<Rep $g.trainee>> trainee|is a little nervous when <<rep $g.discipliner>> discipliner|is late. This too is as it should be. <<Rep $g.discipliner>> discipliner|is watching through a spy hole of <<their $g.discipliner>> own, and doesn't enter until <<rep $g.trainee>> trainee|is at maximum nervousness and is trying to find a way to get comfortable.
+</p>
+<p>
+“What are <i>you</i> doing here?” barks <<rep $g.discipliner>>, striding in with purpose.
+</p>
+<p>
+“I'm here for training,” <<they $g.trainee>> replies meekly. “By order of <<name $unit.player>>.”
+</p>
+<p>
+<<Rep $g.discipliner>> fetches <<rep $g.trainee>> a sharp slap in the face. “Training, my ass! Training is for slavers and you aren't fit to be one. You're <i>here</i> to do what I <i>say</i> and to do it <i>when I say it</i>. That clear, bitch?” <<rep $g.trainee>> hesitates and gets another slap. “I <i>said</i>, is that <i>clear</i>, bitch?”
+</p>
+<p>
+<<if $unit.player.isHome()>> You
+<<elseif _viceleader>> <<rep _viceleader>>
+<<else>> Your spy<</if>>
+can't hear <<reps $g.trainee>> mumbled reply, but <<their $g.trainee>> look is ambiguous between fear and pleasure. <<Reps $g.discipliner>> next order is unambiguous. “Then how <i>dare</i> you come in here dressed up like a slaver, as if <i>you</i> could beat a tough buck into submission? Get out of those clothes <i>now</i> and we'll see what you've got.”
+</p>
+<p>
+<<Rep $g.trainee>> hastens to obey. <<ustriptorso $g.trainee>> <<ustriplegs $g.trainee>> <<Their $g.trainee>> face says <<they $g.trainee>>'s confused;
+<<if $g.trainee.isHasDick()>> his erection says he's aroused. <<else>> her
+tight nipples say she's aroused. <</if>>
+<<if $g.trainee.isHasTrait('dick_large')>> <<rep $g.discipliner>> eyes him
+critically as his underwear comes off. “Pathetic,” <<they $g.discipliner>>
+says. “The gods give you a halfway decent dong, and you could be a master in
+the bedroom easy if you had any heart to go with it.”
+<<elseif $g.trainee.isHasAnyTraitExact(['dick_tiny', 'dick_small'])>>
+<<rep $g.discipliner>>
+discipliner|laugh aloud at <<reps $g.trainee>> miniscule cock. “No wonder
+you're such a bitch,” <<they $g.discipliner>> says. “No woman's even going to
+<i>feel</i> that thing. Pathetic.” <</if>>
+</p>
+<p>
+<<Reps $g.discipliner>> work is cut out for <<them $g.discipliner>>.
+<<if $unit.player.isHome()>> You decide
+<<elseif _viceleader>> <<rep _viceleader>> decides
+<<else>> Your spy decides <</if>>
+to leave <<them $g.discipliner>> to it.
+</p>
+<p>
+A little while later,
+<<if $unit.player.isHome()>> you check back.
+<<elseif _viceleader>> <<rep _viceleader>> checks back.
+<<else>> your spy checks back. <</if>>
+It's a key moment, maybe. <<Rep $g.trainee>> trainee|is on <<their $g.trainee>> hands and knees and from the looks of things <<they $g.trainee>>'s been scrubbing the floor. From the sound of things <<they $g.trainee>>'s voiced some suspicions about the need for this training, and in particular about whether you know and would approve.
+</p>
+<p>
+“Don't you <i>dare</i> talk to me about <<name $unit.player>>!” snaps <<rep $g.discipliner>> . “You owe me for that.” <<rep $g.discipliner>> hikes a booted foot on top of a stirrup in the floor. “You crawl over here and you kiss my foot, and I mean <i>now</i>!”
+</p>
+<p>
+<<Rep $g.trainee>> obeys, but <<their $g.trainee>> face is showing doubt and <<their $g.trainee>> movements show hesitation. <<Rep $g.discipliner>> , of course, showers <<them $g.trainee>> with further abuse, then twists <<their $g.discipliner>> foot around so the sole is in <<reps $g.trainee>> face. “I don't mean a little peck on the top,” <<they $g.discipliner>> barks. “I mean the bottom. <i>Lick</i> it. <i>Neck</i> with it. Make <i>love</i> to it. I've been out walking in the stables today, and the stuff I stepped in there is worth more than you!”
+</p>
+<p>
+<<Rep $g.trainee>> scuttles back a few paces, at long last showing defiance. <<They $g.trainee>>'s still crouching and <<they $g.trainee>> trainee|is not loud, but <<their $g.trainee>> word is plain: “No.”
+</p>
+<p>
+“WHAT???” <<rep $g.discipliner>> strides forward and plants the bottom of <<their $g.discipliner>> boot in <<reps $g.trainee>> face. <<Rep $g.trainee>> doesn't lick. <<They $g.trainee>> grabs the boot, heaves, and sends <<rep $g.discipliner>> sprawling. Soon they're back on their feet in a screaming match.
+</p>
+<p>
+“<<name $unit.player>> didn't order this,” yells <<rep $g.trainee>> , “and even if <<they $unit.player>> did, I'm – not – <i>doing it!</i>”
+<<if $unit.player.isHome()>> You leave
+<<elseif _viceleader>> <<rep _viceleader>> leaves
+<<else>> Your spy leaves <</if>>
+them to that. The kids are so cute playing together. It'll be healthy to get it out of their systems.
+</p>
+<p>
+Later on,
+<<if $unit.player.isHome()>> you check back
+<<elseif _viceleader>> <<rep _viceleader>> checks back
+<<else>> your spy checks back<</if>>
+through the spy hole. <<Rep $g.trainee>> and <<rep $g.discipliner>>  had switched from invective to actual wrestling.
+</p>
+<p>
+<<if $g.trainee.isHasTrait('per_proud')>> <<reps $g.trainee>> natural pride has overcome <<their $g.trainee>> submissiveness, and <<they $g.trainee>> trainee|is determined to do <<rep $g.discipliner>> as much harm as possible.<</if>>
+<<if $g.trainee.isHasTrait('per_aggressive')>>The encounter has tapped a deep well of aggression in <<rep $g.trainee>>, which leads <<them $g.trainee>> to fight hard and forget all about submitting.<</if>>
+<<if $g.trainee.isHasTrait('tough_tough') || $g.trainee.isHasTrait('per_stubborn')>> <<rep $g.trainee>> trainee|have discovered reserves of determination <<they $g.trainee>> didn't know <<they $g.trainee>> had. <</if>>.
+<<if $g.trainee.isHasTrait('muscle_strong')>> <<reps $g.trainee>> strength and determination are telling, and <<they $g.trainee>> wrestles <<rep $g.discipliner>> into a submission hold.
+<<else>> <<rep $g.trainee>> seems to be forcing <<rep $g.discipliner>> into a submission hold…though to the watcher's practiced eye, it seems <<rep $g.discipliner>> discipliner|is secretly letting <<they $g.trainee>> do it. <</if>>.
+</p>
+<p>
+Just as it seems <<rep $g.trainee>> trainee|is going to break <<reps $g.discipliner>> neck or tear <<their $g.discipliner>> guts out bare-handed,
+<<if $g.discipliner.isHasTrait('skill_hypnotic')>> <<rep $g.discipliner>> quietly speaks a codeword that's been conditioned into <<reps $g.trainee>> psyche.
+<<else>> <<rep $g.discipliner>> slips out a one-use amulet that <<they $g.discipliner>> bought with the training funds. <<They $g.discipliner>> presses it into the back of <<reps $g.trainee>> neck. <</if>>
+<<rep $g.trainee>> goes limp. Using the suggestive state induced by
+<<if $g.discipliner.isHasTrait('skill_hypnotic')>> <<their $g.discipliner>> hypnotic skills, the <<= _potion>>, and the excitement of the encounter,
+<<else>> the amulet, the <<= _potion>>, and the excitement of the encounter,<</if>>
+<<rep $g.discipliner>> discipliner|begin to whisper into <<reps $g.trainee>> ear, while stroking <<their $g.trainee>>'s nude <<ubody $g.trainee>> and keeping <<them $g.trainee>> relaxed.
+<<if $unit.player.isHome()>> You assume
+<<elseif _viceleader>> <<rep _viceleader>> assumes
+<<else>> your spy assumes<</if>>
+the words must be in praise of the new, domineering attitude you want your slaver to have.
+</p>
+<p>
+<<Rep $g.discipliner>>  looked excited as <<they $g.discipliner>> pours the words into <<reps $g.trainee>> ears with increasing enthusiasm.
+<<if $g.trainee.isHasDick()>> <<rep $g.trainee>> gets aroused, and <<rep $g.discipliner>> discipliner|begin to fondle his <<ugenital $g.trainee>> while whispering the words of domination. As <<their $g.discipliner>> hands move faster, the watcher can almost read <<their $g.discipliner>>'s lips, “They're-all-your-bitches-they're-all-your-<i>bitches!</i>” <<rep $g.trainee>>, still in a semiconscious state, orgasms messily all over his belly and <<reps $g.discipliner>> <<uadj $g.discipliner>> hand. <<Rep $g.discipliner>> <</if>>
+<<if $g.trainee.isHasDick() and $g.discipliner.isHasTrait('per_lustful')>> licks it up. <<elseif $g.trainee.isHasDick()>> cleans it up primly. <</if>>
+<<if $g.trainee.isHasVagina()>> <<rep $g.trainee>> moans with arousal, and <<rep $g.discipliner>> teases her nipples and belly with <<their $g.discipliner>> fingertips as <<they $g.discipliner>> continues to whisper words of domination in her ears. <<Reps $g.discipliner>> face glows with enthusiasm as <<they $g.discipliner>> explains the true state of things—<<rep $g.trainee>> trainee|is <i>never</i> to take that kind of abuse from anyone again, but she's to dish it out good and hard on those worthless chattels who don't do as they're told. She writhes with pleasure as <<they $g.discipliner>> continues, and fondles her to a shuddering orgasm.
+<</if>>
+</p>
+<p>
+The training appears to have succeeded. If <<if _trainer>> <<rep _trainer>> <<else>> your former Drill Sergeant<</if>>'s book was telling the truth, this should have severed all thoughts of submission from all feelings of pleasure.
+<<if $gOutcome == 'crit'>>You suspect it has gone further and associated pleasure with domination, making <<rep $g.trainee>> into a proper domineering slaver.<</if>>
+<<They $g.trainee>> trainee|is cured, all right.
+</p>
+
+
+
+
+
+:: Quest_slaver_training__submission_cureFailure [nobr]
+<<set _potion = setup.item.potion_submissive_cure.rep()>>
+<<set _trainer = $dutylist.getUnitIfAvailable('trainer')>>
+<p>As <<if _trainer>> <<rep _trainer>> <<else>> your former Drill Sergeant <</if>> explained it to you, the theory is simple enough. Begin to give the submissive the domination he craves. Push it further than he wants. Push it <i>much</i> further than he wants. Dominate and abuse, and force a reaction. Use potions and hypnotic techniques to enhance the effects of the abuse, and (hopefully) the slaver's reaction to it. This exercise is called “conversion by chastisement” or—<<if _trainer>> <<rep _trainer>> <<else>> your former Drill Sergeant <</if>>'s preferred term—“club away the sub.”
+</p>
+<p>
+You assign <<rep $g.trainee>> to your training hall for the week. <<They $g.trainee>> had a light breakfast (liberally infused with the hypnotic <<= _potion>>) and a bath, but no hints as to what <<they $g.trainee>>'s facing from <<their $g.trainee>> assigned trainer.
+</p>
+<p>
+If you respected your slavers' privacy, you would leave what happens between trainer and trainee. Since you don't, you've got a convenient spy hole, where
+<<set _viceleader = $dutylist.getUnitIfAvailable('viceleader')>>
+<<if $unit.player.isHome()>> you
+<<elseif _viceleader>> your vice leader (since you are busy)
+<<else>> one of your more discreet slavers (since you are busy) <</if>>
+can check in on things.
+<<if $unit.player.isHome()>> You decide
+<<elseif _viceleader>> <<They _viceleader>> decides
+<<else>> Your spy decides <</if>>
+to watch the opening moments of the training.
+</p>
+<p>
+<<Rep $g.trainee>> trainee|is fifteen minutes early, and finds the room without furniture, with only a few of the supplies from Domestic Training: Basic scattered around. There are no restraints in sight, but that is as it should be—the point is that <<rep $g.trainee>> trainee|is able to fight back, if <<they $g.trainee>> can muster the will to do it.
+</p>
+<p>
+<<Rep $g.trainee>> trainee|is a little nervous when <<rep $g.discipliner>> discipliner|is late. This too is as it should be. <<Rep $g.discipliner>> discipliner|is watching through a spy hole of <<their $g.discipliner>> own, and doesn't enter until <<rep $g.trainee>> trainee|is at maximum nervousness and is trying to find a way to get comfortable.
+</p>
+<p>
+“What are <i>you</i> doing here?” barks <<rep $g.discipliner>>, striding in with purpose.
+</p>
+<p>
+“I'm here for training,” <<they $g.trainee>> replies meekly. “By order of <<name $unit.player>>.”
+</p>
+<p>
+<<Rep $g.discipliner>> fetches <<rep $g.trainee>> a sharp slap in the face. “Training, my ass! Training is for slavers and you aren't fit to be one. You're <i>here</i> to do what I <i>say</i> and to do it <i>when I say it</i>. That clear, bitch?” <<rep $g.trainee>> hesitates and gets another slap. “I <i>said</i>, is that <i>clear</i>, bitch?”
+</p>
+<p>
+<<if $unit.player.isHome()>> You
+<<elseif _viceleader>> <<rep _viceleader>>
+<<else>> Your spy<</if>>
+can't hear <<reps $g.trainee>> mumbled reply, but <<their $g.trainee>> look is ambiguous between fear and pleasure. <<Reps $g.discipliner>> next order is unambiguous. “Then how <i>dare</i> you come in here dressed up like a slaver, as if <i>you</i> could beat a tough buck into submission? Get out of those clothes <i>now</i> and we'll see what you've got.”
+</p>
+<p>
+<<Rep $g.trainee>> hastens to obey. <<ustriptorso $g.trainee>> <<ustriplegs $g.trainee>> <<Their $g.trainee>> face says <<they $g.trainee>>'s confused;
+<<if $g.trainee.isHasDick()>> his erection says he's aroused <<else>> her tight nipples say she's aroused. <</if>>
+<<if $g.trainee.isHasTrait('dick_large')>> <<rep $g.discipliner>> eyes him critically as his underwear comes off. “Pathetic,” <<they $g.discipliner>> says. “The gods give you a halfway decent dong, and you could be a master in the bedroom easy if you had any heart to go with it.”
+<<elseif !$g.trainee.isHasTrait('dick_medium')>> <<rep $g.discipliner>> laughs aloud at <<reps $g.trainee>> miniscule cock. “No wonder you're such a bitch,” <<they $g.discipliner>> says. “No woman's even going to <i>feel</i> that thing. Pathetic.” <</if>>
+</p>
+<p>
+<<Reps $g.discipliner>> work is cut out for <<them $g.discipliner>>.
+<<if $unit.player.isHome()>> You decide
+<<elseif _viceleader>> <<rep _viceleader>> decides
+<<else>> Your spy decides <</if>>
+to leave <<them $g.discipliner>> to it.
+</p>
+<p>
+A little while later,
+<<if $unit.player.isHome()>> you check back.
+<<elseif _viceleader>> <<rep _viceleader>> checks back.
+<<else>> your spy checks back. <</if>>
+It's a key moment, maybe. <<Rep $g.trainee>> trainee|is on <<their $g.trainee>> hands and knees and from the looks of things <<they $g.trainee>>'s been scrubbing the floor. From the sound of things <<they $g.trainee>>'s voiced some suspicions about the need for this training, and in particular about whether you know and would approve.
+</p>
+<p>
+“Don't you <i>dare</i> talk to me about <<name $unit.player>>!” snaps <<rep $g.discipliner>> . “You owe me for that.” <<rep $g.discipliner>> hikes a booted foot on top of a stirrup in the floor. “You crawl over here and you kiss my foot, and I mean <i>now</i>!”
+</p>
+<p>
+<<Rep $g.trainee>> obeys, but <<their $g.trainee>> face is showing doubt and <<their $g.trainee>> movements show hesitation. <<Rep $g.discipliner>> , of course, showers <<them $g.trainee>> with further abuse, then twists <<their $g.discipliner>> foot around so the sole is in <<reps $g.trainee>> face. “I don't mean a little peck on the top,” <<they $g.discipliner>> barks. “I mean the bottom. <i>Lick</i> it. <i>Neck</i> with it. Make <i>love</i> to it. I've been out walking in the stables today, and the stuff I stepped in there is worth more than you!”
+</p>
+<p>
+<<Rep $g.trainee>>  looked up, and
+<<if $unit.player.isHome()>>you
+<<elseif _viceleader>> <<rep _viceleader>>
+<<else>> your spy<</if>>
+can see that the moment of truth has come. <i>This</i> is the point the training has been leading towards. <i>This</i> is when <<rep $g.trainee>> must look deep within, and see what <<they $g.trainee>> trainee|is really made of, the stuff of slavers or the stuff of slaves. <i>This</i> is the moment to assert <<themselves $g.trainee>> once and for all, to rise and fulfill <<their $g.trainee>> true destiny. Yes, now, <i>right</i> now, is the time for <<rep $g.trainee>> to see that <<they $g.trainee>>'s taken all <<they $g.trainee>> can stand, and that <<they $g.trainee>> <b>cannot and will not stand any more!</b>
+</p>
+<p>
+Or not. “Yes, <<mistress $g.discipliner>>,” says <<rep $g.trainee>> meekly. <<Rep $g.discipliner>> pushes <<them $g.trainee>> onto the floor with <<their $g.discipliner>> boot, so that <<they $g.discipliner>> discipliner|is stepping on <<their $g.trainee>> face, while <<rep $g.trainee>> pushes <<their $g.trainee>> tongue out to lick the grimy, dirty boots, while weeping tears of gratitude at this chance to serve the <<mistress $g.discipliner>>.
+</p>
+<p>
+Apparently, there is more work to be done.
+</p>
+<p>
+<<if $unit.player.isHome()>>You peep in
+<<elseif _viceleader>> <<rep _viceleader>> peeps in
+<<else>>your spy peeps in<</if>>
+on the training later, and things have grown more disturbing.
+<<if $settings.bannedtags.watersport>> What you see turns you slightly queasy, and is best not described here.
+<<else>> <<reps $g.discipliner>> got <<rep $g.trainee>> face-down on the floor, and discipliner|is showering <<them $g.trainee>> with invective. “I'll show you what <i>you're</i> good for,” sneers <<rep $g.discipliner>> , kicking off <<their $g.discipliner>> pants. Squatting over <<reps $g.trainee>> bare back, <<rep $g.discipliner>> unleashes a stream of hot piss. To your intense disappointment, <<reps $g.trainee>> face is somewhere between puzzlement and pleasure. <<Rep $g.discipliner>> takes a few steps back, grabs <<rep $g.trainee>> by the ankles, and drags <<them $g.trainee>> back 'til <<their $g.trainee>> face is close to the spillover. “Now lap it up like a dog, you bitch, and no hesitating!” With a “yes, <<mistress $g.discipliner>>,” <<rep $g.trainee>> obeys eagerly, but not eagerly enough, and gets a corrective kick. You shake your head and turn away.
+<</if>>
+You can hear further talk, with plenty of orders and curses from <<rep $g.discipliner>>, and plenty of “yes, <<mistress $g.discipliner>>,” “yes, <<mistress $g.discipliner>>,” “thank you <<mistress $g.discipliner>> from <<rep $g.trainee>>,” sometimes followed by a sharp, “speak when you're spoken to!” These are not the sounds of a successful conversion.
+</p>
+<p>
+Later on,
+<<if $unit.player.isHome()>>you spy through a peephole into <<reps $g.trainee>> quarters, and see
+<<elseif _viceleader>> <<rep _viceleader>> spies through a peephole into <<reps $g.trainee>> quarters, and sees
+<<else>>your spy spies through a peephole into <<reps $g.trainee>> quarters, and sees<</if>>
+that <<they $g.trainee>> trainee|is nude, with a blissful face, and is stroking <<themselves $g.trainee>> while whispering, “yes, <<mistress $g.discipliner>>, yes, <<mistress $g.discipliner>>, yes, <<mistress $g.discipliner>>…” <<They $g.trainee>> reverently draws out a secret box from under <<their $g.trainee>> bed, lays it on top of the bed, kneels before it, opens it, and to
+<<if $unit.player.isHome()>>your
+<<elseif _viceleader>> <<rep _viceleader>>'s
+<<else>>your spy's <</if>>
+consternation, has drawn out a slutty, silky whore's garment, and begins sniffing it, rubbing it against <<their $g.trainee>>'s face, and stroking both the garment and <<themselves $g.trainee>>.
+</p>
+<p>
+Well, you can confiscate <i>that</i> contraband later on. As for <<rep $g.trainee>>, you'll have to try this again—or give the cure up as a lost cause.
+</p>
+
+
+:: Quest_slaver_training__submission_cureDisaster [nobr]
+<<set _potion = setup.item.potion_submissive_cure.rep()>>
+<<set _trainer = $dutylist.getUnitIfAvailable('trainer')>>
+<p>As <<if _trainer>> <<rep _trainer>> <<else>> your former Drill Sergeant <</if>> explained it to you, the theory is simple enough. Begin to give the submissive the domination he craves. Push it further than he wants. Push it <i>much</i> further than he wants. Dominate and abuse, and force a reaction. Use potions and hypnotic techniques to enhance the effects of the abuse, and (hopefully) the slaver's reaction to it. This exercise is called “conversion by chastisement” or—<<if _trainer>> <<rep _trainer>> <<else>> your former Drill Sergeant <</if>>'s preferred term—“club away the sub.”
+</p>
+<p>
+You assign <<rep $g.trainee>> to your training hall for the week. <<They $g.trainee>> had a light breakfast (liberally infused with the hypnotic <<= _potion>>) and a bath, but no hints as to what <<they $g.trainee>>'s facing from <<their $g.trainee>> assigned trainer.
+</p>
+<p>
+If you respected your slavers' privacy, you would leave what happens between trainer and trainee. Since you don't, you've got a convenient spy hole, where
+<<set _viceleader = $dutylist.getUnitIfAvailable('viceleader')>>
+<<if $unit.player.isHome()>> you
+<<elseif _viceleader>> your vice leader (since you are busy)
+<<else>> one of your more discreet slavers (since you are busy) <</if>>
+can check in on things.
+<<if $unit.player.isHome()>> You decide
+<<elseif _viceleader>> <<They _viceleader>> decides
+<<else>> Your spy decides <</if>>
+to watch the opening moments of the training.
+</p>
+<p>
+<<Rep $g.trainee>> trainee|is fifteen minutes early, and finds the room without furniture, with only a few of the supplies from Domestic Training: Basic scattered around. There are no restraints in sight, but that is as it should be—the point is that <<rep $g.trainee>> trainee|is able to fight back, if <<they $g.trainee>> can muster the will to do it.
+</p>
+<p>
+<<Rep $g.trainee>> trainee|is a little nervous when <<rep $g.discipliner>> discipliner|is late. This too is as it should be. <<Rep $g.discipliner>> discipliner|is watching through a spy hole of <<their $g.discipliner>> own, and doesn't enter until <<rep $g.trainee>> trainee|is at maximum nervousness and is trying to find a way to get comfortable.
+</p>
+<p>
+“What are <i>you</i> doing here?” barks <<rep $g.discipliner>>, striding in with purpose.
+</p>
+<p>
+“I'm here for training,” <<they $g.trainee>> replies meekly. “By order of <<name $unit.player>>.”
+</p>
+<p>
+<<Rep $g.discipliner>> fetches <<rep $g.trainee>> a sharp slap in the face. “Training, my ass! Training is for slavers and you aren't fit to be one. You're <i>here</i> to do what I <i>say</i> and to do it <i>when I say it</i>. That clear, bitch?” <<rep $g.trainee>> hesitates and gets another slap. “I <i>said</i>, is that <i>clear</i>, bitch?”
+</p>
+<p>
+<<if $unit.player.isHome()>> You
+<<elseif _viceleader>> <<rep _viceleader>>
+<<else>> Your spy<</if>>
+can't hear <<reps $g.trainee>> mumbled reply, but <<their $g.trainee>> look is ambiguous between fear and pleasure. <<Reps $g.discipliner>> next order is unambiguous. “Then how <i>dare</i> you come in here dressed up like a slaver, as if <i>you</i> could beat a tough buck into submission? Get out of those clothes <i>now</i> and we'll see what you've got.”
+</p>
+<p>
+<<Rep $g.trainee>> hastens to obey. <<ustriptorso $g.trainee>> <<ustriplegs $g.trainee>> <<Their $g.trainee>> face says <<they $g.trainee>>'s confused;
+<<if $g.trainee.isHasDick()>> his erection says he's aroused <<else>> her tight nipples say she's aroused. <</if>>
+<<if $g.trainee.isHasTrait('dick_large')>> <<rep $g.discipliner>> eyes him critically as his underwear comes off. “Pathetic,” <<they $g.discipliner>> says. “The gods give you a halfway decent dong, and you could be a master in the bedroom easy if you had any heart to go with it.”
+<<elseif !$g.trainee.isHasTrait('dick_medium')>> <<rep $g.discipliner>> laughs aloud at <<reps $g.trainee>> miniscule cock. “No wonder you're such a bitch,” <<they $g.discipliner>> says. “No woman's even going to <i>feel</i> that thing. Pathetic.” <</if>>
+</p>
+<p>
+<<Reps $g.discipliner>> work is cut out for <<them $g.discipliner>>.
+<<if $unit.player.isHome()>> You decide
+<<elseif _viceleader>> <<rep _viceleader>> decides
+<<else>> Your spy decides <</if>>
+to leave <<them $g.discipliner>> to it.
+</p>
+<p>
+A little while later,
+<<if $unit.player.isHome()>> you check back.
+<<elseif _viceleader>> <<rep _viceleader>> checks back.
+<<else>> your spy checks back. <</if>>
+It's a key moment, maybe. <<Rep $g.trainee>> trainee|is on <<their $g.trainee>> hands and knees and from the looks of things <<they $g.trainee>>'s been scrubbing the floor. From the sound of things <<they $g.trainee>>'s voiced some suspicions about the need for this training, and in particular about whether you know and would approve.
+</p>
+<p>
+“Don't you <i>dare</i> talk to me about <<name $unit.player>>!” snaps <<rep $g.discipliner>> . “You owe me for that.” <<rep $g.discipliner>> hikes a booted foot on top of a stirrup in the floor. “You crawl over here and you kiss my foot, and I mean <i>now</i>!”
+</p>
+<p>
+<<Rep $g.trainee>> obeys, but <<their $g.trainee>> face is showing doubt and <<their $g.trainee>> movements show hesitation. <<Rep $g.discipliner>> , of course, showers <<them $g.trainee>> with further abuse, then twists <<their $g.discipliner>> foot around so the sole is in <<reps $g.trainee>> face. “I don't mean a little peck on the top,” <<they $g.discipliner>> barks. “I mean the bottom. <i>Lick</i> it. <i>Neck</i> with it. Make <i>love</i> to it. I've been out walking in the stables today, and the stuff I stepped in there is worth more than you!”
+</p>
+<p>
+<<Rep $g.trainee>>  looked up, and
+<<if $unit.player.isHome()>>you
+<<elseif _viceleader>> <<rep _viceleader>>
+<<else>> your spy<</if>>
+can see that the moment of truth has come. <i>This</i> is the point the training has been leading towards. <i>This</i> is when <<rep $g.trainee>> must look deep within, and see what <<they $g.trainee>> trainee|is really made of, the stuff of slavers or the stuff of slaves. <i>This</i> is the moment to assert <<themselves $g.trainee>> once and for all, to rise and fulfill <<their $g.trainee>> true destiny. Yes, now, <i>right</i> now, is the time for <<rep $g.trainee>> to see that <<they $g.trainee>>'s taken all <<they $g.trainee>> can stand, and that <<they $g.trainee>> <b>cannot and will not stand any more!</b>
+</p>
+<p>
+Or not. “Yes, <<mistress $g.discipliner>>,” says <<rep $g.trainee>> meekly. <<Rep $g.discipliner>> pushes <<them $g.trainee>> onto the floor with <<their $g.discipliner>> boot, so that <<they $g.discipliner>> discipliner|is stepping on <<their $g.trainee>> face, while <<rep $g.trainee>> pushes <<their $g.trainee>> tongue out to lick the grimy, dirty boots, while weeping tears of gratitude at this chance to serve the <<mistress $g.discipliner>>.
+</p>
+<p>
+Apparently, there is more work to be done.
+</p>
+<p>
+<<if $unit.player.isHome()>>You peep in
+<<elseif _viceleader>> <<rep _viceleader>>peeps in
+<<else>>your spy peeps in<</if>>
+on the training later, and things have grown more disturbing.
+<<if $settings.bannedtags.watersport>> What you see turns you slightly queasy, and is best not described here.
+<<else>> <<reps $g.discipliner>> got <<rep $g.trainee>> face-down on the floor, and is showering him with invective. “I'll show you what <i>you're</i> good for,” sneers <<rep $g.discipliner>> , kicking off <<their $g.discipliner>> pants. Squatting over <<reps $g.trainee>> bare back, <<rep $g.discipliner>> unleashes a stream of hot piss. To your intense disappointment, <<reps $g.trainee>> face is somewhere between puzzlement and pleasure. <<Rep $g.discipliner>> takes a few steps back, grabs <<rep $g.trainee>> by the ankles, and drags <<they $g.trainee>> back 'til <<their $g.trainee>> face is close to the spillover. “Now lap it up like a dog, you bitch, and no hesitating!” With a “yes, <<mistress $g.discipliner>>,” <<rep $g.trainee>> obeys eagerly, but not eagerly enough, and gets a corrective kick. You shake your head and turn away.
+<</if>>
+You can hear further talk, with plenty of orders and curses from <<rep $g.discipliner>>, and plenty of “yes, <<mistress $g.discipliner>>,” “yes, <<mistress $g.discipliner>>,” “thank you <<mistress $g.discipliner>> from <<rep $g.trainee>>,” sometimes followed by a sharp, “speak when you're spoken to!” These are not the sounds of a successful conversion.
+</p>
+<p>
+Later on,
+<<if $unit.player.isHome()>>You check <<reps $g.trainee>> room, and see
+<<elseif _viceleader>> <<rep _viceleader>> <<reps $g.trainee>> room, and sees
+<<else>>your spy checks <<reps $g.trainee>> room, and sees<</if>>
+that <<they $g.trainee>> trainee|is gone. You instigate a search, but all anyone finds is a short note. “<<rep $g.discipliner>> discipliner|is right. I don't belong among slavers. I am off to find a <<mistress $g.discipliner>> to fulfill my true destiny. Farewell.”
+</p>
+<p>
+Well, a rescuer may turn <<rep $g.trainee>> up later, and see what <<their $g.trainee>> attitude is after a few weeks in some other slaver's hands. Or in a crazy noble pervert's harem, or beyond the mists, or wherever else <<rep $g.trainee>> may turn up. Then you can decide if you're willing to bother with <<rep $g.trainee>>.
+</p>
+

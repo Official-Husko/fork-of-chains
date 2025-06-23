@@ -1,0 +1,189 @@
+:: QuestSetup_brothel_palace [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'brothel_palace', /* key */
+"Brothel Palace", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+8, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'planner': [ setup.qu.planner, 1],
+  'builder': [ setup.qu.builder, 1],
+  'wizard': [ setup.qu.arcaneearthveteran, 1],
+},
+{ /* actors */
+  'head': [
+    setup.qres.Home(),
+  ],
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* costs */
+  setup.qc.Money(-100000),
+],
+'Quest_brothel_palace',
+setup.qdiff.normal64, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_palaceCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('elf', 150),
+      setup.qc.Favor('neko', 150),
+    ],
+  ],
+  [
+    'Quest_brothel_palaceCrit',
+    [
+      setup.qc.Opportunity('brothel_palace', {
+owner: "owner",
+head: "head",
+slave: "slave",
+}),
+      setup.qc.Favor('neko', 150),
+      setup.qc.Favor('elf', 150),
+    ],
+  ],
+  [
+    'Quest_brothel_palaceCrit',
+    [
+      setup.qc.Money(-12500),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_brothel_palaceCrit',
+    [
+      setup.qc.Money(-30000),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_palace [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+With the staff training completed, as well as having elected your former slave <<name $g.slave>> as the head courtesan, <<attach _describe>> will need only one more step to become a high-class brothel that you and <<yourrep $g.owner>> have always envisioned the place to be. And this last step would no doubt be the most expensive one, as you must transform the brothel from an ordinary brothel building into a palace suitable for hosting the most demanding of clients.
+</p>
+
+<p>
+<<Yourrep $g.owner>> owner|have already drafted a plan for the place, and all it takes is to work on building it. You will need to lend a planner to crosscheck the plan, as well as recruit builders from the nearby laborers. A builder from your company is required to supervise the entire process. Finally, a wizard is also required, as some places within the brothel will be enchanted to enhance the entire experience, as well as ensure that the head courtesan <<name $g.slave>>'s talents will not go to waste.
+</p>
+
+<p>
+<<if _promotion == 'money'>>
+The business manager of your brothel, your former head whore <<name $g.head>>,
+<<else>>
+The manager of your brothel, <<rep $g.owner>>,
+<</if>>
+has calculated that the construction would offset you a hefty <<money 100000>>.
+When you are ready to make the massive payment, the construction can begin immediately.
+</p>
+
+
+
+
+
+:: Quest_brothel_palaceCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+It took your slavers two full months to construct the palace,
+<<if $gOutcome == 'failure'>>
+including a slight over-budgeting,
+<<elseif $gOutcome == 'disaster'>>
+including a massive over-budgeting on their side,
+<</if>>
+but it is finally completed. With <<yourrep $g.planner>> masterful
+supervision, <<rep $g.builder>> together with the hired workers managed to complete the grand structure. The
+grand palace housing <<attach _describe>> stands proudly, drawing attention
+from all the nearby bystanders. The entrance is gilded with traces of gold,
+and visitors are immediately greeted with
+<<if _class > 1>>
+a throne-room like complex, with servants lining the edge of the room while a luxurious enchanted red carpet paves the way into the complex,
+<<elseif _class < 1>>
+a demon-like palace complex, with various bondage devices hanging from the ceiling
+while some kind of magic keeps the fire burning brightly from the chandelier,
+<<else>>
+an exotic palace complex, with plants thriving inside, feeding on the magical crystals underneath their roots,
+<</if>>
+a work of <<yourrep $g.wizard>>.
+Magic is used abundantly in the place, enhancing the overall experience.
+</p>
+
+<p>
+The staffs live rather luxuriously too now, with each <<man $g.head>> having <<their $g.head>> own room. Meanwhile, the
+<<if _promotion == 'money'>>
+business manager <<name $g.head>>
+<<else>>
+customer relations manager <<name $g.head>>
+<</if>>
+head|have <<their $g.head>> own luxurious abode, complete with a balcony, while the head courtesan <<name $g.slave>> (despite remaining your slave for all intent purposes) receives
+the main bedroom all for <<themself $g.slave>>. A suite has also been reserved for you personally, should you decide to visit some time later.
+</p>
+
+<p>
+While previously your dungeons only contain
+<<if _facility == 'rooms'>>
+the private rooms,
+<<else>>
+the sex dungeons,
+<</if>>
+there are now enough space within the palace complex and both the private rooms and the sex dungeons have been built and better than ever.
+<<if _sub == 'sub'>>
+Your submissive courtesans
+<<elseif _sub == 'dom'>>
+Your dominant courtesans
+<<else>>
+Your courtesans
+<</if>>
+would no doubt be able to use these facilities to satisfy their client's darkest desires.
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+<p>
+To celebrate, your brothel opened its door for free for a day, earning your company much favor from the visiting neko and elves alike.
+</p>
+<</if>>
+
+<p>
+However, the centralmost chamber of the palace still remains empty, and <<yourrep $g.owner>> owner|await your decision on how to best make use of it...
+</p>

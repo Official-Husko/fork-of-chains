@@ -1,0 +1,127 @@
+:: QuestSetupTradingMissionVale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'trading_mission_vale', /* key */
+  'Trading Mission: Vale', /* Title */
+  'darko',   /* author */
+  ['vale', 'money'],  /* tags */
+  1,  /* weeks */
+  5, /* expiration weeks */
+  { /* roles */
+    'trader1': setup.qu.trader,
+    'trader2': setup.qu.trader,
+    'guard': setup.qu.guard,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-0.5),
+  ],
+  'QuestTradingMissionVale', /* passage description */
+  setup.qdiff.easier5, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestTradingMissionValeCrit',
+      [
+        setup.qc.MoneyNormal(3),
+        
+      ],
+    ],
+    [
+      'QuestTradingMissionValeSuccess',
+      [
+        setup.qc.MoneyNormal(2),
+        
+      ],
+    ],
+    [
+      'QuestTradingMissionValeFailure',
+      [
+        setup.qc.MoneyNormal(0.1),
+      ],
+    ],
+    [
+      'QuestTradingMissionValeDisaster',
+      [
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestTradingMissionVale [nobr]
+
+<p>
+The northerners are not traders by nature -- each settlement usually only trade
+between their own residents, and very rarely trade occurs between settlements.
+Hence, there is a lot of opportunities for traders to make good coin, although they need
+to be knowledgeable to know where and what to buy and sell.
+It also takes a little bit of investment to get the money train going.
+If you have a particularly savvy group of slavers, you can join in the opportunity as well.
+</p>
+
+
+:: QuestTradingMissionValeCrit [nobr]
+
+<p>
+Via the combined ingenuity of <<rep $g.trader1>> and <<utheirrel $g.trader1 $g.trader2>> <<rep $g.trader2>>,
+your slavers managed to make a huge amount of profit, more than quadrupling
+the amount of investment they put.
+
+<<set _con = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'skill_connected'})>>
+<<if _con>>
+  <<Reps _con>> many connections certainly helped.
+<</if>>
+
+<<set _fru = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'per_frugal'})>>
+<<if _fru>>
+  <<Reps _fru>> frugality certainly saved your company some money.
+<</if>>
+
+<<set _lav = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'per_lavish'})>>
+<<if _lav>>
+  <<Rep _lav>> might not have been the best at <<their _lav>> task -- being rather
+  careless with money -- but the results still speak for itself.
+<</if>>
+</p>
+
+<p>
+Of course, you cannot tell how much money your slavers might have <<uadv $g.trader1>>
+"misplaced" along the way,
+but even then your company still obtain a tidy profit from this quest.
+</p>
+
+
+:: QuestTradingMissionValeSuccess [nobr]
+
+<p>
+The good old standard of buy low and sell high still works to this very day.
+Your slavers managed to profit quite a bit from the trade, no small thanks to
+<<rep $g.guard>> <<uadv $g.trader1>> keeping them safe from the bandits, slavers, and other degenerates
+along the way.
+</p>
+
+
+:: QuestTradingMissionValeFailure [nobr]
+
+<p>
+Unfortunately, your slavers staked their money into the wrong commodity,
+whose price crashed and burn when they were skipping towns.
+The only thing they managed to return with is a puny one fifth of the
+original investment they went with.
+</p>
+
+
+:: QuestTradingMissionValeDisaster [nobr]
+
+<p>
+Unfortunately, your slavers were robbed midway by a band of werewolves.
+There were just too many enemies for <<yourrep $g.guard>> to even have a slight
+amount of chance to contest them. 
+In the end, your slavers were grateful that none of them were harmed,
+even though all the money were lost in the process.
+</p>

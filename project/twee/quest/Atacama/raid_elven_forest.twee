@@ -1,0 +1,105 @@
+:: QuestSetup_raid_elven_forest [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'raid_elven_forest', /* key */
+'Raid: Elven Homestead', /* Title */
+'Atacama', /* Author */
+[
+  'forest',
+  'unit',
+  'ire',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'raider1': setup.qu.raider,
+'raider2': setup.qu.raider,
+'support': setup.qu.raidersupport, },
+{ /* actors */
+'elves': 'subrace_elf', },
+[ /* costs */
+],
+'Quest_raid_elven_forest',
+setup.qdiff.normal20, /* difficulty */
+[ /* outcomes */
+[
+'Quest_raid_elven_forestCrit',
+[
+setup.qc.MoneyNormal(),
+
+setup.qc.Slave('elves', 'a|was a free elf who had the misfortune of being captured by your company', undefined),
+setup.qc.Favor('outlaws', 25),
+setup.qc.Ire('elf', 1), ],
+], [
+'Quest_raid_elven_forestCrit',
+[
+setup.qc.MoneyNormal(),
+
+setup.qc.Favor('outlaws', 25),
+setup.qc.Ire('elf', 1), ],
+], [
+'Quest_raid_elven_forestFailure',
+[
+],
+], [
+'Quest_raid_elven_forestDisaster',
+[
+setup.qc.Injury('raider1', 2),
+setup.qc.Injury('raider2', 2), ],
+], ],
+[
+[setup.questpool.forest, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_raid_elven_forest [nobr]
+
+<<questimage 'raid_elven_forest.jpg'>>
+
+<p>
+The <<lore region_forest>> are inhabited by both neko and elves.
+Most of the neko live in the <<lore location_npc>>.
+The elves, however, are scattered throughout the forest in smaller settlements. Or lone homesteads.
+It would be a simple task to send a group of slavers to one of those isolated dwellings
+and loot them for valuables--or possibly capture the occupants if they're home.
+</p>
+
+
+:: Quest_raid_elven_forestCrit [nobr]
+
+<p>
+Your slavers, led by <<name $g.raider1>>,
+found a residence in the forest with no one home.
+<<if $g.raider1.isHasTrait('per_attentive')>>
+After making sure there are no traps around the small hamlet, <<name $g.raider1>>
+<<uadv $g.raider1>>
+ransacked
+<<elseif $g.raider1.isHasTrait('per_dreamy')>>
+<<name $g.raider1>> waltzed straight into the house, visions of gold, gemstones and richly woven textiles dancing through 
+<<their $g.raider1>> head. The humble interior snapped them out of the reverie and they ransacked
+<<else>>
+<<name $g.raider1>> ransacked
+<</if>>
+the place for all
+belongings of value.
+<<if $gOutcome == 'crit'>>
+As they were about to leave, the resident returned, a small deer slung over their shoulders. Seeing fortune smiling down upon them, your slavers swiftly subdued the elf, adding a potential slave to their haul for the raid.
+<</if>>
+</p>
+
+
+:: Quest_raid_elven_forestFailure [nobr]
+<p>
+Despite spending a week in the forest looking for a homestead to rob, your slavers found nothing and returned empty-handed.
+</p>
+
+
+:: Quest_raid_elven_forestDisaster [nobr]
+<p>
+Your slavers found the perfect house to burgle-or so they thought.
+The abode they turned out to be inhabited by a skilled elven ranger, who proved more than capable of defending their home.  Even after your slavers decided to flee, the ranger continued to harry them with arrows as they fled from the forest. Two of them have injuries that will take some time to heal.
+</p>

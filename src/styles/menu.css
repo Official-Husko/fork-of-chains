@@ -1,0 +1,129 @@
+/**
+ *  Structure:
+ *
+ *  <div class="menu">
+ *    <div>
+ *      <span>Lebel</span>
+ *      <nav>...children...</nav>
+ *    </div>
+ *  </div>
+ *
+ *  <div>: menu item
+ *    <span>: label
+ *    <nav>: container of children menu items (divs) [optional]
+ */
+
+.menu.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.menu.toolbar>div>span {
+  padding: 4px 12px;
+}
+
+.menu.toolbar>div {
+  display: inline-block;
+  border-right: 2px solid transparent;
+  margin-top: 1px;
+}
+
+.menu {
+  user-select: none;
+  text-align: left;
+}
+
+.menu>* {
+  cursor: pointer;
+}
+
+.menu nav {
+  z-index: 1000;
+}
+
+.menu div {
+  position: relative;
+}
+
+.menu div:not(.menu-clickonly):hover>nav {
+  display: block;
+}
+
+.menu div>.menu-span {
+  position: relative;
+  display: block;
+  padding: 8px 12px;
+  background-color: var(--menu-color, #394c7a);
+}
+
+.menu div>.menu-span:hover {
+  background-color: var(--menu-hover-color, #68d);
+}
+
+/* Small arrow at the right of non-terminal menu items */
+.menu div>nav>div>span:not(:only-child)::after {
+  content: '\e81a';
+  position: absolute;
+  right: 6px;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+
+  font-family: tme-fa-icons;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.menu div.menu-left>nav>div>span:not(:only-child)::after {
+  content: '\e819';
+  right: unset;
+  left: 6px;
+}
+
+.menu div:not(.menu-left)>nav>div>span {
+  padding-right: 24px;
+}
+
+.menu div.menu-left>nav>div>span {
+  padding-left: 24px;
+}
+
+.menu nav {
+  display: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 0;
+  list-style-type: none;
+  width: max-content;
+  min-width: 120px;
+  z-index: 21;
+  border-left: 1px solid transparent;
+}
+
+.menu>div.menu-left>nav {
+  left: unset;
+  right: 0;
+}
+
+.menu nav>div>.menu-span {
+  display: block;
+  background: var(--menu-color, #394c7a);
+  color: #fff;
+  padding: 4px 12px;
+  border-top: 1px solid #1A1A1A;
+  border-right: 1px solid transparent;
+}
+
+.menu div>nav>div>nav {
+  position: absolute;
+  left: 100%;
+  top: 0px;
+}
+
+.menu div.menu-left>nav>div>nav {
+  left: unset;
+  right: 100%;
+}

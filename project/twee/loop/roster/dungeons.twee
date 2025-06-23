@@ -1,0 +1,29 @@
+:: Dungeons [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.dungeons)>>
+<<set _unitlist = State.variables.company.player.getUnits({job: setup.job.slave})>>
+<<if !_room>>
+  <<set _cells = 0>>
+<<else>>
+  <<set _cells = _room.getLevel() - 1>>
+<</if>>
+<<set _maxslaves = State.variables.company.player.getMaxUnitOfJob(setup.job.slave)>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You descend into your dungeons.
+<<if _cells>>
+It has been extended with <<= _cells>> additional cells.
+<</if>>
+It currently holds <<successtext _unitlist.length>> slaves out of a maximum of
+<<= _maxslaves>> slaves.
+<<if _unitlist.length >= _maxslaves>>
+If you want to keep more slaves, consider constructing more dungeon cell improvements.
+<</if>>
+</p>
+
+<<set _dom = setup.DOM.Roster.rosterlist(_unitlist, 'unitslave')>>
+<<attach _dom>>

@@ -1,0 +1,162 @@
+:: QuestSetup_luckiest_person_on_mestia [nobr quest]
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Accompanier', /* name */
+[
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_gregarious,
+  setup.trait.skill_entertain,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_loner,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+],
+{
+  intrigue: 1,
+  social: 2,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'luckiest_person_on_mestia', /* key */
+"Luckiest Person on Mestia", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'special',
+  'prep',
+  'trait',
+  'city',
+],
+4, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 1],
+  'guard1': [ setup.qu.guard, 1],
+  'guard2': [ setup.qu.guard, 1],
+},
+{ /* actors */
+  'lucky': 'city_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_luckiest_person_on_mestia',
+setup.qdiff.harder57, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_luckiest_person_on_mestiaCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_crit', 1, -1),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_luckiest_person_on_mestiaCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_done', 1, -1),
+      setup.qc.VarSet('quest_harbinger_of_luck_lucky', '1', -1),
+      setup.qc.Blessing('guard1', 1, 'blessing_luck8', undefined),
+      setup.qc.Blessing('guard2', 1, 'blessing_luck8', undefined),
+      setup.qc.SetCooldownEvent('harbinger_of_chaos', 10),
+      setup.qc.SetCooldownEvent('harbinger_of_crows', 10),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_luckiest_person_on_mestiaCrit',
+    [
+      setup.qc.Blessing('a', 1, 'curse_crow8', undefined),
+      setup.qc.SetCooldownEvent('luck_chaser', 10),
+    ],
+  ],
+  [
+    'Quest_luckiest_person_on_mestiaCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Blessing('guard1', 1, 'curse_crow8', undefined),
+      setup.qc.Blessing('guard2', 1, 'curse_crow8', undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_luckiest_person_on_mestia [nobr]
+<<set _unit = setup.getUnit({title: 'quest_harbinger_of_misfortune_0'})>>
+<<if !_unit>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+In the <<lore region_city>> lives a <<man $g.lucky>> famous for being absolutely lucky. <<They $g.lucky>> would find random coins as <<they $g.lucky>> stroll by, gifted free drinks for being the 100-th patron of a new tavern, or just generally happens to be in the right place at the right time.
+</p>
+
+<p>
+<<Yourrep _unit>> swallows <<their _unit>> jealousy for now and proposes to you that <<they _unit>> might accompany the <<man $g.lucky>> for a while, in the hopes that whatever luck <<they _unit>> has would rub off on <<them _unit>>. You don't believe luck works that way, but seeing how desperate <<therace _unit>> is, you might just not have a choice but to go with the silly idea this time...
+</p>
+
+<</if>>
+
+
+
+:: Quest_luckiest_person_on_mestiaCrit [nobr]
+<p>
+With the generous amount of money <<they $g.a>> brought,
+<<if $g.a.isHasTrait('skill_entertain')>>
+as well as <<their $g.a>> masterful entertainment skills,
+<<elseif $g.a.isHasTrait('face_beautiful')>>
+as well as <<their $g.a>> absolutely gorgeous face,
+<<elseif $g.a.isHasTrait('per_gregarious')>>
+as well as <<their $g.a>> silver tongue,
+<<elseif $g.a.isHasTrait('face_attractive')>>
+as well as <<their $g.a>> attractive face,
+<<else>>
+
+<</if>>
+<<rep $g.a>> got very close to the lucky <<urace $g.lucky>> very quickly. <<Yourrep $g.a>> made the effort to try and stay as close as the lucky <<man $g.lucky>> as possible throughout — <<they $g.lucky>> would go eat together everyday, enjoy the same entertainment, and would "accidentally" stumble across each other in the public baths. This continued for several weeks, and at the end it was time to test if any sort of luck had decided to stick with <<rep $g.a>>.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<p>
+The next day, <<rep $g.a>> tried to venture alone into the city, no longer together with <<their $g.a>> lucky ally.
+When <<they $g.a>> a|was already at an awkward distance from the inn <<they $g.a>> a|is staying, rain started to pour, and of course <<therace $g.a>> did not bring anything to cover <<their $g.a>> clothes. They hurried into an alley, only to fall down into a gap on the mushy floor and face-down into the mud, and fell unconscious. When <<they $g.a>> awoke, <<they $g.a>> a|was already stripped naked, thieves seemingly stripping <<therace $g.a>> of everything <<they $g.a>> bought that day.
+</p>
+
+<p>
+<<Yourrep $g.guard1>> and <<utheirrel $g.guard1 $g.guard2>> <<rep $g.guard2>>, on the other hand, became actually luckier than normal. They would enter one of the famous brothel in the city just when it's offering a promotion for "paired customers", and later they would enjoy a complimentary ice cream from a newly opened shop.
+It seemed the luck had somehow rubbed on your other two slavers instead, perhaps <<reps $g.a>> sheer unluckiness was simply too much and the luck decided to literally rub another way...
+</p>
+
+<p>
+Clearly there is no way this approach would work, and perhaps it is time to try another approach.
+</p>
+
+<<else>>
+
+<p>
+It did not work, and worse, it seemed that whatever small luck <<rep $g.a>> used to retain was completely absorbed by the lucky <<urace $g.lucky>>.
+<<if $gOutcome == 'disaster'>>
+Worse, both <<rep $g.guard1>> and <<rep $g.guard2>> were affected too, and now you are left with nothing but three particularly unlucky slavers.
+<</if>>
+You sighed, thinking if maybe you should have sent a better, more competent team...
+</p>
+
+<</if>>

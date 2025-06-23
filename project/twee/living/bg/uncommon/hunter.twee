@@ -1,0 +1,34 @@
+:: LIVINGSETUP_hunter [nobr living]
+
+<<run new setup.Living({
+  key: 'hunter',
+  name: 'Hunter',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_hunter: setup.LIVING_COMMON_PREFERENCE,
+    bg_woodsman: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_loner: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_gregarious: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'hunting game',
+    'trudging away through the forests',
+    'patiently watching a|their prey',
+  ],
+  location: 'abode',
+})>>
+
+:: LIVING_hunter [nobr]
+
+<p>
+With enough money to retire comfortably, <<rep $g.a>> decided to build a small
+hut in the depths of the <<lore region_forest>> and spend a|their days
+secluded there, living off the many game in the forest.
+a|They keeps an obedient slave to watch over a|their abode, of course,
+but outside of the slave, a|they rarely interact with others.
+<<if $g.a.isHasTrait('per_loner')>>
+The loner a|race would not have it any other way.
+<</if>>
+</p>

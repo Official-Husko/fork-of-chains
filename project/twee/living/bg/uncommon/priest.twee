@@ -1,0 +1,47 @@
+:: LIVINGSETUP_priest [nobr living]
+
+<<run new setup.Living({
+  key: 'priest',
+  name: 'Priest',
+  tags: ['uncommon', ],
+  unit_restrictions: [
+    setup.qres.NoTrait(setup.trait.per_evil),
+  ],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_priest: setup.LIVING_COMMON_PREFERENCE,
+    magic_light: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_light_master: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_fire: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_fire_master: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_water: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_water_master: setup.LIVING_MORECOMMON_PREFERENCE,
+  },
+  business: [
+    'praying to the higher beings',
+    'performing a ritual',
+    'giving a sermon',
+  ],
+  location: 'temple',
+})>>
+
+:: LIVING_priest [nobr]
+
+<p>
+With enough money to satisfy all a|they need for living comfortably, a|they
+<<if $g.a.isHasTrait('bg_priest')>>
+returned to a|their calling
+<<else>>
+pursued a|their new calling
+<</if>>
+and became a priest.
+<<if $g.a.isHasTrait('magic_fire')>>
+a|They would travel the land, purifying corruption whenever a|they go.
+<<elseif $g.a.isHasTrait('magic_light')>>
+a|They would travel the land, healing the wounded whenever a|they go.
+<<elseif $g.a.isHasTrait('magic_water')>>
+a|They would join one of the many flesh-shaping temples on the <<lore region_vale>>.
+<<else>>
+a|They would open a small temple, and the devout or the lost could come and find guidance there.
+<</if>>
+</p>

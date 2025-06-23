@@ -1,0 +1,164 @@
+:: QuestSetupSexualHealing [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'sexual_healing', /* key */
+  'Sexual Healing', /* Title */
+  'darko',   /* author */
+  ['vale', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'healer': setup.qu.healer,
+    'whore': setup.qu.whore,
+    'guard': setup.qu.guard,
+  },
+  { /* actors */
+    'client': 'subrace_humanvale',
+  },
+  [ /* costs */
+  ],
+  'QuestSexualHealing', /* passage description */
+  setup.qdiff.easy11, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestSexualHealingCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestSexualHealingCrit',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestSexualHealingFailure',
+      [
+        setup.qc.MoneyNormal(0.5),
+      ],
+    ],
+    [
+      'QuestSexualHealingDisaster',
+      [
+        setup.qc.Ire('humanvale', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestSexualHealing [nobr]
+
+<p>
+The northerners living in the <<lore region_vale>> are simple and superstitious folks.
+There are many quite ridiculous beliefs they still hold on strongly even to this day.
+There is perhaps an opportunity here, to make use of these beliefs for your own evil gain...
+</p>
+
+<p>
+One particularly juicy belief is concerning their well-being --
+Many northerners still believe that diseases are caused by the impurity contained inside their bodies.
+Your slavers can thus try to offer these simple villagers a "deeply spiritual" sexual healing,
+to cleanse their bodies off the impurities by exorcising them out of their orifices.
+You need a slaver proficient in the sexual arts to "clean", but mostly probe and grope the villagers,
+and an real healer to do the actual work.
+The villagers will start to associate the groping and probing with healing, and you can definitely
+make some coin out of this...
+</p>
+
+
+:: QuestSexualHealingCrit [nobr]
+
+<p>
+Your slavers found a pristine river next to a village, ready to be desecrated with cum
+and all other bodily fluids.
+After setting up shop, <<rep $g.guard>> <<uadv $g.guard>> advertised the services
+to a nearby village.
+The first client is a young feverish
+<<man $g.client>>, who stepped into the water warily to approach the waiting <<rep $g.whore>>.
+The "healing" then began in the earnest, and <<rep $g.whore>> began <<their $g.whore>> molestations.
+
+<<if $g.whore.isHasTrait('per_sly')>>
+  <<They $g.whore>> talked dirtily into the client.
+<</if>>
+
+<<if $g.whore.isHasTrait('dick_large')>>
+  <<Their $g.whore>> <<udick $g.whore>> brushed against the client's back.
+<</if>>
+
+<<if $g.whore.isHasTrait('breast_large')>>
+  <<Their $g.whore>> <<ubreasts $g.whore>> pushed sensuously against the client's own <<ubreasts $g.client>>.
+<</if>>
+
+<<if $g.whore.isHasTrait('magic_earth_master')>>
+  <<They $g.whore>> channeled <<their $g.whore>> mastery over earth magic to conjure tentacles
+  from inside the water, who then ravaged and tested various orifices that belonged to the client.
+<</if>>
+
+As <<rep $g.whore>> continued to molest the various parts of the villager's body,
+<<rep $g.healer>> perceptively noticed a tick bite on the villager's naked butt.
+While <<rep $g.healer>> administered the actual cure, <<reps $g.whore>> advances became bolder and bolder,
+<<their $g.whore>> <<uhands $g.whore>> moving downwards towards <<their $g.client>> nethers, all for
+<<their $g.client>> own good, of course.
+<<Rep $g.whore>> ultimately ordered the villager to
+<<if $g.whore.isHasDick()>>
+suck <<their $g.whore>> <<udick $g.whore>>
+<<else>>
+eat <<their $g.whore>> pussy
+<</if>>
+in order to complete the purifying ritual, and heal <<their $g.client>> disease,
+which the villager reluctantly do so.
+But at the end of the procedure, <<rep $g.healer>> did a wonderful job at healing the fever,
+and word of mouth quickly spread into the village about how the groping, probing and oral action
+cured the fever.
+Your slavers' services became famous soon after.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+In the coming days, it turned out that
+<<yourrep $g.whore>> whore|was a natural at this job.
+<<They $g.whore>> <<uadv $g.whore>> molested and explored all nooks and crannies of
+the customer's body while
+<<rep $g.healer>> worked <<uadv $g.healer>> doing the actual healing.
+The service became so famous that people are willing to pay outrageous amount
+of money, which <<rep $g.whore>> <<uadv $g.whore>> brought home back to your fort.
+</p>
+
+<<else>>
+
+<p>
+In the coming days,
+your slavers made tidy profit from the sexual abuse inflicted <<uadv $g.whore>> by <<rep $g.whore>>,
+After a while, they even started to secretly milk their customers,
+before selling back the "snake oil" to the villagers as spiritual ointments.
+All in all, the venture was a complete success, and your slavers even look forward to doing it again.
+</p>
+
+<</if>>
+
+
+:: QuestSexualHealingFailure [nobr]
+
+<p>
+Unfortunately, the service did not attract as many customers as your slavers had hoped,
+and they were only able to bring about half of the expected profit from the endeavor.
+</p>
+
+
+:: QuestSexualHealingDisaster [nobr]
+
+<p>
+The river your slavers had chosen as the "sacred place" turned out to be infested
+with carnivorous fish. When the first customer unknowingly entered the river, they
+got bitten in all the wrong places, causing the healing service reputation to immediately
+plummet.
+</p>

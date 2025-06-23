@@ -1,0 +1,56 @@
+:: CostSlaver [nobr]
+
+
+
+<p>
+Gain a slaver: <<devactordefault>> with the following background.
+The slaver <<textbox '_background' 'a|was'>>.
+For example, you can write "a|was a hunter".
+<<include 'CostWasHelpText'>>
+
+<br/>
+The slaver will offer to join your company for <<successtextlite 'free'>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Slaver($qgDefaultActorName, _background)>>
+<</link>>
+
+
+:: CostSlaverMercenary [nobr]
+
+
+
+<p>
+Gain a slaver: <<devactordefault>> with the following background.
+The slaver <<textbox '_background' 'a|was'>>.
+For example, you can write "a|was a hunter".
+<<include 'CostWasHelpText'>>
+
+<br/>
+The slaver needs to be <<dangertextlite 'paid'>> money to join your company.
+The price is multiplied by <<numberbox '_multi' 1>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Slaver($qgDefaultActorName, _background, /* mercenary = */ true, _multi)>>
+<</link>>
+
+
+:: CostSlaverMarker [nobr]
+
+
+
+<<devactordefault>> is marked as a slaver, for gender preference.
+<<message '(?)'>>
+  You can use this to mark a certain actor to use slaver's gender preferences.
+  You don't have to use this when the unit is already a possible slaver reward,
+  but you can use this if the unit is just a slaver participating in the story.
+<</message>>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.SlaverMarker($qgDefaultActorName)>>
+<</link>>
+
+

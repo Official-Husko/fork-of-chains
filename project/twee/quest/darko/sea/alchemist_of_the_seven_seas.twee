@@ -1,0 +1,127 @@
+:: QuestSetup_alchemist_of_the_seven_seas [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'alchemist_of_the_seven_seas', /* key */
+"Alchemist of the Seven Seas", /* Title */
+"darko", /* Author */
+[ 'sea', 'item', 'rare',
+], /* tags */
+6, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'alchemist': setup.qu.alchemist_veteran,
+'navigator': setup.qu.navigator,
+'biologist': setup.qu.biologist, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_alchemist_of_the_seven_seas',
+setup.qdiff.extreme48, /* difficulty */
+[ /* outcomes */
+[
+'Quest_alchemist_of_the_seven_seasCrit',
+[
+setup.qc.ItemPool(setup.itempool.all_good),
+setup.qc.ItemPool(setup.itempool.all_good),
+],
+], [
+'Quest_alchemist_of_the_seven_seasSuccess',
+[
+setup.qc.ItemPool(setup.itempool.all_good),
+],
+], [
+'Quest_alchemist_of_the_seven_seasFailure',
+[
+setup.qc.Injury('alchemist', 6),
+setup.qc.Injury('biologist', 6), ],
+], [
+'Quest_alchemist_of_the_seven_seasDisaster',
+[
+setup.qc.Injury('alchemist', 12),
+setup.qc.Injury('biologist', 13),
+setup.qc.Injury('navigator', 8), ],
+], ],
+[
+[setup.questpool.sea, setup.rarity.rare],
+], /* quest pool and rarity */
+[
+setup.qres.QuestUnique(), ], /* restrictions to generate */
+)>>
+
+:: Quest_alchemist_of_the_seven_seas [nobr]
+
+<p>
+Wondrous potions are abound in the <<lore geo_mestia>> —
+from simple potions that can heal wounds, to complex potions that can
+erase memories or even restore the mind of mindbroken slaves.
+While usually you have to resort to buying
+these potions, now that you have <<rep setup.buildingtemplate.scoutharbor>>,
+you can try to send an experienced alchemist <<rep
+setup.trait.skill_alchemy>> across the ocean along with an entourage to
+search for rare ingredients to be made into a potion. If successful, this
+will no doubt gives you a rare potion that is worth a lot. But the sea is always
+dangerous, especially for unprepared adventurers, and best to prepare for the worst.
+</p>
+
+
+:: Quest_alchemist_of_the_seven_seasCrit [nobr]
+
+<p>
+The voyage went smoothly, and <<rep $g.navigator>> navigator|was able to
+<<uadv $g.navigator>>
+lead the ship into multiple islands for <<rep $g.biologist>> and <<rep $g.alchemist>>
+to hunt for ingredients.
+
+<<set _lizardkin = setup.selectUnit([$g.biologist, $g.alchemist, $g.navigator], {anytrait: [
+  'subrace_lizardkin',
+  'subrace_dragonkin',
+  'subrace_humansea',
+]})>>
+<<if _lizardkin>>
+  Some of the islands were familiar to <<rep _lizardkin>> -- <<therace _lizardkin>> helped the team
+  with naming some of the floras in those islands.
+<</if>>
+
+<<set _curious = setup.selectUnit([$g.biologist, $g.alchemist, $g.navigator], {trait: 'per_curious'})>>
+<<if _curious>>
+  <<Rep _curious>> curiously poked the many strange plants <<they _curious>> had never seen before.
+<</if>>
+
+In the end, <<rep $g.alchemist>> alchemist|was able to find and use many rare ingredients to
+concoct two very special potions.
+</p>
+
+
+:: Quest_alchemist_of_the_seven_seasSuccess [nobr]
+
+<p>
+The voyage wasn't easy, but through <<reps $g.navigator>> persistence and
+<<reps $g.alchemist>> skill, they were able to
+<<uadv $g.navigator>>
+return with one vial of an extremely rare potion in hand.
+This potion will surely come in handy for the company's future endeavors.
+Alternatively, you can always sell it for a tidy sum
+<<inyourbuilding 'bazaar'>>.
+</p>
+
+
+:: Quest_alchemist_of_the_seven_seasFailure [nobr]
+
+<p>
+While landing on one of the many islands in the <<lore region_sea>>, your slavers
+were ambushed by local feral animals and had to retreat back to the ship after sustaining
+debilitating injuries.
+</p>
+
+
+:: Quest_alchemist_of_the_seven_seasDisaster [nobr]
+<p>
+<<Yourrep $g.alchemist>> got too excited with the many rare ingredients <<they $g.alchemist>> found,
+ and mixed them incorrectly, resulting in a large explosion in the ship's makeshift laboratory.
+ <<Rep $g.alchemist>> and <<utheirrel $g.alchemist $g.biologist>> <<rep $g.biologist>> sustained life-threatening
+ injuries and need to be treated and rested immediately.
+ </p>
+

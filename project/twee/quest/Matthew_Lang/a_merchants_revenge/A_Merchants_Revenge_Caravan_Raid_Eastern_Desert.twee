@@ -1,0 +1,1186 @@
+:: QuestSetup_a_merchant_s_revenge_caravan_raid_eastern_desert_2 [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"a_merchant_s_revenge_caravan_raid_eastern_desert_0",
+"Caravan Slaves",
+'desert_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+],
+)>>
+
+
+<<set _criteriascout = new setup.UnitCriteria(
+null, /* key */
+'Scout (Desert)', /* name */
+[
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_nomad,
+  setup.trait.tough_tough,
+  setup.trait.per_cautious,
+  setup.trait.per_direct,
+  setup.trait.skill_intimidating,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.race_wolfkin,
+  setup.trait.subrace_humanvale,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.per_brave,
+  setup.trait.per_sly,
+  setup.trait.per_dreamy,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1,
+  survival: 2,
+}
+)>>
+
+<<set _criteriafighter = new setup.UnitCriteria(
+null, /* key */
+'Fighter', /* name */
+[
+  setup.trait.subrace_humandesert,
+  setup.trait.subrace_orc,
+  setup.trait.subrace_demonkin,
+  setup.trait.bg_adventurer,
+  setup.trait.bg_mercenary,
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.per_proud,
+  setup.trait.per_stubborn,
+  setup.trait.skill_ambidextrous,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.subrace_humanvale,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_humble,
+  setup.trait.per_curious,
+  setup.trait.eq_blind,
+  setup.trait.eq_restrained,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriaraider = new setup.UnitCriteria(
+null, /* key */
+'Raider', /* name */
+[
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_engineer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_slaver,
+  setup.trait.bg_soldier,
+  setup.trait.bg_raider,
+  setup.trait.height_giant,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_active,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_intimidating,
+  setup.trait.skill_alchemy,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.subrace_humanvale,
+  setup.trait.subrace_humansea,
+  setup.trait.bg_healer,
+  setup.trait.bg_priest,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_calm,
+  setup.trait.per_humble,
+  setup.trait.per_studious,
+  setup.trait.per_kind,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge_caravan_raid_eastern_desert_2', /* key */
+"A Merchant\'s Revenge: Caravan Raid (Eastern Desert)", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'money',
+  'unit',
+  'ire',
+  'desert',
+  'danger',
+],
+2, /* weeks */
+7, /* expiration weeks */
+{ /* roles */
+  'scout': [ _criteriascout, 1],
+  'fighter': [ _criteriafighter, 1],
+  'raider': [ _criteriaraider, 1],
+},
+{ /* actors */
+  'slaves': 'a_merchant_s_revenge_caravan_raid_eastern_desert_0',
+},
+[ /* costs */
+],
+'Quest_a_merchant_s_revenge_caravan_raid_eastern_desert_2',
+setup.qdiff.hard44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_eastern_desert_2Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.Slave('slaves', "a|was a member of a Toran caravan, captured by your slavers in a raid", undefined),
+      setup.qc.MoneyCustom(5000),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_eastern_desert_2Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.Ire('humankingdom', 2),
+      setup.qc.MoneyCustom(4000),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_eastern_desert_2Crit',
+    [
+      setup.qc.TraumatizeRandom('scout', 5),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_eastern_desert_2Crit',
+    [
+      setup.qc.OneRandom([
+setup.qc.Injury('scout', 1),
+setup.qc.Injury('scout', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('fighter', 1),
+setup.qc.Injury('fighter', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('raider', 1),
+setup.qc.Injury('raider', 2)
+]),
+      setup.qc.Ire('humankingdom', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('mlangmerchantprincequest', '5'),
+  setup.qres.VarLte('mlang_merchantrevenge_caravancount', 12),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_merchant_s_revenge_caravan_raid_eastern_desert_2 [nobr]
+/** mlangmerchantprincequest 5 = Caravan Raiding
+mlang_merchantrevenge_caravancount = How many caravans successfully raided
+**/
+
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        There is s certain a caravan carrying a shipment of
+        <<if $gQuest.getSeed() % 6 == 0>>
+            <<set _goods = "myrrh">>
+        <<elseif $gQuest.getSeed() % 6 == 1>>
+            <<set _goods = "gold">>
+        <<elseif $gQuest.getSeed() % 6 == 2>>
+            <<set _goods = "turquoise">>
+        <<elseif $gQuest.getSeed() % 6 == 3>>
+            <<set _goods = "chickpeas">>
+        <<elseif $gQuest.getSeed() % 6 == 4>>
+            <<set _goods = "erotic pottery">>
+        <<elseif $gQuest.getSeed() % 6 == 5>>
+            <<set _goods = "honey ants">>
+        <</if>>
+        <<= _goods>>
+        that I do not want to arrive at Lucgate. If you can intervene in this matter, the usual bonus will apply. You may, of course, loot whatever you wish from the caravan itself.
+    </p>
+</div>
+
+<p>
+    On the back of the note you find a crude map showing
+    <<if $gQuest.getSeed() % 5 == 0>>
+        an escarpment west of the <<lore geo_cassian>> where a rocky escarpment falls to the desert sands.
+        <<set _location = "escarpment">>
+    <<elseif $gQuest.getSeed() % 5 == 1>>
+        a winding mountain road with a sheer drop on one side.
+        <<set _location = "cliff">>
+    <<elseif $gQuest.getSeed() % 5 == 2>>
+        a rocky outcrop in the eastern foothills of the <<lore geo_cassian>>.
+        <<set _location = "foothills">>
+    <<elseif $gQuest.getSeed() % 5 == 3>>
+        an oasis in the <<lore region_desert>>.
+        <<set _location = "oasis">>
+    <<elseif $gQuest.getSeed() % 5 == 4>>
+        a waystone marker along a well travelled road.
+        <<set _location = "road">>
+    <</if>>
+    It looks possible to stage an ambush there, but the desert is a very dangerous place. You should ensure the slavers you send on this mission are ready for the challenge.
+</p>
+<<if _location == "escarpment" or _location == "cliff">>
+    <p>
+        <<dangertext "This location could prove deadly if a slaver was to end up falling off the">><b> _location </b><<dangertext "Plan accordingly and be wary.">>
+    </p>
+<</if>>
+
+
+
+
+:: Quest_a_merchant_s_revenge_caravan_raid_eastern_desert_2Crit [nobr]
+/* Set cargo */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<set _goods = "myrrh">>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _goods = "gold">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _goods = "turquoise">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _goods = "chickpeas">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _goods = "erotic pottery">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _goods = "honey ants">>
+<</if>>
+
+/* Set ambush location */
+<<if $gQuest.getSeed() % 5 == 0>>
+    <<set _location = "escarpment">>
+<<elseif $gQuest.getSeed() % 5 == 1>>
+    <<set _location = "cliff">>
+<<elseif $gQuest.getSeed() % 5 == 2>>
+    <<set _location = "foothills">>
+<<elseif $gQuest.getSeed() % 5 == 3>>
+    <<set _location = "oasis">>
+<<elseif $gQuest.getSeed() % 5 == 4>>
+    <<set _location = "road">>
+<</if>>
+
+After studying the map carefully,
+<<rep $g.scout>> brought your slavers to
+
+<<if $g.scout.isYou() or $g.fighter.isYou() or $g.raider.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.scout.isYou()>>
+        <<run _notyou.push($g.scout)>>
+    <</if>>
+    <<if !$g.fighter.isYou()>>
+        <<run _notyou.push($g.fighter)>>
+    <</if>>
+    <<if !$g.raider.isYou()>>
+        <<run _notyou.push($g.raider)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    <<if _location == "escarpment">>
+        a ridgeline where the rock of the escarpment fell away to the desert sands below—and the only paths up or down were narrow, precarious trails cut into the cliff.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if your quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing you all with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west.<br>
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+                You all snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Eventually, <<name _o1>> saw a line of bobbing lights in the distance, coming closer and closer to the cliffs. You watched them over the next several hours and soon the lights turned into dark shadows into barely discernable figures in the starlight. Your targets had arrived.
+            </p>
+            <p>
+                The caravan stopped at the base of the escarpment, but made no attempt to begin the climb the road.
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                <<if _unit>>
+                    "What are they waiting for? <<name _unit>> asked.<br>
+                    <<set _cautious = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+                    <<if _cautious>>
+                        "Probably dawn," <<name _cautious>> said. "Would you want to lead a train of laden wagons up the side of a sheer cliff at night?" <br>
+                    <</if>>
+                <</if>>
+                When dawn spilled across the horizon, the soft light lit up the cliffs and shone into your eyes. It also signalled a flurry of activity at the base of the cliff, as the caravan began its slow climb up to the top of the escarpment.
+            </p>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+            <<if _unit>>
+                <p>
+                    You let them get halfway up before <<name _unit>> made the earth of the escarpment tremble and quake, causing many in the caravan to fall and their camels to panic. Too busy trying to maintain their footing, the caravanners were in no position to fight back against your volleys of missiles and those that made it to the top were easily cut down.
+                </p>
+
+            <<else>>
+
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+                <<if _unit>>
+                    <p>
+                        You let them get almost to the top before <<name _unit>> drew flames from the coals of your firepit and directed them down onto the caravan, even as everyone else started dropping pots of pitch and tar, causing gouts of flame when <<name _unit>>'s magic met the flammable substances.
+
+                        <<if $unit.player.isHasAnyTraitExact(["per_kind", "per_empath"])>>
+                            The screams of those set alight seared into your brain and turned your stomach, especially as many chose to jump than stay within range of the magic.
+                        <<elseif $unit.player.isHasTrait("per_cruel")>>
+                            The screams of the dying and the smell of burnt flesh brought a smile to your lips. You hadn't felt so alive in ages.
+                        <<else>>
+                            Many chose to jump rather than stay within range of the magic and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                        <</if>>
+                    </p>
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                    <<if _unit>>
+                        <p>
+                            You let them almost get to the top before <<name _unit>> summoned a spirit of air and sent it, whirlwind like, down the cliff, flinging men and women to the ground far below and causing the camels to stampede back down the trail. It was carnage. But it was swift.
+                        </p>
+                    <<else>>
+                        <p>
+                            You let them get almost to the top before you started dropping pots of burning pitch and tar onto the caravan , dousing everything with the sticky, burning substances.
+                            <<if $unit.player.isHasAnyTraitExact(["per_kind", "per_empath"])>>
+                                The screams of those set alight seared into your brain and turned your stomach, especially as many chose to jump than charge up into the face of more fire.
+                            <<elseif $unit.player.isHasTrait("per_cruel")>>
+                                The screams of the dying and the smell of burnt flesh brought a smile to your lips. You hadn't felt so alive in ages.
+                            <<else>>
+                                Many chose to jump rather than charge up into the face of more fire and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                            <</if>>
+                        </p>
+
+                    <</if>>
+                <</if>>
+            <</if>>
+
+            <<if _goods == "gold" or _goods == "turquoise">>
+                Carefully picking your way down the cliff you recovered the shipment of _goods and brought them back to your fort,
+            <<elseif _goods == "erotic pottery">>
+                With the pottery shattered at the bottom of the cliff, you turned and headed back to your fort,
+            <<else>>
+                The _goods didn't survive the carnage, and you barely bothered searching the remains of the caravan before heading back to your fort,
+            <</if>>
+            bringing along a single survivor. At least you could get a new slave out of this.
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if your quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing you all with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west."<br>
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+                You all snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Eventually, <<name _o1>> saw a line of bobbing lights in the distance, coming closer and closer to the cliffs. You watched them over the next several hours and soon the lights turned into dark shadows into barely discernable figures in the starlight. Your targets had arrived.
+            </p>
+            <p>
+                The caravan stopped at the base of the escarpment, but made no attempt to begin the climb the road.
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                <<if _unit>>
+                    "What are they waiting for? <<name _unit>> asked.<br>
+                    <<set _cautious = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+                    <<if _cautious>>
+                        "Probably dawn," <<name _unit>> said. "Would you want to lead a train of laden wagons up the side of a sheer cliff at night?" <br>
+                    <</if>>
+                <</if>>
+                When dawn spilled across the horizon, the soft light lit up the cliffs and shone into your eyes. It also signalled a flurry of activity at the base of the cliff, as the caravan began its slow climb up to the top of the escarpment.
+            </p>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+            <<if _unit>>
+                <p>
+                    You let them get halfway up before <<name _unit>> made the earth of the escarpment tremble and quake, causing many in the caravan to fall and their camels to panic. Too busy trying to maintain their footing, the caravanners were in no position to fight back against your volleys of missiles and those that made it to the top were easily cut down.
+                </p>
+
+            <<else>>
+
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+                <<if _unit>>
+                    <p>
+                        You let them get almost to the top before <<name _unit>> drew flames from the coals of your firepit and directed them down onto the caravan, even as everyone else started dropping pots of pitch and tar, causing gouts of flame when <<name _unit>>'s magic met the flammable substances.
+                        <<if $unit.player.isHasAnyTraitExact(["per_kind", "per_empath"])>>
+                            The screams of those set alight seared into your brain and turned your stomach, especially as many chose to jump than stay within range of the magic.
+                        <<elseif $unit.player.isHasTrait("per_cruel")>>
+                            The screams of the dying and the smell of burnt flesh brought a smile to your lips. You hadn't felt this alive in ages.
+                        <<else>>
+                            Many chose to jump rather than stay within range of the magic and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                        <</if>>
+                    </p>
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                    <<if _unit>>
+                        <p>
+                            You let them almost get to the top before <<name _unit>> summoned a spirit of air and sent it, whirlwind like, down the cliff, flinging men and women to the ground far below and causing the camels to stampede back down the trail. It was carnage. But it was swift.
+                        </p>
+                    <<else>>
+                        <p>
+                            You let them get almost to the top before you started dropping pots of burning pitch and tar onto the caravan , dousing everything with the sticky, burning substances.
+                            <<if $unit.player.isHasAnyTraitExact(["per_kind", "per_empath"])>>
+                                The screams of those set alight seared into your brain and turned your stomach, especially as many chose to jump than charge up into the face of more fire.
+                            <<elseif $unit.player.isHasTrait("per_cruel")>>
+                                The screams of the dying and the smell of burnt flesh brought a smile to your lips. You hadn't felt this alive in ages.
+                            <<else>>
+                                Many chose to jump rather than charge up into the face of more fire and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                            <</if>>
+                        </p>
+
+                    <</if>>
+                <</if>>
+            <</if>>
+
+            <<if _goods == "gold" or _goods == "turquoise">>
+                Carefully picking your way down the you recovered the shipment of _goods and brought them back to your fort.
+            <<elseif _goods == "erotic pottery">>
+                With the pottery shattered at the bottom of the cliff, you turned and headed back to your fort.
+            <<else>>
+                The _goods didn't survive the carnage, and you barely bothered searching the remains of the caravan before heading back to your fort.
+            <</if>>
+
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if your quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing you all with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west.
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+            </p>
+            <p>
+                You all snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Unfortunately, the trek across the <<lore geo_cassian>> had taken more out of you than you realised, and when you next awoke the sun was shining outside your tent and the air was oppressive and scorching hot. Hearing more noise outside than your slavers should be making, you exited your tent to find the caravan had arrived and climbed the escarpment while you slept, and your trio of tents was now being watched by at least a dozen guards, and you decided that discretion was the better part of valour.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if your quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing you all with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west.
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+            </p>
+            <p>
+                You all snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Unfortunately, the trek across the <<lore geo_cassian>> had taken more out of you than you realised, and when you next awoke it was light, and there was a blade pressed against your throat.
+                <<dialogue $g.slaves>>
+                    Thought you could jump us did you? Well, not today.
+                <</dialogue>>
+                Before you could offer a denial, you felt the punch in your gut as the guard and <<their $g.slaves>> laid into you. Fortunately for you they appeared more intent on beating you up than killing you, and they only kept you until nightfall, when their own caravan packed up and left you and your slavers, bleeding in the dirt.
+            </p>
+        <</if>>
+
+    <<elseif _location == "cliff">>
+        a mountainous road curling around the side of a sheer rocky peak in the <<lore geo_cassian>>.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                With no real cover to speak of, you concealed yourselves around a bend and attacked the moment the first of their scouts rounded it. While their screams alerted the rest of the caravan, their choices were rushing you, or turning around. They chose to rush you, but the narrow road prevented them from really using their numbers to their advantage—and your slavers were better trained. In the end you pushed back to the caravan itself, and the ensuing panick sent the wagons with the _goods soff the cliff, which was just as well. The caravanners morale broke at that point and they started to run, allowing you to grab one of them as a new slave, even if you didn't get any of the truly valuable cargo.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                With no real cover to speak of, you concealed yourselves around a bend and attacked the moment the first of their scouts rounded it. While their screams alerted the rest of the caravan, their choices were rushing you, or turning around. They chose to rush you, but the narrow road prevented them from really using their numbers to their advantage—and your slavers were better trained. In the end you pushed back to the caravan itself, and the ensuing panick sent the wagons with the _goods off the cliff, which was just as well. The caravanners morale broke at that point and they started to run, allowing you to pick through the remains of the caravan at leisure, even if you didn't get any of the truly valuable cargo.
+            </p>
+            <p>
+                Unfortunately the survivors recognised you and at least one Toran merchant is even more inclined to hate you now.
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Despite spending days in the windy peaks you never saw another soul. It looks like you had the wrong path, and you're forced to return to the fort empty handed.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                With no real cover to speak of, you concealed yourselves around a bend and attacked the moment the first of their scouts rounded it. While their screams alerted the rest of the caravan, their choices were rushing you, or turning around. They chose to rush you and their superior numbers proved to be your undoing.
+                <<if $gQuest.getSeed() % 2 == 0>>
+                    <<name _o1>> was thrown off the mountain and hurtled out into the empty void
+                    <<if _o1.isHasTrait('skill_flight')>>
+                        , but was able to use their <<uwings _o1>> to stop their fall. However, with only two of you effectively in the fight, it went very badly, and you were lucky the caravanners moved on rather than throwing both you and <<name _o2>> off the mountain as well.
+                    <<elseif _o1.isHasAnyTraitExact(['magic_wind', 'magic_wind_master'])>>
+                        , but was able to summon air currents to bring them back to safe ground. However, with only two of you effectively in the fight, it went very badly, and you were lucky the caravanners moved on rather than throwing both you and <<name _o2>> off the mountain as well.
+                    <<else>>
+
+                        <<set _flyer = setup.selectUnit([$unit.player, _o2], {trait: 'skill_flight'})>>
+                        <<if _flyer>>
+                            , but <<name _flyer>> was able to swoop down and catch them, although they landed far down the mountainside in a tumble of arms and legs. Meanwhile, the caravan moved on, unimpeded by your ambush, and leaving all three of you badly injured.
+                        <<else>>
+                            <<set _mage = setup.selectUnit([$unit.player, _o2], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                            <<if _mage>>
+                                . <<name _mage>> summoned air currents to bring <<them _o1>> back to safe ground, but the magic went awry when <<name _mage>> was knocked unconscious. It took reinforcements from the fort the better part of a day to find you all, and recovery is going to take some time. Possibly a lot of it.
+                                <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper(_o1))>>
+                            <<else>>
+                                , and tumbled out of sight. It took a few days for reinforcements from the fort to find <<their _o1>> broken body in the ravine below. Or what at least was left of it.
+                                <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper(_o1))>>
+                            <</if>>
+                        <</if>>
+                    <</if>>
+
+                <<elseif $gQuest.getSeed() % 2 == 1>>
+                    <<name _o2>> was thrown off the mountain and hurtled out into the empty void
+                    <<if _o2.isHasTrait('skill_flight')>>
+                        , but was able to use their <<uwings _o2>> to stop their fall. However, with only two of you effectively in the fight, it went very badly, and you were lucky the caravanners moved on rather than throwing both you and <<name _o1>> off the mountain as well.
+                    <<elseif _o2.isHasAnyTraitExact(['magic_wind', 'magic_wind_master'])>>
+                        , but was able to summon air currents to bring them back to safe ground. However, with only two of you effectively in the fight, it went very badly, and you were lucky the caravanners moved on rather than throwing both you and <<name _o1>> off the mountain as well.
+                    <<else>>
+
+                        <<set _flyer = setup.selectUnit([$unit.player, _o1], {trait: 'skill_flight'})>>
+                        <<if _flyer>>
+                            , but <<name _flyer>> was able to swoop down and catch them, although they landed far down the mountainside in a tumble of arms and legs. Meanwhile, the caravan moved on, unimpeded by your ambush, and leaving all three of you badly injured.
+                        <<else>>
+                            <<set _mage = setup.selectUnit([$unit.player, _o1], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                            <<if _mage>>
+                                . <<name _mage>> summoned air currents to bring <<them _o2>> back to safe ground, but the magic went awry when <<name _mage>> was knocked unconscious. It took reinforcements from the fort the better part of a day to find you all, and recovery is going to take some time. Possibly a lot of it.
+                                <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper(_o2))>>
+                            <<else>>
+                                , and tumbled out of sight. It took a few days for reinforcements from the fort to find <<their _o2>> broken body in the ravine below. Or what at least was left of it.
+                                <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper(_o2))>>
+                            <</if>>
+                        <</if>>
+                    <</if>>
+                <</if>>
+            </p>
+        <</if>>
+
+    <<elseif _location == "foothills">>
+        a crumbling outcrop of jagged rock, sticking up from the arid dirt of the eastern foothills. It wasn't as inhospitable as the desert over the mountains,
+        <<if $unit.player.getHomeland() == setup.Text.Race.REGIONS.desert>>
+            and to you it felt like the first time you'd been warm in months.
+        <<else>>
+            and you started to feel uncomfortably hot.
+        <</if>>
+        You did find a small spring and pool of water at the base of the rock—this was likely a watering point, and a very promising ambush spot. You directed your slavers to find hiding places where they'd be concealed from any caravans coming through the nearby mountain pass, and then settled in to wait.
+
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course, that was when you struck, raining arrows down from above before closing in and taking on the rest in combat. The few guards were no match for your seasoned veterans, and you soon found yourself in possession of a wagonload of _goods.
+            </p>
+            <p>
+                You also had a trussed up new slave to take home with you. Or potential slave. Good times.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course, that was when you struck, raining arrows down from above before closing in and taking on the rest in combat. The few guards were no match for your seasoned veterans, and you soon found yourself in possession of a wagonload of _goods.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                <<if $unit.player.getHomeland() == setup.Text.Race.REGIONS.desert>>
+                    When the sun dipped down below the horizon with no sign of the caravan, you inspected the spring more closely, and found recent tracks of humans, wagons and horses. It appeared that they'd already passed, and you'd missed the window of opportunity.
+                <<else>>
+                    After several hours in the baking sun you were forced to seek shelter, and the prospect of waiting out there for several days became too much to contemplate, and you decided to head back to the fort. There would be other caravans to ambush and you really couldn't be bothered with that one.
+                <</if>>
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. That was when you struck, but <<name _o2>> stumbled as they leapt off the outcrop, and sprained their ankle upon landing. Being one <<woman _o2>> down in the fight didn't help when you were already outnumbered, and you were forced to flee, all of you nursing injuries as you headed back toward the fort.
+            </p>
+        <</if>>
+
+    <<elseif _location == "oasis">>
+        a lush oasis, a haven of greenery and water in an otherwise inhospitable landscape.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                You feasted on date palms as you waited, hidden in the tall grasses beside the water. When the caravan arrived they set up camp not far from the water's edge, settling in for the day. Still, the heat of the sun was less harsh in the shade of the trees, and while you usually had to wait until nightfall to spring ambushes, you found yourself waiting until the sun was high in the sky before you were confident that all of the caravanners had found sleep.
+            </p>
+            <p>
+                <<if _goods == "myrrh" or _goods == "turquoise">>
+                    It took you a bit of time to find the right chest, but in the end you found the small volume of _goods hidden away at the bottom of their stockpile, and decided it was easiest to leave with the most valuable of their trade goods. After all, it was the shipment you were being paid to intercept.
+                <<elseif _goods == "gold">>
+                    It took you a bit of time to find the right chest, but in the end you found the small volume of _goods hidden away at the bottom of their stockpile, and decided it was easiest to leave with the most valuable of their trade goods. After all, it was the shipment you were being paid to intercept, and the chest was heavier than it looked.
+                <<elseif _goods == "honey ants">>
+                    You got lucky and found the padded and ventilated box of honey ants under shade cloth near the caravan's food stores. Opening the box you were somewhat surprised to see the ant heads turn towards you, but then, of course. The sweet honey they held inside their bloated abdomens would keep them alive during travel. You contemplated eating one, as such a delicacy was typically reserved for the <<rep $company.royal>>, sometimes dipped into the finest chocolate, but decided that could wait until you were clear of the camp.
+                <<elseif _goods == "chickpeas">>
+                    The sacks of hard, dried chickpeas were easy to find, and you, <<name _o1>> and <<name _o2>> spent almost an hour carrying them off into the reeds, slitting them open and letting the legumes fall into the water and the fine silt below. The reeds ensured that even if the caravan was so inclined, sifting the mud to recover the chickpeas would be a fruitless endeavour.
+                <<else>>
+                    The pottery turned out to be mostly drinking bowls and a good number of amphorae, most of them depicting men engaging in various forms of sexual intercourse, although there are some depicted mixed couples or orgies, and a few that only show women. You contemplated bringing some of them back with you but the sheer amount was more than your slavers could carry.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+                    <<if _unit>>
+                        After some consideration, <<name _unit>> used their magic to turn most of the pottery into clay dust. Those few pieces you really liked were carried out with you.
+                    <<else>>
+                        In the end, there was nothing for it but to start smashing, a process that was quick, but noisy. The fact that the camp was asleep helped you escape without injury, but you're certain you were identified, and your actions will certainly be reported to the authorities in the <<lore region_city>>.
+                        <<run setup.qc.Ire('humankingdom', 2).apply($gQuest)>>
+                    <</if>>
+                <</if>>
+            </p>
+            <p>
+                As you were leaving, <<name $g.raider>> was able to capture a sleepy eyed caravanner stumbling from their tent, and you're able to add a potential <<urace $g.slaves>> slave to your bounty for this job.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                You feasted on date palms as you waited, hidden in the tall grasses beside the water. When the caravan arrived they set up camp not far from the water's edge, settling in for the day. Still, the heat of the sun was less harsh in the shade of the trees, and while you usually had to wait until nightfall to spring ambushes, you found yourself waiting until the sun was high in the sky before you were confident that all of the caravanners had found sleep.
+            </p>
+            <p>
+                <<if _goods == "myrrh" or _goods == "turquoise">>
+                    It took you a bit of time to find the right chest, but in the end you found the small volume of _goods hidden away at the bottom of their stockpile, and decided it was easiest to leave with the most valuable of their trade goods. After all, it was the shipment you were being paid to intercept. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<elseif _goods == "gold">>
+                    It took you a bit of time to find the right chest, but in the end you found the small volume of _goods hidden away at the bottom of their stockpile, and decided it was easiest to leave with the most valuable of their trade goods. After all, it was the shipment you were being paid to intercept, and the chest was heavier than it looked. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<elseif _goods == "honey ants">>
+                    You got lucky and found the padded and ventilated box of honey ants under shade cloth near their food stores. Opening the box you were somewhat surprised to see the ant heads turn towards you, but then, of course. The sweet honey they held inside their bloated abdomens would keep them alive during travel. You contemplated eating one, as such a delicacy was typically reserved for the <<rep $company.royal>>, sometimes dipped into the finest chocolate, but decided that could wait until you were clear of the camp. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<elseif _goods == "chickpeas">>
+                    The sacks of hard, dried chickpeas were easy to find, and you, <<name _o1>> and <<name _o2>> spent almost an hour carrying them off into the reeds, slitting them open and letting the legumes fall into the water and the fine silt below. The reeds ensured that even if the caravan was so inclined, sifting the mud to recover the chickpeas would be a fruitless endeavour. Unfortunately, you heard a shout of alarm as you were collecting the last few bags, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<else>>
+                    The pottery turned out to be mostly drinking bowls and a good number of amphorae, most of them depicting men engaging in various forms of sexual intercourse, although there were some depicted mixed couples or orgies, and a few that only showed women. You contemplated bringing some of them back with you but the sheer amount was more than your slavers could carry.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+                    <<if _unit>>
+                        After some consideration, <<name _unit>> used their magic to turn most of the pottery into clay dust, while everyone else carried out a couple of pieces that had caught their eyes. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                    <<else>>
+                        In the end, there was nothing for it but to start smashing, a process that was quick, but noisy, and definitely roused the camp from their sleep.
+                    <</if>>
+                <</if>>
+
+                The element of surprise helped you escape without injury, but you're certain you were identified, and your actions will certainly be reported to the authorities in the <<lore region_city>>
+            </p>
+
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                You feasted on date palms as you waited, venturing out from your hiding places to gather more dates and other fruits.<br>
+                "I'm amazed no-one's settled here," <<name _o2>> said as they waited at the base of the date palm. <br>
+                "Don't say that," you chided them. "Every time anyone says something like that we get to find out the answer and it's always not good."<br>
+                "That's—"<br>
+                A loud, choral warcry rent the air.<br>
+                "What was—" you started even as <<name _o1>> all but jumped down from the date palm.<br>
+                "Orc raiders!" <<name _o1>> hissed urgently. "And I'm pretty sure they saw me. Run!"<br>
+                Given the distance and the cover of the vegetation, you were able to outrun the orcs, but it also meant you had to abandon the job and head back to the fort. You hoped the orcs might raid the caravan, but you later hear of its safe arrival at Lucgate.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                You feasted on date palms as you waited, hidden in the tall grasses beside the water. When the caravan arrived they set up camp not far from the water's edge, settling in for the day. Still, the heat of the sun was less harsh in the shade of the trees, and while you usually had to wait until nightfall to spring ambushes, you found yourself waiting until the sun was high in the sky before you were confident that all of the caravanners had found sleep.
+            </p>
+            <p>
+                Sneaking into the encampment, you soon realised that the caravan was carrying much more than just _goods and you were going to have to do some searching.<br>
+                "Quietly," you whispered, glaring at your slavers.<br>
+                However, it wasn't long before you heard a series of loud crashes as a stack of crates toppled over, followed by the sound of pottery breaking.<br>
+                "Oops," was all <<name _o1>> managed to say before guards and caravanners all but erupted from the tents.
+            </p>
+            <p>
+                You and your slavers were soundly beaten, and the guards kept you all tied up until the caravan moved on that evening. Broken, bruised and violated, you led your slavers back to the fortress, and vowed never to speak of it ever again.
+            </p>
+        <</if>>
+
+    <<else>>
+        a nondescript section of road, almost lost under the sands of the desert, but marked with a weathered waystone with a number carved into it that's barely readable. You thought it was a sixty seven. Or maybe a sixty nine.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where you all were able to escape the heat of the day. When night came around, you waited just at the ridge of the dunes overlooking the road and waiting for the caravan to come by. When it finally did, <<name $g.scout>> and <<name $g.fighter>> ran towards the caravan, throwing pots of alchemist's fire and drawing the attention of the guards while <<name $g.raider>> went directly to the water barrels and laid into them with an axe.
+            </p>
+            <p>
+                By the time the guards realised their mistake and headed back towards the water stores, it was too late, and you were able to score a direct hit on the cargo wagons with a pot of alchemists fire. Between burning cargo, panicking camels and no water to speak of, the caravan would, at the very least, be forced to turn around. Based on your recollection, the nearest watering hole was a week away. They'd be lucky if any of them made it.
+            </p>
+            <p>
+                As you left, <<name $g.fighter>> managed to capture of the guards who had rushed to intercept <<them $g.fighter>>, and the <<woman $g.slaves>> is now corraled inside your slave pen, awaiting your pleasure. Or displeasure.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where you all were able to escape the heat of the day. When night came around, you waited just at the ridge of the dunes overlooking the road and waiting for the caravan to come by. When it finally did, <<name $g.scout>> and <<name $g.fighter>> ran towards the caravan, throwing pots of alchemist's fire and drawing the attention of the guards while <<name $g.raider>> went directly to the water barrels and laid into them with an axe.
+            </p>
+            <p>
+                By the time the guards realised their mistake and headed back towards the water stores, it was too late, and you were able to score a direct hit on the cargo wagons with a pot of alchemists fire. Between burning cargo, panicking camels and no water to speak of, the caravan would, at the very least, be forced to turn around. Based on your recollection, the nearest watering hole was a week away. They'd be lucky if any of them made it.
+            </p>
+            <p>
+                Some time later, you hear the tale of a plucky survivor, who drank the blood of a camel in order to get back to civilisation alive. They also blamed <<rep $company.player>> for the raid on their caravan, and you just know that's going to get back to the merchant princes of Lucgate.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where you all were able to escape the heat of the day. Unfortunately a sandstorm blew up out of nowhere and you were all buried alive. Thankfully you managed to dig yourselves out, but with sand everywhere, heavily abraded skin and no sign of your quarry, you decided to head back to the fort to lick your wounds.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where you all were able to escape the heat of the day. When night fell, <<name $g.fighter>> had the bright idea of burying yourselves in the loose sand of the dune close to the road, so you'd be able to spring out and attack their water supplies.
+            </p>
+            <p>
+                With the three of you carefully hidden you settled in to wait, and it didn't take long for the caravan to appear. You waited, muscles tense for the right moment, and as their supply wagons rolled along mere feet from you, you pushed your way up out of the sand with your best warcry, only to find yourself alone, and quickly surrounded by guards. A torrent of curses drew your attention to where your slavers were stuggling, half buried in the sand with smirking caravan guards standing over them, weapons drawn.<br>
+                "Sorry <<unickname $g.fighter>>," <<name $g.fighter>> said sheepishly. "Got stuck."<br>
+                The guards left you bloody, beaten and buried up to your necks in sand. You were able to get out eventually, but by that time the sun was high in the sky and the caravan had long gone.
+            </p>
+        <</if>>
+    <</if>>
+
+<<else>>
+    <<if _location == "escarpment">>
+        a ridgeline where the rock of the escarpment fell away to the desert sands below—and the only paths up or down were narrow, precarious trails cut into the cliff.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if their quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing everyone with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west.<br>
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+                They snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Eventually, <<name $g.scout>> saw a line of bobbing lights in the distance, coming closer and closer to the cliffs. <<They $g.scout>> watched them over the next several hours and soon the lights turned into dark shadows into barely discernable figures in the starlight.
+            </p>
+            <p>
+                The caravan stopped at the base of the escarpment, but made no attempt to begin the climb the road.
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                <<if _unit>>
+                    "What are they waiting for? <<name _unit>> asked.<br>
+                    <<set _cautious = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+                    <<if _cautious>>
+                        "Probably dawn," <<name _cautious>> said. "Would you want to lead a train of laden wagons up the side of a sheer cliff at night?" <br>
+                    <</if>>
+                <</if>>
+
+                When dawn spilled across the horizon, the soft light lit up the cliffs and shone into your slavers' eyes. It also signalled a flurry of activity at the base of the cliff, as the caravan began its slow climb up to the top of the escarpment.
+            </p>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+            <<if _unit>>
+                <p>
+                    <<name _unit>> let them get halfway up before <<they _unit>> made the earth of the escarpment tremble and quake, causing many in the caravan to fall and their camels to panic. Too busy trying to maintain their footing, the caravanners were in no position to fight back against your volleys of missiles and those that made it to the top were easily cut down.
+                </p>
+
+            <<else>>
+
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+                <<if _unit>>
+                    <p>
+                        <<name _unit>> let them get almost to the top before <<they _unit>> drew flames from the coals of the firepit and directed them down onto the caravan, even as everyone else started dropping pots of pitch and tar, causing gouts of flame when <<name _unit>>'s magic met the flammable substances. Many chose to jump rather than stay within range of the magic and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                    </p>
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                    <<if _unit>>
+                        <p>
+                            <<name _unit>> let them get almost to the top before <<they _unit>> summoned a spirit of air and sent it, whirlwind like, down the cliff, flinging men and women to the ground far below and causing the camels to stampede back down the trail. It was carnage. But it was swift.
+                        </p>
+                    <<else>>
+                        <p>
+                            Your slavers let them get almost to the top before they started dropping pots of burning pitch and tar onto the caravan , dousing everything with the sticky, burning substances. Many chose to jump rather than charge up into the face of more fire and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                        </p>
+
+                    <</if>>
+                <</if>>
+            <</if>>
+
+            <<if _goods == "gold" or _goods == "turquoise">>
+                Carefully picking their way down the cliff your slavers recovered the shipment of _goods and brought them back to your fort,
+            <<elseif _goods == "erotic pottery">>
+                With the pottery shattered at the bottom of the cliff, your slavers headed back to your fort,
+            <<else>>
+                The _goods didn't survive the carnage, and your slavers barely bothered searching the remains of the caravan before heading for home,
+            <</if>>
+            bringing along a single survivor, now tied up in your slave pens.
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if their quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing everyone with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west.<br>
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+                They snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Eventually, <<name $g.scout>> saw a line of bobbing lights in the distance, coming closer and closer to the cliffs. <<They $g.scout>> watched them over the next several hours and soon the lights turned into dark shadows into barely discernable figures in the starlight.
+            </p>
+            <p>
+                The caravan stopped at the base of the escarpment, but made no attempt to begin the climb the road.
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                <<if _unit>>
+                    "What are they waiting for? <<name _unit>> asked.<br>
+                    <<set _cautious = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+                    <<if _cautious>>
+                        "Probably dawn," <<name _cautious>> said. "Would you want to lead a train of laden wagons up the side of a sheer cliff at night?" <br>
+                    <</if>>
+                <</if>>
+
+                When dawn spilled across the horizon, the soft light lit up the cliffs and shone into your slavers' eyes. It also signalled a flurry of activity at the base of the cliff, as the caravan began its slow climb up to the top of the escarpment.
+            </p>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+            <<if _unit>>
+                <p>
+                    <<name _unit>> let them get halfway up before <<they _unit>> made the earth of the escarpment tremble and quake, causing many in the caravan to fall and their camels to panic. Too busy trying to maintain their footing, the caravanners were in no position to fight back against your volleys of missiles and those that made it to the top were easily cut down.
+                </p>
+
+            <<else>>
+
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+                <<if _unit>>
+                    <p>
+                        <<name _unit>> let them get almost to the top before <<they _unit>> drew flames from the coals of the firepit and directed them down onto the caravan, even as everyone else started dropping pots of pitch and tar, causing gouts of flame when <<name _unit>>'s magic met the flammable substances. Many chose to jump rather than stay within range of the magic and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                    </p>
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                    <<if _unit>>
+                        <p>
+                            <<name _unit>> let them get almost to the top before <<they _unit>> summoned a spirit of air and sent it, whirlwind like, down the cliff, flinging men and women to the ground far below and causing the camels to stampede back down the trail. It was carnage. But it was swift.
+                        </p>
+                    <<else>>
+                        <p>
+                            Your slavers let them get almost to the top before they started dropping pots of burning pitch and tar onto the caravan , dousing everything with the sticky, burning substances. Many chose to jump rather than charge up into the face of more fire and if you close your eyes you can still hear them, and smell the stomach churning stench of scorched flesh.
+                        </p>
+
+                    <</if>>
+                <</if>>
+            <</if>>
+
+            <<if _goods == "gold" or _goods == "turquoise">>
+                Carefully picking their way down the cliff your slavers recovered the shipment of _goods and brought them back to your fort,
+            <<elseif _goods == "erotic pottery">>
+                With the pottery shattered at the bottom of the cliff, your slavers headed back to your fort,
+            <<else>>
+                The _goods didn't survive the carnage, and your slavers barely bothered searching the remains of the caravan before heading for home,
+            <</if>>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if their quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing everyone with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west.<br>
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+            </p>
+            <p>
+                Your slavers snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Unfortunately, the trek across the <<lore geo_cassian>> had taken more out of them than they realised, and when they next awoke the sun was shining outside their tent and the air was oppressive and scorching hot. Hearing a lot of noise outside the tent, they looked out to find the caravan had arrived and climbed the escarpment while they slept, and their trio of tents was now being watched by at least a dozen guards. Faced with those odds, your slavers decided that discretion was the better part of valour, and returned to the fort.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Taking advantage of a small copse of mustard trees, your slavers settled in to wait, taking it in turns to peek over the edge too see if their quarry was near.
+                <<set _local = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['subrace_humandesert','subrace_orc']})>>
+                <<if _local>>
+                    <<name _local>> picked some of the purplish mustard berries and handed them out, providing everyone with a small snack.<br>
+                    <<set _questioner = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {notrait: ['subrace_humandesert','subrace_orc']})>>
+                    <<if _questioner>>
+                        "Are these what mustard's made from then?" <<name _questioner>> asked doubtfully.<br>
+                        <<name _local>> shook <<their _local>> head. "No, I'd never even had your mustard until I went west.<br>
+                    <</if>>
+                    It was, if nothing else, nice to have a source of liquid in this head, no matter how tiny.
+                <</if>>
+            </p>
+            <p>
+                Your slavers snoozed throughout the day and huddled together for warmth during the night, only building a small fire, dug deep into the rocky ground to try to hide its glow. Unfortunately, the trek across the <<lore geo_cassian>> had taken more out of them than they realised, and when they next awoke it was light, and there were blades pressed against their throats.
+                <<dialogue $g.slaves>>
+                    Thought you could jump us did you? Well, not today.
+                <</dialogue>>
+                Before your slavers could offer a denial, the guards laid into them. Fortunately, the guards appeared more intent on doling out beatings than death, and they only kept your slavers until nightfall, leaving them bleeding in the dirt when their own caravan packed up and moved on.
+            </p>
+        <</if>>
+
+    <<elseif _location == "cliff">>
+        a mountainous road curling around the side of a sheer rocky peak in the <<lore geo_cassian>>.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                With no real cover to speak of, your slavers concealed yourselves around a bend and attacked the moment the first of their scouts rounded it. While their screams alerted the rest of the caravan, their choices were rushing your slavers, or turning around. They chose to rush in, but the narrow road prevented them from really using their numbers to their advantage—and your slavers were better trained. In the end <<name $g.fighter>> and <<name $g.raider>> pushed back to the caravan itself, and the ensuing panic sent the wagons with the _goods soff the cliff, which was just as well. The caravanners morale broke at that point and they started to run, allowing your slavers to grab one of them as a new slave, even if they didn't get any of the truly valuable cargo.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                With no real cover to speak of, your slavers concealed yourselves around a bend and attacked the moment the first of their scouts rounded it. While their screams alerted the rest of the caravan, their choices were rushing your slavers, or turning around. They chose to rush in, but the narrow road prevented them from really using their numbers to their advantage—and your slavers were better trained. In the end <<name $g.fighter>> and <<name $g.raider>> pushed back to the caravan itself, and the ensuing panic sent the wagons with the _goods soff the cliff, which was just as well. The caravanners morale broke at that point and they started to run, allowing your slavers to pick through the remains of the caravan at leisure, even if they didn't get any of the truly valuable cargo.
+            </p>
+            <p>
+                Unfortunately the survivors recognised <<name $g.raider>> and at least one Toran merchant is even more inclined to hate you now.
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Despite spending days in the windy peaks your slavers never saw another soul. It looks like you had the wrong path, and they returned to the fort empty handed.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                With no real cover to speak of, your slavers concealed themselves around a bend and attacked the moment the first of their scouts rounded it. While their screams alerted the rest of the caravan, their choices were rushing your slavers, or turning around. They chose to rush you and their superior numbers proved to be your undoing.
+                <<if $gQuest.getSeed() % 3 == 0>>
+                    <<name $g.scout>> was thrown off the mountain and hurtled out into the empty void
+                    <<if $g.scout.isHasTrait('skill_flight')>>
+                        , but was able to use their <<uwings $g.scout>> to stop their fall. However, with only <<name $g.fighter>> and <<name $g.raider>> in the fight, it went very badly, and your slavers were lucky the caravanners moved on rather than throwing both of them off the mountain as well.
+                    <<elseif $g.scout.isHasAnyTraitExact(['magic_wind', 'magic_wind_master'])>>
+                        , but was able to summon air currents to bring <<them $g.scout>> back to safe ground. However, with only <<name $g.fighter>> and <<name $g.raider>> in the fight, it went very badly, and your slavers were lucky the caravanners moved on rather than throwing both of them off the mountain as well.
+                    <<else>>
+
+                        <<set _flyer = setup.selectUnit([$g.fighter, $g.raider], {trait: 'skill_flight'})>>
+                        <<if _flyer>>
+                            , but <<name _flyer>> was able to swoop down and catch <<them $g.scout>>, although they landed far down the mountainside in a tumble of arms and legs. Meanwhile, the caravan moved on, unimpeded by the ambush, and leaving all three of your slavers badly injured.
+                        <<else>>
+                            <<set _mage = setup.selectUnit([$g.fighter, $g.raider], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                            <<if _mage>>
+                                . <<name _mage>> summoned air currents to bring <<them $g.scout>> back to safe ground, but the magic went awry when <<name _mage>> was knocked unconscious. It took reinforcements from the fort the better part of a day to find them all, and recovery is going to take some time. Possibly a lot of it.
+                                <<run setup.qc.Injury('scout', 24).apply ($gQuest)>>
+                            <<else>>
+                                , and tumbled out of sight. It took a few days for reinforcements from the fort to find <<their $g.scout>> broken body in the ravine below. Or what at least was left of it.
+                                <<run setup.qc.MissingUnitForever('scout').apply($gQuest)>>
+                            <</if>>
+                        <</if>>
+                    <</if>>
+
+                <<elseif $gQuest.getSeed() % 3 == 1>>
+                    <<name $g.fighter>> was thrown off the mountain and hurtled out into the empty void
+                    <<if $g.fighter.isHasTrait('skill_flight')>>
+                        , but was able to use their <<uwings $g.fighter>> to stop <<their $g.fighter>> fall. However, with only <<name $g.scout>> and <<name $g.raider>> in the fight, it went very badly, and they were lucky the caravanners moved on rather than throwing both of them off the mountain as well.
+                    <<elseif $g.fighter.isHasAnyTraitExact(['magic_wind', 'magic_wind_master'])>>
+                        , but was able to summon air currents to bring <<them $g.fighter>> back to safe ground. However, with only <<name $g.scout>> and <<name $g.raider>> in the fight, it went very badly, and they were lucky the caravanners moved on rather than throwing both of them off the mountain as well.
+                    <<else>>
+
+                        <<set _flyer = setup.selectUnit([$g.scout, $g.raider], {trait: 'skill_flight'})>>
+                        <<if _flyer>>
+                            , but <<name _flyer>> was able to swoop down and catch <<them $g.fighter>>, although they landed far down the mountainside in a tumble of arms and legs. Meanwhile, the caravan moved on, unimpeded by the ambush, and leaving all three of your slavers badly injured.
+                        <<else>>
+                            <<set _mage = setup.selectUnit([$g.scout, $g.raider], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                            <<if _mage>>
+                                . <<name _mage>> summoned air currents to bring <<them $g.fighter>> back to safe ground, but the magic went awry when <<name _mage>> was knocked unconscious. It took reinforcements from the fort the better part of a day to find them all, and recovery is going to take some time. Possibly a lot of it.
+                                <<run setup.qc.Injury('fighter', 24).apply($gQuest)>>
+                            <<else>>
+                                , and tumbled out of sight. It took a few days for reinforcements from the fort to find <<their $g.fighter>> broken body in the ravine below. Or what at least was left of it.
+                                <<run setup.qc.MissingUnitForever('fighter').apply($gQuest)>>
+                            <</if>>
+                        <</if>>
+                    <</if>>
+
+                <<elseif $gQuest.getSeed() % 3 == 2>>
+                    <<name $g.raider>> was thrown off the mountain and hurtled out into the empty void
+                    <<if $g.raider.isHasTrait('skill_flight')>>
+                        , but was able to use their <<uwings $g.raider>> to stop <<their $g.raider>> fall. However, with only <<name $g.fighter>> and <<name $g.raider>> in the fight, it went very badly, and they were lucky the caravanners moved on rather than throwing both of them off the mountain as well.
+                    <<elseif $g.raider.isHasAnyTraitExact(['magic_wind', 'magic_wind_master'])>>
+                        , but was able to summon air currents to bring <<them $g.raider>> back to safe ground. However, with only <<name $g.scout>> and <<name $g.fighter>> in the fight, it went very badly, and they were lucky the caravanners moved on rather than throwing both of them off the mountain as well.
+                    <<else>>
+
+                        <<set _flyer = setup.selectUnit([$g.scout, $g.fighter], {anytrait: ['skill_flight']})>>
+                        <<if _flyer>>
+                            , but <<name _flyer>> was able to swoop down and catch <<them $g.raider>>, although they landed far down the mountainside in a tumble of arms and legs. Meanwhile, the caravan moved on, unimpeded by the ambush, and leaving all three of your slavers badly injured.
+                        <<else>>
+                            <<set _mage = setup.selectUnit([$g.scout, $g.fighter], {anytrait: ['magic_wind', 'magic_wind_master']})>>
+                            <<if _mage>>
+                                . <<name _mage>> summoned air currents to bring <<them $g.raider>> back to safe ground, but the magic went awry when <<name _mage>> was knocked unconscious. It took reinforcements from the fort the better part of a day to find them all, and recovery is going to take some time. Possibly a lot of it.
+                                <<run setup.qc.Injury('raider', 24).apply ($gQuest)>>
+                            <<else>>
+                                , and tumbled out of sight. It took a few days for reinforcements from the fort to find <<their $g.raider>> broken body in the ravine below. Or what at least was left of it.
+                                <<run setup.qc.MissingUnitForever('raider').apply($gQuest)>>
+                            <</if>>
+                        <</if>>
+                    <</if>>
+                <</if>>
+            </p>
+        <</if>>
+
+    <<elseif _location == "foothills">>
+        a crumbling outcrop of jagged rock, sticking up from the arid dirt of the eastern foothills. It wasn't as inhospitable as the desert over the mountains, and they started to feel uncomfortably hot.
+
+        <<name $g.scout>> found a small spring and pool of water at the base of the rock—likely a watering point, and a good spot for an ambush. Looking around, your slavers found some places to hide from the sight of any caravans coming through the nearby mountain pass.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course that was when <<name $g.scout>> launched the ambush, raining arrows down from above while <<name $g.fighter>> and <<name $g.raider>> charged in to engage the caravanners in melee. The few guards were no match for your seasoned veterans, and they soon found themselves in possession of a wagonload of _goods to bring home.
+            </p>
+            <p>
+                They also brought back a potential slave, who is now awaiting your pleasure in the fort's slave pens.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course that was when <<name $g.scout>> launched the ambush, raining arrows down from above while <<name $g.fighter>> and <<name $g.raider>> charged in to engage the caravanners in melee. The few guards were no match for your seasoned veterans, and they soon found themselves in possession of a wagonload of _goods to bring home.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                After several hours in the baking sun your slavers were forced to seek shelter, and the prospect of waiting out there for several days became too much to contemplate. There would be other caravans to ambush and <<name $g.raider>> really couldn't be bothered with that one - assuming it ever turned up.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course that was when <<name $g.scout>> launched the ambush, , but <<name $g.fighter>> stumbled as they leapt off the outcrop, and sprained their ankle upon landing. Being one <<woman $g.fighter>> down in the fight didn't help when your slavers were already outnumbered, and they were forced to flee, all of them nursing injuries as they headed back toward the fort.
+            </p>
+        <</if>>
+
+    <<elseif _location == "oasis">>
+        a lush oasis, a haven of greenery and water in an otherwise inhospitable landscape.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Your slavers feasted on date palms as they waited, hidden in the tall grasses beside the water. When the caravan arrived they set up camp not far from the water's edge, settling in for the day. Still, the heat of the sun was less harsh in the shade of the trees, and while your slavers usually had to wait until nightfall to spring ambushes, they found themselves waiting until the sun was high in the sky before <<name $g.scout>> was confident that all of the caravanners had found sleep.
+            </p>
+            <p>
+                <<if _goods == "myrrh" or _goods == "turquoise">>
+                    It took <<name $g.raider>> a bit of time to find the right chest, but in the end <<they $g.raider>> found the small volume of _goods hidden away at the bottom of the stockpile, and decided it was easiest to leave with the most valuable of the trade goods. After all, it was the shipment your slavers were being paid to intercept.
+                <<elseif _goods == "gold">>
+                    It took <<name $g.raider>> a bit of time to find the right chest, but in the end <<they $g.raider>> found the small volume of _goods hidden away at the bottom of the stockpile, and decided it was easiest to leave with the most valuable of the trade goods. After all, it was the shipment your slavers were being paid to intercept, and the chest was heavier than it looked.
+                <<elseif _goods == "honey ants">>
+                    <<name $g.scout>> got lucky and found the padded and ventilated box of honey ants under shade cloth near the caravan's food stores. Opening the box <<they $g.scout>> was somewhat surprised to see the ant heads turn towards <<them $g.scout>>, but then, of course. The sweet honey the ants held inside their bloated abdomens would keep them alive during travel. <<name $g.scout>> contemplated eating one, as such a delicacy was typically reserved for the <<rep $company.royal>>, sometimes dipped into the finest chocolate, but decided that could wait until <<they $g.scout>> was clear of the camp.
+                <<elseif _goods == "chickpeas">>
+                    The sacks of hard, dried chickpeas were easy to find, and your slavers spent almost an hour carrying them off into the reeds, slitting them open and letting the legumes fall into the water and the fine silt below. The reeds ensured that even if the caravan was so inclined, sifting the mud to recover the chickpeas would be a fruitless endeavour.
+                <<else>>
+                    The pottery turned out to be mostly drinking bowls and a good number of amphorae, most of them depicting men engaging in various forms of sexual intercourse, although there are some depicted mixed couples or orgies, and a few that only show women. <<name $g.fighter>> contemplated bringing it back with <<them $g.fighter>> but the sheer amount ws more than your slavers could carry.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+                    <<if _unit>>
+                        After some consideration, <<name _unit>> used <<their _unit>> magic to turn most of the pottery into clay dust, your slavers keeping the few pieces that had especially caught their eyes.
+                    <<else>>
+                        In the end, there was nothing for it but to start smashing, a process that was quick, but noisy. The fact that the camp was asleep helped your slavers escape without injury, but <<name $g.scout>> was certain they were identified, and the raid will certainly be reported to the authorities in the <<lore region_city>>.
+                        <<run setup.qc.Ire('humankingdom', 2).apply($gQuest)>>
+                    <</if>>
+                <</if>>
+            </p>
+            <p>
+                As they were leaving, <<name $g.raider>> was able to capture a sleepy eyed caravanner stumbling from their tent, and you're able to add a potential <<urace $g.slaves>> slave to your bounty for this job.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Your slavers feasted on date palms as they waited, hidden in the tall grasses beside the water. When the caravan arrived they set up camp not far from the water's edge, settling in for the day. Still, the heat of the sun was less harsh in the shade of the trees, and while your slavers usually had to wait until nightfall to spring ambushes, they found themselves waiting until the sun was high in the sky before <<name $g.scout>> was confident that all of the caravanners had found sleep.
+            </p>
+            <p>
+                <<if _goods == "myrrh" or _goods == "turquoise">>
+                    It took <<name $g.raider>> a bit of time to find the right chest, but in the end <<they $g.raider>> found the small volume of _goods hidden away at the bottom of the stockpile, and decided it was easiest to leave with the most valuable of the trade goods. After all, it was the shipment your slavers were being paid to intercept. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<elseif _goods == "gold">>
+                    It took <<name $g.raider>> a bit of time to find the right chest, but in the end <<they $g.raider>> found the small volume of _goods hidden away at the bottom of the stockpile, and decided it was easiest to leave with the most valuable of the trade goods. After all, it was the shipment your slavers were being paid to intercept, and the chest was heavier than it looked. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<elseif _goods == "honey ants">>
+                    <<name $g.scout>> got lucky and found the padded and ventilated box of honey ants under shade cloth near the caravan's food stores. Opening the box <<they $g.scout>> was somewhat surprised to see the ant heads turn towards <<them $g.scout>>, but then, of course. The sweet honey the ants held inside their bloated abdomens would keep them alive during travel. <<name $g.scout>> contemplated eating one, as such a delicacy was typically reserved for the <<rep $company.royal>>, sometimes dipped into the finest chocolate, but decided that could wait until <<they $g.scout>> was clear of the camp. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<elseif _goods == "chickpeas">>
+                    The sacks of hard, dried chickpeas were easy to find, and your slavers spent almost an hour carrying them off into the reeds, slitting them open and letting the legumes fall into the water and the fine silt below. The reeds ensured that even if the caravan was so inclined, sifting the mud to recover the chickpeas would be a fruitless endeavour. Unfortunately, you heard a shout of alarm as you were collecting the last few bags, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                <<else>>
+                    The pottery turned out to be mostly drinking bowls and a good number of amphorae, most of them depicting men engaging in various forms of sexual intercourse, although there are some depicted mixed couples or orgies, and a few that only show women. <<name $g.fighter>> contemplated bringing it back with <<them $g.fighter>> but the sheer amount ws more than your slavers could carry.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_earth', 'magic_earth_master']})>>
+                    <<if _unit>>
+                        After some consideration, <<name _unit>> used <<their _unit>> magic to turn most of the pottery into clay dust, your slavers keeping the few pieces that had especially caught their eyes. Unfortunately, you heard a shout of alarm as you were leaving, and you were forced to run to clear the area as guards and caravanners started stumbling out of their tents.
+                    <<else>>
+                        In the end, there was nothing for it but to start smashing, a process that was quick, but noisy, and definitely roused the camp from their sleep.
+                    <</if>>
+                <</if>>
+
+                The element of surprise helped your slavers escape without injury, but <<name $g.scout>> was certain they were identified, and the raid will certainly be reported to the authorities in the <<lore region_city>>
+            </p>
+
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Your slaver feasted on date palms as they waited, venturing out from your hiding places to gather more dates and other fruits.<br>
+                "I'm amazed no-one's settled here," <<name $g.fighter>> said as <<they $g.fighter>> waited at the base of the date palm. <br>
+                "Don't say that," <<name $g.raider>>chided them. "Every time anyone says something like that we get to find out the answer and it's always not good."<br>
+                "That's—"<br>
+                A loud, choral warcry rent the air.<br>
+                "What was—" <<name $g.raider>>started even as <<name $g.scout>> all but jumped down from the date palm.<br>
+                "Orc raiders!" <<name $g.scout>> hissed urgently. "And I'm pretty sure they saw me. Run!"<br>
+                Given the distance and the cover of the vegetation, your slavers were able to outrun the orcs, but it also meant they had to abandon the job and head back to the fort. You hoped the orcs might raid the caravan, but you later hear of its safe arrival at Lucgate.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Your slavers feasted on date palms as they waited, hidden in the tall grasses beside the water. When the caravan arrived they set up camp not far from the water's edge, settling in for the day. Still, the heat of the sun was less harsh in the shade of the trees, and while your slavers usually had to wait until nightfall to spring ambushes, they found themselves waiting until the sun was high in the sky before <<name $g.scout>> was confident that all of the caravanners had found sleep.
+            </p>
+            <p>
+                Sneaking into the encampment, your slavers soon realised that the caravan was carrying much more than just _goods and you were going to have to do some searching. Unfortunately, <<name $g.fighter>> knocked over a stack of crates, which fell with a series of loud crashes, followed by the sound of pottery breaking.<br>
+                "Oops," was all <<they $g.fighter>> managed to say before guards and caravanners all but erupted from the tents.
+            </p>
+            <p>
+                Your slavers were soundly beaten, and the guards kept themall tied up until the caravan moved on that evening. Broken, bruised and violated, they made their back to the fortress.
+            </p>
+        <</if>>
+
+    <<else>>
+        a nondescript section of road, almost lost under the sands of the desert, but marked with a weathered waystone with a number carved into it that's barely readable. <<name $g.raider>> thought it was a sixty seven. Or maybe a sixty nine.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where your slavers were able to escape the heat of the day. When night came around, they waitedjust at the ridge of the dunes overlooking the road and waiting for the caravan to come by. When it finally did, <<name $g.scout>> and <<name $g.fighter>> ran towards the caravan, throwing pots of alchemist's fire and drawing the attention of the guards while <<name $g.raider>> went directly to the water barrels and laid into them with an axe.
+            </p>
+            <p>
+                By the time the guards realised their mistake and headed back towards the water stores, it was too late, and <<name $g.scout>> was able to score a direct hit on the cargo wagons with a pot of alchemists fire. Between burning cargo, panicking camels and no water to speak of, the caravan would, at the very least, be forced to turn around. Based on <<name $g.scout>>'s best recollection, the nearest watering hole was a week away. They'd be lucky if any of them made it.
+            </p>
+            <p>
+                As your slavers left, <<name $g.fighter>> managed to capture of the guards who had rushed to intercept <<them $g.fighter>>, and the <<woman $g.slaves>> is now corraled inside your slave pen, awaiting your pleasure. Or displeasure.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where your slavers were able to escape the heat of the day. When night came around, they waitedjust at the ridge of the dunes overlooking the road and waiting for the caravan to come by. When it finally did, <<name $g.scout>> and <<name $g.fighter>> ran towards the caravan, throwing pots of alchemist's fire and drawing the attention of the guards while <<name $g.raider>> went directly to the water barrels and laid into them with an axe.
+            </p>
+            <p>
+                By the time the guards realised their mistake and headed back towards the water stores, it was too late, and <<name $g.scout>> was able to score a direct hit on the cargo wagons with a pot of alchemists fire. Between burning cargo, panicking camels and no water to speak of, the caravan would, at the very least, be forced to turn around. Based on <<name $g.scout>>'s best recollection, the nearest watering hole was a week away. They'd be lucky if any of them made it.
+            </p>
+            <p>
+                Some time later, you hear the tale of a plucky survivor, who drank the blood of a camel in order to get back to civilisation alive. They also blamed <<rep $company.player>> for the raid on their caravan, and you just know that's going to get back to the merchant princes of Lucgate.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where your slavers were able to escape the heat of the day. Unfortunately a sandstorm blew up out of nowhere and they were all buried alive. Thankfully <<name $g.fighter>> managed to dig them out, but with sand everywhere, heavily abraded skin and no sign of your quarry, your slavers headed back to the fort to lick their wounds.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                <<name $g.scout>> scout|was able to find a hollow of rock where you all were able to escape the heat of the day. When night fell, <<name $g.fighter>> had the bright idea to have them all of bury themselves in the loose sand of the dune close to the road, so they'd be able to spring out and attack the caravan's water supplies.
+            </p>
+            <p>
+                With the three of them carefully hidden they settled in to wait, and it didn't take long for the caravan to appear. <<name $g.raider>> waited, muscles tense for the right moment, and as the supply wagons rolled along mere feet from <<them $g.raider>>, <<they $g.raider>> pushed <<their $g.raider>> way up out of the sand with <<their $g.raider>> best warcry, only to find <<themselves $g.raider>> alone, and quickly surrounded by guards. A torrent of curses drew <<their $g.raider>> attention to where <<name $g.scout>> and <<name $g.fighter>> were stuggling, half buried in the sand with smirking caravan guards standing over them, weapons drawn.<br>
+                "Sorry <<name $g.raider>>," <<name $g.fighter>> said sheepishly. "Got stuck."<br>
+                The guards left your slavers bloody, beaten and buried up to their necks in sand. They were able to get out eventually, but by that time the sun was high in the sky and the caravan had long gone.
+            </p>
+        <</if>>
+    <</if>>
+<</if>>

@@ -1,0 +1,118 @@
+:: QuestSetup_mist_apprentice_payment_the_first2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaescort = new setup.UnitCriteria(
+null, /* key */
+'slaver', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+],
+{
+  slaving: 3,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Well-Used', /* name */
+[
+],
+[
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.Trait(setup.trait.training_obedience_basic),
+  setup.qres.AnyTrait([setup.trait.vagina_gape, setup.trait.anus_gape, setup.trait.face_scary, setup.trait.face_hideous, setup.trait.per_lunatic, setup.trait.per_masochistic], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'mist_apprentice_payment_the_first2', /* key */
+"Mist Apprentice: Payment the First", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'prep',
+  'danger',
+  'trait',
+],
+1, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'escort': [ _criteriaescort, 3],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [
+    setup.qres.Home(),
+  ],
+  'demonkin': 'subrace_demonkin',
+},
+[ /* costs */
+],
+'Quest_mist_apprentice_payment_the_first2',
+setup.qdiff.hell1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.MissingUnitForever('slave'),
+      setup.qc.AddTag('escort', 'mist_apprentice_victim'),
+      setup.qc.Leave('escort', "went missing in The Mist", undefined),
+      setup.qc.Event('mist_apprentice_second_payment', 4, {
+master: "master",
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('return_shipping', 0, {
+master: "master",
+slaver: "slaver",
+}),
+
+],
+)>>
+
+:: Quest_mist_apprentice_payment_the_first2 [nobr]
+<p>
+You are to supply the demon with an "experienced" little slut. And no, it does not
+mean just a well-behaved slave — the slave must have shown some permanent
+marks from their prolonged abuse, be it gaping holes or simply madness. The cruel demon
+loves to compare <<their $g.master>> own work against slaves broken by other
+slave owners, and would like to sample some from your company.
+</p>
+
+<<include 'Quest_mist_apprentice_commonWarning'>>

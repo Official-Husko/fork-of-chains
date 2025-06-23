@@ -1,0 +1,197 @@
+:: QuestSetup_public_penance [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Defiant Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.Trait(setup.trait.will_defiant),
+  setup.qres.HasTag('in_training_defiant_slave'),
+],
+{
+}
+)>>
+
+<<set _res = [
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+  setup.qc.TraitRemove('slave', setup.trait.will_defiant),
+  setup.qc.Mindbreak('slave'),
+  setup.qc.AddHistory('slave', "a|was broken from a|their defiance by being used as a public sex toy in the Undercity of Lucgate for months"),
+  setup.qc.TraitIncreaseExisting('slave', setup.trait.anus_gape),
+  setup.qc.TraitIncreaseExisting('slave', setup.trait.anus_gape),
+  setup.qc.TraitIncreaseExisting('slave', setup.trait.vagina_gape),
+  setup.qc.TraitIncreaseExisting('slave', setup.trait.vagina_gape),
+  setup.qc.RemoveRandomTraitWithTag('slave', 'per'),
+  setup.qc.RemoveRandomTraitWithTag('slave', 'per'),
+  setup.qc.RemoveRandomTraitWithTag('slave', 'per'),
+  setup.qc.RemoveRandomTraitWithTag('slave', 'per'),
+  setup.qc.RemoveRandomTraitWithTag('slave', 'per'),
+]>>
+
+<<run new setup.QuestTemplate(
+'public_penance', /* key */
+"Public Penance", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'city',
+],
+30, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'handler': [ setup.qu.slavehandler, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_public_penance',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_public_penanceCrit',
+    _res,
+  ],
+  [
+    'Quest_public_penanceCrit',
+    [
+      setup.qc.Outcomes('crit'),
+    ]
+  ],
+  [
+    'Quest_public_penanceCrit',
+    [
+      setup.qc.Outcomes('crit'),
+    ]
+  ],
+  [
+    'Quest_public_penanceCrit',
+    [
+      setup.qc.Outcomes('crit'),
+    ]
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+
+],
+)>>
+
+:: Quest_public_penance [nobr]
+<<set _u = setup.getUnit({tag: 'in_training_defiant_slave'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<p>
+<<Yourrep _u>> has continued to be a stubborn little slut. If all other
+methods have failed to break <<therace _u>>, there is always the option of
+simply breaking <<their _u>> mind. But normal methods won't work on <<them
+_u>>, and even more extreme measures have to be taken to do so.
+</p>
+
+<p>
+Your slavers have managed to secure a deal with one of the more prominent
+leaders of the undercity of Lucgate. These sadistic leaders enjoy slowly breaking
+particularly defiant slave, and have offered to lend you a small spot in the
+location, where the slave can be locked inside the stocks there.
+The slave will then be made available for public use —
+the sadistic public members of the undercity that is. These are
+people who revel in the suffering of others, and will no doubt turn
+every single passing day into living hell for the slave. Ordinary slaves
+would only take one or two weeks to be completely broken this way, but this
+particularly defiant slave might take longer — a few months, you would guess.
+</p>
+
+<p>
+You can send the slave together with an overseer if you wish to break <<yourrep
+_u>> this way. The overseer would have to unlock the slave each night, and
+clean the no-doubt well-used slave before locking the slave back for the next
+day. While the slave will surely be broken this way, <<their _u>> mind will
+also guaranteed to be completely shattered and broken, becoming useful for
+nothing else other than a living sex toy. But sometimes extreme measures need
+to be taken for extreme cases...
+</p>
+
+<p>
+Alternatively, you can always ignore this quest, and try to break the slave via other means.
+</p>
+
+<</if>>
+
+
+:: Quest_public_penanceCrit [nobr]
+
+<<if $g.slave.isMale()>>
+  <<if !$settings.bannedtags.furry>>
+    <<questimage 'public_penance_male_furry.jpg'>>
+  <<else>>
+    <<questimage 'public_penance_female_neko.jpg'>>
+  <</if>>
+<<else>>
+<</if>>
+
+
+<p>
+With
+<<if $g.handler.isHasTrait('per_kind')>>
+a little reluctance,
+<<else>>
+a cruel grin,
+<</if>>
+<<rep $g.handler>> introduced to <<rep $g.slave>> what would be <<their
+$g.slave>> home for the next few months — a non-descript stock placed
+securely in the center of the undercity. At first, <<rep $g.slave>> remained
+defiant, thinking that being locked in the stocks could not be that bad. But
+once <<they $g.slave>> got familiar with the residents, <<they $g.slave>>
+could have not been so wrong...
+</p>
+
+<p>
+The undercity hosts the worst of the LucGate residents, including a
+particularly large number of sadists. None of them could resist the allure of having
+a helpless and defiant slave being locked in the center of the undercity. In fact, the slave's
+struggles as <<they $g.slave>> slave|was being continuously raped each day only made
+the assaulters more aroused, and soon all residents from all corners of the
+undercity came to the square to try out the slave's orifices.
+<<if !$settings.bannedtags.watersport>>
+  Not a single hole of <<rep $g.slave>> slave|was left unused -- and <<they
+  $g.slave>> experienced
+  many occassion of simultaneously being raped from the ass while gulping
+  down piss down <<their $g.slave>> throat.
+<</if>>
+<<if $g.handler.isHasTrait('per_cruel')>>
+Being a sadist <<themself $g.handler>>, <<rep $g.handler>> helped out the
+breaking process too, and <<they $g.handler>> together with your slave often
+enjoy some "private time" after the day was over.
+<<else>>
+<<Yourrep $g.handler>> handler|was not a sadist however, and <<they
+$g.handler>> even sometimes felt kinda bad for the slave.
+Still, <<they $g.handler>> <<uadv $g.handler>>
+unlocked the binding each night to clean the filth out of the always
+well-abused slave, before locking the slave back for the night.
+<</if>>
+</p>
+
+<p>
+Within weeks, <<yourrep $g.handler>> could easily notice a drastic change in the
+slave — <<their $g.slave>> mind getting worn down so quickly until it finally
+snapped.
+By the end of the ordeal, the slave was pretty much broken in mind and spirit. While
+<<their $g.slave>> body remained the same — there was absolutely no trace of
+<<their $g.slave>> former fighting spirit. With the very long mission finally
+over, <<rep $g.handler>> brought the new fuck toy back to the fort, to be
+enjoyed by the rest of <<their $g.handler>> slaver mates.
+</p>

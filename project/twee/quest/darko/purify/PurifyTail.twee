@@ -1,0 +1,57 @@
+:: QuestSetupPurifyTail [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'purify_tail',  /* id */
+  'Purify: Tail',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.purify_head_master,
+    'assistant1': setup.qu.purify_assistant,
+    'assistant2': setup.qu.purify_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.MoneyMult(-5),
+  ],  /* costs */
+  'PurifyTail',  /* description */
+  setup.qdiff.hard46,
+  [
+    [
+      'PurifyAllCrit',
+      [
+        setup.qc.Purify('trainee', 'tail'),
+        
+      ]
+    ],
+    [
+      'PurifyAllSuccess',
+      [
+        setup.qc.Purify('trainee', 'tail'),
+        
+      ],
+    ],
+    [
+      'PurifyAllFailure',
+      [
+      ],
+    ],
+    [
+      'PurifyAllDisaster',
+      [
+        setup.qc.Injury('trainee', 4),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: PurifyTail [nobr]
+<p>
+Purify a unit's tail.
+</p>

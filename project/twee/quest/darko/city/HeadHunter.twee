@@ -1,0 +1,166 @@
+:: QuestSetupHeadHunter [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'head_hunter', /* key */
+  'Head Hunter', /* Title */
+  'darko',   /* author */
+  ['city', 'order'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'whoreblowjob': setup.qu.whoreblowjob,
+    'slavetrader': setup.qu.slavetrader,
+    'slavetrainer': setup.qu.slavetrainer,
+  },
+  { /* actors */
+    'head': 'all',
+  },
+  [ /* costs */
+  ],
+  'QuestHeadHunter', /* passage description */
+  setup.qdiff.normal34, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestHeadHunterCrit',
+      [
+        setup.qc.SlaveOrderHeadHunter(/* is crit = */ true),
+        
+      ],
+    ],
+    [
+      'QuestHeadHunterCrit',
+      [
+        setup.qc.SlaveOrderHeadHunter(),
+        
+      ],
+    ],
+    [
+      'QuestHeadHunterCrit',
+      [
+        setup.qc.SlaveOrderHeadHunter(setup.qdiff.easy29),
+      ],
+    ],
+    [
+      'QuestHeadHunterCrit',
+      [
+        setup.qc.SlaveOrderHeadHunter(setup.qdiff.easiest29),
+        setup.qc.SlaverMarker('head'),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.uncommon],], /* quest pool and rarity */
+  [
+    setup.qres.Building(setup.buildingtemplate.marketingoffice),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestHeadHunter [nobr]
+
+<p>
+Among the many guilds in the <<lore region_city>>, the Head-Hunter guild is famous for being
+filthy rich.
+The Head-Hunter guild, despite their name, works on the entertainment field,
+supplying entertainment for various higher-end nobles as well as well paying merchants.
+Entering the head-hunter guild as an entertainer is a dream for many, but they are notoriously
+picky about picking their employees.
+</p>
+
+<p>
+...or that's what seems to be on the surface. In fact, the many "employees" of the
+Head-Hunter guilds are in all technical terms slaves to the higher ups in the guild.
+The "entertainment" they provide are usually lending these employees to the guests to use
+as they see fit -- however, they are called the Head-Hunter because of their particular
+speciality: their employees are very, very good in the art of giving head.
+</p>
+
+<p>
+If your slavers can convince the boss that you can headhunt for more "employees",
+there is a potentially great money to be made here.
+To prove your capability of finding slaves that can give a good head, the standard procedure
+is for one of your slavers to actually demonstrate their capability of giving head,
+so bringing one rather slutty slaver is actually a requirement here.
+You must be careful with this quest, however, for deals
+involving the head-hunters are not so easily broken.
+If you are offering your services here, then you are committing to actually sending the
+specific slave that they will be requesting later.
+</p>
+
+
+:: QuestHeadHunterCrit [nobr]
+
+<p>
+Your arrived at the office and registered themselves to the receptions.
+After a while, one of the receptionists escorted
+<<yourrep $g.whoreblowjob>> for <<their $g.whoreblowjob>> "interview",
+while the rest of your slavers were asked to wait just a little bit longer.
+Some time later, your slavers were called upstairs to talk with one of the higher ups.
+They entered <<their $g.head>> office, a sparsely decorated office with only
+the desk as its centerpiece.
+The higher up was dressed formally, and was seemingly busy with an endless
+amount of paperwork.
+Upon seeing your slavers, <<they $g.head>> greeted them, but your slavers couldn't
+shake the feeling that there was something off about <<their $g.head>> demeanor.
+Indeed, as your slavers grew closer, they could hear some kind of slurping noises coming from
+under the desk. But they knew better than to ask.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Apparently, <<they $g.head>> offered your company a really good deal for a slave.
+<<Yourrep $g.whoreblowjob>> apparently did such a wonderful job with <<their $g.whoreblowjob>>
+"interview", which impressed <<them $g.head>> greatly.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+<<They $g.head>> bargained with your slavers, and it eventually reached an
+adequate deal for an opportunity to sell a slave.
+Throughout the bargaining process, the noises of slurping and sucking never stopped,
+but your slavers did their best to put it at the back of their minds.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+<<They $g.head>> dealt a hard bargain with your slavers, resulting
+in a sub-par deal for you.
+Still, it is in your best interest for your company to fulfill the deal, for
+otherwise you would need to pay for wasting <<their $g.head>> time.
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+
+<p>
+Throughout the negotiation, the sucking and slurping noises were accompanied by the
+occasional zapping noises and a displeased grunt, but your slavers kept their mouths
+shut.
+The supervisor dealt a really hard bargain with your slavers,
+resulting in a terrible par deal for your company.
+Still, it is in your best interest for your company to fulfill the deal, for
+otherwise you would need to pay for wasting <<their $g.head>> time.
+</p>
+
+<</if>>
+
+<p>
+Once the negotiations were over and your slavers were escorted back to the exit, they regrouped with
+<<rep $g.whoreblowjob>>, who looked a little worse for the wear.
+<<They $g.whoreblowjob>> refused to talk about the interview at all.
+<<if $gOutcome == 'disaster'>>
+  Still, based on the new slight burn marks on <<them $g.whoreblowjob>>, your other
+  slavers did not have to think hard to guess what actually had happened.
+<<elseif $g.whoreblowjob.isHasTrait('per_submissive')>>
+  Judging from the occasional blush and knowing how submissive <<they $g.whoreblowjob>> usually
+  whoreblowjob|is, however, there was little room for doubt as to what might have happened under
+  the desk...
+<<elseif $g.whoreblowjob.isHasTrait('per_dominant')>>
+  If anything, <<they $g.whoreblowjob>> looked a little down in the coming days,
+  as if <<their $g.whoreblowjob>> dominant nature had been contested somewhere within the office.
+  <<run setup.qc.TraumatizeRandom('whoreblowjob', 2).apply($gQuest)>>
+<</if>>
+</p>

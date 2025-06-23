@@ -1,0 +1,352 @@
+:: QuestSetup_go_fish [nobr quest]
+
+
+<<run new setup.Title(
+"quest_master_angler_0", /* key */
+"Master Angler", /* name */
+"Caught a legendarily rare fish in the Southern Seas", /* description */
+"caught an extremely rare fish in the Southern Seas, becoming rather famous there", /* unit text */
+4500, /* slave value */
+{ /* skill additives */
+brawn: 3,survival: 3,},
+)
+>>
+
+
+<<set _criteriafish1 = new setup.UnitCriteria(
+null, /* key */
+'Fisherman', /* name */
+[
+  setup.trait.bg_seaman,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_calm,
+  setup.trait.skill_animal,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.per_aggressive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1.5,
+  survival: 1.5,
+}
+)>>
+
+<<set _criteriafish2 = new setup.UnitCriteria(
+null, /* key */
+'Fisherman', /* name */
+[
+  setup.trait.bg_seaman,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_calm,
+  setup.trait.skill_animal,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.per_aggressive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1.5,
+  survival: 1.5,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'go_fish', /* key */
+"Go Fish", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'money',
+  'danger',
+  'unknown',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'fish1': [ _criteriafish1, 1],
+  'fish2': [ _criteriafish2, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_go_fish',
+setup.qdiff.hard52, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_go_fishCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.OneRandomSeed([
+setup.qc.ItemPool(setup.itempool.potion_blessing),
+setup.qc.Equipment(setup.equipmentpool.aid_good),
+setup.qc.MoneyCustom(5000),
+setup.qc.Item(setup.item.potion_boon),
+setup.qc.DoAll([
+setup.qc.Purify('fish1'),
+setup.qc.Purify('fish2')
+], undefined),
+setup.qc.DoAll([
+setup.qc.Corrupt('fish1', null, 1),
+setup.qc.Corrupt('fish2', null, 1)
+], undefined),
+setup.qc.Favor('humansea', 250),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(10000),
+setup.qc.Ire('humansea', 10)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('fish1', 30),
+setup.qc.TraumatizeRandom('fish2', 30)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Blessing('fish1', 1, 'blessing_purity8'),
+setup.qc.Blessing('fish2', 1, 'blessing_purity8')
+], undefined),
+setup.qc.OneRandomSeed([
+setup.qc.AddTitle('fish1', 'quest_master_angler_0'),
+setup.qc.AddTitle('fish2', 'quest_master_angler_0')
+])
+]),
+    ],
+  ],
+  [
+    'Quest_go_fishCrit',
+    [
+      setup.qc.MoneyCustom(4000),
+    ],
+  ],
+  [
+    'Quest_go_fishCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.Injury('fish1', 5),
+setup.qc.Injury('fish2', 5),
+setup.qc.Injury('guard', 5)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Corrupt('fish1', null, 1),
+setup.qc.Corrupt('fish2', null, 1),
+setup.qc.Corrupt('guard', null, 1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('fish1', 25),
+setup.qc.TraumatizeRandom('fish2', 25),
+setup.qc.TraumatizeRandom('guard', 25)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Blessing('fish1', 1, null, true),
+setup.qc.Blessing('fish2', 1, null, true),
+setup.qc.Blessing('guard', 1, null, true)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_go_fishCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_go_fish [nobr]
+<p>
+Many people living in the <<lore region_sea>> make their living by harvesting the bounties of the sea. Most wisely decide not to venture too far from their settlements, as the sea is known to be treacherous, filled with pirates, slavers, and even the occasional monsters. But even so, these people still make decent amount of money by capturing the many fish that live in the shallower part of the sea.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+<p>
+<<Yourrep _u>> has been hearing rumors that the deeper part of the sea hides rare and wondrous sea creatures that would fetch a nice sum of gold to exotic collectors. The creatures range from standard but beautiful-looking fish, to eleven-legged sea creature that you're not sure it even exists. Still, it might be worth it to try and follow-up on this rumor by sending a group of slavers to go fish for these. Although capturing unknown sea creature, especially in the <<lore region_sea>> is going to prove incredibly dangerous...
+</p>
+
+
+
+
+
+
+:: Quest_go_fishCrit [nobr]
+<p>
+The trio of slavers you sent over to the southern set sail from your harbor, each having their own outlook of the quest.
+
+<<set _seaman = setup.selectUnit([$g.fish1, $g.fish2, $g.guard], {trait: 'bg_seaman'})>>
+<<if _seaman>>
+<<Rep _seaman>> looked quite happy to be going back to the sea — the former seaman had apparently missed the open ocean quite a bit.
+<</if>>
+
+<<set _agg = setup.selectUnit([$g.fish1, $g.fish2, $g.guard], {trait: 'per_aggressive'})>>
+
+<<if _agg>>
+<<Yourrep _agg>> did not look forward to the boring trip, being an impatient <<urace _agg>>.
+<</if>>
+
+<<set _calm = setup.selectUnit([$g.fish1, $g.fish2, $g.guard], {trait: 'per_calm'})>>
+<<if _calm>>
+Fishing is a calming experience, and <<rep _calm>> is quite looking forward to it.
+<</if>>
+
+<<set _water = setup.selectUnit([$g.fish1, $g.fish2, $g.guard], {trait: 'magic_water'})>>
+<<if _water>>
+Being on the open ocean has always been a pleasant experience for the water magic specialist <<rep _water>>.
+<</if>>
+
+They gathered their (some newly-bought) fishing rods and set sail.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+<p>
+With some luck, your slavers were able to reach the deep waters, and began fishing.
+They set their fishing rods on the edge of the ship, and then they waited.
+<<set _fru = setup.selectUnit([$g.fish1, $g.fish2, $g.guard], {trait: 'per_frugal'})>>
+
+<<if _fru>>
+<<Rep _fru>> bought a relatively cheap and flimsy-looking fishing rod, and <<therace _fru>> hoped it would be enough to survive whatever fish they were about to encounter.
+<</if>>
+They did not need to wait long, and it turned out the deep waters were extremely rich with fish, since people are generally too afraid to venture this deep and left these fish unharvested.
+Before long, mountains of fish were piling up in their ship, no doubt going to fetch a decent sum in the market.
+</p>
+
+<<if $gOutcome == 'success'>>
+<p>
+While your slavers netted a rather large profit from the endeavor,
+they did not caught anything interesting from within the sea. Your slavers returned home slightly disappointed, hoping they would find more than just ordinary fish in the deep waters of such a dangerous ocean.
+</p>
+<<else>>
+<p>
+Your slavers netted a rather large profit from the endeavor. But more that,
+among the various fish the captured, one stood out.
+<<set _muscle = setup.selectUnit([$g.fish1, $g.fish2, $g.guard], {trait: 'muscle_strong'})>>
+
+<<if _muscle>>
+It was the most difficult one to caught, and <<rep _muscle>> had to exert <<their _muscle>>
+<<if _muscle.isHasTrait('muscle_verystrong')>>
+huge
+<<else>>
+considerable
+<</if>>
+musculature to reel the fish in.
+<</if>>
+
+<<if $gQuest.getSeed() % 11 == 0 || $gQuest.getSeed() % 11 == 3>>
+Despite having the shape of an average southern fish, the fish belly glew a curious color.
+Something must have been swallowed by the fish, and your slavers soon found a rare
+<<if $gQuest.getSeed() % 11 == 3>>
+<<rep setup.item.potion_boon>>. A travelling ship must have dropped the rare potion during their trip.
+<<else>>
+blessing potion, a speciality of one of the many monasteries in the <<lore region_sea>>.
+Who knows how such a rare potion could end up in the belly of a fish, but you for sure are not complaining.
+<</if>>
+
+<<elseif $gQuest.getSeed() % 11 == 1>>
+
+An object was clearly stuck inside one of the bigger fish' belly. Your slavers bravely took it out, and lo and behold, it was a rare saint clothing from the <<lore region_sea>>. How could such a valuable piece of clothes find its way inside a fish' insides?
+
+<<elseif $gQuest.getSeed() % 11 == 2>>
+
+Your slavers somehow managed to captured the elusive golden fish. While the fish itself tastes remarkably normal, nobles of the <<lore region_sea>> uses them as a delecacy, and your slavers were able to sell the rare specimen for a high sum.
+
+<<elseif $gQuest.getSeed() % 11 == 4>>
+
+At the end of the reel is the rare Fish of Purification. After being captured, the fish glew and floated before your slavers' eyes, and it bestowed its purification into your slavers, cleansing them of their corruption, before going back into the sea.
+
+<<elseif $gQuest.getSeed() % 11 == 5>>
+
+At the end of the reel is the rare Fish of Corruption. Unfortunately, this was not a nice fish, and the fish proceeded to glow ominously before exploding in a sea of corruption, corrupting your slavers.
+
+<<elseif $gQuest.getSeed() % 11 == 6>>
+
+At the end of the reel is not a fish, but rather a strange silver shoe. Underneath is written an address in the <<lore region_sea>>. Your slavers ended up returning the shoe to its owner, who was so grateful that your company's reputation soared among their people.
+
+<<elseif $gQuest.getSeed() % 11 == 7>>
+
+At the end of the reel is not a fish, but rather a strange silver shoe. Underneath is written an address in the <<lore region_sea>>. However, your slavers were able to deduce that the shoe was incredibly valuable, and sold it instead for an outrageous sum. The real owner found out about your slavers' treachery, however, and your reputation with their people suffered.
+
+<<elseif $gQuest.getSeed() % 11 == 8>>
+
+At the end of the reel is the rare Fish of Horror. The fish visage immediately instilled fear and trauma to your slavers, and by the time they let go of the fish, it was already too late.
+
+<<elseif $gQuest.getSeed() % 11 == 9>>
+
+At the end of the reel is the rare Fish of Purity. After being captured, the fish glew and floated before your slavers' eyes, and it bestowed the blessings of purity into your slavers, before going back into the sea.
+
+<<else>>
+
+<<if $gQuest.getSeed() % 2 == 0>>
+<<set _t = $g.fish1>>
+<<else>>
+<<set _t = $g.fish2>>
+<</if>>
+
+At the end of the reel is the legendary Fish of Greed. Instead of being helpless like a regular fish, the fish slipped out of your slavers' reel, and floated into the sky, facing <<rep _t>> directly.
+"You have done well to catch me, my son", said the fish towards the understandably flabbergasted <<rep _t>>. "For such a feat, I shall award you with the title of Master Angler. May you carry it with pride", the fish elaborated, before jumping back into the sea.
+
+<</if>>
+
+
+</p>
+
+<</if>>
+
+
+<<else>>
+
+<p>
+With some luck, your slavers were able to reach the deep waters, and began fishing.
+They set their fishing rods on the edge of the ship, and then they waited.
+But instead of finding regular or valuable fish they found something else entirely...
+</p>
+
+<<if $gQuest.getSeed() % 4 == 0>>
+At the end of the reel is the rare Fish of Blades. The fish is covered entirely in sharp spikes, and once it was atop the ship, it started rocking around, sending out sharp damaging spikes everywhere before mercifully diving back into the sea. Your slavers were greatly injured as a result.
+<<elseif $gQuest.getSeed() % 4 == 1>>
+At the end of the reel is the rare Fish of Corruption. Unfortunately, this was not a nice fish, and the fish proceeded to glow ominously before exploding in a sea of corruption, corrupting your slavers.
+<<elseif $gQuest.getSeed() % 4 == 2>>
+At the end of the reel is the rare Fish of Horror. The fish visage immediately instilled fear and trauma to your slavers, and by the time they let go of the fish, it was already too late.
+<<elseif $gQuest.getSeed() % 4 == 3>>
+At the end of the reel is the rare Fish of Vice, a forbidden fish.
+All your slavers were cursed with various curses by the time they realized what kind of
+fish they had just caught and released it immediately back to terrorize the <<lore region_sea>>.
+<</if>>
+
+<</if>>
+
+
+
+
+
+
+

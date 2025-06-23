@@ -1,0 +1,42 @@
+:: LIVINGSETUP_slaver_moderate [nobr living]
+
+<<run new setup.Living({
+  key: 'slaver_moderate',
+  name: 'Slaver',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_slaver: setup.LIVING_COMMON_PREFERENCE,
+    bg_thug: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_kind: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_honorable: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_cruel: -setup.LIVING_COMMON_PREFERENCE,
+    per_evil: -setup.LIVING_COMMON_PREFERENCE,
+  },
+  business: [
+    'going on a repeatable quest',
+    'taking care of a slave',
+    'taking pity on a slave',
+  ],
+  location: 'company fort',
+})>>
+
+:: LIVING_slaver_moderate [nobr]
+
+<p>
+Once a slaver, always a slaver.
+After leaving your company, <<rep $g.a>> simply join another one of the many
+slaving companies in the area.
+a|They would be content to simply be one of its many slavers,
+not looking in any way to climb the ladder.
+<<if $g.a.isHasTrait('per_kind')>>
+a|They would often come down to the slave pens to take care of some of the less
+fortunate ones.
+<</if>>
+<<if $g.a.isHasTrait('per_honorable')>>
+Unlike most of a|their ilk, <<rep $g.a>> a|try to keep a modicum of honor in a|their
+honorless work.
+<</if>>
+a|They never become truly rich, but a|they never a|want to anyways.
+</p>

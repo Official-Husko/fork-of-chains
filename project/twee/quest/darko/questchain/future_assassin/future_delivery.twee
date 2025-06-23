@@ -1,0 +1,313 @@
+:: QuestSetup_future_delivery [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"magician_of_time0",
+"Wizard of Time",
+'sea_all',  /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_mystic),
+  setup.qc.TraitsReplace('unit', [setup.trait.magic_light_master]),
+],
+)>>
+
+
+<<set _criteriabattery1 = new setup.UnitCriteria(
+null, /* key */
+'Magic Battery', /* name */
+[
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.bg_mist,
+  setup.trait.tough_nimble,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cautious,
+  setup.trait.per_curious,
+  setup.trait.per_playful,
+  setup.trait.per_dominant,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], true),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<set _criteriabattery2 = new setup.UnitCriteria(
+null, /* key */
+'Magic Battery', /* name */
+[
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.bg_mist,
+  setup.trait.tough_nimble,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cautious,
+  setup.trait.per_curious,
+  setup.trait.per_playful,
+  setup.trait.per_dominant,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], true),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'future_delivery', /* key */
+"Battery Lease", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'money',
+  'sea',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'battery1': [ _criteriabattery1, 1],
+  'battery2': [ _criteriabattery2, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+  'wizard': 'magician_of_time0',
+},
+[ /* costs */
+],
+'Quest_future_delivery',
+setup.qdiff.hard44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_future_deliveryCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.MoneyCustom(7500),
+    ],
+  ],
+  [
+    'Quest_future_deliveryCrit',
+    [
+      setup.qc.Leave('battery1', "a|is recharging their magic", 2),
+      setup.qc.Leave('battery2', "a|is recharging their magic", 2),
+      setup.qc.MoneyCustom(10000),
+      setup.qc.VarSet('future_assassin_cooldown', '1', 4),
+      setup.qc.VarRemove('future_assassin_progress'),
+    ],
+  ],
+  [
+    'Quest_future_deliveryCrit',
+    [
+      setup.qc.Leave('battery1', "a|is recharging their magic", 4),
+      setup.qc.Leave('battery2', "a|is recharging their magic", 4),
+      setup.qc.MoneyCustom(2000),
+    ],
+  ],
+  [
+    'Quest_future_deliveryCrit',
+    [
+      setup.qc.Injury('guard', 8),
+      setup.qc.IfThenElse(
+setup.qres.And([
+  setup.qres.Actor('guard', setup.qres.NoTraits([setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], true)),
+  setup.qres.Actor('guard', setup.qres.NotYou()),
+]),
+setup.qc.DoAll([
+setup.qc.TraitReplace('guard', setup.trait.per_masochistic),
+setup.qc.AddTraitsRandom('guard', [setup.trait.magic_fire, setup.trait.magic_water, setup.trait.magic_wind, setup.trait.magic_earth, setup.trait.magic_light, setup.trait.magic_dark], 1, false, false)
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+      setup.qc.Leave('battery1', "recharging their magic", 24),
+      setup.qc.Leave('battery2', "recharging their magic", 24),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Cooldown(8),
+  setup.qres.VarNull('future_assassin_cooldown'),
+  setup.qres.Player(setup.qres.LoverExist()),
+  setup.qres.NoUnitWithTag('future_assassin_parent'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_future_delivery [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+As a slaving company, you are used to receive strange and mysterious orders. Whether it's a request for a nicely packaged slave, to open a certain father's mind, or an order for a slave with a semi-transparent body, you have probably seen it all. But today, you got a rather unusual request.
+</p>
+
+<p>
+A certain magician in the <<lore region_sea>> is asking to borrow two of your slavers as magical batteries. The wizard is scarce on details in <<their $g.wizard>> letter, except that these batteries must be capable of using magic. <<They $g.wizard>> promises great amount of wealth for borrowing your slavers — an amount you could not really say no to.
+</p>
+
+<p>
+You'd need to send two magically gifted slavers on this quest. It's probably a good idea to send a guard to watch over them — they'd probably be drained dry and rendered useless after the ritual is over.
+</p>
+
+<p>
+You get the feeling that there is more to this quest than meets the eye, but it's probably nothing but a
+meaningless hunch.
+</p>
+
+
+:: Quest_future_deliveryCrit [nobr]
+
+<<questimage 'battery_lease.jpg'>>
+
+<p>
+The ritual site took place in an abandoned ruin, lost to time and reclaimed by the earth.
+A small black container was placed in the center of the circle, with a cutely drawn card
+that was addressed to... the wizard <<themself $g.wizard>>? Either way, your
+slavers were only hired to act as human batteries, and that was the extend of
+brainpower they are willing to spend. <<Rep $g.guard>> <<uadv $g.guard>>
+kept guard during the ritual, making sure nothing funny happens.
+</p>
+
+<p>
+After a short preparation, the wizard <<rep $g.wizard>> began the ritual.
+Your slavers <<rep $g.battery1>> and <<utheirrel $g.battery1 $g.battery2>>
+<<rep $g.battery2>> sat next to the wizard, prepared to be used as human
+magic battery to fuel the ritual.
+</p>
+
+<p>
+After a long chant, large gusts of wind began to appear as magical energies
+visibly flew from your slavers into the circle. The sensation of being robbed
+of your magic is a strange one — best described as being held on the edge of
+climaxing as close as possible, without ever being allowed to go over. For if
+you "climaxed your magic", the result would be disastrous.
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+Through sheer perseverance and stubbornness, <<rep $g.battery1>> and
+<<utheirrel $g.battery1 $g.battery2>> <<rep $g.battery2>> managed to persevere,
+holding off "climaxing" at the intense magical teasing. Eventually the wind subsided, and
+the only change noticeable by your slavers were the missing box in the middle
+of the circle. Odd, normally transportation magic did not require this much
+magical energy. What had just happened?
+</p>
+
+<p>
+Either way, satisfied with your slavers' work, the wizard handed over the promised money
+<<if $gOutcome == 'crit'>>
+plus a little extra for being such magical good batteries
+<</if>>
+over to your slavers.
+<<Rep $g.guard>> <<uadv $g.guard>> took the money on behalf of your slavers,
+as both <<rep $g.battery1>> and <<rep $g.battery2>> were understandably
+exhausted from the ordeal, and would need some time to recover back their
+magic.
+</p>
+
+<<set _t = $g.battery1>>
+<<if _t.isYou() or $unit.player.getLover() == _t>>
+  <<set _t = $g.battery2>>
+  <<if _t.isYou() or $unit.player.getLover() == _t>>
+    <<set _t = $g.guard>>
+  <</if>>
+<</if>>
+<<run setup.qc.AddTag('unit', 'future_assassin_parent').apply(setup.costUnitHelper(_t))>>
+
+<p>
+<<rep _t>> swore that <<they _t>> saw something familiar came out from inside
+the circle during the ritual. But eh, it's probably nothing to worry about.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+Your slavers almost managed to persevere through the entire "release denial"
+ritual, but they broke at the very end. Their magic leaked out and spread out
+of control around the ritual site. Fortunately for your slavers, the wizard
+seemed to have already completed most of the ritual, and with great efforts
+managed to calm down the vortex.
+</p>
+<p>
+Your slavers were still paid for their efforts, but the money was
+understandably cut for such a shoddy work.
+</p>
+
+<<else>>
+
+<p>
+<<if $g.battery1.isHasTrait('per_stubborn')>>
+Despite being ordinarily stubborn, <<rep $g.battery1>>
+<<elseif $g.battery1.isHasTrait('tough_tough')>>
+Despite being ordinarily tough, <<rep $g.battery1>>
+<<else>>
+<<rep $g.battery1>> battery1|was neither stubborn nor tough, and hence understandably <<they $g.battery1>>
+<</if>>
+
+was unable to "hold their magic off", and prematurely climaxed their magic.
+With the magic leaking out, the ritual site was thrown into chaos. <<Rep
+$g.guard>> guard|was absorbed into the vortex, injuring <<theslaver $g.guard>> as well.
+</p>
+
+<p>
+The skillful wizard eventually managed to calm down the vortex and restored a
+sense of normalcy to the site, but both <<rep $g.battery1>> and <<utheirrel
+$g.battery1 $g.battery2>> <<rep $g.battery2>> had been drained so very dry of
+their magic and will require quite some time of rest.
+</p>
+
+<<if !$g.guard.getTraitWithTag('magic') && !$g.guard.isYou()>>
+<p>
+If there is anything good coming out of this, being exposed to such amount of
+magic surely had a lasting effect on <<rep $g.guard>>...
+</p>
+<</if>>
+<</if>>

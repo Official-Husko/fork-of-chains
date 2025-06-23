@@ -1,0 +1,98 @@
+:: PrologueCompanyGenIntroNewGamePlus [nobr]
+
+<p>
+Your new company shall be named <<textbox "$company.player.name" $company.player.getName()>>
+</p>
+
+<hr/>
+
+<<unitcard $unit.player 1>>
+
+<div>
+You had some time before you restart with a new company, and you've been spending them by:
+</div>
+
+<<set _dom = setup.DOM.Menu.prologueNewGamePlusPCChange()>>
+<<attach _dom>>
+
+:: PrologueCompanyGenIntro [nobr]
+
+<<if $gNewGamePlusExLeader>>
+<p>
+  To kickstart your new company, you have enticed several other slavers in addition
+  to the friends you brought from your previous company.
+</p>
+<<elseif $statistics.get('new_game_plus_count') && $gNewGamePlusExtraKeys.length>>
+<p>
+  To establish your company, you have joined forces with four other slavers that you have
+  befriended along the way, including some of the mysterious veteran slavers that
+  just happened to be in the tavern that you were patroning before...
+</p>
+<<else>>
+<p>
+  To establish your company, you have joined forces with four other slavers that you have
+  befriended along the way.
+</p>
+<</if>>
+
+<div>
+  <<link 'Choose your starting slavers...' 'PrologueCompanyGen'>>
+    <<set _preference = $settings.getGenderPreference(setup.job.slaver)>>
+    <<for _i to 0; _i lt setup.STARTING_SLAVER_CHOICES; _i++>>
+      <<run new setup.MarketObject(
+        setup.unitgroup.all.getUnit(_preference),
+        0,
+        1,
+        $market.initslavermarket,
+        'Starting slavers',
+      )>>
+    <</for>>
+    <<if $gNewGamePlusExtraKeys>>
+      <<for _key range $gNewGamePlusExtraKeys>>
+        <<run new setup.MarketObject(
+          $unit[_key],
+          0,
+          1,
+          $market.initslavermarket,
+        'Mysterious slavers',
+        )>>
+      <</for>>
+    <</if>>
+    <<run $notification.popAll()>>
+    <<unset $gNewGamePlusExtraKeys>>
+  <</link>>
+</div>
+
+
+:: PrologueCompanyGen [nobr]
+
+<<set $gMenuVisible = false>>
+<<set $gPassage = 'PrologueCompanyGen'>>
+
+<<focwidget 'loadflavortext'>>
+  So far your company consists of:
+  <<for _iunit, _unit range $company.player.getUnits()>>
+    <<rep _unit>>
+  <</for>>
+<</focwidget>>
+
+<p id='flavortextholder'>
+  <<loadflavortext>>
+</p>
+
+<h3>Choose your starting slavers</h3>
+
+<<set _callback = () => {
+  if (State.variables.company.player.getUnits().length >= 5) {
+    setup.qc.QuestDirect('establish_base').apply();
+    setup.DOM.Nav.goto('PrologueIntro');
+    return true;
+  };
+}>>
+
+<<set _dom = setup.DOM.Card.market({
+  market: $market.initslavermarket,
+  is_can_delete: false,
+  on_buy_callback: _callback,
+})>>
+<<attach _dom>>

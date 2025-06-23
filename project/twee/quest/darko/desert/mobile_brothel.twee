@@ -1,0 +1,190 @@
+:: QuestSetup_mobile_brothel [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'mobile_brothel', /* key */
+'Mobile Brothel', /* Title */
+'darko', /* Author */
+[ 'desert', 'order'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'trainer1': setup.qu.slavetrainer,
+'trader': setup.qu.slavetrader,
+'guard': setup.qu.guard, },
+{ /* actors */
+'puller': 'desert_all',
+'show': 'desert_all',
+'madam': 'all', },
+[ /* costs */
+],
+'Quest_mobile_brothel',
+setup.qdiff.hard40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mobile_brothelCrit',
+[
+setup.qc.SlaveOrderMobileBrothel(1.8),
+ ],
+], [
+'Quest_mobile_brothelCrit',
+[
+setup.qc.SlaveOrderMobileBrothel(1.3),
+ ],
+], [
+'Quest_mobile_brothelCrit',
+[
+setup.qc.MoneyNormal(-0.1),
+],
+], [
+'Quest_mobile_brothelCrit',
+[
+setup.qc.MoneyCustom(-2000),
+setup.qc.BoonizeRandom('trainer1', 2),
+setup.qc.BoonizeRandom('trader', 2),
+setup.qc.BoonizeRandom('guard', 2),
+setup.qc.SlaveMarker('puller'),
+setup.qc.SlaveMarker('show'),
+setup.qc.SlaverMarker('madam'), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.uncommon],
+], /* quest pool and rarity */
+[
+setup.qres.Cooldown(8),
+setup.qres.QuestUnique(),
+setup.qres.Building(setup.buildingtemplate.marketingoffice), ], /* restrictions to generate */
+)>>
+
+:: Quest_mobile_brothel [nobr]
+
+  <<if $g.show.isMale()>>
+  <<else>>
+    <<questimage 'mobile_brothel_female_2.jpg'>>
+  <</if>>
+
+<p>
+The <<lore region_desert>> has only a few permanent settlements —
+which means that finding a whorehouse becomes a problem for these people.
+But there certain brothels operate a moving brothel service --
+a particularly strong slave is made to carry a carriage containing
+many whores between settlements. Settlers can then pay money to use the carriage's
+contents, which usually consists of slutty and well-behaved slaves.
+</p>
+
+<p>
+Among these slaving troupes, there is a particular troupe famous for
+having the highest quality sluts. While your slavers entertained the idea
+of using their services, you are more interested in seeing if they are
+interested in buying your stock. Rumors is that they pay very good money for high
+quality slaves, which are rather difficult to obtain. To secure such a deal,
+it is necessary to bring your best promotional goods to showcase as an example, so that
+they can see how proficient your company is in raising slaves.
+</p>
+
+
+:: Quest_mobile_brothelCrit [nobr]
+
+<<if $gOutcome == 'success' || $gOutcome == 'crit'>>
+
+  <<if $g.show.isMale()>>
+  <<else>>
+    <<questimage 'mobile_brothel_female.jpg'>>
+  <</if>>
+
+<</if>>
+
+<p>
+Your slavers spotted the caravan travelling across the desert. The first
+thing they saw of course was the
+muscular slave almost entirely naked pulling a carriage covered in drapes.
+<<if $g.puller.isHasVagina()>>
+Her breasts and vagina were both pierced and connected with a chain to a collar on her neck.
+<<else>>
+His cock and nipples were both pierced with thick rings, which were connected with a chain to his neck.
+<</if>>
+Hanging from the chains were round metal weights, that swung back and forth
+with every step that <<they $g.puller>> took.
+</p>
+
+<p>
+After seeing the depravity, as well as the slogan on the drapes,
+your slavers were sure that the <<mistress $g.madam>> is the target they had
+been looking for. When your slavers
+approached, with a well practiced bow the <<mistress $g.madam>> greeted your slavers and
+proceeded to use <<their $g.madam>> practiced sale pitch to offer <<their
+$g.madam>> slaves for your slavers perusal.
+</p>
+
+<p>
+Your slavers managed to focus however, and ignore the various high-quality
+<<girl $g.show>>s writhing inside the cage.
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+They managed to negotiate with the <<mistress $g.madam>>, who was more than
+happy to add more quality slaves to <<their $g.madam>> troupe.
+
+<<if $gOutcome == 'crit'>>
+<<Yourrep $g.trader>>
+managed to negotiate an excellent deal that would yield your company a lot of
+money should you find the right slave be sold.
+<<else>>
+With both parties happy with the deal, your slavers returned home with a new
+slave order while the <<master $g.madam>> continued <<their $g.madam>> journey,
+whipping <<their $g.madam>> strong pony slave to resume the journey under the hot sun.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+As a complimentary gift, the <<master $g.madam>> allowed your slavers to use
+<<their $g.madam>> stock before they go back to your fort.
+<<set _lustful = setup.selectUnit([$g.trainer1, $g.guard, $g.trader], {trait: 'per_lustful'})>>
+<<set _chaste = setup.selectUnit([$g.trainer1, $g.guard, $g.trader], {trait: 'per_chaste'})>>
+<<if _lustful>>
+<<Rep _lustful>> jumped at the opportunity to use such high-quality slaves in the carriage.
+<<elseif _chaste>>
+<<Rep _chaste>> hesitated, but eventually got goaded by <<their _chaste>> teammates to
+just accept the rare opportunity to use such prestigious slaves.
+<<else>>
+Your slavers did not hesitate at all to use the high-quality slaves in the carriage.
+<</if>>
+Even the muscular and heavily pierced pony slave was available for use.
+</p>
+
+<<else>>
+
+<p>
+Unknown to you, your slavers actually managed to scrounge
+up some money to make use of the high-quality slaves the <<mistress $g.madam>>
+had to offer.
+</p>
+
+<</if>>
+
+<<else>>
+
+<p>
+They tried to negotiate a deal to sell your slaves to <<their $g.madam>>
+troupe, but the <<mistress $g.madam>> was less than impressed by both your
+slavers and the sample slave they brought.
+Ultimately, your slavers were unable to
+make a deal with <<them $g.madam>>, and was forced to come back empty-handed.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Worse, your slavers in the end were unable to resist the full temptation of
+the <<mistress $g.madam>>'s slaves and decided to use the company's money to
+fund their degenerate acts of pleasure upon the slaves. At least it was worth it,
+according to your slavers.
+</p>
+<</if>>
+
+<</if>>

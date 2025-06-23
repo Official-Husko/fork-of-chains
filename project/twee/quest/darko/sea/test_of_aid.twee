@@ -1,0 +1,243 @@
+:: QuestSetup_test_of_aid [nobr quest]
+
+<<run new setup.Title(
+"quest_master_of_aid_0", /* key */
+"Master of Aid", /* name */
+"A true master of aid", /* description */
+"a|have proven a|themself to be a master of aid by completing a challenge in the seas", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+aid: 4,},
+)
+>>
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Healer', /* name */
+[
+  setup.trait.bg_assassin,
+  setup.trait.bg_healer,
+  setup.trait.bg_slaver,
+  setup.trait.per_masochistic,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_lunatic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.aid, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_aid_0')
+]), 'Have not yet mastered the art of aid'),
+],
+{
+  aid: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_aid', /* key */
+"Test of Aid", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'legendary',
+  'veteran',
+  'prep',
+  'danger',
+  'item',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'x': 'sea_all',
+},
+[ /* costs */
+],
+'Quest_test_of_aid',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_aidCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_aid_0'),
+      setup.qc.EquipmentDirect('aid_weapon_master'),
+    ],
+  ],
+  [
+    'Quest_test_of_aidCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_aidCrit',
+    [
+      setup.qc.Injury('a', 10),
+      setup.qc.Trauma('a', setup.trait.boon_aid, 20),
+    ],
+  ],
+  [
+    'Quest_test_of_aidCrit',
+    [
+      setup.qc.MissingUnitRecapture('a', 'capturedhard'),
+      setup.qc.Trait('a', setup.trait.per_submissive),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_aid_0'),
+setup.qres.SkillAtLeast(setup.skill.aid, 100)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_aid [nobr]
+<<set _slaver = setup.getUnit({
+job: 'slaver',
+skill_max: setup.skill.aid,
+notyou: true,
+})>>
+
+<p>
+    <<Rep _slaver>> is a master healer, whose mastery is so much that <<they _slaver>> occasionally receive visits from travelers far and away seeking <<their _slaver>> talents to cure whatever ails them.
+    But you've only learned just how much word of <<their _slaver>> talents have spread as you read a strange letter you receive today, sent apparently from a land far beyond the <<lore region_sea>>.
+</p>
+
+<p>
+    As you recall, many <<rep setup.trait.subrace_humansea>> are gifted in the art of healing, and apparently when such a healer claims to have mastered their craft, they would go to a specific healing monastery to demonstrate their mastery with a demonstrative action — something that only a master of healing would know.
+    <<if $unit.player.getSkill(setup.skill.aid) >= 120>>
+        As a master healer yourself, you know exactly what this action would be, but
+    <<else>>
+        You have no clue what this action would be, and
+    <</if>>
+    you would not have interest in sending any of your slavers to such a faraway land until you read the last paragraph of the letter. A reward is promised upon a successful completion of the rite: and it is something you could not refuse. The incredibly rare <<rep setup.equipment.aid_weapon_master>>, said to enhance the healing abilities of whoever lucky enough to wield the staff.
+</p>
+
+<p>
+    The letter wasn't addressed directly to <<rep _slaver>>, and you could send just about anyone you feel qualified enough to be called a master healer, should you feel the potential reward outweighs the potential risks...
+</p>
+
+
+
+
+:: Quest_test_of_aidCrit [nobr]
+<p>
+    The journey to the island was long, and <<rep $g.a>> got plenty of time to contemplate.
+    At the end of the journey, <<they $g.a>> will be asked to demonstrate the single, distilled, most pure act that would demonstrate a mastery over healing. What could be the correct answer? Would closing multiple wounds at the same time would suffice? Would healing while blindfolded would suffice? Is it the act of healing combined with sexual pleasure — the art of healslutting?
+</p>
+<p>
+    Deep within contemplation, the journey was finished as if it was an instant, and even as <<rep $g.a>> took the steps towards the temple, <<they $g.a>> still had not receive a satisfactory answer. But the ritual had to commence, and it was commenced in a room, locked, consisting only of <<rep $g.a>> and the head priest of the temple, concealed behind a curtain.
+    The curtain the rose, signaling the start of the ritual, while simulatenously exposing
+    the priest and <<their $g.x>>
+    <<if $g.x.isMale()>>
+        surprisingly well-honed body.
+    <<else>>
+        surprisingly curvaceous body.
+    <</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        But something was not right about the body.
+        <<Reps $g.a>> mastery of healing is such that <<they $g.a>> could even see the after effects of healing — this <<man $g.x>> in front of them has been injured and healed over and over again.
+        And the answer to the question that has lingered in <<their $g.a>> head thus far has finally arrived — one who knows how to heal and soothe pain also knows the most terrifying and brutal way of inflicting pain — and it is something <<they $g.a>> just would have to demonstrate.
+        <<if $g.a.isHasTrait('per_kind')>>
+            <<Rep $g.a>> closed <<their $g.a>> eyes for a bid, the kind <<urace $g.a>> trying to come up with another answer, but still came to the same conclusion.
+        <<else>>
+            Presented with a sudden opportunity to inflict pain brought a grin to the sadist <<urace $g.a>>.
+        <</if>>
+        Rising from <<their $g.a>> seat, <<rep $g.a>> took a nearby and conveniently located whip, and began to work.
+    </p>
+
+    <p>
+        The priest gave no hint of fear as <<rep $g.a>> approached with a whip, and in fact,
+        <<rep $g.a>> could actually
+        <<if $g.x.isMale()>>
+            see a small but noticable bulge forming underneath.
+        <<else>>
+            smell a faint scent of arousal.
+        <</if>>
+        <<Their $g.a>> suspicion was immediately answered as <<they $g.a>> masterfully whipped the priest at just the right angle to administer the most pain — the priest screamed not in agony, but in pure ecstacy. The answer was a correct one, and the temple has prepared for it by selecting a particularly masochistic priest as the tested.
+        With that revelation, all that was needed was to complete the ritual,
+        and
+        <<if $g.a.isHasTrait('per_cruel')>>
+            the sadist couldn't be happier.
+        <<elseif $g.a.isHasTrait('per_kind')>>
+            the kind <<urace $g.a>> breathed a sigh of relief, knowing that <<their $g.a>> pain was actually something the priest always wanted.
+        <<else>>
+            <<therace $g.a>> got <<their $g.a>> resolve bolstered.
+        <</if>>
+        The sound of whip cracking was heard again and again from within the room.
+        <<if $g.a.isHasTrait('per_masochistic')>>
+            <<Rep $g.a>> even occasionally would "miss" and would hit <<themself $g.a>>, but given how masochistic <<they $g.a>> usually a|is, you have second doubts it was accidental.
+            <<run setup.qc.Injury('a', 1).apply($gQuest)>>
+            <<run setup.qc.BoonizeRandom('a', 5).apply($gQuest)>>
+        <</if>>
+        <<if $g.a.isHasTrait('magic_light')>>
+            Their whipping brought great pain, but <<reps $g.a>> mastery over light magic ensured the damage was actually minimal.
+        <</if>>
+        The head priest visibly
+        <<if $g.x.isMale()>>
+            came
+        <<else>>
+            climaxed
+        <</if>>
+        many times throughout.
+    </p>
+
+    <p>
+        A few hours later, the room was unlocked. With <<their $g.x>> last piece of consciousness, the head priest announced the ritual complete, and
+        <<if $g.x.isMale()>>
+            came
+        <<else>>
+            climaxed
+        <</if>>
+        for the last time before passing out.
+        <<Rep $g.a>> a|was deservedly bestowed the title of the
+        Master of Aid, but more importantly, was given <<their $g.a>> well deserved reward: the <<rep setup.equipment.aid_weapon_master>>.
+    </p>
+
+<<elseif $gOutcome == 'disaster'>>
+
+    <p>
+        <<Rep $g.a>> remained completely clueless, and did nothing for the good part of the next hour. The ritual was then deemed a total failure, and in fact, it was such a total failure that the temple deemed it fit to claim <<reps $g.a>> body as compensation for their wasted time.
+        <<Rep $g.a>> never returned back home, and you fear that the temple had other plans for <<them $g.a>>...
+        Perhaps you could rescue <<them $g.a>>, should you be quick about it, but you do wonder just how changed <<they $g.a>> would be when and if you get <<them $g.a>> back...
+    </p>
+
+<<else>>
+
+    <p>
+        <<Rep $g.a>> remained clueless, having no hint on what could be the possible answer. In desperation, <<they $g.a>> tried to unleash <<their $g.a>> massive healing onto the priest. While the priest was not wounded, <<reps $g.a>> mastery over healing was such that it could even heal the apparently numerous scars riddling <<their $g.x>> body. Still, it was not the answer, and the ritual was deemed a failure. Fortunately, the priests were encouraging, and advised <<rep $g.a>> to try again later, perhaps when <<they $g.a>> had master the art of healing just tiny bit more.
+    </p>
+
+    <<if $gOutcome == 'success'>>
+        <p>
+            After <<rep $g.a>> returned, as promised you receive another invitation to the temple. Once <<rep $g.a>> recovered from <<their $g.a>> understandble exhaustion, perhaps you could try again.
+        </p>
+    <</if>>
+
+<</if>>

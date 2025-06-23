@@ -1,0 +1,191 @@
+:: QuestSetup_brothel_expansion [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'brothel_expansion', /* key */
+"Brothel Expansion", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+4, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'negotiator': [ setup.qu.negotiator, 1],
+  'builder': [ setup.qu.builder, 1],
+  'planner': [ setup.qu.planner, 1],
+},
+{ /* actors */
+  'head': [
+    setup.qres.Home(),
+  ],
+  'owner': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+  setup.qc.Money(-10000),
+],
+'Quest_brothel_expansion',
+setup.qdiff.normal49, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_expansionCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Equipment(setup.equipmentpool.sex),
+      setup.qc.Equipment(setup.equipmentpool.sex),
+      setup.qc.Equipment(setup.equipmentpool.all_sex),
+      setup.qc.Equipment(setup.equipmentpool.all_sex),
+    ],
+  ],
+  [
+    'Quest_brothel_expansionCrit',
+    [
+      setup.qc.Equipment(setup.equipmentpool.sex),
+      setup.qc.Equipment(setup.equipmentpool.sex),
+      setup.qc.Equipment(setup.equipmentpool.all_sex),
+      setup.qc.Equipment(setup.equipmentpool.all_sex),
+      setup.qc.Opportunity('brothel_expansion', {
+owner: "owner",
+head: "head",
+}),
+    ],
+  ],
+  [
+    'Quest_brothel_expansionFailure',
+    [
+      setup.qc.Money(10000),
+      setup.qc.Outcomes("disaster"),
+    ],
+  ],
+  [
+    'Quest_brothel_expansionDisaster',
+    [
+      setup.qc.QuestDirectSelf({
+head: "head",
+owner: "owner",
+}),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_expansion [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+Thanks to your efforts so far, <<attach _describe>> is getting quite popular. Too popular, perhaps, and the small brothelspace that it has always been situated at is starting to look a little too cramped. In fact, as you recall, aside from cleaning up the place, you've never really renovated the place.
+</p>
+
+<p>
+<<Yourrep $g.owner>> owner|think so too, as well as the head whore <<name $g.head>>. In fact, <<they $g.owner>> owner|think it might be time for you to expand the place. The building next door is similarly decrepit, and its owner was looking to sell. Right now might be an auspicious time to expand your business.
+</p>
+
+<p>
+First of all, you'll need a negotiator to arrange a deal with the building owner. A planner and builder is then necessary in order to rebuild the place into something good worthy of being part of your brothel. Finally, and most importantly, you need a significant chunk of money to buy the place out.
+</p>
+
+
+
+
+:: Quest_brothel_expansionCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+It is done. After <<yourrep $g.negotiator>> spent a week in full terse
+negotiation, followed by two weeks of renovation by <<yourrep $g.builder>>
+and <<utheirrel $g.builder $g.planner>> <<rep $g.planner>>, the other
+building has been made into a part of your grand brothel. The entire venue
+now is almost triple the size of what it was before. Your <<girl $g.head>>s
+can finally have their own rooms now, and the various amenities available
+have been greatly expanded.
+Per <<reps $g.planner>>
+<<if $g.planner.isHasTrait('per_attentive')>>
+meticulous
+<<elseif $g.planner.isHasTrait('per_dreamy')>>
+fun
+<<elseif $g.planner.isHasTrait('per_cautious')>>
+careful
+<<elseif $g.planner.isHasTrait('per_smart')>>
+clever
+<</if>>
+design,
+<<if _class > 0>>
+a red carpet has been arranged on its entrance, making the entire entrance looks like a classy palace complex.
+<<elseif _class < 0>>
+several whores are to be posted on the entrance, and their job is to submissively worship and entice potential customers into spending more.
+<<else>>
+the entrance looks elegant, but functional at the same time.
+<</if>>
+A sizeable warehouse has also been built to store various sex toys,
+<<if _sub == 'sub'>>
+to be used on the submissive sluts available in your brothel.
+<<else>>
+to be used by your whores including during their more dominant plays.
+<</if>>
+All in all, it is shaping to be quite a nice place, and hopefully will attract even more customers in.
+</p>
+
+<p>
+To celebreate the expansion, all the sex toys were replaced and bought anew,
+and there was some leftover that are given to your company.
+</p>
+
+<p>
+<<Yourrep $g.owner>> owner|inform you that the renovation was not fully
+completed yet, and there is still a space for one more facility to be build.
+As the proprietor of the place, the decision is yours to make.
+</p>
+
+
+
+
+
+:: Quest_brothel_expansionFailure [nobr]
+<p>
+The building-owner next door turned out to be extremely stubborn. <<Yourrep $g.negotiator>> were not able to come to a reasonable deal with the <<man $unit.player>>, and the entire deal had to be called off. You can try again, perhaps with a more skillful negotiator this time.
+</p>
+
+
+
+:: Quest_brothel_expansionDisaster [nobr]
+<p>
+<<Yourrep $g.negotiator>> negotiator|was terrible at their job, and instead of successfully buying the neighboring building, <<they $g.negotiator>> instead got tricked out of <<their $g.negotiator>> money. In the end, all the money were lost, and there was nothing to show in return.
+</p>
+
+<p>
+<<if $g.negotiator.isYou()>>
+As it was you yourself who had made the terrible deal, you really have no one else to blame but yourself.
+<<else>>
+You shake your head after hearing the report, and the thought of sending <<therace $g.negotiator>> on a difficult mission "by pure coincidence" crosses your mind.
+<</if>>
+</p>

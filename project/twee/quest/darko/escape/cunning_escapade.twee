@@ -1,0 +1,130 @@
+:: QuestSetup_cunning_escapade [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'cunning_escapade', /* key */
+"Cunning Escapade", /* Title */
+"darko", /* Author */
+[
+  'special', 'unit', 'city',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'kidnapper': setup.qu.kidnapper,
+'schemer': setup.qu.schemer,
+'distractor': setup.qu.seducer, },
+{ /* actors */
+'slave': [
+setup.qres.HasTag('escaped_slave'),
+], },
+[ /* costs */
+],
+'Quest_cunning_escapade',
+setup.qdiff.normal45, /* difficulty */
+[ /* outcomes */
+[
+'Quest_cunning_escapadeCrit',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_cunning_escapadeCrit',
+[
+],
+], [
+'Quest_cunning_escapadeFailure',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapemedium'), ],
+], [
+'Quest_cunning_escapadeDisaster',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapehard'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.escapemedium, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTag('escaped_slave'),
+setup.qres.NoTrait(setup.trait.training_mindbreak),
+setup.qres.NoTrait(setup.trait.training_obedience_advanced)
+]), ],
+[ /* expiration outcomes */
+setup.qc.MissingUnitForever('slave'), ],
+)>>
+
+:: Quest_cunning_escapade [nobr]
+<p>
+One of your slaves, <<rep $g.slave>>, had boldly escaped from your clutches. To
+retake back the pride of your company, you can try to recapture the slave and
+let <<them $g.slave>> know that <<their $g.slave>> fate is forever to be a property of
+<<their $g.slave>> betters. But to make matters complicated, <<rep $g.slave>> had apparently
+escaped into the <<lore region_city>>, which bars their gate from slaving companies such
+as yourself.
+</p>
+
+<p>
+If you want to recapture the slave, you will have to be discreet. A slaver gifted
+in the seduction arts to sway the guards while two of your other slavers
+sneak into the city. There, they must locate the errant slave, kidnap <<them
+$g.slave>>, and smuggle <<them $g.slave>> to outside the city gates.
+</p>
+
+<p>
+Or you can just forget about the slave and pride whatnot...
+</p>
+
+<p>
+<<dangertext 'Warning'>>: If you let this quest expire or if you remove the quest, <<rep $g.slave>> will be gone forever, having escaped a life of slavery...
+</p>
+
+
+:: Quest_cunning_escapadeCrit [nobr]
+
+<p>
+None could resist as <<yourrep $g.distractor>> <<uadv $g.distractor>> swayed
+<<their $g.distractor>> <<ubody $g.distractor>> distractingly, offering <<rep $g.kidnapper>>
+and <<rep $g.schemer>> plenty of time to sneak in.
+Once inside, they managed to locate <<rep $g.slave>> buying food
+in a market. Your slavers tailed the former slave until <<they $g.slave>>
+went into an empty alley. With nobody around, your slavers ambushed the
+unsuspecting victim, hogtied <<them $g.slave>> to be brought back home via
+the sewers.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+While inside, your slavers also managed to sneak into one of the wealthy
+citizen's house and grabbed some valuable jewelries to pawn.
+</p>
+<</if>>
+
+
+:: Quest_cunning_escapadeFailure [nobr]
+<p>
+Unfortunately no amount of swaying hip from <<rep $g.distractor>>
+distractor|was enough to (literally) move the guards away. Your slavers had
+no choice but to give up in their endeavors, but at least you know that the
+slave won't go anywhere and you can try again.
+</p>
+
+
+:: Quest_cunning_escapadeDisaster [nobr]
+<p>
+None could resist as <<rep $g.distractor>> <<uadv $g.distractor>> swayed
+<<their $g.distractor>> <<ubody $g.distractor>> distractingly, offering <<rep $g.kidnapper>>
+and <<rep $g.schemer>> plenty of time to sneak in.
+Once inside, they managed to locate <<rep $g.slave>> buying food
+in a market. But <<rep $g.kidnapper>> slipped from the roofs and was spotted by 
+your former slave, who immediately alerted the guards of the slavers infiltrating
+the city. Your slavers were forced to retreat as the city went into high
+alert.
+</p>
+
+<p>
+Unfortunately, now <<rep $g.slave>> slave|is aware that you are actively
+pursuing <<them $g.slave>>, and will likely make it more difficult for your future
+attempts to recapture <<them $g.slave>>.
+</p>

@@ -1,0 +1,41 @@
+:: EventSetup_bank_marketing_strategy [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'bank_marketing_strategy', /* key */
+"Bank Marketing Strategy", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_bank_marketing_strategy',
+{ /* roles */
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('bank', -20),
+setup.qc.IreSpread('bank'),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('bank', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_bank_marketing_strategy [nobr]
+
+<p>
+You have made dangerous enemies in the recent weeks, including
+some executives in the <<rep $company.bank>>.
+And recently, they have begin to retaliate. Suddenly several other companies
+view your company with much more disdain than usual, no doubt thanks to the bank
+unleashing their marketers to spread the bad words around.
+The <<uadjgood $g.slaver>> <<urace $g.slaver>> slaver could offer you no advice
+on this situation, other than perhaps not to anger the bank too much in the future.
+You consider for a little while to deduct the slaver's pay for such a dumb comment,
+but ultimately decide to carry on with your day.
+</p>

@@ -1,0 +1,152 @@
+:: QuestSetup_brothel_cleanup [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'brothel_cleanup', /* key */
+"Brothel Cleanup", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+1, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'builder': [ setup.qu.builder, 1],
+  'cleaner': [ setup.qu.maid, 1],
+  'muscle': [ setup.qu.carrier, 1],
+},
+{ /* actors */
+  'head': [],
+  'owner': [],
+},
+[ /* costs */
+],
+'Quest_brothel_cleanup',
+setup.qdiff.normal27, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_cleanupCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_brothel_cleanupCrit',
+    [
+      setup.qc.VarSet('quest_brothel_progress', '12', -1),
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.Equipment(setup.equipmentpool.brawn),
+      setup.qc.Equipment(setup.equipmentpool.combat),
+      setup.qc.Equipment(setup.equipmentpool.intrigue),
+    ],
+  ],
+  [
+    'Quest_brothel_cleanupFailure',
+    [
+      setup.qc.QuestDirect('brothel_cleanup', {
+        owner: "owner",
+      }),
+    ],
+  ],
+  [
+    'Quest_brothel_cleanupDisaster',
+    [
+      setup.qc.Injury('builder', 2),
+      setup.qc.Injury('cleaner', 1),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_brothel_cleanup [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+It has been a few weeks since you've designated <<attach _describe>> as a
+<<men $g.head>>-only brothel. But there was still no customers coming in, and
+the reason is quite obvious: The brothel building is in a severe state of
+disrepair. The long abuse from its former bandit residents had left the place
+thrashed and incredibly dirty, with the smell of cum and other questionable
+liquids permeating the place. Not to mention the numerous debris, upturned
+tables, and broken bottles all around the place. If you want to attract
+customers into your brothel, it is best to do something about this.
+</p>
+
+<p>
+While your workers in the brothel can surely clean up the smaller debris,
+they are not expert cleaners and you should probably send help from your
+company. A few slavers with a good pair of arms to help lift the debris and
+other heavy furnitures would do wonder. You should also send a slaver
+proficient in cleaning, to rid the place of the questionable smell that
+currently haunts your brothel. And of course <<rep $g.owner>> needs to come,
+as the manager of the place.
+</p>
+
+
+
+
+
+:: Quest_brothel_cleanupCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+You sent four slavers over to <<attach _describe>> to do their magic, and they delivered.
+<<Yourrep $g.builder>> and <<utheirrel $g.builder $g.muscle>> <<rep $g.muscle>> worked their muscles, lifting the heavy debris and furniture away and restoring the still usable ones to their place.
+<<if $g.builder.isHasTrait('muscle_verystrong')>>
+<<Reps $g.builder>> bulging muscles drew attention from the whores, and <<rep $g.owner>> could see some of them
+<<if $g.head.isHasDick()>>stroking their dicks in appreciation.<<else>>
+putting their fingers under them in appreciation.
+<</if>>
+<</if>>
+Meanwhile, <<rep $g.cleaner>> worked similarly hard instructing the brothel workers to scrub the place clean, including all the stains that somehow made their way up into the ceiling.
+After a long week, order is now somewhat restored to the brothel, the smell finally gone and the few remaining furniture are actually usable now.
+</p>
+
+<p>
+Customers started to come too. Sure, there wasn't many customers and they were mostly the low-waged dockworkers that lived nearby, but it's a start. After a few days, it was obvious that one worker in particular stood out among your few workers in the brothel — a <<urace $g.head>> named <<name $g.head>>. <<Their $g.head>> diligence and charm did not escape <<yourrep $g.owner>>, and perhaps <<they $g.head>> would make a fine supervisor for the place later when your brothel has grown...
+</p>
+
+<p>
+It seemed the bandit stashed some of their equipments in one of the rooms, which your slavers brought back home.
+<<if $gOutcome == 'crit'>>
+They also found one of the bandit's secret stash in another room, containing some profit the bandits made back then.
+<</if>>
+</p>
+
+:: Quest_brothel_cleanupFailure [nobr]
+<p>
+Unfortunately, the slavers you've decided were sent were similarly incompetent. Either because the debris were too heavy for them, or the stain was too deeply entrenched, your slavers was not able to restore a sense of normalcy to the place and had to return home defeated.
+</p>
+
+:: Quest_brothel_cleanupDisaster [nobr]
+<p>
+As they were trying to move a large debris away, the big rock fell on top of <<yourrep $g.builder>> and <<rep $g.muscle>>, injuring both. With the help force injured, the brothel workers were unable to continue cleaning up the place, and your slavers returned back to recover from their injuries.
+</p>

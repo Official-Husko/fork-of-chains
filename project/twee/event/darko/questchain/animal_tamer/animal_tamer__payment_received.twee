@@ -1,0 +1,57 @@
+:: EventSetup_animal_tamer__payment_received [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'animal_tamer__payment_received', /* key */
+"Animal Tamer: Payment Received", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+],
+'Event_animal_tamer__payment_received',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.VarRemove('animal_tamer_slave_order_active'),
+  setup.qc.VarRemove('animal_tamer_slave_being_trained'),
+  setup.qc.VarRemove('animal_tamer_slave_order_fulfilled'),
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('animal_tamer_slave_order_fulfilled', '3'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_animal_tamer__payment_received [nobr]
+<<set _u = setup.getUnit({tag: 'in_training_defiant_slave'})>>
+
+<<set _v = setup.getAnySlaver()>>
+
+<<if _u>>
+<p>
+A delivery had come to your fort today in the form of a very large box.
+As <<yourrep _v>> helped you open the box, you noticed there were breathing
+holes punched at the corners of the box, and you could guess what is inside.
+Indeed, you
+found <<yourrep _u>> in full bondage gear inside, having graduated from the animal
+trainer's training. Upon closer inspection, the slave indeed no longer had
+any of the defiant flame that used to burn so brightly in <<their _u>> eyes.
+It seemed the trainer spoke truly — the slave has now been fully broken, and
+<<their _u>> training to become a proper slave can finally begin in earnest.
+</p>
+
+<<set _g = setup.costUnitHelper(_u)>>
+<<run setup.qc.TraitRemove('unit', setup.trait.will_defiant).apply(_g)>>
+<<run setup.qc.Trait('unit', setup.trait.bg_slave).apply(_g)>>
+<<run setup.qc.Trait('unit', setup.trait.bg_unemployed).apply(_g)>>
+<<run setup.qc.TraitReplace('unit', setup.trait.per_slow).apply(_g)>>
+<<run setup.qc.Return('unit').apply(_g)>>
+<</if>>
+
+
+

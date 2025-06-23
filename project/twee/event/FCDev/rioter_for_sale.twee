@@ -1,0 +1,72 @@
+:: EventSetup_rioter_for_sale [nobr event]
+
+<<run new setup.UnitGroup(
+"rioter_for_sale1",
+"Rioter",
+'forest_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_slow, setup.trait.per_stubborn, setup.trait.per_direct, setup.trait.per_brave], 2, true, false),
+],
+)>>
+
+<<run new setup.Event(
+'rioter_for_sale', /* key */
+"Rioter for Sale", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_rioter_for_sale',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slave': 'rioter_for_sale1',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_tiger_bank_repo_resale', '1', 250),
+  setup.qc.Slave('slave', "damaged the property of an influential citizen in the Neko Port City during a protest and got enslaved to pay off a|their debts", true, 0.8),
+  setup.qc.TraitReplace('slave', setup.trait.face_attractive),
+  setup.qc.IfThenElse(
+setup.qres.Actor('slave', setup.qres.AllTraits([setup.trait.gender_male], true)),
+setup.qc.DoAll([
+setup.qc.TraitReplace('slave', setup.trait.muscle_strong)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraitReplace('slave', setup.trait.muscle_thin)
+], undefined)),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+  setup.qres.VarNull('quest_tiger_bank_repo_resale'),
+  setup.qres.FavorAtLeast('bank', 300),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_rioter_for_sale [nobr]
+<<include 'Event_TigerBankRepoCommon'>>
+
+<p>
+Today's merchandise originated from the <<lore region_city>>.
+As it turns out, some "liberal-minded" citizens led protest some time ago in the upper class district of the city. Seems to have been against slavery, for environmentalism, or some other nonsense that you care not.
+The really interesting thing is what happened during the protest.
+Things became a bit unruly between protesters and some counter-protesters - and at some point rocks started to fly... all of which would barely be worth a mention, if the luxury residence of a certain wealthy citizen was not just right next to the street.
+</p>
+
+<p>
+One broken window and smashed luxury glassware set,
+someone was in big trouble. The peacekeepers of the city was summoned, and before long they identified a
+<<if $g.slave.isMale()>>
+good-looking <<urace $g.slave>>, well-muscled too,
+<<else>>
+pretty <<urace $g.slave>> with an attractive waist,
+<</if>>
+who immediately got arrested and was made to reimburse the damages.
+<<They $g.slave>> slave|was not able to, and <<they $g.slave>> ended up being sold to the bank to cover the losses. While <<they $g.slave>> had little experiences as a slave, the bank's agent gave you a complete dossier regarding the results of a thorough strip-search (since all the officers agreed he 'had to be hiding something') and measurements, making you think that perhaps <<they $g.slave>> would make a decent slave after all.
+</p>

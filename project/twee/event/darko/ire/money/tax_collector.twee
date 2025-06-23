@@ -1,0 +1,49 @@
+:: EventSetup_tax_collector [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'tax_collector', /* key */
+"Tax Collector", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_tax_collector',
+{ /* roles */
+'slaver': [
+setup.qres.NotYou(),
+setup.qres.Job(setup.job.slaver),
+],
+},
+{ /* actors */
+  'tax': 'subrace_humankingdom',
+},
+[ /* outcomes */
+setup.qc.MoneyCustom(-10000),
+setup.qc.Ire('humankingdom', -20), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humankingdom', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_tax_collector [nobr]
+<p>
+A most unusual visitor has arrived at your fort today: A well-dressed
+<<man $g.tax>>, probably in <<their $g.tax>> 40s, who comes to your office
+to collect some... tax?
+It turns out to be a thinly-veiled threat, as your actions against the
+<<rep $company.humankingdom>> has apparently raised the ire of some
+powerful members of its undercity.
+</p>
+
+<p>
+Consulting your <<uadjper $g.slaver>> <<urace $g.slaver>> slaver <<rep $g.slaver>>,
+seems like the best approach here is to simply pay the tax.
+These undercity mafias are business people after all, and a good chunk of money
+will surely smooth out the relationship between the two companies.
+</p>
+
+<p>
+As the tax collector departs you wonder what would have happened to your company
+were you to refuse to pay... Best not to dwell on such questions and get back to work.
+</p>

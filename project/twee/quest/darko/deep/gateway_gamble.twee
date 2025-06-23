@@ -1,0 +1,190 @@
+:: QuestSetup_gateway_gamble [nobr quest]
+
+<<run new setup.Title(
+"quest_tainted_by_demons_0", /* key */
+"Tainted by Demons", /* name */
+"Has been permanently marked by the demons to be damned to a live of demonic servitude once their mortal life is over", /* description */
+"a|have been permanently marked by the demons to be damned to a live of demonic servitude once a|their mortal life is over", /* unit text */
+-20000, /* slave value */
+{ /* skill additives */
+ sex: -5,},
+{
+ is_negative: true,
+},
+)
+>>
+<<run new setup.Title(
+"quest_filled_by_demons_1", /* key */
+"Filled by Demons", /* name */
+"Has been filled repeatedly by demons, somehow making their body even more irresistible to others", /* description */
+"a|has been filled repeatedly by demons, somehow making a|their body even more irresistible to others", /* unit text */
+5000, /* slave value */
+{ /* skill additives */
+},
+{
+ is_negative: false,
+},
+)
+>>
+<<run new setup.UnitGroup(
+"gateway_gamble1",
+"Gateway Demon",
+'subrace_demon', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.PerkChoice('unit', 'perk_wild_magic', undefined),
+  setup.qc.DecreaseTraitsRandom('unit', [setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], 12, true),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_fire_master, setup.trait.magic_water_master, setup.trait.magic_wind_master, setup.trait.magic_earth_master, setup.trait.magic_light_master, setup.trait.magic_dark_master], 3, true, false),
+],
+)>>
+
+
+<<set _criteriagambler = new setup.UnitCriteria(
+null, /* key */
+'Abyssal Gambler', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cruel,
+  setup.trait.per_serious,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.race_human,
+  setup.trait.per_kind,
+  setup.trait.per_playful,
+  setup.trait.per_submissive,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1.5,
+  arcane: 1.5,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Offering Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.NoTitle('quest_tainted_by_demons_0'),
+  setup.qres.NoTraits([setup.trait.race_demon, setup.trait.subrace_angel], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'gateway_gamble', /* key */
+"Gateway Gamble", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'danger',
+  'unknown',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'gambler': [ _criteriagambler, 3],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'doll': 'all',
+  'demon': 'gateway_gamble1',
+},
+[ /* costs */
+],
+'Quest_gateway_gamble',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_gateway_gambleCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_gateway_gambleCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_gateway_gambleCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_gateway_gambleCrit',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_gateway_gamble [nobr]
+<p>
+    In addition to the various monsters lurking within the dark corners of the <<lore region_deep>>, some areas have the added danger in the presence of thick Mist. The hellscape of the underworld would indeed make the demons of the Mist feels rather familiar, making it easier for them to cross into the mortal plane.
+</p>
+
+<p>
+    Amongst those places, one particular spot stood out. An extremely powerful demon has somehow opened a seemingly permanent portal to the mortal realm, and the purple imposing gateway still stand to this very day. The demon does not use the portal to send any demonic army or whatnot into the mortal plane, but instead let the portal be a way for mortals to offer <<them $g.demon>> offerings of flesh. The demon would reciprocate the gift with something similar in return, although knowing how fickle the demon could be it is up to anyone's guess what the "reward" could be.
+</p>
+
+<p>
+    The portal is still there, and you could, if you are mad enough, send one of your slaves as an offering to the demon
+    <<if $g.demon.isFemale()>>
+        matron.
+    <<else>>
+        lord.
+    <</if>>
+    You probably have to bring a suitably valuable slave.
+    You need a slaver to accompany the slave too, and best prepared that worst may come to them as well...
+</p>
+
+<p>
+    <<dangertext 'Warning'>>: This is a special quest! Its outcome does not depend on whether it is a critical success or a failure,
+</p>
+
+<p>
+    <<dangertext 'Warning'>>: whichever slave you send on this mission will likely be sent into the demonplane, and who knows what might become of them...
+</p>
+
+
+:: Quest_gateway_gambleCrit [nobr]
+<<questimage "gateway_gamble.jpg">>
+
+<p>
+    The gateway is unnatural. An aberration completely out place, even in the desolate ruins of the <<lore region_deep>>.
+    Even monster tend to avoid the accursed place, which makes it somewhat easier for <<rep $g.gambler>> to arrive with the slave in tow.
+    <<Rep $g.gambler>> tossed the slave away and into the portal, which fizzled and ruptured before swallowing the slave whole, <<their $g.slave>> scream of horror cut mid-sentence.
+</p>
+
+<p>
+    After a long, tense silence, a demonic voice came out booming from the portal.
+</p>
+
+/* This quest's logic is way too complex to write in Twine, and has been moved to javascript */
+<<set _dom = setup.DOM.Quest.gateway_gamble($g.gambler, $g.slave, $g.demon, $gQuest)>>
+<<attach _dom>>

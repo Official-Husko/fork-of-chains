@@ -1,0 +1,38 @@
+:: InteractionSetup_bodyshift [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'bodyshift', /* key */
+"Bodyshift", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Interaction_bodyshift',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* unit requirements */
+  setup.qres.Bodyshifter(),
+],
+[ /* outcomes */
+  setup.qc.Bodyshift('target'),
+  setup.qc.Leave('target', "a|is exhausted from bodyshifting", 1),
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_bodyshift [nobr]
+
+<p>
+<!-- We do this check to make it not err during testing -->
+<<if $bodyshift.isBodyshifter($g.target)>>
+  <<= setup.Text.Unit.Bodyswap.bodyswap($g.target, $bodyshift.getBody($g.target))>>
+<</if>>
+</p>
+
+<p>
+<<Yourrep $g.target>> target|is exhausted from the bodyshifting and will rest for the rest of this week.
+</p>

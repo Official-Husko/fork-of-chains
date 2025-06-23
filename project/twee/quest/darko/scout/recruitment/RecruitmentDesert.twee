@@ -1,0 +1,134 @@
+:: QuestSetupRecruitmentDesert [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _desert_multi = 1.5>>
+
+<<run new setup.QuestTemplate(
+  'recruitmentdesert', /* key */
+  'Recruitment: Desert', /* Title */
+  'darko',   /* author */
+  ['desert', 'unit'],  /* tags */
+  2,  /* weeks */
+  setup.INFINITY,  /* quest expiration weeks */
+  { /* roles */
+    'recruiter1': setup.qu.recruiter,
+    'recruiter2': setup.qu.recruiter,
+    'brawler': setup.qu.brawler,
+  },
+  { /* actors */
+    'recruit1': 'desert_all',
+    'recruit2': 'desert_all',
+    'recruit3': 'desert_all',
+    'recruit4': 'desert_all',
+    'recruit5': 'desert_all',
+    'recruit6': 'desert_all',
+    'recruit7': 'desert_all',
+  },
+  [ /* costs */
+  ],
+  'QuestRecruitmentDesert', /* passage description */
+  setup.qdiff.normal35, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestRecruitmentDesertCrit',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit5', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit6', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit7', "", /* is mercenary = */ true, _desert_multi),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentDesertSuccess',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true, _desert_multi),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true, _desert_multi),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentDesertFailure',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, _desert_multi),
+      ],
+    ],
+    [
+      'QuestRecruitmentDesertDisaster',
+      [
+        setup.qc.Injury('recruiter1', 2),
+        setup.qc.Injury('recruiter2', 2),
+        setup.qc.Injury('brawler', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.recruitmentdesert, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.QuestAvailableUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestRecruitmentDesert [nobr]
+
+<p>
+Both the <<rep setup.trait.subrace_orc>> and <<rep setup.trait.subrace_humandesert>>
+are well-used to the life and culture filled with slavery.
+This gives them a very pliable mould to shape a slaver from. In addition,
+orcs are known for their intimidating posture,
+while many of the desertfolks are known to be... "inventive" in many fields.
+You can try to send a group of slavers over to the desert to entice these people into joining your company
+properly as slavers.
+Should any recruit show up, they will still need to be paid a hiring fee, however.
+</p>
+
+<p>
+This quest is available thanks to your <<rep setup.buildingtemplate.hiringsquaredesert>>.
+</p>
+
+
+:: QuestRecruitmentDesertCrit [nobr]
+
+<p>
+The team's recruiters <<rep $g.recruiter1>> and <<rep $g.recruiter2>> were relentless
+during their recruitment drive and as a result
+seven potential slavers signed up for your company.
+They are now waiting in the prospects hall for your
+decision, and need to be paid if you want to hire them.
+</p>
+
+
+:: QuestRecruitmentDesertSuccess [nobr]
+
+<p>
+The team's recruiters <<rep $g.recruiter1>> and <<rep $g.recruiter2>> scoured through the
+settlements and occasionally slave encampments and managed
+to find four potential slavers amongs the people living there.
+They are now awaiting your decision in the prospects hall.
+</p>
+
+
+:: QuestRecruitmentDesertFailure [nobr]
+
+<p>
+Throughout most of your slaver's stay in the <<lore region_desert>>,
+there was a raging sandstorm in the area which prevented your slavers
+to get about their business as planned.
+Still, 
+<<rep $g.recruiter1>> managed to find one potential slaver to bring back home.
+</p>
+
+
+:: QuestRecruitmentDesertDisaster [nobr]
+
+<p>
+Unfortunately, your slavers got too rowdy during one of their recruitment drives
+raising the ires of the nearby citizens. They were ambushed during their way out and came
+back home injured.
+</p>

@@ -1,0 +1,14 @@
+:: WikiDuty [nobr]
+
+<<set _forfilter = Object.values(setup.dutytemplate)>>
+
+<div>
+  <<run _dom = setup.DOM.Util.filterAll({
+    menu: 'dutytemplate',
+    filter_objects: _forfilter,
+    display_callback: duty_template => {
+      return setup.DutyTemplate.getTypeRep(duty_template.getType()) + duty_template.getName() + " (key: '" + duty_template.key + "')";
+    },
+  })>>
+  <<attach _dom>>
+</div>

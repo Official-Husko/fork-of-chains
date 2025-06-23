@@ -1,0 +1,34 @@
+:: InitCompanyHumanVale [nobr company]
+
+<<set _scout = setup.qc.OneRandom([
+  setup.qc.QuestDelay('vale', 2),
+  setup.qc.QuestDelay('forest', 2),
+  setup.qc.QuestDelay('city', 2),
+])>>
+
+<<run new setup.CompanyTemplate(
+  'humanvale',
+  'Humans of the Northern Vale',
+  'CompanyTemplateHumanVale',
+  [ /* favor effects */
+    [
+      _scout,
+    ],
+    [
+      _scout,
+      _scout,
+    ],
+    [
+      _scout,
+      _scout,
+      _scout,
+    ],
+  ],
+)>>
+
+:: CompanyTemplateHumanVale [nobr]
+
+Humans of the <<lore region_vale>>.
+If you befriend them, they can supply your fort with leads for quests from the surrounding
+vale, forest, and city.
+

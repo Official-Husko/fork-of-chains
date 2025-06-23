@@ -1,0 +1,38 @@
+:: LIVINGSETUP_thug [nobr living]
+
+<<run new setup.Living({
+  key: 'thug',
+  name: 'Thug',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_thug: setup.LIVING_COMMON_PREFERENCE,
+    skill_intimidating: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_cruel: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_kind: -setup.LIVING_UNCOMMON_PREFERENCE,
+    face_scary: setup.LIVING_MORECOMMON_PREFERENCE,
+    face_hideous: setup.LIVING_MORECOMMON_PREFERENCE,
+  },
+  business: [
+    'intimidating others',
+    'extorting money from fine establishments',
+    'scaring away visitors',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_thug [nobr]
+
+<p>
+<<Rep $g.a>> returned to the life of crime.
+a|They would visit taverns and shops and demand money, but unlike before,
+a|their threats feel much more genuine now.
+a|They now knows the full depravity of what one could do to another, having worked
+in a slaving company, and a|they used it to full effect in a|their intimidations.
+<<if $g.a.isHasTrait('skill_intimidating')>>
+a|Their intimidating skills helped a lot too.
+<<elseif $g.a.isHasTrait('face_scary')>>
+a|Their a|face helped a lot too.
+<</if>>
+</p>

@@ -1,0 +1,118 @@
+:: PartyManagement [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.moraleoffice)>>
+<<set _parties = $partylist.getParties()>>
+
+<h2><<= _room.getTitleRep()>></h2> 
+
+<div>
+  You enter the morale office,
+  where you can manage the increasing number of units that are under your employ.
+  <<if _parties.length>>
+    Currently, you have organized
+    <<if _parties.length > 1>>
+      a single party.
+    <<else>>
+      <<= _parties.length>> parties.
+    <</if>>
+  <<else>>
+    You have not yet organized your units into parties.
+  <</if>>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      <p>
+        Here, you can organize your units into parties.
+        This can help you keep track and manage your units better.
+        Units that belong to a party <<dangertextlite "cannot be dismissed or sold">>,
+        but aside from this, parties <<successtextlite "has no other gameplay effects">>.
+        A unit can only belong to at most one party.
+      </p>
+      <p>
+        Parties can be used to filter units, to sort units, and to prevent units from accidentally
+        being sold / dismissed from your company.
+        In addition, once you organize some parties,
+        you can also choose to assign units to quests only from a certain party
+        from the quest menu.
+      </p>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<if $partylist.isCanAddNewParty()>>
+    <<focbutton 'New party'>>
+      <<run $partylist.newParty()>>
+      <<focgoto>>
+    <</focbutton>>
+  <<else>>
+    <<dangertextlite 'You already have too many parties.'>>
+  <</if>>
+</div>
+
+<<set _partylist = $partylist.getParties()>>
+
+<<filterall 'party' _partylist>>
+  <<if $menufilter.get('party', 'display') == 'compact'>>
+    <<partycardcompact _displayobj>>
+  <<else>>
+    <<partycard _displayobj>>
+  <</if>>
+<</filterall>>
+
+
+:: PartyNameChange [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _party = $party[$gParty_key]>>
+
+<div>
+Change <<rep _party>>'s name to
+<<textbox "_newpartyname" _party.getName() autofocus>>
+</div>
+
+<div>
+  <<focbutton 'Confirm'>>
+    <<run $party[$gParty_key].setName(_newpartyname)>>
+    <<unset $gParty_key>>
+    <<run setup.DOM.Nav.gotoreturn()>>
+  <</focbutton>>
+</div>
+
+<div>
+  <<foclink '(Cancel)'>>
+    <<unset $gParty_key>>
+    <<run setup.DOM.Nav.gotoreturn()>>
+  <</foclink>>
+</div>
+
+
+:: PartyAddUnit [nobr]
+
+<<set $gMenuVisible = false>>
+<<set _party = $party[$gPartySelected_key]>>
+
+<div>
+Choose units to be added to <<rep _party>>:
+</div>
+
+<div>
+  <<foclink '(Finish and return)'>>
+    <<unset $gPartySelected_key>>
+    <<run setup.DOM.Nav.gotoreturn()>>
+  <</foclink>>
+  <<run setup.DOM.Nav.topLeftNavigation(
+    setup.DOM.Nav.link(
+      'Finish [space]',
+      () => {
+        delete State.variables.gPartySelected_key;
+        setup.DOM.Nav.gotoreturn();
+      },
+    )
+  )>>
+</div>
+
+<<set _dom = setup.DOM.Roster.selectunitforparty(_party)>>
+<<attach _dom>>

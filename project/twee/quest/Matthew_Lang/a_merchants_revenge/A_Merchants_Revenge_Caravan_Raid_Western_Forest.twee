@@ -1,0 +1,848 @@
+:: QuestSetup_a_merchant_s_revenge_caravan_raid_western_forest_ [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"a_merchant_s_revenge_caravan_raid_western_forest_1",
+"Caravan Slaves",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.OneRandom([
+setup.qc.BgTraitReset('unit', setup.trait.bg_adventurer),
+setup.qc.BgTraitReset('unit', setup.trait.bg_hunter),
+setup.qc.BgTraitReset('unit', setup.trait.bg_mercenary),
+setup.qc.BgTraitReset('unit', setup.trait.bg_scholar),
+setup.qc.BgTraitReset('unit', setup.trait.bg_woodsman)
+]),
+],
+)>>
+
+<<set _criteriaraider = new setup.UnitCriteria(
+null, /* key */
+'Raider-Inventor', /* name */
+[
+  setup.trait.bg_engineer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_slaver,
+  setup.trait.bg_soldier,
+  setup.trait.bg_raider,
+  setup.trait.height_giant,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_active,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.bg_healer,
+  setup.trait.bg_priest,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_calm,
+  setup.trait.per_humble,
+  setup.trait.per_studious,
+  setup.trait.per_kind,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge_caravan_raid_western_forest_', /* key */
+"A Merchant\'s Revenge: Caravan Raid (Western Forest)", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'money',
+  'unit',
+  'ire',
+  'forest',
+],
+1, /* weeks */
+5, /* expiration weeks */
+{ /* roles */
+  'scout': [ setup.qu.spotter, 1],
+  'fighter': [ setup.qu.fighter_forest, 1],
+  'raider': [ _criteriaraider, 1],
+},
+{ /* actors */
+  'slaves': 'a_merchant_s_revenge_caravan_raid_western_forest_1',
+},
+[ /* costs */
+],
+'Quest_a_merchant_s_revenge_caravan_raid_western_forest_',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_western_forest_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.Slave('slaves', "a|was a member of a Toran caravan, captured by your slavers in a raid", undefined),
+      setup.qc.MoneyCustom(2000),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_western_forest_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.MoneyCustom(2000),
+      setup.qc.Ire('humankingdom', 1),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_western_forest_Crit',
+    [
+      setup.qc.TraumatizeRandom('scout', 5),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_western_forest_Crit',
+    [
+      setup.qc.Ire('humankingdom', 1),
+      setup.qc.OneRandom([
+setup.qc.Injury('scout', 1),
+setup.qc.Injury('scout', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('fighter', 1),
+setup.qc.Injury('fighter', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('raider', 1),
+setup.qc.Injury('raider', 2)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('mlangmerchantprincequest', '5'),
+  setup.qres.VarLte('mlang_merchantrevenge_caravancount', 12),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_merchant_s_revenge_caravan_raid_western_forest_ [nobr]
+/** mlangmerchantprincequest 5 = Caravan Raiding
+mlang_merchantrevenge_caravancount = How many caravans successfully raided
+**/
+
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        My contacts have discovered a caravan carrying a shipment of
+        <<if $gQuest.getSeed() % 6 == 0>>
+            <<set _goods = "dried herbs">>
+        <<elseif $gQuest.getSeed() % 6 == 1>>
+            <<set _goods = "cured meats">>
+        <<elseif $gQuest.getSeed() % 6 == 2>>
+            <<set _goods = "arrows">>
+        <<elseif $gQuest.getSeed() % 6 == 3>>
+            <<set _goods = "healing salves">>
+        <<elseif $gQuest.getSeed() % 6 == 4>>
+            <<set _goods = "forest fruits">>
+        <<elseif $gQuest.getSeed() % 6 == 5>>
+            <<set _goods = "fine wines">>
+        <</if>>
+        <<= _goods>>
+        will be travelling from the <<lore region_forest>> to Lucgate over the next month or so.
+        Please ensure it does not make it to its destination with its cargo intact. The usual bonus will apply should you be successful in this endeavour.
+    </p>
+</div>
+
+<p>
+    On the back of the note is a rough map showing
+    <<if $gQuest.getSeed() % 5 == 0>>
+        an old ruin, reclaimed by the forest.
+        <<set _location = "ruin">>
+    <<elseif $gQuest.getSeed() % 5 == 1>>
+        a recently abandoned elven village.
+        <<set _location = "village">>
+    <<elseif $gQuest.getSeed() % 5 == 2>>
+        a clearing in the middle of the forest.
+        <<set _location = "clearing">>
+    <<elseif $gQuest.getSeed() % 5 == 3>>
+        a winding track in the deep forest.
+        <<set _location = "track">>
+    <<elseif $gQuest.getSeed() % 5 == 4>>
+        a flowering meadow at the forest's edge.
+        <<set _location = "meadow">>
+    <</if>>
+    It looks like you may be able to set up an ambush there. It could also be an opportunity to acquire a valuable slave. Of course, if you leave any survivors, the Toran people will likely become more antagonistic toward you.
+</p>
+
+
+:: Quest_a_merchant_s_revenge_caravan_raid_western_forest_Crit [nobr]
+/* Set cargo */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<set _goods = "dried herbs">>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _goods = "cured meats">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _goods = "arrows">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _goods = "healing salves">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _goods = "forest fruits">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _goods = "fine wines">>
+<</if>>
+
+
+
+/* Set ambush location */
+<<if $gQuest.getSeed() % 5 == 0>>
+    <<set _location = "ruin">>
+<<elseif $gQuest.getSeed() % 5 == 1>>
+    <<set _location = "village">>
+<<elseif $gQuest.getSeed() % 5 == 2>>
+    <<set _location = "clearing">>
+<<elseif $gQuest.getSeed() % 5 == 3>>
+    <<set _location = "track">>
+<<elseif $gQuest.getSeed() % 5 == 4>>
+    <<set _location = "meadow">>
+<</if>>
+
+After studying at the map, <<name $g.scout>> cut through the forest, leading your slavers to
+
+<<if $g.scout.isYou() or $g.fighter.isYou() or $g.raider.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.scout.isYou()>>
+        <<run _notyou.push($g.scout)>>
+    <</if>>
+    <<if !$g.fighter.isYou()>>
+        <<run _notyou.push($g.fighter)>>
+    <</if>>
+    <<if !$g.raider.isYou()>>
+        <<run _notyou.push($g.raider)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    <<if _location == "ruin">>
+        a quiet ruin, long overgrown by vegetation and silent bar the sounds of birds overhead.
+        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'race_elf'})>>
+        <<if _unit>>
+            <<name _unit>> thought the ruins probably dated from the sylvan-catkin wars, but didn't want to go into further detail.
+            <<dialogue _unit>>
+                My people weren't exactly at their best during that time.
+            <</dialogue>>
+        <</if>>
+        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'race_catkin'})>>
+        <<if _unit>>
+            <<name _unit>> thought it dated from the war of the open paw, but didn't want to go into further detail.
+            <<dialogue _unit>>
+                It was a long time ago. Long before my time.
+            <</dialogue>>
+
+        <</if>>
+        <p>
+            Still, some of the overgrown stone walls provided a great vantage point over the overgrown cobbled road, which the map indicated the caravan would be following. There was even an old firepit showing the route was fairly well travelled.
+        </p>
+
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                When the caravan arrived and set up camp they made a cursory sweep of the area, but the hiding locations <<name $g.scout>> had picked out went unnoticed. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+            </p>
+
+            <<if _goods == "healing salves">>
+                It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                Given how flammable the cargo was, you decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after you.
+            <<elseif _goods == "fine wines">>
+                After taking a few skins for yourself, you, <<name _o1>> and <<name _o2>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+            <<else>>
+                It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+            <</if>>
+
+            <p>
+                As you made your way back out of the camp, still unnoticed, you decided to take the paralysed guard with you. <<They $g.slaves>> might have seen your faces after all.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                When the caravan arrived and set up camp they made a cursory sweep of the area, but the hiding locations <<name $g.scout>> had picked out went unnoticed. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+            </p>
+
+            <<if _goods == "healing salves">>
+                It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                Given how flammable the cargo was, it you decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after you.
+            <<elseif _goods == "fine wines">>
+                After taking a few skins for yourself, you, <<name _o1>> and <<name _o2>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+            <<else>>
+                It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+            <</if>>
+
+            <p>
+                Once that was done, it was simply a matter of sneaking back out of camp. Unfortunately the guard had bled out - apparently <<name $g.scout>> had punctured an artery, and you would not be getting another slave today. At least, not from this operation.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                But they never came. Upon closer inspection, the ashes in the firepit looked recent. Very recent. If you'd arrived even a day earlier, maybe you'd have found them.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                When the caravan arrived and set up camp they made a cursory sweep of the area, but the hiding locations <<name $g.scout>> had picked out went unnoticed. When they had settled in to sleep, <<name $g.scout>> used a dart coated in a paralytic poison to incapacitate the nearest guard—or tried to. The dart went wide, and the guard raised the alarm. The ensuing battle did not go well for you, and your slavers were roundly beaten before managing to escape into the forests.
+            </p>
+        <</if>>
+
+    <<elseif _location == "village">>
+        a very familiar village. You'd raided it recently, and you could still see the damage from the last time you'd visited. Apparently the elves had decided not to rebuild. Still, familiarity meant you were able to easily find vantage points on the roofs of the remaining houses.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                It appeared the caravan hadn't known about your recent raid, as they appeared surprised and unsettled when they arrived at the deserted village. They split up to search the area, giving you and <<name _o1>> a number of stealthy kills as they ventured near your hiding places. Meanwhile, <<name _o2>> carefully crept around to the almost undefended wagon. Once there, they vaulted into the driving seat and whipped the horses into a gallop, taking off with the cargo.
+            </p>
+            <p>
+                The remaining caravanners chased after the cargo, but with you and <<name _o1>> behind them, they stood no chance. When the dust settled, you had the shipment of _goods to onsell yourself - and a new captive to introduce to their new life of servitude.
+                <<if _goods == "healing salves">>
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <</if>>
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                It appeared the caravan hadn't known about your recent raid, as they appeared surprised and unsettled when they arrived at the deserted village. They split up to search the area, giving you and <<name _o1>> a number of stealthy kills as they ventured near your hiding places. Meanwhile, <<name _o2>> carefully crept around to the almost undefended wagon. Once there, they vaulted into the driving seat and whipped the horses into a gallop, taking off with the cargo.
+            </p>
+            <p>
+                The remaining caravanners chased after the cargo, forcing you and <<name _o1>> to engage them in combat to give <<name _o2>> the chance to escape. You broke off before you were overwhelmed, but the sheer number of guards meant that you've definitely left witnesses behind.
+                <<if _goods == "healing salves">>
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <</if>>
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, familiarity may have led to overconfidence. After waiting for the day - and then three days - it became clear that you had the wrong village, and were forced to return empty handed.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Unfortunately, the roof <<name _o2>> picked to hide on had been damaged, and water damage had weakened it in between your visits. It finally collapsed just as the caravan arrived, and the ensuing battle did not go well for you or your slavers. Eventually, you all fled into the forest, nursing several injuries that are going to take some time to heal.
+            </p>
+        <</if>>
+
+    <<elseif _location == "clearing">>
+        one of many forest clearings, a rough trail passing from one side to the other. It was peaceful, idyllic even, although perhaps not for long.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The caravan arrived at nightfall, and soon set up camp in the clearing. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+            </p>
+
+            <<if _goods == "healing salves">>
+                It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                Given how flammable the cargo was, it you decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after you.
+            <<elseif _goods == "fine wines">>
+                After taking a few skins for yourself, you, <<name _o1>> and <<name _o2>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+            <<else>>
+                It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+            <</if>>
+
+            <p>
+                As you made your way back out of the camp, still unnoticed, you decided to take the paralysed guard with you. <<They $g.slaves>> might have seen your faces after all.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The caravan arrived at nightfall, and soon set up camp in the clearing. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+            </p>
+
+            <<if _goods == "healing salves">>
+                It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                Given how flammable the cargo was, you decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after you.
+            <<elseif _goods == "fine wines">>
+                After taking a few skins for yourself, you, <<name _o1>> and <<name _o2>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+            <<else>>
+                It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+            <</if>>
+
+            <p>
+                Once that was done, it was simply a matter of sneaking back out of camp. Unfortunately the guard had bled out - apparently <<name $g.scout>> had punctured an artery, and you would not be getting another slave today. At least, not from this operation.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                However, the clearing remained idyllic for the entire week, and eventually you gave up waiting and returned to the fort. Later, you heard of the caravan's arrival in Lucgate, either you missed them, or had the wrong clearing entirely.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The caravan arrived at nightfall, and soon set up camp in the clearing. Just as everyone was settling down to sleep, the dead tree <<name _o1>> had climbed started to creak, and then started to fall. Not only was <<name _o1>> injured in the fall, <<they _o1>> was immediately recognised by the caravan as a slaver from <<rep $company.player>>, and they immediately drew their weapons to fight. With one <<woman _o1>> down, the fight was short and brutal, and while you all managed to escape, you'll all be nursing your injuries for a while.
+                <<if _goods == "healing salves">>
+                    You could really have used those healing salves right around now.
+                <</if>>
+            </p>
+        <</if>>
+
+    <<elseif _location == "track">>
+        an infrequently traversed section of the deep woods, where the trees were tall, thick and blocked out most of the light that could filter in through the canopy. With little light, the undergrowth was sparse, but the darkness made for plentiful hiding places as you set up your ambush.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                While investigating the area you found a number of useful things—firstly an old, dead tree that was rotted at the base and ready to fall. Secondly, a number of wasp nests, hanging right over the trail.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <</if>>
+                It took you all some time to fell the tree, but after several hours of work with axes and ropes you all managed to haul it into place so that it blocked the trail. Then you and your slavers hid, waiting for the caravan to arrive.
+            </p>
+            <p>
+                When they made it to the fallen tree, there was some consternation, although you were certain they would soon decide to simply go around the obstruction. However, the pause was long enough for <<name $g.scout>> to shoot down the wasp nests, sending angry wasps swarming over the caravanners. Having coated yourselves in thick mud, you and your slavers were easily able to overpower the few guards who kept their wits - and ability to fight - with the rest of the caravan fleeing into the forest in search of a body of water. Moving quickly, you easily
+                <<if _goods == "healing salves">>
+                    grabbed the healing salves
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<else>>
+                    destroyed the cargo
+                <</if>>
+                and hightailed it out of there, <<name _o2>> capturing a subdued caravanner and bringing them along as an additional bonus.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                While investigating the area you found a number of useful things—firstly an old, dead tree that was rotted at the base and ready to fall. Secondly, a number of wasp nests, hanging right over the trail.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <</if>>
+                It took you all some time to fell the tree, but after several hours of work with axes and ropes, you managed to haul it into place so that it blocked the trail. Then you and your slavers hid, waiting for the caravan to arrive.
+            </p>
+            <p>
+                When they made it to the fallen tree, there was some consternation, although you were certain they would soon decide to simply go around the obstruction. However, the pause was long enough for <<name $g.scout>> to shoot down the wasp nests, sending angry wasps swarming over the caravanners. Having coated yourselves in thick mud, you and your slavers were easily able to overpower the few guards who kept their wits - and ability to fight - with the rest of the caravan fleeing into the forest in search of a body of water. Moving quickly, you easily
+                <<if _goods == "healing salves">>
+                    grabbed the healing salves
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<else>>
+                    destroyed the cargo
+                <</if>>
+                and hightailed it out of there.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                While investigating the area you found an old, dead tree that was rotted at the base and ready to fall.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <<else>>
+                    It took you all some time to fell the tree, but after several hours of work with axes and ropes you managed to haul it into place so that it blocked the trail.
+                <</if>>
+                Unfortunately, the activity dislodged a number of wasp nests you didn't see, and you and your slavers ran for what felt like hours looking for a body of water to hide in. As you fled, <<name $g.scout>> saw the caravan just coming into view, but you were in no position to attack them - especially without the element of surprise.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                While investigating the area you found a number of useful things—firstly an old, dead tree that was rotted at the base and ready to fall. Secondly, a number of wasp nests, hanging right over the trail.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <</if>>
+                It took you all some time to fell the tree, but after several hours of work with axes and ropes, you managed to haul it into place so that it blocked the trail. Then you and your slavers hid, waiting for the caravan to arrive.
+            </p>
+            <p>
+                When they made it to the fallen tree, there was some consternation, although you were certain they would soon decide to simply go around the obstruction. However, the pause was long enough for <<name $g.scout>> to shoot down the wasp nests, or at least, that was the intention. With <<their $g.scout>> shots missing, the caravan guards closed in, and beat you soundly with superior numbers. Thankfully, you all managed to escape, but with all of you injured, this definitely wasn't a success.
+            </p>
+
+        <</if>>
+
+
+    <<else>>
+        a beautiful meadow full of wildflowers and dappled sunlight. It wasn't, at first glance, the optimal place for an ambush, but you soon realised a significant part of the meadow was actually a shallow lake, covered with mats of flowering vegetation.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                With time on their side, you were able to determine the lay of the land, quite literally working out where the stable ground was and finding the best vantage points for your slavers. You also found the 'path' of solid land you assumed the caravan would take to pass through the meadow. That done, you all settled in to wait.
+            </p>
+
+            <p>
+                When the caravan came into view it became apparent that they weren't all familiar with the route, relying on a guide to lead them through the meadow.
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+                <<if _unit>>
+                    <<name _unit>> insisted you all wait until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+                <<else>>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                    <<if _unit>>
+                        <<name _unit>> forced <<themselves _unit>> to wait, second by torturous second, until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+                    <</if>>
+                <</if>>
+                After that, picking off the caravanners was relatively easy, and you were soon left with the entire shipment of _goods,
+                <<if _goods == "healing salves">>
+                    which you kept for yourselves,
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<else>>
+                    which should fetch a good price,
+                <</if>>
+                and a new captive now confined in your slave pens.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                With time on their side, you were able to determine the lay of the land, quite literally working out where the stable ground was and finding the best vantage points for your slavers. You also found the 'path' of solid land you assumed the caravan would take to pass through the meadow. That done, you all settled in to wait.
+            </p>
+
+            When the caravan came into view it became apparent that they weren't all familiar with the route, relying on a guide to lead them through the meadow.
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+            <<if _unit>>
+                <<name _unit>> insisted you all wait until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+            <<else>>
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                <<if _unit>>
+                    <<name _unit>> forced <<themselves _unit>> to wait, second by torturous second, until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+                <</if>>
+            <</if>>
+            After that, picking off the caravanners was relatively easy, but a fair number of them jumped into the water and fled away from you, meaning some of them survived to tell the tale of your brazen attack. Still, you now have an entire shipment of _goods,
+            <<if _goods == "healing salves">>
+                which you keep for yourselves.
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<else>>
+                which should fetch a good price.
+            <</if>>
+            Overall, you still consider the mission a success.
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, none of you ever saw the caravan. You spent days with wet boots and damp clothes before you finally gave up. Maybe <<name $g.scout>> picked the wrong meadow. There are so many of them along the edge of the forest, after all.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                With time on their side, you were able to determine the lay of the land, quite literally working out where the stable ground was and finding the best vantage points for your slavers. You also found the 'path' of solid land you assumed the caravan would take to pass through the meadow. That done, you all settled in to wait.
+            </p>
+            <p>
+                Unfortunately, you hadn't counted on the water buffalo that often like to feed in the well, water meadows. The herd you encountered had a number of calves, and were immediately aggressive—and perched half hidden in islands of land, you didn't have any easy escape routes. Battered, trampled and nearly drowned you dragged yourselves back to the fort. It looked like this caravan would get away this time. Assuming you even had the right meadow.
+            </p>
+        <</if>>
+    <</if>>
+
+<<else>>
+    <<if _location == "ruin">>
+        a quiet ruin, long overgrown by vegetation and silent bar the sounds of birds overhead.
+        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'race_elf'})>>
+        <<if _unit>>
+            <<name _unit>> thought the ruins probably dated from the sylvan-catkin wars, but didn't want to go into further detail.
+            <<dialogue _unit>>
+                My people weren't exactly at their best during that time.
+            <</dialogue>>
+        <</if>>
+        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'race_catkin'})>>
+        <<if _unit>>
+            <<name _unit>> thought it dated from the war of the open paw, but didn't want to go into further detail.
+            <<dialogue _unit>>
+                It was a long time ago. Long before my time.
+            <</dialogue>>
+
+        <</if>>
+        <p>
+            Still, some of the overgrown stone walls provided a great vantage point over the overgrown cobbled road, which the map indicated the caravan would be following. There was even an old firepit showing the route was fairly well travelled.
+        </p>
+
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                When the caravan arrived and set up camp they made a cursory sweep of the area, but the hiding locations <<name $g.scout>> had picked out went unnoticed. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+            </p>
+
+            <<if _goods == "healing salves">>
+                It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                Given how flammable the cargo was, <<name $g.scout>> decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after your slavers.
+                <<if _goods == "fine wines">>
+                    After taking a few skins for themselves, <<name $g.scout>>, <<name $g.fighter>> and <<name $g.raider>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+                <<else>>
+                    It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+                <</if>>
+
+                <p>
+                    As your slavers made your way back out of the camp, still unnoticed, <<name $g.raider>> decided to take the paralysed guard with <<them $g.raider>>. <<They $g.slaves>> might have seen your slavers' faces after all.
+                </p>
+
+
+            <<elseif $gOutcome == 'success'>>
+                <p>
+                    When the caravan arrived and set up camp they made a cursory sweep of the area, but the hiding locations <<name $g.scout>> had picked out went unnoticed. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+                </p>
+                <<if _goods == "healing salves">>
+                    It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                    Given how flammable the cargo was, <<name $g.scout>> decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after your slavers.
+                <<elseif _goods == "fine wines">>
+                    After taking a few skins for themselves, <<name $g.scout>>, <<name $g.fighter>> and <<name $g.raider>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+                <<else>>
+                    It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+                <</if>>
+                <p>
+                    Once that was done, it was simply a matter of sneaking back out of camp. Unfortunately the guard had bled out - apparently <<name $g.scout>> had punctured an artery. Still, your slavers had completed the mission, and you'd be getting paid.
+                </p>
+
+            <<elseif $gOutcome == 'failure'>>
+                <p>
+                    But they never came. Upon closer inspection, the ashes in the firepit looked recent. Very recent. If your slavers had arrived even a day earlier, maybe they'd have been successful.
+                </p>
+            <<elseif $gOutcome == 'disaster'>>
+                <p>
+                    When the caravan arrived and set up camp they made a cursory sweep of the area, but the hiding locations <<name $g.scout>> had picked out went unnoticed. When they had settled in to sleep, <<name $g.scout>> used a dart coated in a paralytic poison to incapacitate the nearest guard—or tried to. The dart went wide, and the guard raised the alarm. The ensuing battle did not go well for you slavers, and they were roundly beaten before they managed to escape into the forest.
+                </p>
+            <</if>>
+
+        <<elseif _location == "village">>
+            a very familiar village. They'd raided it recently, and <<name $g.scout>> could still see the damage from the last time <<they $g.scout>>'d visited. Apparently the elves had decided not to rebuild. Still, familiarity meant your slavers were able to easily find vantage points on the roofs of the remaining houses.
+
+            <<if $gOutcome == 'crit'>>
+                <p>
+                    It appeared the caravan hadn't known about your company's recent raid, as they appeared surprised and unsettled when they arrived at the deserted village. They split up to search the area, giving <<name $g.fighter>> and <<name $g.raider>> a number of stealthy kills as they ventured near their hiding places. Meanwhile, <<name $g.scout>> carefully crept around to the almost undefended wagon. Once there, they vaulted into the driving seat and whipped the horses into a gallop, taking off with the cargo.
+                </p>
+                <p>
+                    The remaining caravanners chased after the cargo, but with <<name $g.fighter>> and <<name $g.raider>> behind them, they stood no chance. When the dust settled, your slavers had the shipment of _goods in their possession - and a new captive to introduce to their new life of servitude.
+                    <<if _goods == "healing salves">>
+                        <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                    <</if>>
+                </p>
+
+            <<elseif $gOutcome == 'success'>>
+                <p>
+                    It appeared the caravan hadn't known about your company's recent raid, as they appeared surprised and unsettled when they arrived at the deserted village. They split up to search the area, giving <<name $g.fighter>> and <<name $g.raider>> a number of stealthy kills as they ventured near their hiding places. Meanwhile, <<name $g.scout>> carefully crept around to the almost undefended wagon. Once there, they vaulted into the driving seat and whipped the horses into a gallop, taking off with the cargo.
+                </p>
+                <p>
+                    The remaining caravanners chased after the cargo, forcing <<name $g.fighter>> and <<name $g.raider>> to engage them in combat to give <<name $g.scout>> the chance to escape. <<name $g.fighter>> and <<name $g.raider>> broke off before they were overwhelmed, but the sheer number of guards meant that they definitely left witnesses behind.
+                </p>
+                <<if _goods == "healing salves">>
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <</if>>
+
+            <</if>>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, familiarity may have led to overconfidence. After waiting for the day - and then three days - it became clear that your slavers had the wrong village, and they were forced to return empty handed.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Unfortunately, the roof <<name $g.fighter>> picked to hide on had been damaged, and water damage had weakened it in between your company's visits. It finally collapsed just as the caravan arrived, and the ensuing battle did not go well for your slavers. Eventually, they all fled into the forest, nursing several injuries that are going to take some time to heal.
+            </p>
+        <</if>>
+
+    <<elseif _location == "clearing">>
+        one of many forest clearings, a rough trail passing from one side to the other. It was peaceful, idyllic even, although perhaps not for long.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The caravan arrived at nightfall, and soon set up camp in the clearing. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+
+                <<if _goods == "healing salves">>
+                    It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                    Given how flammable the cargo was, <<name $g.scout>> decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after your slavers.
+                <<elseif _goods == "fine wines">>
+                    After taking a few skins for themselves, <<name $g.scout>>, <<name $g.fighter>> and <<name $g.raider>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+                <<else>>
+                    It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+                <</if>>
+            </p>
+            <p>
+                As they made their way back out of the camp, still unnoticed, <<name $g.raider>> decided to take the paralysed guard with <<them $g.raider>>. <<They $g.slaves>> might have seen your slavers' faces after all.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The caravan arrived at nightfall, and soon set up camp in the clearing. When they had settled in to sleep, <<name $g.scout>> subdued the nearest guard with a paralytic dart, and everyone else crept into the camp, doing their best to move as quietly as possible.
+
+                <<if _goods == "healing salves">>
+                    It was simple enough to filch the valuable healing salves and leave the camp none the wiser. It was something your slavers needed more often than not.
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<elseif _goods == "dried herbs" or _goods == "arrows">>
+                    Given how flammable the cargo was, <<name $g.scout>> decided the simplest way to deal with it was to drop a lit torch among the crates. By the time the sabotage would be discovered, the caravan would be far too concerned with putting out the impending forest fire than chasing after your slavers.
+                <<elseif _goods == "fine wines">>
+                    After taking a few skins for themselves, <<name $g.scout>>, <<name $g.fighter>> and <<name $g.raider>> started stabbing the wineskins, letting the rich alcohol soak into the forest floor. It was a waste, but the work was quick, and more importantly, silent.
+                <<else>>
+                    It was simple enough to tip out all the foodstuffs and trample them into the dirt, effectively ruining them all.
+                <</if>>
+            </p>
+            <p>
+                Once that was done, it was simply a matter of sneaking back out of camp. Unfortunately one of the other guards spotted your slavers and raised the alarm, forcing them to flee. Their actions had been witnessed, but the mission was still a success.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                However, the clearing remained idyllic for the entire week, and eventually your slavers gave up waiting and returned to the fort. Later, you heard of the caravan's arrival in Lucgate, either your slavers missed them, or had the wrong clearing entirely.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The caravan arrived at nightfall, and soon set up camp in the clearing. Just as everyone was settling down to sleep, the dead tree <<name $g.fighter>> had climbed started to creak, and then started to fall. Not only was <<name $g.fighter>> injured in the fall, <<they $g.fighter>> was immediately recognised by the caravan as a slaver from <<rep $company.player>>, and the guards immediately drew their weapons to fight. With one <<woman $g.fighter>> down, the fight was short and brutal, and while your slavers managed to escape, they'll all be nursing injuries for a while.
+                <<if _goods == "healing salves">>
+                    You could really have used those healing salves right around now.
+                <</if>>
+            </p>
+        <</if>>
+
+    <<elseif _location == "track">>
+        an infrequently traversed section of the deep woods, where the trees were tall, thick and blocked out most of the light that could filter in through the canopy. With little light, the undergrowth was sparse, but the darkness made for plentiful hiding places for your slavers.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                While investigating the area <<name $g.scout>> found a number of useful things—firstly an old, dead tree that was rotted at the base and ready to fall. Secondly, a number of wasp nests, hanging right over the trail.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <</if>>
+                It took your slavers some time to fell the tree, but after several hours of work with axes and ropes they managed to haul it into place so that it blocked the trail. Then they hid, waiting for the caravan to arrive.
+            </p>
+
+            <p>
+                When they made it to the fallen tree, there was some consternation, although <<name $g.scout>> was certain they would soon decide to simply go around the obstruction. However, the pause was long enough for <<them $g.scout>> to shoot down the wasp nests, sending angry wasps swarming over the caravanners. Having coated themselves in thick mud, your slavers were easily able to overpower the few guards who kept their wits - and ability to fight - with the rest of the caravan fleeing into the forest in search of a body of water. Moving quickly, they easily
+                <<if _goods == "healing salves">>
+                    grabbed the healing salves
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<else>>
+                    destroyed the cargo
+                <</if>>
+                and hightailed it out of there, <<name $g.raider>> capturing a subdued caravanner and bringing <<them $g.slaves>> along as an additional bonus.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                While investigating the area <<name $g.scout>> found a number of useful things—firstly an old, dead tree that was rotted at the base and ready to fall. Secondly, a number of wasp nests, hanging right over the trail.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <</if>>
+                It took your slavers some time to fell the tree, but after several hours of work with axes and ropes they managed to haul it into place so that it blocked the trail. Then they hid, waiting for the caravan to arrive.
+            </p>
+            <p>
+                When the caravan made it to the fallen tree, there was some consternation, although <<theslaver $g.raider>> was certain they would soon decide to simply go around the obstruction. However, the pause was long enough for <<name $g.scout>> to shoot down the wasp nests, sending angry wasps swarming over the caravanners. Having coated themselves in thick mud, your slavers were easily able to overpower the few guards who kept their wits - and ability to fight - with the rest of the caravan fleeing into the forest in search of a body of water. Moving quickly, they easily
+                <<if _goods == "healing salves">>
+                    grabbed the healing salves
+                    <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+                <<else>>
+                    destroyed the cargo
+                <</if>>
+                and hightailed it out of there.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                While investigating the area you found an old, dead tree that was rotted at the base and ready to fall.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <<else>>
+                    It took your slavers some time to fell the tree, but after several hours of work with axes and ropes they managed to haul it into place so that it blocked the trail.
+                <</if>>
+                Unfortunately, the activity dislodged a number of wasp nests they didn't see, and your slavers ran for what felt like hours looking for a body of water to hide in. As they fled, <<name $g.scout>> saw the caravan just coming into view, but your slavers were in no position to attack them - especially without the element of surprise.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                While investigating the area <<name $g.scout>> found a number of useful things—firstly an old, dead tree that was rotted at the base and ready to fall. Secondly, a number of wasp nests, hanging right over the trail.
+                <<set _woodsman = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'bg_woodsman'})>>
+                <<if _woodsman>>
+                    <<name _woodsman>> was easily able to fell the tree, angling its fall so that it blocked the trail.
+                <</if>>
+                It took them some time to fell the tree, but after several hours of work with axes and ropes, they managed to haul it into place so that it blocked the trail. Then your slavers hid, waiting for the caravan to arrive.
+            </p>
+            <p>
+                When the caravan made it to the fallen tree, there was some consternation, although <<name $g.raider>> was certain they would soon decide to simply go around the obstruction. However, the pause was long enough for <<name $g.scout>> to shoot down the wasp nests, or at least, that was the intention. With <<their $g.scout>> shots missing, the caravan guards closed in, and beat your slavers soundly with superior numbers. Thankfully, they all managed to escape, but with all of them injured, this definitely wasn't a success.
+            </p>
+        <</if>>
+
+
+    <<else>>
+        a beautiful meadow full of wildflowers and dappled sunlight. It wasn't, at first glance, the optimal place for an ambush, but <<name $g.scout>> soon realised a significant part of the meadow was actually a shallow lake, covered with mats of flowering vegetation.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                With time on their side, your slavers were able to determine the lay of the land, quite literally working out where the stable ground was and finding the best vantage points. <<name $g.fighter>> also found the 'path' of solid land <<they $g.fighter>> assumed the caravan would take to pass through the meadow. That done, they settled in to wait.
+            </p>
+
+            When the caravan came into view it became apparent that they weren't all familiar with the route, relying on a guide to lead them through the meadow.
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+            <<if _unit>>
+                <<name _unit>> insisted your slavers waited until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+            <<else>>
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                <<if _unit>>
+                    <<name _unit>> forced <<themselves _unit>> to wait, second by torturous second, until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+                <</if>>
+            <</if>>
+            After that, picking off the caravanners was relatively easy, and your slavers were soon left with the entire shipment of _goods,
+            <<if _goods == "healing salves">>
+                which they brought back to the fort,
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<else>>
+                which should fetch a good price,
+            <</if>>
+            and a new captive now confined in your slave pens.
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                With time on their side, your slavers were able to determine the lay of the land, quite literally working out where the stable ground was and finding the best vantage points. <<name $g.fighter>> also found the 'path' of solid land <<they $g.fighter>> assumed the caravan would take to pass through the meadow. That done, they settled in to wait.
+            </p>
+
+
+            When the caravan came into view it became apparent that they weren't all familiar with the route, relying on a guide to lead them through the meadow.
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_cautious'})>>
+            <<if _unit>>
+                <<name _unit>> insisted your slavers waited until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+            <<else>>
+                <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'per_aggressive'})>>
+                <<if _unit>>
+                    <<name _unit>> forced <<themselves _unit>> to wait, second by torturous second, until the caravan was in the middle of the meadow before felling the guide with a well placed arrow, leaving the caravan stranded.
+                <</if>>
+            <</if>>
+            After that, picking off the caravanners was relatively easy, and your slavers were soon left with the entire shipment of _goods,
+            <<if _goods == "healing salves">>
+                which they brought back to the fort,
+                <<run setup.qc.Item('healing_potion').apply($gQuest)>>.
+            <<else>>
+                which should fetch a good price,
+            <</if>>
+            Overall, you still consider the mission a success.
+
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, none of your slavers ever saw the caravan. They spent days with wet boots and damp clothes before finally giving up. Maybe <<name $g.scout>> picked the wrong meadow. There are so many of them along the edge of the forest, after all.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                With time on their side, your slavers were able to determine the lay of the land, quite literally working out where the stable ground was and finding the best vantage points. <<name $g.fighter>> also found the 'path' of solid land <<they $g.fighter>> assumed the caravan would take to pass through the meadow. That done, they settled in to wait.
+            </p>
+            <p>
+                Unfortunately, they hadn't counted on the water buffalo that often like to feed in the well, water meadows. The herd they encountered had a number of calves, and were immediately aggressive—and perched half hidden in islands of land, your slavers didn't have any easy escape routes. Battered, trampled and nearly drowned, they dragged themselves back to the fort.
+            </p>
+        <</if>>
+    <</if>>
+<</if>>

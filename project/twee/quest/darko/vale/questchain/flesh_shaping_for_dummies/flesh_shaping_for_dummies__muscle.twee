@@ -1,0 +1,190 @@
+:: QuestSetup_flesh_shaping_for_dummies_muscles [nobr quest]
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Trainee', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_flesh_shaping_dummy_0'),
+  setup.qres.AllTraits([setup.trait.magic_water], true),
+],
+{
+  arcane: 2.0,
+  brawn: 1.0,
+}
+)>>
+
+<<set _criteriaslave1 = new setup.UnitCriteria(
+null, /* key */
+'Muscle / Thin Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.muscle_extremelythin, setup.trait.muscle_verythin, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong], true),
+],
+{
+}
+)>>
+
+<<set _criteriaslave2 = new setup.UnitCriteria(
+null, /* key */
+'Muscle / Thin Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.muscle_extremelythin, setup.trait.muscle_verythin, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'flesh_shaping_for_dummies_muscles', /* key */
+"Flesh-Shaping for Dummies: Muscles", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'trait',
+  'vale',
+],
+8, /* weeks */
+1000, /* expiration weeks */
+{ /* roles */
+  'slaver': [ _criteriaslaver, 3],
+  'slave1': _criteriaslave1,
+  'slave2': _criteriaslave2,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_flesh_shaping_for_dummies_muscles',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_flesh_shaping_for_dummies_musclesCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_musclesCrit',
+    [
+      setup.qc.Injury('slave1', 10),
+      setup.qc.Injury('slave2', 10),
+      setup.qc.QuestDirect('flesh_shaping_for_dummies_bodyparts', null),
+      setup.qc.DecreaseTraitsRandom('slave1', [setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong, setup.trait.muscle_verythin, setup.trait.muscle_extremelythin], 4, true),
+      setup.qc.DecreaseTraitsRandom('slave2', [setup.trait.muscle_extremelythin, setup.trait.muscle_verythin, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong], 4, true),
+      setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AnyTrait([setup.trait.muscle_strong, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong], true)),
+setup.qc.DoAll([
+setup.qc.Trait('slaver', setup.trait.muscle_thin)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AnyTrait([setup.trait.muscle_extremelythin, setup.trait.muscle_verythin, setup.trait.muscle_thin], true)),
+setup.qc.DoAll([
+setup.qc.Trait('slaver', setup.trait.muscle_strong)
+], undefined),
+setup.qc.DoAll([
+
+], undefined))
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_musclesCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_musclesCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTitleGlobal('quest_flesh_shaping_dummy_0'),
+
+],
+)>>
+
+:: Quest_flesh_shaping_for_dummies_muscles [nobr]
+<<set _u = setup.getUnit({title: 'quest_flesh_shaping_dummy_0'})>>
+
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+<p>
+With the initial "study" on orifices, done, the next step to advance <<yourrep _u>>'s mastery over water magic is to study muscle anatomy. A master of <<rep setup.trait.magic_water_master>> must be adept at shaping body and muscles too, be it to strengthen or to thin.
+</p>
+
+<p>
+Another pair of volunteers are needed, again according to the "FleshShaping for Dummies" tome. Since the topic is on muscles, these "volunteers" must be rather unique — either possessing inhuman strength, or possessing inhumanly narrow waist. <<Yourrep _u>> will learn much by applying <<their _u>> magic over to the volunteers, likely altering the shapes of their bodies. It is very likely that the volunteers' body will get completely altered by the time the invasive procedure is complete. Since <<yourrep _u>> is a beginner, it's also very likely that <<their _u>> own magic will burst out of control, affecting <<themself _u>>, and you best get prepared that <<theslaver _u>> <<themself _u>> will also get transformed. But such is the price one must pay for knowledge...
+</p>
+
+<</if>>
+
+
+
+:: Quest_flesh_shaping_for_dummies_musclesCrit [nobr]
+<p>
+Six weeks later, <<yourrep $g.slaver>> slaver|have finally finished <<their $g.slaver>> studies on muscles anatomy. But at what cost?
+</p>
+
+<p>
+The two volunteers of the experiment were pretty much wasted —
+<<if $g.slave1.isHasTrait('muscle_verystrong')>>
+The once hulkingly powerful <<rep $g.slave1>> is reduced to that of a normal person now.
+<<else>>
+The once unnaturally thin waist of <<rep $g.slave1>> is restored to a normal, almost healthy-looking waist now.
+<</if>>
+Similarly,
+<<if $g.slave1.isHasTrait('muscle_verystrong')>>
+<<rep $g.slave1>> lost all of <<their $g.slave1>> musculature, becoming a very normal <<urace $g.slave1>> now.
+<<else>>
+<<reps $g.slave1>> waist is now perfectly normal, no longer the unnaturally thin form that <<they $g.slave1>> once had.
+<</if>>
+
+<<if $g.slaver.isHasTrait('muscle_strong') or
+$g.slaver.isHasTrait('muscle_thin')>>
+<<Yourrep $g.slaver>> slaver|was affected too,
+<<if $g.slaver.isHasTrait('muscle_strong')>>
+<<their $g.slaver>> musculature considerably decreased.
+<<else>>
+<<their $g.slaver>> waistline significantly grow.
+<</if>>
+
+<</if>>
+</p>
+
+<p>
+Still, it was not all for nothing. <<Yourrep $g.slaver>> now slaver|have great understanding of shaping muscles, and is ready to undergo the last and final step of becoming a master of water magic.
+It will no doubt costs you a few more slaves,
+<<if $g.slaver.isHasTrait('per_cruel')>>
+a fact that the cruel slaver certainly does not mind at all.
+<<elseif $g.slaver.isHasTrait('per_kind')>>
+which tugs a little at the kind slaver's heart.
+<<else>>
+but the rewards are going to be worth the efforts.
+<</if>>
+
+</p>

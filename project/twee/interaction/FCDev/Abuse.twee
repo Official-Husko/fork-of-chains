@@ -1,0 +1,196 @@
+:: InteractionAbuseSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_abuse',
+  'Abuse',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionAbuse',
+  [],  /* Cost */
+  [],  /* Requirements */
+  [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionAbuse [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _blind = _u.isHasTrait(setup.trait.eq_blind)>>
+
+<<set _utorsoequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.torso)>>
+<<set _ulegsequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.legs)>>
+
+<<set _unaked = setup.Text.Unit.Equipment.isNaked(_u)>>
+<<set _verymaso = (_u.isHasTrait(setup.trait.training_masochist_advanced) && _maintraining.getTags().includes('trmasochist'))>>
+<<set _maso = (_u.isHasTrait(setup.trait.training_masochist_basic) && _maintraining.getTags().includes('trmasochist'))>>
+
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+
+<<loadinteractioncommon _u>>
+
+You descend into your $i.locgeneral and grabbed
+<<if !_bedchamber>>
+  your
+<<else>>
+  your private
+<</if>>
+<<titlefull _u>>
+<<name _u>> over so you can abuse $i.him.
+
+You get things started with an open-handed slap across the
+face<<if _blind>>; thanks to the blindfold, $i.he never saw it coming<</if>>.
+As $i.he reels in shock and pain, you follow up with
+<<if _u.isHasDick()>>
+  a vicious slap to $i.his <<udick _u>>,
+<<elseif _u.isHasVagina()>>
+  a vicious slap to $i.his exposed clit,
+<<else>>
+  a vicious jerk on $i.his <<unipples _u>>,
+<</if>>
+
+which causes $i.him to collapse to the $i.floor in agony.
+<<if !_unaked>>
+  You tell $i.him $i.he has ten seconds to get naked.
+<</if>>
+<<ustriptorso _u>>
+<<ustriplegs _u>>
+
+<<if _verymaso>>
+  The slap seems to have excited $i.him, seeing $i.his
+  hard nipples <<if _u.isHasDick()>>and erect cock<<elseif _u.isHasVagina()>>and wet pussy<</if>>,
+  and $i.his <<ueyes _u>> practically begging for more.
+<<elseif _maso>>
+  $i.He seems to be a bit expectant of what is to come.
+<</if>> 
+
+<<if !_hasdick>>
+	<<if !_unaked>>While $i.he strips, you<<else>>You<</if>> don a cruelly large strap-on, earning
+<<elseif _hasvagina>>
+	<<if !_unaked>>While $i.he strips, your<<else>>Your<</if>> stiffening cock rises,
+  revealing your pussy and earning
+  <<if _verymaso>>
+    a sultry look
+  <<elseif _maso>>
+    a shy look
+  <<else>>
+    a frightened glance
+  <</if>>
+	from your victim.
+<</if>>
+
+You order $i.him to present
+<<if _u.isHasVagina()>> $i.his holes <<else>> $i.his hole<</if>>
+to you
+
+and spank $i.him brutally
+<<if _maso>>
+	making $i.his
+  <<if _u.isHasVagina()>>
+    pussy
+  <<elseif _u.isHasDick()>>
+    dick
+  <<else>>
+    nipple
+  <</if>>
+  throb
+<</if>>
+<<if _notrain>>
+	until $i.he complies.
+<<elseif _basic>>
+	as $i.he slowly complies.
+<<else>>
+	as $i.he rushes to comply.
+<</if>>
+
+$i.His <<uass _u>>
+growing red under the spanking.
+
+<<if _chastity>>
+	You rip $i.his dick chastity off $i.him,
+  though $i.he knows not to be relieved.
+  $i.His cock is now vulnerable, not free.
+<</if>>
+
+<<set _analrape = false>>
+
+<<if _u.isHasTrait(setup.trait.vagina_tight)>>
+  <<ustripvagina _u>>
+	The bitch's pussy is tight,
+  so you ram
+  <<if !_hasdick>>the strap-on<<else>>your dick<</if>>
+  into $i.him without preamble and fuck $i.him hard and fast.
+  <<if _hasvagina && _hasvagina>>
+    Fortunately for $i.him, this gets you so wet that some of your pussyjuice makes
+    it down onto your shaft and serves as improvised lube.
+  <</if>>
+  $i.His cunt spasms with the pain of the rape.
+  You cum in no time.
+<<elseif _u.isHasTrait(setup.trait.anus_tight)>>
+  <<ustripanus _u>>
+	The bitch's butt is tight, so you ram
+  <<if !_hasdick>>the strap-on<<else>>your dick<</if>>
+  into $i.him without lubricant and sodomize $i.him as hard as you can without
+  damaging your property.
+  <<if _hasvagina && _hasvagina>>
+    Fortunately for $i.him,
+    this gets you so wet that some of your pussyjuice makes it down
+    onto your shaft and serves as improvised lube.
+  <</if>>
+  $i.His asshole spasms with the pain of the rape.
+  You cum explosively.
+  <<set _analrape = true>>
+<<elseif _u.isHasDick() && _u.isHasBalls()>>
+	You ram
+  <<if !_hasdick>>the strap-on<<else>>your dick<</if>>
+  into $i.his butt without lubricant.
+  As $i.he flinches you announce that $i.he'll be taking part
+  in giving $i.himself anal pain.
+  $i.He humps into you lamely,
+  so you administer a truly agonizing slap to $i.his <<uballs _u>>
+  <<if _hasdick>> that makes $i.his anal ring stiffen deliciously around your dick<</if>>.
+  To avoid further punishment
+  $i.he fucks $i.himself against you almost hard enough
+  to hurt $i.himself.
+  <<if _hasvagina && _hasvagina>>
+  Fortunately for $i.him, this gets you so wet that some of
+  your pussyjuice makes it down onto your shaft and
+  serves as improvised lube.
+  <</if>>
+  You orgasm explosively.
+  <<set _analrape = true>>
+<<else>>
+	$i.He's got no special physical targets for abuse,
+  so you just rape $i.him hard and fast,
+  raining stinging slaps down on $i.him as you do.
+  $i.He cries and whimpers; you finish with an explosive orgasm.
+<</if>>
+This leaves $i.him sobbing on the floor
+<<if !_hasdick>>
+as you shuck off the strap-on and drop it on $i.his face<<else>>
+with cum dripping out of $i.him<</if>>.
+
+<<if _analrape>>
+  The anal rape leaves $i.him with a sore butthole.
+<</if>>
+
+<<if _maso>>
+	$i.He secretly got off on the pain and humiliation.
+<</if>>
+
+<<unset $i>>

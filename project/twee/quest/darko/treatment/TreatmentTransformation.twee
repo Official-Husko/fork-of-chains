@@ -1,0 +1,92 @@
+:: QuestSetupTreatmentTransformation [nobr quest]
+
+<<set _traits = setup.TraitHelper.getAllTraitsOfTags(['skin']).filter(a => !a.isCorruption() && !a.getTags().includes('dickshape'))>>
+
+<<set _reward = setup.qc.OneRandom(
+  _traits.map(a => setup.qc.Trait('trainee', a))
+)>>
+
+<<run new setup.QuestTemplate(
+  'treatment_transformation',  /* id */
+  'Treatment: Transformation',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait', 'transformation'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.heal_head_master,
+    'assistant1': setup.qu.heal_assistant,
+    'assistant2': setup.qu.heal_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.potion_transformation),
+  ],  /* costs */
+  'TreatmentTransformation',  /* description */
+  setup.qdiff.hard65,
+  [
+    [
+      'TreatmentTransformationCrit',
+      [
+        _reward,
+      ]
+    ],
+    [
+      'TreatmentTransformationSuccess',
+      [
+        _reward,
+        setup.qc.Injury('trainee', 4),
+      ],
+    ],
+    [
+      'TreatmentTransformationFailure',
+      [
+        _reward,
+        setup.qc.Injury('trainee', 9),
+      ],
+    ],
+    [
+      'TreatmentTransformationDisaster',
+      [
+        _reward,
+        setup.qc.Injury('trainee', 15),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentTransformation [nobr]
+<p>
+Administers <<rep setup.item.potion_transformation>> to grant a unit
+a random non-demonic bodypart.
+The doctors need to stay alert during this invasive procedure.
+While this procedure always succeeds, it usually cause injuries to the patient.
+</p>
+
+:: TreatmentTransformationCrit [nobr]
+<p>
+<<Rep $g.head>> directed the procedure with such skill that <<rep $g.trainee>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+
+:: TreatmentTransformationSuccess [nobr]
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>> will need some time to recover from the procedure.
+</p>
+
+:: TreatmentTransformationFailure [nobr]
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was severely injured during the procedure.
+</p>
+
+:: TreatmentTransformationDisaster [nobr]
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was heavily injured during the procedure.
+</p>

@@ -1,0 +1,96 @@
+:: QuestSetupUnitTrainingSissyBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_sissy_basic',  /* id */
+  'Sissy Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingSissyBasic',  /* description */
+  setup.qdiff.easy17,
+  [
+    [
+      'QuestUnitTrainingSissyBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_sissy_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingSissyBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_sissy_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingSissyBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingSissyBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingSissyBasic [nobr]
+<p>
+Some master prefer their slaves to be entirely girls.
+But it does not mean that they must all be biologically female.
+Through special training, a male slave can be trained to identify
+itself as a female.
+This identity training begins with changing their appearance --- shaving
+their entire body and donning special facial makeup.
+They are no longer allowed access to their dicks, which usually
+kept permanently in a chastity cage.
+</p>
+
+:: QuestUnitTrainingSissyBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_sissy_basic_male.jpg'>>
+<<else>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The training was a complete success.
+With the right makeup,
+<<rep $g.trainee>> trainee|is now passable as a girl,
+while your slavers gain a lot of experience from the training.
+</p>
+
+<<else>>
+<p>
+At the end of the week, <<rep $g.trainee>> can now be
+passed as a girl with the right attire.
+</p>
+<</if>>
+
+:: QuestUnitTrainingSissyBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> continues to futiley grasp
+its male identity, and changing this will require another attempt.
+</p>
+
+:: QuestUnitTrainingSissyBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

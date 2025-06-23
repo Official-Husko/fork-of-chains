@@ -1,0 +1,118 @@
+:: QuestSetup_inheritance_lottery [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'inheritance_lottery', /* key */
+"Inheritance Lottery", /* Title */
+"darko", /* Author */
+[ 'city', 'money', 'legendary',
+], /* tags */
+1, /* weeks */
+50, /* quest expiration weeks */
+{ /* roles */
+'bureaucrat1': setup.qu.bureaucrat,
+'bureaucrat2': setup.qu.bureaucrat,
+'guard': setup.qu.guard, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_inheritance_lottery',
+setup.qdiff.easier40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_inheritance_lotteryCrit',
+[
+setup.qc.MoneyCustom(25000), ],
+], [
+'Quest_inheritance_lotteryCrit',
+[
+setup.qc.MoneyCustom(15000), ],
+], [
+'Quest_inheritance_lotteryFailure',
+[
+setup.qc.MoneyCustom(7500), ],
+], [
+'Quest_inheritance_lotteryDisaster',
+[
+setup.qc.MoneyCustom(2500), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.legendary],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.Cooldown(20), ],
+)>>
+
+:: Quest_inheritance_lottery [nobr]
+<p>
+This quest is <<successtext 'incredibly RARE'>>.
+</p>
+
+<p>
+By pure chance, your exact name happens to be the same name as an inheritor
+of a plot of land in the <<lore region_city>>. Apparently, a letter was found
+addressed to you that the <<lore region_city>> would appropriate the
+inheritance unless the inheritor drop by and sort the bureaucracy mess up.
+</p>
+
+<p>
+Given your occupation, it would be unwise for you to make use of the land
+into something productive. However, with a suitable group of slavers, it
+might just be possible to make them sort out the red tape mess and sell
+the land for a huge sum of money, before it is appropriated by the city.
+</p>
+
+
+
+:: Quest_inheritance_lotteryCrit [nobr]
+
+<p>
+<<Rep $g.bureaucrat1>> <<uadv $g.bureaucrat1>> shifted through the
+bureaucratic mess and your slaving team were able to collect the land on your behalf.
+
+<<set _stu = setup.selectUnit([$g.bureaucrat1, $g.bureaucrat2], {trait: 'per_studious'})>>
+<<if _stu>>
+Despite the boring and confusing job, <<rep _stu>> diligently shifted through the numerous
+paperwork.
+<</if>>
+
+<<set _act = setup.selectUnit([$g.bureaucrat1, $g.bureaucrat2], {trait: 'per_active'})>>
+<<if _act>>
+<<Reps _act>> active nature was keeping <<theslaver _act>> uneasy throughout the bureaucratic job.
+<</if>>
+
+Eventually, <<they $g.bureaucrat1>> found a prospective buyer, who
+<<if $gOutcome == 'crit'>>
+splurged a lot of money
+for the plot of land.
+Your slavers returned home carrying a crate bursting full with gold coins.
+<<else>>
+bought the plot of land
+at a reasonable price.
+Your slavers returned home carrying a crate nearly full to the brim with gold coins.
+<</if>>
+</p>
+
+
+:: Quest_inheritance_lotteryFailure [nobr]
+<p>
+<<Rep $g.bureaucrat1>> <<uadv $g.bureaucrat1>> shifted through the
+bureaucratic mess and your slaving team managed to collect the land on your behalf
+in the nick of time.
+There were unfortunately no time remaining to search for prospective buyer,
+and they ended up selling the land at a subpar price.
+It was still a decent sum though — much more than what your slavers normally
+make, and they came home carrying the bulk of the gold.
+</p>
+
+
+:: Quest_inheritance_lotteryDisaster [nobr]
+<p>
+<<Rep $g.bureaucrat1>> barely managed to sort the bureaucratic mess. Your
+slavers ended up having to bribe the officials to hasten the process with a
+lot of gold — while they still profit from selling the plot of land in the end, the net
+profit came up somewhat smaller than they were expecting.
+</p>

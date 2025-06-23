@@ -1,0 +1,243 @@
+:: QuestSetup_drow_rite_of_adulthood [nobr quest]
+
+<<run new setup.UnitGroup(
+"drow_rite_of_adulthood1",
+"Drow Initiate (Good)",
+'subrace_drow', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_smart, setup.trait.face_attractive, setup.trait.tough_nimble, setup.trait.muscle_strong, setup.trait.height_tall, setup.trait.magic_dark], 1, false, false),
+],
+)>> <<run new setup.UnitGroup(
+"drow_rite_of_adulthood3",
+"Drow Initiate (bad)",
+'subrace_drow', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_unemployed),
+  setup.qc.TraitReplace('unit', setup.trait.per_slow),
+  setup.qc.DecreaseTraitsRandom('unit', [setup.trait.muscle_strong, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong, setup.trait.tough_nimble, setup.trait.face_attractive, setup.trait.face_beautiful, setup.trait.per_smart, setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_connected, setup.trait.skill_hypnotic, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal, setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], 27, true),
+],
+)>>
+
+
+<<set _criteriacat1 = new setup.UnitCriteria(
+null, /* key */
+'Drow Catcher', /* name */
+[
+  setup.trait.subrace_drow,
+  setup.trait.bg_slaver,
+  setup.trait.per_smart,
+  setup.trait.per_sly,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_direct,
+  setup.trait.per_kind,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  intrigue: 1,
+  slaving: 1,
+}
+)>>
+
+<<set _criteriacat2 = new setup.UnitCriteria(
+null, /* key */
+'Drow Catcher', /* name */
+[
+  setup.trait.subrace_drow,
+  setup.trait.bg_slaver,
+  setup.trait.per_smart,
+  setup.trait.per_sly,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_direct,
+  setup.trait.per_kind,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  intrigue: 1,
+  slaving: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'drow_rite_of_adulthood', /* key */
+"Drow Rite of Adulthood", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'unit',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'cat1': [ _criteriacat1, 1],
+  'cat2': [ _criteriacat2, 1],
+  'scout': [ setup.qu.scout_deep, 1],
+},
+{ /* actors */
+  'drow1': 'drow_rite_of_adulthood1',
+  'drow2': 'drow_rite_of_adulthood3',
+},
+[ /* costs */
+],
+'Quest_drow_rite_of_adulthood',
+setup.qdiff.harder40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_drow_rite_of_adulthoodCrit',
+    [
+      setup.qc.Slave('drow1', "a|was a drow who just happened to did their Rite of Adulthood at the wrong time and the wrong place", undefined),
+      setup.qc.ItemIfNew(setup.item.lorebook_drowriteofadulthood),
+    ],
+  ],
+  [
+    'Quest_drow_rite_of_adulthoodCrit',
+    [
+      setup.qc.Slave('drow2', "a|was a drow who would have not passed their Rite of Adulthood anyways, and make for a better slave", undefined),
+      setup.qc.Injury('cat1', 2),
+      setup.qc.Injury('cat2', 2),
+      setup.qc.ItemIfNew(setup.item.lorebook_drowriteofadulthood),
+    ],
+  ],
+  [
+    'Quest_drow_rite_of_adulthoodFailure',
+    [
+      setup.qc.Injury('cat1', 3),
+      setup.qc.Injury('cat2', 3),
+      setup.qc.ItemIfNew(setup.item.lorebook_drowriteofadulthood),
+    ],
+  ],
+  [
+    'Quest_drow_rite_of_adulthoodDisaster',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_drowriteofadulthood),
+      setup.qc.OneRandomSeed([
+setup.qc.MissingUnit('cat1'),
+setup.qc.MissingUnit('cat2')
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.rare],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_drow_rite_of_adulthood [nobr]
+<p>
+    The <<lore region_deep>> is not a very forgiving place to live in. The many communities living there has to make concessions to strengthen their communities. The drows in particular has their own <<lore culture_drowriteofadulthood>>, where in order to become a proper adult, a drow must undertake a mission to go alone outside of the safety of their city, and bring some kind of fortune back into its walls.
+</p>
+
+<p>
+    There are clearly some drows who do not have what it takes to complete the mission. There are many reasons for this, be it the monsters lurking around, the lure of the surface world and the occasional and totally hypothetical kidnapping monsters. Those kidnapping monsters would kidnap unsuspecting drows and bring them to the surface, to be sold as slaves. Totally not related to your company at all!
+</p>
+
+<p>
+    After all, there are many dangers of the <<lore region_deep>>, and who is to blame but the drows themselves for one or two drows that were lost to such a dangerous creature?
+</p>
+
+
+
+
+:: Quest_drow_rite_of_adulthoodCrit [nobr]
+<<if $gOutcome == 'crit'>>
+    <<set $g.o = $g.drow1>>
+<<else>>
+    <<set $g.o = $g.drow2>>
+<</if>>
+
+<p>
+    <<Rep $g.scout>> tracked the initiate from the moment <<they $g.o>> left the city. Once the drow is suitably far from the city, your slavers launched the ambush on the poor drow.
+    <<if $gOutcome == 'crit'>>
+        The drow was cautious, but still, no amount of cautiousness and preparation could help the poor inexperienced drow against two of your battle-hardened slavers. Before long, your slavers had subdued the drow without injuries.
+    <<else>>
+        The poor and inexperienced drow never suspected slavers to be part of <<their $g.o>> initiation menu, and your slavers managed to subdue the drow who gave a little resistance, lightly injuring your slavers.
+    <</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        Looking at the captive, without your slaver's interference, the captive would have easily cleared the trial.
+        After all, <<they $g.o>>
+        <<if $g.o.isHasTrait('per_smart')>>
+            looks pretty smart.
+        <<elseif $g.o.isHasTrait('magic_dark')>>
+            has a decent command of dark magic.
+        <<elseif $g.o.isHasTrait('tough_nimble')>>
+            o|was light on <<their $g.o>> feet.
+        <<elseif $g.o.isHasTrait('height_tall')>>
+            o|was taller than the average drow.
+        <<elseif $g.o.isHasTrait('face_attractive')>>
+            o|looks very easy on the eyes.
+        <<elseif $g.o.isHasTrait('muscle_strong')>>
+            o|possess strong muscles.
+        <</if>>
+        But now, <<they $g.o>> will just have to make good use of that skill to serve as yet another member of your slave stock.
+    </p>
+<<else>>
+    <p>
+        Looking at the drow, there was no way <<they $g.o>> could have passed the rite even without your slaver's interference.
+        So your slaver might just have saved <<them $g.o>> from worse fate, after all...
+    </p>
+<</if>>
+
+
+
+
+
+:: Quest_drow_rite_of_adulthoodFailure [nobr]
+<p>
+    <<Rep $g.scout>> tried to track the drow initiate from the moment <<they $g.drow1>> left the city. But the drow turned out to be cunning beyond your slaver's expectation, and knew immediately that <<they $g.drow1>> was being tracked. Instead, <<they $g.drow1>> led your slavers into a giant spider's nest, and your slavers had to fight for their lives as they were attacked by the eight-legged monstrosities.
+</p>
+
+<p>
+    By the time your slavers managed to scramble out of the nest, the drow was already nowhere to be seen. If this is the kind of cunning the drow community has managed to nurture, perhaps there is a merit to this rite after all...
+</p>
+
+
+
+:: Quest_drow_rite_of_adulthoodDisaster [nobr]
+<p>
+    <<Rep $g.scout>> tried to track the drow initiate from the moment <<they $g.drow1>> left the city. But the drow had other plans, something bad for your slavers. Feigning ignorance, the drow led your slavers into a trap, and
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<set $g.o = $g.cat1>>
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<set $g.o = $g.cat2>>
+    <</if>>
+    <<rep $g.o>> fell into a magical trap, getting paralyzed in place.
+    Your other slavers attempt to free <<their $g.o>> teammate was met with a flurry of dark magic, coming from the drow initiate. It seems the place has been rigged to the brim with dark enchantment, the drow apparently already planning for their initiation long before it begins.
+    There was no way your slavers could rescue <<rep $g.o>> and they were forced to abandon <<them $g.o>> as they fled back to your fort.
+</p>
+
+<p>
+    Last you heard, <<rep $g.o>> o|was presented as the "treasure" the drow found within the dangerous <<lore region_deep>>, and the rite was deemed a success.
+    <<Rep $g.o>> would serve as the drow's personal slave, that is, until you rescue <<them $g.o>>...
+</p>

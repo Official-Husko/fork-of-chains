@@ -1,0 +1,64 @@
+:: QuestSetupSlaveCorruptWings [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'slavecorrupt_wings',  /* id */
+  'Slave Corruption: Wings',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.corruption_head_master,
+    'assistant1': setup.qu.corruption_assistant,
+    'assistant2': setup.qu.corruption_assistant,
+    'offering': setup.qu.offeringslave,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SlaveCorruptWings',  /* description */
+  setup.qdiff.hell55,
+  [
+    [
+      'SlaveCorruptAllCrit',
+      [
+        setup.qc.Corrupt('trainee', 'wings'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ]
+    ],
+    [
+      'SlaveCorruptAllSuccess',
+      [
+        setup.qc.Corrupt('trainee', 'wings'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaveCorruptAllFailure',
+      [
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaveCorruptAllDisaster',
+      [
+        setup.qc.MissingUnit('trainee'),
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SlaveCorruptWings [nobr]
+<p>
+Corrupt a slave's wings. Wing corruption is significantly harder than other corruptions.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: the offered slave will be lost forever as they are offered to the powers beyond <<lore concept_mist>>...
+</p>

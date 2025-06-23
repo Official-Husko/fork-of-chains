@@ -1,0 +1,104 @@
+:: EventSetup_work_unending [nobr event]
+
+<<run new setup.Event(
+'work_unending', /* key */
+"Work Unending", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_work_unending',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+    setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_work_unending [nobr]
+<p>
+    With the growing amount of opportunities, slavers, and the size of your fort, the amount of paperwork you have to do on your desk has grown quite large recently. Like many other days before, today you are again stuck behind the desk, doing endless paperwork. As boring as they are, these paperwork do bring money for you, and it would be in your best interest to continue working on them...
+</p>
+
+<p>
+    A sudden wind blasts your office window wide open. The sight of the outdoors tempts you to abandon your work and just enjoy your life for today...
+</p>
+
+<<choose>>
+<<opt 'Resist the urge and keep working, perhaps in a "fun" way'>>
+
+    <p>
+        As tempting as ditching your work is, you
+        <<if $g.you.isHasTrait('per_frugal')>>
+            are a greedy <<urace $g.you>>, and you know it.
+        <<else>>
+            know just how useful money is, and decided to do the logical thing.
+        <</if>>
+        Money is far too important, and you can always entertain yourself in your office.
+        <<if $g.you.isHasTrait('per_chaste')>>
+            You brought your favorite wine into your office for today, and you enjoy sips of the good stuff while still finishing your paperwork, albeit a little half-assedly.
+        <<else>>
+            You took the obedient <<rep $g.slave>> from <<their $g.slave>> cell and install the slave under your desk for the rest of the day. Visitors would sometimes heard strange slurping noise coming from inside your deks, but you keep your windows open, and tell those people that the sounds are definitely coming from the outside.
+        <</if>>
+    </p>
+
+    <<run setup.qc.Money(500).apply($gQuest)>>
+
+<<opt "Ditch work for today and just have fun">>
+
+    <p>
+        What harm could it be from ditching your work just for today?
+        You
+        <<if $g.you.isHasTrait('per_logical')>>
+            folded your work neatly, making your job easier later, and
+        <<else>>
+            toss all your work all over your desk, and
+        <</if>>
+        jumps across the window, and into the rest of your fort.
+        You spend the rest of the day <<uhobbyverb $g.you>>, and you feel quite refreshed the day after.
+    </p>
+
+    <<run setup.qc.BoonizeRandom('you', 3).apply($gQuest)>>
+
+<<optif $unit.player.isHasTrait('skill_flight')>>
+<<opt "Refresh yourself by soaring into the sky above">>
+
+    <p>
+        The wide open sky and the rare clear blue skies were simply too tempting for you to pass up.
+        You jump outside the window before
+        <<if $g.you.isHasTrait('wings_elf')>>
+            unfolding your transluscent wings, gracefully floating into the open skies.
+        <<elseif $g.you.isHasTrait('wings_dragonkin')>>
+            spreading your large and powerful draconic wings wide, before flapping them powerfully to ascend into the sky.
+        <<elseif $g.you.isHasTrait('wings_demon')>>
+            spreading your demonic wings wide, before flapping them powerfully and swooshed into the sky.
+        <<elseif $g.you.isHasTrait('wings_angel')>>
+            spreading your angelic wings wide, flapping them majestically and soar into the sky.
+        <<else>>
+            unfolding your <<uwings $g.you>> and soar into the sky.
+        <</if>>
+        You spend the rest of the day simply enjoying the feeling of the wind caressing your body and your wings. There are no other feelings like it in the world, as if the sky is made solely for your enjoyment.
+    </p>
+
+    <<run setup.qc.BoonizeRandom('you', 6).apply($gQuest)>>
+
+<</choose>>
+

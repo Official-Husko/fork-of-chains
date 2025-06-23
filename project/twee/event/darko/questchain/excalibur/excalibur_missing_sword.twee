@@ -1,0 +1,81 @@
+:: EventSetup_missing_sword [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'excalibur_missing_sword', /* key */
+"Missing Sword", /* Title */
+"darko", /* Author */
+[ 'veteran',
+], /* tags */
+'Event_missing_sword',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_excalibur', '2', -1),
+],
+[ /* restrictions to generate */
+setup.qres.VarEqual('quest_excalibur', '1'),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+0,  /* cooldown */
+setup.rarity.never,  /* Rarity */
+)>>
+
+:: Event_missing_sword [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+"Hear ye, hear ye. Brave adventurers are wanted, for the legendary sword
+Excalibur has been stolen from the walls of the <<lore region_city>>."
+</p>
+
+<<if $varstore.get('quest_excalibur_done')>>
+
+<p>
+Oh no, not again. 
+It seems that the legendary sword has once again been lost soon after your
+company's heist into the city treasury.
+Given your company's history with the sword, obviously none of your slavers would have dared to 
+bring or touch the sword. Still, you ask
+<<yourrep _u>> whether <<they _u>> stole the sword, which <<therace _u>> answers negatively.
+</p>
+
+<p>
+Rumors said that each Excalibur sword is different. Perhaps this Excalibur
+sword is not as feisty as the previous one?
+Probably not, but perhaps you are foolish enough to actually reattempt acquiring the sword.
+If you really want to go through with such a terrible idea, you no doubt will need a
+chivalrious, experienced, and wise slaver yet again.
+</p>
+
+<<else>>
+
+<p>
+Finishing the news, it seems that a legendary sword has been lost soon after
+your company's heist into the city treasury. You ask <<yourrep _u>> whether
+the sword was one of the items stolen during the heist. <<They _u>> shakes
+their head, "Sorry boss, but no". You have a thoughts or two about giving your
+slavers a well-earned hard lecture about "how-to-choose-object-to-steal", but on a second
+thought perhaps they made the right decision not to make the entire
+<<rep $company.humankingdom>> your company's mortal enemy.
+</p>
+
+
+<p>
+You wonder what could have possibly happened to the sword. Rumors said that
+the sword tend to show itself to a worthy swordsman who has proven their
+chivalry, experience, and wisdom, but it has never happened for centuries as
+no single <<man $unit.player>> is capable of having all three aspects. You dismissed
+the tale as dumb before, but maybe now it's your only hope for recovering the sword for yourself.
+</p>
+
+<p>
+Then again, recovering the sword is not really your business. What use does a
+band of slaver possibly have with some petty sword, after all? You should
+really get going with your day.
+Chivalry, experience, and wisdom, huh?
+</p>
+<</if>>

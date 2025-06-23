@@ -1,0 +1,124 @@
+:: CostEventVisibleCheckbox [nobr]
+
+<div>
+  <<checkbox '_is_visible_in_calendar' false true>>
+  Visible in calendar?
+  <<message '(?)'>>
+    <div class='helpcard'>
+      If checked, this event will be visible in the player's calendar, and will be shown
+      in their list of upcoming events.
+    </div>
+  <</message>>
+</div>
+
+
+:: CostEvent [nobr]
+
+<div>
+Schedule the following event to trigger in
+<<numberbox '_weeks' 0>> weeks.
+<<message '(?)'>>
+  Put 0 if you want the event to trigger in the same week.
+<</message>>
+</div>
+
+<<include 'CostEventVisibleCheckbox'>>
+
+<<for _ievent, _event range setup.event>>
+  <<capture _event>>
+    <<link _event.getName() 'QGCostDone'>>
+      <<set $qcost = setup.qc.Event(_event, _weeks, null, _is_visible_in_calendar)>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: CostSetCooldownEvent [nobr]
+
+<p>
+The following event cannot be generated in the next
+<<numberbox "_cooldown" 200>> weeks:
+</p>
+
+<<for _ievent, _event range setup.event>>
+  <<capture _event>>
+    <<link _event.getName() 'QGCostDone'>>
+      <<set $qcost = setup.qc.SetCooldownEvent(_event, _cooldown)>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: CostSetCooldownEventSelf [nobr]
+
+This event cannot be generated in the next <<numberbox '_cooldown' 200>> weeks.
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.SetCooldownEvent(null, _cooldown)>>
+<</link>>
+
+
+:: CostUnscheduleEvent [nobr]
+
+If the following event was scheduled, unschedule it.
+<br/>
+
+<<for _ievent, _event range setup.event>>
+  <<capture _event>>
+    <<link _event.getName() 'QGCostDone'>>
+      <<set $qcost = setup.qc.UnscheduleEvent(_event, _weeks)>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: CostEventRoles [nobr]
+
+<div>
+First, choose the event
+that you want to trigger in
+<<numberbox '_weeks' 0>> weeks.
+<<message '(?)'>>
+  Put 0 if you want the event to trigger in the same week.
+<</message>>
+</div>
+
+<<include 'CostEventVisibleCheckbox'>>
+
+<<for _ievent, _event range setup.event>>
+  <<capture _event>>
+    <<link _event.getName() 'CostEventRolesImplement'>>
+      <<set $qeventchosenweeks = _weeks>>
+      <<set $qeventchosen = _event>>
+      <<set $qeventisvisibleincalendar = _is_visible_in_calendar>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: CostEventRolesImplement [nobr]
+
+
+<p>
+Select the roles in <<rep $qeventchosen>> that you want to assign with roles
+in the current thing you are making:
+</p>
+
+<p>
+<<devquestroles $qeventchosen>>
+</p>
+
+<<link '(Done)' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Event($qeventchosen, $qeventchosenweeks, setup.deepCopy($qdevquestroles), $qeventisvisibleincalendar)>>
+  <<unset $qdevquestroles>>
+<</link>>
+
+
+
+
+
+

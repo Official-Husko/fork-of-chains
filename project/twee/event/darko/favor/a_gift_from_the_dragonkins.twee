@@ -1,0 +1,75 @@
+:: EventSetup_a_gift_from_the_dragonkins [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'a_gift_from_the_dragonkins', /* key */
+"A Gift from the Dragonkin", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'item',
+  'sea',
+],
+'Event_a_gift_from_the_dragonkins',
+{ /* roles */
+},
+{ /* actors */
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Available(),
+    setup.qres.Home(),
+  ],
+  'dragon': 'subrace_dragonkin',
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.sexmanual_bodypart_tail),
+  setup.qc.SlaverMarker('dragon'),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.sexmanual_bodypart_tail),
+  setup.qres.FavorAtLeast('dragonkin', 800),
+],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_a_gift_from_the_dragonkins [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+A winged dragonkin messenger clad in full armor has come to your compound
+today. The mighty messenger brings you a gift, as a token of your strong
+friendship with <<rep $company.dragonkin>>. You open the carefully wrapped
+gift, and discover the <<rep setup.item.sexmanual_bodypart_tail>> instead.
+This book is the "karmasutra" of the dragonkin, depicting the various sexual
+acts one could do if should they are blessed with a tail. A fitting gift for a
+slaving company such as yours.
+</p>
+
+<<if $unit.player.getTail()>>
+<p>
+Your <<utail $unit.player>> twitches as you continue to read the book, as if
+your tail has a mind of its own, eager to try the techniques out.
+You do not blame your tail, and you proceed to pick up <<yourrep $g.slave>> from
+the dungeons. Following the book's instruction, you slither your tail into the
+entrance of <<their $g.slave>> <<uhole $g.slave>>, before <<uadv
+$unit.player>> shoving it inside <<them $g.slave>>. As you are inexperienced,
+you shove it hard and rough, eliciting a pained moan from <<yourrep
+$g.slave>>. To your surprise, the sensation of having your tail rub against
+the inner walls of <<rep $g.slave>> is quite pleasurable, and you reach
+climax soon-after.
+All the while the messenger watches amusedly as you learn firsthand how
+pleasurable it is using your own tail to penetrate a slave.
+</p>
+<<else>>
+<p>
+You might not have the tail to use the techniques in this book for now, but
+who knows? Maybe one day you'll somehow be able to experience the
+sensation of having a tail penetrate another.
+</p>
+<</if>>
+
+<p>
+You thank the messenger for the kind gift, and <<they $g.dragon>> departs
+from your fort accompanied with a blast of wind from <<their $g.dragon>> powerful wing
+muscles.
+</p>

@@ -1,0 +1,76 @@
+:: MarketEquipment [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _objects = $market.equipmentmarket.getMarketObjects()>>
+
+<h2>Equipment Market</h2>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.forge)>>
+
+<p>
+Your market also sells equipments.
+<<if _objects.length>>
+  You found <<successtext _objects.length>> equipment pieces for sale right now in the market.
+<<else>>
+  Unfortunately, nobody seems to be selling any equipment right now.
+  You can wait until next week for more items for sale.
+<</if>>
+</p>
+
+<<if _room>>
+<p>
+The <<rep _room>> provides
+an area where blacksmiths and tailors can peddle their goods.
+<<if $fort.player.isHasBuilding(setup.buildingtemplate.workshop)>>
+  A <<rep setup.buildingtemplate.workshop>> has been designated for
+  craftsmen to sell their work.
+<<else>>
+  While some seasonal merchants would set up temporary shops here, you might be
+  able to attract more permanent ones once you build the
+  <<rep setup.buildingtemplate.workshop>>.
+<</if>>
+<<set _favor = $favor.getFavor($company.orc)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  You have somehow allied with the rough-and-tumble orcs of <<rep $company.orc>>.
+  As a result, some of their master smiths can often be seen here,
+  grumpily selling their finest armors to you and your slavers, including
+  the incredibly rare <<rep setup.equipment.combat_arms_master>>.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  You have maintained friendly relations with the rough-and-tumble orcs of <<rep $company.orc>>.
+  Some of their smiths often come to your fort to sell their wares here.
+  Very rarely their master smiths also come to sell the rarest armors to your market.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  You have maintained warm relations with the rough-and-tumble orcs of <<rep $company.orc>>.
+  Their smiths freely sell their work in your fort, for you and your slavers to buy.
+<</if>>
+</p>
+<</if>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.sexshop)>>
+
+<<if _room>>
+<p>
+Your fort is also home to the <<rep _room>>, where people can go should they
+wish to expand their collection of sex toys.
+<<set _favor = $favor.getFavor($company.neko)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  Because of your excellent relationship with the <<rep $company.neko>>,
+  occasionally a master crafter can be seen in here,
+  selling an extremely rare <<rep setup.equipment.buttplug_master >>.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  The friendly relationship you maintained with <<rep $company.neko>> encourages
+  their crafters to open shop in your fort.
+  Very rarely, some very rare sex equipment can even be found here.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  The <<rep $company.neko>> trusted your company enough to send some of its
+  crafters to peddle their goods here.
+<</if>>
+</p>
+<</if>>
+
+<<set _dom = setup.DOM.Card.market({
+  market: $market.equipmentmarket,
+  is_can_delete: true,
+})>>
+<<attach _dom>>

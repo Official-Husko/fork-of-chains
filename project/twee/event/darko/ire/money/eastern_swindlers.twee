@@ -1,0 +1,51 @@
+:: EventSetup_eastern_swindlers [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'eastern_swindlers', /* key */
+"Eastern Swindlers", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_eastern_swindlers',
+{ /* roles */
+'slaver': [
+setup.qres.NotYou(),
+setup.qres.Job(setup.job.slaver),
+],
+
+'slaver2': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.MoneyCustom(-10000),
+setup.qc.Ire('humandesert', -20), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humandesert', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_eastern_swindlers [nobr]
+
+<p>
+As you are doing the daily accounting for your money, you notice a large sum
+has recently went missing. Upon further scrutiny, it seems that your company
+has made a very bad purchase some time in an eastern city. Apparently <<yourrep
+$g.slaver>> slaver|was swindled by an unscrupulous merchant from the east,
+losing much of your money. The <<uadjbad $g.slaver2>> slaver <<rep
+$g.slaver2>> slaver2|was also swindled, and probably many more of your slavers.
+</p>
+
+<p>
+In fact, talking to the rest of the fort reveals that almost everyone
+seemingly have been swindled by a merchant or two in the recent days. Perhaps
+this is their way of showing their displeasure at your company from your
+deeds in the past. You consider being more careful in the future, and to avoid
+making these people as your enemy, but in the meantime you can always channel your
+frustration into one of your slaves.
+</p>

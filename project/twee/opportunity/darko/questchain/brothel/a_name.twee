@@ -1,0 +1,172 @@
+:: OpportunitySetup_a_name [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'a_name', /* key */
+"A Name", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_a_name',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_a_name_0',
+    'Opportunity_a_name_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '52', -1),
+    ],
+  ],
+  [
+    'Opportunity_a_name_1',
+    'Opportunity_a_name_1_flavor',
+    [ /* costs */
+      setup.qc.MoneyCustom(-3000),
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Favor('neko', 150),
+      setup.qc.VarSet('quest_brothel_progress', '52', -1),
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_a_name [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+It has been several months since the grand reopening of <<attach _describe>>,
+and the brothel is starting to take shape.
+The structure is servicable, the security is present, and your <<men
+$g.head>> working there now possess a working knowledge on the art of
+<<if _class > 0>>
+entertaining clients in the middle of sex.
+<<else>>
+giving
+sexual pleasure.
+<</if>>
+All in all, it's turning into a quaint little brothel.
+</p>
+
+<p>
+But as it is, your brothel is simply known as "the brothel" by the customers and workers alike.
+<<Yourrep $g.owner>> as well as the head whore <<name $g.head>> both come with a proposal to properly name the establishment.
+A name would do much for the morale of the workers, and will make it easier for your brothel's name to spread by word of mouth.
+</p>
+
+<p>
+The responsibility of picking the name of the brothel thus falls to you. You
+can also celebrate the official naming by letting customers enjoy your
+establishment's services for free for a day, if you wish.
+</p>
+
+
+
+
+:: Opportunity_a_name_0 [nobr]
+Name your establishment, but don't celebrate
+
+
+:: Opportunity_a_name_0_flavor [nobr]
+
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+
+<p>
+You've decided to be frugal and save up on your money. After all, a brothel's
+purpose is to make money, and celebrations only serve to waste them. Thus the
+brothel is renamed without much outside fanfare, although your <<men $g.head>>
+still celebrate the new name with a drink or two,
+as well as giving their customers for the day
+<<if _class < 0>>
+a free extra blowjob or two.
+<<else>>
+a peek inside their butts as they dance.
+<</if>>
+</p>
+
+<<include 'Opportunity_a_name_brothelCommon'>>
+
+
+:: Opportunity_a_name_1 [nobr]
+Name your establishment, and make the establishment free for a day
+
+
+:: Opportunity_a_name_1_flavor [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+
+<p>
+With the money from your company's coffers, the brothel has been decorated for the grand celebration. Customers are free to peruse make use of all the brothel's facilities for the day,
+including
+<<if _class < 0>>
+using the whore's experienced orifices.
+<<else>>
+watching the whore's dance and performance.
+<</if>>
+Many citizens of <<lore location_npc>> come to the brothel, and they view your company with a better light after such generosity.
+</p>
+
+<<include 'Opportunity_a_name_brothelCommon'>>
+
+
+:: Opportunity_a_name_brothelCommon [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _name = setup.dutytemplate.questbrothelmanager.randomizeBrothelName()>>
+
+<p>
+From today on, your brothel shall be known as
+<<textbox "_brothelname" _name>>.
+</p>
+
+<div>
+<<focbutton 'Confirm and continue' 'OpportunityList'>>
+<<run setup.dutytemplate.questbrothelmanager.setBrothelName(_brothelname)>>
+<</focbutton>>
+</div>

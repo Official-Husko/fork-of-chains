@@ -1,0 +1,294 @@
+:: QuestSetup_test_subject_wanted [nobr quest]
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Test Subject', /* name */
+[
+  setup.trait.vagina_tight,
+  setup.trait.anus_tight,
+  setup.trait.training_obedience_master,
+],
+[
+  setup.trait.race_demon,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.IsCanBeSold(),
+  setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+{
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'test_subject_wanted', /* key */
+"Test Subject Wanted", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'veteran',
+  'item',
+  'order',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'alchemist1': [ setup.qu.alchemist, 1],
+  'alchemist2': [ setup.qu.alchemist, 1],
+  'scout': [ setup.qu.scout_forest, 1],
+},
+{ /* actors */
+  'alc': 'alchemist_orders0',
+},
+[ /* costs */
+],
+'Quest_test_subject_wanted',
+setup.qdiff.hard49, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_subject_wantedCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(6000),
+    ],
+  ],
+  [
+    'Quest_test_subject_wantedCrit',
+    [
+      setup.qc.VarAdd('lonely_alchemist_progress', 1, -1),
+    ],
+  ],
+  [
+    'Quest_test_subject_wantedCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_test_subject_wantedCrit',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.Building('veteranhall'),
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('alchemist_orders'),
+  setup.qres.NoOpportunity('lonely_alchemist'),
+  setup.qres.NoOpportunity('lonely_alchemist2'),
+  setup.qres.NoOpportunity('lonely_alchemist3'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_subject_wanted [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Within the vast <<lore region_forest>>, lives a rather alchemist who goes by the name <<name $g.alc>>.
+<<if $g.alc.isHasTrait('race_elf')>>
+<<They $g.alc>> alc|is an elf, and even among the elves, <<their $g.alc>> gift in alchemy is remarkable.
+<<else>>
+<<They $g.alc>> alc|is gifted in alchemy — a very rare occurrence for a <<urace $g.alc>>.
+<</if>>
+However, <<their $g.alc>> personality is... eccentric, and rumors say that after an alchemical experiment that went wrong, <<they $g.alc>> had been exiled ever since. It was unclear what experiment <<they $g.alc>> had conducted, but rumors are abound that it involves the mist, big boobs, and a lot of cum.
+</p>
+
+<p>
+<<Yourrep _u>> came in to your office today bearing a quest opportunity coming from the alchemist.
+Apparently, the alchemist is looking for "test subjects" to help with <<their $g.alc>> latest concoction. You could try to send a group of slavers together with an obedient slave over to the alchemist. There is no way for you to know just what kind of crazy alchemical experiment the alchemist is going to conduct on the slave, but it will probably affect the slave one way or another...
+</p>
+
+<p>
+<<if $statistics.isHasSuccess('test_subject_wanted')>>
+You've dealt with <<name $g.alc>> in the past, and despite <<their $g.alc>> eccentricity, you know that <<their $g.alc>> potions are the real stuffs.
+<<else>>
+Given how eccentric the alchemist is, you're a little unsure if you'd like to take up the job, but it might just reward you with enough rare potions to make it worth your while.
+<</if>>
+</p>
+
+
+
+
+
+
+:: Quest_test_subject_wantedCrit [nobr]
+<p>
+<<Yourrep $g.scout>> <<uadv $g.scout>> guided the rest of the slavers into the small hut in the forests. Once there, your slavers handed over <<rep $g.slave>> to the grinning <<urace $g.alc>> alchemist, and the experiment immediately started.
+<<Yourrep $g.alchemist1>> and <<utheirrel $g.alchemist1 $g.alchemist2>> <<rep $g.alchemist2>> served as assistant alchemists.
+<<set _unit = setup.selectUnit([$g.slave, $g.alchemist1, $g.alchemist2, $g.scout], {trait: 'skill_alchemy'})>>
+<<if _unit>>
+<<Reps _unit>> alchemical skill prove handy for the experiments.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.slave, $g.alchemist1, $g.alchemist2, $g.scout], {trait: 'per_smart'})>>
+<<if _unit>>
+<<Rep _unit>> <<if _unit.isYou()>>are<<else>>is<</if>> sufficiently smart to prove helpful during the experiments.
+
+<</if>>
+</p>
+
+<<set _c = [
+
+['injury', setup.qc.Injury('slave', 10), setup.item.healing_potion_greater],
+
+['trauma', setup.qc.TraumatizeRandom('slave', 100), setup.item.potion_trauma_reduce],
+
+['missing', setup.qc.MissingUnit('slave'), setup.item.potion_life],
+
+['notrain', setup.qc.RemoveTraitsWithTag('slave', 'training'), setup.item.reset_potion],
+
+['per',
+setup.qc.DoAll([
+setup.qc.RemoveRandomTraitWithTag('slave', 'per'),
+setup.qc.AddRandomTraitWithTags('slave', ['per']),
+]),
+null],
+
+['nothing',
+setup.qc.DoAll([]),
+null],
+
+]>>
+
+<<if !$g.slave.isHasTrait('race_demon')>>
+<<run _c.push([
+'corrupt',
+setup.qc.Corrupt('slave', null, 3),
+setup.item.potion_purity,
+])>>
+<</if>>
+
+<<if $favor.getFavor($company.elf) >= 750>>
+<<run _c.push([
+'mindbreak',
+setup.qc.Mindbreak('slave'),
+setup.item.mindmend_potion,
+])>>
+<</if>>
+
+<<if !$g.slave.isHasTrait('anus_gape')>>
+<<run _c.push([
+'gape',
+setup.qc.TraitIncreaseExisting('slave', setup.trait.anus_gape),
+setup.item.potion_tight,
+])>>
+<</if>>
+
+<<if !$g.slave.isHasTraitExact('anus_tight')>>
+<<run _c.push([
+'tighten',
+setup.qc.TraitDecrease('slave', setup.trait.anus_tight),
+null
+]
+)>>
+<</if>>
+
+<<set _rnd = setup.rng.choice(_c)>>
+
+<p>
+In the coming days, the trio of slavers forced down many concoctions of various colors down the slave's struggling throat, although they made sure the slave has a balanced diet by occasionally substituting the potion with
+<<if $g.alc.isHasDick()>>
+the alchemist's own cum.
+<<else>>
+the alchemist's own pussyjuice.
+<</if>>
+By the end of the rough treatment,
+<<if _rnd[0] == 'injury'>>
+the slave was understandably heavily injured by the rough treatment and choking on the thick liquid.
+<<elseif _rnd[0] == 'trauma'>>
+the slave was not so much affected by the potions, but greatly traumatized by the entire ordeal.
+<<elseif _rnd[0] == 'missing'>>
+the slave somehow went missing one way or another.
+<<elseif _rnd[0] == 'notrain'>>
+the slave's willpower was somehow completely restored by the strange alchemical concoction.
+<<elseif _rnd[0] == 'per'>>
+the slave's personality changed over the course of the treatment.
+<<elseif _rnd[0] == 'nothing'>>
+nothing happened, surprisingly.
+<<elseif _rnd[0] == 'corrupt'>>
+the slave was greatly corrupted by the dark concoction.
+<<elseif _rnd[0] == 'mindbreak'>>
+the slave became a complete mess, drooling on the floor, <<their $g.slave>> mind completely shattered.
+<<elseif _rnd[0] == 'gape'>>
+the slave's anus somehow become much more accomodating than before.
+<<elseif _rnd[0] == 'tighten'>>
+the slave's anus tightens considerably.
+<<else>>
+ERROR: UNKNOWN TYPE: <<= _rnd[0] >>.
+<</if>>
+</p>
+
+<<run _rnd[1].apply($gQuest)>>
+
+<p>
+After four weeks of the experiment, the experiment was concluded.
+<<if $gOutcome == 'disaster'>>
+
+Despite the entire experiment looking like a standard success to your slavers, the alchemist deemed it an utter failure, and blame it on <<yourrep $g.slave>>. Your slavers were helpless to watch as the alchemist kicked them out while keeping your former slave with <<them $g.slave>>, supposedly to perform some more experiments on the poor <<urace $g.slave>>. Although given the amount of <<if $g.alc.isHasDick()>>cum<<else>>pussyjuice<</if>> <<they $g.alc>> had so eagerly fed the slave throughout the experiment, you have second thoughts on the real reason behind this...
+
+<<if _rnd[1] != 'missing'>>
+<<run setup.qc.MissingUnit('slave').apply($gQuest)>>
+<</if>>
+
+<<else>>
+
+
+
+<<if $gOutcome == 'failure'>>
+The alchemist in all <<their $g.alc>> crazed wisdom deemed it a complete failure, and refused to pay your slavers a single penny. When your slavers tried to protest, <<they $g.alc>> took one of <<their $g.alc>> potions from the shelf and threw it in the general direction of your slavers. Within moments, your slavers found themselves suddenly back at your fort. How could an exiled alchemist have access to the extremely rare telepotion like this?
+<<else>>
+
+<<set _item = _rnd[2]>>
+<<if _item>>
+<<set _qty = Math.floor(6000 / _item.getValue())>>
+<<if _qty <= 0>>
+<<set _qty = 1>>
+<</if>>
+<<run setup.qc.Item(_item, _qty).apply($gQuest)>>
+<</if>>
+
+<<if $gOutcome == 'success'>>
+The alchemist deemed it a successful experiment,
+<<else>>
+The alchemist deemed it a great success, and paid your slavers handsomely.
+<<if _item>>
+But money isn't the only payment your slavers received.
+<</if>>
+<</if>>
+
+<<if _rnd[0] == 'nothing'>>
+<<run setup.qc.Money(6000).apply($gQuest)>>
+A bag of gold was also placed in your slaver's grubby <<uhands $g.alchemist1>>, and although they brought plenty of it home, you could not help but wonder just how much fraction of it has been "accidentally misplaced" by your unscrupulous employees...
+<<elseif _item>>
+To cushion the "damages" that had been inflicted upon your slave, the alchemist had so kindly gave your slavers
+<<if _qty > 1>>
+several bottles of
+<<else>>
+a bottle of
+<</if>>
+<<rep _item>>.
+<<else>>
+No other payment was deemed necessary by the alchemist, however, and <<they $g.alc>> consider the changes on the slaves sufficient as payment.
+<</if>>
+
+<</if>>
+
+<</if>>
+</p>
+

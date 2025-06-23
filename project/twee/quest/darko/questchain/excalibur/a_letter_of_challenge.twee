@@ -1,0 +1,201 @@
+:: QuestSetup_a_letter_of_challenge [nobr quest]
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Dark Knight', /* name */
+[
+  setup.trait.bg_knight,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cruel,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_kind,
+  setup.trait.per_chaste,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Equipped('slaving_weapon_master'),
+],
+{
+  combat: 0.6,
+  brawn: 0.6,
+  slaving: 0.6,
+  arcane: 0.6,
+  sex: 0.6,
+}
+)>>
+<<run new setup.QuestTemplate(
+'a_letter_of_challenge', /* key */
+"A Letter of Challenge", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'prep',
+  'special',
+  'danger',
+  'unit',
+],
+8, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'k': [],
+},
+[ /* costs */
+],
+'Quest_a_letter_of_challenge',
+setup.qdiff.hardest60, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_letter_of_challengeCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Item(setup.item.potion_protection, 1),
+    ],
+  ],
+  [
+    'Quest_a_letter_of_challengeCrit',
+    [
+      setup.qc.Slave('k', "a|was a knight sent on a quest to recover the missing Excalibur, but failed miserably", undefined),
+      setup.qc.Equipment(setup.equipmentpool.combat_good),
+      setup.qc.Corrupt('a', null, 1),
+      setup.qc.Injury('a', 4),
+    ],
+  ],
+  [
+    'Quest_a_letter_of_challengeFailure',
+    [
+      setup.qc.MissingUnit('a'),
+      setup.qc.AddTraitsRandom('a', [setup.trait.per_chaste, setup.trait.per_honorable, setup.trait.magic_light, setup.trait.per_calm], 1, false, false),
+    ],
+  ],
+  [
+    'Quest_a_letter_of_challengeFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.EquipmentLose(setup.equipment.slaving_weapon_master),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_letter_of_challenge [nobr]
+<p>
+A mysterious letter has arrived at your fort, impeccably written, and challenging one of your slavers to a duel. Specifically, <<they $g.k>> k|have somehow heard that one of the missing Excalibur swords is currently in the possession of one of your slavers. Judging from the letter, it does not seem that the challenger is aware of what fate has befell the sword, but the challenge was issues nonetheless seemingly for <<them $g.k>> to get a shot a reclaiming the sword.
+</p>
+
+<p>
+Chivalry and honor would be of zero interest to your company <<if $unit.player.isHasTrait('per_honorable')>>(despite how honorable you are, you know that chivalry ultimately does not make money go round)<</if>>, but the challenger must be quite confident in <<their $g.k>> abilities to issue such a challenge, and perhaps having a skilled fighter such as <<them $g.k>> as one of your slaves would be an interesting challenge...
+</p>
+
+<p>
+You could try to send them to take up the challenge, but who knows what might happen should they fail...
+</p>
+
+
+
+
+
+:: Quest_a_letter_of_challengeCrit [nobr]
+<p>
+<<Yourrep $g.a>> <<uadv $g.a>> arrived at a small clearing in the <<lore region_vale>>, designated as the dueling area.
+There, a lone knight stood in waiting, and upon seeing <<rep $g.a>> and <<their $g.a>> sword, readied <<their $g.k>> own, and with a simple nod the combat began.
+<<They $g.k>> k|is very good at combat, harrying thrust upon thrust on <<rep $g.a>>.
+A stray hit or two grazed and injured <<rep $g.a>>, but the fight was far from over.
+</p>
+
+<p>
+<<Rep $g.a>> a|is fully aware that <<their $g.a>> opponent is completely oblivious to the corrupted state of <<their $g.a>> sword, and a|is planning to make full advantage of it.
+When a small opening is presented, <<rep $g.a>> seized it by thrusting <<their $g.a>> ethereal sword upwards.
+The sky turned dark, and corrupted energy began to concentrate on the sword.
+<<if $g.a.isHasTrait('face_scary')>>
+The corruption turned <<rep $g.a>>'s already scary face into a terrifying visage.
+<</if>>
+<<if $g.a.isHasTrait('corrupted')>>
+<<Reps $g.a>> corrupted body easily absorbed the corruption, empowering <<them $g.a>> greatly.
+<</if>>
+<<if $g.a.isHasTrait('per_cruel')>>
+The corruption is well attuned to <<reps $g.a>> cruel self, making it more effective as a weapon.
+<</if>>
+<<if $g.a.isHasTrait('per_lustful')>>
+<<Rep $g.a>> a|is a rather lusty <<urace $g.a>>, making <<them $g.a>> a perfect host for the corrupted energy.
+<</if>>
+<<if $g.a.isHasTrait('per_dominant')>>
+<<Their $g.a>> dominant tendencies got amplified by the corruption.
+<</if>>
+<<if $g.a.isHasTrait('per_lunatic')>>
+<<They $g.a>> let out a maniacal cackle at the sight, intimidating the enemy.
+<</if>>
+<<if $g.a.isHasTrait('magic_dark')>>
+<<Their $g.a>> mastery over dark magic is greatly amplified by the impending energy.
+<</if>>
+Fully empowered by the dark energy, <<rep $g.a>> completely overpowered the enemy, pinning <<them $g.k>> to the ground and knocking <<them $g.k>> unconscious.
+</p>
+
+<p>
+Once the combat was over and the corruption ended, <<rep $g.a>> stripped the knight completely naked and bound <<them $g.k>> tight, ensuring all holes were plugged for the long trip home. <<They $g.k>> even took one of <<their $g.k>> equipments that was not too tarnished by the corruption home.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Rep $g.a>> also found a single rare potion inside the knight's pocket: a <<rep setup.item.potion_protection>>. The knight must have planned to use it prior to the fight, but probably forgotten about it.
+</p>
+<</if>>
+
+
+
+
+
+:: Quest_a_letter_of_challengeFailure [nobr]
+<p>
+<<Yourrep $g.a>> <<uadv $g.a>> arrived at a small clearing in the <<lore region_vale>>, designated as the dueling area.
+There, a lone knight stood in waiting, and upon seeing <<rep $g.a>> and <<their $g.a>> sword, readied <<their $g.k>> own, and with a simple nod the combat began.
+<<They $g.k>> k|is very good at combat, harrying thrust upon thrust on <<rep $g.a>>.
+And perhaps a little too good for <<reps $g.a>> liking...
+</p>
+
+<p>Indeed, the knight was meticulous. <<They $g.k>> realized that <<rep $g.a>> was hiding something, and straight from the start <<they $g.a>> a|was not aiming for <<therace $g.a>>, but rather, for the cursed Excalibur.
+<<Rep $g.a>> a|was no match for the sword<<man $g.k>>'s prowess as <<they $g.k>> skillfully disarmed <<therace $g.a>>, thus claming <<their $g.k>> victory.
+</p>
+
+<p>
+You never heard back from <<yourrep $g.a>> after the fight. Perhaps <<they $g.a>> found <<their $g.a>> new calling as a squire for the knight, but more likely <<they $g.a>> a|have been captured to be reborn anew as an upstanding and model citizen.
+<<uneedrescue $g.a>>, before <<their $g.a>> heart got purified a little too much!
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+Strangely enough, you found the <<rep setup.equipment.slaving_weapon_master>> back at your <<rep setup.buildingtemplate.armory>> after a couple of days...
+</p>
+<</if>>

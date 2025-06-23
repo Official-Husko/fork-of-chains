@@ -1,0 +1,74 @@
+:: EventSetup_slave_recapture [nobr event]
+
+<<run new setup.Event(
+'slave_recapture', /* key */
+"Slave Recapture", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_slave_recapture',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.bg_hunter, setup.trait.bg_wildman, setup.trait.bg_woodsman], true),
+  ],
+  'slave': 'missingslaves',
+},
+[ /* outcomes */
+  setup.qc.Slave('slave', "", undefined),
+],
+[ /* restrictions */
+  setup.qres.UnitGroupHasUnit('missingslaves'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_slave_recapture [nobr]
+<p>
+<<Yourrep $g.slaver>> slaver|hail from the woods, where <<they $g.slaver>> used to spend most of <<their $g.slaver>> time in.
+<<if $g.slaver.isHasTrait('bg_wildman')>>
+As a wildman, <<they $g.slaver>> subsisted almost entirely by foraging the forests, living off the wildlife and fruit abundantly found within.
+<<elseif $g.slaver.isHasTrait('bg_hunter')>>
+As a hunter, <<they $g.slaver>> slaver|was used to scouring for wild game inside the vast forests.
+<<else>>
+As a woods<<man $g.slaver>>, <<they $g.slaver>> slaver|was used through scouring the forest for a living.
+<</if>>
+From time to time, <<therace $g.slaver>> can be seen spending a week venturing into the forests to relax and relive <<their $g.slaver>> past.
+<<if $g.you.isHasAnyTraitExact(['bg_wildman', 'bg_hunter', 'bg_woodsman'])>>
+As a former <<man $g.you>> of the woods yourself, you understand the urge to retreat into the
+woods very well.
+<</if>>
+</p>
+
+<p>
+It turns out having such a slaver has its own considerably benefit.
+Some time ago, <<they $g.slaver>> again slaver|venture into the forests, but this time return with a rather sizable catch. <<Rep $g.slave>> — your former slave — was found within the vast forests, and the
+<<if $g.slaver.isHasTrait('per_attentive')>>
+sharp-eyed
+<</if>>
+slaver made sure the slave did not escape this time.
+The slave is now waiting fully bound in the <<rep setup.buildingtemplate.slavepens>>, awaiting <<their $g.slave>> punishment for escaping from the cruel clutches of your fort.
+Looking at <<their $g.slaver>> handiwork, <<yourrep $g.slaver>>
+<<if $g.slaver.isHasTrait('per_frugal')>>
+slaver|rub <<their $g.slaver>> <<uhands $g.slaver>> together in front of you, no doubt demanding payment for <<their $g.slaver>> services. You almost forgot the slaver is a greedy little <<urace $g.slaver>>...
+<<run setup.qc.Money(-1000).apply($gQuest)>>
+<<else>>
+slaver|grin <<uadv $g.slaver>>, feeling a little more confident from <<their $g.slaver>> pastime.
+<</if>>
+
+</p>

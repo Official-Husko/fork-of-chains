@@ -1,0 +1,84 @@
+:: QuestSetupSurgeryAnusTighten [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_anus_tighten',  /* id */
+  'Surgery: Tighten Anus',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [  /* costs */
+    setup.qc.LoseItem(setup.item.potion_tight, 1),
+  ],
+  'SurgeryAnusTighten',  /* description */
+  setup.qdiff.hardest60,
+  [
+    [
+      'SurgeryAnusTightenCrit',
+      [
+        setup.qc.TraitDecrease('trainee', setup.trait.anus_tight),
+        setup.qc.TraitDecrease('trainee', setup.trait.anus_tight),
+      ]
+    ],
+    [
+      'SurgeryAnusTightenSuccess',
+      [
+        setup.qc.TraitDecrease('trainee', setup.trait.anus_tight),
+      ],
+    ],
+    [
+      'SurgeryAnusTightenFailure',
+      [
+        setup.qc.TraitDecrease('trainee', setup.trait.anus_tight),
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+    [
+      'SurgeryAnusTightenDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryAnusTighten [nobr]
+<p>
+Tighten the slaver's anus.
+</p>
+
+:: SurgeryAnusTightenCrit [nobr]
+<p>
+The orifice tightening procedure was very successful, no small thanks to <<yourrep $g.head>>
+masterful handling of the rare <<rep setup.item.potion_tight>>.
+<<Rep $g.trainee>> tentatively rubber their now <<uanus $g.trainee>>, getting used to the new feeling
+of it being extra-tight.
+</p>
+
+:: SurgeryAnusTightenSuccess [nobr]
+<p>
+The orifice tightening procedure was successful, no small thanks to <<yourrep $g.head>>.
+<<Rep $g.trainee>> tentatively rubber their now <<uanus $g.trainee>>, getting used to the strange new feeling.
+</p>
+
+:: SurgeryAnusTightenFailure [nobr]
+<p>
+The orifice tightening procedure was successful, no small thanks to <<yourrep $g.head>>.
+But <<rep $g.trainee>> trainee|was severely damaged by the invasive procedure, and will need some time to rest.
+<<Rep $g.trainee>> tentatively rubber their now <<uanus $g.trainee>>, getting used to the strange new feeling.
+</p>
+
+:: SurgeryAnusTightenDisaster [nobr]
+<p>
+The surgery failed catastrophically, badly injuring <<rep $g.trainee>>.
+</p>

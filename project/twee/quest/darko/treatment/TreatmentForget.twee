@@ -1,0 +1,114 @@
+:: QuestSetupTreatmentForget [nobr quest]
+
+<<set _target = new setup.UnitCriteria(
+  null, /* key */
+  'TARGET SLAVER', /* title */
+  [ /* critical traits */
+  ],
+  [
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'treatment_forget',  /* id */
+  'Treatment: Forget',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'target': _target,
+    'head': [setup.qu.heal_head, 2],
+    'assistant1': [setup.qu.heal_assistant, 1],
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.forget_potion),
+  ],  /* costs */
+  'TreatmentForget',  /* description */
+  setup.qdiff.hard40,
+  [
+    [
+      'TreatmentForgetCrit',
+      [
+        setup.qc.Friendship('trainee', 'target', 'reset'),
+      ],
+    ],
+    [
+      'TreatmentForgetSuccess',
+      [
+        setup.qc.Friendship('trainee', 'target', 'reset'),
+        setup.qc.Injury('trainee', 2),
+        setup.qc.Injury('target', 2),
+      ],
+    ],
+    [
+      'TreatmentForgetFailure',
+      [
+        setup.qc.Friendship('trainee', 'target', 'reset'),
+        setup.qc.Injury('trainee', 5),
+        setup.qc.Injury('target', 5),
+      ],
+    ],
+    [
+      'TreatmentForgetDisaster',
+      [
+        setup.qc.Friendship('trainee', 'target', 'reset'),
+        setup.qc.Injury('trainee', 8),
+        setup.qc.Injury('target', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentForget [nobr]
+<p>
+Make two units forget each other, resetting their friendship to 0.
+This can be useful, since a unit cannot have too many friends at one time.
+Uses a <<rep setup.item.forget_potion>>.
+While this procedure always succeeds, it usually cause injuries to the patients.
+</p>
+
+<p>
+<<dangertext 'IMPORTANT'>>: The unit assigned to the TARGET SLAVER role will be the unit
+that gains affection for the patient.
+</p>
+
+:: TreatmentForgetCrit [nobr]
+<p>
+<<Rep $g.head>> directed the procedure with such skill that both <<rep $g.trainee>>
+and <<rep $g.target>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+
+:: TreatmentForgetSuccess [nobr]
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>>
+and <<rep $g.target>>
+will need some time to recover from the procedure.
+</p>
+
+:: TreatmentForgetFailure [nobr]
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>>
+and <<rep $g.target>>
+were severely injured during the procedure.
+</p>
+
+:: TreatmentForgetDisaster [nobr]
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>>
+and <<rep $g.target>>
+were heavily injured during the procedure.
+</p>

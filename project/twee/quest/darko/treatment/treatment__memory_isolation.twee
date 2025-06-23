@@ -1,0 +1,113 @@
+:: QuestSetup_treatment__memory_isolation [nobr quest]
+
+<<run new setup.QuestTemplate(
+'treatmentmemory_isolation', /* key */
+"Treatment: Memory Isolation", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* weeks */
+1, /* expiration weeks */
+{ /* roles */
+  'head': [ setup.qu.heal_head_master, 1],
+  'assistant1': [ setup.qu.heal_assistant, 1],
+  'assistant2': [ setup.qu.heal_assistant, 1],
+},
+{ /* actors */
+  'trainee': null,
+},
+[ /* costs */
+  setup.qc.LoseItem(setup.item.potion_isolation),
+],
+'Quest_treatment__memory_isolation',
+setup.qdiff.hard51, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_treatment__memory_isolationCrit',
+    [
+      setup.qc.Opportunity('isolate_memory', {
+target: "trainee",
+}),
+    ],
+  ],
+  [
+    'Quest_treatment__memory_isolationSuccess',
+    [
+      setup.qc.Injury('trainee', 2),
+      setup.qc.Opportunity('isolate_memory', {
+target: "trainee",
+}),
+    ],
+  ],
+  [
+    'Quest_treatment__memory_isolationFailure',
+    [
+      setup.qc.Injury('trainee', 5),
+      setup.qc.Opportunity('isolate_memory', {
+target: "trainee",
+}),
+    ],
+  ],
+  [
+    'Quest_treatment__memory_isolationDisaster',
+    [
+      setup.qc.Injury('trainee', 8),
+      setup.qc.Opportunity('isolate_memory', {
+target: "trainee",
+}),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_treatment__memory_isolation [nobr]
+<p>
+An invasive procedure allowing you to isolate a part of a unit's history, making a unit forget it completely.
+</p>
+
+<p>
+Allows you to choose and remove a background or skill trait from the unit.
+While this procedure always succeeds, it usually cause injuries to the patient.
+</p>
+
+
+
+:: Quest_treatment__memory_isolationCrit [nobr]
+<p>
+<<Rep $g.head>> directed the procedure with such skill that <<rep $g.trainee>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+
+
+
+:: Quest_treatment__memory_isolationSuccess [nobr]
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>> will need some time to recover from the procedure.
+</p>
+
+
+
+:: Quest_treatment__memory_isolationFailure [nobr]
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was severely injured during the procedure.
+</p>
+
+
+
+:: Quest_treatment__memory_isolationDisaster [nobr]
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was heavily injured during the procedure.
+</p>
+

@@ -1,0 +1,126 @@
+:: QuestSetup_mindbroken_escapade [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'mindbroken_escapade', /* key */
+"Mindbroken Escapade", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'special', 'unit', 'vale',
+],
+1, /* weeks */
+3, /* quest expiration weeks */
+{ /* roles */
+'spotter': setup.qu.spotter,
+'informer1': setup.qu.informer,
+'informer2': setup.qu.informer, },
+{ /* actors */
+'slave': [
+setup.qres.HasTag('escaped_slave'),
+], },
+[ /* costs */
+],
+'Quest_mindbroken_escapade',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mindbroken_escapadeCrit',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_mindbroken_escapadeCrit',
+[
+],
+], [
+'Quest_mindbroken_escapadeCrit',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapeeasy'), ],
+], [
+'Quest_mindbroken_escapadeCrit',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapeeasy'),
+setup.qc.Injury('spotter', 3),
+setup.qc.Injury('informer1', 3),
+setup.qc.Injury('informer2', 3), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.escapeeasy, setup.rarity.common],
+[setup.questpool.escapemedium, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTag('escaped_slave'),
+setup.qres.Trait(setup.trait.training_mindbreak)
+]), ],
+[ /* expiration outcomes */
+setup.qc.Injury('slave', 10),
+],
+)>>
+
+:: Quest_mindbroken_escapade [nobr]
+<p>
+<<Rep $g.slave>> slave|have escaped from your fort!
+Normally, this would be much harder with any ordinary slave. But you remember
+that <<rep $g.slave>> slave|have been mindbroken, and is likely just dazing
+out there unsure of where <<they $g.slave>> slave|is supposed to go.
+</p>
+
+<p>
+To recapture the slave, you will most likely need to gather information in
+the surrounding taverns — whether anyone has spotted someone bearing
+similarity with <<rep $g.slave>>. With luck, your slavers will be able to
+locate the slave and bring <<them $g.slave>> home before anything bad befalls
+<<them $g.slave>>.
+</p>
+
+<p>
+Although given enough time, hunger and thirst will surely drive the mindbroken
+slave back to your fort. You can ignore this quest and the slave will eventually return to your fort,
+but most likely heavily malnourished.
+</p>
+
+
+:: Quest_mindbroken_escapadeCrit [nobr]
+
+<p>
+Your slavers traveled from tavern to tavern <<uadv $g.informer1>> gathering
+as much information as possible about the slave. Finally, they were informed
+by a local farmer that someone suspicious had come to his farm and ate their
+animals' food. That does sound like what a hungry mindbroken slave would do,
+and your slavers followed the lead.
+</p>
+
+<<if $gOutcome == 'failure' or $gOutcome == 'disaster'>>
+
+<p>
+Arriving at the farm, there were nothing but farm animals grazing around the
+fields. But <<rep $g.informer2>> found signs that <<rep $g.slave>>
+slave|was here at some point, drinking and eating from the livestock through. Your slavers gathered
+more information until they finally found another lead towards <<reps
+$g.slave>> position, although the lead will still need to be re-pursued.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Unfortunately, your slavers were waylaid by brigands during their way back and came back home injured.
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+Lo and behold, <<yourrep $g.slave>> slave|was there grazing along the other
+farm animals. Your slavers <<uadv $g.informer1>> collared back the slave to
+be brought to <<their $g.informer1>> usual home.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Rep $g.slave>> somehow bore some valuables with <<them $g.slave>>, unknown
+from which traveler they must have liberated them from.
+</p>
+<</if>>
+
+<</if>>

@@ -1,0 +1,45 @@
+:: CostDoAll [nobr]
+
+<<set $qcost = setup.qc.DoAll([])>>
+<<gotowipehistory 'QGCostDone'>>
+
+:: CostDoAllHeader [nobr]
+
+<<if _entry.probability !== undefined>>
+  <b>Do all of the following with <<= (_entry.probability * 100).toFixed(1)>>% chance:</b>
+<<else>>
+  <b>Do all of the following:</b>
+<</if>>
+
+
+:: CostDoAllProbability [nobr]
+
+<p>
+Do all of the following with probability: <<numberbox "_probability" 50>>%
+<<message '(?)'>>
+  Put a percentage. For example, 50, which means these will be executed half of the time.
+<</message>>:
+</p>
+
+<<link '(Continue)' 'QGCostDone'>>
+  <<set $qcost = setup.qc.DoAll([], _probability / 100)>>
+<</link>>
+
+
+:: CostHideAll [nobr]
+
+<p>
+Do all of the following, but mask the description. Instead, show:
+<<textbox '_description' ''>>.
+</p>
+
+<<link '(Continue)' 'QGCostDone'>>
+  <<set $qcost = setup.qc.HideAll([], _description)>>
+<</link>>
+
+
+
+:: CostHideAllHeader [nobr]
+
+<b>Do all of the following, but mask the description and show "<<= _entry.explain()>>" instead:</b>
+

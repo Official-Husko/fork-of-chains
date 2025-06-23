@@ -1,0 +1,99 @@
+:: InitBuildingPortal [nobr]
+
+<<set _portal_price = [
+  [setup.qc.Money(-1000), setup.qc.LoseItem('potion_portal', 1)],
+  [setup.qc.Money(-50000), setup.qc.LoseItem('potion_portal', 1)],
+  [setup.qc.Money(-1000000), setup.qc.LoseItem('potion_portal', 1)],
+]>>
+
+<<run new setup.RoomTemplate({
+  key: 'portalindoors',
+  tags: ['hidename',],
+  width: 1,
+  height: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'portaloutdoors',
+  tags: ['hidename', ],
+  width: 1,
+  height: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'portalindoors',
+  name: 'Portal (Indoors)',
+  tags: ['misc',],
+  description_passage: 'BuildingPortalIndoors',
+  costs: _portal_price,
+  restrictions: [
+    [
+      setup.qres.HasItem(setup.item.technology_portal),
+    ],
+    [],
+    [],
+  ],
+  main_room_template_key: 'portalindoors',
+  sub_room_template_key: 'portalindoors',
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'portaloutdoors',
+  name: 'Portal (Outdoors)',
+  tags: ['misc',],
+  description_passage: 'BuildingPortalOutdoors',
+  costs: _portal_price,
+  restrictions: [
+    [
+      setup.qres.HasItem(setup.item.technology_portal),
+    ],
+    [],
+    [],
+  ],
+  main_room_template_key: 'portaloutdoors',
+  sub_room_template_key: 'portaloutdoors',
+})>>
+
+:: BuildingPortalCommon [nobr]
+
+<p>
+A paraphernalia for opening a stable temporal gate between portals, allowing
+people to travel instantly between any two of them.
+Allows your units to pass from a portal to any other,
+which can make two physically distant rooms become nearby with
+each other.
+</p>
+
+
+
+:: BuildingPortalIndoors [nobr]
+
+<<include 'BuildingPortalCommon'>>
+
+<p>
+This portal can only be built indoors.
+</p>
+
+
+
+:: BuildingPortalOutdoors [nobr]
+
+<<include 'BuildingPortalCommon'>>
+
+<p>
+This portal can only be built outdoors.
+</p>
+
+

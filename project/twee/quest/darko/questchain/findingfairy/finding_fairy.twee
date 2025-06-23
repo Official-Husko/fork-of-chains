@@ -1,0 +1,226 @@
+:: QuestSetup_finding_fairy [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_bewitching_fairy_0", /* key */
+"Bewitching Fairy", /* name */
+"A fairy living in the western forests infamous for growing a harem by kidnapping lost adventurers", /* description */
+"a|was living in the western forests, kidnapping lost adventurers and travelers alike and turning them into a|their personal harem", /* unit text */
+10000, /* slave value */
+{ /* skill additives */
+survival: 2,slaving: 4,sex: 2,},
+)
+>>
+<<run new setup.Title(
+"quest_bewitched_1", /* key */
+"Bewitched", /* name */
+"Went missing in the Western Forests.", /* description */
+"a|have went missing in the Western Forests, no doubt awaiting rescue", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.UnitGroup(
+"finding_fairy0",
+"Fairy Kidnapper",
+'subrace_fairy',  /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitsReplace('unit', [setup.trait.skill_hypnotic, setup.trait.per_dominant]),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_wildman),
+  setup.qc.Trait('unit', setup.trait.magic_earth),
+  setup.qc.AddTitle('unit', 'quest_bewitching_fairy_0'),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'finding_fairy', /* key */
+"Finding Fairy", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'unknown',
+  'veteran',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'bait': [ setup.qu.whore, 1],
+  'tracker': [ setup.qu.spotter, 1],
+  'rescuer': [ setup.qu.rescuer, 1],
+},
+{ /* actors */
+  'fairy': 'finding_fairy0',
+},
+[ /* costs */
+],
+'Quest_finding_fairy',
+setup.qdiff.hard49, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_finding_fairyCrit',
+    [
+      setup.qc.VarRemove('quest_bewitchment_progress'),
+      setup.qc.VarRemove('quest_bewitchment_alternative'),
+      setup.qc.SetCooldownQuest('finding_fairy2', 2),
+      setup.qc.Opportunity('a_fair_y__offer', {
+fairy: "fairy",
+rescuer: "rescuer",
+tracker: "tracker",
+}),
+      setup.qc.RemoveTitleGlobal('quest_bewitched_1'),
+    ],
+  ],
+  [
+    'Quest_finding_fairyCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_finding_fairyCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_finding_fairyCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.VarGte('quest_bewitchment_progress', 12),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_finding_fairy [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Many of your slavers have went missing in their search in the <<lore region_forest>>
+for a fairy that you've come to understand as being not-so-innocent. But their
+sacrifices have finally borne fruit — using the combined information left by
+your slavers, <<yourrep _u>> is able to locate the approximate position of
+the fairy's lair.
+</p>
+
+<p>
+The time for revenge is perhaps finally at hand. You could try to send a
+group of slavers — one slaver will bait the fairy into abducting them, while
+the rest of the team will use the knowledge gathered so far to help them
+track the bait and into the fairy's lair. You might just find the lair, and
+hopefully rescue all your other slavers too...
+</p>
+
+<<if $inventory.isHasItem('quest_bewitchment_trap') and
+$inventory.isHasItem('quest_bewitchment_nectar')>>
+<p>
+Now that you have both <<rep setup.item.quest_bewitchment_trap>> and <<rep
+setup.item.quest_bewitchment_nectar>> in your <<uhand $unit.player>>, you
+might even be able to finally get your revenge on this mischivious fairy...
+</p>
+<<elseif $inventory.isHasItem('quest_bewitchment_nectar')>>
+<p>
+Now that you have the <<rep setup.item.quest_bewitchment_nectar>> in your
+<<uhand $unit.player>>, you might be able to get the better out of the fairy...
+</p>
+<<elseif $statistics.isHasSuccess('finding_fairy')>>
+<p>
+From your past experiences with this quest, you know that going headlong in
+this quest without much preparation is going to be a fruitless affair. You
+might want to scout the <<lore region_sea>> first in search of a valuable
+nectar to bait the fairy...
+</p>
+<</if>>
+
+
+:: Quest_finding_fairyCrit [nobr]
+<<set _t = $company.player.getUnits().filter(unit => unit.isHasTitle('quest_bewitched_1'))>>
+
+<p>
+It did not take long for the fairy to notice <<yourrep $g.bait>> wandering
+aimlessly in the forest. But it was different this time, for <<rep
+$g.tracker>> and <<utheirrel $g.tracker $g.rescuer>> <<rep $g.rescuer>> were
+lying in wait, hidden behind, trying to track strange movements. Before long
+they could see <<yourrep $g.bait>> suddenly lifted from ground, hovering
+helplessly, before being moved quickly in one direction. Guided with the hints
+that your company had collected so far, <<yourrep $g.tracker>> tracker|was able to <<uadv
+$g.tracker>> track <<rep $g.bait>> down to a hidden abode...
+</p>
+
+<p>
+In the abode was a harem of people of various races — elves, neko, humans —
+all with dazed expressions planted on their faces, complete with drools coming out from their
+mouths. While the races varied, one thing was in common between all of them:
+lack of clothes — it almost looked like the fairy was keeping them as <<their
+$g.fairy>> personal harem.
+<<if _t.length>>
+Among them, they could see your missing slavers too, including
+<<if $gOutcome == 'success'>>
+the freshly-captured <<rep $g.bait>>, and
+<</if>>
+<<yourrep _t[0]>> -- all naked and on <<their _t[0]>> knees, seemingly
+prostrating <<themself _t[0]>> awaiting <<their _t[0]>> <<mistress
+$g.fairy>>'s return.
+<</if>>
+</p>
+
+<<if _t.length>>
+
+<p>
+With the fairy nowhere to be seen, <<yourrep $g.rescuer>> couldn't take it
+any longer and immediately got to work, undoing all the bindings on your
+captured slavers, and shaking their sanities back onto them. As <<rep
+$g.rescuer>> shook their bodies, <<they $g.rescuer>> could see yellow-ish
+powder starting to shrug off the body, and before long color returned to
+their eyes. One by one, the captured slavers were dispelled from the spell,
+although their conditions varied having been used quite thoroughly by the
+unscrupulous fairy.
+</p>
+<</if>>
+
+<p>
+By the time your slavers finished rescuing your captured slavers, the fairy
+was standing in front of the room, glaring at your slavers. However, with all
+your slavers at the ready, there was really no hope that the fairy could win
+this one out — instead, <<they $g.fairy>> gave <<them $g.rescuer>> a truce offer.
+Why not just walk away with all the slavers, and everyone gets on with the
+remainder of their days and their lives?
+</p>
+
+<p>
+As much as your slavers hated to accept the offer, there was really no way to
+capture the fairy given <<their $g.fairy>> skills and that damned wings.
+Unless...?
+</p>
+
+<<if $gOutcome == 'success'>>
+<<run _t.push($g.bait)>>
+<</if>>
+
+<<for _s range _t>>
+<<if Math.random() < 0.33>>
+<<run setup.qc.Injury('unit', 4).apply(setup.costUnitHelper(_s))>>
+<<elseif Math.random() < 0.5>>
+<<run setup.qc.TraumatizeRandom('unit', 10).apply(setup.costUnitHelper(_s))>>
+<<else>>
+<<run setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape).apply(setup.costUnitHelper(_s))>>
+<<run setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape).apply(setup.costUnitHelper(_s))>>
+<</if>>
+
+<<if _s != $g.bait>>
+<<run setup.qc.Return('unit').apply(setup.costUnitHelper(_s))>>
+<</if>>
+
+<</for>>

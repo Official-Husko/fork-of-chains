@@ -1,0 +1,74 @@
+:: EventSetup_royal_visit [nobr event]
+
+<<run new setup.Title(
+"quest_royal_visit0", /* key */
+"Neko Port City Royalty", /* name */
+"A symbolic royalty of the Neko Port City", /* description */
+"a|is part of the symbolic royal family of the Neko Port City", /* unit text */
+20000, /* slave value */
+{ /* skill additives */
+  social: 5,
+  sex: 3,
+},
+)
+>>
+
+
+<<run new setup.UnitGroup(
+"royal_visit0",
+"Neko Submissive Royal",
+'subrace_neko', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_submissive, setup.trait.per_attentive, setup.trait.face_beautiful, setup.trait.magic_earth_master]),
+  setup.qc.AddTitle('unit', 'quest_royal_visit0'),
+],
+)>>
+
+<<run new setup.Event(
+'royal_visit', /* key */
+"Royal Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_royal_visit',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+  'target': 'royal_visit0',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+  setup.qc.SetCooldownEvent(null, 300),
+  setup.qc.QuestDirect('royal_visit', {
+head: "head",
+owner: "owner",
+slave: "slave",
+target: "target",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+  setup.qres.VarGte('quest_brothel_class', 20),
+  setup.qres.VarNull('quest_brothel_royal_visit'),
+],
+53, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_royal_visit [nobr]
+<<include "Quest_royal_visit">>

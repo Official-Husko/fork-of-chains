@@ -1,0 +1,60 @@
+:: EventSetup_a_gift_from_the_lizardkins [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'a_gift_from_the_lizardkins', /* key */
+"A Gift from the Lizardkin", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'item',
+  'sea',
+],
+'Event_a_gift_from_the_lizardkins',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'lizardkin': 'subrace_lizardkin',
+},
+[ /* outcomes */
+  setup.qc.SlaverMarker('lizardkin'),
+  setup.qc.Item(setup.item.sexmanual_nibble_neck),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.sexmanual_nibble_neck),
+  setup.qres.FavorAtLeast('lizardkin', 800),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_a_gift_from_the_lizardkins [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+In the recent weeks, you've made great allies with the reclusive <<rep
+$company.lizardkin>>. These people are rather awkward at communicating with
+people outside of their tribe, and it shows even now. They've come to your fort
+today, bearing a strange gift. While the gift happens to be suitable for a slaving
+company such as yours, it would be awkward anywhere else: the <<rep
+setup.item.sexmanual_nibble_neck>>.
+</p>
+
+<p>
+The book explains in great details, perhaps in too much details, of how these lizardkin
+people make love with each other.
+<<if $unit.player.isHasTrait('subrace_lizardkin')>>
+Being a lizardkin yourself, you know these techniques well, but you can
+only guess what kind of face your other slavers would make when they read this book
+once it's stored in your classroom...
+<<elseif $unit.player.isHasTrait('race_lizardkin')>>
+As a <<urace $unit.player>>, you are closely related to lizardkin, and hence
+you are somewhat familiar with these mating rituals. Despite that, the depth
+to which this book goes to explicitly describe the acts still intrigues you,
+and before you know it you have finished reading the book.
+<<else>>
+Still, the book describes these raunchy acts very well, and you become absorbed in the book.
+Before you know it, you've finished reading the book.
+<</if>>
+Reading the entire sexy tome somehow jots your creativity, and
+you can't wait to try out some of these new knowledge on some unsuspecting slave...
+</p>

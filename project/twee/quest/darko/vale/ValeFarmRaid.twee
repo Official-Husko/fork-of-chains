@@ -1,0 +1,135 @@
+:: QuestSetupValeFarmRaid [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'vale_farm_raid', /* key */
+  'Raid: Vale Farm', /* Title */
+  'darko',   /* author */
+  ['vale', 'money', 'unit', 'ire',],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'raider1': setup.qu.raider,
+    'raider2': setup.qu.raider,
+    'support': setup.qu.raidersupport,
+  },
+  { /* actors */
+    'farmer': 'quest_humanvale_farmer',
+  },
+  [ /* costs */
+  ],
+  'QuestValeFarmRaid', /* passage description */
+  setup.qdiff.easy3, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestValeFarmRaidCrit',
+      [
+        setup.qc.Slave(
+          'farmer',
+          'a|was a simple farmer on the northern vale that had the misfortune of being raided by your company'),
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('outlaws', 25),
+        setup.qc.Ire('humanvale', 1),
+      ],
+    ],
+    [
+      'QuestValeFarmRaidCrit',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('outlaws', 25),
+        setup.qc.Ire('humanvale', 1),
+      ],
+    ],
+    [
+      'QuestValeFarmRaidFailure',
+      [
+
+      ],
+    ],
+    [
+      'QuestValeFarmRaidDisaster',
+      [
+        setup.qc.Injury('raider1', 1),
+        setup.qc.Injury('raider2', 1),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestValeFarmRaid [nobr]
+
+<p>
+Welcome to the world of raiding! All raiders must begin somewhere, and what better
+place to start than to raid an innocent little farm on the <<lore region_vale>>!
+Lightly guarded, promising good amount of reward, and also promising you the
+earthly bounty in the form of the farmer's own <<daughter $g.farmer>>, it surely is the perfect target
+for an enterprising company such as yourself.
+</p>
+
+
+:: QuestValeFarmRaidCrit [nobr]
+
+<p>
+Your slavers launched a very textbook raid on the farm.
+
+<<set _intim = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'skill_intimidating'})>>
+<<set _scary = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'face_scary'})>>
+<<set _muscle = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'muscle_verystrong'})>>
+<<set _cruel = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_cruel'})>>
+<<set _agg = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_aggressive'})>>
+
+<<if _intim>>
+  <<Rep _intim>> used <<their _intim>> intimidation skills to scare off the farmhands, leaving the farm
+  empty for the moment.
+
+<<elseif _muscle>>
+  <<Rep _muscle>> used <<their _muscle>> bulging muscles to scare off the farmhands, leaving the farm
+  empty for the moment.
+
+<<elseif _scary>>
+  <<Rep _scary>> used <<their _scary>> scary face to scare off the farmhands, leaving the farm
+  empty for the moment.
+
+<<elseif _cruel>>
+  <<Rep _cruel>> cruelly assaulted one of the farmhands, leaving the rest fleeing for their lives and the farm empty.
+
+<<elseif _agg>>
+  <<Rep _agg>> aggressively assaulted one of the farmhands, leaving the rest fleeing for their lives and the farm empty.
+
+<<else>>
+  They set fire into the fields, which alarmed the farmers.
+<</if>>
+
+With the farmers gone, there was nobody guarding their homes.
+Your slavers proceeded to ransack the buildings, stealing many valuables.
+<<if $gOutcome == 'crit'>>
+<<rep $g.raider1>> raider1|was even able to <<uadv $g.raider1>> nab the farmer's
+<<daughter $g.farmer>> to bring back to the fort as a potential trophy after a little
+friendly gang-fuck.
+<</if>>
+</p>
+
+
+:: QuestValeFarmRaidFailure [nobr]
+
+<p>
+Unfortunately, your company was not the only company that came up with the idea to raid
+such a juicy target.
+By the time your slavers arrived,
+the farm had already been torched and ransacked.
+Nothing of value were found.
+</p>
+
+
+:: QuestValeFarmRaidDisaster [nobr]
+
+<p>
+Your slavers made a grave error in picking a long-standing farm in the region.
+It turned out that there was a very good reason why no raiders dared to touch this particular farm --
+These farmers were fierce, and armed themselves the moment they see your slavers coming.
+For a group of farmers they fought like heroes of legends, and your slavers were soundly defeated.
+</p>

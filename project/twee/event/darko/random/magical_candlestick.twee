@@ -1,0 +1,126 @@
+:: EventSetup_magical_candlestick [nobr event]
+
+<<run new setup.Event(
+'magical_candlestick', /* key */
+"Magical Candlestick", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_magical_candlestick',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.join_senior], true),
+    setup.qres.AnyTrait([setup.trait.bg_mystic, setup.trait.bg_apprentice]),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Available(),
+    setup.qres.AnyTrait([setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.f_lighting_good_slaver),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.AnyTrait([setup.trait.bg_mystic, setup.trait.bg_apprentice])),
+    setup.qc.DoAll([
+      setup.qc.Item(setup.item.f_lighting_good_slaver),
+      setup.qc.Item(setup.item.f_lighting_good_slaver),
+      setup.qc.Item(setup.item.f_lighting_good_slaver),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+  setup.qc.BoonizeRandom('slaver', 5),
+  setup.qc.Injury('slave', 5),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.bedchamberwing),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_magical_candlestick [nobr]
+<p>
+In the past few weeks, you've seen <<yourrep $g.slaver>> doing something with
+one of your slaves, <<rep $g.slave>>. It's unclear what <<therace $g.slaver>>
+slaver|have been doing, but
+<<if $g.you.isHasAnyTraitExact(['bg_mystic', 'bg_apprentice'])>>
+given the trace of magic you can sense in the air -- something you learned
+when you were a magic student yourself,
+<<else>>
+given <<their $g.slaver>>
+<<their $g.slaver>> past as a
+<<if $g.slaver.isHasTrait('bg_mystic')>>
+wizard
+<<else>>
+student of magic
+<</if>>
+and hence <<their $g.slaver>>
+proclivity towards
+magic, and given the slave's magical abilities,
+<</if>>
+it's probably something
+related to the arcane.
+</p>
+
+<p>
+Today, <<rep $g.slaver>> slaver|have come over to you, thanking you for all
+the things you've done for your company and for <<them $g.slaver>>. Just when
+you suspect the worst, <<they $g.slaver>> instead slaver|give you a present
+of gratitude: a magically enchanted candlestick to decorate your bedchamber
+with. Despite looking like a regular candlestick, it emits no heat, and
+perpetually glistens with a reddish color — no doubt fueled by magic.
+According to <<therace $g.slaver>>, <<they $g.slaver>> slaver|have been
+draining all the magical energies from the slave into the candlestick,
+leaving the slave severely drained and needing a few weeks to recover.
+</p>
+
+<<if $g.you.isHasAnyTraitExact(['bg_mystic', 'bg_apprentice'])>>
+
+<p>
+However, drawing from your own vast knowledge of arcane matters,
+you can sense that the device was somewhat unstable.
+But you have an idea -- you could divide the energy among multiple vessels, and it should
+bring it to a stable level.
+You share your thoughts and idea with the <<urace $g.slaver>>, who ended up appreciating
+your shared interest in mystic arts.
+The next few days were spent with the both of you locked inside your office, making more and
+more of these candlesticks.
+You finished with a couple of the valuable furniture, ready to be installed or sold.
+But more importantly, your friendship with <<yourrep $g.slaver>> grew.
+The journey is the real reward, after all.
+</p>
+
+<<else>>
+
+<p>
+You thank your slaver for such a thoughtful gift, and stow it in your office
+for the time being. Judging from how severely drained the slave is, however,
+you can only imagine the pain the slave must have endured being drained of
+<<their $g.slave>> magical essence again and again.
+<<if $g.slaver.isHasTrait('per_cruel')>>
+Given <<reps $g.slaver>> sadistic nature, you have a feeling that the real reason why the slaver decide to make such an enchanted candlestick is to make the slave suffer from it...
+<<elseif $g.slaver.isHasTrait('per_dominant')>>
+Given <<reps $g.slaver>> dominant nature, you have a feeling that the real reason why the slaver decide to make such an enchanted candlestick is to satisfy <<their $g.slaver>> need to dominate others...
+<<elseif $g.slaver.isHasTrait('per_evil')>>
+Given <<reps $g.slaver>> evil nature, you have a feeling that the real reason why the slaver decide to make such an enchanted candlestick is because <<they $g.slaver>> slaver|want to torture the slave by making it...
+<</if>>
+</p>
+
+<</if>>

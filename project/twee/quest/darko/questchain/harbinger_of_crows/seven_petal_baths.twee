@@ -1,0 +1,237 @@
+:: QuestSetup_seven_petal_baths [nobr quest]
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Bathing Enthusiast', /* name */
+[
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.vagina_tight,
+  setup.trait.anus_tight,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+],
+{
+  brawn: 1,
+  aid: 1,
+  sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'seven_petal_baths', /* key */
+"Seven Petal Baths", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'special',
+  'trait',
+  'prep',
+  'vale',
+],
+4, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 1],
+  'bio1': [ setup.qu.biologist, 1],
+  'bio2': [ setup.qu.biologist, 1],
+},
+{ /* actors */
+  'x': 'vale_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_seven_petal_baths',
+setup.qdiff.harder53, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_seven_petal_bathsCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_crit', 1, -1),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_seven_petal_bathsCrit',
+    [
+      setup.qc.VarSet('quest_harbinger_of_luck_bath', '1', -1),
+      setup.qc.VarAdd('quest_harbinger_of_luck_done', 1, -1),
+      setup.qc.Blessing('bio1', 1, 'blessing_purity8', undefined),
+      setup.qc.Blessing('bio2', 1, 'blessing_purity8', undefined),
+      setup.qc.SetCooldownEvent('harbinger_of_chaos', 10),
+      setup.qc.SetCooldownEvent('harbinger_of_crows', 10),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_seven_petal_bathsFailure',
+    [
+      setup.qc.Blessing('a', 1, 'curse_vice8', undefined),
+      setup.qc.SetCooldownEvent('luck_chaser', 10),
+    ],
+  ],
+  [
+    'Quest_seven_petal_bathsFailure',
+    [
+      setup.qc.Blessing('bio1', 1, 'curse_vice8', undefined),
+      setup.qc.Blessing('bio2', 1, 'curse_vice8', undefined),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_seven_petal_baths [nobr]
+<<set _unit = setup.getUnit({title: 'quest_harbinger_of_misfortune_0'})>>
+<<if !_unit>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+<<Yourrep _unit>> has come with yet another attempt at purging <<their _unit>> unluckiness away. This time, <<they _unit>> had somehow consulted an elderly <<urace $g.x>> of the <<lore region_vale>>, who had suggested the so-called "seven-petal-baths" as a way to purge the unluckiness away. Under the full moon night, whichever maiden/lad that wishes to gain the blessing of the moon must bathe under the moonlight in the cold glade of the <<lore region_vale>>, whose waters have been infused with petals of seven particularly rare flowers of the north. There will only be two people in the glade that night: the prospective bather, and the elder <<themself $g.x>> to supposedly guide the ritual.
+</p>
+
+<p>
+If you're mad enough to believe in such a tale, you could try to purge the unluckiness of your particularly unlucky slaver by sending them alongside two other slavers into the north. They must first spend weeks gathering the necessary flowers, before finally delivering the ritual ingredients into the elder and let <<rep _unit>> undergo the ritual.
+</p>
+
+<</if>>
+
+
+
+:: Quest_seven_petal_bathsCrit [nobr]
+
+<<if $g.a.isMale()>>
+  <<questimage "seven_petal_baths_male.jpg">>
+<<else>>
+  <<questimage "seven_petal_baths_female.jpg">>
+<</if>>
+
+<p>
+<<Yourrep $g.bio1>> and <<utheirrel $g.bio1 $g.bio2>> <<rep $g.bio2>> spent weeks scouring through the vales for the seven flowers.
+<<set _unit = setup.selectUnit([$g.a, $g.bio1, $g.bio2], {trait: 'per_studious'})>>
+<<if _unit>>
+<<Reps _unit>> studious nature meant that <<therace _unit>> knew exactly what flowers they were looking for.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.a, $g.bio1, $g.bio2], {trait: 'per_attentive'})>>
+<<if _unit>>
+The task was ultimately done no small thanks to <<reps _unit>> attentive eyes.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.a, $g.bio1, $g.bio2], {trait: 'bg_scholar'})>>
+<<if _unit>>
+<<Rep _unit>> had learned about the flowers from <<their _unit>> time working as a scholar, making the entire quest easier.
+
+<</if>>
+
+After three full weeks of searching, your slavers miraculously found all seven ingredients, and it was time for the ritual to commence.
+</p>
+
+<p>
+After waiting for the full moon night, <<yourrep $g.a>> ventured alone with only the elder into the glade. Once inside, the elder chanted some gibberish before sprinkling the petals away along the glade. Surprisingly, the ritual seems to not be complete gibberish, as the waters suddenly turn lighter in color. <<Rep $g.a>> <<uadv $g.a>> stepped into the waters, while the elder followed from behind.
+</p>
+
+<p>
+The elder rubber the remains of the seven flowers in <<their $g.x>> <<uhands $g.x>>, before liberally slathering it onto <<reps $g.a>> <<ubody $g.a>>.
+<<if $g.a.isHasTrait('per_chaste')>>
+<<Rep $g.a>> a|is a chaste slaver, and tried to cover <<their $g.a>> genitals as best as they could, but it was no match for the surprisingly experienced <<uhands $g.x>>.
+<<elseif $g.a.isHasTrait('per_lustful')>>
+<<Rep $g.a>> moaned lustfully at the unexpected molestation, and not-so-secretly
+<<if $g.a.isHasDick()>>
+manage an erection underwater.
+<<else>>
+got aroused from the surprisingly experienced <<uhands $g.x>>.
+<</if>>
+<<else>>
+<<Rep $g.a>> moaned at the unexpected molestation, before giving in since it felt rather good.
+<</if>>
+The elder thoroughly explored every nook and cranny of <<reps $g.a>> body, with the excuse that <<they $g.x>> was making sure to coat every single part of <<reps $g.a>> <<uskin $g.a>>.
+<<if $g.a.isHasTrait('muscle_verystrong')>>
+The <<uhands $g.x>> traced <<reps $g.a>> massive musculature.
+<<elseif $g.a.isHasTrait('muscle_strong')>>
+The <<uhands $g.x>> traced <<reps $g.a>> considerable musculature.
+<</if>>
+<<if $g.a.isHasTrait('muscle_verythin')>>
+The <<uhands $g.x>> made extra sure every bit of <<reps $g.a>> unnaturally thin waist is covered in the flower oil.
+<</if>>
+<<if $g.a.isHasTrait('muscle_thin')>>
+The <<uhands $g.x>> made extra sure every bit of <<reps $g.a>> thin waist is covered in the flower oil.
+<</if>>
+<<if $g.a.isHasTrait('dick_huge')>>
+<<They $g.x>> spent a lot of time with <<reps $g.a>> <<udick $g.a>>, supposedly since its considered "sacred" for the ritual.
+<</if>>
+<<if $g.a.isHasTrait('breast_huge')>>
+<<Reps $g.x>> massive breastflesh were groped and poked in the name of the ritual.
+<</if>>
+<<if $g.a.isHasTrait('anus_gape')>>
+The <<uhands $g.x>> went easily inside <<reps $g.a>> <<uanus $g.a>>, eliciting a gasp as <<they $g.x>> coated the insides with the flower oil.
+<<else>>
+Several lubricated fingers went inside <<reps $g.a>> <<uanus $g.a>>, eliciting a gasp as <<they $g.x>> coated the insides with the flower oil.
+<</if>>
+<<if $g.a.isHasTrait('vagina_tight')>>
+<<Reps $g.a>> <<uvagina $g.a>> did not go unmolested either.
+<</if>>
+</p>
+
+<p>
+Unfortunately, despite the constant molestation and the power of the ritual, whatever curse plaguing <<rep $g.a>> a|was simply too strong. At the end of the ritual, instead of feeling blessed, <<rep $g.a>> felt even more cursed than usual. The ritual's blessings instead went into <<rep $g.bio1>> and <<rep $g.bio2>>, who felt purer than ever...
+</p>
+
+<p>
+Maybe you should try a different ritual next time.
+</p>
+
+
+
+
+
+:: Quest_seven_petal_bathsFailure [nobr]
+<p>
+<<Yourrep $g.bio1>> and <<utheirrel $g.bio1 $g.bio2>> <<rep $g.bio2>> spent weeks scouring through the vales for the seven flowers.
+But little that they knew that they have misclassified the flowers — instead of the seven flowers of purity, they collected the seven flowers of vice instead.
+</p>
+
+<p>
+The ritual went about as bad as expected, given the completely opposite flowers that was being used.
+Instead of being blessed and cleansed of <<their $g.a>> bad luck, <<therace $g.a>> felt more cursed than ever at the end of the ritual.
+<<if $gOutcome == 'disaster'>>
+Worse, the effects also seem to have went into both <<rep $g.bio1>> and <<rep $g.bio2>>, and by the end of the quest, you're left with three sufficiently cursed slavers...
+<</if>>
+</p>
+
+<p>
+You could try the ritual again later, but maybe you should send a more competent group of slavers next time.
+</p>
+

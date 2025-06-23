@@ -1,0 +1,157 @@
+:: CostMissingUnit [nobr]
+
+
+
+<p>
+Unit <<devactordefault>> will be gone from your company,
+but can be rescued one day.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnit($qgDefaultActorName)>>
+<</link>>
+
+
+:: CostMissingUnitForever [nobr]
+
+<p>
+Unit <<devactordefault>> will be gone from your company
+<<dangertext 'forever'>> with no chance of being rescued.
+</p>
+
+<p>
+  <<dangertext "Important:">>
+  Please make sure that whichever units that will become missing forever
+  is not in a party. This can be checked by using the Restriction named:
+  "Not in Party"
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitForever($qgDefaultActorName)>>
+<</link>>
+
+
+:: CostMissingUnitRebuy [nobr]
+
+
+
+<p>
+Unit <<devactordefault>> will be gone from your company, but can be
+<<successtext 'rebought'>> immediately.
+The price is 
+<<numberbox '_multiplier' 1.0>> times their value.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitRebuy($qgDefaultActorName, _multiplier)>>
+<</link>>
+
+
+:: CostMissingUnitOpposite [nobr]
+
+
+
+<p>
+Unit <<devactordefault>> will switch their job.
+<<message '(?)'>>
+A slaver becomes a slave available in the slave pens,
+while a slave becomes a slaver available in the prospects hall.
+<</message>>
+Replace their flavor text background with:
+The slave <<textbox '_background' 'a|was'>>.
+For example, you can write "a|was a slave corrupted into a slaver".
+(Leave blank to keep old flavor text. The a|was syntax will automatically convert it to either
+was or were)
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitOpposite($qgDefaultActorName, _background)>>
+<</link>>
+
+
+:: CostMissingUnitRecaptureEasy [nobr]
+
+
+
+<p>
+Unit <<devactordefault>> will attempt an escape. A quest will then be generated
+which must be done in order to recapture the slave.
+For this one, the quest will be <<successtext 'easy'>>, with level around 15-30.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitRecapture($qgDefaultActorName, 'escapeeasy')>>
+<</link>>
+
+
+:: CostMissingUnitRecaptureMedium [nobr]
+
+
+
+<p>
+Unit <<devactordefault>> will attempt an escape. A quest will then be generated
+which must be done in order to recapture the slave.
+For this one, the quest will be medium difficulty, with level around 35-50.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitRecapture($qgDefaultActorName, 'escapemedium')>>
+<</link>>
+
+
+:: CostMissingUnitRecaptureHard [nobr]
+
+
+
+<p>
+Unit <<devactordefault>> will attempt an escape. A quest will then be generated
+which must be done in order to recapture the slave.
+For this one, the quest will be <<dangertext 'hard'>>, with level 50-70.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitRecapture($qgDefaultActorName, 'escapehard')>>
+<</link>>
+
+
+:: CostMissingUnitRecaptureEasySlaver [nobr]
+
+
+
+<p>
+Slaver <<devactordefault>> will be captured, but immediately rescue-able with a quest.
+For this one, the quest will be <<successtext 'easy'>>, with level around 15-30.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitRecapture($qgDefaultActorName, 'capturedeasy')>>
+<</link>>
+
+
+:: CostMissingUnitRecaptureMediumSlaver [nobr]
+
+
+
+<p>
+Slaver <<devactordefault>> will be captured, but immediately rescue-able with a quest.
+For this one, the quest will be medium difficulty, with level around 35-50.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitRecapture($qgDefaultActorName, 'capturedmedium')>>
+<</link>>
+
+
+:: CostMissingUnitRecaptureHardSlaver [nobr]
+
+
+
+<p>
+Slaver <<devactordefault>> will be captured, but immediately rescue-able with a quest.
+For this one, the quest will be <<dangertext 'hard'>>, with level 50-70.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MissingUnitRecapture($qgDefaultActorName, 'capturedhard')>>
+<</link>>
+

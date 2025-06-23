@@ -1,0 +1,129 @@
+:: QuestSetup_shepherd_of_men_steal [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_shepherd_of_men_steal1',
+'Animals',
+'desert_all',  /* pools */
+0,
+[
+setup.qc.TraitReplace('unit', setup.trait.training_obedience_basic),
+setup.qc.TraitReplace('unit', setup.trait.training_endurance_basic), ],
+)>>
+
+<<run new setup.QuestTemplate(
+'shepherd_of_men_steal', /* key */
+'Shepherd of Men: Steal', /* Title */
+  'darko',   /* author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'thief1': setup.qu.thief,
+'thief2': setup.qu.thief,
+'appraiser': setup.qu.slaveappraiser, },
+{ /* actors */
+'animal': 'quest_shepherd_of_men_steal1', },
+[ /* costs */
+],
+'Quest_shepherd_of_men_steal',
+setup.qdiff.hard38, /* difficulty */
+[ /* outcomes */
+[
+'Quest_shepherd_of_men_stealCrit',
+[
+
+setup.qc.MoneyCrit(0.75),
+setup.qc.Slave('animal', 'a|was captured and trained at a slave farm'), ],
+], [
+'Quest_shepherd_of_men_stealSuccess',
+[
+
+setup.qc.MoneySmall(),
+setup.qc.Slave('animal', 'a|was captured and trained at a slave farm'), ],
+], [
+'Quest_shepherd_of_men_stealFailure',
+[
+setup.qc.Injury('thief1', 2),
+setup.qc.Injury('thief2', 2), ],
+], [
+'Quest_shepherd_of_men_stealDisaster',
+[
+setup.qc.MissingUnit('thief1'),
+setup.qc.Injury('thief2', 4), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+setup.qres.Building(setup.buildingtemplate.dungeons), ], /* restrictions to generate */
+)>>
+
+:: Quest_shepherd_of_men_steal [nobr]
+
+<<include 'Opportunity_shepherd_of_men'>>
+
+<p>
+You have chosen to steal one of the farm's products.
+</p>
+
+
+:: Quest_shepherd_of_men_stealCrit [nobr]
+
+<p>
+Your slavers sneaked into the well-guarded farm in the middle of the night.
+There, they found an unguarded barn, which your slavers entered from the rear door.
+The slaves were all placed in their respective booths, each with their hands
+restrained to the back and ankles chained to the corners of their booths,
+while their necks are securely locked in stock.
+With seemingly no guard watching over the barn,
+<<yourrep $g.thief1>> and <<rep $g.thief2>> had all the time in the world to
+loot the barn clean while <<rep $g.appraiser>> <<man $g.appraiser>>handled and appraised
+the multiple slaves on display,
+<<if $g.appraiser.isHasTrait('per_calm')>>
+taking <<their $g.appraiser>> time leisuerly,
+<<elseif $g.appraiser.isHasTrait('per_aggressive')>>
+rushedly going through slave after slave,
+<</if>>
+before picking a particularly
+well-behaving slave to bring back home.
+</p>
+
+
+:: Quest_shepherd_of_men_stealSuccess [nobr]
+<p>
+Your slavers sneaked into the well-guarded farm in the middle of the night.
+There were guards watching every barn, and your slavers had to be careful to
+not alert the guards.
+Eventually, they found a barn whose rear entrance was left unguarded, which your slavers entered.
+There were even more guards inside, and your slavers were not given much choice if they wanted to remain
+undetected.
+They unlocked the closest slave in the barn
+from <<their $g.animal>> night bondage and kidnapped <<them $g.animal>> home.
+</p>
+
+
+:: Quest_shepherd_of_men_stealFailure [nobr]
+<p>
+Your slavers sneaked into the well-guarded farm in the middle of the night.
+But <<rep $g.thief1>> accidentally alerted one of the guards, which meant
+your slavers had no choice but to run as fast as they could. Your slavers were
+slightly injured during the chase, which was not too bad considering the other
+scenarios would result in far much worse outcome.
+</p>
+
+
+:: Quest_shepherd_of_men_stealDisaster [nobr]
+
+<p>
+Your slavers sneaked into the well-guarded farm in the middle of the night.
+But <<rep $g.thief1>> accidentally alerted one of the bulkier guards, who
+immediately immobilized <<them $g.thief1>>. Your other slavers, being completely
+outnumbered, had no choice but to abandon <<yourrep $g.thief1>> to <<their
+$g.thief1 >> fate...
+</p>
+
+<p>
+You can only guess what fate awaits <<rep $g.thief1>>, but given the nature of the farm it should not be too hard of a guess.
+</p>

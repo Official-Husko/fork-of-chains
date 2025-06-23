@@ -1,0 +1,79 @@
+:: EventSetup_prison_break [nobr event]
+
+<<run new setup.Event(
+'prison_break', /* key */
+"Prison Break", /* Title */
+{ /* Author */
+  name: "Fae",
+  url: "",
+},
+[ /* tags */
+],
+'Event_prison_break',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'escapeeone': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_none),
+    setup.qres.Available(),
+  ],
+  'escapeetwo': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_none),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Ire('kobold', -20),
+  setup.qc.MissingUnitRecapture('escapeeone', 'escapemedium'),
+  setup.qc.MissingUnit('escapeetwo'),
+],
+[ /* restrictions */
+  setup.qres.IreAtLeast('kobold', 20),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_prison_break [nobr]
+
+<<set _u = setup.getAnySlaver()>>
+<<set _v = setup.getAnySlaver([_u])>>
+
+<p>
+  You enter your office to do your work. As is usual by now,
+  something inordinary happened, and <<yourrep _u>> barges into your office, bearing bad news.
+  Apparently, <<they _u>> notices that some slaves had gone missing when <<they _u>>
+  went into the Dungeons
+  <<if _u.isHasTrait('per_kind')>>
+  to care for <<their _u>> favorite slave.
+  <<else>>
+  to have some "fun".
+  <</if>>
+</p>
+
+<p>
+  Going into the cells yourself, you notice there is a large hole in their cells.
+  The tunnel seems to lead all the way from the dungeons to outside of the fort, and to their freedom.
+  <<if _u.isHasTrait('per_smart')>>
+  Thankfully, the smart slaver <<rep _u>> had already sent another slaver <<rep _v>> to scout ahead,
+  looking for any trail the slaves may had left behind.
+  <<else>>
+  You quickly ordered
+  another slaver, <<rep _v>>, to scout outside,
+  looking for any trail the slaves may had left behind.
+  <</if>>
+  One of the escaped slaves seems to have hurt themselves, and there are visible trails that may
+  lead to <<them $g.escapeeone>>.
+  There are no trace of the other one, however.
+  <<uneedrescue $g.escapeetwo>>.
+</p>
+
+<p>
+  When you are back at the comfort of your office, you start to wonder.
+  How is it possible that the slaves managed to dig such a large tunnel outside, seemingly without
+  any of you or your slavers noticing?
+  Perhaps this is the work of one of the companies you may have angered recently,
+  one particularly skilled in digging tunnels...
+</p>

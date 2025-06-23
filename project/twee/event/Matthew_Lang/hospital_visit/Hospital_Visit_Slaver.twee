@@ -1,0 +1,43 @@
+:: EventSetup_hospital_visit [nobr event]
+
+<<run new setup.Event(
+'hospital_visit', /* key */
+"Hospital Visit", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'unknown',
+],
+'Event_hospital_visit',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'injured': [
+    setup.qres.IsInjured(1),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Not(setup.qres.YourLover()),
+  ],
+  'you': [
+    setup.qres.You(),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('visiting_the_injured', {
+covalescent: "injured",
+you: "you",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.hospital),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_hospital_visit [nobr]
+Your slaver, <<rep $g.injured>> has been hurt in the line of duty and is currently convalescing in hospital. Given you're at home at the moment, you consider dropping by to say hello and maybe lift their spirits. Or something...

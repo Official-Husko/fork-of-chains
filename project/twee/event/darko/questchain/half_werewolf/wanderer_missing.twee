@@ -1,0 +1,74 @@
+:: EventSetup_wanderer_missing [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'wanderer_missing', /* key */
+"Wanderer Missing", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Event_wanderer_missing',
+{ /* roles */
+},
+{ /* actors */
+  'wanderer': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_mysterious_wanderer_0'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Leave('wanderer', "went missing from your company", 1),
+  setup.qc.IfThenElse(
+    setup.qres.And([
+      setup.qres.VarGte('wanderer_joins_missing', 2),
+      setup.qres.Building('mailroom'),
+    ]),
+  setup.qc.DoAll([
+  setup.qc.QuestDirect('the_wanderer_wanders', {
+  wanderer: "wanderer",
+  })
+  ], undefined),
+  setup.qc.DoAll([
+
+  ], undefined)),
+  setup.qc.VarAdd('wanderer_joins_missing', 1, -1),
+],
+[ /* restrictions */
+],
+8, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_wanderer_missing [nobr]
+
+<<set _iter = $varstore.get('wanderer_joins_missing') || 0>>
+<<set _u = setup.getAnySlaver([$g.wanderer])>>
+<p>
+Your usually <<uadj $g.wanderer>> <<rep $g.wanderer>> wanderer|is nowhere to be seen.
+<<if _iter > 2>>
+But you're not a little bit surprised by now — It has almost become a routine
+that <<rep $g.wanderer>> must disappear from your fort every now and then.
+<<if $fort.player.isHasBuilding(setup.buildingtemplate.mailroom)>>
+Perhaps you can adjust your schedule to fit this variable in, or perhaps you
+can try to find the root cause of <<their $g.wanderer>> frequent disappearances...
+<<else>>
+Perhaps once you build the <<rep setup.buildingtemplate.mailroom>>, you can
+try to find the root cause of <<their $g.wanderer>> frequent disappearances.
+But until then, you'll just have to adjust <<their $g.wanderer>> schedule
+every now and then.
+<</if>>
+<<elseif _iter > 0>>
+As you recall, this isn't the first time the mysterious slaver wanderer|have disappeared
+from your fort. The last time <<they $g.wanderer>> disappeared, <<they
+$g.wanderer>> dodged all of your questions asking where <<they $g.wanderer>>
+had gone to. You're starting to think if you should dock the <<uadjper
+$g.wanderer>> slaver's pay...
+<<else>>
+Even with <<yourrep _u>> helping
+you comb the entire fort, there was no trace of <<rep $g.wanderer>> to be
+found. Strange, you think to yourself, but perhaps <<theslaver $g.wanderer>> just wanderer|need some
+time for <<themself $g.wanderer>>. <<They $g.wanderer>>'ll probably be back
+by next week to collect <<their $g.wanderer>> pay as usual.
+<</if>>
+</p>

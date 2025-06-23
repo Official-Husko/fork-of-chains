@@ -1,0 +1,53 @@
+:: EventSetup_investigate_the_earth [nobr event]
+
+<<run new setup.Event(
+'investigate_the_earth', /* key */
+"Investigate the Earth", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+],
+'Event_investigate_the_earth',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('investigate_the_earth', null),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.lorebook_deep),
+  setup.qres.Building(setup.buildingtemplate.library),
+  setup.qres.NoQuest('investigate_the_earth'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_investigate_the_earth [nobr]
+<<questimage "investigate_the_earth.jpg">>
+
+<p>
+    Recently, your fort has been rocked by very frequent earthquakes, you know, almost once per day. It's certainly not natural, but what could you do about it? Just as you thought your day couldn't get worse, another big tremor happens, rocking you to the core as well as spilling your drink all over your desk.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    Just as you were about to
+    <<if $unit.player.isHasTrait('per_kind')>>
+        make sure your slaves are fine,
+    <<else>>
+        release your stress on one of your slaves,
+    <</if>>
+    <<yourrep _u>> came running to you, bringing urgent news.
+    A cavern entrance inside your fort has been unearthed by the recent earthquake. It looks dark, damp, and dank, with tunnels leading underground.
+</p>
+
+<p>
+    Perhaps there is something down there, causing the recent tremors. A quest has been prepared for you, should you wish to investigate...
+</p>

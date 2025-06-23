@@ -1,0 +1,162 @@
+:: QuestSetupDeliveryService [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _trader = setup.CriteriaHelper.CritTraits(
+  [
+    setup.trait.subrace_humandesert,
+    setup.trait.race_greenskin,
+    setup.trait.magic_fire,
+    setup.trait.magic_fire_master,
+  ],
+  setup.CriteriaHelper.DisasterTraits(
+    [
+      setup.trait.race_wolfkin,
+      setup.trait.subrace_humanvale,
+      setup.trait.magic_water,
+      setup.trait.magic_water_master,
+    ],
+    setup.qu.trader,
+  )
+)>>
+
+<<run new setup.QuestTemplate(
+  'delivery_service', /* key */
+  'Delivery Service', /* Title */
+  'darko',   /* author */
+  ['desert', 'money'],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'trader1': _trader,
+    'trader2': _trader,
+    'trainer': setup.qu.slavetrainer,
+    'pony': [setup.qu.slavepony, 2],
+  },
+  { /* actors */
+    'client': 'all',
+  },
+  [ /* costs */
+  ],
+  'QuestDeliveryService', /* passage description */
+  setup.qdiff.hard37, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestDeliveryServiceCrit',
+      [
+        setup.qc.Equipment(setup.equipmentpool.pony_good),
+        setup.qc.MoneyNormal(1.0),
+        
+      ],
+    ],
+    [
+      'QuestDeliveryServiceSuccess',
+      [
+        setup.qc.MoneyNormal(1.4),
+        
+      ],
+    ],
+    [
+      'QuestDeliveryServiceFailure',
+      [
+      ],
+    ],
+    [
+      'QuestDeliveryServiceDisaster',
+      [
+        setup.qc.Injury('pony', 4),
+        setup.qc.Trait('pony', null, setup.trait.training_pony_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [[setup.questpool.desert, setup.rarity.uncommon],], /* quest pool and rarity */
+  [
+    setup.qres.HasSlaveWithTraits([setup.trait.training_pony_basic]),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestDeliveryService [nobr]
+
+<p>
+The eastern nomads are known for their prowess in riding and taming horses.
+Amongs the multiple clans in the east, there is one in particular which specializes
+in training people as ponies. These clans raise their ponies to be a hardy,
+bulky, and obedient steed and relies largely on them for their transportation and work.
+The steeds in those villages can usually be seen in the village center either being
+parked or being used to transport some goods. These steeds always wear their
+standard pony gear at all times -- a bit gag, a pony plug, and a pair of arm/leg hooves.
+Some more kinky owners like to decorate their ponies too with nipple clamps and chastity
+devices.
+</p>
+
+<p>
+A client has come forward to you asking to help deliver an important cargo to the leader
+of the clan.
+<<They $g.client>> specifically wants your slavers to deliver the cargo using one of your pony slaves,
+to show <<their $g.client>> goodwill for the clan.
+You can take the offer and give your pony slaves some fresh air in the deserts,
+but a journey to the <<lore region_desert>> will surely take a little while.
+</p>
+
+
+:: QuestDeliveryServiceCrit [nobr]
+
+  <<if $g.pony.isMale()>>
+  <<else>>
+    <<questimage 'delivery_service_female.jpg'>>
+  <</if>>
+
+<p>
+Your slavers and their pony slave arrived at the nomad camp earlier than expected.
+They <<uadv $g.trader1>>
+delivered the cargo to the leader of the encampment, who appreciated the gesture of sending it
+via a well-bred pony slave.
+As a bonus reward, your slavers were given a particularly kinky pony gear courtesy of the settlement,
+which could be used as a reward or punishment for your pony slave.
+Before heading back, your slavers spent some time looking around the camp,
+observing some the camp's pony trainers training their newer and freshly captured
+ponies to properly trot.
+<<set _cruel = setup.selectUnit([$g.trader1, $g.trader2, $g.trainer], {trait: 'per_cruel'})>>
+<<if _cruel>>
+  <<Rep _cruel>> cruelly smirked as <<they _cruel>> watched one of the pony-in-training yelped
+  through its gag as it was whipped for being too slow on the trot.
+<</if>>
+
+<<set _kind = setup.selectUnit([$g.trader1, $g.trader2, $g.trainer], {trait: 'per_kind'})>>
+<<if _kind>>
+  <<Rep _kind>> could not watch anymore as the kind slaver was not completely fine watching
+  others suffer like that.
+<</if>>
+
+</p>
+
+
+:: QuestDeliveryServiceSuccess [nobr]
+
+<p>
+Your slavers and their pony slave arrived at the nomad camp as scheduled.
+The leader of the encampment were happy to receive the cargo <<uadv $g.trader1>>
+delivered in a way that fully respects
+their traditions, and sent <<their $g.client>> good regards to your client.
+Before heading back, your slavers spent some time looking around the camp,
+and observing some the camp's pony trainers training their newer ponies to properly trot.
+</p>
+
+
+:: QuestDeliveryServiceFailure [nobr]
+
+<p>
+Unfortunately, by the time your slavers and <<rep $g.pony>> arrived at the camp,
+the nomads had already moved on to a different location. It seemed that <<rep $g.pony>>
+pony|was just not fast enough. You made a mental note to punish the slave later.
+</p>
+
+
+:: QuestDeliveryServiceDisaster [nobr]
+
+<p>
+Unfortunately, <<rep $g.pony>> collapsed from exhaustion in the middle of the trip,
+and your slavers had no choice but to bring <<them $g.pony>> back home to recover.
+Perhaps <<their $g.pony>> pony training requires a refresher.
+</p>

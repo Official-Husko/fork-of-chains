@@ -1,0 +1,299 @@
+:: QuestSetup_tiger_bank_debt_collection_vales [nobr quest]
+
+
+
+
+
+<<set _criterianegotiator = new setup.UnitCriteria(
+null, /* key */
+'Trader', /* name */
+[
+  setup.trait.subrace_demonkin,
+  setup.trait.subrace_tigerkin,
+  setup.trait.subrace_dragonkin,
+  setup.trait.subrace_demon,
+  setup.trait.bg_boss,
+  setup.trait.bg_merchant,
+  setup.trait.height_tall,
+  setup.trait.face_scary,
+  setup.trait.per_smart,
+  setup.trait.per_sly,
+  setup.trait.per_frugal,
+  setup.trait.per_cruel,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_lavish,
+  setup.trait.per_dreamy,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 1,
+  social: 2,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'tiger_bank_debt_collection_vales', /* key */
+"Tiger Bank Debt Collection - Vales", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'vale',
+  'money',
+  'favor',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'negotiator': [ _criterianegotiator, 1],
+  'enforcer': [ setup.qu.thug, 1],
+  'enforcer2': [ setup.qu.thug, 1],
+},
+{ /* actors */
+  'agent': 'quest_event_loan_tiger1',
+  'villager': 'vale_all',
+},
+[ /* costs */
+],
+'Quest_tiger_bank_debt_collection_vales',
+setup.qdiff.normal12, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_tiger_bank_debt_collection_valesCrit',
+    [
+      setup.qc.Ire('bank', -1),
+      setup.qc.Favor('bank', 50),
+      setup.qc.MoneyCustom(500),
+      setup.qc.SlaveMarker('villager'),
+    ],
+  ],
+  [
+    'Quest_tiger_bank_debt_collection_valesCrit',
+    [
+      setup.qc.MoneyCustom(500),
+      setup.qc.Favor('bank', 30),
+      setup.qc.Favor('humanvale', -20),
+    ],
+  ],
+  [
+    'Quest_tiger_bank_debt_collection_valesFailure',
+    [
+      setup.qc.MoneyCustom(100),
+    ],
+  ],
+  [
+    'Quest_tiger_bank_debt_collection_valesDisaster',
+    [
+      setup.qc.Injury('negotiator', 2),
+      setup.qc.OneRandom([
+setup.qc.Injury('enforcer', 1),
+setup.qc.TraumatizeRandom('enforcer', 5)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('enforcer2', 1),
+setup.qc.TraumatizeRandom('enforcer2', 5)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_tiger_bank_debt_collection_vales [nobr]
+<<dialogue $g.agent>>
+    I would prefer you do not kill them. I simply want what is due.
+    <<if $gQuest.getSeed() % 2 == 0>>
+        Dead customers do not spend money with you again.
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        Our rates are not unreasonable and they knew the terms when they signed on.
+    <</if>>
+<</dialogue>>
+
+The <<rep $company.bank>> in <<lore location_npc>> is a lifeline for many who fall upon hard times and do their best to make wise investments. Unfortunately, some people are unable to pay back the loans they take out. Sometimes the bank needs people to convince the debtors to pay up. This is where you come in.
+
+Your contact <<rep $g.agent>> at the Tiger Bank has directed you to
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    an isolated farmstead in the far reaches of the vales.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    an inn at a busy crossroads.
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    a fishing village by the banks of a swift river.
+<</if>>
+
+If you feel like doing some collection work, you can send a team into the vales to push the northerners to repay their debt.
+
+
+
+
+:: Quest_tiger_bank_debt_collection_valesCrit [nobr]
+It doesn't take your slavers long to arrive at the
+
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    farmstead
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    inn
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    fishing village
+<</if>>
+
+where you are greeted by
+
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    the farmer.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    the innkeeper.
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    a village elder.
+<</if>>
+
+When <<rep $g.negotiator>>
+<<if $g.negotiator.isYou()>>
+    explain
+<<else>>
+    explains
+<</if>>
+why they're visiting, the <<woman $g.villager>> eyes <<rep $g.enforcer>> and <<rep $g.enforcer2>> warily and hastens to explain.<br>
+
+<<if $gOutcome == 'crit'>>
+    "Look, we do have the payment. It's just taken a bit longer for us to get it together. The vales are lousy with bandits and there have been werewolf raids and it hasn't been safe to send large sums of coin anywhere."<br>
+    Payment collection was easy—almost disappointingly so, but <<rep $g.agent>> is happy that the problem customer isn't such a problem after all, and happily pays you your fee.
+<<elseif $gOutcome == 'success'>>
+    "We don't have it. We've been facing outlaw and werewolf raids almost non stop these last months and they've taken everything. Your bank is going to have to wait."<br>
+    /* set target location */
+    <<if $gQuest.getSeed() % 3 == 0>>
+        "All right," <<rep $g.negotiator>> says <<uadv $g.negotiator>>. "Tell you what. We're from <<rep $company.player>>, so how about we take your <<daughter $g.villager>>, sell <<them $g.villager>> off and use that to square your debt? No harm, no foul."<br>
+        It was remarkable how quickly the farmer managed to pull out a gold necklace and a few other pieces of jewellery to hand over. <<rep $g.negotiator>> figured they easily covered the payment amount and bid the farmer farewell. <br>
+    <<elseif $gQuest.getSeed() % 3 == 1>>
+        "All right," <<rep $g.negotiator>> says <<uadv $g.negotiator>>. "How about you and I sit down and talk about this, and <<name $g.enforcer>> and <<name $g.enforcer2>> head down into your cellar and play with their axes and your barrels of ale?"<br>
+        The innkeeper's face paled. "You wouldn't."<br>
+        "I sell people for a living. Do you think I'm going to blink at some spilt ale?"<br>
+        Begrudgingly, the innkeeper tugged a golden ring off his finger and pushed it across the bar. "That was my grandfathers. I hope you're happy."<br>
+    <<elseif $gQuest.getSeed() % 3 == 2>>
+        "All right," <<rep $g.negotiator>> says <<uadv $g.negotiator>>. "I'll tell you what. You hand over the payment, and <<name $g.enforcer>> and <<name $g.enforcer2>> won't burn all your nets, rope and lines."<br>
+        "Are you threatening me?"<br>
+        "Yes. But I like to think of it as a statement of fact."<br>
+        Under threat of losing their livelihood, the villagers begrudgingly put together a small pile of gold, jewellery and other trinkets, including a near perfect pearl, which your slavers brought back to the fort.<br>
+    <</if>>
+    <<rep $g.agent>> was pleased when you delivered the payment and happily paid you the agreed fee. After a few days your slavers report rumours spreading in <<rep $company.humanvale>> that your company is acting as a strong arm for the <<rep $company.bank>>. It can't be helped, but some northerners will be warier around your slavers. Not that it matters that much.
+<</if>>
+
+
+
+
+
+:: Quest_tiger_bank_debt_collection_valesFailure [nobr]
+It doesn't take your slavers long to arrive at the
+
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    farmstead
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    inn
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    fishing village
+<</if>>
+
+but none of them were prepared for what greeted them there. The first thing was the smell of vomit, shit and rotting flesh. Then they saw the bodies. They'd been stripped and tossed into piles
+
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    in the kitchen garden
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    in the courtyard
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    in the town square
+<</if>>
+
+and left for the flies and scavengers. Outlaws probably, given that just about everything of value had been taken. Your slavers picked up a few trinkets and some less durable items, like a decorative ceramic vase, but there isn't much of value left. You get some base pay from <<rep $g.agent>> for looking into the situation, but the bank isn't getting any money from that loan, and you're not getting your bonuses either.
+
+
+
+:: Quest_tiger_bank_debt_collection_valesDisaster [nobr]
+It doesn't take your slavers long to arrive at the
+
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    farmstead
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    inn
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    fishing village
+<</if>>
+
+where you are greeted by
+
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    the farmer.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    the innkeeper.
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    a village elder.
+<</if>>
+
+When <<rep $g.negotiator>>
+<<if $g.negotiator.isYou()>>
+    explain
+<<else>>
+    explains
+<</if>>
+
+why they're visiting, the <<woman $g.villager>> eyes <<rep $g.enforcer>> and <<rep $g.enforcer2>> and folds <<them $g.villager>> arms.<br>
+"We've been hit by bandits and werewolves and now you lot? Bugger off. We'll get the bank its money when we have it and it's going to be soon. Tell the cat he'll get his funds and some extra to cover the late pay."<br>
+"The bank is not offering an extension," <<rep $g.negotiator>>
+<<if $g.negotiator.isYou()>>
+    say
+<<else>>
+    says
+<</if>>
+<<uadv $g.negotiator>>. "Tell you what.
+/* set target location */
+<<if $gQuest.getSeed() % 3 == 0>>
+    How about I take your <<daughter $g.villager>>, sell <<them $g.villager>> off and use that to square your debt? No harm, no foul."<br>
+    The farmer smiled. <<They $g.villager>> wasn't meant to, but <<they $g.villager>> did. Then your slavers felt the shadows fall upon them from the farmer's sons and farmhands. Big, sturdy folk armed with shovels, makeshift cudgels and more than a few pitchforks.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    How about you and I sit down and talk about this, and <<name $g.enforcer>> and <<name $g.enforcer2>> head down into your cellar and play with their axes and your barrels of ale?"<br>
+    "All right," the innkeeper says. "Sounds good. Would you like some pork? We've been slow roasting it all day. It should just be about perfect."<br>
+    "Sounds wonderful." Something was off, but they'd called the bluff.<br>
+    <<Rep $g.enforcer>> and <<name $g.enforcer2>> headed down to the cellar as a skinny, simpering girl brought over a plate of roasted pork and potatoes, cringing away from <<rep $g.negotiator>> as she places the dish in front of <<them $g.negotiator>>. Then she lunges, and there's a heavy knife impaling <<their $g.negotiator>> hand to the table.<br>
+    "We saw off the bandits," the innkeeper says evenly. "And you're about to see why. When you crawl back to your fortress, tell the bank that they will get their money. And you will stay away from my inn."
+
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    You hand over the payment, and <<name $g.enforcer>> and <<name $g.enforcer2>> won't burn all your nets, rope and lines."<br>
+    A heavy mass fell over your slavers.<br>
+    "You mean these nets?" the elder says with a gummy smile as your slavers struggled to break free. "They will mend in a few days. Your bones, on the other hand..."<br>
+    The hardy fisherfolk laid into your slavers with shovels, broom handles, oars and rocks, and kept going past the point where they were begging for mercy.
+<</if>>
+
+<p>
+    Your slavers eventually made it back to the fort, broken and injured, without any coin to show for their efforts. <<rep $g.agent>> doesn't even bother meeting with you to discuss your slavers' ineptitude.
+</p>
+
+
+
+
+

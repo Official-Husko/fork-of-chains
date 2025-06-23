@@ -1,0 +1,277 @@
+:: QuestSetup_a_most_noble_extortion [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'a_most_noble_extortion', /* key */
+"A Most Expensive Extortion", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+4, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'whore': [ setup.qu.escort, 1],
+  'bodyguard': [ setup.qu.bodyguard, 1],
+  'convincer': [ setup.qu.convincer, 1],
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'noble': 'city_all',
+},
+[ /* costs */
+],
+'Quest_a_most_noble_extortion',
+setup.qdiff.hard54, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_most_noble_extortionCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.IfThenElse(
+        setup.qres.VarGte('quest_brothel_class', 1),
+        setup.qc.Equipment(setup.equipmentpool.social_good),
+        setup.qc.Equipment(setup.equipmentpool.slaving_good),
+      ),
+    ],
+  ],
+  [
+    'Quest_a_most_noble_extortionCrit',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '84', -1),
+      setup.qc.IfThenElse(
+        setup.qres.VarGte('quest_brothel_class', 1),
+        setup.qc.Equipment(setup.equipmentpool.social_good),
+        setup.qc.Equipment(setup.equipmentpool.slaving_good),
+      ),
+    ],
+  ],
+  [
+    'Quest_a_most_noble_extortionFailure',
+    [
+      setup.qc.QuestDirectSelf({
+head: "head",
+owner: "owner",
+}),
+      setup.qc.MoneyCustom(-3000),
+    ],
+  ],
+  [
+    'Quest_a_most_noble_extortionFailure',
+    [
+      setup.qc.Injury('whore', 4),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_most_noble_extortion [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+Thanks to the recent expansion of <<attach _describe>>, the brothel's growth
+has been unprecedented. More and more people are aware of your brothel now,
+and many flock into your brothel to try the goods. But unfortunately, the
+fame also attracts unwanted people in.
+</p>
+
+<p>
+<<if _class > 0>>
+Since you've chosen to make a rather classy brothel, a noble of the city has
+deign it fit to impose a hefty tax upon your fine establishment. While a few
+tax is fair, the amount imposed is almost bordering on extortion.
+<<else>>
+Since you've chosen to make a rather debauched brothel,
+a gang of neko mafias has deign it fit to ask your brothel for "protection money".
+While your establishment would be happy to pay a reasonable fee, the amount
+they asked for was just too much, bordering on extortion.
+<</if>>
+This is
+just unacceptable, and <<yourrep $g.owner>> owner|implore you to do something
+while <<they $g.owner>> and the head whore <<name $g.head>> would try their
+best to delay the payment as much as possible.
+</p>
+
+<p>
+As much as you'd like to order your bouncers to put
+<<if _class > 0>>
+the noble in <<their $g.noble>> place, harming a noble is going to be an incredibly bad decision for you, so you'll
+just have to convince the noble that it is in <<their $g.noble>> best interest to
+keep the brothel up and running.
+<<else>>
+these criminals in their place, they are also
+a rather significant part of your customer, and angering them would be an
+incredibly bad decision for you.
+You'll just have to convince these scums that it is in <<their $g.noble>> interest to
+keep the brothel up and running.
+<</if>>
+A convincer should be sent to spearhead the negotiation, as well as an
+imposing bodyguard to add to the negotiation. Finally, to demonstrate the
+worth of your brothel, you should also send one of your slavers as a "whore",
+together with a real whore from the brothel. Surely with their masterful
+expertise over sex,
+<<if _class > 0>>
+they'll convince the noble that this brothel is "good for <<them $g.noble>>".
+<<else>>
+they'll overwhelm the criminal's primal instincts and convince <<them $g.noble>> that this brothel
+has "<<their $g.noble>> best interest at heart".
+<</if>>
+</p>
+
+
+:: Quest_a_most_noble_extortionCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<<if _class > 0>>
+<<set _noble = 'noble'>>
+<<else>>
+<<set _noble = 'boss'>>
+<</if>>
+
+<p>
+As it happened,
+<<if _class > 0>>
+the noble
+<<else>>
+the mafia boss
+<</if>>
+was doing a surprise visit to your brothel to
+collect the
+<<if _class > 0>>
+"tax",
+<<else>>
+"protection money",
+<</if>>
+by the time <<yourrep $g.convincer>> arrived. Using
+<<their $g.convincer>> silver tongue, <<therace $g.convincer>> managed to
+<<uadv $g.convincer>> convince <<them $g.noble>> to give your brothel a try first,
+before collecting <<their $g.noble>> "well-deserved"
+<<if _class > 0>>
+tax.
+<<else>>
+protection money.
+<</if>>
+A full-on service
+for an entire month, all courtesy of <<attach _describe>>.
+</p>
+
+<p>
+Before the <<= _noble>>
+was able to refuse, <<yourrep $g.whore>> as well as the head
+whore <<name $g.head>> stripped down, before advancing slowly into
+the <<= _noble>>.
+Apparently having done <<their $g.head>> research, the head whore <<name
+$g.head>> knew very well that the <<= _noble>>
+<<if _sub == 'sub'>>
+loves nothing more than to dominate other <<men $g.head>>, and <<therace
+$g.head>> dropped into the floor while offering a whip into the noble.
+<<else>>
+harbors a secretly submissive tendencies, and <<therace $g.head>> sternly
+ordered the <<= _noble>> to drop on <<their $g.noble>> knees.
+<</if>>
+<<Yourrep $g.convincer>> could see the <<= _noble>>
+<<if $g.noble.isHasDick()>> was getting a hard-on, and a stiff prick was visibly tenting from <<their $g.noble>> pants.
+<<else>>
+was getting aroused, flushing all over.
+<</if>>
+Without saying a word, the trio went into one of the
+<<if _facility == 'rooms'>>
+luxurious private rooms, no doubt to enjoy some "private time" together.
+<<else>>
+sex dungeons, no doubt to enjoy some "private time" together.
+<</if>>
+</p>
+
+<p>
+Throughout the four weeks, <<yourrep $g.whore>> as well as the head whore <<name $g.head>>
+serviced the <<= _noble>>, indulging in every bit of <<their $g.noble>>
+<<if _sub == 'sub'>>
+darkest fantasies.
+<<else>>
+secretly submissive tendencies.
+<</if>>
+Loud sounds of moaning could be heard every now and then, and they were
+almost only seen outside of the room for basic necessities. In the end, the
+<<= _noble>> changed <<their $g.noble>> mind completely, and decided to
+<<if _class > 0>>
+waive all taxes of your establishment for its "service for the people".
+<<else>>
+protect your establishment without collecting any pay, for the good of <<their $g.noble>>
+people.
+<</if>>
+The head whore <<name $g.head>> had done a tremendous job this time,
+and perhaps <<their $g.head>> talents are wasted working as a whore...
+</p>
+
+<p>
+<<if _class > 0>>
+As the noble went back to <<their $g.noble>> palace,
+<<else>>
+As the mafia boss went back to <<their $g.noble>> hideout,
+<</if>>
+<<they $g.noble>> did so
+while leaving some of <<their $g.noble>> valuable clothings inside. <<Yourrep
+$g.convincer>> brought them back to your fort for your perusal.
+</p>
+
+
+
+:: Quest_a_most_noble_extortionFailure [nobr]
+
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+
+<p>
+Unfortunately, <<yourrep $g.convincer>> convincer|was unable to convince the noble of the merits of your fine establishment.
+<<if $gOutcome == 'disaster'>>
+When your slavers tried to protest,
+<<if _class > 0>>
+the noble called upon one of <<their $g.noble>> hulking bodyguards
+<<else>>
+the mafia boss called upon one of <<their $g.noble>> hulking bruisers
+<</if>>
+to rough up one of your slavers, and <<yourrep $g.whore>> ended up injured.
+<</if>>
+In the end, your slavers were forced to pay the month's
+<<if _class > 0>>
+tax
+<<else>>
+protection money
+<</if>>
+for your brothel,
+which they grudgingly paid. You'll have to try again if you want to solve
+this problem for good.
+</p>

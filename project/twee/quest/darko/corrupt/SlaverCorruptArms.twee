@@ -1,0 +1,64 @@
+:: QuestSetupSlaverCorruptArms [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'slavercorrupt_arms',  /* id */
+  'Slaver Corruption: Arms',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.corruption_head_master,
+    'assistant1': setup.qu.corruption_assistant,
+    'assistant2': setup.qu.corruption_assistant,
+    'offering': setup.qu.offeringslave,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SlaverCorruptArms',  /* description */
+  setup.qdiff.extreme51,
+  [
+    [
+      'SlaverCorruptAllCrit',
+      [
+        setup.qc.Corrupt('trainee', 'arms'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ]
+    ],
+    [
+      'SlaverCorruptAllSuccess',
+      [
+        setup.qc.Corrupt('trainee', 'arms'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaverCorruptAllFailure',
+      [
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaverCorruptAllDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SlaverCorruptArms [nobr]
+<p>
+Corrupt a slaver's arms.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: the offered slave will be lost forever as they are offered to the powers beyond <<lore concept_mist>>...
+</p>

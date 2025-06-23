@@ -1,0 +1,198 @@
+:: QuestSetup_a_bargainatany_price [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Valuable Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.value_high4, setup.trait.value_high5, setup.trait.value_high6, setup.trait.value_high7], true),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'a_bargainatany_price', /* key */
+'A Bargain at any Price', /* Title */
+'darko', /* Author */
+[ 'desert', 'veteran', 'danger', 'upgrade', 'legendary',
+], /* tags */
+4, /* weeks */
+20, /* quest expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'negotiator': setup.qu.abyssal_negotiator,
+'bimbo': setup.qu.bimbo,
+'offering': _criteriaslave, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_a_bargainatany_price',
+setup.qdiff.hell56, /* difficulty */
+[ /* outcomes */
+[
+'Quest_a_bargainatany_priceCrit',
+[
+setup.qc.Item(setup.item.dark_technology),
+setup.qc.MissingUnitForever('offering'),
+
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_a_bargainatany_priceCrit',
+[
+setup.qc.Item(setup.item.dark_technology),
+setup.qc.MissingUnitForever('offering'),
+setup.qc.MoneySmall(),
+setup.qc.Corrupt('bimbo'), ],
+], [
+'Quest_a_bargainatany_priceCrit',
+[
+setup.qc.Corrupt('bimbo'),
+setup.qc.Corrupt('bimbo'),
+setup.qc.Corrupt('bimbo'),
+setup.qc.Corrupt('bimbo'),
+setup.qc.Corrupt('bimbo'),
+setup.qc.Corrupt('offering'),
+setup.qc.Corrupt('offering'),
+setup.qc.Corrupt('offering'), ],
+], [
+'Quest_a_bargainatany_priceCrit',
+[
+setup.qc.MissingUnitForever('offering'),
+setup.qc.MissingUnit('bimbo'), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.legendary],
+], /* quest pool and rarity */
+[
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(),
+setup.qres.NoItem(setup.item.dark_technology), ], /* restrictions to generate */
+)>>
+
+:: Quest_a_bargainatany_price [nobr]
+
+<p>
+<<lore concept_mist>> is often very thin at some
+remote parts of the <<lore region_desert>>.
+In these places, it is sometimes possible to communicate with the demonic
+forces beyond, to bargain for demonic treasures that would not exist in the
+mortal plane.
+While the risk is absolutely profound, the benefits often outweights the risks.
+</p>
+
+<p>
+You can try to send a group of slavers to barter a sufficiently valuable slave in exchange for
+a forbidden knowledge. As a backup, one of your slavers should also be completely prepared
+should the fickle demon asked for a demonstration of the slave.
+This quest will long and dangerous, and it is completely unclear what kind of benefit
+you could possibly reap from it, but it might just give you a knowledge far beyond anything you
+could find normally.
+</p>
+
+
+:: Quest_a_bargainatany_priceCrit [nobr]
+
+<p>
+Having journeyed for a week straight, your slavers arrived at the target
+place. <<lore concept_mist>> was indeed very thick in the location, and your slavers swore they
+could hear otherworldly moans echoing throughout the oasis,
+as well as the sounds of breasts lactating milk from all around the area.
+A sudden daze assaulted your team, and
+within moments, they somehow found themselves having been transported into a completely
+different realm that they could only describe as hell.
+</p>
+
+<p>
+A minor prince from the land beyond <<lore concept_mist>> has taken an interest in your slavers'
+merchandise, and also in <<yourrep $g.bimbo>>.
+The prince offered to open negotiation in exchange for "fair use" of both
+<<rep $g.offering>> and <<rep $g.bimbo>>. Your slavers reluctantly agreed to the deal.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+It turned out that your slavers had nothing to worry about as <<rep $g.negotiator>> somehow
+<<uadv $g.negotiator>>
+managed to close negotiation extremely early, exchanging <<rep $g.offering>> for a
+piece of corrupted knowledge. <<Rep $g.bimbo>> bimbo|was returned to you
+before <<they $g.bimbo>> took any permanent damage from being used in such an
+otherworldly location.
+</p>
+
+<<else>>
+
+<p>
+The prince prolonged the negotiations as much as he can.
+While the time was wasting, his many conjured
+clones were violently using your wares.
+Ultimately, through <<reps $g.negotiator>> deft negotiation skills, <<they $g.negotiator>>
+<<uadv $g.negotiator>> reached an agreement where <<rep $g.offering>> offering|was
+permanently exchanged with a small piece of corrupted knowledge.
+<<Rep $g.bimbo>> bimbo|was returned to you after much use, which left <<them $g.bimbo>> rather
+corrupted by the experience.
+</p>
+
+<</if>>
+
+<p>
+The demon flicked its fingers, and your slavers found themselves back at the desert,
+two weeks having passed during their absence.
+After recuperating in a nearby settlement, they headed home victorious, with
+forbidden knowledge in <<uhand $g.bimbo>>.
+</p>
+
+<p>
+<<Reps $g.offering>> fate is unknown, but there are little left to
+imagination what could happen to slaves in such a debauched palace.
+</p>
+
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+The prince prolonged the negotiations as much as he can.
+While the time was wasting, his many conjured
+clones were violently using your wares.
+Even with the sacrifices of your slaves and <<yourrep $g.bimbo>>, the negotiation
+did not go through.
+When <<rep $g.negotiator>> <<uadv $g.negotiator>>
+raised the prince's ire, your slavers found themselves transpored back at the desert,
+with two weeks apparently had passed in their absence.
+The cum-soaked <<rep $g.offering>> and <<rep $g.bimbo>> were also found next to them,
+having been severely used, abused, and corrupted beyond recognition.
+After recuperating in a nearby settlement, your slavers headed home defeated.
+</p>
+
+<<else>>
+
+<p>Unfortunately, your slavers were deceived by the demon.
+The contract sealed
+both <<reps $g.negotiator>> and <<reps $g.bimbo>> fates, without gaining
+anything in return.
+The prince gave no chance to regain them back as
+<<yourrep $g.negotiator>> and <<utheirrel $g.negotiator $g.trainer>> <<rep $g.trainer>>
+suddently found themselves back at the desert, with two weeks apparently had passed in
+their absence.
+Having no way to contact their missing ally, they headed home, utterly defeated.
+</p>
+
+<p>
+The fates of
+<<rep $g.offering>> and <<rep $g.bimbo>> are unknown, but there are
+surprisingly little left to imagination what could possible happen to slaves in such a
+debauched palace.
+</p>
+
+<</if>>

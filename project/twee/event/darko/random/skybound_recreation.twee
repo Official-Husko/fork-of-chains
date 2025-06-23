@@ -1,0 +1,129 @@
+:: EventSetup_skybound_recreation [nobr event]
+
+<<run new setup.Event(
+'skybound_recreation', /* key */
+"Skybound Recreation", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_skybound_recreation',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.AllTraits([setup.trait.skill_flight], true),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveNoBedchamber(),
+    setup.qres.AllTraits([setup.trait.training_obedience_basic], true),
+    setup.qres.NoTraits([setup.trait.skill_flight], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_skybound_recreation [nobr]
+<p>
+    As you walk past your fort, suddenly a shadow whooshed far high on the sky, far above you. Looking above, you see <<yourrep $g.slaver>>
+    flying leisurely above your fort.
+    <<Their $g.slaver>>
+    <<if $g.slaver.isHasTrait('wings_elf')>>
+        fluttery transluscent wings are almost invinsible with the bright sun above.
+    <<elseif $g.slaver.isHasTrait('wings_dragonkin')>>
+        massive draconic wings are a sight to behold indeed, allowing <<them $g.slaver>> to fly powerfully and make ridiculous aerial maneuvers.
+    <<elseif $g.slaver.isHasTrait('wings_demon')>>
+        bat-like demonic wing a strong contrast to the bright sun, like a demon's attempt to pierce the heavens.
+    <<elseif $g.slaver.isHasTrait('wings_angel')>>
+        feathery wings flap beautifully in the sky, like a saint from the heavens.
+    <<else>>
+        wings carrying them up the sky high.
+    <</if>>
+</p>
+
+<p>
+    Looking closer, however, you notice that <<they $g.slaver>> brought a "passenger" with them: one of your slaves, <<rep $g.slave>>.
+</p>
+
+<<if $g.slaver.isHasTrait('per_kind')>>
+    <p>
+        The poorly trained slave is crying in fear, unused to such heights.
+        Knowing how kind <<rep $g.slaver>> is, you are guessing that this is <<their $g.slaver>> attempt to soothe and calm the slave, which has backfired spectacularly.
+        Perhaps the <<urace $g.slaver>> thought a calming breeze far above the fort would do much good for the slave's mental well-being.
+    </p>
+
+<<elseif $g.slaver.isHasTrait('per_chaste')>>
+    <p>
+        The poorly trained slave is crying in fear, unused to such heights.
+        Knowing how chaste <<rep $g.slaver>> is, you are guessing that nothing sexual happens far above the sky there, but who knows what might prompt the <<uadj $g.slaver>> <<urace $g.slaver>> for bringing a passenger with <<them $g.slaver>>.
+    </p>
+<<else>>
+
+    <p>
+        Judging from <<reps $g.slaver>> pleasure-filled face, <<they $g.slaver>> slaver|is probably busy fucking the slave senseless
+        <<if !$g.slaver.isHasDick()>>
+            with a strap-on
+        <</if>>
+        far above the sky.
+        The sky does make an exquisite settings for sex, should one be capable of having fun up there.
+    </p>
+
+    <<choose>>
+    <<opt "Just enjoy the show">>
+
+        <p>
+            <<Rep $g.slaver>> flies in circles, barrel-rolling, and even do a loop, all without stopping to fuck the now screaming and crying slave.
+            It was quite a sight, like watching a flight show, and you feel quite refreshed watching such depravity far above your fort.
+        </p>
+
+        <<run setup.qc.BoonizeRandom('you', 5).apply($gQuest)>>
+
+    <<optif $unit.player.isHasTrait('skill_flight')>>
+    <<opt "Fly using your own wings and make it a threesome">>
+
+        <p>
+            Flapping your own <<uwings $g.you>>, you soar far above to meet with <<rep $g.slaver>>. Initially surprised, <<they $g.slaver>> quickly understand what you are trying to do, and reposition <<rep $g.slave>> so <<their $g.slave>> mouth is now open facing forwards. You
+            <<if $g.you.isHasTrait('wings_elf')>>
+                use your translucent wings to gracefully flutter before positioning your
+                <<udickorstrap $g.you>> right in front of the slave's face.
+            <<elseif $g.you.isHasTrait('wings_dragonkin')>>
+                spread your powerful draconic wings wide and made a show to dive powerfully down and up, before settling yourself just right so that your <<udickorstrap $g.you>> is right in front of the slave's face.
+            <<elseif $g.you.isHasTrait('wings_demon')>>
+                spread your bat-like demonic wings like some demon of old, before swooping right into position, your <<udickorstrap $g.you>> grazing the slave's face.
+            <<elseif $g.you.isHasTrait('wings_angel')>>
+                spread your majestic angelic wings, before gently descending into position, your <<udickorstrap $g.you>> now right in front of the slave's face.
+            <<else>>
+                get into position and place your <<udickorstrap $g.you>> right in front of the slave's face.
+            <</if>>
+            You <<uadv $g.you>> shove your <<udickorstrap $g.you>> down the slave's throat. The slave's struggles were met with <<rep $g.slaver>> renewing the fucking with vigor, <<their $g.slaver>> eyes meeting you, challenging you to fuck the slave's harder.
+        </p>
+
+        <p>
+            For the next hour, you and <<rep $g.slaver>> fucked the slave senseless, all while flying in unison with the wind on your back.
+            It was an experience unlike any others, and your bond with <<rep $g.slaver>> increased.
+        </p>
+
+        <<run setup.qc.FriendshipWithYou('slaver', 50).apply($gQuest)>>
+
+    <</choose>>
+
+
+<</if>>

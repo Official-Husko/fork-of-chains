@@ -1,0 +1,186 @@
+:: QuestSetup_the_honest_slaver [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriahonest = new setup.UnitCriteria(
+null, /* key */
+'"Woodcutter"', /* name */
+[
+setup.trait.bg_knight,
+setup.trait.bg_woodsman,
+setup.trait.bg_laborer,
+setup.trait.per_humble,
+setup.trait.per_direct,
+setup.trait.per_kind,
+setup.trait.per_honorable,
+],
+[
+setup.trait.race_demon,
+setup.trait.bg_mist,
+setup.trait.bg_raider,
+setup.trait.bg_slaver,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_proud,
+setup.trait.per_sly,
+setup.trait.per_cruel,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.AnyTrait([setup.trait.per_direct, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_honorable, setup.trait.per_chaste], true),
+],
+{
+social: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_honest_slaver', /* key */
+"The Honest Slaver", /* Title */
+"darko", /* Author */
+[ 'forest', 'money'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'honest': [_criteriahonest, 2],
+'scout': [setup.qu.scout_forest, 0.5],
+'schemer': [setup.qu.schemer, 0.5], },
+{ /* actors */
+'lady': 'subrace_elf',
+'woodcutter': 'all', },
+[ /* costs */
+],
+'Quest_the_honest_slaver',
+setup.qdiff.normal19, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_honest_slaverCrit',
+[
+setup.qc.MoneyCrit(),
+setup.qc.BoonizeRandom('honest', 8), ],
+], [
+'Quest_the_honest_slaverCrit',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_the_honest_slaverCrit',
+[
+],
+], [
+'Quest_the_honest_slaverCrit',
+[
+setup.qc.TraumatizeRandom('honest', 20), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_the_honest_slaver [nobr]
+<p>
+The folks living in the <<lore region_forest>> often tell the tale of an honest
+woodcutter, who accidentally dropped <<their $g.woodcutter>> axe to a river.
+Since <<their $g.woodcutter>> axe was <<their $g.woodcutter>> only mean of
+livelihood, <<they $g.woodcutter>> sat down and wept. Taking pity on <<them
+$g.woodcutter>>, the spirit of the lake dived into the water and returned
+with a golden axe. "Was this what you had lost?", <<they $g.lady>> asked, but
+the woodcutter said it was not, and returned the same answer when a silver
+axe was brought to the surface. Only when <<their $g.woodcutter>> own tool is
+produced does <<they $g.woodcutter>> claim it. Impressed by <<their
+$g.woodcutter>> honesty, the <<lady $g.lady>> of the river allowed <<them
+$g.woodcutter>> to keep all three.
+</p>
+
+<p>
+Hearing of this good fortune, your slavers came up with the idea of throwing
+your own object into the river, and wailed for its return. Of course, the
+<<lady $g.lady>> can probably sense the evilness in your slaver who came up
+with the idea, so the better idea is to send a team of slaver — let the
+object be dropped into the river by one of your slaver, and let your most
+honorable slaver do the wailing.
+It might work out, or it might just be a fairy tale...
+</p>
+
+
+:: Quest_the_honest_slaverCrit [nobr]
+
+<p>
+<<Rep $g.schemer>> <<uadv $g.schemer>> bought a big wooden dildo in a nearby
+village. Guided by <<rep $g.scout>>, your slavers arrived at the supposed
+river. There, <<rep $g.schemer>> dropped the dildo into the river, and
+together with <<rep $g.scout>> hid far away from the area, leaving <<rep
+$g.honest>> to try and beg for the dildo's safe return all by <<themself
+$g.honest>>,
+being as
+<<if $g.honest.isHasTrait('per_direct')>>
+honest
+<<elseif $g.honest.isHasTrait('per_humble')>>
+humble
+<<elseif $g.honest.isHasTrait('per_kind')>>
+kind
+<<elseif $g.honest.isHasTrait('per_honorable')>>
+honorable
+<<else>>
+chaste
+<</if>>
+as <<they $g.honest>> could possibly feign while <<they $g.honest>> did so.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The <<lady $g.lady>> of the river obviously sensed the wickedness coming out
+from <<theslaver $g.honest>>, what with such an indecent item being thrown into the
+river. But upon seeing <<yourrep $g.honest>>, <<they $g.lady>> could not help but
+be charmed by the aura of good emanating from <<them $g.honest>>. Instead, the
+<<lady $g.lady>> invited <<them $g.honest>> to dive into the river together to
+"reclaim the dildo", and so <<they $g.honest>> did. It was unknown what
+happened under the riverbed, but when <<rep $g.honest>> returned, it was with
+a renewed vigor and a massive golden phallus. Your slavers sold the golden
+dildo for a high price before returning back home.
+</p>
+
+<p>
+Your slavers could not help but notice that the dildo appears to have slight
+dents and an unnatural smell, as if it was used before.
+<<Rep $g.honest>> honest|was oddly quiet about it.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+The <<lady $g.lady>> of the river obviously sensed the wickedness coming out
+from <<theslaver $g.honest>>, what with such an indecent item being thrown into the
+river. But <<reps $g.honest>> goodness still tugged on <<their $g.lady>> heart,
+and after deciding what was best, <<they $g.lady>> decided to unceremoniously
+throw a silver dildo, accidentally hitting <<reps $g.honest>> head. Sensing
+that it was all they were going to get, your slavers went back home after
+selling the silver dildo for a decent sum. Your slavers never noticed how the
+<<lady $g.lady>> lustfully eyed <<rep $g.honest>> on their way out
+of the forest...
+</p>
+
+<p>
+You probably should scold your slavers for bringing a dildo of all things to
+the pure and innocent <<lady $g.lady>> of the river, but it worked out in
+the end.
+</p>
+
+<<else>>
+
+<p>
+When the <<lady $g.lady>> appeared and
+offered <<rep $g.honest>> a golden dildo, the <<man $g.honest>> <<uadv
+$g.honest>> claimed it.
+Sensing the deception and the wickedness from <<therace $g.honest>>,
+the <<lady $g.lady>> of the river denied both that and the return of your own wooden dildo.
+<<if $gOutcome == 'disaster'>>
+Instead, <<they $g.lady>> bestowed a curse upon your slaver.
+<</if>>
+</p>
+
+<</if>>

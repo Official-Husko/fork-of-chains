@@ -1,0 +1,279 @@
+:: QuestSetup_heroic_showdown [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _ifthenelse1 = setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_caution', 'caution'),
+  setup.qc.DoAll([
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero1', setup.trait.per_cautious),
+      setup.qc.TraitReplace('hero1', setup.trait.per_calm),
+    ]),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero2', setup.trait.per_cautious),
+      setup.qc.TraitReplace('hero2', setup.trait.per_calm),
+    ]),
+  ]),
+  setup.qc.DoAll([
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero1', setup.trait.per_brave),
+      setup.qc.TraitReplace('hero1', setup.trait.per_aggressive),
+    ]),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero2', setup.trait.per_brave),
+      setup.qc.TraitReplace('hero2', setup.trait.per_aggressive),
+    ]),
+  ]),
+)>>
+
+<<set _ifthenelse2 = setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_oasis', 'oasis'),
+  setup.qc.DoAll([
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero1', setup.trait.tough_nimble),
+      setup.qc.TraitReplace('hero1', setup.trait.per_curious),
+    ]),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero2', setup.trait.tough_nimble),
+      setup.qc.TraitReplace('hero2', setup.trait.per_curious),
+    ]),
+  ]),
+  setup.qc.DoAll([
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero1', setup.trait.tough_tough),
+      setup.qc.TraitReplace('hero1', setup.trait.per_stubborn),
+    ]),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero2', setup.trait.tough_tough),
+      setup.qc.TraitReplace('hero2', setup.trait.per_stubborn),
+    ]),
+  ]),
+)>>
+
+
+<<run new setup.QuestTemplate(
+'heroic_showdown', /* key */
+"Heroic Showdown", /* Title */
+"darko", /* Author */
+[ 'desert', 'danger'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'healer': setup.qu.healer,
+'tank': setup.qu.tank,
+'dps': setup.qu.dps, },
+{ /* actors */
+'hero1': 'quest_choose_your_own_adventure_hero1',
+'hero2': 'quest_choose_your_own_adventure_hero2',
+'demon': 'subrace_demon', },
+[ /* costs */
+],
+'Quest_heroic_showdown',
+setup.qdiff.harder39, /* difficulty */
+[ /* outcomes */
+[
+'Quest_heroic_showdownCrit',
+[
+_ifthenelse1,
+_ifthenelse2,
+setup.qc.MoneyCrit(),
+setup.qc.VarSet('choose_your_own_adventure_progress', '8', -1),
+setup.qc.SetCooldownEvent('choose_your_own_adventure_final_chapter', 8),
+],
+], [
+'Quest_heroic_showdownCrit',
+[
+_ifthenelse1,
+_ifthenelse2,
+setup.qc.VarSet('choose_your_own_adventure_progress', '8', -1),
+setup.qc.SetCooldownEvent('choose_your_own_adventure_final_chapter', 8),
+setup.qc.Corrupt('tank'),
+setup.qc.MoneyCustom(4000),
+setup.qc.Injury('tank', 1), ],
+], [
+'Quest_heroic_showdownCrit',
+[
+_ifthenelse1,
+_ifthenelse2,
+setup.qc.MoneyCustom(3000),
+setup.qc.VarSet('choose_your_own_adventure_progress', '8', -1),
+setup.qc.SetCooldownEvent('choose_your_own_adventure_final_chapter', 8),
+setup.qc.Injury('healer', 4),
+setup.qc.Injury('tank', 4),
+setup.qc.Injury('dps', 4),
+setup.qc.Corrupt('healer'),
+setup.qc.Corrupt('tank'),
+setup.qc.Corrupt('dps'), ],
+], [
+'Quest_heroic_showdownCrit',
+[
+_ifthenelse1,
+_ifthenelse2,
+setup.qc.VarSet('choose_your_own_adventure_progress', '8', -1),
+setup.qc.SetCooldownEvent('choose_your_own_adventure_final_chapter', 8),
+setup.qc.Injury('healer', 8),
+setup.qc.Injury('tank', 8),
+setup.qc.Injury('dps', 8),
+setup.qc.Corrupt('healer'),
+setup.qc.Corrupt('tank'),
+setup.qc.Corrupt('dps'),
+setup.qc.MoneyCustom(3000), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarEqual('choose_your_own_adventure_progress', '7'), ],
+[ /* expired outcomes */
+setup.qc.SetCooldownQuest(null, 20),
+],
+)>>
+
+:: Quest_heroic_showdown [nobr]
+<p>
+The pair of
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+have once again came to your fort, but this time, it is with grim
+determination to end their journey once and for all.
+Within the <<lore region_desert>>, they have located a breach in <<lore concept_mist>> where
+they are certain that the demon must be waiting for them there.
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+The time has come for them to exact their revenge.
+<<else>>
+The time has come for them to end the tragedy once and for all.
+<</if>>
+But they are not foolish enough to go alone — they are approaching your
+company to ask for a backup help, and promises great reward.
+</p>
+
+<p>
+Fighting demons won't be easy, but fortunately you had plenty of time to
+prepare thanks to the book. The finale of the story is finally here, and it
+is up to you to help close the chapter.
+</p>
+
+
+:: Quest_heroic_showdownCrit [nobr]
+
+<p>
+Your slavers journeyed with the 
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+for several days until finally they got very close to their destination.
+After resting peacefully in
+<<if $varstore.get('choose_your_own_adventure_oasis') == 'oasis'>>
+an oasis,
+<<else>>
+a desert caverns,
+<</if>>
+your slavers arrived with the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+together at the site, a crater with dark cloud and lightning looming over the
+place. It looked ominous and foreboding — a clear indicator that your slavers
+were in the right place.
+Led by the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>,
+<<rep $g.tank>> <<uadv $g.tank>> and your band of slavers ran down towards the crater
+<<if $varstore.get('choose_your_own_adventure_caution') == 'caution'>>
+  cautiously.
+<<else>>
+  courageously.
+<</if>>
+</p>
+
+<p>
+Their descend were not peaceful, as demonic creatures suddenly appeared out of
+nowhere and start attacking them.
+<<Rep $g.tank>> <<uadv $g.tank>> protected <<their $g.tank>> team members
+while <<rep $g.dps>> <<uadv $g.dps>> dispatched a creature, and then two, and more.
+Meanwhile, the <<= $varstore.get('choose_your_own_adventure_lovers')>>
+<<if $varstore.get('choose_your_own_adventure_lovers') == 'rivals'>>
+each fought on their own, turning the battle into a competition of who could dispatch the most.
+<<else>>
+fought with their backs on each other, fighting not as two people, but as one.
+<</if>>
+</p>
+
+<p>
+After the fierce fight, your slavers and the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+arrived at the center of the crater, where a sizable rift awaits. It was then
+that they heard footsteps coming from the beyond, and before long <<if
+$g.demon.isFemale()>>a naked and incredibly voluptuous succubus<<else>>a
+naked and extremely well hung incubus<</if>> walked out of the portal
+seemingly with no care in the world.
+</p>
+
+<p>
+Upon seeing the demon,
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+your slavers could see vindictive rage and anger burning in the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>' eyes,
+<<else>>
+your slavers could see decisive resolution in the faces of the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>,
+<</if>>
+knowing their journey was at an end.
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+Raising their sword,
+<<else>>
+Casting their spell,
+<</if>>
+they immediately attacked the demon, who swatted the
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+weapon
+<<else>>
+spell
+<</if>>
+seemingly with no problem at all.
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+Crying a battle cry,
+<<else>>
+Vowing solemnly,
+<</if>>
+the <<= $varstore.get('choose_your_own_adventure_lovers')>>
+began their attack in the fullest,
+while your slavers fought off the demonic minions that keep appearing out of
+nowhere around the craters.
+</p>
+
+<p>
+The fight was long and bloody, but by pure chance a stray spell hit the demon,
+stunning <<them $g.demon>> for a while. That short time was all the time
+needed for <<name $g.hero1>> and <<name $g.hero2>> to
+simultaneously
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+impale their weapons into the demon, dispatching <<them $g.demon>>.
+<<else>>
+impale the demon with a magical spear, dispatching <<them $g.demon>>.
+<</if>>
+The demon turned to dust, and
+as if acknowledging that the fight was over,
+the sky suddenly cleared up, and the demonic minions retreated from the fight.
+</p>
+
+<p>
+Having their duties over, the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+stood silently over the demon corpse, unmoving, seemingly thinking
+about all the adventures they had up to and leading into this end.
+Meanwhile, your slavers gathered the pay they were promised. Not wanting to disturb the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>,
+they left without saying goodbye and headed home to your fort.
+The pair of <<= $varstore.get('choose_your_own_adventure_lovers')>> never once looked back at your slavers.
+</p>
+
+<p>
+Your slavers never noticed that the demon taunted the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+during the fight, shaking their convictions to the core.
+</p>
+
+<<if $gOutcome == 'success'>>
+<p>Your slavers sustained minor injuries during the terrible fight.</p>
+<<elseif $gOutcome == 'failure'>>
+<p>Your slavers sustained great injuries during the corrupted fight.</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>Your slavers barely made it out of the fight, and they were corrupted much from the intense fight.</p>
+<</if>>

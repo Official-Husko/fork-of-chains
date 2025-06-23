@@ -1,0 +1,65 @@
+:: InitBuildingBiolab [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'biolab',
+  tags: [],
+  width: 5,
+  height: 5,
+  door_column: 2,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "brawn",
+      room_keys: [
+        'greathall',
+        'anuslab',
+        'ballslab',
+        'breastlab',
+        'dicklab',
+        'vaginalab',
+      ],
+    },
+    {
+      type: "near",
+      skill_key: "brawn",
+      room_keys: [
+        'surgery',
+        'hospital',
+        'warehouse',
+        'library',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'biolab',
+  name: 'Biolab',
+  tags: ['biolab', 'critical', 'unlocker', ],
+  description_passage: 'BuildingBiolab',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('veteranhall'),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_water]),
+    ],
+  ],
+  main_room_template_key: 'biolab',
+})>>
+
+
+:: BuildingBiolab [nobr]
+
+<p>
+Unlocks limited muscle and height growing and shrinking on slaves.
+Can build further improvements to unlock more flesh shaping options.
+
+</p>
+

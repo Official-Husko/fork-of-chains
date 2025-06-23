@@ -1,0 +1,121 @@
+:: QuestSetup_raid_desert_settlement [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'raid_desert_settlement', /* key */
+'Raid: Desert Settlement', /* Title */
+'darko', /* Author */
+[ 'desert', 'money', 'ire',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'raider1': setup.qu.raider,
+'raider2': setup.qu.raider,
+'support': setup.qu.raidersupport, },
+{ /* actors */
+'villager': 'subrace_humandesert', },
+[ /* costs */
+],
+'Quest_raid_desert_settlement',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+[
+'Quest_raid_desert_settlementCrit',
+[
+setup.qc.MoneyCustom(4000),
+setup.qc.Ire('humandesert', 2),
+setup.qc.Slave('villager', 'a|was a humble villager in an eastern settlement'), ],
+], [
+'Quest_raid_desert_settlementCrit',
+[
+setup.qc.MoneyNormal(),
+setup.qc.MoneyCustom(500),
+setup.qc.Ire('humandesert', 1),
+],
+], [
+'Quest_raid_desert_settlementFailure',
+[
+setup.qc.Injury('raider1', 1),
+setup.qc.Injury('raider2', 1), ],
+], [
+'Quest_raid_desert_settlementDisaster',
+[
+setup.qc.Injury('raider1', 3),
+setup.qc.Injury('raider2', 3), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_raid_desert_settlement [nobr]
+
+<p>
+The vast majority of the settlements located in the <<lore region_desert>>
+do not call any particular place as their permanent home.
+For them, home is where their journey brings them to, and they live by
+using up resources near the area, before moving to another.
+This makes their settlements an
+easy target for raiders, since they are unable to erect permanent defenses to
+deter these raiders.
+Raiders such as your company, apparently.
+You can send a group of slavers to raid one of
+these settlements, if you really need the money.
+</p>
+
+
+:: Quest_raid_desert_settlementCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+  <<if $g.villager.isMale()>>
+  <<else>>
+    <<questimage "raid_desert_settlement_female.jpg">>
+  <</if>>
+<</if>>
+
+<p>
+Led by <<rep $g.raider1>>, your slavers
+<<uadv $g.raider1>> raided the settlement and was met with little resistance.
+
+<<set _evil = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_evil'})>>
+<<if _evil>>
+  The wailings of the villagers were like music to the evil slaver <<rep _evil>>.
+<</if>>
+
+<<set _honorable = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_honorable'})>>
+<<if _honorable>>
+  <<Reps _honorable>> honorable soul tugged at <<their _honorable>> heart at hearing the wailings
+  of the villagers, but decided to still stick with your company.
+  <<run setup.qc.TraumatizeRandom('unit', 2).apply(setup.costUnitHelper(_honorable))>>
+<</if>>
+
+They gathered up all the loot from the huts
+<<if $gOutcome == 'crit'>>
+and also bringing the chieftain's <<daughter
+$g.villager>> home as a trophy.
+<<else>>
+including a particularly pricey piece of rug.
+<</if>>
+</p>
+
+
+:: Quest_raid_desert_settlementFailure [nobr]
+
+<p>
+Unfortunately, the settlement had already moved to a different location by
+the time your slavers arrived. They were unable to track where the new
+settlement was located.
+</p>
+
+
+:: Quest_raid_desert_settlementDisaster [nobr]
+
+<p>
+Your slavers attempted to raid the settlement but they were instead met with
+fierce resistance befitting of the desertfolks.
+In their attempt to retreat from their mistake, <<yourrep $g.raider1>> raider1|was injured.
+</p>

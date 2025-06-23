@@ -1,0 +1,53 @@
+:: OpportunitySetupFuckholeFair [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+  'fuckhole_fair',  /* key */
+  'Fuckhole Fair Offer',  /* name */
+  'darko',  /* author */
+  ['vale', 'money', 'order', ],  /* tags */
+  1,  /* deadline weeks, */
+  'OpportunityFuckholeFair',  /* passage */
+  setup.qdiff.normal12, /* difficulty */
+  [  /* choices */
+    [
+      'OpportunityFuckholeFairOptionSlaveOrder',
+      null,
+      [],
+      [setup.qres.Building(setup.buildingtemplate.marketingoffice)],
+      [
+        setup.qc.SlaveOrderFuckholeFair(),
+      ],
+    ],
+    [
+      'OpportunityFuckholeFairOptionContact',
+      null,
+      [],
+      [setup.qres.Building(setup.buildingtemplate.messengerpost)],
+      [
+        setup.qc.Contact(setup.contacttemplate.fuckholefair),
+      ],
+    ],
+  ],
+  [],  /* questpool */
+  [],  /* requirements */
+)>>
+
+:: ContactFuckholeFair [nobr]
+<p>
+Your contact given as a reward from your slave performance in fuckhole fair.
+Grants you money each week for 10 weeks.
+</p>
+
+:: OpportunityFuckholeFair
+<p>
+As a reward for your slave's stellar performance in the fuckhole fair,
+you are offered a choice between a <<dangertext 'temporary'>> contact or a slave order.
+</p>
+
+:: OpportunityFuckholeFairOptionSlaveOrder
+Gain slave order
+
+:: OpportunityFuckholeFairOptionContact
+Gain contact

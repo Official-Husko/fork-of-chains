@@ -1,0 +1,260 @@
+:: QuestSetup_mist_apprenticeship [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_mist_apprentice_0", /* key */
+"Mist Apprentice", /* name */
+"Is supposedly \"studying\" in the land beyond the Mist in order to master dark magic", /* description */
+"a|is supposedly \"studying\" in the land beyond the Mist in order to master dark magic", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.UnitGroup(
+"mist_apprenticeship0",
+"Demonic Teacher",
+'subrace_demon', /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+],
+)>> <<run new setup.UnitGroup(
+"mist_apprenticeship1",
+"Corrupted Slave",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Corrupt('unit', null, 4),
+],
+)>>
+
+
+<<set _criteriaapprentice = new setup.UnitCriteria(
+null, /* key */
+'Mist Apprentice', /* name */
+[
+  setup.trait.bg_apprentice,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.vagina_tight,
+  setup.trait.anus_tight,
+  setup.trait.per_submissive,
+],
+[
+  setup.trait.race_demon,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_dominant,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.join_junior,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+  setup.qres.TraitExact(setup.trait.magic_dark),
+],
+{
+  arcane: 3,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'mist_apprenticeship', /* key */
+"Mist Apprenticeship", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'desert',
+  'prep',
+  'trait',
+  'unknown',
+  'rare',
+],
+4, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'apprentice': [ _criteriaapprentice, 1],
+  'scout1': [ setup.qu.scout_desert, 1],
+  'scout2': [ setup.qu.scout_desert, 1],
+},
+{ /* actors */
+  'teacher': 'mist_apprenticeship0',
+  'slave': 'mist_apprenticeship1',
+},
+[ /* costs */
+],
+'Quest_mist_apprenticeship',
+setup.qdiff.hardest43, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_mist_apprenticeshipCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('slave', "a|was a highly corrupted slave given to your slavers during their trip in the Mist", undefined),
+      setup.qc.Equipment(setup.equipmentpool.sextoy_good),
+    ],
+  ],
+  [
+    'Quest_mist_apprenticeshipCrit',
+    [
+      setup.qc.AddTitle('apprentice', 'quest_mist_apprentice_0'),
+      setup.qc.Leave('apprentice', "a|is studying to master dark magic in the land beyond the mist", undefined),
+      setup.qc.Event('mist_apprentice_first_payment', 4, {slaver: 'apprentice', master: 'teacher'}),
+    ],
+  ],
+  [
+    'Quest_mist_apprenticeshipCrit',
+    [
+      setup.qc.MissingUnit('apprentice'),
+      setup.qc.Corrupt('apprentice', null, 1),
+    ],
+  ],
+  [
+    'Quest_mist_apprenticeshipCrit',
+    [
+      setup.qc.MissingUnit('apprentice'),
+      setup.qc.Corrupt('apprentice', null, 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.NoUnitWithTitle('quest_mist_apprentice_0', {
+}),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+setup.qres.TraitExact(setup.trait.magic_dark)
+]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_mist_apprenticeship [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Mastering <<lore magic_dark>> is not an easy endeavor. For one, the magic is
+extremely volatile, so much more than all the other domains of magic. Furthermore,
+the masters of these magic often reside in the land beyond <<lore
+concept_mist>>, which makes patronizing them very difficult.
+And finally, these masters themselves mostly belong to the <<rep
+setup.trait.subrace_demon>> race, who are known for their lunacy — equally likely to
+lavish mortals with pleasure and to inflict unimaginable pain to them.
+Hence, masters of dark magic are feared not only for the power they wield, but for
+the things they must have done to obtain such power.
+</p>
+
+<p>
+A slaver in your employ has the potential to advance their mastery over this
+domain of dark magic, and <<yourrep _u>> has came up with a suggestion.
+Somehow, <<they _u>> had heard a "reliable rumor" that a demonic <<lady
+$g.teacher>> wizard who lives beyond <<lore concept_mist>> has been sending
+<<their $g.teacher>> underlings into the mortal realm in search for mortals
+gifted with dark magic. If you really want your slavers to master <<rep
+setup.trait.magic_dark_master>>, you could try to send a group of slavers,
+together with the prospective apprentice, to seek the <<lady $g.teacher>>
+out. Who knows, maybe you are lucky enough that in all <<their $g.teacher>>
+lunatic benevolence the demon would bestow upon your slaver unimaginable
+knowledge...
+</p>
+
+
+:: Quest_mist_apprenticeshipCrit [nobr]
+
+<<if $g.apprentice.isMale()>>
+<<questimage 'mist_apprenticeship_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+With <<rep $g.scout1>> and <<utheirrel $g.scout1 $g.scout2>> <<rep
+$g.scout2>> guiding the way, <<yourrep $g.apprentice>> managed to arrive at
+their destination: an oasis swirling purple with mist. There, a demonic
+<<lady $g.teacher>> sat naked, <<if $g.teacher.isFemale()>>
+sedutively inviting <<rep $g.apprentice>> to come closer while pressing
+<<their $g.teacher>> massive tits together.
+<<else>>
+stoically commanding <<rep $g.apprentice>> to approach, <<their $g.teacher>>
+massive muscles bulging all the time.
+<</if>>
+As <<therace $g.apprentice>> approached the demon, <<their $g.apprentice>>
+visage blurred and blurred until both the demons and <<therace $g.apprentice>>
+apprentice|was out of your other slavers' visions. Unclear at what just
+happened, your surviving slavers shrugged before heading home, assuming
+everything was in order...
+</p>
+
+<<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+<p>
+A few days later, you receive a letter with a very simple message...
+</p>
+
+<div class='lettercard'>
+Help-
+</div>
+
+<p>
+The handwriting looks like <<reps $g.apprentice>>. You sigh to yourself,
+realizing you've probably just doomed <<therace $g.apprentice>> to a live of
+demonic servitude unless you do something.
+<<uneedrescue $g.apprentice>><<if $gOutcome == 'failure'>>.<<else>>,
+although judging from the various purplish substance splattered on the letter, by
+the time you recover your slaver, <<they $g.apprentice>> might just have been
+corrupted beyond recognition...<</if>>
+</p>
+
+<<else>>
+
+<p>
+A few days later, you've received a letter with the most disturbing handwriting you've ever seen...
+</p>
+<div class='lettercard'>
+<p>
+Hmm...
+</p>
+<p>
+So you seek to bestow this <<urace $g.apprentice>> slave ultimate power?
+Foolish, but perhaps your ambition should be rewarded. Very well, but I shall
+require three payments from you — three souls for forbidden knowledge. A
+fair exchange, don't you think?
+</p>
+</div>
+
+<p>
+That went better than you expected. You'll just need to pay
+whatever it is that the demon asks for in the coming days, unless you'd like
+<<yourrep $g.apprentice>> to come back as a writhing mess of a <<urace $g.apprentice>>...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+A few days later, you receive a shipment of... a highly corrupted slave. Who
+could have sent such a slave to your fort? While the slave <<themself
+$g.slave>> is rather worthless, <<they $g.slave>> slave|is equipped with some
+high quality sex toy...
+</p>
+<</if>>
+
+<</if>>

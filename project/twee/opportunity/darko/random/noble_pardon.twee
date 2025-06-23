@@ -1,0 +1,226 @@
+:: OpportunitySetup_noble_pardon [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'noble_pardon', /* key */
+"Noble Pardon", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'favor',
+],
+1, /* expiration weeks */
+'Opportunity_noble_pardon',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_noble_pardon_0',
+    'Opportunity_noble_pardon_0_flavor',
+    [ /* costs */
+      setup.qc.MoneyCustom(-4000),
+    ],
+    [ /* restrictions */
+      setup.qres.IreAtLeast('humankingdom', 1),
+    ],
+    [ /* outcomes */
+      setup.qc.Ire('humankingdom', -10),
+      setup.qc.IfThenElse(
+        setup.qres.ExistUnit([
+          setup.qres.You(),
+          setup.qres.Trait(setup.trait.bg_noble),
+        ]),
+        setup.qc.DoAll([
+          setup.qc.Favor('humankingdom', 200),
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined),
+      ),
+    ],
+  ],
+  [
+    'Opportunity_noble_pardon_1',
+    'Opportunity_noble_pardon_1_flavor',
+    [ /* costs */
+      setup.qc.MoneyCustom(-4000),
+    ],
+    [ /* restrictions */
+      setup.qres.IreAtLeast('humanvale', 1),
+    ],
+    [ /* outcomes */
+      setup.qc.Ire('humanvale', -10),
+      setup.qc.IfThenElse(
+        setup.qres.ExistUnit([
+          setup.qres.You(),
+          setup.qres.Trait(setup.trait.bg_noble),
+        ]),
+        setup.qc.DoAll([
+          setup.qc.Favor('humanvale', 200),
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined),
+      ),
+    ],
+  ],
+  [
+    'Opportunity_noble_pardon_2',
+    'Opportunity_noble_pardon_2_flavor',
+    [ /* costs */
+      setup.qc.MoneyCustom(-4000),
+    ],
+    [ /* restrictions */
+      setup.qres.IreAtLeast('humandesert', 1),
+    ],
+    [ /* outcomes */
+      setup.qc.Ire('humandesert', -10),
+      setup.qc.IfThenElse(
+        setup.qres.ExistUnit([
+          setup.qres.You(),
+          setup.qres.Trait(setup.trait.bg_noble),
+        ]),
+        setup.qc.DoAll([
+          setup.qc.Favor('humandesert', 200),
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined),
+      ),
+    ],
+  ],
+  [
+    'Opportunity_noble_pardon_3',
+    'Opportunity_noble_pardon_3_flavor',
+    [ /* costs */
+      setup.qc.MoneyCustom(-4000),
+    ],
+    [ /* restrictions */
+      setup.qres.IreAtLeast('elf', 1),
+    ],
+    [ /* outcomes */
+      setup.qc.Ire('elf', -10),
+      setup.qc.IfThenElse(
+        setup.qres.ExistUnit([
+          setup.qres.You(),
+          setup.qres.Trait(setup.trait.bg_noble),
+        ]),
+        setup.qc.DoAll([
+          setup.qc.Favor('elf', 200),
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined),
+      ),
+    ],
+  ],
+  [
+    'Opportunity_noble_pardon_4',
+    'Opportunity_noble_pardon_4_flavor',
+    [ /* costs */
+      setup.qc.MoneyCustom(-4000),
+    ],
+    [ /* restrictions */
+      setup.qres.IreAtLeast('neko', 1),
+    ],
+    [ /* outcomes */
+      setup.qc.Ire('neko', -10),
+      setup.qc.IfThenElse(
+        setup.qres.ExistUnit([
+          setup.qres.You(),
+          setup.qres.Trait(setup.trait.bg_noble),
+        ]),
+        setup.qc.DoAll([
+          setup.qc.Favor('neko', 200),
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined),
+      ),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_noble_pardon [nobr]
+<p>
+Among the many things that you have to maintain is your relationships with the various companies out there. And recently, it has not been going so well. You've angered some important people out there, and you're trying your best to ensure that it won't do your company any harm.
+</p>
+
+<p>
+Just as you were thinking about what gifts to bring to them, <<yourrep $g.slaver>> slaver|have entered your office after overhearing your woes from the outside. As you recall, <<therace $g.slaver>> is of noble blood, and it still carries with it considerable connection within <<their $g.slaver>> circle. The
+<<if $g.slaver.isHasTrait('bg_noble')>>
+noble
+<<else>>
+royal
+<</if>>
+slaver|offer to make use of <<their $g.slaver>> noble connections to try and appease these companies, if you wish. But it will cost quite a few gold, to cover the bribes and gifts that must be procured, as well as some "service fee" for using <<their $g.slaver>> most noble service.
+</p>
+
+<<if $unit.player.isHasTrait('bg_noble')>>
+<p>
+As a fellow noble yourself, you can even add in your own connections to warp the words
+to your advantage, and possibly gain some of them as allies...
+</p>
+<</if>>
+
+
+
+
+:: Opportunity_noble_pardon_0 [nobr]
+Lose Ire with the Kingdom of Tor
+
+
+:: Opportunity_noble_pardon_0_flavor [nobr]
+<p>
+A few sweet words here, and a few bribes there, and before long the <<rep $company.humankingdom>> views your company with much less disdain than before.
+</p>
+
+
+:: Opportunity_noble_pardon_1 [nobr]
+Lose Ire with the Humans of the Northern Vale
+
+
+:: Opportunity_noble_pardon_1_flavor [nobr]
+<p>
+A few sweet words here, and a few bribes there, and before long the <<rep $company.humanvale>> views your company with much less disdain than before.
+</p>
+
+
+:: Opportunity_noble_pardon_2 [nobr]
+Lose Ire with the Humans of the Eastern Deserts
+
+
+:: Opportunity_noble_pardon_2_flavor [nobr]
+<p>
+A few sweet words here, and a few bribes there, and before long the <<rep $company.humandesert>> views your company with much less disdain than before.
+</p>
+
+
+:: Opportunity_noble_pardon_3 [nobr]
+Lose Ire with the Elves
+
+
+:: Opportunity_noble_pardon_3_flavor [nobr]
+<p>
+A few sweet words here, and a few bribes there, and before long the <<rep $company.elf>> views your company with much less disdain than before.
+</p>
+
+
+:: Opportunity_noble_pardon_4 [nobr]
+Lose Ire with the Neko
+
+
+:: Opportunity_noble_pardon_4_flavor [nobr]
+<p>
+A few sweet words here, and a few bribes there, and before long the <<rep $company.neko>> views your company with much less disdain than before.
+</p>

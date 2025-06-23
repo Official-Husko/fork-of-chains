@@ -1,0 +1,83 @@
+:: OpportunitySetup_safari_zone [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'safari_zone', /* key */
+'Safari Zone', /* Title */
+'darko', /* Author */
+[ 'forest', 'order', 'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_safari_zone',
+setup.qdiff.normal21, /* difficulty */
+[ /* options */
+[
+'Opportunity_safari_zone_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.marketingoffice),
+],
+[ /* outcomes */
+setup.qc.QuestDirect('safari_zone_sell_slaves'), ],
+], [
+'Opportunity_safari_zone_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('safari_zone_illegal_hunt2'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.dungeons),
+setup.qres.OpportunityUnique(),
+setup.qres.NoQuest('safari_zone_sell_slaves'),
+setup.qres.NoQuest('safari_zone_illegal_hunt2'), ],
+)>>
+
+:: Opportunity_safari_zone [nobr]
+
+<p>
+Within the <<lore region_forest>>, there is an
+oddly fenced area managed by an enterprising slaving agency.
+This fenced area forms the so-called "Safari Zone".
+During certain months, very wealthy clients can go
+to the safari zone and purchase a safari pass which would last for an hour,
+complete with a tranquilizer dart. Once inside, they are free to shoot as
+many of the animals as possible within the hour — all the animals bagged can
+be brought home as pets.
+</p>
+
+<p>
+Only, the "animals" are not your usual fare of animals. Instead of deers and
+other wildlife, the Safari Zone prides itself on its stable of humanlikes.
+These humanlikes are usually slaves who are stripped naked of any and all
+clothings, and let loose in the forest. They are promised their freedom if
+they managed to remain uncaught until the end of the hunting season, which further
+motivates the slaves. The Safari Zone serves a large and diverse
+stable of animals, from easy to catch ones into high valued ones like former
+mercenaries.
+</p>
+
+<p>
+You have the rare opportunity of going into the Safari Zone — not as a
+paying customer of course, but either as a slaver company offering to sell
+slaves to them, or to sneak inside the Safari Zone and illegally hunt one of the
+slaves there.
+</p>
+
+
+:: Opportunity_safari_zone_0 [nobr]
+Sell slaves
+
+
+:: Opportunity_safari_zone_1 [nobr]
+Illegal hunt
+

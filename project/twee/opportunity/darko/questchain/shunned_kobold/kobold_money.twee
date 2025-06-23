@@ -1,0 +1,94 @@
+:: OpportunitySetup_kobold_money [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'kobold_money', /* key */
+"Kobold Money", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_kobold_money',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_kobold_money_0',
+    outcome_passage: 'Opportunity_kobold_money_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_frugal),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_kobold_money_1',
+    outcome_passage: 'Opportunity_kobold_money_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_lavish),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'kobold': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_kobold_money [nobr]
+<p>
+    The kobold is unsure how to feel about <<their $g.kobold>> money.
+    Is it better to use it anyway you like, or to save it for something grand?
+</p>
+
+
+:: Opportunity_kobold_money_0 [nobr]
+Saving money is good
+
+
+:: Opportunity_kobold_money_0_flavor [nobr]
+<p>
+    There is always use for money, so make sure you have enough at all times.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> has become a much more frugal <<urace $g.kobold>>, sometimes haggling with merchants just over a piece of bread.
+</p>
+
+
+:: Opportunity_kobold_money_1 [nobr]
+It's not your money until you use it
+
+
+:: Opportunity_kobold_money_1_flavor [nobr]
+<p>
+    Money is given out to be used, so use it well!
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> has become more generous, and sometimes even bordering on lavish when it comes to buying stuffs.
+</p>
+

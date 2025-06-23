@@ -1,0 +1,113 @@
+:: OpportunitySetup_ex_leader [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'ex_leader', /* key */
+"Ex-Leader", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_ex_leader',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_ex_leader_0',
+    outcome_passage: 'Opportunity_ex_leader_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Leave('you', "a|is going on a vacation far away from the burdens of leadership", undefined),
+      setup.qc.Leave('slaver', "a|is currently substituting you as the leader of the company", undefined),
+      setup.qc.Event('vacation_over', 5, {
+you: "you",
+them: "slaver",
+}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_ex_leader_1',
+    outcome_passage: 'Opportunity_ex_leader_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyCustom(1000),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'you': [
+  ],
+  'slaver': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_ex_leader [nobr]
+<p>
+Among your many slavers, <<yourrep $g.slaver>> is a particularly mysterious one. <<Therace $g.slaver>> has a particularly experienced aura, and
+<<if $g.slaver.isHasTrait('per_loner')>>
+although they rarely talk about it,
+<<else>>
+given how much they like to brag about it,
+<</if>>
+you get the feeling that <<they $g.slaver>> is far wiser beyond <<their $g.slaver>> years.
+In fact, you recall that <<they $g.slaver>> had once led a similar slaving company such as yours some time in <<their $g.slaver>> past.
+</p>
+
+<p>
+In fact, as fellow leader of the company (or former leader in <<their $g.slaver>> case), <<they $g.slaver>> knows intimately the burdens that come with the duty. <<Therace $g.slaver>> has <<uadv $g.slaver>> offered to you to take over of your duties for the coming several weeks, should you want to.
+</p>
+
+
+
+:: Opportunity_ex_leader_0 [nobr]
+Go on a vacation
+
+
+:: Opportunity_ex_leader_0_flavor [nobr]
+<p>
+Once the words have come out of your lips, you could feel the temporary feeling of the heavy weight of leadership lifted from your shoulders. For the next few days, you are free from the burdens of leadership, and you plan to make good use of it by going on a vacation.
+You'll leave your company in the capable hands of <<yourrep $g.slaver>>, who will be similarly busy managing your company.
+</p>
+
+
+
+:: Opportunity_ex_leader_1 [nobr]
+Refuse
+
+
+:: Opportunity_ex_leader_1_flavor [nobr]
+<p>
+You thank <<therace $g.slaver>> for the kind offer, but ultimately decline. After all,
+<<if $g.you.isHasTrait('per_masochistic')>>
+you are a masochist, and find the torturous rigor of the work rather pleasurable.
+<<elseif $g.you.isHasTrait('per_studious')>>
+you are known for diligence, and would not neglect your duties.
+<<elseif $g.you.isHasTrait('per_loyal')>>
+you have your responsibilities to your slavers, something you would not trade for anything else.
+<<else>>
+you have work to do, and you best get back to it.
+<</if>>
+You made some money in the coming days.
+</p>

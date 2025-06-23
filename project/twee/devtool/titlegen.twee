@@ -1,0 +1,127 @@
+:: TRGenInit [nobr]
+
+<<set $trname = "">>
+<<set $trdescription = "">>
+<<set $trunittext = "">>
+<<set $trslavevalue = 0>>
+<<set $trskilladds = [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+]>>
+<<set $trisnegative = false>>
+
+:: TRGen [nobr]
+
+<<link '(Cancel)'>>
+  <<goto $gTRReturnPassage>>
+<</link>>
+<br/>
+
+<p>
+Title name:
+<<message '(?)'>>
+Enter the title's name. For example "Divine Wielder of Excalibur"
+<</message>>
+<<textbox "$trname" $trname>>
+</p>
+
+<p>
+Title description:
+<<message '(?)'>>
+Enter the title's description. For example "Wielder of the divine sword Excalibur"
+<</message>>
+<<textbox "$trdescription" $trdescription>>
+</p>
+
+<p>
+Title unit text:
+<<message '(?)'>>
+<div class='helpcard'>
+Enter the unit text that will be displayed in unit description.
+For example: " a|is the sole wielder of the divine sword Excalibur".
+Do NOT put period at the end.
+Consider using past tense when appropriate.
+<<include 'CostWasHelpText'>>
+</div>
+<</message>>
+<<textbox "$trunittext" $trunittext>>
+</p>
+
+<p>
+Slave value:
+<<message '(?)'>>
+Enter the additional value slaves with this title gets.
+Often 0.
+Rule of thumb: cheap title: 1500g. Good titles: 3000g.
+Rare title: 7500g.
+Unicorn: 15000g.
+Can be negative.
+<</message>>
+<<numberbox "$trslavevalue" $trslavevalue>>
+</p>
+
+<div class='equipmentsetcard card'>
+  Skill additives:
+  <<message '(?)'>>
+    <div class='helpcard'>
+      How much increment does each of these skills get?
+      This is a flat bonus, not percentage.
+      Should not exceed 5 on any one skill.
+      (Only put 5 for very rare titles! Most ordinary ones should be at most 3.)
+      Total sum should not exceed 10 for the rarest trait --- less rare trait should sum less.
+      Can put negative values to penalty those stats instead.
+    </div>
+  <</message>>
+  <<for _iskill, _skill range setup.skill>>
+    <br/>
+    <<set _varname = `$trskilladds[${_iskill}]`>>
+    <<capture _varname>>
+      <<rep _skill>>: <<numberbox _varname $trskilladds[_iskill]>>
+    <</capture>>
+  <</for>>
+</div>
+
+<div class='titlecard-negative'>
+  <<checkbox '$trisnegative' false true autocheck>>
+  Negative title
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Mark a title as a Negative Title. Should generally only be used on titles that confer
+      penalties instead of bonuses to skills.
+      Negative Titles are always active.
+    </div>
+  <</message>>
+</div>
+
+<<link 'CREATE TITLE' >>
+  <<if !$trname>>
+    <<warning 'Name cannot be empty'>>
+  <<elseif !$trdescription>>
+    <<warning 'Description cannot be empty'>>
+  <<else>>
+    setup.Title = function(key, name, description, unit_text, slave_value, skill_adds) {
+    <<set $tkey = 'quest_' + setup.getKeyFromName($trname, setup.title) + `_${$qcustomtitle.length}`>>
+    <<run $qcustomtitle.push(
+      new setup.Title(
+        $tkey,
+        $trname,
+        $trdescription,
+        $trunittext,
+        $trslavevalue,
+        $trskilladds,
+        {
+          is_negative: $trisnegative,
+        },
+      )
+    )>>
+    <<goto $gTRReturnPassage>>
+  <</if>>
+<</link>>

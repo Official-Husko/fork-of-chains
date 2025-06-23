@@ -1,0 +1,90 @@
+:: QuestSetupUnitTrainingObedienceAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_obedience_advanced',  /* id */
+  'Obedience Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingObedienceAdvanced',  /* description */
+  setup.qdiff.harder35,
+  [
+    [
+      'QuestUnitTrainingObedienceAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_obedience_advanced),
+      ]
+    ],
+    [
+      'QuestUnitTrainingObedienceAdvancedSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_obedience_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingObedienceAdvancedFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingObedienceAdvancedDisaster',
+      [
+        setup.qc.Injury('head', 1),
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingObedienceAdvanced [nobr]
+<p>
+Once a slave learned the basic knowledge of servitude, the next step
+is to instill inside their head that they can be nothing else but a slave.
+While some others prefer to achieve this by breaking the slaves' mind,
+some prefer this training which trains the slave by simple repetition
+of the punishment and reward system.
+They must learn to obey without question, and to understand their place
+in the world.
+</p>
+
+:: QuestUnitTrainingObedienceAdvancedCrit [nobr]
+<p>
+<<Rep $g.trainee>> turned out to be a natural submissive. <<Rep $g.head>> even finds the training
+enjoyable, if somewhat lacking in challenge.
+</p>
+
+:: QuestUnitTrainingObedienceAdvancedSuccess [nobr]
+<p>
+It was close, but by the end of the training,
+<<rep $g.trainee>> trainee|have fully grasp the new reality
+that <<they $g.trainee>> trainee|is no longer a <<woman $g.trainee>>,
+but a slave.
+</p>
+
+:: QuestUnitTrainingObedienceAdvancedFailure [nobr]
+<p>
+While <<rep $g.trainee>> trainee|have basic understanding of
+servitude, <<their $g.trainee>> head seems incapable
+of grasping deeper into it.
+At the end of the week, <<reps $g.head>> mission was
+unsuccessful.
+</p>
+
+:: QuestUnitTrainingObedienceAdvancedDisaster [nobr]
+<p>
+<<Rep $g.trainee>> somehow snapped during the training, injuring
+both <<themselves $g.trainee>> and <<rep $g.head>>.
+</p>

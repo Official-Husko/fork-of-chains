@@ -1,0 +1,141 @@
+:: EventSetup_wandering_nomad [nobr event]
+
+<<run new setup.Event(
+'wandering_nomad', /* key */
+"Wandering Nomad", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_wandering_nomad',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_nomad], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.BoonizeRandom('slaver', 5),
+  setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AnyTrait([setup.trait.subrace_humandesert, setup.trait.race_greenskin], true)),
+setup.qc.DoAll([
+setup.qc.QuestDelay(setup.questpool.desert, 2)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AnyTrait([setup.trait.subrace_humanvale, setup.trait.race_wolfkin], true)),
+setup.qc.DoAll([
+setup.qc.QuestDelay(setup.questpool.vale, 4)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AnyTrait([setup.trait.race_elf, setup.trait.race_catkin], true)),
+setup.qc.DoAll([
+setup.qc.QuestDelay(setup.questpool.forest, 3)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AnyTrait([setup.trait.race_demon, setup.trait.race_lizardkin, setup.trait.subrace_humansea], true)),
+setup.qc.DoAll([
+setup.qc.QuestDelay(setup.questpool.sea, 1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.QuestDelay(setup.questpool.city, 3)
+], undefined))
+], undefined))
+], undefined))
+], undefined)),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.scoutharbor),
+  setup.qres.Building(setup.buildingtemplate.scouttunnel),
+  setup.qres.Building(setup.buildingtemplate.scoutcarriage),
+  setup.qres.Building(setup.buildingtemplate.scoutoffice),
+  setup.qres.Building(setup.buildingtemplate.scouttower),
+  setup.qres.Building(setup.buildingtemplate.scouthut),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_wandering_nomad [nobr]
+<p>
+<<Yourrep $g.slaver>> often slaver|leave the comfort of the fort during <<their $g.slaver>> free times. Nomad blood runs thick in <<therace $g.slaver>>, and <<they $g.slaver>> often slaver|have the urge to simply go out and explore.
+
+<<They $g.slaver>>
+<<if $g.slaver.isHasTrait('race_greenskin')
+or
+$g.slaver.isHasTrait('subrace_humandesert')
+>>
+often slaver|venture eastwards, towards the great dunes <<they $g.slaver>> once called home.
+<<elseif $g.slaver.isHasTrait('subrace_humanvale')
+or
+$g.slaver.isHasTrait('race_wolfkin')>>
+often slaver|venture northwards, towards the cold vales <<they $g.slaver>> once called home.
+<<elseif $g.slaver.isHasTrait('race_elf') or $g.slaver.isHasTrait('race_catkin')>>
+often slaver|venture westwards, towards the vast forests <<they $g.slaver>> once called home.
+<<elseif $g.slaver.isHasTrait('race_lizardkin') or $g.slaver.isHasTrait('subrace_humansea')>>
+often slaver|venture southwards, towards the oceans <<they $g.slaver>> once called home.
+<<elseif $g.slaver.isHasTrait('race_demon')>>
+travel haphazardly, as <<their $g.slaver>> demonic heritage means <<their $g.slaver>> original home lays in a land beyond the mortal plane.
+<<elseif $g.slaver.isHasTrait('subrace_humankingdom')>>
+often slaver|venture back into the <<lore region_city>>, whom <<they $g.slaver>> once called home.
+<<else>>
+often slaver|venture far, sometimes even reaching into the <<lore region_sea>>.
+<</if>>
+<<if $g.you.isHasTrait('bg_nomad')>>
+Sometimes, you have the urge to follow <<them $g.slaver>> on their escapades. Not surprising, given your background. But you know better than to ditch your responsibilites as the fort's leader.
+<</if>>
+</p>
+
+<p>
+Today, <<rep $g.slaver>> slaver|have just returned from one such wandering, and slaver|come back with some bonus for you.
+During <<their $g.slaver>> venture this time, <<they $g.slaver>> slaver|discover some quest leads in the
+<<if $g.slaver.isHasTrait('race_greenskin')
+or
+$g.slaver.isHasTrait('subrace_humandesert')
+>>
+<<lore region_desert>>.
+<<elseif $g.slaver.isHasTrait('subrace_humanvale')
+or
+$g.slaver.isHasTrait('race_wolfkin')>>
+<<lore region_vale>>.
+<<elseif $g.slaver.isHasTrait('race_elf')
+or
+$g.slaver.isHasTrait('race_catkin')>>
+<<lore region_forest>>.
+<<elseif $g.slaver.isHasTrait('race_lizardkin')
+or $g.slaver.isHasTrait('subrace_humansea')
+or
+$g.slaver.isHasTrait('race_demon')>>
+<<lore region_sea>>.
+<<else>>
+<<lore region_city>>.
+<</if>>
+Judging from <<their $g.slaver>> elated face, <<they $g.slaver>> probably found it when <<they $g.slaver>> patroned one of the
+<<if $g.slaver.isHasTrait('per_lustful')>>
+whorehouses of the region, no doubt also sampling some of the wenches offered.
+<<elseif $g.slaver.isHasTrait('per_studious')>>
+libraries, no doubt also perusing the vast trove of knowledge for their own studious gain.
+<<elseif $g.slaver.isHasTrait('per_frugal')>>
+markets, no doubt selling off some of the contraband <<they $g.slaver>> managed to hide from you.
+<<elseif $g.slaver.isHasTrait('per_kind')>>
+temples, no doubt feeling a bit better from all the atrocious acts <<they $g.slaver>> did as part of your company.
+<<else>>
+taverns, no doubt getting <<themself $g.slaver>> drunk to the point of uselessness.
+<</if>>
+The good mood will probably last a couple of weeks, and this might be an opportune time for you to assign <<them $g.slaver>> to a more difficult quest.
+</p>

@@ -1,0 +1,152 @@
+:: QuestSetup_desert_purifiers_enslave [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_desert_purifiers_enslave',
+'Purifier',
+'subrace_humandesert', /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_healer),
+setup.qc.TraitReplace('unit', setup.trait.face_attractive),
+setup.qc.TraitReplace('unit', setup.trait.magic_fire_master),
+setup.qc.TraitReplace('unit', setup.trait.per_kind), ],
+)>>
+
+<<run new setup.QuestTemplate(
+'desert_purifiers_enslave', /* key */
+'Desert Purifiers: Enslave', /* Title */
+'darko', /* Author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'corruptor': setup.qu.corruptor,
+'warrior1': setup.qu.dark_warrior,
+'warrior2': setup.qu.dark_warrior, },
+{ /* actors */
+'guard': 'desert_all',
+'purifier': 'quest_desert_purifiers_enslave', },
+[ /* costs */
+],
+'Quest_desert_purifiers_enslave',
+setup.qdiff.harder41, /* difficulty */
+[ /* outcomes */
+[
+'Quest_desert_purifiers_enslaveCrit',
+[
+setup.qc.Slave('purifier', 'a|was a purifier living on the eastern desert whom you managed to enslave'),
+ ],
+], [
+'Quest_desert_purifiers_enslaveCrit',
+[
+setup.qc.Slave('guard', 'a|was a patron of the desert purifier'),
+ ],
+], [
+'Quest_desert_purifiers_enslaveFailure',
+[
+setup.qc.Purify('corruptor'),
+setup.qc.Purify('warrior1'),
+setup.qc.Purify('warrior2'), ],
+], [
+'Quest_desert_purifiers_enslaveFailure',
+[
+setup.qc.Purify('corruptor'),
+setup.qc.Purify('warrior1'),
+setup.qc.Purify('corruptor'),
+setup.qc.Purify('warrior1'),
+setup.qc.MoneyCrit(-1),
+setup.qc.Purify('warrior2'),
+setup.qc.Purify('warrior2'), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_desert_purifiers_enslave [nobr]
+
+<<include 'Opportunity_desert_purifiers'>>
+
+<p>
+You have foolishly chosen to try and enslave a purifier.
+</p>
+
+
+:: Quest_desert_purifiers_enslaveCrit [nobr]
+
+<p>
+The purifier had settled camp near an oasis and provided <<their $g.purifier>> services to the
+surrounding settlements.
+Your slavers waited until nightfall before <<rep $g.corruptor>> <<uadv $g.corruptor>>
+began <<their $g.corruptor>> dark work.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Within moments,
+dark energies corrupted tendrils shot out of the grounds throughout the encampment.
+The purifier were not defenseless however and <<their $g.purifier>> many
+followers soon attempted to fight through the corruptions. But <<rep
+$g.warrior1>> and <<rep $g.warrior2>> managed to turn the tide of battle in
+your favor and soon enough <<rep $g.corruptor>> had all the time
+in the world to enter and capture <<rep $g.purifier>>.
+</p>
+
+<p>
+Long after your slavers had left the compound,
+moaning sounds could still be heard throughout the
+encampment as the purifier's followers were ravaged thoroughly by the many
+corrupted tendrils that kept spawning and feeding throughout the encampment.
+</p>
+
+<<else>>
+
+<p>
+Soon after, dark corrupted warriors spawn out of nowhere and invaded the
+encampment. Your slavers did nothing but watch as the once pure camp followers one by one were
+subdued by the demonic soldiers and fucked mercilessly.
+</p>
+
+<p>
+The lead demon, having seen the <<if $g.purifier.isFemale()>> strikingly beautiful <<else>>
+strikingly handsome <</if>> purifier, decided to take the purifier as payment for
+their services. <<Yourrep $g.corruptor>> corruptor|was unable to do anything as
+the object of your quest purifier|was taken as a living cock-sheathe by the demon and
+disappeared together through <<lore concept_mist>>.
+</p>
+
+<p>
+Having no option but to leave without the purifier, your slavers picked a still usable camp
+followers out of the ex-purifiers and took <<them $g.guard>> home as a consolation prize.
+As your slavers exited the camp, the wailing and moaning of the victims could still be
+heard even from a distance...
+</p>
+
+<</if>>
+
+
+:: Quest_desert_purifiers_enslaveFailure [nobr]
+<p>
+The purifier had settled camp near an oasis and provided services to
+surrounding settlements.
+However, your slavers caught glimpse of the head purifier and somehow
+<<their $g.purifier>> divine <<if $g.purifier.isFemale()>>beauty<<else>>handsomeness<</if>>
+disarmed your slavers of all their evil intentions.
+<<if $gOutcome == 'failure'>>
+With their intentions gone, your
+slavers decided to come in peace to the encampment. The purifier
+blessed your slavers for such forthcomingness, and your slavers
+later returned back home less corrupt than before.
+<<else>>
+Within moment
+your slavers prostrated themselves in front of <<rep $g.purifier>>, leaving
+tithes and promising more tithe in the future. <<Rep $g.purifier>> blessed
+them for their generosity, and ultimately your slavers came back home less
+corrupt than ever but with a mounting amount of debt.
+<</if>>
+
+</p>

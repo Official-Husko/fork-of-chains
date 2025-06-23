@@ -1,0 +1,193 @@
+:: OpportunitySetup_brothel_focus_ii [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'brothel_focus_ii', /* key */
+"Brothel Focus II", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_focus_ii',
+setup.qdiff.hard59, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_focus_ii_0',
+    'Opportunity_brothel_focus_ii_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '100', -1),
+      setup.qc.IfThenElse(
+setup.qres.VarEqual('quest_brothel_sub', 'sub'),
+setup.qc.DoAll([
+setup.qc.VarAdd('quest_brothel_class', -10, -1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.VarAdd('quest_brothel_class', 10, -1)
+], undefined)),
+    ],
+  ],
+  [
+    'Opportunity_brothel_focus_ii_1',
+    'Opportunity_brothel_focus_ii_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '100', -1),
+      setup.qc.IfThenElse(
+setup.qres.VarEqual('quest_brothel_sub', 'sub'),
+setup.qc.DoAll([
+setup.qc.VarAdd('quest_brothel_class', 10, -1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.VarAdd('quest_brothel_class', -10, -1)
+], undefined)),
+      setup.qc.VarSet('quest_brothel_sub', 'switch', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_focus_ii [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+With the bulk of the training done, it is time for the final touch.
+Per your prior direction, the courtesans so far have been directed to do their best as
+<<if _sub == 'sub'>>
+submissive little sluts.
+<<else>>
+a high-class dominatrix.
+<</if>>
+You must now decide whether to advance this further, or to switch to something else.
+</p>
+
+<p>
+The first option is to dedicate the courtesans in your brothel fully to being
+<<if _sub == 'sub'>>
+the most submissive little sluts anyone would ever get in the region.
+This will turn your establishment into a paradise for dominants, with needy submissive courtesans ready to be rented to satisfy your clients' desires. A high-class den of debauchery, if you will.
+<<else>>
+the most dominant courtesans you'll ever seen in your life. This will turn your establishment into a paradise for secretive sluts, with the most dominant courtesans ready to whip discipline into submissive little clients, or simply to enjoy lovemaking between to perfectly equal doms. And it will all be done in style.
+<</if>>
+</p>
+
+
+<p>
+Alternatively, you could make your courtesans more flexible. Instead of going full
+<<if _sub == 'sub'>>
+submissive,
+<<else>>
+dominant,
+<</if>>
+the courtesans could be taught how to enjoy both being a submissive and also
+being a dominant. A "switch", if you'd like. While they won't be able to match a pure
+submissive slut's desire to be dominated, nor a pure dominant's ego, their
+flexibility will attract a wider range of clients.
+</p>
+
+
+
+
+:: Opportunity_brothel_focus_ii_0 [nobr]
+<<if setup.dutytemplate.questbrothelmanager.sub() == 'sub'>>Full submissive<<else>>Full dominant<</if>>
+
+
+:: Opportunity_brothel_focus_ii_0_flavor [nobr]
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+
+<p>
+Having heard your decision to double down on the courtesans'
+<<if _sub == 'sub'>>
+submissive
+<<else>>
+dominant
+<</if>>
+tendencies, <<yourrep $g.owner>> immediately owner|resume <<their $g.owner>> work.
+<<if $g.owner.isHasTrait('per_active')>>
+(Which is nothing short of a miracle, considering how lazy <<theslaver $g.owner>> usually owner|is.)
+<<elseif $g.owner.isHasTrait('per_studious')>>
+(Completely in character with the diligent slaver.)
+<</if>>
+Using the
+<<if _facility == 'dungeons'>>
+sex dungeons
+<<else>>
+private rooms
+<</if>>
+as a makeshift classroom, <<therace $g.owner>> owner|hold a meeting letting the now high-class courtesans know about the direction of the brothel.
+<<if _sub == 'sub'>>
+Their customers are kings and queens now, and they must worship them like one.
+<<else>>
+Their customers are their slaves now, and they must treat them as they deserve.
+<</if>>
+As the next days pass, the sounds of whipping can be heard coming from the complex, which sometimes make you wonder who is it that got lucky with the right side of the whip.
+</p>
+
+
+:: Opportunity_brothel_focus_ii_1 [nobr]
+Switch
+
+
+:: Opportunity_brothel_focus_ii_1_flavor [nobr]
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+
+<p>
+Having heard your decision to
+broaden the courtesans' scopes,
+<<yourrep $g.owner>> immediately owner|resume <<their $g.owner>> work.
+<<if $g.owner.isHasTrait('per_active')>>
+(Which is nothing short of a miracle, considering how lazy <<theslaver $g.owner>> usually owner|is.)
+<<elseif $g.owner.isHasTrait('per_studious')>>
+(Completely in character with the diligent slaver.)
+<</if>>
+Using the
+<<if _facility == 'dungeons'>>
+sex dungeons
+<<else>>
+private rooms
+<</if>>
+as a makeshift classroom, <<therace $g.owner>> owner|hold a meeting letting the now high-class courtesans know about the new direction of the brothel.
+They must learn to both top and bottom, and to extract pleasure from their customers as both roles.
+Sounds of moaning and guttural scream of pleasure could be heard coming from the complex in the next few days...
+</p>

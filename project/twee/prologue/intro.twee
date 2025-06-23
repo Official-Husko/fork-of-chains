@@ -1,0 +1,90 @@
+:: PrologueIntro [nobr]
+
+<<if $gNewGamePlusExLeader>>
+  <<unset $gNewGamePlusExLeader>>
+
+<p>
+After scouring away and far from your old home, you found yet another abandoned fort
+to establish your new company at.
+It seems there are quite a bit of abandoned forts in the area, and you are not very sure why.
+</p>
+
+<p>
+Like before, the fort would need a lot of repairs to be worthy to be called as the stronghold
+of your glorious company, rebuilding and clearing debris will take time
+but as you have demonstrated in the past, it can be done.
+There is a lot of work to do, but you are eager to begin straight away...
+</p>
+
+<<if !setup.unitgroup.new_game_plus_slaves.isEmpty()>>
+<p>
+Until you build the <<rep setup.buildingtemplate.veteranhall>>,
+the slaves you've brought along from your old fort will be stowed away safely
+in one of the dungeons you had already paid for in advance.
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+You did it! You have found an old abandoned fort to establish as the base of operation
+for your company: <<rep $company.player>>.
+</p>
+
+<p>
+The fort is in a sorry state however, most of the buildings are in ruins and debris limits the available space.
+There is much to be done before you can even
+begin operation as a proper slaver band.
+The first improvement you should construct is the
+<<rep setup.buildingtemplate.scouthut>>, which allows your group of slavers
+to take on more quests on the wild.
+Next, you need to build the <<rep setup.buildingtemplate.dungeons>> to house your slaves, and
+<<rep setup.buildingtemplate.slavepens>> to temporarily keep incoming slaves.
+You also need to expand the <<rep setup.buildingtemplate.lodgings>> if you ever want to hire more slavers.
+All in all, aim to build the <<rep setup.buildingtemplate.greathall>> as soon as possible.
+</p>
+
+<p>
+You open the gates to your new fort and begin your new career...
+</p>
+
+<<if !setup.unitgroup.new_game_plus_slaves.isEmpty()>>
+<p>
+(You get the feeling that some slaves you are destined to receive will
+somehow be received once you build the <<rep setup.buildingtemplate.veteranhall>>.)
+</p>
+<</if>>
+
+<div class='helpcard'>
+  <p>
+    Welcome to Fort of Chains!
+  </p>
+
+  <p>
+    This game is designed to be perfectly playable going in completely blind in your first playthrough.
+    There are contextual help texts such as
+    <<message '(?)'>>
+      <div class='helpcard'>
+        You have successfully clicked the help link and made this help text appear!
+        To close, click the "(?)" link again.
+      </div>
+    <</message>>
+    throughout the games.
+    You can get more hints and help by clicking on them.
+    In this game, please
+    do not be afraid of failures! The game is designed so that
+    <<successtext "if you fail / time out on a quest, there will be replacement quests or the quest will respawn">>.
+  </p>
+
+  <p>
+    Hint: Make sure to check the Settings menu to change your game's preferences.
+    Also, the [Space] key is a shortcut to press continue for most menus.
+  </p>
+</div>
+
+<</if>>
+
+<div>
+<<set _dom = setup.DOM.Menu.gameinit()>>
+<<attach _dom>>
+</div>

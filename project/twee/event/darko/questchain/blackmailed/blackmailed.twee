@@ -1,0 +1,68 @@
+:: EventSetup_blackmailed [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_former_leader_of_a_slaving_company_0", /* key */
+"Former Leader of a Slaving Company", /* name */
+"Formerly led a slaving company", /* description */
+"a|was a former leader in a slaving company whom you bankrupted", /* unit text */
+25000, /* slave value */
+{ /* skill additives */
+combat: 1,brawn: 1,survival: 1,intrigue: 1,slaving: 1,knowledge: 1,social: 1,aid: 1,arcane: 1,sex: 1,},
+)
+>>
+<<run new setup.UnitGroup(
+"blackmailed1",
+"Slaving Company Leader",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slaver),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_connected, setup.trait.skill_hypnotic, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal, setup.trait.magic_fire_master, setup.trait.magic_water_master, setup.trait.magic_wind_master, setup.trait.magic_earth_master, setup.trait.magic_light_master, setup.trait.magic_dark_master], 1, false, true),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.muscle_extremelystrong, setup.trait.face_beautiful, setup.trait.per_smart], 1, false, true),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_frugal]),
+  setup.qc.AddTitle('unit', 'quest_former_leader_of_a_slaving_company_0'),
+],
+)>>
+
+<<run new setup.Event(
+'blackmailed', /* key */
+"Blackmailed", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "FCdev and darko",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'unit',
+],
+'Event_blackmailed',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': 'missingslavers',
+  'boss': 'blackmailed1',
+  'messenger': 'all',
+},
+[ /* outcomes */
+  setup.qc.VarSet('rival_blackmail_active', '1', -1),
+  setup.qc.Opportunity('blackmailed', {
+slaver: "slaver",
+boss: "boss",
+messenger: "messenger",
+}),
+  setup.qc.RemoveFromUnitGroup('slaver'),
+],
+[ /* restrictions */
+  setup.qres.Building('veteranhall'),
+  setup.qres.VarNull('rival_blackmail_active'),
+  setup.qres.UnitGroupHasUnit('missingslavers'),
+],
+0, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_blackmailed [nobr]
+<<include "Opportunity_blackmailed">>

@@ -1,0 +1,58 @@
+:: InitBuildingMarket [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'market',
+  tags: [],
+  width: 5,
+  height: 5,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "knowledge",
+      room_keys: [
+        'alchemistshop',
+        'armory',
+        'bazaar',
+        'booths',
+        'forge',
+        'inn',
+        'sexshop',
+        'warehouse',
+        'workshop',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+
+<<run new setup.BuildingTemplate({
+  key: 'market',
+  name: 'Market',
+  tags: ['storage', 'unlocker',],
+  description_passage: 'BuildingMarket',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('warehouse')],
+  ],
+  on_build: [
+    []
+  ],
+  main_room_template_key: 'market',
+})>>
+
+
+:: BuildingMarket [nobr]
+
+<p>
+An area with small kiosks where peddlers can sell their goods to you and your slavers.
+Unlocks buying items.
+Can build improvements which attracts vendors that makes more goods available to purchase.
+</p>
+

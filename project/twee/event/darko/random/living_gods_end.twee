@@ -1,0 +1,38 @@
+:: EventSetup_living_god_s_end [nobr event]
+
+<<run new setup.Event(
+'living_god_s_end', /* key */
+"Living God\'s End", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_living_god_s_end',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.VarRemove('quest_living_god_active'),
+  setup.qc.VarRemove('quest_living_god_isfavor'),
+  setup.qc.MoneyCustom(1000),
+  setup.qc.RemoveDuty('questlivinggod'),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_living_god_active', '1'),
+  setup.qres.NoUnitWithTitle('quest_living_god', {
+}),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_living_god_s_end [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+With the slaver gone, your little shrine dedicated to your once <<rep setup.trait.bg_mythical>> slaver lies desolate. Nobody ever comes to the place anymore, and before long plants start to overgrow the place. Sighing, you order <<yourrep _u>> to cleanup the shrine, recouping what little you could get from reselling its materials.
+</p>

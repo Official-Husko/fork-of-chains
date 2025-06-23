@@ -1,0 +1,299 @@
+:: QuestSetup_houndmastery [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"the_dog_whisperer0",
+"Dog Whisperer",
+'forest_all',  /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitsReplace('unit', [setup.trait.skill_animal]),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_hunter),
+],
+)>>
+
+
+<<set _criteriawhisperer = new setup.UnitCriteria(
+null, /* key */
+'Dog Whisperer', /* name */
+[
+  setup.trait.bg_hunter,
+  setup.trait.per_proud,
+  setup.trait.per_playful,
+  setup.trait.per_dominant,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.muscle_extremelythin,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_humble,
+  setup.trait.per_serious,
+  setup.trait.per_submissive,
+  setup.trait.skill_intimidating,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.skill_animal),
+],
+{
+  survival: 1.5,
+  slaving: 1.5,
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'houndmastery', /* key */
+"Houndmastery", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'order',
+  'upgrade',
+  'forest',
+  'prep',
+  'rare',
+],
+4, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'whisperer': [ _criteriawhisperer, 1],
+  'scout1': [ setup.qu.scout_forest, 1],
+  'scout2': [ setup.qu.scout_forest, 1],
+  'slave': setup.qu.slavepet,
+},
+{ /* actors */
+  'master': 'the_dog_whisperer0',
+  'pet': 'forest_all',
+},
+[ /* costs */
+],
+'Quest_houndmastery',
+setup.qdiff.hard41, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_houndmasteryCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.Equipment(setup.equipmentpool.pet_good),
+    ],
+  ],
+  [
+    'Quest_houndmasteryCrit',
+    [
+      setup.qc.SetCooldownQuest('houndmastery', 20),
+      setup.qc.VarRemove('houndmaster_pets_delivered'),
+    ],
+  ],
+  [
+    'Quest_houndmasteryFailure',
+    [
+      setup.qc.SetCooldownQuest('houndmastery', 10),
+      setup.qc.Trait('pet', setup.trait.training_obedience_basic),
+      setup.qc.Trait('pet', setup.trait.training_pet_basic),
+      setup.qc.Slave('pet', "a|was a stray pet your slavers found in the forest, when looking for the Houndmaster", undefined),
+      setup.qc.Ire('neko', 10),
+    ],
+  ],
+  [
+    'Quest_houndmasteryDisaster',
+    [
+      setup.qc.SlaverMarker('master'),
+      setup.qc.SlaveMarker('pet'),
+      setup.qc.SetCooldownQuest('houndmastery', 10),
+      setup.qc.Injury('whisperer', 6),
+      setup.qc.Injury('scout1', 4),
+      setup.qc.Injury('scout2', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_houndmastery [nobr]
+<<set _i = setup.item.technology_petmaster>>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+There are whispers of a legendary hound<<master $g.master>> living somewhere
+in the <<lore region_forest>>. According to <<yourrep _u>>, when it comes to taming
+beasts, the hound<<master $g.master>> is second to none. In fact, it is
+rumored that <<they $g.master>> master|have even managed to tame the most
+dangerous beast of all — fellow human-likes — and <<their $g.master>> abode is stuffed
+full of loving and perfectly obedient pets of various races.
+</p>
+
+<p>
+Recently, the hound<<master $g.master>> is looking for additional exotic pets
+to add to <<their $g.master>> loving care — two trained pets that are
+opposites of each other, to help liven up <<their $g.master>> abode. This
+could be a job for you, but what rewards would it bring?
+</p>
+
+<<if $inventory.isHasItem(_i)>>
+<p>
+While you've already obtained the <<rep _i>> from the good ol' hound<<master
+$g.master>> some time ago, it couldn't hurt to get on the <<man $g.master>>'s
+better side. If anything, you bet there are still a trick or two the
+hound<<master $g.master>> could teach you and your company...
+</p>
+<<else>>
+<p>
+You have always wanted to know the secrets to training pets, and your
+instincts are screaming right now that this might be the lead you need to get
+that elusive <<rep _i>>. It's still terribly unclear what kind of slaves the
+hound<<master $g.master>> wanted, but anything would be worth the price for
+<<rep _i>>.
+</p>
+<</if>>
+
+<p>
+To take on this job, you absolutely need a slaver gifted in <<rep
+setup.trait.skill_animal>>, as the hound<<master $g.master>> is very picky
+when it comes to guests, and only show respect to those of similar talents.
+On top of that, two scouts familiar with the forests are preferable to help
+guide the whisperer to the hidden abode.
+</p>
+
+
+:: Quest_houndmasteryCrit [nobr]
+
+<p>
+It took several weeks, but after dredging through the vast forests, <<rep
+$g.scout1>> and <<utheirrel $g.scout1 $g.scout2>> <<rep $g.scout2>> 
+found the hidden abode almost by pure chance.
+They were immediately greeted by a <<urace $g.pet>>,
+in full pet gear. <<They $g.pet>> pet|ran on all fours to your
+slavers before starting to bark at your slavers, just like a proper guard dog.
+</p>
+
+<p>
+<<Yourrep $g.whisperer>> however had <<their $g.whisperer>> way with animals,
+and the pet was not an exception. With a few whispers, the pet stopped
+barking, before starting to lick <<reps $g.whisperer>> <<ucfeet
+$g.whisperer>>. Seeing the pet calmed down, <<rep $g.whisperer>> allowed
+<<their $g.whisperer>> own pet <<rep $g.slave>> to go out and play, and the
+two human-like pets started to circle and lick each others.
+</p>
+
+<p>
+Hearing the commotion, the head of the abode came out of the house,
+accompanied with several more human-like pets. Seeing its owner, <<therace
+$g.pet>> ran away from your slavers into <<their $g.pet>> owner, leaving your slavers and
+their pet slave alone. As the slaves were busy licking <<their $g.master>> <<master $g.master>>'s
+boots, the hound<<master $g.master>> greeted your slavers warmly, after
+seeing a fellow animal enthusiast in <<rep $g.whisperer>>. The two then
+engaged in a talk almost as if they were in their own world, and as if
+<<rep $g.scout1>> and <<rep $g.scout2>> did not exists at all. All the while the pets
+were busy servicing their owner's boots.
+</p>
+
+<<set _i = setup.item.technology_petmaster>>
+
+<p>
+<<Rep $g.whisperer>> managed to gather the important information regarding
+the pet specifications that the hound<<master $g.master>> would like to have delivered to
+<<their $g.master>> abode. Two pets, in fact, and should be properly trained
+as a pet. More than that, however, the hound<<master $g.master>> is looking
+to spice up <<their $g.master>> living abode by having the two pets paired as
+polar opposites, since it'll be fun to see the two very different animals
+playing with each other.
+</p>
+
+<p>
+Their goal complete, your slavers agreed to deliver the slave order to your
+company. As for the rewards, there is nothing to fear — the hound<<master
+$g.master>> master|have plenty of secrets to share,
+<<if $inventory.isHasItem(_i)>>
+including a particularly rare pet that <<they $g.master>> might be willing to
+lend to your company for some time.
+<<else>>
+including the elusive <<rep _i>>.
+<</if>>
+All you have to do now is to fulfill the slave order, which will no doubt be quite a challenge.
+<<if $gOutcome == 'crit'>>
+As a down-payment, the hound<<master $g.master>> called for one of <<their
+$g.master>> hounds, before unlocking one of its valuable pet-gear and handed
+it over to your slavers.
+<</if>>
+</p>
+
+<p>
+Back at your fort, you look at the particulars of the slave orders. Two
+slaves, both trained in pet training.
+<<if $gQuest.getSeed() % 4 == 0>>
+One strong and one weak,
+<<set _traits = ['muscle_strong', 'muscle_thin']>>
+<<elseif $gQuest.getSeed() % 4 == 1>>
+One playful and one serious,
+<<set _traits = ['per_playful', 'per_serious']>>
+<<elseif $gQuest.getSeed() % 4 == 2>>
+One tough and one nimble,
+<<set _traits = ['tough_tough', 'tough_nimble']>>
+<<elseif $gQuest.getSeed() % 4 == 3>>
+One chaste and one lustful,
+<<set _traits = ['per_chaste', 'per_lustful']>>
+<</if>>
+both to be delivered within 4 months.
+Better start working capturing the appropriate slaves if you want to fulfill
+the order.
+</p>
+
+<<for _itrait range _traits>>
+  <<run setup.qc.SlaveOrderHoundmastery(_itrait).apply($gQuest)>>
+<</for>>
+
+
+
+:: Quest_houndmasteryFailure [nobr]
+<p>
+Your slavers got lost in the forest, no small part thanks to <<reps
+$g.scout1>> incompetence. But during the venture in the forests, they
+encountered what appeared to be a stray human-like pet, wondering alone in the
+forest on all fours. Your slavers took the <<rep $g.pet>> as a consolation
+prize and brought it back home, as the company can always use more pets!
+</p>
+
+<p>
+Little did they know that they were just a few steps away from the
+hound<<master $g.master>> abode.
+Worse still, they actually stole one of <<their $g.master>> in-training pets,
+which will surely anger <<them $g.master>>.
+Oh well, there is always next time if you want to go look for <<them
+$g.master>> again!
+</p>
+
+
+
+
+:: Quest_houndmasteryDisaster [nobr]
+<p>
+It took several weeks, but after dredging through the vast forests <<rep
+$g.scout1>> and <<utheirrel $g.scout1 $g.scout2>> <<rep $g.scout2>> finally
+found the hidden abode. They were immediately greeted by a <<urace
+$g.pet>>, in full pet gear. <<They $g.pet>> ran on all fours to your slavers
+before starting to bark at your slavers, just like a proper guard dog.
+</p>
+
+<p>
+As <<rep $g.whisperer>> tried to calm the guard dog, the guard dog viciously attacked your slavers
+without warning. In the end, your slavers were no match for the
+well-trained watchdog, and they retreated back to safety to nurse their wounds.
+</p>

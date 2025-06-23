@@ -1,0 +1,40 @@
+:: EventSetup_doppelganger_epilogue [nobr event]
+
+<<run new setup.Event(
+'doppelganger_epilogue', /* key */
+"Doppelganger Epilogue", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_doppelganger_epilogue',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_doppelganged'),
+    setup.qres.Available(),
+    setup.qres.Home(),
+  ],
+  'dop': setup.contacttemplate.quest_doppelganger,
+},
+[ /* outcomes */
+  setup.qc.Opportunity('doppelganger_epilogue', {
+dop: "dop",
+slaver: "slaver",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_doppelganger_progress', '6'),
+  setup.qres.NoOpportunity('doppelganger_epilogue'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_doppelganger_epilogue [nobr]
+<<include "Opportunity_doppelganger_epilogue">>

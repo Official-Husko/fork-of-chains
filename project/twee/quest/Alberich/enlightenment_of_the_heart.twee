@@ -1,0 +1,748 @@
+:: QuestSetup_enlightenment_of_the_heart [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriapupil = new setup.UnitCriteria(
+null, /* key */
+'Pupil', /* name */
+[
+setup.trait.bg_mythical,
+setup.trait.bg_wiseman,
+setup.trait.bg_mystic,
+setup.trait.bg_monk,
+setup.trait.bg_priest,
+setup.trait.bg_healer,
+setup.trait.bg_apprentice,
+setup.trait.bg_scholar,
+setup.trait.per_chaste,
+setup.trait.per_lavish,
+setup.trait.per_humble,
+setup.trait.per_kind,
+setup.trait.per_loyal,
+setup.trait.per_direct,
+setup.trait.per_empath,
+setup.trait.per_honorable,
+setup.trait.per_calm,
+],
+[
+setup.trait.bg_mist,
+setup.trait.bg_assassin,
+setup.trait.bg_informer,
+setup.trait.bg_slaver,
+setup.trait.bg_raider,
+setup.trait.bg_pirate,
+setup.trait.bg_thug,
+setup.trait.bg_thief,
+setup.trait.bg_mercenary,
+setup.trait.bg_whore,
+setup.trait.bg_unemployed,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_proud,
+setup.trait.per_cruel,
+setup.trait.per_lunatic,
+setup.trait.per_masochistic,
+setup.trait.per_sly,
+setup.trait.per_evil,
+setup.trait.per_aggressive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.Trait(setup.trait.gender_female),
+setup.qres.HasTitle('quest_enlightenment_1_graduate_0'),
+setup.qres.Trait(setup.trait.magic_light),
+],
+{
+arcane: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'enlightenment_of_the_heart', /* key */
+"Enlightenment of the Heart", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[
+'veteran', 'trait', 'prep', 'city', 'special',
+], /* tags */
+3, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+'pupil': [_criteriapupil, 3]},
+{ /* actors */
+'master': 'quest_enlightenment_of_the_mind1', },
+[ /* costs */
+setup.qc.Money(-10000), ],
+'Quest_enlightenment_of_the_heart',
+setup.qdiff.normal47, /* difficulty */
+[ /* outcomes */
+[
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.SetCooldownOpportunity('enlightenment_of_the_soul___prelude', 10),
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.AddTitle('pupil', 'quest_enlightenment_2_graduate_1'),
+setup.qc.TraitRemove('pupil', setup.trait.per_evil),
+setup.qc.MoneyCustom(5000),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 2, true), ],
+], [
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.SetCooldownOpportunity('enlightenment_of_the_soul___prelude', 10),
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.AddTitle('pupil', 'quest_enlightenment_2_graduate_1'),
+setup.qc.TraitRemove('pupil', setup.trait.per_evil),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 1, true), ],
+], [
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.TraitRemove('pupil', setup.trait.per_chaste), ],
+], [
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.MissingUnit('pupil'),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_honorable, setup.trait.per_calm], 2, true),
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoQuest('infiltration_of_the_heart'),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.ExistUnit([
+  setup.qres.HasTitle('quest_enlightenment_1_graduate_0'),
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.gender_female),
+])
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_enlightenment_of_the_heart [nobr]
+
+<<set _trap = ($gQuest.getTemplate().key == 'infiltration_of_the_heart')>>
+
+<p>
+One of your diligent slavers has successfully graduated the first phase of Master training at the Women's Academy of Light<<if _trap>>, despite actually being a man<</if>>.
+<<set _vice = $dutylist.getUnitIfAvailable('viceleader')>>
+<<if _vice>> Your vice leader, <<rep _vice>>, brings you
+<<else>> You have now received <</if>>
+a letter from the Academy, singing them praises as if to a proud
+<<if $unit.player.isMale()>>father <<else>> mother <</if>>.
+</p>
+<p>
+As the letter explains in lengthy, florid prose, the young
+<<if _trap>>
+"lady"
+<<else>>
+lady
+<</if>>
+shows true
+promise, talent, and devotion, as needed to enter the ranks of those who know
+the Inner Light, and bring its blessings to the world. In surmounting the
+difficulties attendant on the course, and achieving Enlightenment of the
+Mind, they has overcome all obstacles, penetrated all riddles,
+taken a whetstone to their wits, and thus armed themself
+on the way to obtaining all mysteries, all secrets, of the Light
+Mage's knowledge. Now is their mind ready to mount the stair to
+the next level of readiness, to obtain true riches from the Academy's
+treasury of knowledge, and earn the admiration of all.
+</p>
+<p>
+<i>The way these people write</i>, you think, <i>are we sure they're not from the Academy of Wind?</i>
+</p>
+<p>
+Now, the letter goes on to say, to approach ever nearer the goal, it is necessary that their enlightened mind be combined with a purified heart . . .
+</p>
+<p>
+<i><b>My</b> slavers?</i> you think. <i> A purified heart? A heart at all? Am
+I throwing my money away here?</i>
+</p>
+<p>
+. . . and the necessary spiritual exercises may be had at the Women's Academy
+of Light, in return for an entirely reasonable tuition, barely a pittance in
+comparison with the wisdom and world-healing lore that soon will be theirs. . .
+</p>
+<p>
+<I>Nuts</i>, you think. <i>Can't they just blow somebody and get the spell book already?</i>
+</p>
+<p>
+The letter reveals no such option; if you wish your slaver to continue at the
+academy, it's another ten thousand for tuition. </p>
+
+<<if _trap>>
+<p>
+And of course, since your slaver will need to disguise themself again, add another
+ten thousand for the Potion of Illusion...
+</p>
+<</if>>
+
+
+:: Quest_enlightenment_of_the_heartCrit [nobr]
+
+<p>
+<<if $g.pupil.isMale()>>
+After gulping down the Potion of Illusion and embarrasedly donning <<their $g.pupil>>
+best dress,
+<</if>>
+<<Rep $g.pupil>> returned to the unimposing stone building in Lucgate, which
+still houses the Women's Academy of Light. Again <<they $g.pupil>> is greeted
+by the handsome, warm, but proper <<rep $g.master>>. For now only one
+other student is present. They take their purifying baths,
+change into white academic robes, and enjoy just one simple meal together.
+After that the two are not to see each other for
+the rest of the training. The spiritual exercises of the heart work best when
+the pupil is isolated, but for the objects of <<their $g.pupil>> meditation
+and <<their $g.pupil>> spiritual guide—in this case, <<rep $g.master>>
+himself.
+</p>
+
+<p>
+The prior course was austere, but this one is more so. <<Rep $g.pupil>>
+pupil|is straitly given in charge that <<they $g.pupil>> is not to eat one
+bite more than <<they $g.pupil>> is given at meals, and those are to be light
+and infrequent. At breakfast <<they $g.pupil>> is to drink an alchemical
+draught designed to intensify <<their $g.pupil>> feelings. <<They $g.pupil>>
+is to sleep not one minute more than <<they $g.pupil>> is allowed by <<their
+$g.pupil>> guide, and he will allow far less than <<they $g.pupil>> is
+accustomed to. <<They $g.pupil>> is not to allow <<themself $g.pupil>> any
+sexual release, not so much as a single erotic touch, and any violation of
+this order will be grounds for immediate expulsion<<if $g.pupil.isMale()>>,
+although this will probably for a completely different reason for your disguised slaver<</if>>.
+<<Their $g.pupil>> mind
+is to be bent entirely to the themes and meditations of the exercises, and
+each day <<they $g.pupil>> is to write in a diary and confess to <<rep
+$g.master>> all <<their $g.pupil>> failings in <<their $g.pupil>> devotion to
+this.
+</p>
+
+<p>
+Each day opens with a meditation on the Pure Light. But the main business of
+the first week is an examination of <<reps $g.pupil>> own life and failings,
+each exercise a meditation, and each meditation an hour. <<They $g.pupil>> is
+to consider the Tale of the Sun Child, and all occasions when <<they
+$g.pupil>> has done harm to a being no less harmless; and the Verse of the
+Dark River, and how each of <<their $g.pupil>> meanest deeds has reverberated
+to the harm of the world. Tale follows tale and reflection follows
+reflection.
+</p>
+
+<p>
+<<They $g.pupil>> is required to meditate on tales of mindless creatures
+that, by their natures, do harm, show no gratitude, and know no other
+way.
+<<if $g.pupil.isHasTrait('race_catkin')>>
+<<They $g.pupil>> is forced to
+dwell on <<their $g.pupil>> own birth as a <<urace $g.pupil>>, on the cruel and predatory
+ways of cats and cat-like beings, their readiness to torment their prey
+before devouring it, and the presence of such fantasies in <<their $g.pupil>>
+own dark dreams. <<They $g.pupil>> cannot but deeply question whether
+such a being could know the ways of Light and bring healing to the
+world.
+<<elseif $g.pupil.isHasTrait('race_wolfkin')>> <<They $g.pupil>> is forced to
+dwell on <<their $g.pupil>> own whelping as a werewolf, on the heartless
+pack-hunting ways of <<their $g.pupil>> lupine sires that sometimes fill
+<<their $g.pupil>> dreams. <<They $g.pupil>> cannot but deeply question
+whether a born predator with the smell of blood in its
+nostrils could know the ways of Light and bring healing to the world.
+<<elseif $g.pupil.isHasTrait('race_greenskin')>> <<They $g.pupil>> is forced
+to dwell on <<their $g.pupil>> birth and nature as <<urace $g.pupil>>, one of that
+notorious race of debauched green-skinned rapists, on how <<their $g.pupil>>
+very existence must surely rely on more forced ravishing than gentle
+lovemaking, and the way <<their $g.pupil>> kind ravage the countryside and
+terrorize all others. Could a sprig from such a fleshly,
+degenerate race know the ways of Light and bring healing to the world?
+<<elseif $g.pupil.isHasTrait('race_lizardkin')>> <<They $g.pupil>> is forced
+to dwell on <<their $g.pupil>> ovoviviparous hatching as a dragonkin,
+ultimate spawn of those haughty, winged tyrants who know the rest of the
+world only as prey and a source of plunder, and who bring fear and strange
+desire rather than love or happiness. <<They $g.pupil>> must
+confront <<themself $g.pupil>> and ask how such a being could know the ways
+of Light and bring healing to the world.
+<<elseif $g.pupil.isHasTrait('race_demon')>> <<They $g.pupil>> is forced to
+dwell <<their $g.pupil>> own corrupt spawning as a demon beyond the mists,
+fashioned from birth to tempt and corrupt, not to guide and to soothe, and to
+work subversion and pain, not wisdom and healing, and to bring the pleasure
+that leads to pain and ruin. <<They $g.pupil>> must face the absurdity that
+such a being, from its arrival a foul seed in the clean soil of this world,
+might even <i>touch</i> the Pure Light, let alone master its ways and bring
+healing to the world.
+<<elseif $g.pupil.isHasTrait('race_elf')>> <<They $g.pupil>> is forced to
+dwell on <<their $g.pupil>> long life and upbringing as an elf, one of those
+haughty, aloof woodfolk who cannot flit through the trees in search of prey
+without admiring their own fleetness, and sneering at the grossness of every
+other kind; for whom a reflective forest pool is an
+irresistible temptation to boundless self-admiration. In their disdain for
+every other kind, did not the ancient elves subject their neko
+foes to a most disgraceful living death in the Field of Moai? And the nature
+of those sadistic monsters, who left those poor catfolk as eternal statues
+with dildos up their backsides, is surely the nature of <<rep $g.pupil>>
+<<themself $g.pupil>>, who yet imagines that <<they $g.pupil>> can summon the
+pure light, and bring healing to the world.
+<<else>> <<They $g.pupil>> is forced to dwell on <<their $g.pupil>> birth as
+a <i>human</i>, the race that must have invented every evil on the earth,
+that has never ceased killing and enslaving its own kind and every other. When <<their $g.pupil>> kind are not sweating their lives away or
+plotting to do each other harm, they dull themselves with
+drink or debauchery or amuse themselves with the most
+degenerate games. Why, there are some who have never owned a
+slave in their lives, yet would like to <i>imagine</i> themselves as chiefs
+of a band of slavers. In their daydreams they cruelly capture, train, and
+market their fellow beings amidst a life of lechery and
+libertine adventures, dreamed up by the sickest minds human “civilization”
+can produce. No race capable of such pastimes could be trusted with anything
+good, and how can <<they $g.pupil>>, one of them, hope to know the ways of
+Light and bring healing to the world? <</if>>
+</p>
+
+<p>
+The thoughts are depressing and disturbing, exactly as they are meant to be.
+Yet the next exercises are worse. By now <<their $g.pupil>> head is swimming
+with fatigue and hunger, and <<they $g.pupil>> must meditate on tales of bad
+character, the lazy wife whose children went hungry, the foul-mouthed
+magistrate who worked the greatest injustice from a simple fit of bad temper.
+<<They $g.pupil>> is encouraged to focus on pictures from these tales, and
+see the petty spitefulness of the characters in their painted faces, and
+where it leads. As the tales continue, each more than the last
+seems written to stir the deepest distress and self-loathing within <<rep
+$g.pupil>>—not just for <<their $g.pupil>> corrupt origins, but for the
+ugliness within <<them $g.pupil>>, that has grown since the first day <<they
+$g.pupil>> could think. <<Their $g.pupil>> smallest transgressions, <<their
+$g.pupil>> most persistent vices, fill <<their $g.pupil>> mind for the hours
+of the exercises, and mortify <<them $g.pupil>>.
+<<if $g.pupil.isHasTrait('per_lunatic')>> <<They $g.pupil>> must confront
+<<their $g.pupil>> own lunacy—and in <<their $g.pupil>> woozy, hungry,
+sleep-deprived clarity, must ask <<themself $g.pupil>> whether
+<<they $g.pupil>> is retreating from the realities of <<their $g.pupil>> own
+badness into the comforting fog of a mad<<woman $g.pupil>>'s dreaming.
+<</if>>
+
+<<if $g.pupil.isHasTrait('per_lustful')>> <<They $g.pupil>> must face <<their
+$g.pupil>> own unbridled lusts, and as the deprivations of the flesh take
+hold of <<them $g.pupil>>, must face the truth that the creatures <<they
+$g.pupil>> seeks to sate <<their $g.pupil>> lusts on have hearts as well as
+bodies, and to simply take them at pleasure and for pleasure is to do
+countless invisible injuries. <</if>>
+
+<<if $g.pupil.isHasTrait('per_aggressive')>> <<They $g.pupil>> must face
+<<their $g.pupil>> own wrathful ways, and see the pain even a single angry
+word can cause. As a poet once said: “Drop an unkind word — or careless—in a
+minute you forget / But ther's little waves a flowing, and
+there's ripples circling yet / And perhaps in some sad heart a
+mighty wave of tears you've stirred / And disturbed a life was happy, ere you
+dropped that unkind word.” And how many such words <<they $g.pupil>> has
+flung left and right, simply because there was hate in <<their
+$g.pupil>> heart that wanted out, though <<they $g.pupil>> never imagined
+where it might lead. <</if>>
+
+<<if $g.pupil.isHasTrait('per_cruel')>> <<They $g.pupil>> must face the
+cruelty in <<their $g.pupil>> heart and in <<their $g.pupil>> ways, and the
+pleasure <<they $g.pupil>> has taken from the pain and humiliation of
+others, and see how that passion to beat others
+down and make them cringe and suffer brings only base and fleeting pleasure
+to some, with lasting misery for others. <</if>>
+
+<<if $g.pupil.isHasTrait('per_cruel') && $g.pupil.isHasTrait('per_evil')>>
+Indeed, <<they $g.pupil>> must come to understand the outright sadism that
+has animated <<their $g.pupil>> outwardly lovely frame, and the pain those
+well-fashioned hands have inflicted for the sake of <<their $g.pupil>>
+lubricious wishes, and what it has meant for the objects of
+that pain, of whom <<they $g.pupil>> was thoughtless as <<they $g.pupil>>
+sought only <<their $g.pupil>> own desires. <</if>>
+
+<<if $g.pupil.isHasTrait('per_masochistic')>> Indeed, <<they $g.pupil>> must
+come to understand the pleasure <<they $g.pupil>> has drawn from <<their
+$g.pupil>> own pain, and from encouraging others to inflict it, and so to
+bring out the worst in themselves—a worst they may inflict on others who do
+not so wish it. <<Their $g.pupil>> own sexual desires may have brought much
+unwelcome pain to others, and <<they $g.pupil>> must be mindful of
+consequences. <</if>>
+
+<<if $g.pupil.isHasTrait('per_sly')>> <<They $g.pupil>> must face <<their
+$g.pupil>> long career of deception and lies, and reflect on how lies
+multiply and feed on each other, leading to misery and mistrust, and the fog
+of lies like <<theirs $g.pupil>> brings a Cloud of Corrupton upon the earth,
+one that the Pure Light is meant to piece, but <<they $g.pupil>> <<themself
+$g.pupil>> is its greatest enemy. <</if>>
+
+<<if $g.pupil.isHasTrait('per_evil')>> Above all things, <<they $g.pupil>>
+must confront the core of <i>evil</i> within <<themself $g.pupil>>, and the
+parasitic ways of those who extract tribute from the world, not because
+others are fools or weaklings, but because they are trying to live by a
+decency <<they $g.pupil>> has not known and has never tried to comprehend.
+<</if>>
+</p>
+
+<p>
+And still the first week is not done, and the worst has not passed. As
+<<their $g.pupil>> unsated hunger, <<their $g.pupil>> unfulfilled need for
+sleep, and <<their $g.pupil>> unquenchable and increasing need for sexual
+release continue, <<their $g.pupil>> daily confessions of stray thoughts grow
+more tearful, and the images on which <<they $g.pupil>> must meditate grow
+worse. <<They $g.pupil>> must bend <<their $g.pupil>> mind to tales of those
+whose lives and livelihoods are an offense to their fellow beings, and who
+live to hurt and live by hurt. And <<they $g.pupil>> can only see <<themself
+$g.pupil>> in them, and ask what <<their $g.pupil>> life has been.
+</p>
+
+<p>
+<<if $g.pupil.isHasTrait('bg_noble')>> Has <<they $g.pupil>> not been a
+noble, supposedly the mainstay and fighting bulwark of any kingdom, yet too
+often simply a pampered parasite, extracting <<their $g.pupil>> living and
+pleasures from the sweat of honest folk? Precious little nobility in that.
+<</if>>
+<<if $g.pupil.isHasTrait('bg_mercenary')>> Has <<they $g.pupil>> not been a
+mercenary, playing the savage game of war and contributing to the misery of
+the world, not for king and country or loyalty and defense, but simply for a
+bag of short-lived coin? The money goes fast, and the dead do not return.
+<</if>>
+<<if $g.pupil.isHasTrait('bg_pirate')>> Has <<they $g.pupil>> not been a
+pirate, venturing where honest folk brave the waves for trade,
+and plundering what they have earned and destroying what they have built, on
+no higher ground than the fear <<they $g.pupil>> and <<their
+$g.pupil>> mates could instill? The romance is for fools and children. The
+reality is cruelty piled on cruelty. <</if>>
+<<if $g.pupil.isHasTrait('bg_raider')>> Has <<they $g.pupil>> not been a
+raider, a pirate of the land, ravaging and burning and bringing pain and
+poverty, creating nothing and destroying all, simply to keep <<their
+$g.pupil>> wretched life moving forward? Toenail fungus has a more beautiful
+life. <</if>>
+<<if $g.pupil.isHasTrait('bg_thug')>> Has <<they $g.pupil>> not been a thug,
+pushing <<their $g.pupil>> way into the lives of those who wish only to live
+and find a little happiness, and beating <<their $g.pupil>> living out of
+their fear and humiliation? Those who do that inflict a thousand little
+deaths on their weak and wretched victims. Pond scum brings more beauty to
+the world. <</if>>
+<<if $g.pupil.isHasTrait('bg_informer')>> Has <<they $g.pupil>> not been an
+informer, trading on the trust of others, that sweetest prize of life, and
+<i>betraying</i> it for nothing better than bread? It's hard to see how such
+a creature could live with <<themself $g.pupil>> . <</if>>
+<<if $g.pupil.isHasTrait('bg_thief')>> Has <<they $g.pupil>> not been a
+thief, seeing around <<their $g.pupil>> a world of honest tradesmen and
+lawful owners, ones who work and craft and obey while planning a little
+security and luxury for themselves, and then simply <i>taking</i> what they
+have rightly earned, while offering <<themself $g.pupil>> the flimsiest
+excuses for what <<they $g.pupil>> did to them? Worse than worthless. <</if>>
+<<if $g.pupil.isHasTrait('bg_whore')>> Has <<they $g.pupil>> not been a
+whore, selling <<their $g.pupil>> lubricious services to all and sundry
+without asking why, helping wayward husbands to break honest wives' hearts,
+or tempting the poor and lonely to squander their little all for a moment's
+pleasure, all built on lies and illusions of love? Disgusting. <</if>>
+<<if $g.pupil.isHasTrait('bg_unemployed')>> Has <<they $g.pupil>> not been a
+shiftless tramp, a pointless parasite, eating the bread made and earned by
+the honest, and imagining this was freedom? Maggots contribute more to the
+world. <</if>>
+<<if $g.pupil.isHasTrait('bg_assassin')>> Has <<they $g.pupil>> not been a
+cutthroat, an assassin, a murderess-for-hire, robbing others of the precious
+gift of life itself, without even the boldness to face them as the
+mercenaries do? Better things than <i><<they $g.pupil>></i> is may be found
+dripping from a donkey's dong. <</if>>
+Worst of all, and worst of all creatures, <<they $g.pupil>> has lived as a
+<i>slaver</i>, and not just any slaver, but a slaver with that repulsive
+company of <<rep $company.player>>, those foulest of flesh-traders, caring
+nothing for the liberty of their fellow-beings, nor even for their lives
+except as pieces of merchandise. That <<name $unit.player>> is simply a tyrant
+on the largest scale <<they $unit.player>> can manage, and such a creature,
+or anyone who could serve such a creature, lives and is a constant offense
+before the Light. If ever the world produced a child of Belial, it is <<rep
+$g.pupil>>.
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+At the end of the week, <<reps $g.pupil>> evening confessions are
+increasingly tearful, and in <<their $g.pupil>> confused, deprived state,
+<<they $g.pupil>> is not only wondering whether <<they
+$g.pupil>> may be fit to receive and transmit the Pure Light. <<They
+$g.pupil>> is wondering whether <<they $g.pupil>> is fit to
+live and breathe at all. The first morning of the second week finds <<their
+$g.pupil>> kneeling in a bare meditation chamber, lit only by a beam of pure
+sunlight through a clear window, <<their $g.pupil>> face streaming with
+tears, and <<their $g.pupil>> heart filled only with a wish to be cleansed of
+all the horrors of the previous week.
+</p>
+
+<p>
+And then—at least in part—<<their $g.pupil>> wishes are
+granted. This week, <<their $g.pupil>> meditations are focused not merely on
+tales, but on optical apparatus, arrangements of lenses and prims that focus
+light both natural and magical, so that <<they $g.pupil>> may see how the
+aberrations distort the image, but a well-ground lens can focus the light far
+more than anything in Nature, and bring the smallest details into the
+sharpest relief. A prism is not just a source of beauty, but a metaphor for
+splitting the essential from the nonessential, and seeing what needs to be
+seen.
+</p>
+
+<p>
+The deprivations <<rep $g.pupil>> suffers may be worse than the first week,
+but they do not seem so, as <<they $g.pupil>> masters—at least for now—the
+worst of <<their $g.pupil>> fleshly needs. <<Their $g.pupil>> daily
+confessions of aberrant thoughts become sparser and less tearful, as <<they
+$g.pupil>> comes to see <<they $g.pupil>> can perfect <<themself $g.pupil>>,
+and focus on the ideals before <<their $g.pupil>>.
+</p>
+
+<p>
+<<They $g.pupil>> is allowed to remember the better parts of <<their
+$g.pupil>> character now, to integrate them into <<their $g.pupil>> new and
+nobler self, one that is worthy to wear the robe of a master healer.
+<<if $g.pupil.isHasTrait('per_chaste')>> After all, <<they $g.pupil>> has
+shown restraint in controlling <<their $g.pupil>> lustful desires, however
+desirable <<they $g.pupil>> might be, and so kept <<themself $g.pupil>> from
+breaking hearts and causing much harm. <</if>>
+<<if $g.pupil.isHasTrait('per_lavish')>> It must be said, <<their $g.pupil>>
+nature has always been generous and free-handed, and maybe <<their $g.pupil>>
+small acts of kindness have brought more happiness than <<they $g.pupil>>
+knew. <</if>>
+<<if $g.pupil.isHasTrait('per_calm')>> It has to be allowed, <<they
+$g.pupil>> has always been an island of patience and calm when others around
+<<their $g.pupil>> were roiled, and has nipped many a pointless feud in the
+bud with <<their $g.pupil>> quietude and willingness to listen. <</if>>
+<<if $g.pupil.isHasTrait('per_humble')>> <<Their $g.pupil>> sincere desire
+for simplicity has sometimes let <<their $g.pupil>> bring peace to others.
+<</if>>
+<<if $g.pupil.isHasTrait('per_logical')>> <<Their $g.pupil>> logical ways,
+<<their $g.pupil>> ability to “see reason” when others cannot, has sometimes
+done them a world of good. <</if>>
+<<if $g.pupil.isHasTrait('per_empath')>> <<Their $g.pupil>> natural empathy,
+<<their $g.pupil>> ability to see into the hearts of others and feel what
+they feel, has sometimes brought them happiness or at least relief from their
+sorrows. <</if>>
+<<if $g.pupil.isHasTrait('per_loyal')>> There must be some
+good inside anyone as naturally loyal as <<rep $g.pupil>>, even if that
+loyalty is sometimes misplaced. <</if>>
+<<if $g.pupil.isHasTrait('per_direct') ||
+$g.pupil.isHasTrait('per_honorable')>> Whatever else may be said, <<rep
+$g.pupil>> pupil|is a <<woman $g.pupil>> of <<their $g.pupil>> word, and
+people know they can trust <<their $g.pupil>>. <</if>>
+<<if $g.pupil.isHasTrait('per_kind')>> Above all, at heart, <<rep $g.pupil>>
+pupil|is a kindly soul, who draws more pleasure from another's smile than
+from anything else in life.<</if>>
+<<Their $g.pupil>> best traits may not manifest every day, but they are
+there, and <<they $g.pupil>> sees them more clearly now.
+</p>
+<p>
+In time, <<rep $g.pupil>> pupil|is allowed to see that <i><<they
+$g.pupil>></i>, even as <<they $g.pupil>> is, has worth; just as the ones
+<<they $g.pupil>> must heal, whoever and whatever they may be, have worth;
+and the best and the worst may become more whole in body and in mind. And
+thus <<they $g.pupil>> achieves Enlightenment of the Heart, at least enough
+to raise <<their $g.pupil>> another step on the way to Mastery.
+</p>
+<p>
+On the final day, <<they $g.pupil>> enjoys a simple, communal meal with
+<<their $g.pupil>> spiritual guide, <<rep $g.master>>, and <<their $g.pupil>>
+one fellow pupil. The latter, a young lady from the vale, glows with a new
+inner beauty, and <<rep $g.pupil>> realizes <<they $g.pupil>> is seeing a
+reflection of <<their $g.pupil>> own enlightened, ennobled face. And <<their
+$g.pupil>> master and guide, <<their $g.pupil>> beautiful, beautiful master
+and guide, now brings effusive praise and even embraces <<their $g.pupil>>
+chastely. Both pupils have withstood the darkness and conquered it, and taken
+a step furt<<their $g.pupil>> into the Light. </p>
+
+<<if $gOutcome == 'crit'>> <p> <<Rep $g.pupil>> <<themself $g.pupil>> has
+overcome more ill than any other student this year. On <<reps $g.master>>
+recommendation, the <i>curia honoris</i> of the Women's Academy of Light has
+chosen to award <<their $g.pupil>> the Laurel of Lustration, which will not
+only mean a beautifully calligraphed certificate, but a partial deferment of
+<<their $g.pupil>> tuition. Which will at least please that suspicious
+skinflint <<name $unit.player>>. </p> <</if>>
+
+<p> <<Rep $g.pupil>> sleeps <<their $g.pupil>> last night at the Academy in
+great peace.
+<<set _pimp = $dutylist.getUnitIfAvailable('entertainmentpimp')>>
+<<set _marketer = $dutylist.getUnitIfAvailable('marketer')>>
+<<set _viceleader=$dutylist.getUnitIfAvailable('viceleader')>>
+<<set _trainer=$dutylist.getUnitIfAvailable('trainer')>>
+And then <<they $g.pupil>> returns to those roustabout slavers at <<rep
+$company.player>>, where the whips are always cracking, the slaves are
+constantly begging for mercy, and the filthy money from the flesh trade is
+forever changing hands. </p>
+<<if _pimp>> <p>The company's lascivious pimp, <<rep _pimp>>, sees <<their
+$g.pupil>> in the courtyard and calls out. “Ahoy, sweet cheeks, want some
+time with the duty slaves? It's on the house for your homecoming. 'least if
+we all get to watch, it is. <<They _pimp>> leers and winks. </p> <</if>>
+<<if _marketer>> <p> <<rep _marketer>>, the company's grasping marketer,
+waves hello at <<their $g.pupil>> homecoming. “Say,” <<they _marketer>> says,
+“while you were leaving the city, did you spot any down-and-outs with red
+hair and a good pair of melons? I've got some specialty orders that'd make it
+worth our while.” </p> <</if>>
+<<if _trainer>> <p> On <<their $g.pupil>> way to the main offices, <<rep
+$g.pupil>> passes <<rep _trainer>>, that martinet of a slavers' drill
+sergeant. “Hope you're rested!” <<they _trainer>> barks sharply. “This week's
+focus exercise is the weighted strapon thrust! For the ladies anyway. And
+slackers get the receiving end, you get me?” <<They _trainer>> does a rude
+pelvic swivel and cackles. </p> <</if>>
+<<if _viceleader>> <p> At the main offices, the vice leader, <<rep
+_viceleader>>, welcomes <<their $g.pupil>> back and fills <<their $g.pupil>>
+in on the current training schedule. “I hope you haven't forgotten how to do
+Obedience: Basic,” <<they _viceleader>> says. “We may be needing an extra
+pair of hands to administer a few swats.” <<They _viceleader>> mimes a blow.
+</p> <</if>>
+<<if $gOutcome == 'crit'>> <p> <<Reps $g.pupil>> Certificate of Purification
+does indeed look nice on <<name $unit.player>> 's wall, something <<they
+$unit.player>> can point to when wooing new buyers and dealers. </p> <</if>>
+
+<p>
+It's good to be home.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+And still the first week is not done, and the worst has not passed. As
+<<their $g.pupil>> unsated hunger, <<their $g.pupil>> unfulfilled need for
+sleep, <<their $g.pupil>> unquenchable and increasing need for sexual release
+continue, <<their $g.pupil>> diary, which should be full of contrition and
+self-correction, is instead full of increasingly erotic drawings, most
+involving <<themself $g.pupil>> and <<rep $g.master>>. <<Their $g.pupil>>
+daily confessions of stray thoughts grow more tearful, to the point of agony
+and past it.
+</p>
+
+<p>
+“Oh, Pupilmaster <<rep $g.master>>, I am on fire…I cannot shake these lustful
+daydreams. I try to force them away, but they come back and back again.”
+<<They $g.pupil>> squirms and looks up at him with big, hungry eyes.
+</p>
+
+<p>
+“You must,” he says. “and you can. They aren't so hard to understand.
+Where do these thoughts seem to focus?”
+</p>
+
+<p>
+“On you,” <<they $g.pupil>> says, wider-eyed still. “I know I should be
+focused on my transgressions, but all I can think of is you. See!” <<They
+$g.pupil>> promptly hands him <<their $g.pupil>> diary. He pages through it,
+seeing the proper thoughts replaced by increasingly graphic drawings. As the
+pictures grow more explicit, his face shows disturbance—and his body shows
+desire.
+</p>
+
+<p>
+He looks up sharply from a particularly well-executed coupling, surrounded
+with words and arrows that would explain to the dullest child just what <<rep
+$g.pupil>> pupil|want done to <<their $g.pupil>>, and by whom. He tries to
+speak but can barely find his breath. “Think of your purification. Think of
+the art, of the light…”
+</p>
+
+<p>
+<<They $g.pupil>> seizes his <<uhands $g.master>>, stopping his breath completely with the
+intensity of <<their $g.pupil>> desire. “I can't – Pupilmaster, help me! –
+<<rep $g.master>>, help me! I don't <i>want</i> purification, I want…I want…
+<i>copulation!</i> I don't <i>want</i> to be healed, I want to be fixed, I
+don't <i>want</i> a shaft of true light, I want another shaft, I want
+<i>your</i> shaft, and <i>I want it right now! </i>
+</p>
+
+<<if $g.pupil.isMale()>>
+
+<p>
+And just like that, the effect Potion of Illusion, which requires the drinker to be chaste to work
+effectively, was broken.
+The pupil was revealed for what <<they $g.pupil>> really is -- a male <<urace $g.pupil>>,
+and was prompty expelled from the academy.
+The tuition is extremely non-refundable, and you have never lost so much money
+within such a short period of time...
+</p>
+
+<<else>>
+<p>
+There is not much more – <<they $g.pupil>> is tearing off <<their $g.pupil>>
+robe, and he is trying to restrain <<their $g.pupil>>, but in going for
+<<their $g.pupil>> wrists he finds <<their $g.pupil>> <<ubreasts $g.pupil>>,
+and in minutes all forbearance is forgotten as he plunges into <<their
+$g.pupil>> <<uvagina $g.pupil>>, ending the agony of abstention in a minute
+of sweet delight. He is, after all, only human.
+<<if $g.master.isHasTrait('race_elf') || $g.master.isHasTrait('race_catkin')
+|| $g.master.isHasTrait('race_lizardkin') ||
+$g.master.isHasTrait('race_wolfkin') ||
+$g.master.isHasTrait('race_greenskin')>> Or <i>mortal</i>, anyway.
+<<elseif $g.master.isHasTrait('race_demon')>>Or, rat<<their $g.pupil>>, he
+isn't human, but a demon, and whatever the Discipline of Light has taught
+him, <<rep $g.pupil>> pupil|have brought out his inner nature, in all its
+monstrous lasciviousness. Beyond the mists, Lust ravages Seduction, and it
+takes more than a change of locale and a few mental tricks to change the
+nature of things. <</if>>
+</p>
+
+<p>
+Pupilmaster <<rep $g.master>> can't bring himself to expel <<rep $g.pupil>>
+after the pleasure they've shared. But his superiors in the Academy find out
+quickly. They can and do discharge <i>him</i> and expel <<their $g.pupil>> in
+the bargain. If <<name $unit.player>> ever gets another invitation, some other
+master will administer the instruction, and they would probably prefer that
+some other student receive it. But the tuition is extremely non-refundable.
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+At the end of the week, <<reps $g.pupil>> evening confessions are
+increasingly tearful, and in <<their $g.pupil>> confused, deprived state,
+<<they $g.pupil>> is not only wondering whether <<they $g.pupil>> may be fit
+to receive and transmit the Pure Light. <<They $g.pupil>> is wondering
+whether <<they $g.pupil>> is fit to live and breathe at all. The first
+morning of the second week finds <<their $g.pupil>> kneeling in a bare
+meditation chamber, lit only by a beam of pure sunlight through a clear
+window, <<their $g.pupil>> face streaming with tears, and <<their $g.pupil>>
+heart filled only with a wish to be cleansed of all the horrors of the
+previous week.
+</p>
+
+<p>
+<<Rep $g.master>> approaches <<their $g.pupil>> with a kindly look. “You have
+done well, my child, better than you know.”
+</p>
+
+<p>
+“I haven't,” responds <<rep $g.pupil>>. “I've polluted the academy with my
+presence and desecrated the Pure Light with even my slight practice of it . .
+. .”
+</p>
+
+<p>
+“But this is the feeling every initiate must come to,” says the Pupilmaster,
+“so that <<they $g.pupil>> may enter into a better Way with a purer heart.”
+</p>
+
+<p>
+“You don't understand,” <<they $g.pupil>> replies. “Do you know who sent me
+here? That <<uadjper $unit.player>>, <<uadjper $unit.player>>,
+flesh-trading pervert-monster <<name $unit.player>>, from that beastly den of
+ruffians, <<rep $company.player>>! I was studying <<lore magic_light>> to
+help <i>them</i>, so they could recover from their dreadful adventures, and
+heal the scars on their poor victims and fetch them a hig<<their $g.pupil>>
+price . . .” – and here <<they $g.pupil>> breaks down in shame
+and guilt.
+</p>
+
+<p>
+You can guess the rest. <<They $g.pupil>> quits the slaving trade that very
+day,<<if $g.pupil.isFemale()>>
+and after a whirlwind romance marries <<their $g.pupil>> Pupilmaster.
+They dedicate their lives to happiness and charity until misfortune overtakes
+them, perhaps as divine recompense for <<their $g.pupil>> past bad deeds.
+<<else>>
+and last you heard <<therace $g.pupil>> decide to open a charity for war victims to prevent
+them from being enslaved.
+<</if>>
+But
+this is far from your knowing. All <i>you</i> know, for now at least, is that
+you're out some 20,000 gold pieces in tuition, and have nothing to show for
+it.
+</p>
+
+<</if>>
+

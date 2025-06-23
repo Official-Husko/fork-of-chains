@@ -1,0 +1,147 @@
+:: QuestSetup_dungeons_and_dragons_woodsgem [nobr quest]
+
+<<set _criteriahero = new setup.UnitCriteria(
+null, /* key */
+'Hero', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.per_attentive,
+  setup.trait.per_lunatic,
+  setup.trait.skill_connected,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_heroic_withdrawal_0'),
+],
+{
+  arcane: 1,
+  survival: 1,
+  knowledge: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'dungeons_and_dragons_woodsgem', /* key */
+"Dungeons and Dragons: Woodsgem", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'unknown',
+],
+4, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'hero': [ _criteriahero, 1],
+  'scout1': [ setup.qu.scout_forest, 1],
+  'scout2': [ setup.qu.scout_forest, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_dungeons_and_dragons_woodsgem',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_dungeons_and_dragons_woodsgemCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('neko', 150),
+      setup.qc.Favor('elf', 150),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_woodsgemCrit',
+    [
+      setup.qc.VarSet('dungeons_and_dragons_withdrawal_progress', '4', -1),
+      setup.qc.Favor('neko', 150),
+      setup.qc.Favor('elf', 150),
+      setup.qc.SetCooldownEvent('dungeons_and_dragons_lair_of_evil', 10),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_woodsgemFailure',
+    [
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_woodsgemFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Injury('hero', 4),
+      setup.qc.Injury('scout1', 2),
+      setup.qc.Injury('scout2', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.AllUnitSatisfyDo([setup.qres.HasTitle('quest_heroic_withdrawal_0')],
+[setup.qc.TraumatizeRandom('unit', 50)],
+),
+  setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+
+],
+)>>
+
+:: Quest_dungeons_and_dragons_woodsgem [nobr]
+<<set _type = 'Woodsgem'>>
+
+<<set _u = setup.getUnit({title: 'quest_heroic_withdrawal_0'})>>
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+According to credible information that you totally did not just made up on
+the spot, somewhere within the <<lore region_forest>>
+lies a treasure called the Woodsgem. It is said to be a highly delicious food additive,
+and many would pay a great amount of money for a taste of the gem. The culinary uses
+are rumored to be numerous, and the very credible rumors detail how it is the secret ingredient
+of several high-class recipes used exclusively for royals.
+</p>
+
+<p>
+Since you have a hero in need of a quest within your company, you uhh..,
+suddenly remember that for some reason you don't recall, you really need the
+Woodsgem. Surely a hero such as <<rep _u>> would be moved by such a tale, and
+would gladly fetch this Woodsgem for the needy (that is you), out of the
+goodness of the hero's heart and without demanding any payment.
+</p>
+
+<p>
+(While your slaver probably won't find anything, it's best to accompany
+<<them _u>> with two slavers knowledgeable with the way of the forests, just in
+case.)
+</p>
+
+<</if>>
+
+
+:: Quest_dungeons_and_dragons_woodsgemCrit [nobr]
+<<set _type = 'Woodsgem'>>
+
+<<include 'Quest_dungeons_and_dragons_fetchCommonCrit'>>
+
+
+:: Quest_dungeons_and_dragons_woodsgemFailure [nobr]
+<<set _type = 'Woodsgem'>>
+
+<<include 'Quest_dungeons_and_dragons_fetchFailure'>>

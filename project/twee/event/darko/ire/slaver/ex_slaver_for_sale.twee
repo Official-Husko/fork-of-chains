@@ -1,0 +1,51 @@
+:: EventSetup_ex_slaver_for_sale [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'ex_slaver_for_sale', /* key */
+"Ex-Slaver for Sale", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_ex_slaver_for_sale',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NotYou(),
+],
+
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('outlaws', -20),
+setup.qc.MissingUnit('victim'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('outlaws', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_ex_slaver_for_sale [nobr]
+
+<p>
+In the recent months, you have somehow made enemies with the local brigand
+gang. And today, you reap the consequences as <<yourrep $g.slaver>> reports
+that <<yourrep $g.victim>> victim|is nowhere to be seen. Searching through the
+entire fort, from their room to the empty dungeon cells yields nothing, as
+if <<rep $g.victim>> victim|have just vanished into thin air. That is, until you see
+the news that <<rep $g.victim>> victim|is going to be auctioned soon in the
+undercity of Lucgate.
+</p>
+
+<p>
+It is unfortunately already too late for you to participate in the auction,
+but from what you have gathered, this is the work of that <<rep $company.outlaws>>
+that you have irked recently. But there is no time to think about that —
+<<uneedrescue $g.victim>>.
+</p>

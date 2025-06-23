@@ -1,0 +1,88 @@
+:: EventSetup_doctor_molestation [nobr event]
+
+<<run new setup.Event(
+'doctor_molestation', /* key */
+"Doctor Molestation", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_doctor_molestation',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.OnDuty('doctor'),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.NoTraits([setup.trait.per_chaste, setup.trait.per_submissive], true),
+    setup.qres.AnyTrait([setup.trait.per_dominant, setup.trait.per_lustful, setup.trait.per_sexaddict], true),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.IsInjured(1),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_doctor_molestation [nobr]
+<p>
+Your duties as the leader of the company means that you spend quite some time going around your fort.
+As you past by the <<rep setup.buildingtemplate.doctoroffice>>,
+you hear a quiet moaning and the distinct noise of flesh on flesh.
+Peeking into the office, you see <<yourrep $g.slaver>> between
+<<their $g.slaver>> patient slave <<rep $g.slave>>'s <<ulegs $g.slave>>,
+who are lying gagged on top of the doctor's table and
+spread wide by makeshift stirrups made from weapon sheathes.
+
+<<if $g.slaver.isHasDick()>>
+<<They $g.slaver>> slaver|is pounding eagerly away and mauling <<their $g.slaver>> patient's bare <<ubreasts $g.slave>> with both <<uhands $g.slaver>>.
+<<else>>
+<<They $g.slaver>> slaver|is using one <<uhand $g.slaver>> to fingerfuck <<their $g.slaver>> patient, and the other to masturbate furiously.
+<</if>>
+
+As you recall, your doctor is indeed
+<<if $g.slaver.isHasTrait('per_dominant')>>
+a rather dominant <<urace $g.slaver>>, and <<they $g.slaver>> could not resist violating a sub or two.
+<<elseif $g.slaver.isHasTrait('per_lustful')>>
+rather lustful, even by your fort's standard, and <<they $g.slaver>> could not resist violating a slave or two even on duty.
+<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Just move on with your day">>
+
+<p>
+Sensing nothing wrong with a little fun on the job, you leave
+your <<uadjper $g.slaver>> doctor alone to continue <<their $g.slaver>> poundings.
+<<Rep $g.slave>> will certainly feel that <<their $g.slave>> ass sore the next day, but in <<their $g.slave>> life, that would be nothing surprising.
+</p>
+
+<<run setup.qc.Injury('slave', 1).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('slaver', 5).apply($gQuest)>>
+
+<<opt "Ask the doctor to be gentle with the injured slave">>
+
+<p>
+Feeling pity for the slave, you <<uadv $unit.player>> knock on the door before entering. While sex is an acceptable recreation activity in your fort, you also need your slave to recover quickly, and you
+<<uadv $unit.player>> tell this to your <<urace $g.slaver>>.
+<<They $g.slaver>> begrudgingly agree, and slow down <<their $g.slaver>> fucking pace significantly to something more comfortable for the injured slave.
+</p>
+
+<</choose>>

@@ -1,0 +1,42 @@
+:: InitBuildingTreatmentRoomMindMend [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'treatmentroommindmend',
+  tags: [],
+  width: 4,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'treatmentroommindmend',
+  name: 'Spa',
+  tags: ['heal'],
+  description_passage: 'BuildingTreatmentRoomMindMend',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_HIGH_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('treatmentroom'),
+      setup.qres.Building('veteranhall'),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_light_master]),
+    ],
+  ],
+  main_room_template_key: 'treatmentroommindmend',
+})>>
+
+
+:: BuildingTreatmentRoomMindMend [nobr]
+
+<p>
+Unlocks a treatment option that can restore a mindbroken slave.
+Each treatment will consume a <<rep setup.item.mindmend_potion>>.
+
+</p>

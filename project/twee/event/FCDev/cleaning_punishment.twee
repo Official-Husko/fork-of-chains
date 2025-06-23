@@ -1,0 +1,104 @@
+:: EventSetup_cleaning_punishment [nobr event]
+
+<<run new setup.Event(
+'cleaning_punishment', /* key */
+"Cleaning Punishment", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_cleaning_punishment',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_maid], true),
+    setup.qres.NoTraits([setup.trait.per_kind, setup.trait.per_submissive], true),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.OnDuty('maidslave'),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_cleaning_punishment [nobr]
+<p>
+<<Yourrep $g.slave>> clearly isn't working as hard as <<they $g.slaver>> should.
+And this does not escape
+the
+<<if $g.slaver.isHasTrait('per_attentive')>>
+attentive
+<</if>>
+eyes of <<yourrep $g.slaver>>, who once worked <<themself $g.slaver>> as a house-servant.
+In fact, right now <<rep $g.slaver>> has <<them $g.slaver>> bent over with <<their $g.slaver>> buttocks bare, and is administering a punishing spanking.
+<<Reps $g.slave>> <<uskin $g.slave>> is starting to show the force of the beating, and <<they $g.slave>> slave|is begging desperately for mercy.
+</p>
+
+<p>
+<<name $g.slaver>>, meanwhile, is obviously enjoying torturing the poor servant for <<their $g.slaver>> failings. <<They $g.slaver>>'s
+<<if $g.slaver.isHasDick()>>jacking off furiously
+<<else>>rubbing <<their $g.slaver>> sopping pussy<</if>> with <<their $g.slaver>> other <<uhand $g.slaver>>,
+getting close to orgasm as the servant begs and moans.
+</p>
+
+<<choose>>
+
+<<opt "Fuck <<reps $g.slave>> mouth as <<rep $g.slaver>> beats <<them $g.slaver>>">>
+
+<p>
+You ask <<yourrep $g.slaver>> to continue the spanking.
+<<Rep $g.slave>> has one anguished second to realize what's happening before you
+<<ustrippantsand $unit.player>>
+shove yourself <<if (!$unit.player.isHasDick())>>against <<their $g.slaver>> <<umouth $g.slave>><<else>>down <<their $g.slaver>> throat<</if>>. <<They $g.slaver>> gags reflexively, jerking back, only to jerk forward again in automatic pain avoidance when <<name $g.slaver>> hits <<their $g.slaver>> already-sore buttocks yet again. <<They $g.slaver>>'s broken enough to understand that <<they $g.slaver>> needs to relax and let <<themself $g.slaver>> be abused, but <<their $g.slaver>> <<ubody $g.slave>>'s reflexive responses deny <<them $g.slaver>> the relief that might give.
+<<if $g.slave.isHasTrait('per_cruel')>>
+The sadistic <<urace $g.slave>>
+comes twice before you do, a deliciously cruel expression on <<their $g.slaver>> face.
+<<else>>
+You eventually
+<<if $unit.player.isHasDick()>>
+climaxes, sending torrent of cum straight down the slave's throat.
+<<else>>
+climaxes with the slave's <<umouth $g.slave>> still deep within your pussy.
+<</if>>
+<</if>>
+Your abuse combined with the punishing slaps ensures that <<rep $g.slave>> learns <<their $g.slave>> lessons, promising to be more diligent next time.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', 150).apply($gQuest)>>
+<<run setup.qc.FriendshipWithYou('slave', -150).apply($gQuest)>>
+
+<<opt "Show mercy">>
+
+<p>
+The slave's continued begging and sobbing tugs at your heart, and you finally give in. You gently ask <<yourrep $g.slaver>> to cease the punishment, and the
+<<if $g.slaver.isHasTrait('per_cruel')>>
+cruel
+<</if>>
+slaver grudgingly let the slave go.
+While the slave certainly appreciate your timely intervention, the slaver
+most certainly do not, and you the two of you grow somewhat more distant as a result.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', -150).apply($gQuest)>>
+<<run setup.qc.FriendshipWithYou('slave', 150).apply($gQuest)>>
+
+<</choose>>

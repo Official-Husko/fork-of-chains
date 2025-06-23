@@ -1,0 +1,159 @@
+:: EventSetup_slave_dick_on_slave [nobr event]
+
+<<run new setup.Event(
+'slave_dick_on_slave', /* key */
+"Slave Dick on Slave", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_slave_dick_on_slave',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+    setup.qres.AnyTrait([setup.trait.dick_tiny, setup.trait.dick_small, setup.trait.dick_medium, setup.trait.dick_large, setup.trait.dick_huge, setup.trait.dick_titanic], true),
+    setup.qres.IsCanOrgasm(),
+    setup.qres.BedchamberOtherSlave(setup.qres.And([
+setup.qres.Available(),
+setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true)
+])),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_slave_dick_on_slave [nobr]
+<<set _o = $g.slave.getBedchamberOtherSlave()>>
+
+<<if !_o>>
+    /* Should not happen, but nice for testing: */
+    <<set _o = setup.getAnySlaver()>>
+<</if>>
+
+<p>
+    Through the windows of your bedchamber, you see <<yourrep $g.slave>> fucking <<rep _o>> with <<their $g.slave>>
+    <<if $g.slave.isHasTrait('dick_titanic')>>
+        huge, horselike phallus.
+    <<elseif $g.slave.isHasTrait('dick_large')>>
+        long cock.
+    <<else>>
+        small penis.
+    <</if>>
+    Since you gave <<them $g.slave>> orders that permit <<them $g.slave>> to cum, <<they $g.slave>>'s been fucking <<rep _o>> whenever <<they $g.slave>> can. The other slave is
+    <<if $g.slave.isHasTrait('dick_titanic')>>
+        enjoying the big dick, even if <<they $g.slave>> does wince from time to time.
+    <<elseif $g.slave.isHasTrait('dick_large')>>
+        enjoying the sex.
+    <<else>>
+        enjoying <<themself $g.slave>> even though the dick in <<their $g.slave>> <<uhole $g.slave>> is a little disappointing.
+    <</if>>
+    <<if $g.slave.isHasTrait('balls_huge')>>
+        As <<name $g.slave>> pounds, <<their $g.slave>> big balls slap against <<their $g.slave>> partner.
+    <<else>>
+        As <<name $g.slave>> pounds, <<their $g.slave>> balls tighten, preparing to empty themselves.
+    <</if>>
+</p>
+
+<<choose>>
+
+<<opt "Fuck the bottom">>
+
+    <<set _o = $g.slave.getBedchamberOtherSlave()>>
+
+    <<if !_o>>
+        /* Should not happen, but nice for testing: */
+        <<set _o = setup.getAnySlaver()>>
+    <</if>>
+
+    <p>
+        Since the other slave is riding <<name $g.slave>>'s dick, it's a trivial matter to
+        <<if !$unit.player.isHasDick()>>
+            don a strap-on,
+        <</if>>
+        come up behind the fucking slaves, stop the other slave's riding for a moment, and insert yourself into <<reps _o>> anus
+        <<if !_o.isHasVagina()>>
+            alongisde <<reps $g.slave>>
+        <</if>>
+        . <<Rep _o>>
+        <<if $g.slave.isHasTrait('dick_titanic')>>
+            struggles and begs for mercy as <<their _o>>
+            <<if _o.isHasVagina()>>
+                holes are
+            <<else>>
+                anus is
+            <</if>>
+            brutally stretched.
+        <<elseif $g.slave.isHasTrait('dick_large')>>
+            shrieks as <<they _o>> feels <<their _o>>
+            <<if _o.isHasVagina()>>
+                holes
+            <<else>>
+                anus
+            <</if>>
+            stretched by
+            <<if !$unit.player.isHasDick()>>
+                a strap-on and a cock
+            <<else>>
+                two cocks
+            <</if>>
+            .
+
+        <<else>>
+            gasps as your
+            <<udickorstrap $unit.player>> complements the small one.
+        <</if>>
+        The poor slave rides out the sexual storm as you and <<name $g.slave>> fuck <<them _o>>
+        <<if $unit.player.isHasVagina()>>
+            , your pussy sliding against the base of <<name $g.slave>>'s thrusting shaft
+        <</if>>
+        . <<name $g.slave>> flirts outrageously with you over the <<reps _o>> shoulder whenever <<they $g.slave>> can.
+    </p>
+
+    <<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Fuck the top">>
+
+    <p>
+        Since <<name $g.slave>> is on top, it's a trivial matter to
+        <<if !$unit.player.isHasDick()>>
+            don a strap-on,
+        <</if>>
+        come up behind the fucking slaves, stop <<their $g.slave>> thrusting for a moment, and penetrate <<their $g.slave>> butthole.
+        <<if $g.slave.getMainTraining().getTags().includes('tranal')>>
+            <<They $g.slave>> shivers with delight as <<they $g.slave>> feels <<their $g.slave>> anal ring stretch to accommodate your
+            <<if !$unit.player.isHasDick()>>
+                strap-on
+            <<else>>
+                dick
+            <</if>>
+            .
+        <</if>>
+        Fucking a slave with prostate stimulation from your
+        <<if !$unit.player.isHasDick()>>
+            phallus
+        <<else>>
+            cock
+        <</if>>
+        in <<their $g.slave>> ass makes <<them $g.slave>> cum with indecent speed. You let <<them $g.slave>> slide down so <<they $g.slave>> can finish the other slave with <<their $g.slave>> <<umouth $g.slave>> while you continue using <<their $g.slave>> anus. <<Rep _o>> definitely enjoys <<name $g.slave>>'s moaning into <<their _o>> <<uhole _o>> as you use <<name $g.slave>>'s ass. The hard buttfucking <<name $g.slave>> is getting keeps <<their $g.slave>> dick stiff all the way through.
+    </p>
+
+    <<run setup.qc.FriendshipWithYou('slave', 50).apply(setup.costUnitHelper(_o))>>
+
+<</choose>>

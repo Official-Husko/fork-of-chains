@@ -1,0 +1,515 @@
+:: QuestSetup_wishing_well [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"wishing_well0",
+"Dominant Slave",
+'forest_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slaver),
+  setup.qc.TraitsReplace('unit', [setup.trait.muscle_strong, setup.trait.per_dominant, setup.trait.training_obedience_advanced, setup.trait.training_dominance_advanced]),
+],
+)>>
+
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Well Wisher', /* name */
+[
+  setup.trait.bg_priest,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 1,
+  aid: 1,
+  arcane: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'wishing_well', /* key */
+"Wishing Well", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'danger',
+  'unknown',
+  'legendary',
+],
+3, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'dom': 'wishing_well0',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_wishing_well',
+setup.qdiff.normal20, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_wishing_wellCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Blessing('a', 1, null, false),
+    ],
+  ],
+  [
+    'Quest_wishing_wellCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 250),
+    ],
+  ],
+  [
+    'Quest_wishing_wellFailure',
+    [
+      setup.qc.Blessing('a', 1, null, true),
+    ],
+  ],
+  [
+    'Quest_wishing_wellFailure',
+    [
+      setup.qc.Blessing('a', 2, null, true),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_wishing_well [nobr]
+<p>
+Legends say that somewhere deep within the woody mass that is the <<lore region_forest>> lies a single water well, famous for bestowing fortune on travelers lucky enough to stumble into it.
+While nobody knows its exact location, very recently one of your forest scouts have somehow managed to locate the vicinity of the well. This is a <<successtext "rare">> opportunity for you to try and send one of your slavers to go and toss a few thousand coins into the well.
+Rumors said that the well would grant any wish one could desire, as long as the coins flip land right... Surely it's too good to be true?
+</p>
+
+
+
+
+:: Quest_wishing_wellCrit [nobr]
+<p>
+<<Yourrep $g.a>> brought a bag of gold into the lone, clearly enchanted well. The well is surrounded by flowers which rapidly grow and decay in an endless cycle, while its water sway and ripple deep beneath even without wind.
+</p>
+
+<p>
+<<Rep $g.a>> <<uadv $g.a>> dumped the entire content of the money bag they brought into the well<<if $gOutcome == 'crit'>>, which the well immediately repiprocated with a blessing<</if>>.
+<<if $g.a.isHasTrait('per_frugal')>>
+Given how frugal <<they $g.a>> a|is, <<they $g.a>> lamented slightly at the loss of such fortune, but knows that a potential reward is now awaiting <<them $g.a>>.
+<</if>>
+Once that done, <<rep $g.a>> knelt and prayed <<if $g.a.isHasTrait('per_evil')>>(evilly)<</if>>
+while concentrating on the singular wish <<they $g.a>> had been trying to get all this time...
+</p>
+
+<<set _cangenital = (
+  $g.a.isHasAnyTraitExact(['dick_tiny', 'dick_small', 'dick_medium', 'dick_large', 'dick_huge', 'breast_tiny', 'breast_small', 'breast_medium', 'breast_large', 'breast_huge'])
+)>>
+
+<<if $g.a.isYou()>>
+
+<p>
+Well, what is it that you wish for?
+</p>
+
+<<choose>>
+<<opt 'An obedient slave'>>
+<<set _rew = 'slave'>>
+<<includereplace 'Quest_wishing_wellOutcome'>>
+
+<<opt 'Power'>>
+<<set _rew = 'power'>>
+<<includereplace 'Quest_wishing_wellOutcome'>>
+
+<<optif _cangenital>>
+<<opt 'Endowment'>>
+<<set _rew = 'size'>>
+<<includereplace 'Quest_wishing_wellOutcome'>>
+
+<<opt 'Luck'>>
+<<set _rew = 'luck'>>
+<<includereplace 'Quest_wishing_wellOutcome'>>
+
+<<opt 'Money'>>
+<<set _rew = 'money'>>
+<<includereplace 'Quest_wishing_wellOutcome'>>
+
+<</choose>>
+
+<<else>>
+
+<<set _choices = [
+  'slave',
+  'power',
+  'luck',
+  'money',
+]>>
+<<if _cangenital>>
+  <<run _choices.push('size')>>
+<</if>>
+
+<<set _options = {
+  'per_slow': 'slave',
+  'per_smart': 'power',
+  'per_brave': 'power',
+  'per_cautious': 'money',
+  'per_aggressive': 'power',
+  'per_calm': 'luck',
+  'per_proud': 'power',
+  'per_humble': 'size',
+  'per_direct': 'slave',
+  'per_sly': 'money',
+  'per_active': 'size',
+  'per_studious': 'size',
+  'per_loner': 'size',
+  'per_gregarious': 'luck',
+  'per_frugal': 'money',
+  'per_lavish': 'money',
+  'per_independent': 'power',
+  'per_loyal': 'power',
+  'per_attentive': 'money',
+  'per_dreamy': 'size',
+  'per_stubborn': 'power',
+  'per_curious': 'size',
+  'per_cruel': 'power',
+  'per_kind': 'luck',
+  'per_serious': 'slave',
+  'per_playful': 'luck',
+  'per_logical': 'money',
+  'per_empath': 'luck',
+  'per_chaste': 'luck',
+  'per_lustful': 'size',
+  'per_sexaddict': 'size',
+  'per_dominant': 'slave',
+  'per_submissive': 'slave',
+  'per_masochistic': 'size',
+  'per_lunatic': 'luck',
+  'per_evil': 'power',
+  'per_honorable': 'luck',
+}>>
+
+<p>
+<<set _rew = null>>
+<<set _keys = Object.keys(_options)>>
+<<run setup.rng.shuffleArray(_keys)>>
+<<for _key range _keys>>
+  <<if $g.a.isHasTraitExact(_key) && _choices.includes(_options[_key])>>
+    <<set _rew = _options[_key]>>
+    You know <<rep $g.a>> to be a <<= setup.trait[_key].getName()>> <<urace $g.a>>,
+    and it was not suprising <<they $g.a>> decided to wish
+    <<if _rew == 'money'>>
+    for a lot of wealth.
+    <<elseif _rew == 'slave'>>
+    for a slave suitable for <<them $g.a>>.
+    <<elseif _rew == 'size'>>
+    to be more well-endowed.
+    <<elseif _rew == 'luck'>>
+    for luck.
+    <<else>>
+    for the most dangerous thing in <<lore geo_mestia>>: power.
+    <</if>>
+    <<break>>
+  <</if>>
+<</for>>
+
+<<if !_rew>>
+  <<set _rew = 'money'>>
+  <<Rep $g.a>> a|is not particularly known for anything, so it was not surprising that
+  <<they $g.a>> chose to pray for the simplest thing in life: money.
+<</if>>
+</p>
+
+<<includereplace 'Quest_wishing_wellOutcome'>>
+<</if>>
+
+
+
+:: Quest_wishing_wellOutcome [nobr]
+
+
+<<if _rew == 'slave'>>
+
+<p>
+<<They $g.a>> a|is a simple <<urace $g.a>> with simple needs, and <<they $g.a>> <<if $g.a.isHasTrait('per_proud')>>proudly<<else>>humbly<</if>> requested a loyal slave to serve and fulfill <<their $g.a>>
+<<if $g.a.isHasTrait('per_dominant')>>
+perverted fantasies.
+<<else>>
+every wish.
+<</if>>
+</p>
+
+<p>
+Once the prayer was made, light shone from beneath the well, and <<rep $g.a>> could not believe <<their $g.a>> eyes as a <<male $g.dom>> slave materialized before <<them $g.a>>.
+<<if $g.a.isHasTrait('per_submissive')>>
+Being a complete submissive, <<they $g.a>> expected a fully dominant slave to fulfill <<their $g.a>> darkest fantasies, and the well granted just that.
+Once fully summoned, the "slave" proceeded to dominate <<their $g.a>> "<<master $g.a>>", and the cold night in the forest was filled with <<reps $g.a>> completely insincere begs for mercy from <<their $g.a>> new "<<master $g.dom>>"...
+<<else>>
+<<if $g.a.isHasTrait('per_dominant')>>
+Being a complete dominant,
+<<else>>
+Being a slaver,
+<</if>>
+<<they $g.a>> expected a fully submissive slave to fulfill <<their $g.a>> darkest fantasies. But instead, the well "fulfilled" <<their $g.a>> wish by summoning
+the most dominant slave <<they $g.a>> had ever seen in <<their $g.a>> life. Clearly this was not what <<they $g.a>> wished for, and something was wrong, but <<their $g.a>> question was soon answered as the well rippled for a second time, its magic this time targeting <<rep $g.a>>.
+Submissive thoughts flooded the
+<<if $g.a.isHasTrait('per_dominant')>>
+formerly completely dominant <<urace $g.a>>
+<</if>>
+until <<they $g.a>> became nothing but a quivering submissive on the floor.
+The rest of the night was spent with the new submissive
+insincerely begging for mercy from <<their $g.a>> new "<<master $g.dom>>" who used <<them $g.a>> like the sex toy <<they $g.a>> just realized <<they $g.a>> actually is...
+<<run setup.qc.TraitReplace('a', setup.trait.per_submissive).apply($gQuest)>>
+<</if>>
+</p>
+
+<<run setup.qc.Slave('dom', 'a|was granted by the Wishing Well to fulfill the perverted desires of one of your slavers').apply($gQuest)>>
+
+<<elseif _rew == 'power'>>
+
+<p>
+<<They $g.a>> had always wanted to be bigger, stronger, and tougher, and <<they $g.a>> wished just for that.
+Hearing the request, rippled and changed color, apparently trying to grant <<their $g.a>> wish.
+
+<<set _success = false>>
+<<set _crit = false>>
+<<if $gQuest.getSeed() % 3 == 0>>
+
+<<if $g.a.isHasTrait('muscle_verystrong')>>
+But <<their $g.a>> muscles are already far too big, too bulky, and no magic, not even the strong well magic, could enhance it even further.
+<<else>>
+
+<<set _success = true>>
+
+<<if $g.a.isHasTrait('muscle_strong')>>
+<<set _crit = true>>
+<<run setup.qc.TraitReplace('a', 'muscle_verystrong').apply($gQuest)>>
+<<Their $g.a>> already muscular body bulged even more, giving <<them $g.a>> an extremely pleasurable sensation as <<their $g.a>> very muscles bulging into massive proportions.
+<<else>>
+<<run setup.qc.TraitReplace('a', 'muscle_strong').apply($gQuest)>>
+<<Their $g.a>> muscles bulged out from <<their $g.a>> body, giving <<them $g.a>> a pleasurable sensation as <<their $g.a>> very body becomes bulkier and meatier.
+<</if>>
+
+<</if>>
+
+<<elseif $gQuest.getSeed() % 3 == 0>>
+
+<<if $g.a.isHasTrait('tough_tough')>>
+<p>
+But <<their $g.a>> body is already too naturally tough, and no enhancement or magic could strengthen it any further.
+</p>
+<<else>>
+<<set _success = true>>
+<p>
+<<Their $g.a>> <<if $g.a.isHasTrait('tough_nimble')>>previously lithe<</if>> body stiffens, exchanging flexibility with toughness, and <<their $g.a>> lungs gained a few more capacity.
+</p>
+<<run setup.qc.TraitReplace('a', 'tough_tough').apply($gQuest)>>
+
+<</if>>
+
+<<else>>
+
+<<if $g.a.isHasTrait('height_giant')>>
+<p>
+But <<they $g.a>> a|is already too large and too big, and no amount of dark magic could enhance it any further
+</p>
+<<else>>
+
+<<set _success = true>>
+
+<<if $g.a.isHasTrait('height_tall')>>
+<<set _crit = true>>
+<<run setup.qc.TraitReplace('a', 'height_giant').apply($gQuest)>>
+<<Their $g.a>> already relatively tall figure grows even more, now towering over most other <<men $g.a>>.
+<<else>>
+<<run setup.qc.TraitReplace('a', 'height_tall').apply($gQuest)>>
+<<Their $g.a>> body grows taller and taller until it stops just short of becoming a giant of a <<man $g.a>>.
+<</if>>
+
+<</if>>
+
+<</if>>
+
+</p>
+
+<<if _success>>
+<p>
+However, something odd was also happening, as <<they $g.a>> soon learn that muscles were not the only thing the well enhanced for <<them $g.a>>.
+Chants of dumbness and obedience echoed in <<their $g.a>> head, trying to make <<them $g.a>> dumber and dumber...
+<<if $g.a.isHasTrait('per_slow')>>
+<<Reps $g.a>> already simple mind is not affected, however.
+<<else>>
+<<run setup.qc.TraitReplace('a', setup.trait.per_slow).apply($gQuest)>>
+<<Rep $g.a>> lost <<their $g.a>> mind, becoming closer to the image of a big dumb muscle <<girl $g.a>>.
+<</if>>
+
+<<if _crit>>
+
+<<set _skills = $g.a.getRemovableTraits().filter(trait => trait.getTags().includes('skill'))>>
+<<if _skills.length>>
+<<set _s = setup.rng.choice(_skills)>>
+<<run setup.qc.TraitRemove('a', _s).apply($gQuest)>>
+
+<<Their $g.a>> now straightforward mind no longer able to comprehend
+<<if _s.getTags().includes('magic')>>
+the complexity of <<rep _s>>, which <<they $g.a>> once commanded, and it was lost...
+<<else>>
+the complexity of <<rep _s>>, which <<they $g.a>> a|was once famous for, and it was lost...
+<</if>>
+
+<</if>>
+
+<</if>>
+
+</p>
+<</if>>
+
+
+<<elseif _rew == 'size'>>
+
+<p>
+<<if $g.a.isHasTrait('dick_large')>>
+Despite already being blessed with relatively well-endowed dick, <<they $g.a>> sometimes still wished that
+<<elseif $g.a.isHasTrait('breast_large')>>
+Despite already being blessed with relatively voluptuous breasts, <<they $g.a>> sometimes still wished that
+<<else>>
+<<They $g.a>> had always been a little self-conscious of <<their $g.a>>
+<<if $g.a.isFemale()>>breasts<<else>>dick<</if>>,
+and wished
+<</if>>
+they could be bigger.
+And the well heard of the wish, and granted it.
+<<Their $g.a>>
+<<if $g.a.isFemale()>>breasts<<else>>dick<</if>> grew before <<their $g.a>> eyes,
+becoming
+<<if $g.a.isHasTrait('dick_huge')>>
+gargantuanly large,
+<<run setup.qc.TraitReplaceExisting('a', 'dick_titanic').apply($gQuest)>>
+<<elseif $g.a.isHasTrait('breast_huge')>>
+gargantuanly large,
+<<run setup.qc.TraitReplaceExisting('a', 'breast_titanic').apply($gQuest)>>
+<<else>>
+huge and imposing.
+<<run setup.qc.TraitReplaceExisting('a', 'dick_huge').apply($gQuest)>>
+<<run setup.qc.TraitReplaceExisting('a', 'breast_huge').apply($gQuest)>>
+<</if>>
+But <<they $g.a>> soon learned that it was not without cost, as the flesh must have come from somewhere...
+</p>
+
+<p>
+<<if $g.a.isHasTrait('balls_small')>>
+<<Their $g.a>> <<uballs $g.a>> shrunk into a barely visible pair of marble-sized balls.
+<<else>>
+<<if $g.a.isHasTrait('balls_tiny')>>
+The magic attempted to shrink <<their $g.a>> balls, but it was already far too tiny to be shrunk.
+<</if>>
+
+<<if $g.a.isHasTrait('height_tall')>>
+It took the flesh from <<reps $g.a>> entire body, shrinking the once tall <<man $g.a>> into a regular-sized <<urace $g.a>>.
+<<run setup.qc.TraitRemove('a', 'height_tall').apply($gQuest)>>
+<<run setup.qc.TraitRemove('a', 'height_giant').apply($gQuest)>>
+
+<<elseif $g.a.isHasTrait('tough_tough')>>
+It took the flesh from <<reps $g.a>> once tough body, weakening it drastically.
+<<run setup.qc.TraitRemove('a', 'tough_tough').apply($gQuest)>>
+<<elseif $g.a.isHasTrait('muscle_verystrong')>>
+It took the flesh from <<reps $g.a>> meaty body, draining it of its strength.
+<<run setup.qc.TraitRemove('a', 'muscle_verystrong').apply($gQuest)>>
+<<run setup.qc.TraitRemove('a', 'muscle_extremelystrong').apply($gQuest)>>
+<<elseif $g.a.isHasTrait('muscle_verythin')>>
+Surprisingly, instead of draining flesh, it somehow restores <<reps $g.a>> previously unnaturally thin waist to more normal proportions.
+<<run setup.qc.TraitRemove('a', 'muscle_verythin').apply($gQuest)>>
+<<run setup.qc.TraitRemove('a', 'muscle_extremelythin').apply($gQuest)>>
+<<elseif $g.a.getWings()>>
+It took away <<reps $g.a>> wings, reducing it to nothing...
+<<run setup.qc.TraitRemove('a', $g.a.getWings()).apply($gQuest)>>
+
+<<elseif $g.a.getTail()>>
+It took away <<reps $g.a>> tail, reducing it to nothing...
+<<run setup.qc.TraitRemove('a', $g.a.getTail()).apply($gQuest)>>
+<<else>>
+But strangely enough, there wasn't any noticable change on <<rep $g.a>>...
+<</if>>
+
+<</if>>
+
+</p>
+
+<<elseif _rew == 'luck'>>
+
+<p>
+<<Yourrep $g.a>> prays to make <<them $g.a>> the luckiest <<urace $g.a>> on <<lore geo_mestia>>, and the well obliged.
+<<Rep $g.a>> a|was showered with blessings of luck, making <<therace $g.a>> almost like a beacon of luck.
+But in exchange the well also peppered <<therace $g.a>> with an equal amount of curses...
+<<run setup.qc.Blessing('a', 8, setup.trait.blessing_luck8).apply($gQuest)>>
+<<run setup.qc.Blessing('a', 2, null, true).apply($gQuest)>>
+<<run setup.qc.Blessing('a', 2, null, true).apply($gQuest)>>
+<<run setup.qc.Blessing('a', 2, null, true).apply($gQuest)>>
+<<run setup.qc.Blessing('a', 2, null, true).apply($gQuest)>>
+</p>
+
+<<elseif _rew == 'money'>>
+
+<p>
+<<Yourrep $g.a>> wishes for the most classic of all wishes: money.
+Soon after bags and bags of coins suddenly materialize before <<therace $g.a>>, seemingly out of nowhere.
+<<if $g.a.isHasTrait('per_frugal')>>
+The greedy <<urace $g.a>>
+<<else>>
+The <<urace $g.a>>
+<</if>>
+collected them all, not bothering to count <<their $g.a>> luck that the well worked at all, and headed home with a bag of gold in tow.
+</p>
+
+<p>
+Some days later, you've learned that a large amount of money has been lost from the great treasuries of the <<rep $company.bank>>, and they have somehow traced them into your vaults. They can't demand them back without proof, however, but they grow extremely suspicious of your company...
+</p>
+
+<<run setup.qc.Money(12000).apply($gQuest)>>
+<<run setup.qc.Ire('bank', 18).apply($gQuest)>>
+
+<</if>>
+
+
+
+
+
+:: Quest_wishing_wellFailure [nobr]
+<p>
+<<Yourrep $g.a>> brought a bag of gold into the lone, clearly enchanted well. The well is surrounded by flowers which rapidly grow and decay in an endless cycle, while its water sway and ripple deep beneath even without wind.
+</p>
+
+<p>
+...or so <<they $g.a>> thought. When <<they $g.a>> checked <<their $g.a>> belongings, the bag of gold was nowhere to be seen.
+Whether it's that
+beggar <<they $g.a>> made along the way,
+the tavern <<they $g.a>> stopped by along the way,
+the wench <<they $g.a>> patroned along the way,
+and the many other clearly important distractions along the way,
+the money had been lost one way or another in its entirely.
+And the well was not pleased at all.
+</p>
+
+<p>
+It was unclear what had happened, but when <<rep $g.a>> came back, you can clearly see that <<they $g.a>> a|has been quite cursed by the well's magic.
+</p>
+

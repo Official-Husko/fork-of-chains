@@ -1,0 +1,22 @@
+:: LorePickerDialog [nobr]
+
+<<unset _sellore>>
+
+<div>
+  <<button 'Cancel'>>
+    <<run Dialog.close()>>
+  <</button>>
+</div>
+
+<div style="display: flex; flex-wrap: wrap">
+  <<for _lore range Object.values(setup.lore)>>
+    <<capture _lore>>
+      <<set _tag = setup.TagHelper.tagRep('lore', _lore.getTags())>>
+      <<set _text = _tag + _lore.rep()>>
+      <<button _text>>
+        <<set _sellore = _lore>>
+        <<run Dialog.close()>>
+      <</button>>
+    <</capture>>
+  <</for>>
+</div>

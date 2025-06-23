@@ -1,0 +1,158 @@
+:: OpportunitySetup_veteran_slaver [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'veteran_slaver', /* key */
+"Veteran Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_veteran_slaver',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_veteran_slaver_0',
+    'Opportunity_veteran_slaver_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.Player(setup.qres.AnyTrait([setup.trait.bg_slaver, setup.trait.skill_intimidating, setup.trait.magic_wind_master, setup.trait.face_hideous], true)),
+setup.qc.DoAll([
+setup.qc.TraitReplace('slave', setup.trait.training_obedience_advanced)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraitReplace('slave', setup.trait.training_obedience_basic)
+], undefined)),
+    ],
+  ],
+  [
+    'Opportunity_veteran_slaver_1',
+    'Opportunity_veteran_slaver_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+  'you': [
+  ],
+  'slave': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_veteran_slaver [nobr]
+<p>
+<<Yourrep $g.slaver>> slaver|have been a slaver for a long time, even before joining your company.
+<<if $g.slaver.isHasTrait('race_demon')>>
+Not a surprising fact — many demons who lived beyond <<lore concept_mist>> practice slavery, after all.
+<<elseif $g.slaver.isHasTrait('subrace_humankingdom')>>
+(Not in <<their $g.slaver>> homeland, however, since they have banned slavery by now.)
+<<elseif $g.slaver.isHasTrait('subrace_humansea') or $g.slaver.isHasTrait('race_lizardkin')>>
+Not a surprising fact — slavery is rampant everywhere, including on those lands beyond the <<lore region_sea>>.
+<<elseif $g.slaver.isHasTrait('subrace_humandesert') or $g.slaver.isHasTrait('race_greenskin')>>
+Not a surprising fact — being a slaver is very commonplace in the deserts <<they $g.slaver>> once called home.
+<</if>>
+<<if $unit.player.isHasTrait('bg_slaver')>>
+In fact, <<they $g.slaver>> slaver|have a rather similar background with you.
+<<else>>
+In fact, <<they $g.slaver>> might have been a slaver before you started to become one.
+<</if>>
+You could certainly learn a thing or two from <<therace $g.slaver>>.
+</p>
+
+<p>
+As it happens, you still have a rather disobedient slave under your care, <<rep $g.slave>>. It might be fun to ask <<them $g.slaver>> to demonstrate a thing or two <<they $g.slaver>> surely slaver|know about breaking slaves...
+</p>
+
+
+
+:: Opportunity_veteran_slaver_0 [nobr]
+Ask for a demonstration
+
+
+:: Opportunity_veteran_slaver_0_flavor [nobr]
+<p>
+You find <<yourrep $g.slaver>> in the middle of <<uhobbyverb $g.slaver>>, and when <<they $g.slaver>> slaver|hear about your idea, <<they $g.slaver>>
+<<if $g.slaver.isHasTrait('per_kind')>>
+slaver|refuse straight away. Looks like the kind slaver is averse inflicting pain upon slaves, unless absolutely necessary...
+<<else>>
+slaver|look quite pleased with it. Together, you descend into the dungeons to pick up <<yourrep $g.slave>>, before heading into the <<rep setup.buildingtemplate.trainingchamber>>. You sit down and let <<yourrep $g.slaver>> slaver|show you what <<they $g.slaver>> could do to the slave from <<their $g.slaver>> past experiences.
+<</if>>
+</p>
+
+<p>
+<<if $g.slaver.isHasTrait('bg_slaver')>>
+Since <<they $g.slaver>> hailed from the land beyond <<lore concept_mist>>, <<they $g.slaver>> slaver|is quite familiar with how demons break slaves. Compared to that degenerate of a place, the bondage devices in your training chamber is lacking, but the slaver makes do. The demons break their slaves in a very simple way: by cruelly breaking their mind. It took your slaver quite some skill to push the slave's mind to the brink of being completely broken, but pull away right before, leaving nothing but a compliant slave behind.
+<<elseif $g.slaver.isHasTrait('per_cruel')>>
+The cruel <<urace $g.slaver>> slaver|lick <<their $g.slaver>> lips in anticipation, as <<they $g.slaver>> slowly advances on the quivering slave. <<They $g.slaver>> slaver|grab a whip and proceed to give the slave a good long session of whipping, while explaining to you the finer points of inflicting pain upon others. One of the techniques is to blindfold the slave, which enhances their other senses, including the sense of touch. It doesn't take long before the slave is reduced doing nothing but incoherently beg for mercy.
+<<elseif $g.slaver.isHasTrait('per_aggressive')>>
+The aggressive <<urace $g.slaver>> slaver|do not hesitate, before grabbing the nearest tool of bondage and rain it down upon the slave. Before long, the slave is reduced to begging incoherently for the pain to stop. The slaver masterfully inflicts much pain upon the slave, but not injury so that the suffering can be extended for as long as <<yourrep $g.slaver>> slaver|want to. Before long, the slave is broken to a quivering mess on the floor.
+<<elseif $g.slaver.isHasTrait('per_logical') or $g.slaver.isHasTrait('per_sly') or $g.slaver.isHasTrait('per_gregarious')>>
+The slaver has learned a trick or two about breaking slaves without tool of pain — words can be a powerful too if used correctly. <<They $g.slaver>> elaborate the kinds of pain and torment the slave would endure in the near future, and also expound the hopelessness of the situation to <<them $g.slave>>. By the end of the "lecture", the slave is reduced to a crying mess on the floor, promising to be a good slave.
+<<elseif $g.slaver.isHasTrait('per_lustful')>>
+In <<their $g.slaver>> past a slaver, <<rep $g.slaver>> slave|have learned that the most primal desire of any <<urace $g.slave>> can be exploited, that is: sex.
+Without any warning, <<they $g.slave>> slave|shove <<their $g.slave>> <<udickorstrap $g.slave>> up and inside the resisting slave, drawing incoherent moan of pain from the slave. The slave was then used in various degrading positions throughout the day, before eventually reduced to a sobbing mess on the floor, promising to be a good <<boy $g.slave>>.
+<<else>>
+<<They $g.slaver>> slave|demonstrate quite a masterful technique in breaking down slave, and before long <<rep $g.slave>> slave|is down on the floor, sobbing and promising to be a good slave.
+<</if>>
+</p>
+
+<<if $unit.player.isHasTrait('bg_slaver')
+or
+$unit.player.isHasTrait('skill_intimidating')
+or
+$unit.player.isHasTrait('magic_wind_master')
+or
+$unit.player.isHasTrait('face_hideous')
+>>
+<p>
+However, you feel you could do better than the slaver.
+<<if $unit.player.isHasTrait('bg_slaver')>>
+You also have been a slaver for quite some time, after all, and this gig is far from being your first.
+<<elseif $unit.player.isHasTrait('skill_intimidating')>>
+You feel you can use your rather intimidating stature to pressure more obedience into the slave.
+<<elseif $unit.player.isHasTrait('magic_wind_master')>>
+Your mastery of wind magic could be used to drill even more obedience into the slave.
+<<elseif $unit.player.isHasTrait('face_hideous')>>
+Your frightening face could probably drill even more obedience into your slave.
+<</if>>
+And you are right, by the time you finish with the slave, <<they $g.slave>> slave|have been reduced to nothing but an almost mindless slave, ready to serve all and every one of yours and your slavers' whims.
+<<Yourrep $g.slaver>> slaver|is understandably quite impressed by the display, and the two of you grow somewhat closer over this.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', 100).apply($gQuest)>>
+<</if>>
+
+
+
+
+:: Opportunity_veteran_slaver_1 [nobr]
+Forget it!
+
+
+:: Opportunity_veteran_slaver_1_flavor [nobr]
+<p>
+You have your own twisted plan for the <<urace $g.slave>>, and training them right now in basic obedience just isn't part of your plan.
+</p>

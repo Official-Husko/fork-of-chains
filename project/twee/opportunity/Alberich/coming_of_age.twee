@@ -1,0 +1,78 @@
+:: OpportunitySetup_coming_of_age [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'coming_of_age', /* key */
+"Coming of Age", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[ 'special', 'fort', 'unit', ], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_coming_of_age',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+[
+'Opportunity_coming_of_age_0', 
+null, 
+[ /* costs */
+], 
+[ /* restrictions */
+], 
+[ /* outcomes */
+setup.qc.Slaver('child', "a|was the child of one of your slavers who a|have all grown up", undefined), 
+], 
+], [
+'Opportunity_coming_of_age_1', 
+'Opportunity_coming_of_age_1_flavor', 
+[ /* costs */
+setup.qc.Money(-1000), ], 
+[ /* restrictions */
+], 
+[ /* outcomes */
+], 
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'child': null},
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_coming_of_age [nobr]
+<<set _mom = $family.getUnitRelation($g.child, setup.familyrelation.mother)>>
+<<set _dad = $family.getUnitRelation($g.child, setup.familyrelation.father)>>
+<<set _u = setup.getAnySlaver()>>
+<p>
+Today marks the 18-th birthday of <<rep $g.child>>, which if you recall
+correctly was the <<daughter $g.child>> of
+<<if _mom && _mom.isSlaver()>>
+<<yourrep _mom>>.
+<<else>>
+a former slaver in your employ.
+<</if>>
+Now comes the day where you need to decide what to do with the <<lass $g.child>>.
+You could try asking <<yourrep _u>> for advice, but on a second thought these personal matters are best resolved
+with your own hands.
+</p>
+
+
+
+:: Opportunity_coming_of_age_0 [nobr]
+Recruit
+
+
+
+:: Opportunity_coming_of_age_1 [nobr]
+Release
+
+
+:: Opportunity_coming_of_age_1_flavor [nobr]
+You released the child into the world, giving <<them $g.child>> some money to jumpstart <<their $g.child>> life.
+

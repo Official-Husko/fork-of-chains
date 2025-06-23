@@ -1,0 +1,54 @@
+:: EventSetup_a_gift_from_the_bank [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'a_gift_from_the_bank', /* key */
+"A Gift from the Bank", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'item',
+  'forest',
+],
+'Event_a_gift_from_the_bank',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'neko': 'subrace_neko',
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.sexmanual_lick_feet),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.sexmanual_lick_feet),
+  setup.qres.FavorAtLeast('bank', 800),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_a_gift_from_the_bank [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Through a series of appropriately placed bribes and investments, your
+standings with the <<rep $company.bank>> has grown. They have trusted your
+company a great deal now, and in fact, an emissary has just arrived at your fort today to seal
+the alliance with a gift.
+A proper gift for a person such as you, the <<rep setup.item.sexmanual_lick_feet>>.
+</p>
+
+<p>
+The book details many sexual pleasures one could derive from getting their
+feet worshipped and licked clean. While the book itself is certainly a
+valuable gift, you can't feel but notice that the neko messenger smirks a
+little at the gift — a bootlicker for a bootlicker perhaps? Either way, this
+is a valuable gift, and you grudgingly thank the messenger before putting
+the book in your shelf for later perusal.
+</p>
+
+<p>
+You can see <<yourrep _u>> smirking at you for receiving such a gift and for the connotation it
+brings. You make a mental note to put the <<uadjgood _u>> <<urace _u>> in a
+dangerous mission later this week.
+</p>

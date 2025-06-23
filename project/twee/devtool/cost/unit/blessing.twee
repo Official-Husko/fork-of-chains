@@ -1,0 +1,43 @@
+:: CostBlessingRandom [nobr]
+
+<p>
+Bless <<devactordefault>> with
+<<numberbox '_amount' 1>> stacks of a random blessing.
+Each stack is worth <<money 2500>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Blessing($qgDefaultActorName, _amount, null, false)>>
+<</link>>
+
+
+:: CostCurseRandom [nobr]
+
+<p>
+Bless <<devactordefault>> with
+<<numberbox '_amount' 1>> stacks of a random curse.
+Each stack is worth <<money -2500>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Blessing($qgDefaultActorName, _amount, null, true)>>
+<</link>>
+
+
+:: CostBlessing [nobr]
+
+<<include LoadSelectTrait>>
+
+<p>
+Bless / Curse <<devactordefault>> with
+<<numberbox '_amount' 1>> stacks of the following blessing / curse.
+Each blessing stack is worth <<money 2500>>, while
+each curse stack is worth <<money -2500>>.
+</p>
+
+<<selecttrait 'CostBlessingDo' setup.TraitHelper.getAllTraitsOfTags(['blessingcursemax'])>>
+
+:: CostBlessingDo [nobr]
+
+<<set $qcost = setup.qc.Blessing($qgDefaultActorName, _amount, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>

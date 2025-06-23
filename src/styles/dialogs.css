@@ -1,0 +1,192 @@
+
+#ui-dialog-body.dialog-fullwidth {
+  width: min(66em, calc(100vw - 32px));
+}
+
+#ui-dialog-body.dialog-fullheight {
+  /* 100% screen height - (16*2 dialog top/bottom + 36 titlebar + 2 border)
+   * plus some additional margin
+   */
+  height: calc(100vh - 96px);
+}
+
+#ui-dialog-body.dialog-globalsettings {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+
+  & > header {
+    padding: 0.5em 1em 0.25em 1em;
+    flex: 0 0;
+
+    display: flex;
+    gap: 0.5em;
+    align-items: flex-start;
+
+    & > h2 {
+      margin: 0;
+      flex: 1 1;
+    }
+    & > div {
+      display: flex;
+      gap: 0.25em;
+    }
+  }
+  & > div {
+    overflow: auto;
+    padding: 1em;
+    padding-top: 0.5em;
+  }
+}
+
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+.dialog-buttons > * + * {
+  margin-left: 8px;
+}
+
+
+
+/** Unit Image (preview) dialog */
+
+.dialog-unitimage img {
+  max-width: 100%;
+  max-height: 88vh;
+}
+
+.dialog-unitimage .artistinfo {
+  display: block;
+  text-align: center;
+}
+
+
+
+/** Unit Image Picker dialog */
+
+.dialog-imagepicker-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  height: 100%;
+}
+
+.dialog-imagepicker-container button + button {
+  margin-left: 8px;
+}
+
+.dialog-imagepicker-container > header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+}
+
+.dialog-imagepicker-leftpane {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1em;
+  overflow: hidden;
+}
+
+.dialog-imagepicker .thumbnails {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  align-content: start;
+  justify-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  overflow-y: auto;
+}
+.dialog-imagepicker .thumbnails > header {
+  grid-column: 1 / -1;
+  font-size: smaller;
+  opacity: 0.8;
+}
+.dialog-imagepicker .thumbnails > div {
+  width: 128px;
+  height: 128px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 2px solid transparent;
+  overflow: hidden;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+}
+.dialog-imagepicker .thumbnails > div.disabled::after {
+  content: '✖';
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  font-weight: 900;
+  font-size: 24px;
+  color: #ad0000;
+  --shadow-color: white;
+  text-shadow:
+    -1px -1px 1px var(--shadow-color),
+    1px -1px 1px var(--shadow-color),
+    -1px 1px 1px var(--shadow-color),
+    1px 1px 1px var(--shadow-color);
+}
+
+.dialog-imagepicker .thumbnails > div.selected {
+  border-color: yellow;
+}
+
+
+.dialog-imagepicker-preview {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: 1fr auto;
+  gap: 16px;
+  overflow: hidden;
+}
+.dialog-imagepicker-preview figure {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  margin: 0;
+  text-align: center;
+  overflow: hidden;
+}
+.dialog-imagepicker-preview figure > div {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+.dialog-imagepicker-preview figure > div > div {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+}
+.dialog-imagepicker-preview figure > div.error {
+  border-color: crimson;
+}
+.dialog-imagepicker-preview figure > div.error > div {
+  color: crimson;
+  font-weight: bold;
+  word-break: break-all;
+  margin: 0 2em;
+}
+.dialog-imagepicker-preview figure > div > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.dialog-imagepicker-preview figure > div.error > img {
+  display: none;
+}
+

@@ -1,0 +1,22 @@
+:: AddonUnitValueToFavor [nobr]
+
+Gain favor equal to:
+<<numberbox '_value_to_favor' 0.025>> times the slave's value plus
+<<numberbox '_crit_to_favor' 75>> times number of crit traits with:
+
+<<for _icompany, _company range $company>>
+  <<capture _company>>
+    <<if _company != $company.player && _company != $company.independent>>
+      <div>
+        <<rep _company>>
+        <<button 'Select' 'SlaveOrderGen'>>
+          <<run $soaddons.push(setup.SlaveOrderAddon.UnitValueToFavor(
+            _company,
+            _value_to_favor,
+            _crit_to_favor
+          ))>>
+        <</button>>
+      </div>
+    <</if>>
+  <</capture>>
+<</for>>

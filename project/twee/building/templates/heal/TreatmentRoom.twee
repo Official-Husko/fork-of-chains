@@ -1,0 +1,61 @@
+:: InitBuildingTreatmentRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'treatmentroom',
+  tags: [],
+  width: 6,
+  height: 3,
+  door_column: 2,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "survival",
+      room_keys: [
+        'treatmentroomalternative',
+        'treatmentroomblank',
+        'treatmentroomforget',
+        'treatmentroomhate',
+        'treatmentroomisolation',
+        'treatmentroomlove',
+        'treatmentroomlovetrue',
+        'treatmentroommindmend',
+        'treatmentroomresetlevel',
+        'treatmentroomtransformation',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+
+<<run new setup.BuildingTemplate({
+  key: 'treatmentroom',
+  name: 'Treatment Room',
+  tags: ['heal', 'critical', 'unlocker', ],
+  description_passage: 'BuildingTreatmentRoom',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('hospital'),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_light]),
+    ],
+  ],
+  main_room_template_key: 'treatmentroom',
+})>>
+
+
+:: BuildingTreatmentRoom [nobr]
+
+<p>
+A sterile room designated to allow your slavers
+to (literally) work their healing magic.
+Unlocks treatments that can heal significantly injured slavers.
+Can be further expanded for more treatment options.
+
+</p>

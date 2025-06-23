@@ -1,0 +1,60 @@
+:: LoadBanterWidget [nobr widget]
+
+<!-- used for tooltip -->
+<<focwidget "bantercarddetails">>
+  <<set _initiator = $unit[$args[0]]>>
+  <<set _target = $unit[$args[1]]>>
+  <<set _friendship_amt = $args[2]>>
+
+  <<set _friendcheck = $fort.player.isHasBuilding(setup.buildingtemplate.moraleoffice)>>
+  
+  <<= _initiator.rep()>>
+  gained
+
+  <<if _friendcheck>>
+    <<friendship _friendship_amt>>
+  <<else>>
+    some
+  <</if>>
+
+  <<if _friendship_amt >= 0>>
+    friendship
+  <<else>>
+    rivalry 
+  <</if>>
+
+  with <<= _target.rep()>>
+
+  <br/>
+  <br/>
+
+  <<if _friendcheck>>
+    <<set _friendship_total = $friendship.getFriendship(_initiator, _target)>>
+    Total
+    <<if _friendship_amt >= 0>>
+      friendship:
+    <<else>>
+      rivalry:
+    <</if>>
+    
+    <<friendship _friendship_total>>
+
+  <<else>>
+    Build a <<rep setup.buildingtemplate.moraleoffice>> to reveal more information.
+  <</if>>
+<</focwidget>>
+
+
+<<focwidget "bantercard">>
+  <<set _dom = setup.DOM.Card.banter($args[0])>>
+  <<attach _dom>>
+<</focwidget>>
+
+
+/* Generate a random sentence about the $args[0] and their lover */
+<<focwidget 'lovertextshort'>>
+  <<if $args[0].getLover()>>
+    <<set _banter = new setup.BanterInstance($args[0], $args[0].getLover(), 1)>>
+    <<bantertext _banter>>
+  <</if>>
+<</focwidget>>

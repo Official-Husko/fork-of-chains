@@ -1,0 +1,1269 @@
+:: QGAddCostActual [nobr]
+
+Select from these options:
+
+<hr/>
+
+<div><b>Non-unit related</b></div>
+
+<<if $qCostActualNoUnit>>
+  <div>
+  <<message 'Money...'>>
+    <div class='marketobjectcard'>
+    <<if $qCostActualNonCost>>
+      <div>
+      [['Gain money'|CostMoneyCustom]]
+      </div>
+    <</if>>
+    <div>
+    [['Lose money'|CostMoneyLoseCustom]]
+    </div>
+    <hr/>
+    <<message 'Advanced...'>>
+      <div class='card lorecard'>
+        <<if $qCostActualNonCost>>
+          <div>
+          [['Gain money (auto, crit)'|CostMoneyCrit]]
+          <<message '(?)'>>A convenience option that gives an automatically computed amount of money
+          equal to the total rewards that this quest should give on a <<successtext 'critical success'>>,
+          assuming no other rewards.
+          <</message>>
+          </div>
+          <div>
+          [['Gain money (auto, success)'|CostMoneyNormal]]
+          <<message '(?)'>>A convenience option that gives an automatically computed amount of money
+          equal to the total rewards that this quest should give on a <<successtextlite 'success'>>,
+          assuming no other rewards.
+          <</message>>
+          </div>
+          <div>
+          [["Gain money based on unit's value"|CostMoneyUnitValue]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Gain a sum of money equal to a fraction of a slave's value,
+              up to a certain cap. Use with caution, as slave value can range from 1000g to 40,000g.
+              Can be useful for quests that whore out your slave.
+            </div>
+          <</message>>
+          </div>
+        <</if>>
+        <<if $qCostActualNonCost>>
+          <div>
+          [['Gain money (FIXED)'|CostMoneyCustomFixed]]
+          <<message '(?)'>>
+            Gain a fixed amount of money. When using the standard gain money,
+            the amount of money will be adjusted by difficulty. This one does not get
+            adjusted by difficulty.
+          <</message>>
+          </div>
+        <</if>>
+        <div>
+        [['Lose money (FIXED)'|CostMoneyLoseCustomFixed]]
+        <<message '(?)'>>
+          Lose a fixed amount of money. When using the standard gain money,
+          the amount of money will be adjusted by difficulty. This one does not get
+          adjusted by difficulty.
+        <</message>>
+        </div>
+      </div>
+    <</message>>
+  <</message>>
+  </div>
+<</if>>
+
+<<if $qCostActualNoUnit>>
+  <div>
+    <<message 'Favor / Ire...'>>
+      <div class='marketobjectcard'>
+        <div><b>Favor</b></div>
+        <<if $qCostActualNonCost>>
+          <div>
+            [['Gain favor'|CostFavor]]
+            <<message '(?)'>>
+              5.0 favor is worth <<money 1000>>
+            <</message>>
+          </div>
+
+          <div>
+          [["Gain favor based on unit's value"|CostFavorUnitValue]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Gain favor equal to a fraction of a slave's value.
+            </div>
+          <</message>>
+          </div>
+
+        <</if>>
+
+        <div>
+          [['Lose favor'|CostFavorLose]]
+          <<message '(?)'>>
+            5.0 favor is worth <<money 1000>>
+          <</message>>
+        </div>
+
+
+        <<if $qCostActualNonCost>>
+          <hr/>
+          <div><b>Ire</b></div>
+          <div>
+          [['Gain ire'|CostIre]]
+          <<message '(?)'>>
+            1 ire is worth <<money 500>>
+          <</message>>
+          </div>
+          <div>
+          [['Lose ire'|CostIreLose]]
+          <<message '(?)'>>
+            1 ire is worth <<money 500>>
+          <</message>>
+          </div>
+
+        <</if>>
+      </div>
+    <</message>>
+  </div>
+<</if>>
+
+<<if $qCostActualNoUnit>>
+  <div>
+  <<message 'Item / Equipment...'>>
+    <div class='marketobjectcard'>
+      <div><b>Item</b></div>
+      <<if $qCostActualNonCost>>
+        <div>
+        [['Gain an item'|CostItem]]
+        </div>
+        <div>
+        [['Gain a random item'|CostItemPool]]
+        </div>
+        <div>
+        [['Gain an item unless you already have it'|CostItemIfNew]]
+        </div>
+      <</if>>
+      <div>
+      [['Lose an item'|CostLoseItem]]
+      </div>
+    <<if $qCostActualNonCost>>
+      <hr/>
+      <div><b>Equipment</b></div>
+      <div>
+      [['Gain an equipment'|CostEquipmentDirect]]
+      </div>
+      <div>
+      [['Gain a random equipment'|CostEquipment]]
+      </div>
+      <div>
+      [['Lose an equipment'|CostLoseEquipment]]
+      </div>
+    <</if>>
+    </div>
+  <</message>>
+  </div>
+<</if>>
+
+<<if $qCostActualNoUnit && $qCostActualNonCost>>
+  <div>
+    <<message 'Quests / Mails / Event / Slave order...'>>
+      <div class='marketobjectcard'>
+        <<if $devtooltype == 'quest'>>
+          <div>
+          [['Set cooldown for this quest'|CostSetCooldownQuestSelf]]
+          </div>
+        <<elseif $devtooltype == 'opportunity'>>
+          <div>
+          [['Set cooldown for this opportunity'|CostSetCooldownOpportunitySelf]]
+          </div>
+        <<elseif $devtooltype == 'event'>>
+          <div>
+          [['Set cooldown for this event'|CostSetCooldownEventSelf]]
+          </div>
+        <</if>>
+
+        <div><b>Quest</b></div>
+        <div>
+        [['Gain a quest'|CostQuestDirect]]
+        </div>
+        <div>
+        [['Gain a random quest from pool'|CostQuest]]
+        </div>
+        <div>
+        [['Gain a chained quest'|CostQuestDirectRoles]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            A chained quest will make some of its actors to be the same actors in this quest.
+            For example, you can fight the same villain over multiple quests this way.
+          </div>
+        <</message>>
+        </div>
+        <div>
+        [['Gain a consecutive quest'|CostQuestDirectForceAssign]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            A consecutive quest will force the same team to be stuck in a new quest.
+            This way, you can make a quest with variable length. You can also use
+            this if you want to tell that your slavers got lost, and is instead stuck
+            in another quest.
+          </div>
+        <</message>>
+        </div>
+        <div>
+        [['Set a quest cooldown'|CostSetCooldownQuest]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This will prevent a certain quest from being spawned in the next few weeks.
+            For example, you can prevent a certain quest from being respawned in the next 10 weeks
+            when you get a critical success.
+          </div>
+        <</message>>
+        </div>
+
+        <<if $devtooltype == 'quest'>>
+          <div>
+            <<message 'Gain the current quest...'>>
+              <div class='card lorecard'>
+                <div>
+                  [['Gain the current quest'|CostQuestDirectSelf]]
+                </div>
+                <div>
+                  [['Gain the current quest (chained)'|CostQuestDirectSelfRoles]]
+                </div>
+              </div>
+            <</message>>
+          </div>
+        <</if>>
+
+        <hr/>
+
+        <div><b>Opportunity</b></div>
+        <div>
+        [['Gain an opportunity'|CostOpportunity]]
+        </div>
+        <div>
+        [['Gained a chained opportunity'|CostOpportunityRoles]]
+        </div>
+        <div>
+        [['Set an opportunity cooldown'|CostSetCooldownOpportunity]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This will prevent a certain opportunity from being spawned in the next few weeks.
+            For example, you can prevent a certain opportunity from being respawned in the next 10 weeks
+            when you get a critical success on another quest.
+          </div>
+        <</message>>
+        </div>
+
+        <hr/>
+
+        <div><b>Event</b></div>
+        <div>
+        [['Schedule an event'|CostEvent]]
+        </div>
+        <div>
+        [['Unschedule an event'|CostUnscheduleEvent]]
+        </div>
+        <div>
+        [['Schedule a chained event'|CostEventRoles]]
+        </div>
+        <div>
+        [['Set an event cooldown'|CostSetCooldownEvent]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This will prevent a certain event from being triggered in the next few weeks.
+            For example, you can prevent a certain event from being respawned in the next 10 weeks
+            when you get a critical success on another quest.
+          </div>
+        <</message>>
+        </div>
+
+        <hr/>
+
+        <div><b>Slave order</b></div>
+        <div>
+        [['Gain a slave order'|CostSlaveOrder]]
+        </div>
+      </div>
+    <</message>>
+  </div>
+<</if>>
+
+<<if $qCostActualNoUnit && $qCostActualNonCost && $devtooltype == 'quest'>>
+  <div>
+    <<message 'Outcomes from other quest results...'>>
+      <div class='marketobjectcard'>
+        <div>
+          <<message '(Help)'>>
+            <div class='helpcard'>
+              Selecting these will apply all the outcomes of another result
+              of the quest.
+              For example, if your quest has the same outcomes on all results,
+              then you can just fill the outcomes on critical, and then
+              for all the other outcomes, select the "Do all CRIT outcomes".
+            </div>
+          <</message>>
+        </div>
+        <div>
+          [["Do all CRIT outcomes"|CostOutcomesCrit]]
+        </div>
+        <div>
+          [["Do all SUCCESS outcomes"|CostOutcomesSuccess]]
+        </div>
+        <div>
+          [["Do all FAILURE outcomes"|CostOutcomesFailure]]
+        </div>
+        <div>
+          [["Do all DISASTER outcomes"|CostOutcomesDisaster]]
+        </div>
+      </div>
+    <</message>>
+  </div>
+<</if>>
+
+
+<hr/>
+
+<div><b>Gain / Lose unit</b></div>
+
+<<if $qCostActualNoUnit && $qCostActualNonCost>>
+  <div>
+    <<message 'Gain unit...'>>
+      <div class='marketobjectcard'>
+        <div><b>Slaver</b></div>
+        <div>
+        [['Gain a slaver'|CostSlaver]]
+        </div>
+        <div>
+        [['Gain a slaver (must be paid)'|CostSlaverMercenary]]
+        <<message '(?)'>>
+          Slavers gained via this option will have to be paid a hiring free.
+          The most promiment user of this reward are recruitment quests, that scouts
+          for potential recruits. The amount paid will depend on the traits of the slaver.
+        <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Slave</b></div>
+        <div>
+        [['Gain a slave'|CostSlave]]
+        </div>
+        <div>
+        [['Gain a slave (must be paid)'|CostSlaveMercenary]]
+        <<message '(?)'>>
+          Slaves gained via this option will have to be bought with a sum of money equal to their value.
+          The most promiment user of this reward are quests that browse wares in a slave market.
+        <</message>>
+        </div>
+      </div>
+    <</message>>
+  </div>
+<</if>>
+
+<<if $qCostActualNonCost>>
+  <div>
+    <<message 'Lose unit...'>>
+      <div class='marketobjectcard'>
+        <div><b>Slaver</b></div>
+        <div>
+          [['Lose a slaver (rescue-able with a Rescuer)'|CostMissingUnit]]
+          <<message '(?)'>>
+            This is the standard way to lose slavers.
+            Slavers lost this way can be rescued later by the Rescuer duty.
+          <</message>>
+        </div>
+        <div>
+          <<message 'Slaver is captured but immediately rescue-able...'>>
+            <div class='card lorecard'>
+              <div>
+                [['Easy (Lv 15 - 30)'|CostMissingUnitRecaptureEasySlaver]]
+              </div>
+              <div>
+                [['Medium (Lv 35 - 50)'|CostMissingUnitRecaptureMediumSlaver]]
+              </div>
+              <div>
+                [['Hard (Lv 50 - 70)'|CostMissingUnitRecaptureHardSlaver]]
+              </div>
+            </div>
+          <</message>>
+          <<message '(?)'>>
+            The slaver will went missing, but
+            a quest will be immediately generated where the slaver can be rescued.
+            If the quest is ignored, the slaver will disappear forever --- otherwise,
+            the slaver will be rescued in the quest.
+            Has three difficulties to choose from.
+          <</message>>
+        </div>
+        <div>
+          [['Lose a slaver (rebuy-able)'|CostMissingUnitRebuy]]
+          <<message '(?)'>>
+            Slavers lost this way are immediately added back to the
+            prospects hall, and can be rebought at a price.
+            The price can be adjusted to be high or low.
+            This is useful for example when your slaver is captured by another slaver and immediately
+            sold back to you.
+          <</message>>
+        </div>
+        <div>
+          [['Lose a slaver FOREVER'|CostMissingUnitForever]]
+          <<message '(?)'>>
+            Lose a slaver forever. Use extremely sparingly.
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Slave</b></div>
+
+        <div>
+          [['Lose a slave (rescue-able with a Rescuer)'|CostMissingUnit]]
+          <<message '(?)'>>
+            This is the standard way to lose slaves.
+            Slaves lost this way can be rescued later by the Rescuer duty.
+          <</message>>
+        </div>
+        <div>
+          <<message 'Slave escapes but immediately recapture-able...'>>
+            <div class='card lorecard'>
+              <div>
+                [['Easy (Lv 15 - 30)'|CostMissingUnitRecaptureEasy]]
+              </div>
+              <div>
+                [['Medium (Lv 35 - 50)'|CostMissingUnitRecaptureMedium]]
+              </div>
+              <div>
+                [['Hard (Lv 50 - 70)'|CostMissingUnitRecaptureHard]]
+              </div>
+            </div>
+          <</message>>
+          <<message '(?)'>>
+            A quest will be generated where the slave will attempt an escape.
+            If the quest is ignored, the slave will disappear forever --- otherwise,
+            the slave will be recaptured in the quest.
+            Has three difficulties to choose from.
+          <</message>>
+        </div>
+        <div>
+          [['Lose a slave (rebuy-able immediately)'|CostMissingUnitRebuy]]
+          <<message '(?)'>>
+            Lose a slave.
+            Slaves lost this way are immediately added back to the
+            slaves pen, and can be rebought at a price.
+            The price can be adjusted.
+            This is useful for example when your slave is captured by another slaver and immediately
+            sold to you.
+          <</message>>
+        </div>
+        <div>
+          [['Lose a slave FOREVER'|CostMissingUnitForever]]
+          <<message '(?)'>>
+            Lose a slave forever.
+            Primarily used when you sell a slave.
+          <</message>>
+        </div>
+        <div>
+          [['Lose a random slave'|CostEscapedSlaveRandom]]
+          <<message '(?)'>>
+            Will make a random one of your slaves escape from the fort.
+          <</message>>
+        </div>
+      </div>
+    <</message>>
+  </div>
+<</if>>
+
+<<if $qCostActualUnit>>
+<hr/>
+
+<div><b>Unit related</b></div>
+  <div>
+    <<message 'Injury, Trauma, Corruption, Blessing, Curse...'>>
+      <div class='marketobjectcard'>
+        <div><b>Injury</b></div>
+        <div>
+          [['Injure unit'|CostInjury]]
+        </div>
+        <div>
+          [['Heal unit'|CostHeal]]
+        </div>
+
+        <hr/>
+        <div><b>Blessing / Curse</b></div>
+
+        <div>
+          [['Randomly bless unit'|CostBlessingRandom]]
+        </div>
+
+        <div>
+          [['Randomly curse unit'|CostCurseRandom]]
+        </div>
+
+        <div>
+          [['Bless / curse unit with a specific blessing / curse'|CostBlessing]]
+        </div>
+
+        <hr/>
+        <div><b>Trauma</b></div>
+
+        <div>
+          [['Traumatize unit'|CostTraumatizeRandom]]
+          <<message '(?)'>>
+            The default way to traumatize a unit.
+            A random trauma will be chosen and given the unit. The chance of each trauma
+            depends on the slaver's skills.
+          <</message>>
+        </div>
+        <div>
+          [['Boonize unit'|CostBoonizeRandom]]
+          <<message '(?)'>>
+            The default way to give a boon to a unit.
+            A random boon will be chosen and given the unit. The chance of each trauma
+            depends on the slaver's skills.
+          <</message>>
+        </div>
+        <div>
+          [['Specialized trauma / boon'|CostTrauma]]
+          <<message '(?)'>>
+            Gives a unit a specific boon or trauma.
+          <</message>>
+        </div>
+        <div>
+          [['Heal trauma'|CostTraumaHeal]]
+          <<message '(?)'>>
+            Heals traumas on a unit worth the given amount of weeks.
+            If the unit is not traumatized, nothing happens.
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Corruption</b></div>
+
+        <div>
+          [['Corrupt unit'|CostCorrupt]]
+          <<message '(?)'>>
+            Corruption will replace one of the bodyparts with its demonic counterpart,
+            significantly reducing one skill and reducing the value of the unit.
+            The bodypart chosen by this option is randomly chosen.
+            Corruption sometimes will replace the bodypart with non-demonic part.
+          <</message>>
+        </div>
+        <div>
+          [['Purify a unit'|CostPurify]]
+          <<message '(?)'>>
+            Restores a missing bodypart to what it should be.
+            Can be used to reverse corruption.
+            Demons cannot be purified.
+          <</message>>
+        </div>
+        <div>
+          [['Gain innate trait'|CostTraitAndMakeInnate]]
+          <<message '(?)'>>
+            Permanently give a unit a bodypart. If you give it using this, then the trait
+            cannot be purified.
+          <</message>>
+        </div>
+        <div>
+          [['Reset innate traits'|CostResetInnateTraits]]
+          <<message '(?)'>>
+            This unit will gain all its current skin traits as their innate traits.
+            Most useful for generating units.
+          <</message>>
+        </div>
+        <div>
+          [['PERMANENTLY corrupt unit'|CostPermanentlyCorrupt]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Gives a random permanent corruption. Permanent corruption cannot be purified.
+            </div>
+          <</message>>
+        </div>
+
+      </div>
+    <</message>>
+  </div>
+
+  <div>
+    <<message 'Trait...'>>
+      <div class='marketobjectcard'>
+        <div><b>Gain trait</b></div>
+        <div>
+        [['Gain trait / Increase trait level'|CostTrait]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            The preferred way to add trait.
+            <br/>
+            <br/>
+            For most traits, this will simply add the trait to the unit if it does not already have it.
+            However, some traits have level in them --- for example,
+            <<rep setup.trait.muscle_strong>>
+            <<rep setup.trait.muscle_verystrong>>
+            <<rep setup.trait.muscle_extremelystrong>>.
+            For these traits, this option will increase the trait level by one, up to the chosen trait.
+            For example, if you choose <<rep setup.trait.muscle_verystrong>>,
+            then a <<rep setup.trait.muscle_strong>> will get <<rep setup.trait.muscle_verystrong>>
+            and a unit with <<rep setup.trait.muscle_verythin>> will get <<rep setup.trait.muscle_thin>>.
+            Units with <<rep setup.trait.muscle_verystrong>> or <<rep setup.trait.muscle_extremelystrong>>
+            will not change their traits.
+            <br/>
+            <br/>
+            Be careful with gender-specific traits such as
+            <<rep setup.trait.dick_small>> or <<rep setup.trait.vagina_loose>>.
+            Using this will grow those if the unit does not have it.
+            Use the "Increase trait" option instead.
+            <br/>
+            <br/>
+            If you want to forcefully add a trait, use the
+            "Replace trait" option.
+          </div>
+        <</message>>
+        </div>
+
+        <div>
+          [['Replace background'|CostBgTraitReset]]
+          <<message '(?)'>>
+            Replace a unit's background trait with a new one.
+            <br/>
+            <br/>
+            Note that unit can usually have multiple backgrounds. Using this,
+            the old background will be removed and replaced with the new one.
+            Most useful in generating units so that they always come with a
+            specific background.
+          <</message>>
+        </div>
+
+        <div>
+          [['Replace trait'|CostTraitReplace]]
+          <<message '(?)'>>
+            Forcefully gain a specific trait, replacing all conflicting trait.
+            <br/>
+            <br/>
+            This is different than gaining trait: a <<rep setup.trait.muscle_verythin>>
+            slaver that gains a <<rep setup.trait.muscle_verystrong>> will end up with
+            <<rep setup.trait.muscle_thin>>.
+            But if the <<rep setup.trait.muscle_verythin>> slaver replaced it with
+            <<rep setup.trait.muscle_verystrong>>, then the slaver will end up with
+            <<rep setup.trait.muscle_verystrong>>.
+          <</message>>
+        </div>
+
+        <div>
+          [['Replace trait (mass)'|CostTraitsReplace]]
+          <<message '(?)'>>
+            Shorthand for using (replace trait) on multiple traits at once.
+          <</message>>
+        </div>
+
+        <div>
+          [['Mindbreak'|CostMindbreak]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Use this to add the <<rep setup.trait.training_mindbreak>>, so that
+              the incompatible traits are cleared out.
+            </div>
+          <</message>>
+        </div>
+
+        <div>
+          [['Sluttify'|CostSluttify]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Randomly makes the unit more slutty. Click this cost to see more details.
+            </div>
+          <</message>>
+        </div>
+
+        <div>
+          [['Domify'|CostDomify]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Randomly makes the unit more dominant. Click this cost to see more details.
+            </div>
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Genitals</b></div>
+
+        <div>
+          [['Increase genital size (if any)'|CostTraitIncreaseExisting]]
+          <<message '(?)'>>
+            Increase an existing trait, if the unit already have it, up to a certain cap.
+            Mostly useful for growing existing physical attributes such as
+            <<rep setup.trait.dick_large>> or <<rep setup.trait.breast_large>>.
+          <</message>>
+        </div>
+
+        <div>
+          [['Replace genital (if any)'|CostTraitReplaceExisting]]
+          <<message '(?)'>>
+            Replaces an existing trait, if the unit already have it.
+            Mostly useful for growing existing physical attributes such as
+            <<rep setup.trait.dick_large>> or <<rep setup.trait.breast_large>>.
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Random</b></div>
+
+        <div>
+          <<message 'Gain random traits...'>>
+            <div class='card lorecard'>
+              <div>
+                [['Gain random traits'|CostAddTraitsRandom]]
+              </div>
+              <div>
+                [['Replace random traits'|CostAddTraitsRandomReplace]]
+              </div>
+              <div>
+                [['Gain a random non-demonic bodypart'|CostAddRandomBodypartNonDemonic]]
+              </div>
+              <div>
+                [['Gain a random bodypart (can be demonic)'|CostAddRandomBodypartAll]]
+              </div>
+            </div>
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Lose trait</b></div>
+
+        <div>
+          [['Remove trait'|CostTraitRemove]]
+          <<message '(?)'>>
+            Removes a specific trait, if the unit have it.
+          <</message>>
+        </div>
+
+        <div>
+          [['Decrease existing trait'|CostTraitDecrease]]
+          <<message '(?)'>>
+            Decrease an existing trait, if the unit already have it, up to a certain cap.
+            Mostly useful for shrinking physical attributes such as
+            <<rep setup.trait.dick_small>> or <<rep setup.trait.breast_small>>,
+            to ensure they will not be gone.
+          <</message>>
+        </div>
+
+        <div>
+          <<message 'Decrease random traits...'>>
+            <div class='card lorecard'>
+              <div>
+                [['Remove random traits'|CostDecreaseTraitsRandomReplace]]
+              </div>
+              <div>
+                [['Decrease random traits'|CostDecreaseTraitsRandom]]
+              </div>
+
+              <div>
+                [['Remove a random background trait'|CostRemoveRandomBgTrait]]
+              </div>
+              <div>
+                [['Remove a random personality trait'|CostRemoveRandomPerTrait]]
+              </div>
+            </div>
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Advanced</b></div>
+
+        <div>
+          [['Remove all mental traits'|CostClearMentalTraits]]
+        </div>
+      </div>
+    <</message>>
+  </div>
+
+  <div>
+    <<message 'Title...'>>
+      <div class='marketobjectcard'>
+        <div>
+          [["Gain title"|CostAddTitle]]
+        </div>
+        <div>
+          [["Lose title"|CostRemoveTitle]]
+        </div>
+        <div>
+          [["Gain value titles"|CostAddValueTitles]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Give this unit value titles to increase their value by some amount.
+              Only use this when first time generating a unit.
+              Minimum <<money 5000>>
+            </div>
+          <</message>>
+        </div>
+      </div>
+    <</message>>
+  </div>
+
+  <div>
+    <<message 'Leave...'>>
+      <div class='marketobjectcard'>
+        <div><b>Go on a leave</b></div>
+        <div>
+          [["Go on a leave (set duration)"|CostLeave]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              This will cause the unit to be away from your company for a set number of weeks.
+            </div>
+          <</message>>
+        </div>
+        <div>
+          [["Go on a leave (indefinite duration)"|CostLeaveNoDuration]]
+          <<message '(?)'>>
+            <div class='helpcard'>
+              This will cause the unit to be away from your company until another
+              event / quest returns the unit back to the company.
+            </div>
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Return from leave</b></div>
+        <div>
+          [["Return from leave"|CostReturn]]
+        </div>
+      </div>
+    <</message>>
+  </div>
+
+  <div>
+    <<message 'Others...'>>
+      <div class='marketobjectcard'>
+        <div><b>Skill boost</b></div>
+
+        <div>
+          [["Permanently boost a unit's skill"|CostSkillBoost]]
+        </div>
+
+        <hr/>
+        <div><b>History</b></div>
+
+        <div>
+          [["Mark a historical moment in unit's history"|CostAddHistory]]
+        </div>
+
+        <hr/>
+        <div><b>Friend / Lover</b></div>
+
+        <div>
+          [["Gain friendship / rivalry with you"|CostFriendshipWithYou]]
+        </div>
+
+        <div>
+          [["Become your lovers"|CostHookupWithYou]]
+        </div>
+
+        <div>
+          [["Breaks up with you"|CostBreakupWithYou]]
+        </div>
+
+        <hr/>
+        <div><b>Name</b></div>
+
+        <div>
+          [["Change unit's nickname"|CostNickname]]
+        </div>
+        <div>
+          [["Change unit's real name to a newly generated one"|CostGenName]]
+        </div>
+        <div>
+          [["Change unit's first name"|CostFirstName]]
+          <<dangertext 'Use with caution'>>
+          <<message '(?)'>>
+            Use this sparingly, and consider generating the unit's name randomly
+            and give them a nickname instead.
+          <</message>>
+        </div>
+        <div>
+          [["Change unit's surname"|CostSurname]]
+          <<dangertext 'Use with caution'>>
+          <<message '(?)'>>
+            Use this sparingly, and consider generating the unit's name randomly
+            and give them a nickname instead.
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Exp, Level, Perk</b></div>
+
+        <div>
+          [["Unit gains some extra EXP"|CostExpUnit]]
+        </div>
+        <div>
+          [["Unit levels up"|CostlevelUp]]
+          <<message '(?)'>>
+            Should NOT be used in most circumstances.
+          <</message>>
+        </div>
+        <div>
+          [["Reset unit's level to 1"|CostResetLevel]]
+        </div>
+        <div>
+          [["Gain perk choice and learn it"|CostPerkChoice]]
+        </div>
+        <div>
+          [["Lose perk choice"|CostRemovePerkChoice]]
+        </div>
+
+        <div>
+          [['Retire unit'|CostRetire]]
+        </div>
+
+        <hr/>
+        <div><b>Unit group</b></div>
+
+        <div>
+          [["Add unit to unit group"|CostAddUnitToUnitGroup]]
+          <<message '(?)'>>
+            Adds a unit to another unit group. This can be useful to set up an event chain,
+            for example, you add a slaver that just left your company to the villain unit group,
+            to be picked from later when the slaver seeks retribution against you.
+          <</message>>
+        </div>
+        <div>
+          [["Remove actor from unit group"|CostRemoveFromUnitGroup]]
+          <<message '(?)'>>
+            Removes the unit from their unit group. Only relevant for units that are generated
+            from persistent unit groups, such as the "Missing Slavers" unit groups
+            or custom-made unit groups.
+            Will also delete the unit if they are no longer referred to by any quest.
+          <</message>>
+        </div>
+
+        <hr/>
+        <div><b>Tags</b></div>
+
+        <div>
+          [["Remove a tag / flag from a unit"|CostRemoveTag]]
+          <<include 'CostTagHelp'>>
+        </div>
+        <div>
+          [["Give a Tag / Flag to a unit"|CostAddTag]]
+          <<include 'CostTagHelp'>>
+        </div>
+      </div>
+    <</message>>
+  </div>
+<</if>>
+
+<hr/>
+
+<div><b>Advanced</b></div>
+
+<<if $qCostActualNonCost>>
+  <div>
+    <<message 'Recursive...'>>
+      <div class='marketobjectcard'>
+        <div><b>Conditional</b></div>
+        <div>
+          [['If (restriction) then (outcome) else (outcome)'|CostIfThenElse]]
+          <<message '(?)'>>
+            Sets a restriction. If it's satisfied, then the first outcome is given. Otherwise, the second outcome is given.
+          <</message>>
+        </div>
+        <hr/>
+        <div><b>Do all</b></div>
+        <div>
+          [['Do all of the following'|CostDoAll]]
+          <<message '(?)'>>
+            Get all the rewards listed. Useful in combination with other conditionals, such as "Do one at random"
+          <</message>>
+        </div>
+        <div>
+          [['Do all of the following with certain probability'|CostDoAllProbability]]
+          <<message '(?)'>>
+            Will only give the rewards with some probability.
+            Useful for a "lucky" reward, e.g., small chance of getting something rare.
+          <</message>>
+        </div>
+        <div>
+          [['Do all, but mask description'|CostHideAll]]
+          <<message '(?)'>>
+            Like "Do all of the following", but will hide the description from the players,
+            and instead show some other texts.
+          <</message>>
+        </div>
+        <hr/>
+        <div><b>Do one at random</b></div>
+        <div>
+          [['Do one at random'|CostOneRandom]]
+          <<message '(?)'>>
+            One of these outcomes are chosen COMPLETELY at random.
+          <</message>>
+        </div>
+        <div>
+          [['Do one at random (SEEDED)'|CostOneRandomSeed]]
+          <<message '(?)'>>
+            One of these outcomes are chosen at random, depending on the quest's SEED value.
+            <br/>
+            <br/>
+            <<include 'CostSeedHelpText'>>
+          <</message>>
+        </div>
+        <hr/>
+        <div><b>Loop</b></div>
+        <div>
+          [['For all unit that satisfy (restriction) do (outcome)'|CostAllUnitSatisfyDo]]
+        </div>
+      </div>
+    <</message>>
+  </div>
+<</if>>
+
+<<if $qCostActualNoUnit && $qCostActualNonCost>>
+  <<message 'All Others...'>>
+    <div class='marketobjectcard'>
+      <div><b>Misc.</b></div>
+
+      <div>
+        <<message 'Variables...'>>
+          <div class='card lorecard'>
+            <div>
+              [['Set variable'|CostVarSet]]
+            </div>
+            <div>
+              [['Unset variable'|CostVarRemove]]
+            </div>
+            <div>
+              [['Adds a value into a variable'|CostVarAdd]]
+            </div>
+          </div>
+        <</message>>
+        <<message '(?)'>>
+          Variables are advanced but very flexible technique.
+          It is essentially a "data container" that can be used to store decisions
+          made by the player. For example, you can store here that a player has decided to
+          choose a certain opportunity, and this can later be checked for.
+        <</message>>
+      </div>
+
+      <div>
+        [['Prestige'|CostPrestige]]
+        <<message '(?)'>>
+          Should NOT be used in most circumstances.
+        <</message>>
+      </div>
+
+      <hr/>
+      <div><b>Two units</b></div>
+
+      <div>
+        <<message 'Family...'>>
+          <div class='card lorecard'>
+            <div>
+              [['Make siblings'|CostSibling]]
+            </div>
+            <div>
+              [["Make parent-child"|CostParent]]
+            </div>
+            <div>
+              [['Make twins'|CostTwin]]
+            </div>
+          </div>
+        <</message>>
+      </div>
+
+      <div>
+        <<message 'Friendship / Lovers...'>>
+          <div class='card lorecard'>
+            <div>
+              [['Friendship / Rivalry'|CostFriendship]]
+            </div>
+            <div>
+              [['Make lovers'|CostHookup]]
+            </div>
+            <div>
+              [['Break up lovers'|CostBreakup]]
+            </div>
+          </div>
+        <</message>>
+      </div>
+
+      <div>
+        [['Swap bodies'|CostBodyswap]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            Swapping bodies will exchange all physical traits between the units including race
+            and gender.
+            <br/>
+            <br/>
+            Take care <<dangertext 'not to bodyswap slavers with unit of the opposite gender!'>>
+            This cause inconsistency problems with existing quests.
+            Slaves and NPCs on the other hand are free to gender-swap as you like.
+          </div>
+        <</message>>
+      </div>
+
+      <div>
+        [['Copy body (one direction)'|CostBodyswapOneDirection]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            A unit copy another unit's body, but not the other way around.
+            <br/>
+            <br/>
+            Take care <<dangertext 'not to let slavers copy the body of a unit of the opposite gender!'>>
+            This cause inconsistency problems with existing quests.
+            Slaves and NPCs on the other hand are free to gender-swap as you like.
+          </div>
+        <</message>>
+      </div>
+
+      <div>
+        [['Make bodyshifter'|CostSetBodyshifter]]
+        <<message '(?)'>>
+          A bodyshifter is able to shift their body to another one at will.
+        <</message>>
+      </div>
+
+      <hr/>
+      <div><b>One unit (others)</b></div>
+
+      <div>
+        [['Bodyshifts'|CostBodyshift]]
+        <<message '(?)'>>
+          Only usable on bodyshifters.
+        <</message>>
+      </div>
+
+      <div>
+      [["Mark unit as slaver"|CostSlaverMarker]]
+      <<message '(?)'>>
+        Mark this unit as a slaver --- the unit's gender will try to follow player's
+        preferences for slaver gender.
+        There is no need to use this if you already have the unit as a slaver reward.
+      <</message>>
+      </div>
+
+      <div>
+        [["Mark unit as slave"|CostSlaveMarker]]
+        <<message '(?)'>>
+          Mark this unit as a slave --- the unit's gender will try to follow player's
+          preferences for slave gender.
+          There is no need to use this if you already have the unit as a slave reward.
+        <</message>>
+      </div>
+
+      <div>
+        [['Unit switches job'|CostMissingUnitOpposite]]
+        <<message '(?)'>>
+          A unit switches their job --- i.e., a slave becomes a slaver, or a slaver becomes a slave.
+          <<dangertext 'USE WITH CAUTION'>>.
+          This is a very dangerous reward, and could easily break the game if abused.
+        <</message>>
+      </div>
+
+      <hr/>
+      <div><b>Global</b></div>
+
+      <div>
+        [["Remove a tag from ALL units that have it"|CostRemoveTagGlobal]]
+      </div>
+
+      <div>
+        [["Remove a title from ALL units that have it"|CostRemoveTitleGlobal]]
+      </div>
+
+      <div>
+        [["Clear all units from a unit group"|CostEmptyUnitGroup]]
+      </div>
+
+      <hr/>
+      <div><b>Contact</b></div>
+
+      <div>
+        [["Gain a unit-less contact"|CostContactNoUnit]]
+      </div>
+      <div>
+        [["Gain a unit as contact"|CostContactHasUnit]]
+      </div>
+      <div>
+        [["Lose a contact"|CostContactLose]]
+      </div>
+
+      <hr/>
+      <div><b>Others</b></div>
+
+      <div>
+        [["Free player"|CostFreePlayer]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This is only relevant for quest or events that can free a captured player.
+          </div>
+        <</message>>
+      </div>
+
+    </div>
+  <</message>>
+<</if>>
+
+
+<br/>
+<br/>
+<<devtoolreturnbutton>>
+
+
+
+:: QGAddCost [nobr]
+
+<<set $qCostActualUnit = true>>
+<<set $qCostActualNoUnit = true>>
+<<set $qCostActualNonCost = true>>
+
+<<set $qgDefaultActorName = ''>>
+
+<<include 'QGAddCostActual'>>
+
+
+:: QGAddCostNoUnit [nobr]
+
+Choose cost type:
+
+<<set $qCostActualUnit = false>>
+<<set $qCostActualNoUnit = true>>
+<<set $qCostActualNonCost = true>>
+
+<<set $qgDefaultActorName = ''>>
+
+<<include 'QGAddCostActual'>>
+
+
+:: QGAddCostUnit [nobr]
+
+Choose cost type:
+
+<<set $qCostActualUnit = true>>
+<<set $qCostActualNoUnit = false>>
+<<set $qCostActualNonCost = true>>
+
+<<set $qgDefaultActorName = 'unit'>>
+
+<<include 'QGAddCostActual'>>
+
+
+:: QGAddActualCost [nobr]
+
+Choose cost type:
+
+<<set $qCostActualNoUnit = true>>
+<<set $qCostActualUnit = false>>
+<<set $qCostActualNonCost = false>>
+
+<<include 'QGAddCostActual'>>
+
+
+
+:: QGAddCostTarget [nobr]
+
+<<set $qCostActualUnit = true>>
+<<set $qCostActualNoUnit = true>>
+<<set $qCostActualNonCost = true>>
+
+<<set $qgDefaultActorName = 'target'>>
+
+<<include 'QGAddCostActual'>>
+
+
+:: QGCostDone [nobr]
+
+<<set _entry = $qcost>>
+<<unset $qcost>>
+<<include 'DevAddEntry'>>

@@ -1,0 +1,147 @@
+:: OpportunitySetup_choose_your_own_adventure__the_powerup___goal [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__the_powerup___goal2', /* key */
+"Choose Your Own Adventure: The Powerup - Goal", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown',], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__the_powerup___goal',
+setup.qdiff.normal19, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__the_powerup___goal2_0',
+'Opportunity_choose_your_own_adventure__the_powerup___goal_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_strength', 'strength', -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '3', -1), ],
+], [
+'Opportunity_choose_your_own_adventure__the_powerup___goal2_1',
+'Opportunity_choose_your_own_adventure__the_powerup___goal_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_strength', 'intelligence', -1),
+setup.qc.VarAdd('choose_your_own_adventure_changes', 1, -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '3', -1), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__the_powerup___goal', /* key */
+"Choose Your Own Adventure: The Powerup - Goal", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown',], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__the_powerup___goal',
+setup.qdiff.normal19, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__the_powerup___goal_0',
+'Opportunity_choose_your_own_adventure__the_powerup___goal_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarAdd('choose_your_own_adventure_changes', 1, -1),
+setup.qc.VarSet('choose_your_own_adventure_strength', 'strength', -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '3', -1), ],
+], [
+'Opportunity_choose_your_own_adventure__the_powerup___goal_1',
+'Opportunity_choose_your_own_adventure__the_powerup___goal_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_strength', 'intelligence', -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '3', -1), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_choose_your_own_adventure__the_powerup___goal [nobr]
+<<include 'Opportunity_choose_your_own_adventure__the_beginning__storyCommon'>>
+
+<p>
+Weeks passed, and the pair of
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+manage to make their living off slaying minor beasts and completing bounties.
+But it is not just for the sake of getting enough money to get by — they are hoping to
+accumulate some money in order to patron a wise sage deep inside the forests.
+They believe that the sage shall grant them the...
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__the_powerup___goal_0 [nobr]
+Strength
+
+:: Opportunity_choose_your_own_adventure__the_powerup___goal2_0 [nobr]
+Strength (Default)
+
+
+
+:: Opportunity_choose_your_own_adventure__the_powerup__storyCommon [nobr]
+<<include 'Opportunity_choose_your_own_adventure__the_beginning__storyCommon'>>
+
+<p>
+Weeks passed, and the pair of
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+manage to make their living off slaying minor beasts and completing bounties.
+But it is not just for the sake of getting enough money to get by — they are hoping to
+accumulate some money in order to patron a wise sage deep inside the forests.
+They believe that the sage shall grant them the
+<<= $varstore.get('choose_your_own_adventure_strength')>>
+they need in their quest for
+<<= $varstore.get('choose_your_own_adventure_revenge')>>.
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__the_powerup___goal_0_flavor [nobr]
+
+<<include 'Opportunity_choose_your_own_adventure__the_powerup__storyCommon'>>
+
+<p>
+Even more weeks pass by, and they have accumulate enough money to hire the
+service they need to locate the sage...
+</p>
+
+<p>
+Again, once you complete reading the chapter the book vanishes into a black
+puff.
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__the_powerup___goal_1 [nobr]
+Intelligence (Default)
+
+:: Opportunity_choose_your_own_adventure__the_powerup___goal2_1 [nobr]
+Intelligence
+

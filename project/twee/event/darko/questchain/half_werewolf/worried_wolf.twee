@@ -1,0 +1,58 @@
+:: EventSetup_worried_wolf [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'worried_wolf', /* key */
+"Worried Wolf", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'unit',
+],
+'Event_worried_wolf',
+{ /* roles */
+},
+{ /* actors */
+  'child': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_shapeshifter__werewolf_1'),
+    setup.qres.NoTag('half_werewolf_told_backstory'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.AddTag('child', 'half_werewolf_told_backstory'),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('half_werewolf_father_encountered', '1'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_worried_wolf [nobr]
+
+<p>
+Entering your office today, you are surprised to find <<yourrep $g.child>>
+waiting anxiously for you inside. <<They $g.child>> child|has come to talk about your
+company's recent quest in the
+<<lore region_vale>>, where your slavers encountered a certain werewolf that bear
+striking similarity to <<them $g.child>>.
+</p>
+
+<p>
+For the first time ever, <<they $g.child>> child|tell you <<their $g.child>> full
+backstory. As you recall, <<rep $g.child>> child|is the child of a werewolf
+father and a human mother. But that's not the entire story — the mother was an innocent
+villager until one day the village was attacked and burned to the ground by
+a werewolf raiding party. In that fateful day, one of the more lusty werewolf
+apparently raped the poor lady, impregnating her in the process. <<Rep
+$g.child>> child|was the end result of that, and has been gathering
+information about the evil werewolf, who is responsible for <<their $g.child>> cursed existence.
+</p>
+
+<p>
+Seeing this as a potential lead, <<they $g.child>> child|ask you to send <<them
+$g.child>> over should you receive a similar request in the future.
+As <<they $g.child>> exited your office, you
+ponder on <<their $g.child>> request before going on with the rest of your day.
+</p>

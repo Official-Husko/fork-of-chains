@@ -1,0 +1,97 @@
+:: EventSetup_entertainer_dance [nobr event]
+
+<<run new setup.Event(
+'entertainer_dance', /* key */
+"Entertainer Dance", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_entertainer_dance',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_entertainer], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.hiringsquare),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_entertainer_dance [nobr]
+<p>
+<<Yourrep $g.slaver>> slaver|is known for having a beautiful voice, as well as expert dancing skills. Today, a small commotion is forming on the <<rep setup.buildingtemplate.hiringsquare>>, and <<rep $g.slaver>> slaver|is in the center of it. <<Therace $g.slaver>> slaver|is dancing and singing to celebrate the nice weather, and slaver|have gathered quite a crowd of both slavers and visitors around <<them $g.slaver>>.
+</p>
+
+<<if $g.slaver.isMale()>>
+  <<questimage 'entertainer_dance_male.jpg'>>
+<<else>>
+<</if>>
+
+<<choose>>
+
+<<opt "Just watch">>
+
+<p>
+<<if $g.slaver.isHasTrait('skill_entertain')>>
+<<Yourrep $g.slaver>> is a region-class entertainer, and you were captivated
+in no time at all. By the time the performance ended, almost the entire fort were gathered in the square. The performance was indeed very good, and you feel inspired just from watching it.
+
+<<run setup.qc.BoonizeRandom('you', 15).apply($gQuest)>>
+<<else>>
+While <<yourrep $g.slaver>> may not be a famous entertainer, <<they $g.slaver>> slaver|is still very good, and you were captivated in no time. By the time the performance ended, almost half of the entire fort were gathered in the square. The performance was indeed quite good, and you feel inspired just from watching it.
+
+<<run setup.qc.BoonizeRandom('you', 5).apply($gQuest)>>
+<</if>>
+</p>
+
+<<opt "Join <<them $g.slaver>>">>
+
+<p>
+You step into the center of the square, and <<yourrep $g.slaver>> slaver|stop temporarily, waiting for you to make your move.
+
+<<if $unit.player.isHasAnyTraitExact(['skill_entertain', 'bg_entertainer'])>>
+<<if $unit.player.isHasTrait('bg_entertainer')>>
+As a former entertainer yourself,
+<<run setup.qc.Money(5000).apply($gQuest)>>
+<<else>>
+You are no slouch when it comes to dancing or singing, and
+<<run setup.qc.Money(500).apply($gQuest)>>
+<</if>>
+you easily continue <<their $g.slaver>> performance. Soon the two of you were dancing and singing for the growing crowd. By the end of the performance, almost the entire fort were in attendance, and many threw in some tips for the both of you.
+
+<<if $unit.player.isHasTrait('bg_entertainer')>>
+In fact,
+given both your backgrounds,
+almost the entire fort were drawn to the
+dance.
+The few coins thrown as tip eventually accumulated, and by the end of the show you've
+amassed quite a fortune from the tips alone...
+<</if>>
+
+<<else>>
+But you're not a professional dancer, and despite your best efforts, you are no match for <<their $g.slaver>> skills in dancing. Still, <<they $g.slaver>> slaver|appreciate your gesture, and soon starting to guide you into the performance. Before long a larger crowd starts to gather around the two of you, and <<yourrep $g.slaver>> slaver|continue to expertly lead you along the performance until the end. While you may not have contributed much to it, you feel you've become closer with <<therace $g.slaver>> nonetheless.
+<</if>>
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', 100).apply($gQuest)>>
+
+<</choose>>

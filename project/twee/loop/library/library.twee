@@ -1,0 +1,55 @@
+:: Library [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.library)>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<<set _u = setup.getUnitRandom({job: setup.job.slaver, available: true})>>
+<<if Math.random() < 0.3>><<set _u = null>><</if>>
+
+<p>
+You enter the grand library of your fort.
+It is furnished full with books, whose origin you never actually know.
+The <<message 'map of the region'>>
+  <<worldmap>>
+<</message>> is framed on one of the walls.
+<<if _u && !_u.isYou()>>
+  <<Yourrep _u>> is here right now.
+  <<if _u.isHasTrait('per_studious')>>
+    Not really surprising given <<their _u>> diligent nature.
+  <<elseif _u.isHasTrait('per_curious')>>
+    The inquisitive slaver always enjoys a good read or two.
+  <<elseif _u.isHasTrait('per_smart')>>
+    No doubt <<their _u>> frequent trip to the library is contributing to <<their _u>>
+    intelligence.
+  <<elseif _u.isHasTrait('per_slow')>>
+    It seems that despite being a little slow, <<they _u>> is clearly trying to improve.
+  <<elseif _u.isHasTrait('per_active')>>
+    A surprising fact -- you have never known the active slaver to enjoy reading books.
+  <<elseif _u.isHasTrait('per_stubborn')>>
+    You sighed, knowing that sooner or later the stubborn slaver will give up reading the book and throw it away.
+  <<elseif _u.isHasTrait('per_evil')>>
+    <<They _u>>'s probably reading a book about world domination or two.
+  <<elseif _u.isHasTrait('per_dreamy')>>
+    From the drool coming from <<their _u>> <<umouth _u>>, the air-headed slaver
+    seems to be enjoying a good day-dream.
+  <<else>>
+    You walked quietly to try and not disturb the slaver's reading.
+  <</if>>
+<<else>>
+  Nobody is in the library right now.
+<</if>>
+  You pick an empty seat and begin to plan what you would like to read today.
+</p>
+
+<<set _forfilter = Object.values(setup.lore).filter(a => a.isVisible())>>
+
+<<filterall 'lore' _forfilter>>
+  <<if $menufilter.get('lore', 'display') == 'compact'>>
+    <<lorecardcompact _displayobj>>
+  <<else>>
+    <<lorecard _displayobj>>
+  <</if>>
+<</filterall>>

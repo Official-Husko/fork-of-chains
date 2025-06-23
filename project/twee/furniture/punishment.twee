@@ -1,0 +1,96 @@
+:: InitFurniturePunishment [nobr]
+
+<<run new setup.Furniture(
+  'f_punishment_none',
+  'nothing',
+  'Spanks for naughty slaves!', 
+  /* value = */ 0,
+  setup.furnitureslot.punishment,
+  ['basic'],
+  {},
+  {  /* texts */
+    bedchamber: "The slave will be continuously spanked until their rear form a delicious red. Perhaps you could buy a tool to make the job easier.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_punishment_normal',
+  'whip',
+  'A worn-out whip for inflicting discipline on slaves', 
+  /* value = */ setup.FURNITURE_PRICE_NORMAL,
+  setup.furnitureslot.punishment,
+  ['normal'],
+  {
+    slaving: setup.FURNITURE_SKILL_NORMAL,
+  },
+  {  /* texts */
+    ambience: [
+      "the a|rep is forgotten and not used for once",
+    ],
+    bedchamber: "Secured and tied, the slave will be mercilessly whipped until they learn from their mistake.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_punishment_good',
+  'cross',
+  'A large cross to secure your slaves for a good session of bondage', 
+  /* value = */ setup.FURNITURE_PRICE_GOOD,
+  setup.furnitureslot.punishment,
+  ['good'],
+  {
+    slaving: setup.FURNITURE_SKILL_GOOD,
+  },
+  {  /* texts */
+    ambience: [
+      "the a|rep watches over, as if remembering all the time slaves were tied up on it",
+    ],
+    bedchamber: "Secured on the cross, the slave will be tormented until they learn from their mistake.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_punishment_master',
+  'PLACEHOLDER punishment master title',
+  'PLACEHOLDER punishment master description',
+  /* value = */ setup.FURNITURE_PRICE_MASTER,
+  setup.furnitureslot.punishment,
+  ['master'],
+  {
+    slaving: setup.FURNITURE_SKILL_MASTER,
+  },
+  {  /* texts */
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_punishment_good_slaver',
+  'Fetters with Pulleys',
+  'A pulley contraption connected to a pair of fetters hanging from the ceiling, where slaves can be hanged upside down for punishment.', 
+  /* value = */ setup.FURNITURE_PRICE_GOOD,
+  setup.furnitureslot.punishment,
+  ['good', 'upsidedown'],
+  {
+    knowledge: 1,
+    slaving: setup.FURNITURE_SKILL_NORMAL,
+  },
+  {  /* texts */
+    ambience: [
+      "the fetters hanging from the ceiling makes a rattling noise as wind blew on the ropes connected to them",
+    ],
+    bedchamber: "The fetters are connected via a series of rope to a pulley down, and can be used to hang a slave upside-down from the ceiling.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_punishment_none_dungeons',
+  'ceiling restraints',
+  'A set of manacles hanging from the ceiling', 
+  /* value = */ 0,
+  setup.furnitureslot.punishment,
+  ['normal', 'upsidedown'],
+  {},
+  {  /* texts */
+    bedchamber: "",
+  },
+)>>

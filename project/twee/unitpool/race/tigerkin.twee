@@ -1,0 +1,148 @@
+:: InitUnitPoolRaceTigerkin [nobr unitpool]
+
+<<set _tigerkin = new setup.UnitPoolTraitAlloc(
+  {  /* trait preferences */
+
+    /* =========== */
+    /* RACE */
+    /* =========== */
+    subrace_tigerkin: 1,
+
+    /* =========== */
+    /* BACKGROUNDS */
+    /* =========== */
+
+    bg_mercenary: setup.POOL_BG_COMMON_1,
+    bg_monk: setup.POOL_BG_COMMON_1,
+
+    bg_hunter: setup.POOL_BG_COMMON_1,
+    bg_woodsman: setup.POOL_BG_COMMON_1,
+    bg_soldier: setup.POOL_BG_COMMON_1,
+
+    bg_adventurer: setup.POOL_BG_RARE_3,
+    bg_assassin: setup.POOL_BG_RARE_3,
+    bg_metalworker: setup.POOL_BG_RARE_3,
+    bg_mystic: setup.POOL_BG_RARE_3,
+    bg_wildman: setup.POOL_BG_RARE_3,
+
+    bg_apprentice: setup.POOL_BG_RARE_3,
+    bg_artisan: setup.POOL_BG_RARE_3,
+    bg_artist: setup.POOL_BG_RARE_3,
+    bg_nomad: setup.POOL_BG_RARE_3,
+    bg_merchant: setup.POOL_BG_RARE_3,
+    bg_thug: setup.POOL_BG_RARE_3,
+
+    bg_entertainer: setup.POOL_BG_RARE_3,
+    bg_farmer: setup.POOL_BG_RARE_3,
+    bg_foodworker: setup.POOL_BG_RARE_3,
+    bg_laborer: setup.POOL_BG_RARE_3,
+    bg_maid: setup.POOL_BG_RARE_3,
+    bg_whore: setup.POOL_BG_RARE_3,
+
+    bg_unemployed: setup.POOL_BG_LEGENDARY_5,
+    bg_slave: setup.POOL_BG_LEGENDARY_5,
+
+    bg_courtesan: setup.POOL_BG_LEGENDARY_5,
+    bg_informer: setup.POOL_BG_LEGENDARY_5,
+    bg_noble: setup.POOL_BG_LEGENDARY_5,
+    bg_knight: setup.POOL_BG_LEGENDARY_5,
+    bg_scholar: setup.POOL_BG_LEGENDARY_5,
+
+    bg_priest: setup.POOL_BG_LEGENDARY_5,
+    bg_slaver: setup.POOL_BG_LEGENDARY_5,
+
+    bg_clerk: setup.POOL_BG_LEGENDARY_5,
+    bg_seaman: setup.POOL_BG_LEGENDARY_5,
+    bg_thief: setup.POOL_BG_LEGENDARY_5,
+
+    bg_engineer: setup.POOL_BG_MYTHIC_6,
+    bg_healer: setup.POOL_BG_MYTHIC_6,
+
+    bg_wiseman: setup.POOL_BG_MYTHIC_6,
+
+    bg_pirate: setup.POOL_BG_MYTHIC_6,
+    bg_raider: setup.POOL_BG_MYTHIC_6,
+
+    bg_royal: setup.POOL_BG_ULTRA_7,
+
+    bg_mist: setup.POOL_BG_FINAL_8,
+    bg_boss: setup.POOL_BG_FINAL_8,
+
+    bg_mythical: 0,
+
+    /* =========== */
+    /* PERSONALITY */
+    /* =========== */
+
+    per_dominant: setup.POOL_PER_UNCOMMON_2,
+    per_proud: setup.POOL_PER_UNCOMMON_2,
+
+    per_active: setup.POOL_PER_RARE_3,
+    per_playful: setup.POOL_PER_RARE_3,
+    per_lustful: setup.POOL_PER_RARE_3,
+
+    /* =========== */
+    /* MAGIC */
+    /* =========== */
+
+    skill_ambidextrous: 0.2,
+    magic_earth: 0.1,
+    magic_earth_master: 0.01,
+
+    /* =========== */
+    /* PHYSICAL */
+    /* =========== */
+
+    muscle_strong: 0.1,
+    muscle_verystrong: 0.05,
+    muscle_extremelystrong: 0.01,
+
+    dick_huge: 0.1,
+    dick_titanic: 0.01,
+
+    balls_huge: 0.1,
+    balls_titanic: 0.01,
+
+    breast_huge: 0.1,
+    breast_titanic: 0.01,
+
+    tough_nimble: 0.2,
+
+    /* =========== */
+    /* SKIN */
+    /* =========== */
+
+    eyes_neko: 0.9,
+    ears_neko: 1.0,
+    tail_neko: 1.0,
+    arms_neko: 1.0,
+    body_neko: 1.0,
+    legs_neko: 1.0,
+    mouth_neko: 1.0,
+
+  },
+  {  /* trait dispreferences */
+    magic_wind: 5.0,
+    magic_wind_master: 5.0,
+  },
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_tigerkin_male',
+    'Tigerkin Male',
+    _tigerkin.computePreferences(setup.trait.gender_male),
+    setup.DEFAULT_INITIAL_SKILLS,
+    [  /* post process */
+    ],
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_tigerkin_female',
+    'Tigerkin Female',
+    _tigerkin.computePreferences(setup.trait.gender_female),
+    setup.DEFAULT_INITIAL_SKILLS,
+    [  /* post process */
+    ],
+)>>

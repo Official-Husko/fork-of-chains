@@ -1,0 +1,100 @@
+:: QuestSetupUnitTrainingSissyMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_sissy_master',  /* id */
+  'Sissy Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingSissyMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingSissyMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_sissy_master),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingSissyMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_sissy_master),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingSissyMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingSissyMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_sissy_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingSissyMaster [nobr]
+<p>
+The final training will irrevocably transform the slave into what is
+effectively a girl at every aspect but the biology.
+Let it be outward appearance, demeanor, even sexual preference.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingSissyMasterCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_sissy_master_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into an elite sissy
+has been completed.
+</p>
+
+:: QuestUnitTrainingSissyMasterSuccess [nobr]
+<p>
+It is done. <<Reps $g.trainee>> transformation into an elite sissy
+has been completed. <<Reps $g.trainee>> dick is now a simple decoration on their body,
+forgotten and never to be used again.
+</p>
+
+:: QuestUnitTrainingSissyMasterFailure [nobr]
+<p>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into the ultimate sissy.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingSissyMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

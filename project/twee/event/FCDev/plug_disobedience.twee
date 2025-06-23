@@ -1,0 +1,99 @@
+:: EventSetup_plug_disobedience [nobr event]
+
+<<run new setup.Event(
+'plug_disobedience', /* key */
+"Plug Disobedience", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_plug_disobedience',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.eq_plug_anus], true),
+    setup.qres.AnyTrait([setup.trait.training_obedience_basic, setup.trait.training_none], true),
+    setup.qres.NoTraits([setup.trait.anus_gape], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_plug_disobedience [nobr]
+<<set _eq = $g.slave.getEquipmentAt('rear')>>
+<<if _eq>>
+<<set _plug = _eq.rep()>>
+<<else>>
+<<set _plug = 'buttplug'>>
+<</if>>
+
+<p>
+One morning, you see <<yourrep $g.slave>> <<if !$g.slave.isCanWalk()>>crawls
+<<else>>
+walks<</if>>
+hurriedly past you, as though <<they $g.slave>> doesn't want you to notice <<them $g.slave>>. Of course, this only makes you notice <<them $g.slave>>, and you order <<them $g.slave>> to your attention. As <<they $g.slave>> reluctantly obeys, you notice something off about <<their $g.slave>> gait. <<They $g.slave>> should be quite uncomfortable from the
+<<= _plug>>
+<<they $g.slave>> is required to wear, but <<they $g.slave>> doesn't seem to be.
+</p>
+<p>
+Your order <<them $g.slave>> to turn around and present <<their $g.slave>> anus for inspection. <<They $g.slave>> doesn't refuse, exactly, but neither does <<they $g.slave>> obey. <<They $g.slave>> keeps <<their $g.slave>> butt pointed resolutely away from you, and backs away a little. You cover the distance between you in three steps and run a clinical hand between the terrified slave's buttocks. As you suspected, <<they $g.slave>> isn't wearing <<their $g.slave>>
+<<= _plug>>. <<if !$g.slave.isCanTalk()>><<They $g.slave>> gestures pitifully, complaining that the plug hurts.<<else>><<They $g.slave>> whines pitifully, "That thing hurts, <<Master $unit.player>>. It's too big for my asshole. Please don't make me wear it."<</if>>
+</p>
+
+<<choose>>
+
+<<opt "It's <<their $g.slave>> role to hurt">>
+
+<p>
+Without a word, you<<if !$unit.player.isHasDick()>> don a cruelly knobby strap-on,<</if>> throw <<them $g.slave>> onto the <<uslaverbed $g.slave>>, take both <<their $g.slave>> ankles in one <<uhand $unit.player>>, and force them back over <<their $g.slave>> head so <<their $g.slave>> poor, doomed asshole is completely defenseless. You then spit on <<their $g.slave>> hole, seize your <<if !$unit.player.isHasDick()>>instrument<<else>>rock-hard dick<</if>>, and shove it up the wriggling slave <<girl $g.slave>>'s spasming rectum.
+You've got the necessary skill to judge exactly where the line between anal pain and anal injury is, and you take <<them $g.slave>> right up to it.
+Halfway through the long anal rape, <<they $g.slave>> gives up struggling and just goes limp, sobbing. <<They $g.slave>> fears you quite a bit now.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<<opt "Punish <<them $g.slave>> for disobedience, but address <<their $g.slave>> anal pain">>
+
+<<set _eq = $g.slave.getEquipmentAt('rear')>>
+<<if _eq>>
+<<set _plug = _eq.rep()>>
+<<else>>
+<<set _plug = 'buttplug'>>
+<</if>>
+
+<p>
+You <<uadv $unit.player>> explain to <<them $g.slave>> that disobeying orders isn't acceptable, but that too much pain from <<their $g.slave>> <<= _plug>> is a sign that something isn't right. First, you inform <<them $g.slave>>, <<they $g.slave>> will have to be punished for the disobedience, since <<they $g.slave>> should have brought <<their $g.slave>> trouble to you instead of disobeying. <<They $g.slave>>'s almost willing as you bend <<them $g.slave>> over the <<uslaverbed $g.slave>> and spank <<their $g.slave>> buttocks severely, unsure whether to resent the corporal punishment or appreciate your measured response. When you're done tanning <<their $g.slave>> ass, <<they $g.slave>>'s surprised to feel a cool, lubricated digit working its way into <<their $g.slave>> anus. <<They $g.slave>> stiffens a little but eventually relaxes enough to take the finger, then two, and finally three, before you gently and slowly emplace <<their $g.slave>> <<= _plug>>. You instruct <<them $g.slave>> <<uadv $unit.player>> on how to relax in the future when <<they $g.slave>> inserts it on <<their $g.slave>> own.
+</p>
+
+<<opt "Address <<their $g.slave>> worrisome anal pain">>
+
+<<set _eq = $g.slave.getEquipmentAt('rear')>>
+<<if _eq>>
+<<set _plug = _eq.rep()>>
+<<else>>
+<<set _plug = 'buttplug'>>
+<</if>>
+
+<p>
+You <<uadv $unit.player>> explain how to relax and prepare one's asshole for such insertions. <<They $g.slave>>'s been told already, but you make <<them $g.slave>> fetch <<their $g.slave>> <<= _plug>> and go through the steps in front of you so you can check <<their $g.slave>> approach. <<They $g.slave>> leaves reminded how to wear <<their $g.slave>> <<= _plug>>, but secretly relieved <<they $g.slave>> got away with disobedience with nothing more than a lecture.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<</choose>>

@@ -1,0 +1,53 @@
+:: EventSetup_room_mate [nobr event]
+
+<<run new setup.UnitGroup(
+"room_mate0",
+"Doppelganger",
+'subrace_humandesert', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_wildman),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.skill_animal, setup.trait.magic_water_master], 1, false, false),
+],
+)>>
+
+<<run new setup.Event(
+'room_mate', /* key */
+"Room Mate", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_room_mate',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.HasTag('quest_doppelganged'),
+  ],
+  'dop': 'room_mate0',
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 15),
+  setup.qc.QuestDirect('room_mate', {
+dop: "dop",
+slaver: "slaver",
+}),
+],
+[ /* restrictions */
+  setup.qres.NoQuest('room_mate'),
+  setup.qres.NoOpportunity('room_mate'),
+  setup.qres.VarEqual('quest_doppelganger_progress', '2'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_room_mate [nobr]
+<<include "Quest_room_mate">>

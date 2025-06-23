@@ -1,0 +1,151 @@
+:: EventSetup_penitent [nobr event]
+
+<<run new setup.Event(
+'penitent', /* key */
+"Penitent", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_penitent',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.training_obedience_basic, setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+    setup.qres.AnyTrait([setup.trait.bg_priest], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.hiringsquare),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_penitent [nobr]
+<p>
+    <<Yourrep $g.slave>> has been trained for some time now as your personal sex slave and fucktoy. Looking at <<their $g.slave>> slutty self now, it is quite hard to imagine that the <<urace $g.slave>> was once a
+    <<if $g.slave.isHasTrait('per_honorable')>>
+        pious
+    <<elseif $g.slave.isHasTrait('per_evil')>>
+        (probably un-)
+    <</if>>
+    holy <<woman $g.slave>>.
+    Among their many duties in the past must have been hearing confessions.
+    <<if $g.you.isHasTrait('per_serious')>>
+        Wanting to seriously check on <<their $g.slave>> discipline,
+    <<else>>
+        Feeling a little playful yourself,
+    <</if>>
+    today you
+    require <<them $g.slave>> to tell the full tale of all <<their $g.slave>> minor infractions against the rules, and even order <<them $g.slave>> to confess <<their $g.slave>> resistant thoughts to you as well.
+    Trained past the ability to resist, <<they $g.slave>> pours out a stream of <<their $g.slave>> inner fears, hopes, and feelings about <<their $g.slave>> life as a sex slave.
+</p>
+
+<<choose>>
+
+<<optif !$settings.bannedtags.gore>>
+<<opt "Require <<them $g.slave>>
+    to self-flagellate">>
+
+    <p>
+        You tell <<them $g.slave>> that you will offer <<them $g.slave>> a method of expiating <<their $g.slave>> deep and troubling sin. <<They $g.slave>> looks almost hopeful at this, until you lead <<them $g.slave>> out onto
+        the <<rep setup.buildingtemplate.hiringsquare>>
+        and order <<them $g.slave>> to strip before handing <<them $g.slave>> a
+        <<if $g.slave.isHasTrait('body_dragonkin')>>
+            cruel looking flail, enough to pierce <<their $g.slave>> thick scales.
+            <<set _weapon = 'flail'>>
+        <<else>>
+            simple length of hempen rope.
+            <<set _weapon = 'rope'>>
+        <</if>>
+        <<They $g.slave>> already knows what's coming next, but <<they $g.slave>> breaks down as <<they $g.slave>> obeys your orders to kneel.
+        <<They $g.slave>> sobs abjectly, but you don't even have to give the next order:
+        <<they $g.slave>>'s already flogging the <<= _weapon>> against <<their $g.slave>> own back in the hope of earning a reprieve by obedience.
+    </p>
+
+    <p>
+        You count the strokes aloud, stopping at one in disapproval of how light <<they $g.slave>>'s hitting <<themself $g.slave>>. <<They $g.slave>> flogs <<themself $g.slave>> harder and harder, screaming a little in pain and fear as you obstinately refuse to say "two."
+        <<if $g.slave.isMasochistic()>>
+            Despite the screaming, however, it was quite obvious that the masochist derive great pleasure from the abuse:
+            <<if $g.slave.isHasDick()>>
+                <<if $g.slave.isInChastity()>>
+                    <<their $g.slave>> dick painfully pressing against <<their $g.slave>> tight cage, unable to get hard.
+                <<else>>
+                    <<their $g.slave>> dick painfully erect under the scene.
+                <</if>>
+            <<else>>
+                <<their $g.slave>> body visibly flushing from arousal.
+            <</if>>
+        <</if>>
+        When <<they $g.slave>> strikes so hard that <<they $g.slave>> draws a little blood, you finally say the terrible word.
+        <<if $g.slave.isCanOrgasm()>>
+            <<They $g.slave>> climaxed twiced during the ordeal.
+        <</if>>
+        When you're finally satisfied with <<their $g.slave>> self-torture, <<they $g.slave>>'s so exhausted that you carry <<their $g.slave>> limp, bloody
+        <<if !$settings.bannedtags.watersport>>
+            , vaguely urine-scented
+        <</if>>
+        form into the shower, wash <<them $g.slave>>, and apply basic healing magic, though <<they $g.slave>>'s still quite injured.
+        <<if $g.slave.isMasochistic()>>
+            Judging from the delirious smile on <<their $g.slave>> face, however, <<they $g.slave>> must have enjoyed the punishment far too much to your liking. Such is the burden of a masochist slave owner.
+            <<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+        <<else>>
+            Later, <<they $g.slave>> wakes to find <<themself $g.slave>>
+            <<if $g.you.isHasTrait('per_cruel')>>
+                locked back inside <<their $g.slave>> cage, no doubt a product of your cruelty. <<They $g.slave>> weep softly alone inside <<their $g.slave>> cramped abode.
+            <<else>>
+                curled up in your lap, and <<they $g.slave>> stiffens for a brief moment before relaxing against your chest, weeping softly.
+            <</if>>
+            <<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+        <</if>>
+    </p>
+
+<<opt "Sodomize <<them $g.slave>>
+    while <<they $g.slave>> prays">>
+
+    <p>
+        <<Rep $g.slave>> finds <<themself $g.slave>> standing in front of you, feeling you roughly probe <<their $g.slave>> ass with two fingers. <<They $g.slave>> gasps out: Oh, <<Master $g.you>>,
+        owner and protector,
+        forgive my sins, just as you forgave my
+        <<if $g.slave.isFemale()>>
+            sisters
+        <<else>>
+            brothers
+        <</if>>
+        in slavery before me.
+        Count not my transgressions against your rules, but, rather, my tears of anal service. Remember not my iniquities but my willingness to be assraped by you. I long to serve your
+        <<if !$unit.player.isHasDick()>>
+            pussy
+        <<else>>
+            dick
+        <</if>>
+        , and beg that you will use me and make your dwelling place within my butthole. I promise to submit to you as your anal slut all the days of my servitude."
+    </p>
+
+    <p>
+        <<They $g.slave>> moans with relief when <<they $g.slave>> feels you withdraw your penetrating digits partway through <<their $g.slave>> recitation, but by the time <<they $g.slave>>'s finished, you've shoved
+        <<if !$unit.player.isHasDick()>>
+            a strap-on
+        <<else>>
+            your dick
+        <</if>>
+        up <<their $g.slave>> loosened ass.
+        <<They $g.slave>> does <<their $g.slave>> best to relax and resumes, "Oh <<Master $unit.player>>..."
+    </p>
+
+<</choose>>

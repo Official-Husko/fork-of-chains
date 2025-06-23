@@ -1,0 +1,232 @@
+:: QuestSetup_fertility_rite [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaphallus = new setup.UnitCriteria(
+null, /* key */
+'Holy Phallus', /* name */
+[
+  setup.trait.bg_whore,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dreamy,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.balls_large,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.subrace_humanvale,
+],
+[
+  setup.trait.balls_tiny,
+  setup.trait.dick_tiny,
+  setup.trait.per_chaste,
+  setup.trait.per_attentive,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.per_loner,
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.skill_intimidating,
+  setup.trait.dick_small,
+  setup.trait.balls_small,
+  setup.trait.race_elf,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTraits([setup.trait.race_wolfkin, setup.trait.race_catkin, setup.trait.race_greenskin, setup.trait.race_lizardkin, setup.trait.race_demon], true),
+  setup.qres.Trait(setup.trait.dick_tiny),
+],
+{
+  sex: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'fertility_rite', /* key */
+"Fertility Rite", /* Title */
+{ /* Author */
+  name: "Blueflame451",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/l8wjjj/northern_vale_quest_fertility_rite_my_first/',
+},
+[ /* tags */
+  'vale',
+  'money',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'biologist': [ setup.qu.biologist, 1],
+  'phallus': [ _criteriaphallus, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+  'client': 'subrace_humanvale',
+  'shepherd': 'subrace_humanvale',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-500),
+],
+'Quest_fertility_rite',
+setup.qdiff.easy13, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_fertility_riteCrit',
+    [
+      setup.qc.MoneyCrit(),
+      setup.qc.Favor('humanvale', 25),
+    ],
+  ],
+  [
+    'Quest_fertility_riteCrit',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.Favor('humanvale', 25),
+    ],
+  ],
+  [
+    'Quest_fertility_riteFailure',
+    [
+      setup.qc.MoneyNormal(0.5),
+    ],
+  ],
+  [
+    'Quest_fertility_riteDisaster',
+    [
+      setup.qc.Ire('humanvale', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.HasSlaverWithTraits([setup.trait.dick_tiny]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_fertility_rite [nobr]
+
+<p>
+There does not seem to be any end to the superstitious beliefs of the folk of the <<lore region_vale>>. 
+Were one be creative enough,
+there are actually plenty of opportunities from using these beliefs for some fun and profit.
+If you think your enterprising company is up for the task, then read on...
+</p>
+
+<p>
+Among these beliefs, there is a tale of an old fertility rituals,
+said to bestow blessings onto the land, livestock and the wombs of people.
+With a small investment to secure the right garb and paraphernalia you might be able convince the simple northerners to partake in your earthy and sexual fertility rites.
+Of course a slaver that understands the workings of the fields and livestocks is good.
+If they know alchemy or actual Earth magic, then that's even better.
+You'll also need a (lucky) slaver with a ready cock, or “holy phallus,” to be worshiped, and a reliable guard to collect and protect the tribute these gullible folk would no doubt pay for your slaver's holy services.
+</p>
+
+
+
+:: Quest_fertility_riteCrit [nobr]
+<p>
+Donning their new robes, setting out the ritual accoutrements, and pitching their tent on a hill overlooking a village, your slavers are ready to hold their "holy" sex rites.
+<<Rep $g.guard>> <<uadv $g.guard>> invited the people of the nearby village to come receive the sacred fertility blessing.
+</p>
+
+<<set _shepherdess = 'shepherd'>>
+<<if $g.shepherd.isFemale()>> <<set _shepherdess = 'shepherdess'>>
+<</if>>
+
+<p>
+The first visitor was a timid <<= _shepherdess>> hoping to hear prayers for the nannies of
+<<their $g.shepherd>> flock. While <<rep $g.biologist>> administered to the goats, the
+<<= _shepherdess>> was told to enter into the tent where <<rep $g.phallus>> lied in wait.
+There, <<they $g.shepherd>> knelt in "prayer" with the assistance of <<yourrep $g.phallus>>,
+who <<uadv $g.phallus>> convinced the <<= _shepherdess>> to worship <<their $g.phallus>> <<udick $g.phallus>> as part of the ritual.
+
+<<if $g.phallus.isHasTrait('dick_titanic')>>
+  The titanic dick was so very large, easily hypnotizing the <<= _shepherdess>>.
+<<elseif $g.phallus.isHasTrait('dick_huge')>>
+  The huge dick was so very, almost hypnotizing the <<= _shepherdess>>.
+<<elseif $g.phallus.isHasTraitExact('dick_small')>>
+  The tiny dick was so unnaturally small, poking the curiosity of the innocent <<= _shepherdess>>.
+<</if>>
+
+A long while later, after many smooching noises the blushing <<= _shepherdess>> exited the tent, face red, before collecting <<their $g.shepherd>> flock and leaving.
+However it was with a secret smile that <<they $g.shepherd>> praised the sacred ritual to <<their $g.shepherd>> interested neighbors and soon the fertility blessings were much sought after,
+for <<they $g.shepherd>> was much impressed by <<reps $g.phallus>> <<upraisenoun $g.phallus>> (and also <<their $g.phallus>> <<uballs $g.phallus>>).
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+In the coming days many <<women $g.shepherd>> from the village, including
+<<if $g.shepherd.isFemale()>>
+wives, widows, and daughters,
+<<else>>
+husbands, widowers, and sons,
+<</if>>
+came to receive their blessings, all eagerly slobbering or bouncing on <<rep $g.phallus>> <<udick $g.phallus>>,
+<<if $g.phallus.isHasTrait('per_chaste')>>
+much to the embarrassment of the chaste slaver.
+<<elseif $g.phallus.isHasTrait('per_lustful')>>
+to the great delight of the lustful slaver.
+<<else>>
+earning your slavers a lot of coins.
+<</if>>
+Of course <<rep $g.biologist>> stayed busy offering good advice on how to care for the "newly blessed" fields, livestock, or bodies, but many attendees seemed more interested in <<reps $g.phallus>> "holy rites". Some even returned to beg for additional blessings!
+</p>
+
+<p>
+<<Rep $g.guard>> collected and secured all the generous tributes in the trusty strongbox for their eventual return to the <<rep $company.player>>.
+</p>
+
+<<else>>
+
+<p>
+Your slavers made a tidy profit exploiting these poor people seeking the holy blessing.
+<<Rep $g.phallus>> <<uadv $g.phallus>> enticed many villager to worship <<their $g.phallus>> <<udick $g.phallus>>, while <<rep $g.biologist>> made sure to give actual advice on how to care their "newly blessed" fields, livestock, or bodies.
+</p>
+
+<p>
+Overall the venture is a complete success, with your slavers bagging quite a heavy bag of gold.
+</p>
+
+<</if>>
+
+
+:: Quest_fertility_riteFailure [nobr]
+
+<p>
+Unfortunately, for one reason or another the scheme just did not draw the worshippers your
+slavers were hoping for.
+Except for that one <<man $g.shepherd>> who kept coming back for more,
+the rest of the villagers never become excited for the service.
+Many that did come seeking blessing remain unconvinced and skeptical.
+The amount of tithe suffered as a result, and
+your slavers only managed to bring in a portion of the expected profit.
+</p>
+
+
+:: Quest_fertility_riteDisaster [nobr]
+
+<p>
+In the mission, your slavers learned the hard way that
+not every village in the <<lore region_vale>> is full of superstitious simpletons.
+The particular village they were trying to dupe
+didn't like <<rep $g.phallus>> <<uadjbad $g.phallus>> take on holy prayer.
+In fact, the moment <<their $g.phallus>> <<udick $g.phallus>> came out from under <<their $g.phallus>> robe, it was all over...
+</p>
+
+<p>
+The angry villagers tore your slavers' robes off their backs and trampled on the ritual tent.
+While the team's guard <<rep $g.guard>> guard|was able to make sure everyone got away from the mob in one piece, there was no way to recoup the material cost spent on this venture.
+</p>
+

@@ -1,0 +1,128 @@
+:: QuestSetupValeWerewolfCampRaid [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'vale_werewolf_camp_raid', /* key */
+  'Raid: Werewolf Camp', /* Title */
+  'darko',   /* author */
+  ['furry', 'vale', 'unit', 'ire',],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'raider1': setup.qu.raider,
+    'raider2': setup.qu.raider,
+    'support': setup.qu.raidersupport,
+  },
+  { /* actors */
+    'unit': 'subrace_humanvale',
+  },
+  [ /* costs */
+  ],
+  'QuestValeWerewolfCampRaid', /* passage description */
+  setup.qdiff.normal13, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestValeWerewolfCampRaidCrit',
+      [
+        setup.qc.Slave(
+          'unit',
+          'a|was a traveler first captured by the werewolves, and now captured by your company'),
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humanvale', 25),
+        setup.qc.Ire('werewolf', 1),
+      ],
+    ],
+    [
+      'QuestValeWerewolfCampRaidCrit',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humanvale', 25),
+        setup.qc.Ire('werewolf', 1),
+      ],
+    ],
+    [
+      'QuestValeWerewolfCampRaidFailure',
+      [
+        setup.qc.Injury('raider1', 1),
+        setup.qc.Injury('raider2', 1),
+      ],
+    ],
+    [
+      'QuestValeWerewolfCampRaidDisaster',
+      [
+        setup.qc.Injury('raider1', 2),
+        setup.qc.Injury('raider2', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.uncommon],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestValeWerewolfCampRaid [nobr]
+
+<p>
+  While the northerners are the most numerous race in the <<lore region_vale>>,
+  they are not the only humanlike species that call the vast open plains their home.
+  The werewolves also share territory with them,
+  although the werewolves tend to occupy the colder, northernmost regions of the vale.
+</p>
+
+<p>
+  You have heard legends of the werewolves' main camp and its impenetrable walls.
+  But while assaulting the main camp sounds impossible, there are many smaller
+  outposts for the werewolf clan on the outskirts of their territory.
+  The werewolves can rest and store their slaves in these encampments between the raids
+  they launch.
+  You could try to send a group of slavers to assault one of these encampments --
+  these outposts are usually very lightly guarded and it should pose no problem
+  for your slavers.
+  Who knows, maybe the werewolves' fresh captures would be better under the tender care of your company.
+</p>
+
+
+:: QuestValeWerewolfCampRaidCrit [nobr]
+
+<p>
+  Your slavers were very lucky.
+  The camp was nearly empty when they arrived --
+  it seemed that the werewolves were out there busy hunting for more captures.
+  <<Rep $g.raider1>> and <<utheirrel $g.raider1 $g.raider2>> <<rep $g.raider2>> <<uadv $g.raider1>>
+  ransacked through the entire place, taking all the valuables with them.
+
+  <<if $gOutcome == 'crit'>>
+  Most importantly, your slavers also found a naked and fully tied up <<urace $g.unit>> inside one of the camps,
+  freshly caught from the vale.
+  <<if $g.raider1.isHasTrait('per_lustful')>>
+  Uncharacteristically, <<yourrep $g.raider1>> managed to resist <<their $g.raider1>> lustful desires and
+  <<else>>
+  In a surprise twist, <<yourrep $g.raider1>> somehow
+  <</if>>
+  resisted raping the struggling slave,
+  giving your slavers enough time to escape the encampment before the werewolves returned.
+  <<else>>.
+  There was no slave to be found though, perhaps this camp was actually already abandoned and the werewolves
+  had moved to another camp?
+  <</if>>
+
+</p>
+
+
+
+:: QuestValeWerewolfCampRaidFailure [nobr]
+
+<p>
+Unfortunately, your slavers did not manage to locate the werewolf camp among the vast
+snowy fields of the north. Better luck next time.
+</p>
+
+
+:: QuestValeWerewolfCampRaidDisaster [nobr]
+
+<p>
+Your slavers found the camp empty and looking abandoned. Just when they counted their luck,
+they were ambushed by werewolves who were lying in wait to ambush looters like your slavers.
+While your slavers managed to escape, they sustained heavy injuries.
+</p>

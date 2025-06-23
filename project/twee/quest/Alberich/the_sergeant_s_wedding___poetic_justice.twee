@@ -1,0 +1,565 @@
+:: QuestSetup_the_sergeant_s_wedding___poetic_justice [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriamarriagebroker = new setup.UnitCriteria(
+null, /* key */
+'Marriage Broker', /* name */
+[
+setup.trait.subrace_humankingdom,
+setup.trait.bg_noble,
+setup.trait.bg_royal,
+setup.trait.per_sly,
+setup.trait.per_cautious,
+setup.trait.per_studious,
+setup.trait.per_logical,
+setup.trait.per_curious,
+setup.trait.per_calm,
+setup.trait.skill_connected,
+setup.trait.bg_merchant,
+],
+[
+setup.trait.bg_farmer,
+setup.trait.bg_pirate,
+setup.trait.bg_laborer,
+setup.trait.bg_wildman,
+setup.trait.bg_raider,
+setup.trait.bg_foodworker,
+setup.trait.per_direct,
+setup.trait.per_honorable,
+setup.trait.per_lavish,
+setup.trait.per_kind,
+setup.trait.corrupted,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.TraitExact(setup.trait.gender_male),
+setup.qres.AnyTrait([setup.trait.race_human], true),
+setup.qres.AnyTrait([setup.trait.eq_valuable, setup.trait.eq_veryvaluable], true),
+setup.qres.NoTrait(setup.trait.eq_gagged),
+setup.qres.NoTrait(setup.trait.eq_blind),
+setup.qres.NoTrait(setup.trait.eq_collar),
+setup.qres.NoTrait(setup.trait.eq_restrained),
+setup.qres.NoTrait(setup.trait.eq_pony),
+setup.qres.NoTrait(setup.trait.eq_pet),
+setup.qres.NoTrait(setup.trait.corruptedfull),
+],
+{
+intrigue: 1,
+social: 2,
+}
+)>>
+
+<<set _criterialadyinwaiting = new setup.UnitCriteria(
+null, /* key */
+'Lady-in-Waiting', /* name */
+[
+setup.trait.subrace_humankingdom,
+setup.trait.bg_noble,
+setup.trait.bg_royal,
+setup.trait.per_calm,
+setup.trait.per_cautious,
+setup.trait.per_sly,
+setup.trait.per_stubborn,
+setup.trait.per_studious,
+setup.trait.skill_connected,
+setup.trait.per_serious,
+],
+[
+setup.trait.subrace_humanvale,
+setup.trait.subrace_humandesert,
+setup.trait.subrace_humansea,
+setup.trait.bg_farmer,
+setup.trait.bg_pirate,
+setup.trait.bg_hunter,
+setup.trait.bg_laborer,
+setup.trait.bg_merchant,
+setup.trait.bg_wildman,
+setup.trait.bg_raider,
+setup.trait.bg_foodworker,
+setup.trait.bg_slaver,
+setup.trait.bg_artisan,
+setup.trait.bg_seaman,
+setup.trait.bg_unemployed,
+setup.trait.bg_woodsman,
+setup.trait.bg_clerk,
+setup.trait.bg_thug,
+setup.trait.bg_maid,
+setup.trait.corrupted,
+setup.trait.per_direct,
+setup.trait.per_honorable,
+setup.trait.eq_plug_anus,
+setup.trait.eq_plug_vagina,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.TraitExact(setup.trait.gender_female),
+setup.qres.AnyTrait([setup.trait.race_human], true),
+setup.qres.AnyTrait([setup.trait.eq_valuable, setup.trait.eq_veryvaluable], true),
+setup.qres.NoTrait(setup.trait.corruptedfull),
+setup.qres.NoTrait(setup.trait.skill_flight),
+setup.qres.NoTrait(setup.trait.eq_gagged),
+setup.qres.NoTrait(setup.trait.eq_blind),
+setup.qres.NoTrait(setup.trait.eq_collar),
+setup.qres.NoTrait(setup.trait.eq_restrained),
+setup.qres.NoTrait(setup.trait.eq_pony),
+setup.qres.NoTrait(setup.trait.eq_pet),
+setup.qres.NoTrait(setup.trait.eq_slutty),
+setup.qres.NoTrait(setup.trait.eq_veryslutty),
+],
+{
+intrigue: 2,
+social: 1,
+}
+)>>
+
+<<set _criteriavirtuedefender = new setup.UnitCriteria(
+null, /* key */
+"Defender of the Bride's Virtue", /* name */
+[
+setup.trait.bg_knight,
+setup.trait.per_chaste,
+setup.trait.bg_noble,
+setup.trait.bg_royal,
+setup.trait.bg_soldier,
+setup.trait.per_aggressive,
+setup.trait.per_brave,
+setup.trait.per_loyal,
+setup.trait.per_stubborn,
+setup.trait.skill_connected,
+],
+[
+setup.trait.bg_raider,
+setup.trait.bg_farmer,
+setup.trait.bg_slave,
+setup.trait.bg_pirate,
+setup.trait.bg_hunter,
+setup.trait.bg_laborer,
+setup.trait.bg_wildman,
+setup.trait.bg_foodworker,
+setup.trait.bg_slaver,
+setup.trait.bg_unemployed,
+setup.trait.bg_artisan,
+setup.trait.bg_seaman,
+setup.trait.bg_woodsman,
+setup.trait.bg_clerk,
+setup.trait.bg_thug,
+setup.trait.bg_maid,
+
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.AnyTrait([setup.trait.race_human], true),
+setup.qres.Trait(setup.trait.gender_male),
+setup.qres.AnyTrait([setup.trait.eq_valuable, setup.trait.eq_veryvaluable], true),
+setup.qres.NoTrait(setup.trait.eq_slutty),
+setup.qres.NoTrait(setup.trait.eq_veryslutty),
+setup.qres.NoTrait(setup.trait.corruptedfull),
+setup.qres.NoTrait(setup.trait.skill_flight),
+setup.qres.NoTrait(setup.trait.eq_gagged),
+setup.qres.NoTrait(setup.trait.eq_blind),
+setup.qres.NoTrait(setup.trait.eq_collar),
+setup.qres.NoTrait(setup.trait.eq_restrained),
+setup.qres.NoTrait(setup.trait.eq_pony),
+setup.qres.NoTrait(setup.trait.eq_pet),
+],
+{
+combat: 2,
+brawn: 1,
+}
+)>>
+
+<<set _criteriablushingbride = new setup.UnitCriteria(
+null, /* key */
+'Blushing Bride', /* name */
+[
+setup.trait.subrace_humankingdom,
+setup.trait.bg_noble,
+setup.trait.bg_royal,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_sly,
+setup.trait.skill_connected,
+setup.trait.per_dominant,
+setup.trait.per_evil,
+setup.trait.per_cruel,
+setup.trait.per_lunatic,
+setup.trait.per_cruel,
+setup.trait.per_proud,
+setup.trait.per_stubborn,
+setup.trait.per_aggressive,
+setup.trait.training_oral_basic,
+setup.trait.training_oral_advanced,
+setup.trait.training_oral_master,
+setup.trait.training_anal_basic,
+setup.trait.training_anal_advanced,
+setup.trait.training_anal_master,
+setup.trait.training_dominance_basic,
+setup.trait.training_dominance_advanced,
+setup.trait.training_dominance_master,
+setup.trait.training_masochist_basic,
+setup.trait.training_masochist_advanced,
+setup.trait.training_masochist_master,
+setup.trait.training_toilet_basic,
+setup.trait.training_toilet_advanced,
+setup.trait.training_toilet_master,
+setup.trait.training_horny_basic,
+setup.trait.training_horny_advanced,
+setup.trait.training_horny_master,
+],
+[
+setup.trait.subrace_humanvale,
+setup.trait.subrace_humandesert,
+setup.trait.subrace_humansea,
+setup.trait.bg_farmer,
+setup.trait.bg_pirate,
+setup.trait.bg_laborer,
+setup.trait.bg_wildman,
+setup.trait.bg_nomad,
+setup.trait.bg_foodworker,
+setup.trait.bg_slaver,
+setup.trait.bg_unemployed,
+setup.trait.bg_artisan,
+setup.trait.bg_seaman,
+setup.trait.bg_woodsman,
+setup.trait.bg_clerk,
+setup.trait.bg_thug,
+setup.trait.bg_maid,
+setup.trait.per_direct,
+setup.trait.per_kind,
+setup.trait.per_honorable,
+],
+[
+setup.qres.IsCanBeSold(),
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.race_human], true),
+setup.qres.TraitExact(setup.trait.gender_female),
+setup.qres.TraitExact(setup.trait.vagina_tight),
+setup.qres.Trait(setup.trait.eq_veryvaluable),
+setup.qres.NoTrait(setup.trait.corrupted),
+setup.qres.NoTrait(setup.trait.eq_slutty),
+setup.qres.NoTrait(setup.trait.eq_veryslutty),
+setup.qres.NoTrait(setup.trait.eq_gagged),
+setup.qres.NoTrait(setup.trait.eq_blind),
+setup.qres.NoTrait(setup.trait.eq_collar),
+setup.qres.NoTrait(setup.trait.eq_restrained),
+setup.qres.NoTrait(setup.trait.eq_plug_anus),
+setup.qres.NoTrait(setup.trait.eq_plug_vagina),
+setup.qres.NoTrait(setup.trait.eq_pony),
+setup.qres.NoTrait(setup.trait.eq_pet),
+setup.qres.NoTrait(setup.trait.face_scary),
+setup.qres.NoTrait(setup.trait.training_vagina_basic),
+setup.qres.NoTrait(setup.trait.training_mindbreak),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_sergeant_s_wedding___poetic_justice', /* key */
+"The Sergeant's Wedding - Poetic Justice", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/joyyfi/v100_is_here_submit_all_your_stories_bug_reports/gc6c9sa/',
+},
+[ 'city', 'veteran', 'order', 'favor',
+], /* tags */
+4, /* weeks */
+12, /* quest expiration weeks */
+{ /* roles */
+'marriagebroker': _criteriamarriagebroker,
+'ladyinwaiting': _criterialadyinwaiting,
+'virtuedefender': _criteriavirtuedefender,
+'blushingbride': _criteriablushingbride, },
+{ /* actors */
+'sgtelke': 'subrace_humankingdom_male', },
+[ /* costs */
+],
+'Quest_the_sergeant_s_wedding___poetic_justice',
+setup.qdiff.harder40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_sergeant_s_wedding___poetic_justiceCrit',
+[
+setup.qc.MissingUnitForever('blushingbride'),
+setup.qc.MoneyCrit(),
+setup.qc.Favor('humankingdom', 200),
+setup.qc.MoneyUnitValue("blushingbride", 2, 100000), ],
+], [
+'Quest_the_sergeant_s_wedding___poetic_justiceSuccess',
+[
+setup.qc.MissingUnitForever('blushingbride'),
+setup.qc.MoneyNormal(),
+setup.qc.Favor('humankingdom', 100),
+setup.qc.MoneyUnitValue("blushingbride", 1.2, 100000), ],
+], [
+'Quest_the_sergeant_s_wedding___poetic_justiceFailure',
+[
+setup.qc.MissingUnitRebuy('blushingbride', 0.25),
+setup.qc.Injury('marriagebroker', 1),
+setup.qc.Injury('virtuedefender', 2),
+setup.qc.Injury('blushingbride', 1), ],
+], [
+'Quest_the_sergeant_s_wedding___poetic_justiceDisaster',
+[
+setup.qc.Injury('marriagebroker', 2),
+setup.qc.Injury('virtuedefender', 3),
+setup.qc.Injury('blushingbride', 1),
+setup.qc.TraitIncreaseExisting('ladyinwaiting', setup.trait.vagina_gape),
+setup.qc.TraitReplace('ladyinwaiting', setup.trait.per_sexaddict),
+setup.qc.Trait('ladyinwaiting', setup.trait.bg_slave),
+setup.qc.MissingUnit('ladyinwaiting'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.uncommon],
+],
+[ /* restrictions to generate */
+/* setup.qres.HasSlaveWithTraits([setup.trait.training_pet_basic]), */
+setup.qres.HasSlaveWithTraits([setup.trait.gender_female]),
+setup.qres.HasSlaverWithTraits([setup.trait.gender_female]),
+setup.qres.HasSlaverWithTraits([setup.trait.gender_male]),
+setup.qres.QuestUnique(),
+setup.qres.FavorAtLeast('humankingdom', 300),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+)>>
+
+:: Quest_the_sergeant_s_wedding___poetic_justice [nobr]
+<p>
+The most hated sergeant in the Kingdom's army wants to crown his career of villainy by marrying his way into the lower nobility.
+His enemies, including most of his own soldiers, want him to fail. They have
+the backing of certain nobles, who don't want this low-bred scoundrel joining
+their ranks. You're known in Tor and may be just the slaver they need.
+</p>
+
+<p>
+The sergeant's saved enough from a lifetime of grifting and embezzling to convince one of the poorer noble families to let him have one of their daughters. Working within the law, there isn't much his enemies can do. But slavers like you don't work within the law, not in the Kingdom of Tor. If you'll help them, they'll foil his scheme and obtain poetic justice. And you'll make a tidy profit while having a bit of fun.
+</p>
+
+<p>
+The sergeant's supposed to meet with a respectable marriage broker, so he can parlay a lifetime of ill-gotten gain into an advantageous match. Instead, unbeknownst to him, he'll met a smooth-talking slaver in fine clothes, ready to set him up for life. His blushing bride won't be (as he thinks) the scion of a poor but proud noble family. She'll be a well-used creature from your slave pens.
+</p>
+
+<p>
+Naturally, the bride must be human and preferably a native of the Kingdom, dressed in her finest, entirely well-mannered, and wholly respectable on the surface. She must be tight enough "up front" to pass for a virgin. But outside of that, the more debauched she is, the better your backers will like it. If she has bad qualities that come out later in the marriage, that's fine, too.
+</p>
+
+<p>
+Of course, you will be losing the slave, but you'll be more than compensated for her value if everything goes well. And your noble backers will not forget.
+</p>
+
+<p>
+(Note: There is a small amount of optional watersports content, but you won't see it unless you use a slave trained in that specialty. Which you don't have to do to succeed in this quest.)
+</p>
+
+
+:: Quest_the_sergeant_s_wedding___poetic_justiceCrit [nobr]
+<p>
+The marriage negotiations went off without a hitch. Of course, the "lady's" "noble" "kin" wouldn't be seen talking marriage with a common soldier, so they employed a respectable marriage broker. The broker looked just like that notorious slaver <<rep $g.marriagebroker>> in fancy clothes. But that scoundrel Sgt. <<Rep $g.sgtelke>> didn't know that.</p>
+
+<p>
+Sgt. <<Rep $g.sgtelke>> sgtelke|is as greedy, grasping, and unscrupulous a bounder as ever slimed the rungs of the social ladder he's hoping to climb. <<Rep $g.marriagebroker>> played his role to the hilt, professionally distant and cold, albeit <<uadjper $g.marriagebroker >>. A dowry was of course out of the question, but if the good Sgt. <<Rep $g.sgtelke>> could provide a suitable sum, part of it can be returned to him as "dowry" for appearance's sake. The gentleman would naturally understand the lady's family's straitened circumstances....
+</p>
+
+<p>
+Sgt. <<Rep $g.sgtelke>> sgtelke|was taken in completely, eager as he was to slither his way into the upper reaches of society, and get his <<udick $g.sgtelke >> into one of their virgin daughters. The money changed hands. A respectable physician examined <<rep $g.blushingbride>>—under the watchful eyes of her severely respectable lady-in-waiting, <<rep $g.ladyinwaiting>>, and within earshot of her noble but discreet bodyguard, <<rep $g.virtuedefender>>—and pronounced her "intact."
+<<if $g.blushingbride.isHasTrait('anus_gape') || $g.blushingbride.isHasTrait('vagina_gape')>>
+It was your slaver's good fortune that the physician never looked behind her, for he would
+be met with a cavernous hole that is certainly not "intact".
+<</if>>
+</p>
+
+<p>
+And now comes the day of the wedding itself. The lower-upper classes are turning out for the occasion. So are Sgt. <<Reps $g.sgtelke>> own soldiers, or at least the ones who are in on the prank. It's bad luck for the groom to see the bride before the ceremony, so your slavers retire to a nearby private lodging with <<rep $g.blushingbride>> and over a dozen of the soldiers and nobles who funded the scheme. And there your slavers give proof of your company's good faith.
+</p>
+
+<p>
+On a command from <<rep $g.marriagebroker>>, <<rep $g.blushingbride>> demurely strips down for the intimate crowd, and proceeds to debase herself in the ways she knows best. First <<rep $g.virtuedefender>> virtuedefender|lube up <<their $g.virtuedefender>> <<udick $g.virtuedefender >> and virtuedefender|slide it into her <<uanus $g.blushingbride>> while <<rep $g.ladyinwaiting>> ladyinwaiting|knead her <<ubreast $g.blushingbride >> and she squeals <<uadv $g.blushingbride >>. Then the spectators join in, using and abusing every opening she's got except the "intact" one. </p>
+
+<p>
+<<if $g.blushingbride.isHasTraitExact('training_oral_basic')>>She mechanically sucks off every cock in sight.<</if>>
+<<if $g.blushingbride.isHasTraitExact('training_oral_advanced')>>She sucks off every cock in sight with practiced skill, wiping her lips daintily and smiling up at the gentlemen. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_oral_master')>>Like the world-class professional she is, she wraps her lips around every cock she can get near, and gulps down cum as if it were water. Daintily wiping her lips, she looks around for more. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_basic')>>A burly corporal spits on his palm, wipes his cock wet, and goes for her ass. She takes it gamely with only a few winces of pain. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_advanced')>>A burly corporal spits on his palm, wipes his cock wet, and goes for her ass. She takes it with a smile, and encourages him to speed up. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_master')>>She may be a lowly slave, but she is the queen of anal artists. Presenting her nether cheeks to the crowd, she calls them in for an anal gangbang, and cheers them on as they fill her up. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_horny_basic')>>At one point, she talks dirty to the crowd and masturbates to a quick orgasm. They clap. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_horny_advanced')>> At one point, <<rep $g.ladyinwaiting>> commands <<rep $g.blushingbride>> to show off her ability to lube up at a moment's notice. Then she strokes her to orgasm in thirty seconds flat while the spectators applaud. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_horny_master')>> At one point, <<rep $g.ladyinwaiting>> commands <<rep $g.blushingbride>> to show off her ability to lube up at a moment's notice. Then <<rep $g.blushingbride>> strokes herself to multiple orgasms, writhing and talking filthy while the spectators laugh and cheer. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_masochist_basic')>>Whenever she fails for a moment at a degrading task, <<rep $g.ladyinwaiting>> turns her over her knee and gives her a good spanking. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_masochist_advanced')>>Whenever she fails for a moment at a degrading task, <<rep $g.ladyinwaiting>> turns her over her knee and gives her a good spanking. She cries for more. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_masochist_master')>>Encouraged by <<rep $g.ladyinwaiting>>, she degrades herself in words and begs the crowd to spank and beat her. The more they do, the more she wants, until her body is red from blows. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_toilet_basic')>>A private who's had a bit too much beer excuses himself to the latrine. <<Rep $g.ladyinwaiting>> stops him, and encourages him to go in <<reps $g.blushingbride>> open mouth instead. She swallows the piss without complaint. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_toilet_advanced')>> A private who's had a bit too much beer excuses himself to the latrine. <<Rep $g.blushingbride>> whistles him over, and offers her mouth for the purpose. When he's done, she licks her lips and smiles up at him. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_toilet_master')>> <<rep $g.ladyinwaiting>> sees some soldiers slipping out to the latrine. "Not so fast boys," she says. "Latrine's over here!" Soon <<rep $g.blushingbride>> blushingbride|is gulping down all the piss she can, and what she can't swallow spills all over her body. She touches herself briefly and orgasms loudly from the feel and the smell. <</if>>
+A few of the more refined spectators don't want "sloppy twelfths." They stroke themselves violently and splatter <<rep $g.blushingbride>> with their juices until she's left kneeling before them all and looking just like what she is: a wholly-debauched, degraded though <<uadjper $g.blushingbride >>, cum-drenched slave, and a fitting match for Sgt. <<Rep $g.sgtelke>> in the eyes of all.
+</p>
+
+<p>
+After this fitting pre-nuptial ceremony, the spectators make their way to the temple and <<rep $g.ladyinwaiting>> ladyinwaiting|give <<rep $g.blushingbride>> a careful bath and coiffure. Flanked by her "lady-in-waiting" and the "defender of her virtue," <<rep $g.blushingbride>> blushingbride|make her way to the altar while <<rep $g.marriagebroker>> marriagebroker|join the audience. The nobles are tittering behind their silk handkerchiefs while the soldiers are keeping their best parade-ground faces as the priest joints these two saintly-faced hypocrites in holy matrimony. It's as the poet said —
+</p>
+
+<p>
+Bowin' like a lady,<br>
+Blushin' like a lad —<br>
+'Oo would say to see 'em<br>
+Both is rotten bad?<br>
+<br>
+Cheer for the Sergeant's weddin' —<br>
+Give 'em one cheer more!<br>
+Grey gun-'orses in the lando,<br>
+An' a rogue is married to, etc.<br>
+</p>
+
+<p>He wanted a title, and now he's got two: "fool" and "cuckold." And now he learns the worst of married life in the tender arms of <<rep $g.blushingbride>>.
+<<if $g.blushingbride.isHasTraitExact('per_aggressive')>>She takes out her natural aggression on her husband in a thousand tiny ways.<</if>>
+<<if $g.blushingbride.isHasTraitExact('per_sly')>>As a practiced deceiver, she takes lovers at will. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_proud')>>Her bad-tempered ways don't leave him in peace for long. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_stubborn')>>Her mulish temper makes every little domestic dispute into a shouting match or a day of cold silence. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_dominant')>>She's determined to "rule the roost" and turn her man into a hen-pecked shadow. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_lunatic')>>Being absolutely crazy, she swings from clinging affection to paranoid screaming without a moment's notice, and when her husband's trying to sleep, she's writhing in mad dreams or howling at the moon. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_cruel') && $g.blushingbride.isHasTrait('per_evil')>>His sufferings only make her smile. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_cruel')>>If he ever tries to complain, she simply mocks him for it. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_evil')>>It's as if she enjoys causing her husband as much misery as possible, for no better reason than that she likes it. <</if>>
+<<if $g.blushingbride.isHasTraitExact('skill_connected')>>Adding insult to injury, she's got the social connections to paint <i>him</i> as the villain to all their neighbors and betters. <</if>> Truly they are a couple that deserve each other. The thought may warm your heart, if you've got one.
+</p>
+
+<p>
+It's time for your slavers to leave before Sgt. <<Rep $g.sgtelke>> finds out what a favor they've done him. Of course they can't be thanked or acknowledged in public, but they bring back enough bonus money to show you there's still gratitude in this unfeeling world. Probably your slavers kept a bit of that "gratitude" for themselves, but they still bring more than you'd've gotten for <<rep $g.blushingbride>> in most markets.
+</p>
+
+
+
+
+:: Quest_the_sergeant_s_wedding___poetic_justiceSuccess [nobr]
+<p>
+The marriage negotiations went smoothly. Of course, the "lady's" "noble" "kin" wouldn't be seen talking marriage with a common soldier, so they employed a respectable marriage broker. The broker looked just like that notorious slaver <<rep $g.marriagebroker>> in fancy clothes. But that scoundrel Sgt. <<Rep $g.sgtelke>> didn't know that.</p>
+
+<p>Sgt. <<Rep $g.sgtelke>> found the arrangement distasteful, but <<rep $g.marriagebroker>> <<uadv $g.marriagebroker >> put off his objections and kept the negotiations on track. Naturally there would be no dowry. If the "lady's" "kin" weren't impecunious, they'd never consider a match like this. But if Sgt. <<Rep $g.sgtelke>> would hand over the appropriate sum, they'll kick back part as "dowry" for appearance's sake.
+</p>
+
+<p>
+Sgt. <<Rep $g.sgtelke>> scowled and screwed up his face at this, but in the end his greed and lust overcame his objections. The money changed hands. A respectable physician examined <<rep $g.blushingbride>>—under the watchful eyes of her severely respectable lady-in-waiting, <<rep $g.ladyinwaiting>>, and within earshot of her noble but discreet bodyguard, <<rep $g.virtuedefender>>—and pronounced her "intact."
+<<if $g.blushingbride.isHasTrait('anus_gape') || $g.blushingbride.isHasTrait('vagina_gape')>>
+It was your slaver's good fortune that the physician never looked behind her, for he would
+be met with a cavernous hole that is certainly not "intact".
+<</if>>
+</p>
+
+<p>
+And now comes the day of the wedding itself. The lower-upper classes are turning out for the occasion. So are Sgt. <<Reps $g.sgtelke>> own soldiers, or at least the ones who are in on the prank. Flanked by her "lady-in-waiting" and the "defender of her virtue," <<rep $g.blushingbride>> blushingbride|make her way to the altar while <<rep $g.marriagebroker>> marriagebroker|join the audience. The nobles are tittering behind their silk handkerchiefs while the soldiers are keeping their best parade-ground faces as the priest joints these two saintly-faced hypocrites in holy matrimony. It's as the poet said —
+</p>
+
+<p>
+Bowin' like a lady,<br>
+Blushin' like a lad —<br>
+'Oo would say to see 'em<br>
+Both is rotten bad?<br>
+<br>
+Cheer for the Sergeant's weddin' —<br>
+Give 'em one cheer more!<br>
+Grey gun-'orses in the lando,<br>
+An' a rogue is married to, etc.<br>
+</p>
+
+<p>
+Poetic justice has been done. Sgt. <<Rep $g.sgtelke>> wanted a title, and now he's got two: "fool" and "cuckold." And now he learns the worst of married life in the tender arms of <<rep $g.blushingbride>>.
+<<if $g.blushingbride.isHasTraitExact('per_aggressive')>>She takes out her natural aggression on her husband in a thousand tiny ways.<</if>>
+<<if $g.blushingbride.isHasTraitExact('per_sly')>>As a practiced 'lovers 'at will. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_proud')>>Her bad-tempered ways don't leave him in peace for long. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_stubborn')>>Her mulish temper makes every little domestic dispute into a shouting match or a day of cold silence. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_dominant')>>She's determined to "rule the roost" and turn her man into a hen-pecked shadow. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_lunatic')>>Being absolutely crazy, she swings from clinging affection to paranoid screaming without a moment's notice, and when her husband's trying to sleep, she's writhing in mad dreams or howling at the moon. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_cruel') && $g.blushingbride.isHasTrait('per_evil')>>His sufferings only make her smile. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_cruel')>>If he ever tries to complain, she simply mocks him for it. <</if>>
+<<if $g.blushingbride.isHasTraitExact('per_evil')>>It's as if she enjoys causing her husband as much misery as possible, for no better reason than that she likes it. <</if>>
+<<if $g.blushingbride.isHasTraitExact('skill_connected')>>Adding insult to injury, she's got the social connections to paint <i>him</i> as the villain to all their neighbors and betters. <</if>> Truly they are a couple that deserve each other. The thought may warm your heart, if you've got one.
+</p>
+
+<p>Your slavers don't stick around to see how much good they've done. They return home, and hand over more than a fair market price for <<rep $g.blushingbride>>, though you privately wonder how much more there was.</p>
+
+
+:: Quest_the_sergeant_s_wedding___poetic_justiceFailure [nobr]
+<p>
+The marriage negotiations didn't go as smoothly as they should. Of course, the "lady's" "noble" "kin" wouldn't be seen talking marriage with a common soldier, so they employed a respectable marriage broker. The broker looked just like that notorious slaver <<rep $g.marriagebroker>> in fancy clothes. But that scoundrel Sgt. <<Rep $g.sgtelke>> didn't know that.</p>
+
+<p> Sgt. <<Rep $g.sgtelke>> found the arrangement distasteful, and <<rep $g.marriagebroker>> had trouble keeping the negotiations on track. There was to be no dowry. If the "lady's" "kin" weren't impecunious, they'd never consider a match like this. But if Sgt. <<Rep $g.sgtelke>> would hand over the appropriate sum, they'll kick back part as "dowry" for appearance's sake. Sgt. <<Rep $g.sgtelke>> <<uadv $g.sgtelke >> stormed out of the room at that one.
+</p>
+
+<p>
+Eventually, greed overcomes wisdom, he came back, and the deal was done. The money changed hands. A respectable physician examined <<rep $g.blushingbride>>—under the watchful eyes of her severely respectable lady-in-waiting, <<rep $g.ladyinwaiting>>, and within earshot of her noble but discreet bodyguard, <<rep $g.virtuedefender>>. Her "front door" is immaculate...but he was a little too thorough in examining her <<utorso $g.blushingbride >>, her <<uface $g.blushingbride >>, and her <<uanus $g.blushingbride >>. The marks of her abuse were subtle, but maybe not subtle enough.
+<<if $g.blushingbride.isHasTraitExact('training_anal_basic')>>Her experienced ass draws his suspicions. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_advanced')>>Her well-used ass draws his intense suspicions. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_master')>>Her ass has seen more sausage than the local beer garden. The respectable physician can't help but notice.<</if>>
+The physician looked sharply at <<rep $g.ladyinwaiting>> and began to ask pointed questions, which the "lady-in-waiting" deflected <<uadv $g.ladyinwaiting >>, but it was clear he was not going to decare <<rep $g.blushingbride>> intact. It was even clearer he was going to start talking. It was time for your slavers and the "blushing bride" to get out of town.
+</p>
+
+<p>
+As they flee, your slavers were set upon by Sgt. <<Rep $g.sgtelke>> himself and a squad of soldiers who weren't in on the scheme. <<Rep $g.virtuedefender>> virtuedefender|was supposed to cover the retreat of the others, and <<they $g.virtuedefender>> did so quite <<uadv $g.virtuedefender>>, at least until he was wounded and took the "better part of valor" <<themself $g.virtuedefender>>...
+</p>
+
+<p>
+In the end, your slavers all fled pell-mell, with no thought for their "precious" cargo and precious little for each other. All three are wounded and <<rep $g.blushingbride>> blushingbride|was lost completely—she couldn't run in her finery. Or maybe she preferred the mercy of the Kingdom's soldiers to the mercy of your slave pens. (Perish the thought!)
+</p>
+
+<p>
+Your noble backers are disappointed, but also cool under pressure. They don't want any member of your little conspiracy staying behind and answering questions. They'll get <<rep $g.blushingbride>> back to you for a fraction of her market value. Just don't ask them how. Dealing with slavers is a crime, you know.
+</p>
+
+
+:: Quest_the_sergeant_s_wedding___poetic_justiceDisaster [nobr]
+<p>
+The marriage negotiations didn't go as smoothly as they should. Of course, the "lady's" "noble" "kin" wouldn't be seen talking marriage with a common soldier, so they employed a respectable marriage broker. The broker looked just like that notorious slaver <<rep $g.marriagebroker>> in fancy clothes. But that scoundrel Sgt. <<Rep $g.sgtelke>> didn't know that.</p>
+
+<p>Sgt. <<Rep $g.sgtelke>> found the arrangement distasteful, and <<rep $g.marriagebroker>> had trouble keeping the negotiations on track. There was to be no dowry. If the "lady's" "kin" weren't impecunious, they'd never consider a match like this. But if Sgt. <<Rep $g.sgtelke>> would hand over the appropriate sum, they'll kick back part as "dowry" for appearance's sake. Sgt. <<Rep $g.sgtelke>> agreed in the end, and <i>appears</i> to be taken in.
+</p>
+
+<p>
+The contract was made. The money changed hands. A respectable physician examined <<rep $g.blushingbride>>—under the watchful eyes of her severely respectable lady-in-waiting, <<rep $g.ladyinwaiting>>, and within earshot of her noble but discreet bodyguard, <<rep $g.virtuedefender>>—and pronounced her "intact." The wedding was on track.
+</p>
+
+<p>
+And now comes the day of the wedding itself. The lower-upper classes are turning out for the occasion. So are Sgt. <<Reps $g.sgtelke>> own soldiers, or at least the ones who are in on the prank. It's bad luck for the groom to see the bride before the ceremony, so your slavers retire to a nearby private lodging with <<rep $g.blushingbride>> and about a dozen of the soldiers and nobles who funded the scheme. And there your slavers give proof of your company's good faith.
+</p>
+
+<p>
+On a command from <<rep $g.marriagebroker>>, <<rep $g.blushingbride>> demurely strips down for the intimate crowd, and proceeds to debase herself in the ways she knows best. First <<rep $g.virtuedefender>> virtuedefender|slam <<their $g.virtuedefender>> <<udick $g.virtuedefender >> into her <<uanus $g.blushingbride >> while <<rep $g.ladyinwaiting>> kneads her <<ubreast $g.blushingbride >> and she squeals <<uadv $g.blushingbride>>. Then the dozen spectators join in, using and abusing every opening she's got except the "intact" one. </p>
+
+<p>
+<<if $g.blushingbride.isHasTraitExact('training_oral_basic')>>She mechanically sucks off every cock in sight.<</if>>
+<<if $g.blushingbride.isHasTraitExact('training_oral_advanced')>>She sucks off every cock in sight with practiced skill, wiping her lips daintily and smiling up at the gentlemen. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_oral_master')>>Like the world-class professional she is, she wraps her lips around every cock she can get near, and gulps down cum as if it were water. Daintily wiping her lips, she looks for more. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_basic')>>A burly corporal spits on his palm, wipes his cock wet, and goes for her ass. She takes it gamely with only a few winces of pain. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_advanced')>>A burly corporal spits on his palm, wipes his cock wet, and goes for her ass. She takes it with a smile, and encourages him to fuck her harder. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_anal_master')>>She may be a lowly slave, but she is the queen of anal artists. Presenting her nether cheeks to the crowd, she calls them in for an anal gangbang, and cheers them on as they fill her up. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_horny_basic')>>At one point, she talks dirty to the crowd and masturbates to a quick orgasm. They clap. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_horny_advanced')>> At one point, <<rep $g.ladyinwaiting>> commands <<rep $g.blushingbride>> to show off her ability to lube up at a moment's notice. Then she strokes her to orgasm in thirty seconds flat while the spectators applaud. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_horny_master')>> At one point, <<rep $g.ladyinwaiting>> commands <<rep $g.blushingbride>> to show off her ability to lube up at a moment's notice. Then <<rep $g.blushingbride>> strokes herself to multiple orgasms, writhing and talking filthy while the spectators laugh and cheer. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_masochist_basic')>>Whenever she fails for a moment at a degrading task, <<rep $g.ladyinwaiting>> turns her over her knee and gives her a good spanking. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_masochist_advanced')>>Whenever she fails for a moment at a degrading task, <<rep $g.ladyinwaiting>> turns her over her knee and gives her a good spanking. She cries for more. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_masochist_master')>>Encouraged by <<rep $g.ladyinwaiting>>, she degrades herself in words and begs the crowd to spank and beat her. The more they do, the more she wants, until her body is red from blows. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_toilet_basic')>>A private who's had a bit too much beer excuses himself to the latrine. <<Rep $g.ladyinwaiting>> stops him, and encourages him to go in <<reps $g.blushingbride>> open mouth instead. She swallows the piss without complaint. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_toilet_advanced')>> A private who's had a bit too much beer excuses himself to the latrine. <<Rep $g.blushingbride>> whistles him over, and offers her mouth for the purpose. When he's done, she licks her lips and smiles up at him. <</if>>
+<<if $g.blushingbride.isHasTraitExact('training_toilet_master')>> <<rep $g.ladyinwaiting>> sees some soldiers slipping out to the latrine. "Not so fast boys," she says. "Latrine's over here!" Soon <<rep $g.blushingbride>> blushingbride|is gulping down all the piss she can, and what she can't swallow spills all over her body. She touches herself quickly and orgasms loudly from the feel and the smell. <</if>>
+A few of the more refined spectators don't want "sloppy twelfths." They stroke themselves violently and splatter <<rep $g.blushingbride>> with their juices until she's left kneeling before them all and looking just like what she is: a wholly-degraded, degenerate though <<uadjper $g.blushingbride >>, cum-drenched slave, and a fitting match for Sgt. <<Rep $g.sgtelke>> in the eyes of all.
+</p>
+
+<p>
+Except, that is, for Sgt. <<Rep $g.sgtelke>> himself, who at that moment bursts into the room with a squad of troops loyal only to him. <i>How</i> he found out, your slavers don't know, or at least they don't report it. Maybe <<rep $g.marriagebroker>> marriagebroker|wasn't quite as smooth as he thought, or <<rep $g.ladyinwaiting>> ladyinwaiting|was not as prim and demure as <i>she</i> thought. Or one of your conspirators looked foreign, or betrayed signs of a lower-class upbringing. Or maybe the respectable physician was wiser than he seemed.
+</p>
+
+<p>
+Whatever the reason, Sgt. <<Rep $g.sgtelke>> sgtelke|have penetrated your schemes, and your slavers don't hesitate. Self-preservation is the order of the day. <<Rep $g.virtuedefender>> virtuedefender|is the first to move, and the first to trip over his own disarrayed clothes. <<They $g.virtuedefender>> virtuedefender|is wounded before <<they $g.virtuedefender>> can get up, but that only speeds <<their $g.virtuedefender>> flight. <<Rep $g.marriagebroker>> marriagebroker|get out the window right behind <<them $g.marriagebroker>>, and they desperately break through the surrounding cordon of troops. They haven't a moment to think of the "ladies."
+</p>
+
+<p>
+<<Rep $g.blushingbride>> and <<rep $g.ladyinwaiting>> are embarrassingly <i>dishabille</i> at the moment of attack. <<Rep $g.ladyinwaiting>> ladyinwaiting|kick Sgt. <<Rep $g.sgtelke>> in his <<uballs $g.sgtelke >>, so his loyal troops pile on <<them $g.ladyinwaiting>> 'til <<they $g.ladyinwaiting>> can't move. <<Rep $g.blushingbride>> blushingbride|is so slick with cum that the guards can't get a handhold. She slips through them and out the window like a greased pig, catches up with her wounded masters, and gallops off with them back into slavery.
+</p>
+
+<p>
+Sgt. <<Rep $g.sgtelke>> sgtelke|is incandescent. He wants <<rep $g.ladyinwaiting>> tortured into confessing the names of her co-conspirators, then gang-raped, tortured, and executed for her affront to his honor. The co-conspirators (who don't think Sgt. <<Rep $g.sgtelke>> sgtelke|have any honor to begin with) want her to disappear. So they do the best they can—which is to sell her to one of your competitors, who ships her off to his private island for some Advanced Debauchery Training.
+</p>
+
+<p>
+A good Rescuer will doubtless find <<rep $g.ladyinwaiting>> in due course (just build a rescuer office if you don't have one, and assign a slaver to the task). But by the time you get <<them $g.ladyinwaiting>> back, <<they $g.ladyinwaiting>>'ll have been conditioned to want more sex and wear raunchier clothing than any self-respecting slaver would ever be seen in. Do you really want <<them $g.ladyinwaiting>> back under those conditions?
+</p>

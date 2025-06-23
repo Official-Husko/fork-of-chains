@@ -1,0 +1,62 @@
+:: EventSetup_used_angelic_slave_for_sale [nobr event]
+
+<<run new setup.UnitGroup(
+"used_angelic_slave_for_sale0",
+"Fake Angel",
+'subrace_humankingdom', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_tight),
+  setup.qc.TraitReplace('unit', setup.trait.anus_tight),
+  setup.qc.TraitReplace('unit', setup.trait.wings_angel),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slave),
+  setup.qc.TraitReplace('unit', setup.trait.face_attractive),
+],
+)>>
+
+<<run new setup.Event(
+'used_angelic_slave_for_sale', /* key */
+"Used Angelic Slave For Sale", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_used_angelic_slave_for_sale',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'man': 'all',
+  'slave': 'used_angelic_slave_for_sale0',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_tiger_bank_repo_resale', '1', 250),
+  setup.qc.Slave('slave', "a|was the private slave of a con artist cult leader before being taken by the Tiger Bank repo-men", true, 0.8),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+  setup.qres.FavorAtLeast('bank', 500),
+  setup.qres.VarNull('quest_tiger_bank_repo_resale'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_used_angelic_slave_for_sale [nobr]
+<<include 'Event_TigerBankRepoCommon'>>
+
+<p>
+The current sale offer by the bank is a bit special.
+Given how superstitious many folks in <<lore geo_mestia>> are, new cults tend to spring up like weeds in the continent, but all met its almost inevitable fate. Even with the most charismatic leader or starry-eyed idealism, the boundless greed in milking the followers usually put a sudden end to the various self-declared temples and places of worship.
+These temples cost money to establish, and sometimes
+the cult leader would made a hasty getaway, leaving the Tiger Bank creditors and conned believers behind. Repo men are sent out in force, carting off the contents of the 'house of worship' the cult leader kept.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The contents of many boxes being carried out of there do have a certain perverted look to them, but they are not offered to your company. Instead, a <<if $g.slave.isMale()>>handsome<<else>>pretty<</if>> <<man $g.slave>> that must have been the cult leader's personal slave is offered. The slave certainly has a unique look, sporting an extremely rare angel wings, as well as possessing near virgin-tight holes. Just when you thought you would be able to get your <<uhands $unit.player>> on a relatively easy-to-get angel slave, <<yourrep _u>> points out that the slave is but a regular kingdomfolk, albeit with an extremely rare wing corruption. Should the slave become purified some time, the wings would revert back to nothingness.
+</p>

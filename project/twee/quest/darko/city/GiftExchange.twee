@@ -1,0 +1,254 @@
+:: QuestSetupGiftExchange [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _santa = new setup.UnitCriteria(
+  null, /* key */
+  'Santa', /* title */
+  [
+    setup.trait.per_lavish,
+    setup.trait.per_playful,
+    setup.trait.skill_flight,
+  ], /* critical traits */
+  [
+    setup.trait.muscle_thin,
+    setup.trait.per_frugal,
+    setup.trait.per_serious,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    brawn: 2.0,
+    social: 1.0,
+  }
+)>>
+
+<<set _elf = new setup.UnitCriteria(
+  null, /* key */
+  "Santa's Elf", /* title */
+  [
+    setup.trait.race_elf,
+    setup.trait.per_direct,
+    setup.trait.per_lavish,
+  ], /* critical traits */
+  [
+    setup.trait.race_human,
+    setup.trait.per_sly,
+    setup.trait.per_frugal,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    intrigue: 2.0,
+    brawn: 1.0,
+  }
+)>>
+
+<<set _slave = new setup.UnitCriteria(
+  null, /* key */
+  "A Gift", /* title */
+  [ /* critical traits */
+    setup.trait.value_high1,
+    setup.trait.value_high2,
+    setup.trait.value_high3,
+    setup.trait.value_high4,
+    setup.trait.value_high5,
+    setup.trait.value_high6,
+    setup.trait.value_high7,
+  ],
+  [ /* disaster traits */
+  ],
+  [ /* requirement */
+    setup.qres.IsCanBeSold(),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.NoTrait(setup.trait.value_low),
+  ],
+  { /* skill effects, sum to 3.0 */
+    intrigue: 2.0,
+    brawn: 1.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'gift_exchange', /* key */
+  'Gift Exchange', /* Title */
+  'darko',   /* author */
+  ['city', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'santa': [_santa, 2],
+    'elf1': [_elf, 0.5],
+    'elf2': [_elf, 0.5],
+    'present': _slave,
+  },
+  { /* actors */
+    'gift': 'quest_all_noble',
+  },
+  [ /* costs */
+  ],
+  'QuestGiftExchange', /* passage description */
+  setup.qdiff.hard31, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestGiftExchangeCrit',
+      [
+        setup.qc.MissingUnitForever('present'),
+        setup.qc.Slave('gift'),
+        setup.qc.MoneyCrit(),
+        
+      ],
+    ],
+    [
+      'QuestGiftExchangeCrit',
+      [
+        setup.qc.MissingUnitForever('present'),
+        setup.qc.MoneyNormal(2.5),
+        
+      ],
+    ],
+    [
+      'QuestGiftExchangeCrit',
+      [
+        setup.qc.MissingUnitForever('present'),
+        setup.qc.MoneyNormal(0.5),
+      ],
+    ],
+    [
+      'QuestGiftExchangeCrit',
+      [
+        setup.qc.MissingUnitForever('present'),
+        setup.qc.MoneyNormal(-1),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.uncommon],], /* quest pool and rarity */
+  [
+    setup.qres.HasSlave(),
+    setup.qres.QuestUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestGiftExchange [nobr]
+
+<p>
+On the night of certain months, there is a tradition in the <<lore region_city>>
+where people blindly exchange gifts with strangers.
+While traditionally people exchange standard gifts such as food or
+cooking utensils, some particularly adventurous circle of people in the city
+use the opportunity to exchange slaves packed prettily in a box.
+You have been invited into such an exchange. If you are willing to part
+with one of your slaves, the reward could be very worth the price.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: The slave you sent on this quest will be gone forever,
+shipped as a gift to some unknown conoisseur...
+</p>
+
+
+:: QuestGiftExchangeCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+  <<if $g.gift.isMale()>>
+    <<questimage 'gift_exchange_male.jpg'>>
+  <<else>>
+    <<questimage 'gift_exchange_female.jpg'>>
+  <</if>>
+<</if>>
+
+<p>
+<<Yourrep $g.present>> present|was fully bound and blindfolded from head to toe,
+before being placed into a holey box and tied nicely with a ribbon.
+<<Rep $g.present>> present|was then shipped by your slavers, to be the new plaything
+of some lucky owner.
+<<set _lavish = setup.selectUnit([$g.santa, $g.elf1, $g.elf2], {trait: 'per_lavish'})>>
+<<set _frugal = setup.selectUnit([$g.santa, $g.elf1, $g.elf2], {trait: 'per_frugal'})>>
+
+<<if _lavish>>
+Giving away gifts is completely within <<reps _lavish>> generous nature, adding to the
+immersion.
+<<elseif _frugal>>
+<<Rep _frugal>> almost scoffed at the idea of giving such a slave away,
+the greedy slaver clearly not seeing the benefit of the endeavor.
+<</if>>
+
+<<set _playful = setup.selectUnit([$g.santa, $g.elf1, $g.elf2], {trait: 'per_playful'})>>
+<<set _serious = setup.selectUnit([$g.santa, $g.elf1, $g.elf2], {trait: 'per_serious'})>>
+
+<<if _playful>>
+<<Rep _playful>> playfully added several finishing touch to the decoration, including an
+oversized candy cane shoved deep within the slave's rear.
+<<elseif _serious>>
+<<Rep _serious>> took the entire job extremely seriously, and did not even bother to
+decorate the "gift".
+<</if>>
+</p>
+
+<p>
+A few weeks after the shipment, you receive a huge package yourself
+delivered straight to your fort.
+You checked and examine the box.
+There was no sender on the box, the only note being "Use Well!".
+Sensing danger, you order your other slavers to stand by and watch over
+as you open the box.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+As you start to unwrap the box, a sudden move from the box caught you by surprise.
+Could there be some kind of trap inside? As you opened it further, you started to hear
+moaning and breathing sounds coming from inside. This made you and your slavers
+more eager to unwrap it faster. When all the wrapping were undone, your present
+lied in full bondage before you -- a <<urace $g.gift>> blindfolded
+and fully bound with all of <<their $g.gift>> holes fitted
+with various festive-looking sex toys.
+Happy holidays!
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+You unwrapped the box slowly but carefully, not wishing whatever danger inside to
+catch you by surprise.
+But there was no such surprise -- fully unpacked, a grand golden statue of
+yourself stood before you in its full glory.
+You could not fathom how such statue of your liking could come to exist,
+given that you have never really showed your face to any of the game's participants.
+While you contemplated keeping the statue as decoration in your office, you felt the money
+you can get by smelting the statue and selling the gold might be of more interest
+for your business.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+You unwrapped the box slowly but carefully, not wishing whatever danger inside to
+catch you by surprise.
+But inside the box was another box, and inside it was another box.
+This continued on until the very tiny boxd in the middle that contain a small lump of gold,
+clearly not enough to compensate for <<reps $g.present>> value.
+You ponder who could have dared to send such a measly gift in this dangerous game,
+as there are rumors that people whose gift were subpar tend to receive misfortune
+in the days to come.
+</p>
+
+<<else>>
+
+<p>
+You unwrapped the box slowly, but you accidentaly shook the box, which
+then proceeded to violently explodes.
+Miraculously, you and your slavers were unharmed, but a significant
+damage had been done to your fort, which cost money to repair.
+</p>
+
+<p>
+Perhaps sending such a subpar slave as <<rep $g.present>> was not a good idea after all.
+</p>
+
+<</if>>

@@ -1,0 +1,219 @@
+:: QuestSetup_animal_trainer_of_the_south [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Defiant Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.Trait(setup.trait.will_defiant),
+  setup.qres.HasTag('in_training_defiant_slave'),
+],
+{
+}
+)>>
+
+
+<<set _so = setup.qc.SlaveOrderFlex(
+'Payment for Animal Tamer Service', /* name */
+'humansea', /* company */
+50, /* expires in */
+-2500, /* base price */
+1000, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandomExact([
+setup.trait.subrace_humankingdom,
+setup.trait.subrace_humanvale,
+setup.trait.subrace_humandesert,
+setup.trait.subrace_humansea,
+setup.trait.race_wolfkin,
+setup.trait.race_elf,
+setup.trait.race_catkin,
+setup.trait.race_greenskin,
+setup.trait.race_lizardkin,
+setup.trait.race_demon
+], 1, 1, 0),
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.muscle_thin,
+setup.trait.muscle_strong,
+setup.trait.face_scary,
+setup.trait.face_attractive,
+setup.trait.tough_nimble,
+setup.trait.tough_tough,
+setup.trait.corrupted,
+setup.trait.height_short,
+setup.trait.height_tall,
+setup.trait.per_gregarious,
+setup.trait.per_loner,
+setup.trait.per_chaste,
+setup.trait.per_lustful,
+setup.trait.per_lavish,
+setup.trait.per_frugal,
+setup.trait.per_proud,
+setup.trait.per_humble,
+setup.trait.per_brave,
+setup.trait.per_cautious,
+setup.trait.per_kind,
+setup.trait.per_cruel,
+setup.trait.per_loyal,
+setup.trait.per_independent,
+setup.trait.per_sly,
+setup.trait.per_direct,
+setup.trait.per_stubborn,
+setup.trait.per_curious,
+setup.trait.per_logical,
+setup.trait.per_empath,
+setup.trait.per_attentive,
+setup.trait.per_dreamy,
+setup.trait.per_aggressive,
+setup.trait.per_calm,
+setup.trait.per_playful,
+setup.trait.per_serious,
+setup.trait.per_studious,
+setup.trait.per_active
+], 7, 5, 0),
+],
+[ /* fulfilled outcomes */
+setup.qc.HideAll([
+setup.qc.VarAdd('animal_tamer_slave_order_fulfilled', 1, 100)
+], "Payment for the Animal Tamer service"),
+],
+[ /* unfulfilled outcomes */
+setup.qc.VarRemove('animal_tamer_slave_order_active'),
+],
+)>>
+
+
+<<set _rews = [
+  _so,
+  _so,
+  _so,
+  setup.qc.VarSet('animal_tamer_slave_order_active', '1', 100),
+  setup.qc.VarSet('animal_tamer_slave_being_trained', '1', -1),
+  setup.qc.Leave('slave', "a|is being trained by an animal trainer from the southern seas", undefined),
+  setup.qc.SlaverMarker('master'),
+]>>
+
+
+<<run new setup.QuestTemplate(
+'animal_trainer_of_the_south', /* key */
+"Animal Trainer of the South", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+  'order',
+  'trait',
+],
+4, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'negotiator': [ setup.qu.negotiator, 1],
+  'trainer': [ setup.qu.slavetrainer, 1],
+  'navigator': [ setup.qu.navigator, 1],
+},
+{ /* actors */
+  'master': 'sea_all',
+},
+[ /* costs */
+],
+'Quest_animal_trainer_of_the_south',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_animal_trainer_of_the_southCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_animal_trainer_of_the_southCrit',
+    _rews,
+  ],
+  [
+    'Quest_animal_trainer_of_the_southCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_animal_trainer_of_the_southCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+
+],
+)>>
+
+:: Quest_animal_trainer_of_the_south [nobr]
+<<set _u = setup.getUnit({tag: 'in_training_defiant_slave'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+
+<p>
+It has been made clear from the last few days that <<rep _u>> is one tough
+slave to break. It seems that no amount of standard slave training will break
+the highly defiant slave.
+</p>
+
+<p>
+Your slavers therefore come out with an idea, fresh out of the box. Perhaps
+the key is not to treat the slave as a normal humanlike slave, but as an
+animal instead. Living somewhere beyond the <<lore region_sea>> is a trainer
+specializing in training animals, whom your slavers have successfully
+contracted to specifically train <<therace _u>> animal.
+</p>
+
+<p>
+However, in securing the deal your slavers had to make a lot of concessions.
+In particular, they promised to provide the trainer with one of your company's
+specialities: three made-to-order slaves. If you accept this quest, then you
+will no doubt receive three <<dangertext 'very specific'>> slave orders from the animal trainer as payment
+for <<their $g.master>> services...
+</p>
+
+<p>
+As for side effects, who knows what might happen to <<rep _u>> after being
+treated like a livestock by the trainer?
+</p>
+
+<p>
+Alternatively, you can always ignore this quest, and try to break the slave via other means.
+</p>
+
+<</if>>
+
+
+:: Quest_animal_trainer_of_the_southCrit [nobr]
+
+<p>
+Without much fanfare, your slavers dropped <<yourrep $g.slave>> at the secluded
+island where the animal trainer lives. <<They $g.master>> promised to deliver
+the slave as soon as <<they $g.master>> receives the payment. In the
+meantime, your slavers went back to your fort as the trainer began the slave
+training by ushering your lent slave into one of <<their $g.master>> stables...
+</p>

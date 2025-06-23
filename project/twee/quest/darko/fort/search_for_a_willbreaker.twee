@@ -1,0 +1,140 @@
+:: QuestSetup_search_for_a_willbreaker [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'search_for_a_willbreaker', /* key */
+"Break Will", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'quest',
+  'trait',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'informer1': [ setup.qu.informer, 1],
+  'informer2': [ setup.qu.informer, 1],
+  'historian': [ setup.qu.scholar, 1],
+},
+{ /* actors */
+  'trainee': [
+  ],
+},
+[ /* costs */
+  setup.qc.Money(-7000),
+],
+'Quest_search_for_a_willbreaker',
+setup.qdiff.hard45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_search_for_a_willbreakerCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.Money(3000),
+    ],
+  ],
+  [
+    'Quest_search_for_a_willbreakerCrit',
+    [
+      setup.qc.AddTag('trainee', 'in_training_defiant_slave'),
+    ],
+  ],
+  [
+    'Quest_search_for_a_willbreakerFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_search_for_a_willbreakerFailure',
+    [
+      setup.qc.Ire('humankingdom', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_search_for_a_willbreaker [nobr]
+
+<p>
+A defiant slave cannot be broken via normal means. You must dedicate a team
+of slavers to work for a few weeks in the <<rep setup.buildingtemplate.researchroom>>,
+trying to find a way to break the slave. This will cost a great deal of money, but
+the cost should be the least of your concern.
+The coin spent would discover a way to break the slave, which will no doubt
+be even more challenging than just finding a sum of money...
+</p>
+
+
+:: Quest_search_for_a_willbreakerCrit [nobr]
+<<set _candidates = {
+race_human: ['cor', 'mind', 'fav', 'pot', 'ord',],
+race_wolfkin: ['cor', 'ord'],
+race_elf: ['cor', 'mind', 'ord'],
+race_catkin: ['cor', 'fav', 'ord'],
+race_greenskin: ['mind', 'ord'],
+race_lizardkin: ['fav', 'ord'],
+race_demon: ['pot', 'ord'],
+}>>
+
+<<set _tr = setup.rng.choice(_candidates[$g.trainee.getRace().key])>>
+
+<p>
+After four long weeks of searching, your slavers found a lead in the
+<<if _tr == 'cor'>>
+<<lore region_vale>>.
+<<set _questtt = 'corruption_cycle_breaker'>>
+<<elseif _tr == 'pot'>>
+<<lore region_forest>>.
+<<set _questtt = 'drug_regime'>>
+<<elseif _tr == 'fav'>>
+<<lore region_desert>>.
+<<set _questtt = 'bargain_with_the_devil'>>
+<<elseif _tr == 'ord'>>
+<<lore region_sea>>.
+<<set _questtt = 'animal_trainer_of_the_south'>>
+<<elseif _tr == 'mind'>>
+<<lore region_city>>.
+<<set _questtt = 'public_penance'>>
+<</if>>
+It is now up to you if you want to follow-up on this lead, or if you want to discard the lead.
+</p>
+
+<<run setup.qc.QuestDirect(_questtt).apply($gQuest)>>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers managed to find the information using only a fraction of the money they started with.
+</p>
+<</if>>
+
+
+
+:: Quest_search_for_a_willbreakerFailure [nobr]
+
+<p>
+Unfortunately, your slavers were not able to found any contact or hint on how
+to possibly break <<yourrep $g.trainee>>. After four weeks of such search, you
+had to call off the mission for being a complete failure.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Worse still, <<yourrep $g.informer1>> informer1|was careless during one of
+the information gathering, and leaked your fort information into some of the
+dissidents in the <<rep $company.humankingdom>>. They view your slaving
+company with some greater disdain now as a result.
+</p>
+
+<</if>>
+
+
+

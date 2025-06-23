@@ -1,0 +1,54 @@
+:: EventSetup_debtor_for_sale [nobr event]
+
+
+<<run new setup.UnitGroup(
+"debtor_for_sale0",
+"Debtor",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_merchant),
+  setup.qc.TraitReplace('unit', setup.trait.per_lavish),
+],
+)>>
+
+<<run new setup.Event(
+'debtor_for_sale', /* key */
+"Debtor for Sale", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_debtor_for_sale',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'man': 'all',
+  'debtor': 'debtor_for_sale0',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_tiger_bank_repo_resale', '1', 250),
+  setup.qc.Slave('debtor', "a|was enslaved after a|they fell into a debt far too big for a|their own worth", true, 0.8),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+  setup.qres.FavorAtLeast('bank', 300),
+  setup.qres.VarNull('quest_tiger_bank_repo_resale'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_debtor_for_sale [nobr]
+<<include 'Event_TigerBankRepoCommon'>>
+
+<p>
+The current sale offer is a bit different than usual.
+The bank is offering you a brand new slave, apparently being the debtor <<themself $g.debtor>>.
+<<Their $g.debtor>> debt has increased so much to the point that even after the many repo-men and women repossessed all <<their $g.debtor>> belongings, it was still not enough. <<They $g.debtor>> eventually put a slave collar on the poor <<urace $g.debtor>>'s neck, before eventually offering the new slave to you.
+</p>
+

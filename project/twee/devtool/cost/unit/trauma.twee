@@ -1,0 +1,60 @@
+:: CostTrauma [nobr]
+
+<<include LoadSelectTrait>>
+
+
+<<devactordefault>> gains the following temporary trait for 
+<<numberbox '_duration' 5>> weeks:
+
+<br/>
+
+<<selecttrait 'CostTraumaDo' setup.TraitHelper.getAllTraitsOfTags(['temporary'])>>
+
+:: CostTraumaDo [nobr]
+
+<<set $qcost = setup.qc.Trauma($qgDefaultActorName, $rTrait, _duration)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostTraumatizeRandom [nobr]
+
+
+
+<<devactordefault>> gains a random temporary trauma for 
+<<numberbox '_duration' 5>> weeks.
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.TraumatizeRandom($qgDefaultActorName, _duration)>>
+<</link>>
+
+
+:: CostBoonizeRandom [nobr]
+
+
+
+<<devactordefault>> gains a random temporary boon for 
+<<numberbox '_duration' 5>> weeks.
+One week of boon is worth <<money 100>> per unit.
+(E.g., 3 units each getting 5 weeks of boon is <<money 1500>>)
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.BoonizeRandom($qgDefaultActorName, _duration)>>
+<</link>>
+
+
+:: CostTraumaHeal [nobr]
+
+
+
+<<devactordefault>> heals
+<<numberbox '_duration' 5>> weeks worth of trauma.
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.TraumaHeal($qgDefaultActorName, _duration)>>
+<</link>>
+
+
+

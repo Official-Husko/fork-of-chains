@@ -1,0 +1,113 @@
+:: QuestSetupMilkFactoryRaid [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _infiltrator = new setup.UnitCriteria(
+  null, /* key */
+  'Infiltrator', /* title */
+  [
+    setup.trait.bg_thief,
+    setup.trait.tough_nimble,
+    setup.trait.per_sly,
+    setup.trait.per_loner,
+    setup.trait.per_lunatic,
+    setup.trait.per_evil,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+  ], /* critical traits */
+  [
+    setup.trait.subrace_humankingdom,
+    setup.trait.bg_slave,
+    setup.trait.per_direct,
+    setup.trait.per_gregarious,
+    setup.trait.per_masochistic,
+    setup.trait.per_honorable,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    intrigue: 3.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'milk_factory_raid', /* key */
+  'Factory: Raid', /* Title */
+  'darko',   /* author */
+  ['city', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'seducer': setup.qu.seducer,
+    'infil1': _infiltrator,
+    'infil2': _infiltrator,
+  },
+  { /* actors */
+    'cow': 'quest_humankingdom_cow_female',
+    'bigcow': 'quest_humankingdom_cow_female_titanic',
+  },
+  [ /* costs */
+  ],
+  'QuestMilkFactoryRaid', /* passage description */
+  setup.qdiff.normal29, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestMilkFactoryRaidCrit',
+      [
+        setup.qc.MoneyCrit(),
+        
+      ],
+    ],
+    [
+      'QuestMilkFactoryRaidCrit',
+      [
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestMilkFactoryRaidFailure',
+      [
+      ],
+    ],
+    [
+      'QuestMilkFactoryRaidDisaster',
+      [
+        setup.qc.Injury('seducer', 4),
+        setup.qc.TraitReplaceExisting('seducer', setup.trait.anus_gape),
+        setup.qc.TraitReplaceExisting('seducer', setup.trait.vagina_gape),
+        setup.qc.SlaveMarker('cow'),
+        setup.qc.SlaveMarker('bigcow'),
+      ],
+    ],
+  ],
+  [], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestMilkFactoryRaid [nobr]
+
+<<include 'OpportunityMilkFactory'>>
+
+<p>
+You have chosen to infiltrate the factory and steal whatever valuables you can get.
+</p>
+
+
+:: QuestMilkFactoryRaidCrit [nobr]
+
+<<include 'QuestMilkFactoryKidnapFemaleCrit'>>
+
+
+
+:: QuestMilkFactoryRaidFailure [nobr]
+
+<<include 'QuestMilkFactoryKidnapFemaleFailure'>>
+
+
+:: QuestMilkFactoryRaidDisaster [nobr]
+
+<<include 'QuestMilkFactoryKidnapFemaleDisaster'>>

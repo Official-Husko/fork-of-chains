@@ -1,0 +1,221 @@
+:: QuestSetup_the_cold_dish [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_avenger_0", /* key */
+"Avenger", /* name */
+"Had delivered swift justice on their mother\'s ravager", /* description */
+"had finally made peace with a|their past by delivering justice to a|their mother\'s raper", /* unit text */
+3000, /* slave value */
+{ /* skill additives */
+combat: 2,brawn: 4,survival: 1,},
+)
+>>
+<<run new setup.UnitGroup(
+"the_cold_dish0",
+"Father of the Half-Werewolf",
+'subrace_werewolfmale',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+  setup.qc.TraitsReplace('unit', [setup.trait.muscle_extremelystrong]),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_lustful, setup.trait.per_dominant]),
+  setup.qc.AddTag('unit', 'half_werewolf_father'),
+],
+)>>
+
+
+<<set _criteriachild = new setup.UnitCriteria(
+null, /* key */
+'The Half-Werewolf', /* name */
+[
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_loner,
+  setup.trait.per_cautious,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+],
+[
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.per_gregarious,
+  setup.trait.per_kind,
+  setup.trait.per_brave,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_shapeshifter__werewolf_1'),
+],
+{
+  combat: 1,
+  brawn: 1,
+  survival: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_cold_dish', /* key */
+"The Cold Dish", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'vale',
+  'unit',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'child': [ _criteriachild, 1],
+  'bait': [ setup.qu.bimbo, 1],
+  'lurer': [ setup.qu.convincer, 1],
+},
+{ /* actors */
+  'father': 'the_cold_dish0',
+},
+[ /* costs */
+],
+'Quest_the_cold_dish',
+setup.qdiff.harder44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_cold_dishCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.BoonizeRandom('child', 75),
+    ],
+  ],
+  [
+    'Quest_the_cold_dishCrit',
+    [
+      setup.qc.VarRemove('half_werewolf_father_seen'),
+      setup.qc.VarRemove('half_werewolf_father_encountered'),
+      setup.qc.Parent('father', 'child'),
+      setup.qc.AddTitle('child', 'quest_avenger_0'),
+      setup.qc.VarSet('half_werewolf_epilogue', '1', -1),
+      setup.qc.Injury('child', 1),
+      setup.qc.RemoveTagGlobal('half_werewolf_told_backstory'),
+      setup.qc.Slave(
+        'father',
+        "a|was the father of a shapeshifter slaver who sired the slaver during an unfortunate assault, and a|have been served justice by being remade into your slave",
+        undefined),
+    ],
+  ],
+  [
+    'Quest_the_cold_dishCrit',
+    [
+      setup.qc.TraumatizeRandom('child', 25),
+      setup.qc.Injury('child', 8),
+      setup.qc.TraitIncreaseExisting('bait', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('bait', setup.trait.anus_gape),
+      setup.qc.Injury('bait', 2),
+    ],
+  ],
+  [
+    'Quest_the_cold_dishCrit',
+    [
+      setup.qc.TraitIncreaseExisting('bait', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('bait', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('bait', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('bait', setup.trait.vagina_gape),
+      setup.qc.Injury('bait', 12),
+      setup.qc.TraumatizeRandom('bait', 35),
+      setup.qc.Injury('child', 8),
+      setup.qc.TraumatizeRandom('child', 35),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.VarEqual('half_werewolf_father_seen', '1'),
+],
+[ /* expiration outcomes */
+  setup.qc.VarRemove('half_werewolf_father_seen'),
+
+],
+)>>
+
+:: Quest_the_cold_dish [nobr]
+<<set _u = setup.getUnit({job: setup.job.slaver, title: "quest_shapeshifter__werewolf_1"})>>
+
+<<if _u>>
+
+<p>
+As luck would have it, you have heard that the werewolf that sired <<yourrep _u>> is back settling nearby a small settlement on the <<lore region_vale>>, no doubt to quench <<their $g.father>> insatiable lust.
+Hearing the news, <<rep _u>> desperately begs you to let <<them _u>> go after <<them $g.father>>, to finally put an end to it all. Looking at your slaver's puppy eyes, how could you say no? More importantly, however, is that the werewolf must have possessed quite a bit of strength to be able to raid such settlements all by <<themself $g.father>>, and no doubt would be a nice addition to your stable of slaves.
+</p>
+
+<p>
+Before getting ahead of yourself though, you should best prepare for the mission. A bait is required, something attractive to lure in the werewolf. Furthermore, one of your slavers must be able to pose as innocent stranger, gossiping aloud about the target enough for the werewolf to overhear. And finally, <<rep _u>> <<themself _u>> must be ready, for <<they _u>> alone will come face-to-face with <<their _u>> giver of nightmares, and must put an end to it <<themself _u>>.
+</p>
+
+<<else>>
+
+<p>
+<<dangertext "You are missing a unit required for this quest.">> This quest is no longer able to be completed.
+</p>
+
+<</if>>
+
+
+:: Quest_the_cold_dishCrit [nobr]
+<p>
+With <<rep $g.bait>> suitably tied up on a pole, <<yourrep $g.lurer>> <<uadv $g.lurer>> began the plan. Posing as an innocent merchant <<they $g.lurer>> walked dangerously close to the werewolf den, while chatting aloud about the
+<<if $g.lurer.isFemale()>>
+gorgeous definitely-virgin girl-slave being tied up alone on the plains.
+<<else>>
+handsome boy-slave, definitely virgin too, being tied up alone on the plains.
+<</if>>
+The plan enacted, <<rep $g.child>> then lied in wait for their worst nightmare to come...
+</p>
+
+<p>
+After an agonizing wait, <<rep $g.child>> heard a shuffling sound and went back alert. The werewolf then came into view, a hulking werewolf inches taller than <<rep $g.child>> <<themself $g.child>>, eyeing <<rep $g.bait>> lustfully. Unable to contain <<their $g.father>> lust, <<they $g.father>> went straight for <<rep $g.bait>>, no doubt with impure intention. As <<rep $g.bait>> thearetically screamed in terror, <<rep $g.child>> leaped to the rescue, securing the first attack on the were.
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+A surprise attack was nowhere near enough to knock the hulking werewolf,
+and <<rep $g.child>> must now fight all by <<themself $g.child>>, ending this once and for all.
+
+<<if $g.child.isHasTrait('per_lunatic')>>
+Laughing lunatically, <<rep $g.child>> moved with unnerving precision around <<rep $g.father>>, catching <<them $g.father>> by surprise. The battle ended in a flash, and when the dust settled all that remain were <<rep $g.child>> and an unconscious body behind <<them $g.child>>.
+<<elseif $g.child.isHasTrait('per_cruel')>>
+Laughing cruelly, <<reps $g.child>> bloodthirst poured out with such intensity that even caught <<them $g.father>> by surprise. Sensing an opportunity, <<rep $g.child>> raised <<their $g.child>> <<uweapon $g.child>> and delivered a decisive strike, knocking the were unconscious to the ground.
+<<elseif $g.child.isHasTrait('muscle_verystrong')>>
+Laughing, <<reps $g.child>> muscles turned out to be evenly matched with that of <<rep $g.father>>, turning it into an all-out brawl. Muscle against muscle, the fight was raw and intense, but the surprise attack gave <<rep $g.child>> the opening <<they $g.child>> needed before finally clutching the sweatfest out.
+<<else>>
+But the surprise attack gave <<rep $g.child>> the edge <<they $g.child>> needed, and after an intense battle, <<rep $g.child>> raised <<their $g.child>> <<uweapon $g.child>> victoriously with the other werewolf defeated and on the ground.
+<<run setup.qc.Injury('child', 2).apply($gQuest)>>
+<</if>>
+</p>
+
+<p>
+Staring at the body on the ground, <<rep $g.child>> almost could not believe that <<they $g.child>> had the creature that brought <<their $g.child>> cursed existence into the world before them. And now justice could be served, for <<they $g.father>> will use what remains of <<their $g.father>> body to serve and make amend, this time as your slave.
+<<if $gOutcome == 'crit'>>
+As if a dark shroud has been finally lifted from <<them $g.child>>, <<yourrep $g.child>> can feel a lightness in <<their $g.child>> step now, which will likely last for a good while.
+<</if>>
+</p>
+
+<p>
+Basking in the aftermarth, <<rep $g.child>> almost forgot to release <<rep $g.bait>>, who struggled all the time asking to be released from <<their $g.bait>> bondage. <<They $g.child>> hurriedly apologized before undoing their bondage.
+</p>
+
+<<else>>
+<p>
+But it was all in naught, as the werewolf was too powerful and easily shrugged off the sudden attack. Thrown into the ground, <<rep $g.child>> child|was heavily injured in the ensuing fight, and rendered helpless to watch as <<their $g.child>> father approached the bound <<rep $g.bait>>, before penetrating <<them $g.bait>> violently before <<yourrep $g.child>>'s <<ueyes $g.child>>. As <<they $g.child>> continued to watch, <<rep $g.child>> could not help but grow a little broken inside, having to relive a reenaction of <<their $g.child>> worst memory.
+</p>
+
+<p>
+By the time the werewolf was finished with the non-consensual sex, <<rep $g.bait>> bait|was left exhausted and with <<their $g.bait>> holes visibly gaped by the experience. It was not until when <<rep $g.lurer>> came back that your slavers were able to tend to their wounds, although they will need a lot of time in your fort to recover from it, and even longer to recover from the trauma they must have endured.
+</p>
+
+<</if>>
+
+

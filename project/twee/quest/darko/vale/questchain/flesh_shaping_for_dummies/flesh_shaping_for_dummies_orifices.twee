@@ -1,0 +1,153 @@
+:: QuestSetup_flesh_shaping_for_dummies_orifices [nobr quest]
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Trainee', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_flesh_shaping_dummy_0'),
+  setup.qres.AllTraits([setup.trait.magic_water], true),
+],
+{
+  arcane: 2.0,
+  brawn: 1.0,
+}
+)>>
+
+<<set _criteriaslave1 = new setup.UnitCriteria(
+null, /* key */
+'Tight slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.anus_tight, setup.trait.vagina_tight], true),
+],
+{
+}
+)>>
+
+<<set _criteriaslave2 = new setup.UnitCriteria(
+null, /* key */
+'Tight slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.anus_tight, setup.trait.vagina_tight], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'flesh_shaping_for_dummies_orifices', /* key */
+"Flesh-Shaping for Dummies: Orifices", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'trait',
+  'vale',
+],
+8, /* weeks */
+1000, /* expiration weeks */
+{ /* roles */
+  'slaver': [ _criteriaslaver, 3],
+  'slave1': _criteriaslave1,
+  'slave2': _criteriaslave2,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_flesh_shaping_for_dummies_orifices',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_flesh_shaping_for_dummies_orificesCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_orificesCrit',
+    [
+      setup.qc.Injury('slave1', 10),
+      setup.qc.Injury('slave2', 10),
+      setup.qc.QuestDirect('flesh_shaping_for_dummies_muscles', null),
+      setup.qc.TraitReplaceExisting('slave1', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('slave1', setup.trait.anus_gape),
+      setup.qc.TraitReplaceExisting('slave2', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('slave2', setup.trait.anus_gape),
+      setup.qc.TraitReplaceExisting('slaver', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('slaver', setup.trait.anus_gape),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_orificesCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_orificesCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTitleGlobal('quest_flesh_shaping_dummy_0'),
+
+],
+)>>
+
+:: Quest_flesh_shaping_for_dummies_orifices [nobr]
+<<set _u = setup.getUnit({title: 'quest_flesh_shaping_dummy_0'})>>
+
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+<p>
+Having obtained the legendary "Flesh-Shaping for Dummies" book, <<yourrep _u>> immediately begins to work advancing their mastery over their water magic. According to the book, "practice makes perfect", and to master the magic, <<rep _u>> must practice flesh-shaping on various targets. The first step is easy, "shaping orifices" by gaping them wide. Surely this is a feat worthy of an advanced flesh-shaping magic, and surely it's not just by gaping them by force...
+</p>
+
+<p>
+Either way, a pair of "volunteers" are needed. To make the learning experience as effective as possible, both must still possess virgin-tight orifices. By the end of the procedure, there is little doubt what would happen to their orifices, but you get the feeling that <<yourrep _u>> lack of mastery will also lead to other holes being gaped, not necessarily just those belonging to the volunteers...
+</p>
+
+<</if>>
+
+
+
+:: Quest_flesh_shaping_for_dummies_orificesCrit [nobr]
+<p>
+A grueling six weeks later, after many screams were heard from the ritual room, <<yourrep $g.slaver>> slaver|have finally finished <<their $g.slaver>> studies on the subject of gaping holes with water magic.
+You can't be sure if it was really via flesh-shaping magic, or whether it was simply by forcing a silly amount of water in, but whatever it was, it certainly did the job. The two slaves are now a mess, their once virgin-tight holes have been permanently gaped into cavernous gapes.
+<<if !$g.slaver.isHasTrait('anus_gape')>>
+That's not all, however. It turned out that <<therace $g.slaver>> had accidentally lost control of <<their $g.slaver>> magic during the ritual, and as a result <<their $g.slaver>> own anus was also affected...
+<<elseif !$g.slaver.isHasTrait('vagina_gape')>>
+That's not all, however. It turned out that <<therace $g.slaver>> had accidentally lost control of <<their $g.slaver>> magic during the ritual, and as a result <<their $g.slaver>> own pussy was also affected...
+<</if>>
+</p>
+
+<p>
+Still, it was not all for nothing.
+<<Yourrep $g.slaver>> slaver|is now ready, at least according to the book, to advanced into the next step of becoming a master of water magic.
+No doubt you will need to supply more slaves for the venture, however...
+You just hope that the rewards are going to be worth all these efforts.
+</p>

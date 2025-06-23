@@ -1,0 +1,157 @@
+:: QuestSetup_trading_mission__southern_seas [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriatrader1 = new setup.UnitCriteria(
+null, /* key */
+'Trader (Sea)', /* name */
+[
+setup.trait.per_sly,
+setup.trait.per_frugal,
+setup.trait.per_dominant,
+],
+[
+setup.trait.per_direct,
+setup.trait.per_lavish,
+setup.trait.per_submissive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+slaving: 1,
+social: 1,
+arcane: 1,
+}
+)>>
+
+<<set _criteriatrader2 = new setup.UnitCriteria(
+null, /* key */
+'Trader (Sea)', /* name */
+[
+setup.trait.per_sly,
+setup.trait.per_frugal,
+setup.trait.per_dominant,
+],
+[
+setup.trait.per_direct,
+setup.trait.per_lavish,
+setup.trait.per_submissive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+slaving: 1,
+social: 1,
+arcane: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'trading_mission__southern_seas', /* key */
+"Trading Mission: Southern Seas", /* Title */
+"darko", /* Author */
+[ 'sea', 'money'
+], /* tags */
+3, /* weeks */
+1, /* expiration weeks */
+{ /* roles */
+'guard': setup.qu.guard,
+'trader1': _criteriatrader1,
+'trader2': _criteriatrader2, },
+{ /* actors */
+},
+[ /* costs */
+setup.qc.MoneyNormal(-1), ],
+'Quest_trading_mission__southern_seas',
+setup.qdiff.normal49, /* difficulty */
+[ /* outcomes */
+[
+'Quest_trading_mission__southern_seasCrit',
+[
+setup.qc.Favor('humansea', 100),
+setup.qc.MoneyNormal(3.0),
+],
+], [
+'Quest_trading_mission__southern_seasSuccess',
+[
+setup.qc.MoneyNormal(2.4), ],
+], [
+'Quest_trading_mission__southern_seasFailure',
+[
+],
+], [
+'Quest_trading_mission__southern_seasDisaster',
+[
+setup.qc.Injury('guard', 2),
+setup.qc.Injury('trader1', 2),
+setup.qc.Injury('trader2', 2), ],
+], ],
+[
+[setup.questpool.sea, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_trading_mission__southern_seas [nobr]
+
+<p>
+There are a great many exotic spices and fabric in the land beyond the
+<<lore region_sea>>. You could send a group of slavers with a capital to venture
+there and buy plenty of goods, which will sell insanely high near your fort.
+This venture will surely bring great income, but requires plenty of capital
+as well as posing a certain amount of danger.
+</p>
+
+
+:: Quest_trading_mission__southern_seasCrit [nobr]
+
+<p>
+You almost could not believe your eyes as your slavers managed to
+<<uadv $g.trader1>>
+rake in so much money.
+
+<<set _con = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'skill_connected'})>>
+<<if _con>>
+  <<Rep _con>> must have pulled some strings using <<their _con>> vast network of connections.
+<</if>>
+
+<<set _fru = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'per_frugal'})>>
+<<if _fru>>
+  <<Rep _fru>> must have been a natural at picking deals.
+<</if>>
+
+Even though your slavers for sure pocketed a significant fraction
+of it, you still don't mind the remaining sum at all.
+</p>
+
+
+:: Quest_trading_mission__southern_seasSuccess [nobr]
+
+<p>
+Your slavers
+<<uadv $g.trader1>>
+brought spices, rugs, silk, and even an exotic slave dancer to be resold in
+the <<lore region_city>> bringing an enormous amount of profit for your
+company.
+</p>
+
+
+:: Quest_trading_mission__southern_seasFailure [nobr]
+
+<p>
+Unfortunately, your slavers got swindled hard by the southern traders. The
+goods they brought along the ship had rotten into nothingness by the time
+they arrived back at your fort.
+</p>
+
+
+:: Quest_trading_mission__southern_seasDisaster [nobr]
+
+<p>
+Unfortunately, your ship was struck by a lightning storm on the way back
+resulting in the loss of the trading goods as well as injuring your slavers.
+</p>

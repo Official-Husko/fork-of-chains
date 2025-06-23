@@ -1,0 +1,70 @@
+:: InitBuildingLodgings [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'slaverroom',
+  tags: [],
+  description_passage: 'RoomSlaverRoom',
+  name: 'Slaver room',
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'lodgings',
+  tags: [],
+  width: 4,
+  height: 2,
+  door_column: 1,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "combat",
+      room_keys: [
+        'slaverroom',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'lodgings',
+  name: 'Lodgings',
+  tags: ['critical', 'unlocker', 'accomodation', ],
+  description_passage: 'BuildingLodgings',
+  costs: setup.BuildingTemplate.getLodgingsCost(0),
+  restrictions: setup.BuildingTemplate.getLodgingsRestrictions(),
+  main_room_template_key: 'lodgings',
+  sub_room_template_key: 'slaverroom',
+})>>
+
+
+:: BuildingLodgings [nobr]
+
+<p>
+A room in your fort has been transformed into
+a lodgings area for your slavers.
+While only few rooms have been prepared initially, you can prepare more rooms
+to house more slavers.
+Each upgrade adds
+<<= setup.FORT_SLAVER_CAPACITY_PER_LODGING>>
+extra spaces for slavers.
+</p>
+
+
+:: RoomSlaverRoom [nobr]
+
+<p>
+A room for two of your slavers to call home.
+</p>

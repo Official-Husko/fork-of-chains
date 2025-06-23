@@ -1,0 +1,69 @@
+:: ActivitySetup_temple_pray [nobr activity]
+
+
+<<run new setup.ActivityTemplate({
+key: 'temple_pray',
+name: "Temple Pray", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+  ],
+},
+critical_traits: [
+  setup.trait.per_honorable,
+  setup.trait.per_empath,
+  setup.trait.per_kind,
+  setup.trait.per_calm,
+  setup.trait.bg_priest,
+],
+disaster_traits: [
+  setup.trait.per_evil,
+  setup.trait.per_cruel,
+  setup.trait.per_logical,
+  setup.trait.per_aggressive,
+  setup.trait.race_demon,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "<<ugreetingshort $g.a>> are you here to pray as well?",
+      "<<ugreetingshort $g.a>> have you come to pray as well?",
+      "I hope that peace and prosperity would keep enriching everyone in my life...",
+    ],
+    bold: [
+      "<<ugreetingshort $g.a>> I'm praying right now, talk to you later.",
+      "<<ugreetingshort $g.a>> I may not look like the kind of <<rep $g.a>> that pray but I do from time to time.",
+      "I demand blessing for the upcoming quest...",
+    ],
+    cool: [
+      "<<ugreetingshort $g.a>> come to pray?.",
+      "<<ugreetingfull $g.a>> I'm praying right now.",
+      "...",
+    ],
+    witty: [
+      "<<ugreetingshort $g.a>> come to offer your prayers to something that might or might not exists?.",
+      "<<ugreetingshort $g.a>> don't mind me, just kneeling here doing something solemn like I usually do.",
+      "I came to pray, but kept getting distracted by the attractive priests around...",
+    ],
+    debauched: [
+      "<<ugreetingshort $g.a>> surprised to see me here? I sometimes come here during clarity hours, you know.",
+      "Please bestow me more money, more fame, and oh, more slaves too!",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.temple,
+],
+})>>

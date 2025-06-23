@@ -1,0 +1,40 @@
+:: LIVINGSETUP_vagabond [nobr living]
+
+<<run new setup.Living({
+  key: 'vagabond',
+  name: 'Vagabond',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_nomad: setup.LIVING_COMMON_PREFERENCE,
+    bg_unemployed: setup.LIVING_MORECOMMON_PREFERENCE,
+    bg_slave: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_curious: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_stubborn: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'wandering aimlessly',
+    'exploring the unknown',
+    'sleeping under the full moon',
+  ],
+  location: 'tent',
+})>>
+
+:: LIVING_vagabond [nobr]
+
+<p>
+With a|their slaving job over, the a|race decided to
+<<if $g.a.isHasTrait('bg_slave')>>
+enjoy their newly found freedom by living
+<<elseif $g.a.isHasTrait('bg_nomad')>>
+return to their nomadic lifestyle and live
+<<elseif $g.a.isHasTrait('bg_unemployed')>>
+return to being jobless and live
+<<else>>
+not pursue any particular occupation, but live
+<</if>>
+a|their live wandering the land.
+a|They would travel from land to land seeking wonders and beautiful sights, and spend
+a|their money buying the strangest trinkets a|they could find in faraway lands.
+</p>

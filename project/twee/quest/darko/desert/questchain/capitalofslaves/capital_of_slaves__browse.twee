@@ -1,0 +1,123 @@
+:: QuestSetup_capital_of_slaves__browse_wares [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'capital_of_slaves__browse_wares', /* key */
+"Capital of Slaves: Browse Wares", /* Title */
+"darko", /* Author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'appraiser1': setup.qu.slaveappraiser,
+'appraiser2': setup.qu.slaveappraiser,
+'trader': setup.qu.slavetrader, },
+{ /* actors */
+'slave1': 'desert_all',
+'slave2': 'desert_all',
+'slave3': 'desert_all',
+'slave4': 'desert_all',
+'slave5': 'desert_all',
+'slave6': 'all',
+'slave7': 'all',
+'slave8': 'all',
+'slave9': 'desert_all',
+'slave10': 'subrace_humansea', },
+[ /* costs */
+],
+'Quest_capital_of_slaves__browse_wares',
+setup.qdiff.easy40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_capital_of_slaves__browse_waresCrit',
+[
+setup.qc.Trait('slave1', setup.trait.training_obedience_basic),
+setup.qc.Trait('slave3', setup.trait.training_obedience_basic),
+setup.qc.Trait('slave7', setup.trait.training_obedience_basic),
+setup.qc.Slave('slave10', '', true),
+setup.qc.Slave('slave1', '', true),
+setup.qc.Slave('slave2', '', true),
+setup.qc.Slave('slave3', '', true),
+setup.qc.Slave('slave4', '', true),
+setup.qc.Slave('slave5', '', true),
+setup.qc.Slave('slave6', '', true),
+setup.qc.Slave('slave7', '', true),
+setup.qc.Slave('slave8', '', true),
+setup.qc.Slave('slave9', '', true), ],
+], [
+'Quest_capital_of_slaves__browse_waresCrit',
+[
+setup.qc.Trait('slave1', setup.trait.training_obedience_basic),
+setup.qc.Trait('slave3', setup.trait.training_obedience_basic),
+setup.qc.Slave('slave1', '', true),
+setup.qc.Slave('slave2', '', true),
+setup.qc.Slave('slave3', '', true),
+setup.qc.Slave('slave6', '', true),
+setup.qc.Slave('slave7', '', true), ],
+], [
+'Quest_capital_of_slaves__browse_waresCrit',
+[
+setup.qc.Slave('slave1', '', true),
+setup.qc.Slave('slave2', '', true), ],
+], [
+'Quest_capital_of_slaves__browse_waresDisaster',
+[
+],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_capital_of_slaves__browse_wares [nobr]
+
+<<include 'Opportunity_capital_of_slaves'>>
+
+<p>
+You have chosen to take the safest route and send a group of slavers to browse through the wares.
+</p>
+
+
+:: Quest_capital_of_slaves__browse_waresCrit [nobr]
+
+<<if $g.slave1.isMale()>>
+<<else>>
+  <<questimage 'capital_of_slaves_female.jpg'>>
+<</if>>
+
+<p>
+The slave market of Qarma was truly a sight to behold. Naked slaves were on
+full display everywhere — from a muscularly built ex-raider who was being
+continuously whipped to showcase his endurance, to a lady with breasts so
+large she cannot move on her own.
+
+<<set _cur = setup.selectUnit([$g.appraiser1, $g.appraiser2, $g.trader], {trait: 'per_curious'})>>
+<<if _cur>>
+The various strange merchandise on display was very interesting for the curious <<rep _cur>>.
+<</if>>
+
+<<Yourrep $g.appraiser1>> and <<rep $g.appraiser2>> <<uadv $g.appraiser1>>
+worked their best
+to appraise the slaves under the hot sun of Qarma,
+
+<<if $gOutcome == 'crit'>>
+and they were so successful that they returned with ten decently-priced candidates for
+you to browse including one particularly rare slave.
+<<elseif $gOutcome == 'success'>>
+and returned with five decently-priced candidates for you to browse.
+<<else>>
+but your slavers were incompetent
+were only able to find two decently priced slaves for you to browse.
+
+<</if>>
+</p>
+
+
+:: Quest_capital_of_slaves__browse_waresDisaster [nobr]
+<p>
+Unfortunately, your slavers were mistaken for raiders and were denied entry to
+the city. They had no choice but to went back home, having wasted two weeks of work.
+</p>

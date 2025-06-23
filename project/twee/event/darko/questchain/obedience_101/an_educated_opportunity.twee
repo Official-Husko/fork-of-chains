@@ -1,0 +1,48 @@
+:: EventSetup_an_educated_opportunity [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_certified_instructor_0", /* key */
+"Certified Instructor", /* name */
+"Has completed the instructor certifications from the Institute of Higher Learning ", /* description */
+"a|have completed the instructor certifications from the Institute of Higher Learning ", /* unit text */
+1000, /* slave value */
+{ /* skill additives */
+slaving: 2,knowledge: 1,},
+)
+>>
+
+
+<<run new setup.Event(
+'an_educated_opportunity', /* key */
+"An Educated Opportunity", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'unknown',
+],
+'Event_an_educated_opportunity',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_certified_instructor_0'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 30),
+  setup.qc.Opportunity('an_educated_opportunity', {
+slaver: "slaver",
+}),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.technology_obediencemaster),
+],
+0, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_an_educated_opportunity [nobr]
+<<include "Opportunity_an_educated_opportunity">>

@@ -1,0 +1,41 @@
+:: InitBuildingMysticOffice [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'mysticoffice',
+  tags: [],
+  width: 2,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+
+<<run new setup.BuildingTemplate({
+  key: 'mysticoffice',
+  name: 'Mystic office',
+  tags: ['heal',],
+  description_passage: 'BuildingMysticOffice',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('hospital'), setup.qres.Building('dutyroom')],
+  ],
+  on_build: [
+    [setup.qc.Duty('mystic')],
+  ],
+  main_room_template_key: 'mysticoffice',
+})>>
+
+
+:: BuildingMysticOffice [nobr]
+
+<p>
+Unlocks the mystic duty, which can amplify boons received by your slavers.
+</p>
+

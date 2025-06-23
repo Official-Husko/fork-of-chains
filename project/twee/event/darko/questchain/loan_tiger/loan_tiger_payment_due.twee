@@ -1,0 +1,82 @@
+:: EventSetup_loan_tiger_payment_due [nobr event]
+
+<<run new setup.Event(
+'loan_tiger_payment_due', /* key */
+"Loan Tiger: Payment Due", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_loan_tiger_payment_due',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'neko': 'subrace_neko',
+},
+[ /* outcomes */
+  setup.qc.IfThenElse(
+setup.qres.Function(() => {
+  return State.variables.company.player.getMoney() >= State.variables.varstore.get('tiger_bank_loan');
+}),
+setup.qc.DoAll([
+setup.qc.Function((quest) => {
+  setup.qc.Money(-State.variables.varstore.get('tiger_bank_loan')).apply(quest);
+}),
+setup.qc.VarRemove('tiger_bank_loan'),
+setup.qc.IfThenElse(
+setup.qres.VarNull('tiger_bank_loan_extension'),
+setup.qc.DoAll([
+setup.qc.Favor('bank', 100)
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+setup.qc.VarRemove('tiger_bank_loan_extension')
+], undefined),
+setup.qc.DoAll([
+setup.qc.VarAdd('tiger_bank_loan', 10000, -1),
+setup.qc.VarSet('tiger_bank_loan_extension', '1', -1),
+setup.qc.Ire('bank', 5),
+setup.qc.Event('loan_tiger_payment_due', 53, null, true)
+], undefined)),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_loan_tiger_payment_due [nobr]
+<<set _money = $varstore.get('tiger_bank_loan')>>
+
+<p>
+Some time ago, your company has fallen into a debt, and you had to borrow some money from the <<rep $company.bank>>. The loan is due today however, and a representative has come to collect your due pay: a sum of <<money _money>>, and not a single penny missing.
+</p>
+
+<<set _repeat = $varstore.get('tiger_bank_loan_extension')>>
+<<if $company.player.getMoney() >= _money>>
+
+<<if _repeat>>
+<p>
+Not wanting to anger and increase your debt any further, you finally managed to scrounge the money this time. You grudgingly paid the money via the bank's representative, and they took your money graciously. You are finally debt-free once again, and it feels to be a debt-free <<urace $unit.player>> again.
+</p>
+<<else>>
+<p>
+Fortunately, you've recovered your coffers ever since you've fallen into debt. You took the required money from the fort vaults and gave it to the bank, who took it graciously. You parted in good terms with the bank, both of you happy with how the deal went. It feels good to be debt-free once again.
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+Unfortunately, you keep mismanaging your finances, and the money you're supposed to pay with is nowhere inside your coffers.
+<<if _repeat>>
+This is not the first this might have happened either.
+<</if>>
+The bank is understandably displeased with you, and decided to add a hefty <<money 10000>> on top of your existing loan. They will try and collect the money again next year, but in the meantime, their view of your company has soured.
+</p>
+
+<</if>>

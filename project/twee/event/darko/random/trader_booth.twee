@@ -1,0 +1,183 @@
+:: EventSetup_trader_booth [nobr event]
+
+<<run new setup.Event(
+'trader_booth', /* key */
+"Trader Booth", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_trader_booth',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_merchant], true),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AnyTrait([setup.trait.breast_huge, setup.trait.breast_titanic, setup.trait.balls_huge, setup.trait.balls_titanic], true),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.market),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_trader_booth [nobr]
+<p>
+About this time of the day, <<yourrep $g.slaver>> can usually be found
+<<uhobbyverb $g.slaver>>. However, today <<they $g.slaver>> slaver|is not in
+<<their $g.slaver>> usual spot. Instead, you spot the ex-merchant opening up
+a small booth in your <<rep setup.buildingtemplate.market>>.
+</p>
+
+<p>
+Coming over, you see that <<therace $g.slaver>> is opening up a one-day-only booth, selling a "specialty product" of your company with a steep discount: the slave <<rep $g.slave>> is fully bound and placed on the table, while
+<<if $g.slave.isHasTrait('breast_huge')>>
+the nipples on <<their $g.slave>> milky breasts are attached to some sort of suction pipe, which ends in
+<<else>>
+some sort of pip is attached deep inside <<their $g.slave>> urethra, and ending in
+<</if>>
+a box with a tap.
+</p>
+
+<p>
+As you recall, <<rep $g.slaver>> used to be a merchant before joining your company, and it seems <<therace $g.slaver>> sees the potential profit in your particularly well-endowed <<urace $g.slave>> slave. Seeing you approach, <<they $g.slaver>>
+<<if $g.slaver.getSpeech() == setup.speech.friendly>>
+give you a friendly smile and asks if you'd like to try some of the product first.
+<<elseif $g.slaver.getSpeech() == setup.speech.bold>>
+almost screams to greet you and ask you to come and try the product.
+<<elseif $g.slaver.getSpeech() == setup.speech.cool>>
+gives you a stoic nod, before inviting you to come and sample the product.
+<<elseif $g.slaver.getSpeech() == setup.speech.witty>>
+points invitingly at the slave's
+<<if $g.slave.isHasTrait('breast_huge')>>
+tits.
+<<else>>
+balls.
+<</if>>
+<<elseif $g.slaver.getSpeech() == setup.speech.debauched>>
+slaps the slave's exposed ass cheeks, before asking you to come over and sample the produce of the well-abused slave.
+<</if>>
+</p>
+
+<<if $g.you.isHasTrait('bg_merchant')>>
+<p>
+Your merchant blood has been dormant for quite some time, but such a brazen show of
+money-making seems to jog your money brain quite a bit.
+Perhaps you could help <<them $g.slaver>> in <<their $g.slaver>> money-making endeavor...
+</p>
+<</if>>
+
+<<choose>>
+
+<<opt "Sample it">>
+
+<<if $g.you.isHasTrait('bg_merchant')>>
+
+<p>
+What's an easy way to attract other people to a booth? Why, by demonstrating
+just how nice the produce is!
+You put on your best acting face and sampled the produce.
+With a thrust of the big dildo hidden down under the slave, the slave's eyes
+widen at the sudden stimulation.
+Before long, you can see the slave climaxing, producing a steady stream of
+<<ucum $g.slave>>.
+You thearetically drink down the fluid and applause its taste,
+its benefit, and whatever lie you can come up with that makes people would want to
+buy the thing.
+</p>
+
+<p>
+A steady stream of visitors soon come to try out the legendary <<ucum $g.slave>>,
+and as supply and demand dictates, <<rep $g.slaver>> were able to sell the produce
+at a premium price.
+At the end of the day, <<rep $g.slaver>> had made quite a bit of money, and you
+got your cut for a job well done.
+</p>
+
+<<run setup.qc.Money(5000).apply($gQuest)>>
+
+<<else>>
+
+<p>
+When you said yes, <<therace $g.slaver>> <<uadv $g.slaver>> grins and takes
+a large dildo from under the booth table. The slave's eyes' widen at its
+size, and your slaver unceremoniously shove it up inside the slave's anus
+while simultaneously stimulating <<their $g.slave>> <<ugenital $g.slave>>.
+Before long, you can see the slave climaxing, and at the same time, a steady stream of
+<<if $g.slave.isHasTrait('breast_huge')>>
+milk
+<<else>>
+cum
+<</if>>
+pours from the tap and into the glass below.
+The
+<<if $g.slave.isHasTrait('breast_huge')>>
+gigantic tits aren't just for show, and it produces a glass of milk effortlessly.
+<<else>>
+gigantic balls aren't just for show, and it produces a pint of cum effortlessly.
+<</if>>
+Other visitors near the <<rep setup.buildingtemplate.market>> see the demonstration and become quite interested in the booth. Soon, many people visit to the impromptu booth, and by the end of the day, <<yourrep $g.slaver>> looks quite satisfied with <<themself $g.slaver>>, having cashed in quite a bit of money from the fully-drained slave.
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 5).apply($gQuest)>>
+<</if>>
+
+<<!optif $g.you.isHasTrait('bg_merchant')>>
+<<opt "Help with the booth">>
+
+<p>
+With a different goal in mind, you order for a
+<<if $g.slave.isHasTrait('breast_huge')>>
+glass of milk.
+<<else>>
+pint of cum.
+<</if>>
+<<Therace $g.slaver>> grins <<uadv $g.slaver>> and takes a large dildo from under the booth table. The slave's eyes' widen at its size, and your slaver unceremoniously shove it up inside the slave's anus while simultaneously stimulating <<their $g.slave>> <<ugenital $g.slave>> Before long, you can see the slave climaxing, and at the same time, stream of
+<<if $g.slave.isHasDick()>>
+cum
+<<else>>
+milk
+<</if>>
+pours from the tap and into the glass below.
+The
+<<if $g.slave.isHasTrait('breast_huge')>>
+gigantic tits aren't just for show, and it produces a glass of milk effortlessly.
+<<else>>
+gigantic balls aren't just for show, and it produces a pint of cum effortlessly.
+<</if>>
+</p>
+
+<p>
+Instead of tasting it, however, you walk around the busy <<rep setup.buildingtemplate.market>> and offer the sample to other visitors around. Intrigued by the taste, many decide to come to the impromptu booth, and the booth makes quite a lot of profit by abusing <<rep $g.slave>> that day, forcing the slave to
+<<if $g.slave.isHasTrait('breast_huge')>>
+lactate painfully
+<<else>>
+cum painfully
+<</if>>
+over and over again.
+By the end of the day, the slave is on the brink of losing consciousness, but you and <<yourrep $g.slaver>> make quite a large profit from selling the goods.
+</p>
+
+<<run setup.qc.Money(800).apply($gQuest)>>
+
+<</choose>>

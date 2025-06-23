@@ -1,0 +1,86 @@
+:: OpportunitySetup_capital_of_slaves [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'capital_of_slaves', /* key */
+"Capital of Slaves", /* Title */
+"darko", /* Author */
+[ 'desert', 'unit', 'order',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_capital_of_slaves',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+[
+'Opportunity_capital_of_slaves_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('capital_of_slaves__browse_wares'), ],
+], [
+'Opportunity_capital_of_slaves_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('capital_of_slaves__sell_wares'), ],
+], [
+'Opportunity_capital_of_slaves_2',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('capital_of_slaves__steal_wares'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.OpportunityUnique(),
+setup.qres.NoQuest('capital_of_slaves__browse_wares'),
+setup.qres.NoQuest('capital_of_slaves__sell_wares'),
+setup.qres.NoQuest('capital_of_slaves__steal_wares'), ],
+)>>
+
+:: Opportunity_capital_of_slaves [nobr]
+
+<p>
+The largest city in the desert, the <<lore location_qarma>>, houses the
+largest slave market in the region. All kinds of slaves are available
+in the market — from nearby ex-raiders who were captured and turned into slaves, to exotic
+travelers unlucky enough to found their way into the market.
+</p>
+
+<p>
+You have an opportunity to send a group of slavers to visit the market, and
+there are several options you can take here.
+The safest option is to simply browse
+through the wares, while noting particularly interesting slaves for you to purchase.
+Another option is to sell your own stock to the market — the market is highly
+competitive, however, and you would not get too hot of a price there. But it
+would be very easy to get plenty of the orders.
+The last option is to attempt to sneak in during the night and steal some of the merchandise
+— this will net you quite a bit of slaves, but it will be very dangerous for your
+slavers should they fail.
+</p>
+
+
+:: Opportunity_capital_of_slaves_0 [nobr]
+Browse wares
+
+
+:: Opportunity_capital_of_slaves_1 [nobr]
+Sell wares
+
+
+:: Opportunity_capital_of_slaves_2 [nobr]
+Steal wares
+

@@ -1,0 +1,608 @@
+:: QuestSetup_a_merchant_s_revenge_caravan_raid_vale_ [nobr quest]
+
+<<set _criteriaraider = new setup.UnitCriteria(
+null, /* key */
+'Raider-Inventor', /* name */
+[
+  setup.trait.bg_engineer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_slaver,
+  setup.trait.bg_soldier,
+  setup.trait.bg_raider,
+  setup.trait.height_giant,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_active,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.bg_healer,
+  setup.trait.bg_priest,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_calm,
+  setup.trait.per_humble,
+  setup.trait.per_studious,
+  setup.trait.per_kind,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+
+<<run new setup.UnitGroup(
+"a_merchant_s_revenge_caravan_raid_vale_1",
+"Merchant Prince",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_merchant),
+  setup.qc.TraitRemove('unit', setup.trait.bg_merchant),
+  setup.qc.AddTraitsRandom('unit',
+  [
+    setup.trait.bg_merchant, setup.trait.bg_adventurer, setup.trait.bg_mercenary, setup.trait.bg_thug, setup.trait.bg_woodsman
+    ], 1, false, true),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge_caravan_raid_vale_', /* key */
+"A Merchant\'s Revenge: Caravan Raid (Vale)", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'vale',
+  'money',
+  'unit',
+  'ire',
+],
+1, /* weeks */
+5, /* expiration weeks */
+{ /* roles */
+  'scout': [ setup.qu.spotter, 1],
+  'fighter': [ setup.qu.fighter_vale, 1],
+  'raider': [ _criteriaraider, 1],
+},
+{ /* actors */
+  'slaves': 'a_merchant_s_revenge_caravan_raid_vale_1',
+},
+[ /* costs */
+],
+'Quest_a_merchant_s_revenge_caravan_raid_vale_',
+setup.qdiff.normal41, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_vale_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.Slave('slaves', "a|was a member of a Toran caravan, captured by your slavers in a raid", undefined),
+      setup.qc.MoneyCustom(1500),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_vale_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.MoneyCustom(2000),
+      setup.qc.Ire('humankingdom', 1),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_vale_Crit',
+    [
+      setup.qc.TraumatizeRandom('scout', 5),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_vale_Crit',
+    [
+      setup.qc.Ire('humankingdom', 1),
+      setup.qc.OneRandom([
+setup.qc.Injury('scout', 1),
+setup.qc.Injury('scout', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('fighter', 1),
+setup.qc.Injury('fighter', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('raider', 1),
+setup.qc.Injury('raider', 2)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('mlangmerchantprincequest', '5'),
+  setup.qres.VarLte('mlang_merchantrevenge_caravancount', 12),
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_merchant_s_revenge_caravan_raid_vale_ [nobr]
+/* mlangmerchantprincequest 5 = Caravan Raiding
+mlang_merchantrevenge_caravancount = How many caravans successfully raided
+*/
+
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        A caravan will be passing through the <<lore region_vale>> carrying a cargo full of
+        <<if $gQuest.getSeed() % 5 == 0>>
+            <<set _goods = "furs">>
+        <<elseif $gQuest.getSeed() % 5 == 1>>
+            <<set _goods = "wool">>
+        <<elseif $gQuest.getSeed() % 5 == 2>>
+            <<set _goods = "lumber">>
+        <<elseif $gQuest.getSeed() % 5 == 3>>
+            <<set _goods = "dried fish">>
+        <<elseif $gQuest.getSeed() % 5 == 4>>
+            <<set _goods = "blocks of ice">>
+        <</if>>
+        <<= _goods>>.
+        Please ensure it does not make it to Lucgate with its cargo intact. The usual fee will be provided as a bonus should you be successful in this endeavour.
+    </p>
+</div>
+
+<p>
+    On the back of the note is a rough map showing
+    <<if Math.round($gQuest.getSeed() / 5) % 5 == 0>>
+        <<set _location = "river">>
+        a bend in the River Varde.
+    <<elseif Math.round($gQuest.getSeed() / 5) % 5 == 1>>
+        <<set _location = "ravine">>
+        a ravine through the mountains.
+    <<elseif Math.round($gQuest.getSeed() / 5) % 5 == 2>>
+        <<set _location = "forest">>
+        a path running through the pine forests.
+    <<elseif Math.round($gQuest.getSeed() / 5) % 5 == 3>>
+        <<set _location = "werewolves">>
+        an unmarked track along the edge of werewolf territory.
+    <<elseif Math.round($gQuest.getSeed() / 5) % 5 == 4>>
+        <<set _location = "swampland">>
+        A bushy area of swampland.
+    <</if>>
+    It looks like a good spot for an ambush. You might even come away with a new slave. Of course, if you leave any survivors, you may incur the wrath of the Kingdom of Tor.
+</p>
+
+
+
+
+:: Quest_a_merchant_s_revenge_caravan_raid_vale_Crit [nobr]
+/* Set caravan cargo */
+<<if $gQuest.getSeed() % 5 == 0>>
+    <<set _goods = "furs">>
+<<elseif $gQuest.getSeed() % 5 == 1>>
+    <<set _goods = "wool">>
+<<elseif $gQuest.getSeed() % 5 == 2>>
+    <<set _goods = "lumber">>
+<<elseif $gQuest.getSeed() % 5 == 3>>
+    <<set _goods = "dried fish">>
+<<elseif $gQuest.getSeed() % 5 == 4>>
+    <<set _goods = "blocks of ice">>
+<</if>>
+
+/* Set ambush location */
+<<if Math.round($gQuest.getSeed() / 5) % 5 == 0>>
+    <<set _location = "river">>
+<<elseif Math.round($gQuest.getSeed() / 5) % 5 == 1>>
+    <<set _location = "ravine">>
+<<elseif Math.round($gQuest.getSeed() / 5) % 5 == 2>>
+    <<set _location = "forest">>
+<<elseif Math.round($gQuest.getSeed() / 5) % 5 == 3>>
+    <<set _location = "werewolves">>
+<<elseif Math.round($gQuest.getSeed() / 5) % 5 == 4>>
+    <<set _location = "swampland">>
+<</if>>
+
+<<name $g.scout>> easily led your slavers to
+
+<<if $g.scout.isYou() or $g.fighter.isYou() or $g.raider.isYou()>>
+
+
+    <<if _location == "river">>
+        the banks of the River Varde. The provided map brings you to an idyllic campsite some distance off the road, but it would also be a great place to ambush the caravan at their most vulnerable. And so, you settle down to wait for their arrival.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                When the caravan finally arrived it was clear they camped here frequently—and were used to being alone. They immediately set up a well organised camp, and posted very few guards, clearly expecting the river to keep them safe. When night rolled in, <<name $g.scout>> scout|was amazed to see the guards falling asleep at their post, and it took barely any time to
+                <<if _goods == "lumber">>
+                    drag the plants of pine into the river, where the water would warp them into uselessness.
+                <<elseif _goods == "blocks of ice">>
+                    push the ice blocks into the water, where they'd both melt and be swept away downstream.
+                <<else>>
+                    crack open the crates and push them into the river, where the water would ruin their contents and send most of it off downstream.
+                <</if>>
+            </p>
+
+            <p>
+                As you were working, <<name $g.raider>> nabbed a caravanner who had woken up and left their tent to answer a call of nature, pouncing on them before they could raise the alarm. Bringing them back in their soiled pants wasn't pleasant, but it did reinforce their new position in life.
+            </p>
+
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                When the caravan finally arrived it was clear they camped here frequently—and were used to being alone. They immediately set up a well organised camp, and posted very few guards, clearly expecting the river to keep them safe. When night rolled in, <<name $g.scout>> scout|was amazed to see the guards falling asleep at their post, and it took barely any time to
+                <<if _goods == "lumber">>
+                    drag the plants of pine into the river, where the water would warp them into uselessness.
+                <<elseif _goods == "blocks of ice">>
+                    push the ice blocks into the water, where they'd both melt and be swept away downstream.
+                <<else>>
+                    crack open the crates and push them into the river, where the water would ruin their contents and send most of it off downstream. Unfortunately, it appears that at least someone was awake inside their tent, and while they didn't raise the alarm, they were able to lay the blame for the attack at your door, and your company will be spoken of with displeasure in certain circles for some time.
+                <</if>>
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                But they never came. Later you heard news of the caravan arriving in Lucgate. It appears you were too slow and missed them, leaving you with nothing to show for your efforts.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Unfortunately the guards weren't as asleep as you'd thought and the noise roused them. They also turned out to be very well trained, and easily overwhelmed your slavers, who only survived by diving into the river and allowing the current to sweep them away. While everyone survived, the battering they took from both the caravanners and the underwater rocks left them with injuries that will take some time to heal.
+            </p>
+        <</if>>
+
+    <<elseif _location == "ravine">>
+        a ravine through the northern mountains. It was a trading shortcut, but was definitely a spot that was perfect for an ambush. Of course, being a ravine there was potentially a greater chance that some would be able to flee, which was potentially a problem. However, you hoped that any survivors would not be able to identify you or your slavers given the distances involved.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                In the end, you went for the "blocking them in with falling rocks" approach, which worked surprisingly well, allowing you to block them in before
+                <<if $unit.player.isHasAnyTraitExact(["per_evil", "per_cruel"])>>
+                    rolling more boulders directly onto the caravan itself.
+                <<else>>
+                    firing at the caravan with arrows, causing them to flee, scrambling over the fallen rocks, but leaving their goods behind.
+                <</if>>
+                When your slavers finally descended into the ravine, you were able to pick through the remnants of the goods, taking some supplies and leaving the rest to the elements. <<name $g.raider>> also found an unconscious <<woman $g.slaves>> who is now awaiting your final decision in the slave pens.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                In the end, you went for the "blocking them in with falling rocks" approach, which worked surprisingly well, allowing you to block them in before
+                <<if $unit.player.isHasAnyTraitExact(["per_evil", "per_cruel"])>>
+                    rolling more boulders directly onto the caravan itself.
+                <<else>>
+                    firing at the caravan with arrows, causing them to flee, scrambling over the fallen rocks, but leaving their goods behind. Unfortunately it appears that at least some of the survivors recognised your slavers, and you have garnered more animosity from the Kingdom of Tor.
+                <</if>>
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                In the end, you went for the "blocking them in with falling rocks" approach, which worked surprisingly well, allowing you to block them in before
+                <<if $unit.player.isHasAnyTraitExact(["per_evil", "per_cruel"])>>
+                    rolling more boulders directly onto the caravan itself.
+                <<else>>
+                    firing at the caravan with arrows.
+                <</if>>
+                Unfortunately, the boulders didn't fall down into the ravine itself, and the caravan spurred their horses into a gallop, escaping your trap and leaving you too far behind to catch up to them. You also caught the glint of a spyglass looking back at you as they fled, and you expect your relations with the Kingdom of Tor to be a little cooler going forward.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Unfortunately, the boulders didn't fall down into the ravine itself, and the caravan spurred their horses into a gallop, escaping your trap and racing up the mouth of the ravine. While you were close enough to engage them in combat, there were too many guards, and your slavers were forced to retreat, nursing more than a few injuries to their bodies as well as to their pride.
+            </p>
+        <</if>>
+
+    <<elseif _location == "forest">>
+        the forest path, the dark pine boughs laden with snow. The area beneath the trees was dark, but there were still snowdrifts ready to betray your presence. One misplaced foot would be enough to let an eagle eyed guard know that they weren't alone in this forest. Blowing on your hands to keep warm, you and your slavers took position for an ambush, and waited.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                It was a simple matter to bring several trees worth of snow down onto the caravan, giving your slavers the upper hand in the fighting that commenced. It was more a slaughter than a fight,
+                <<if $unit.player.isHasAnyTraitExact(["per_cruel", "per_evil"])>>
+                    and you put them all to sword—bar one that <<name $g.fighter>> had taken a shine to. The <<woman $g.slaves>> is now in your slave pen, awaiting your final decision.
+                <<elseif $unit.player.isHasAnyTraitExact(["per_honorable", "per_kind", "per_empath"])>>
+                    although you ensured their deaths were as quick and painless and possible. <<name $g.fighter>> did take a shine to one of them, and the <<woman $g.slaves>> is now in your slave pen, awaiting your final decision.
+                <<else>>
+                    and you consider it a job well done. <<name $g.fighter>> did take a shine to one of them, and the <<woman $g.slaves>> is now in your slave pen, awaiting your final decision.
+                <</if>>
+            </p>
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                It was a simple matter to bring several trees worth of snow down onto the caravan, giving your slavers the upper hand in the fighting that commenced. It was more a slaughter than a fight,
+                <<if $unit.player.isHasAnyTraitExact(["per_cruel", "per_evil"])>>
+                    and you put them all to sword, leaving you free to pick through the remains of the caravan.
+                <<elseif $unit.player.isHasAnyTraitExact(["per_honorable", "per_kind", "per_empath"])>>
+                    although you ensured their deaths were as quick and painless and possible. All in all, you consider it a job well done.
+                <<else>>
+                    and you consider it a job well done.
+                <</if>>
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, after days of waiting in the bitter cold, you were forced to give up and return to the fort. On the way back you found some wide tracks suggesting you were late by several days, and the caravan had long passed through.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                It was a simple matter to bring several trees worth of snow down onto the caravan, giving your slavers the upper hand in the fighting that commenced. Unfortunately the sheer number of guards the caravan employed meant the advantage was short lived, and your slavers were forced to withdraw. Later, tales of their victory over <<rep $company.player>> in the northern forests spread through the city. It's exaggerated by any measure, but it seems to have caught in the popular imagination.
+            </p>
+        <</if>>
+
+    <<elseif _location == "werewolves">>
+        the unmarked forest track, taking care to stay out of the werewolves' hunting grounds. Crossing that near invisible boundary would almost ensure you ran the risk of being taken, fucked, eaten, or all three. Probably in that order. On the other hand, there was always the option of pushing the caravanners to flee into the waiting claws of the lycanthropes.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                You'd had enough time to build a blockade across the road, covered in snow, and your slavers attacked from behind and the side, leaving the caravanners with a very clear escape route—and many of them took it. The guards were out of position, investigating your blockade, and some ran after the civilians, urging them not to run towards the werewolf hunting grounds. In the chaos, it was easy enough to
+                <<if _goods == "ice">>
+                    smash the blocks of ice into unsellable shards that would melt before they reach Lucgate.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                With the caravanners torn between fight, flight and saving their goods, it was easy enough to pick the guards off one by one, and when the rest broke you herded them towards the werewolves, capturing one for your own amusement. If any of the caravanners survived the werewolves, they haven't returned to the city to say.
+            </p>
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                You'd had enough time to build a blockade across the road, covered in snow, and your slavers attacked from behind and the side, leaving the caravanners with a very clear escape route—and many of them took it. The guards were out of position, investigating your blockade, and some ran after the civilians, urging them not to run towards the werewolf hunting grounds. In the chaos, it was easy enough to
+                <<if _goods == "ice">>
+                    smash the blocks of ice into unsellable shards that would melt before they reach Lucgate.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                With the caravanners torn between fight, flight and saving their goods, it was easy enough to pick the guards off one by one, and when the rest broke you herded them towards the werewolves. If any of them survived, they haven't returned to the city to say.
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                You had enough time to build a blockade across the road, covered in snow, and your slavers attacked from behind and the side, leaving the caravanners with a very clear escape route, but they never showed up. After a few days of waiting you were forced to return home, wondering if you'd even managed to find the right place.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                You'd had enough time to build a blockade across the road, covered in snow, and your slavers attacked from behind and the side, leaving the caravanners with a very clear escape route. However, the caravan was able to break through the blockade, allowing the wagons to flee, and there were enough guards that pursuit was not an option.
+            </p>
+            <p>
+                You were forced to abandon the fight and head home, nursing your injuries, and with nothing to show for your efforts.
+            </p>
+        <</if>>
+    <<else>>
+        the mosquito filled swampland. Why any caravan would willingly travel this route was beyond you. The marshy soil made fleeing near impossible, both for you and for the caravanners, and you had to hope you'd be able to overwhelm them in combat. Maybe if you were sneaky about it...
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The difficulty in moving meant your slavers only had to face a few opponents at a time, and while <<name $g.fighter>> and <<name $g.scout>> engaged the guards, <<name $g.raider>> went straight for the cargo and
+                <<if _goods == "ice">>
+                    smashed the blocks of ice into unsellable shards before tipping them into the marsh to melt.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                The marsh meant those who ran were easy to cut down, but the last <<woman $g.slaves>> surrendered to you, and is now confined in your slave pens awaiting your final decision.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The difficulty in moving meant your slavers only had to face a few opponents at a time, and while <<name $g.fighter>> and <<name $g.scout>> engaged the guards, <<name $g.raider>> went straight for the cargo and
+                <<if _goods == "ice">>
+                    smashed the blocks of ice into unsellable shards before tipping them into the marsh to melt.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                The marsh slowed your pursuit and the caravanners scattered, meaning at least some of them survived your ambush. Still, you leave the remains of the caravan burning in the marsh, and have done enough to fulfil the contract.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, none of you ever saw the caravan. You spent days in being bitten by everything that flew, swam or wriggled in those marshes, and in the end, the caravan didn't even have the decency to show up to be raided. Maybe <<name $g.scout>> got turned around in the mess of water, dead trees and floating islands of vegetation.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The difficulty of moving in the water should have meant your slavers only had to face a few opponents at a time. While <<name $g.fighter>> and <<name $g.scout>> engaged the guards, <<name $g.raider>> went straight for the cargo. What you hadn't accounted for was the number of crossbows the caravanners had with them—in hindsight it was probably why they felt confident in going through the marshes in the first place. Your raid attempt was over almost before it began, with your slavers barely able to limp back to the fort.
+            </p>
+        <</if>>
+    <</if>>
+
+<<else>>
+
+    <<if _location == "river">>
+        the banks of the River Varde. The provided map bought them to an idyllic campsite some distance off the road, but <<name $g.raider>> pointed out it would also be a great place to ambush the caravan at their most vulnerable. And so, they settled down to wait for their arrival.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                When the caravan finally arrived it was clear they camped there frequently—and were used to being alone. They immediately set up a well organised camp, and posted very few guards, clearly expecting the river to keep them safe. When night rolled in, <<name $g.scout>> scout|was amazed to see the guards falling asleep at their post, and it took barely any time to
+                <<if _goods == "lumber">>
+                    drag the plants of pine into the river, where the water would warp them into uselessness.
+                <<elseif _goods == "blocks of ice">>
+                    push the ice blocks into the water, where they'd both melt and be swept away downstream.
+                <<else>>
+                    crack open the crates and push them into the river, where the water would ruin their contents and send most of it off downstream.
+                <</if>>
+            </p>
+
+            <p>
+                As they were working, <<name $g.raider>> nabbed a caravanner who had woken up and left their tent to answer a call of nature, pouncing on them before they could raise the alarm. Bringing them back in their soiled pants wasn't pleasant, but it did reinforce their new position in life—assuming you decide to keep them, of course.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                When the caravan finally arrived it was clear they camped here frequently—and were used to being alone. They immediately set up a well organised camp, and posted very few guards, clearly expecting the river to keep them safe. When night rolled in, <<name $g.scout>> scout|was amazed to see the guards falling asleep at their post, and it took barely any time to
+                <<if _goods == "lumber">>
+                    drag the plants of pine into the river, where the water would warp them into uselessness.
+                <<elseif _goods == "blocks of ice">>
+                    push the ice blocks into the water, where they'd both melt and be swept away downstream.
+                <<else>>
+                    crack open the crates and push them into the river, where the water would ruin their contents and send most of it off downstream. Unfortunately, it appears that at least someone was awake inside their tent, and while they didn't raise the alarm, they were able to lay the blame for the attack at your door, and your company will be spoken of with displeasure in certain circles for some time.
+                <</if>>
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                But they never came. Later you heard news of the caravan arriving in Lucgate. It appears your slavers were too slow and missed them, leaving you with nothing to show for their efforts.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Unfortunately the guards weren't as asleep as your slavers thought and the noise of their approach roused them to wakefulness. The guards also turned out to be very well trained, and easily overwhelmed your slavers, who only survived by diving into the river and allowing the current to sweep them away. While everyone survived, the battering they took from both the caravanners and the underwater rocks left them with injuries that will take some time to heal.
+            </p>
+        <</if>>
+
+    <<elseif _location == "ravine">>
+        a ravine through the northern mountains. It was a trading shortcut, but was definitely a spot that was perfect for an ambush. Of course, being a ravine there was potentially a greater chance that some would be able to flee, which was potentially a problem. However, <<name $g.scout>> hoped that any survivors would not be able to identify you or your slavers given the distances involved.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                In the end, your slavers went for the "blocking them in with falling rocks" approach, which worked surprisingly well, allowing them to box the caravan in before
+                <<if $unit.player.isHasAnyTraitExact(["per_evil", "per_cruel"])>>
+                    rolling more boulders directly onto the wagons.
+                <<else>>
+                    firing at the caravan with arrows, causing the caravanners to flee. Most were easily able to scramble over the fallen rocks, but they were forced to leave their goods behind.
+                <</if>>
+                When your slavers finally descended into the ravine, they were able to pick through the remnants of the goods, taking some supplies and leaving the rest to the elements. <<name $g.raider>> also found an unconscious <<woman $g.slaves>> who is now awaiting your final decision in the slave pens.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                In the end, your slavers went for the "blocking them in with falling rocks" approach, which worked surprisingly well, allowing them to box the caravan in before
+                <<if $unit.player.isHasAnyTraitExact(["per_evil", "per_cruel"])>>
+                    rolling more boulders directly onto the wagons.
+                <<else>>
+                    firing at the caravan with arrows, causing the caravanners to flee. Most were easily able to scramble over the fallen rocks, but they were forced to leave their goods behind. Unfortunately it appears that at least some of the survivors recognised your slavers, and you have garnered more animosity from the Kingdom of Tor.
+                <</if>>
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                In the end, your slavers went for the "blocking them in with falling rocks" approach, which worked surprisingly well, allowing them to box the caravan in before
+                <<if $unit.player.isHasAnyTraitExact(["per_evil", "per_cruel"])>>
+                    rolling more boulders directly onto the wagons.
+                <<else>>
+                    firing at the caravan with arrows.
+                <</if>>
+                Unfortunately, the boulders didn't fall down into the ravine itself, and the caravan spurred their horses into a gallop, escaping the trap and leaving your slavers too far behind to catch up to them. <<name $g.scout>> also caught the glint of a spyglass looking back at them as the caravan fled, and you expect your relations with the Kingdom of Tor to be a little cooler going forward.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Unfortunately, the boulders didn't fall down into the ravine itself, and the caravan spurred their horses into a gallop, escaping the trap and racing up the mouth of the ravine. While your slavers were close enough to engage them in combat, there were too many guards, and they were forced to retreat, nursing more than a few injuries to their bodies as well as to their pride.
+            </p>
+        <</if>>
+
+    <<elseif _location == "forest">>
+        the forest path, the dark pine boughs laden with snow. The area beneath the trees was dark, but there were still snowdrifts ready to betray your slavers' presence. One misplaced foot would be enough to let an eagle eyed guard know that they weren't alone in this forest. Blowing on <<their $g.scout>> hands to keep warm, <<name $g.scout>> found your slavers positions for an ambush, and waited.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                It was a simple matter for <<name $g.fighter>> to bring several trees worth of snow down onto the caravan, giving your slavers the upper hand in the fighting that commenced. It was more a slaughter than a fight, and your slavers put them all to sword—bar one that <<name $g.fighter>> had taken a shine to. The <<woman $g.slaves>> is now in your slave pen, awaiting your final decision.
+            </p>
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                It was a simple matter for <<name $g.fighter>> to bring several trees worth of snow down onto the caravan, giving your slavers the upper hand in the fighting that commenced. It was more a slaughter than a fight, and your slavers put them all to sword. All in all, you consider it a job well done.
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, after days of waiting in the bitter cold, your slavers were forced to give up and return to the fort. On the way back <<name $g.scout>> found some wide tracks suggesting they were late by several days, and the caravan had long passed through.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                It was a simple matter for <<name $g.fighter>> to bring several trees worth of snow down onto the caravan, giving your slavers the upper hand in the fighting that commenced. Unfortunately the sheer number of guards the caravan employed meant the advantage was short lived, and your slavers were forced to withdraw. Later, tales of their victory over <<rep $company.player>> in the northern forests spread through the city. It's exaggerated by any measure, but it seems to have caught in the popular imagination.
+            </p>
+        <</if>>
+
+    <<elseif _location == "werewolves">>
+        the unmarked forest track, taking care to stay out of the werewolves' hunting grounds. Crossing that near invisible boundary would almost ensure your slavers ran the risk of being taken, fucked, eaten, or all three. Probably in that order. On the other hand, there was always the option of pushing the caravanners to flee into the waiting claws of the lycanthropes.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Your slavers had enough time to build a blockade across the road, covered in snow, allowing them to attack from behind and the side. This left the caravanners with a very clear escape route—and many of them took it. The guards were out of position, investigating the blockade, and some ran after the civilians, urging them not to run towards the werewolf hunting grounds. In the chaos, it was easy enough to
+                <<if _goods == "ice">>
+                    smash the blocks of ice into unsellable shards that would melt before they reach Lucgate.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                With the caravanners torn between fight, flight and saving their goods, it was easy enough to pick the guards off one by one, and when the rest broke <<name $g.fighter>> and <<name $g.raider>> herded them towards the werewolves, while <<name $g.scout>> subdued and captured one of them who <<they $g.scout>> thought would prove valuable. If any of the caravanners survived the werewolves, they haven't returned to the city to say.
+            </p>
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Your slavers had enough time to build a blockade across the road, covered in snow, allowing them to attack from behind and the side. This left the caravanners with a very clear escape route—and many of them took it. The guards were out of position, investigating the blockade, and some ran after the civilians, urging them not to run towards the werewolf hunting grounds. In the chaos, it was easy enough to
+                <<if _goods == "ice">>
+                    smash the blocks of ice into unsellable shards that would melt before they reach Lucgate.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                With the caravanners torn between fight, flight and saving their goods, it was easy enough to pick the guards off one by one, and when the rest broke <<name $g.fighter>> and <<name $g.raider>> herded them towards the werewolves. If any of them survived, they haven't returned to the city to say.
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Your slavers had enough time to build a blockade across the road, covered in snow, allowing them to attack from behind and the side. This would leave the caravanners with a very clear escape route, but they never showed up. After a few days of waiting they were forced to return home, wondering if they'd even managed to find the right place.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Your slavers had enough time to build a blockade across the road, covered in snow, allowing them to attack from behind and the side. This left the caravanners with a very clear escape route, but instead, they plunged forward, and managed to break through the blockade. The wagons fled, and there were enough guards that pursuit was not an option.
+            </p>
+            <p>
+                Your slavers were forced to abandon the fight and head home, nursing their injuries, and with nothing to show for their efforts.
+            </p>
+        <</if>>
+
+    <<else>>
+        the mosquito filled swampland. Why any caravan would willingly travel this route was beyond <<name $g.scout>>, but <<they $g.scout>> pushed on regardless. The marshy soil made fleeing near impossible, both for your slavers and for the caravanners, and <<name $g.scout>> had to hope they'd be able to overwhelm the caravan in combat.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The difficulty in moving meant your slavers only had to face a few opponents at a time, and while <<name $g.fighter>> and <<name $g.scout>> engaged the guards, <<name $g.raider>> went straight for the cargo and
+                <<if _goods == "ice">>
+                    smashed the blocks of ice into unsellable shards before tipping them into the marsh to melt.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                The marsh meant those who run are easy to cut down, but the last <<woman $g.slaves>> surrendered, and is now confined in your slave pens awaiting your final decision.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The difficulty in moving meant your slavers only had to face a few opponents at a time, and while <<name $g.fighter>> and <<name $g.scout>> engaged the guards, <<name $g.raider>> went straight for the cargo and
+                <<if _goods == "ice">>
+                    smashed the blocks of ice into unsellable shards before tipping them into the marsh to melt.
+                <<elseif _goods == "lumber">>
+                    set fire to wooden planks. Even if they didn't burn completely, they'd be warped by the flame to the point of uselessness.
+                <<else>>
+                    set fire to the crates, easily destroying the trade goods.
+                <</if>>
+                The marsh slowed their pursuit and the caravanners scattered, meaning at least some survived the ambush. Still, your slavers left the remains of the caravan burning in the marsh, and have done enough to fulfil the contract.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately, none of them ever saw the caravan. Your slavers spent days in being bitten by everything that flew, swam or wriggled in those marshes, and in the end, the caravan didn't even have the decency to show up to be raided. Maybe <<name $g.scout>> got turned around in the mess of water, dead trees and floating islands of vegetation.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The difficulty of moving in the swamp should have meant your slavers only had to face a few opponents at a time. While <<name $g.fighter>> and <<name $g.scout>> engaged the guards, <<name $g.raider>> went straight for the cargo. What they hadn't accounted for was the number of crossbows the caravanners had with them—in hindsight it was probably why they felt confident in going through the marshes in the first place. The attempted raid was over almost before it began, with your slavers barely able to limp back to the fort.
+            </p>
+        <</if>>
+    <</if>>
+<</if>>

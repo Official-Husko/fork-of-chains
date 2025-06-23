@@ -1,0 +1,240 @@
+:: QuestSetup_test_of_social [nobr quest]
+
+<<run new setup.Title(
+"quest_master_of_social_0", /* key */
+"Master of Social", /* name */
+"A true master of social", /* description */
+"a|have proven a|themself to be a master of social by completing a challenge in the city", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+social: 4,},
+)
+>>
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Diplomat', /* name */
+[
+  setup.trait.bg_informer,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_playful,
+  setup.trait.skill_creative,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_serious,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.social, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_social_0')
+]), 'Have not yet mastered the art of social'),
+],
+{
+  social: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_social', /* key */
+"Test of Social", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'city',
+  'veteran',
+  'prep',
+  'item',
+  'legendary',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'b': 'all',
+},
+[ /* costs */
+],
+'Quest_test_of_social',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_socialCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_social_0'),
+      setup.qc.EquipmentDirect('social_eyes_master'),
+    ],
+  ],
+  [
+    'Quest_test_of_socialCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+      setup.qc.MoneyCustom(5000),
+    ],
+  ],
+  [
+    'Quest_test_of_socialCrit',
+    [
+      setup.qc.Trauma('a', setup.trait.boon_social, 20),
+      setup.qc.TraumatizeRandom('a', 54),
+    ],
+  ],
+  [
+    'Quest_test_of_socialDisaster',
+    [
+      setup.qc.MissingUnitRecapture('a', 'capturedhard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_social_0'),
+setup.qres.SkillAtLeast(setup.skill.social, 100)
+], 1),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_social [nobr]
+<<set _slavers = $company.player.getUnits({job: setup.job.slaver})>>
+<<run _slavers.sort((a, b) => b.getSkill(setup.skill.social) - a.getSkill(setup.skill.social))>>
+<<set _s = _slavers[0]>>
+<<set $g.s = _s>>
+
+<p>
+You have many slavers under your employ. Some specialize in the art of skulking around in the dark, while others in combat. But not all of your job requires such strenuous physical activity — some require subtle manipulation and diplomacy, and that's where <<yourrep $g.s>> would often come very handy indeed.
+<<Therace $g.s>> s|is very good at using <<their $g.s>> tongue to get what <<they $g.s>> s|want.
+</p>
+
+<p>
+It is no secret that the <<lore region_city>> hosts secret societies of many kind, ranging from benign ones that worship the bountiful flesh that has been wrought into <<lore geo_mestia>>, to those radical ones that would try to return slavery back into the kingdom. But among these secret socities, it is rumored that there is one so elusive reserved only for the most skilled diplomats. There, the diplomats would all wear masks to hide their identities, and mingle with each other with a singular goal of identifying who could be the host. It is said that the host would grant power to whoever manages to identify them...
+</p>
+
+
+
+:: Quest_test_of_socialCrit [nobr]
+<p>
+<<if $g.a.isHasTrait('skill_connected')>>
+Leveraging <<their $g.a>> many connections,
+<<elseif $g.a.isHasTrait('skill_creative')>>
+Using <<their $g.a>> wit,
+<<elseif $g.a.isHasTrait('per_logical')>>
+By logically piecing the hints together,
+<<else>>
+By sheer luck,
+<</if>>
+<<yourrep $g.a>> found the masked secret society and received an invitation for an upcoming ball.
+<<They $g.a>> prepared and gathered as much information as <<they $g.a>> could.
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+<<They $g.a>> learned that the host is a rather
+<<if $g.b.isFemale()>>busty woman<<else>>well-endowed man<</if>>, but the host kept <<their $g.b>> secret well guarded and no other information surfaced.
+<<else>>
+But <<they $g.a>> couldn't find out much...
+<</if>>
+</p>
+
+<p>
+Donning a <<uadv $g.a>> purchased masquerade mask, <<therace $g.a>> attended the ball at the designated time and place. It was held in one of the thought-abandoned mansion in the city, only to reveal the extravagant interior hidden within. The ball started, and murmurs and silent whispers were abound in the hall.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Unfortunately, <<rep $g.a>> got distracted.
+<<if $g.a.isHasTrait('per_frugal')>>
+The greedy <<urace $g.a>> simply could not resist the various exquisite food on offer, and gorged on them instead of socializing.
+<<elseif $g.a.isHasTrait('per_lustful')>>
+The lustful <<urace $g.a>> focused too much — way too much — on a particularly well-endowed <<lady $g.b>>.
+<<elseif $g.a.isHasTrait('per_submissive')>>
+The many servants subserviantly servicing their betters got <<them $g.a>> all submissive and docile, fantasizing what it feels to be put in place.
+<<else>>
+Whether it's the exquisite food, the tasteful music, or the well-endowed participants on the ball, you could not tell for sure.
+<</if>>
+<<They $g.a>> never returned to your company after that fateful night. Perhaps the host thought the behavior insulting, or perhaps <<they $g.b>> were looking for a slave that just happens to fit <<reps $g.a>> description, but either way, you should get moving to save the <<uadj $g.a>> <<urace $g.a>> fast.
+</p>
+<<elseif $gOutcome == 'crit'>>
+<p>
+<<Rep $g.a>> a|is a masterful diplomat, and it showed. Using <<their $g.a>> gift of eloquence, <<they $g.a>> sweet-talked others into revealing much while at the same time revealing <<their $g.a>> own cards as little as possible. <<They $g.a>> navigated through the web of lies and deceit, rooting out the lies while extracting the singular thread of truth from within.
+<<if $g.a.isHasTrait('per_sly')>>
+<<Their $g.a>> aptitude for deceit certainly helped.
+<</if>>
+<<if $g.a.isHasTrait('per_gregarious')>>
+<<Their $g.a>> natural eloquence helped quite a bit.
+<</if>>
+<<if $g.a.isHasTrait('bg_informer')>>
+<<They $g.a>> a|was once an informer, and no stranger to this task.
+<</if>>
+<<if $g.a.isHasTrait('per_playful')>>
+<<They $g.a>> would employ jokes during the exchanges, subtly lowering <<their $g.a>> confidant's guard.
+<</if>>
+<<if $g.a.isHasTrait('skill_creative')>>
+<<They $g.a>> came up with various creative means of extracting every single drop of truth from others.
+<</if>>
+<<They $g.a>> remembered the hint <<they $g.a>> got too, and would "accidentally" bumped into many other <<women $g.b>> that night, while subtly feeling the size of <<their $g.b>> <<if $g.b.isFemale()>>melons<<else>>bulges<</if>>.
+</p>
+
+<p>
+After an hour of mingling, <<they $g.a>> narrowed the target down to a singular <<woman $g.b>> in
+<<if $g.b.isFemale()>>
+a singularly striking black dress.
+<<else>>
+a singularly striking black suit.
+<</if>>
+<<They $g.a>> slowly approached the <<urace $g.b>>, and hosted small talks first to assert that <<their $g.a>> guess was correct. Once <<they $g.a>> a|was confident in <<their $g.a>> judgment, <<they $g.a>> invited the <<lady $g.b>> for a dance, which <<therace $g.b>> gracefully accepted.
+<<if $g.a.isHasTrait('skill_entertain')>>
+<<Rep $g.a>> a|is a very skilled dancer, and guided the steps masterfully, before
+<<else>>
+The two of them danced wordlessly for a while, before
+<</if>>
+finally whispering <<their $g.a>> guess into <<their $g.b>> ears.
+In response, <<therace $g.b>> shut <<their $g.b>> eyes, before stopping the dance and pressing the palms of <<their $g.b>> <<uhands $g.b>> on <<reps $g.a>> chest. It felt warm, far warmer than what a normal touch would do, and it was enjoyable as well. Suddenly lost in warmth, <<reps $g.a>> mind wandered almost immediately, and when <<they $g.a>> regained consciousness next, it was on a luxuriant bed of the villa, with <<therace $g.b>> next to <<them $g.a>>.
+Whether it is the no-doubt magic employed, or some potions that must have been forced down <<them $g.a>>, <<rep $g.a>> felt incredibly horny that day<<if $g.a.isHasTrait('per_chaste')>> (despite normally being ever so chaste!), <<elseif $g.a.isHasTrait('per_lustful')>> (although knowing how lusty <<therace $g.a>> usually a|is you have your doubts it's the work of magic), <<else>>, <</if>>
+and made intense love with the host of the party.
+</p>
+
+<p>
+The rest of the night went in a blur, and despite having only slept for what must have been an hour, <<rep $g.a>> woke up refreshed the next day, completely invigorated. There was no trace of the host, and the only proof that it was not all a dream is <<their $g.a>> own masquerade mask, who has somehow been enchanted into a piece worthy of being called an artifact.
+</p>
+
+<<else>>
+<p>
+<<Rep $g.a>> tried <<their $g.a>> best, mingling with the other participants and using <<their $g.a>> considerable talent at sweet talking to get as much information as possible. But <<they $g.a>> a|was careless and distracted, and got sucked into an intricate web of lies and deciet. In the end <<rep $g.a>> a|was not able to narrow down the possible suspect of the host, and lost the game of lies.
+<<if $g.a.isHasTrait('per_frugal')>>
+The greedy <<urace $g.a>> spent quite a great deal of time taste-testing the various delicacies provided too.
+<<elseif $g.a.isHasTrait('per_lustful')>>
+Contributing to it is the fact that the lustful <<urace $g.a>> focused too much —perhaps way too much — on a particularly well-endowed <<lady $g.b>>.
+<</if>>
+<<if $gOutcome == 'failure'>>
+<<They $g.a>> a|was traumatized by the experience too, having seen how much things <<they $g.a>> would still need to learn to truly master the art of socializing.
+<</if>>
+But <<therace $g.a>> a|look rather upbeat from having failed such a mission, and a|is no doubt eager to try again.
+</p>
+<</if>>
+
+
+
+:: Quest_test_of_socialDisaster [nobr]
+<p>
+After being sent to the mission, you never heard back from <<yourrep $g.a>>. Instead, a letter arrived at your fort, telling you that <<rep $g.a>> had lost horribly in the contest, not even reaching second prize, and had been reappropriated as the entry fee for such a prestigious contest.
+</p>
+
+<p>
+You sighed to yourself — perhaps you have overestimated <<their $g.a>> abilities.
+<<urescuenow $g.a>>, and save <<them $g.a>> from this farce of a competition.
+</p>

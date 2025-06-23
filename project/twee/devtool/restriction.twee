@@ -1,0 +1,929 @@
+:: QGAddRestriction [nobr]
+
+Choose restriction type:
+<<back 'Back'>>
+
+<hr/>
+
+<div><b>Company</b></div>
+
+<div>
+  [[Improvement|RestrictionBuilding]]
+</div>
+
+<div>
+  [[Money|RestrictionMoney]]
+</div>
+
+<div>
+  [[Prestige|RestrictionPrestige]]
+</div>
+
+<div>
+  <<message 'Favor / Ire...'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[Favor at LEAST this much |RestrictionFavorAtLeast]]
+      </div>
+      <div>
+        [[Ire at LEAST this much |RestrictionIreAtLeast]]
+      </div>
+      <div>
+        [[Have ever gain favor/ire with company|RestrictionHaveMetCompany]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'Item...'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[Must have item|RestrictionHasItem]]
+      </div>
+      <div>
+        [[Must NOT have item|RestrictionNoItem]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<hr/>
+
+<div><b>Quest / Opportunity / Event</b></div>
+
+<<if $devtooltype == 'quest'>>
+  <div>
+  [[Unique|RestrictionQuestUnique]]
+  <<message '(?)'>>
+    Only one instance of this quest can exists at any given time.
+    You can get more of this quest once the quest expires / complete.
+  <</message>>
+  </div>
+<<elseif $devtooltype == 'opportunity'>>
+  <div>
+  [[Unique|RestrictionOpportunityUnique]]
+  <<message '(?)'>>
+    Only one instance of this opportunity can exists at any given time.
+    You can get more of this opportunity once the opportunity expires / complete.
+    Usually used in combination with the
+    "(Certain quest does not exist)".
+  <</message>>
+  </div>
+<</if>>
+
+<div>
+<<message 'Quest / Opportunity / Event...'>>
+  <div class='marketobjectcard'>
+    <<if $devtooltype == 'quest' || $devtooltype == 'opportunity'>>
+      <div>
+        [[Cooldown|RestrictionCooldown]]
+        <<message '(?)'>>
+          This $devtooltype can only be created at most once per
+          this many weeks.
+        <</message>>
+      </div>
+    <</if>>
+    <<if $devtooltype == 'quest'>>
+      <div>
+        [[Must have completed this quest on success or crit before|RestrictionQuestDoneSelf]]
+      </div>
+    <</if>>
+    <div>
+      [[Quest cannot exist|RestrictionNoQuest]]
+      <<message '(?)'>>
+        Must not have or already doing the chosen quest.
+        Most commonly used in conjunction with (Unique) ---
+        e.g., to ensure that none of the three variations of
+        the flesh shaping temple quest can exist simultaneously.
+      <</message>>
+    </div>
+    <div>
+      [[Must have completed some quest on success or crit before|RestrictionQuestDone]]
+    </div>
+    <div>
+      [[Opportunity cannot exist|RestrictionNoOpportunity]]
+      <<message '(?)'>>
+        Must not currently have this opportunity.
+        Can be used with quests that rewards opportunities, to ensure the player
+        has to answer the opportunity first before proceeding.
+      <</message>>
+    </div>
+    <div>
+      [[Event cannot already been scheduled|RestrictionNoEvent]]
+      <<message '(?)'>>
+        Must not have this event scheduled to occur in the future.
+      <</message>>
+    </div>
+
+    <div>
+      <<message 'Must be currently on cooldown...'>>
+        <div class='card lorecard'>
+          <div>
+            [[Quest must be on cooldown|RestrictionQuestOnCooldown]]
+          </div>
+          <div>
+            [[Opportunity must be on cooldown|RestrictionOpportunityOnCooldown]]
+          </div>
+          <div>
+            [[Event must be on cooldown|RestrictionEventOnCooldown]]
+          </div>
+        </div>
+      <</message>>
+    </div>
+
+  </div>
+<</message>>
+</div>
+
+<hr/>
+
+<div><b>Unit</b></div>
+
+<div>
+  <<message 'Slaver...'>>
+    <div class='marketobjectcard'>
+      <div><b>Trait</b></div>
+      <div>
+        [[Exist slaver with ALL these traits|RestrictionHasSlaverWithTraits]]
+      </div>
+      <div>
+        [[NOT exist slaver with ALL these traits|RestrictionNoSlaverWithTraits]]
+      </div>
+      <hr/>
+      <div><b>Title</b></div>
+      <div>
+        [[Exist slaver with title|RestrictionHasSlaverWithTitle]]
+      </div>
+      <div>
+        [[NOT exist slaver with title|RestrictionNoSlaverWithTitle]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'Slave...'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[Have any slave|RestrictionHasSlave]]
+      </div>
+      <hr/>
+      <div><b>Trait</b></div>
+      <div>
+        [[Exist slave with ALL these traits|RestrictionHasSlaveWithTraits]]
+      </div>
+      <div>
+        [[NOT exist slave with ALL these traits|RestrictionNoSlaveWithTraits]]
+      </div>
+      <hr/>
+      <div><b>Title</b></div>
+      <div>
+        [[Exist slave with title|RestrictionHasSlaveWithTitle]]
+      </div>
+      <div>
+        [[NOT exist slave with title|RestrictionNoSlaveWithTitle]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'Unit...'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[Exist at least X unit(s) that satisfies...|RestrictionExistUnit]]
+      </div>
+      <div>
+        [[NOT exist unit that satisfies...|RestrictionNotExistUnit]]
+      </div>
+      <div>
+        [[Has unit on this duty|RestrictionHasUnitOnDuty]]
+      </div>
+      <div>
+        <<message 'Tag...'>>
+          <div class='card lorecard'>
+            <div>
+              [[Exist slave with tag|RestrictionHasSlaveWithTag]]
+            </div>
+            <div>
+              [[Exist slaver with tag|RestrictionHasSlaverWithTag]]
+            </div>
+            <div>
+              [[No unit with tag|RestrictionNoUnitWithTag]]
+              <<message '(?)'>>
+                This means that there cannot exist a unit ANYWHERE that have this tag.
+                This includes slavers that are lost, but rescue-able, as well as similar-fated slaves.
+              <</message>>
+            </div>
+          </div>
+        <</message>>
+        <<include 'CostTagHelp'>>
+      </div>
+      <div>
+        [[Exist unit with title|RestrictionHasUnitWithTitle]]
+      </div>
+      <div>
+        [[NOT exist unit with title|RestrictionNoUnitWithTitle]]
+      </div>
+      <div>
+        <<message 'Multiple units...'>>
+          <div class='card lorecard'>
+            <div>
+              [[Two units must be best friends|RestrictionBestFriends]]
+            </div>
+            <div>
+              [[Two units must be lovers|RestrictionLovers]]
+            </div>
+            <div>
+              [[Two units must have the same gender|RestrictionSameGender]]
+            </div>
+          </div>
+        <</message>>
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'A certain unit satisfies...'>>
+    <div class='marketobjectcard'>
+      <div>
+        <<link 'You satisfies this'>>
+          <<include 'RestrictionPlayer'>>
+        <</link>>
+      </div>
+
+      <<if $qgDefaultActorName || $dtquest.getAllActorNames().length>>
+        <div>
+          [[Actor satisfies this|RestrictionActor]]
+        </div>
+      <</if>>
+    </div>
+  <</message>>
+</div>
+
+<hr/>
+
+<div><b>Advanced</b></div>
+
+<div>
+  <<message 'Recursive...'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[OR: At least one of these must be true|RestrictionOr]]
+      </div>
+      <div>
+        [[AND: ALL of these must be true|RestrictionAnd]]
+      </div>
+      <div>
+        [[NOT: This requirement must be false|RestrictionNot]]
+      </div>
+      <div>
+        [[THROUGH: Hide the requirement from the user|RestrictionThrough]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'Others..'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[True with certain probability|RestrictionRandomlyTrue]]
+      </div>
+      <<if $devtooltype == 'quest' || $devtooltype == 'opportunity'>>
+        <div>
+          [[True with certain probability (seeded)|RestrictionRandomlyTrueSeeded]]
+        </div>
+      <</if>>
+      <div>
+        <<message 'Contact...'>>
+          <div class='card lorecard'>
+            <div>
+              [[Contact exists|RestrictionHasContact]]
+            </div>
+            <div>
+              [[Contact does NOT exist|RestrictionNoContact]]
+            </div>
+          </div>
+        <</message>>
+      </div>
+      <div>
+        <<message 'Exist missing unit / unit in group...'>>
+          <div class='card lorecard'>
+            <div>
+              [[Exist rescue-able missing slaver|RestrictionHasMissingSlaver]]
+            </div>
+            <div>
+              [[Exist rescue-able missing slave|RestrictionHasMissingSlave]]
+            </div>
+            <div>
+              [[Exist unit in unit group|RestrictionUnitGroupHasUnit]]
+            </div>
+            <div>
+              [[No unit in the unit group is busy|RestrictionUnitGroupNotBusy]]
+              <<message '(?)'>>
+                <div class='helpcard'>
+                  True either when the unit group is empty, or no unit in the group
+                  is busy with some quest. Most important for persistent unit groups that
+                  only have one member -- don't want them to appear in two simultaneous quests.
+                </div>
+              <</message>>
+            </div>
+          </div>
+        <</message>>
+      </div>
+      <div>
+        <<message 'Variable...'>>
+          <div class='card lorecard'>
+            <div>
+            [[Variable equals|RestrictionVarEqual]]
+            </div>
+            <div>
+              [[Variable greater than or equal|RestrictionVarGte]]
+            </div>
+            <div>
+            [[Variable less than or equal|RestrictionVarLte]]
+            </div>
+            <div>
+            [[Variable is unset|RestrictionVarNull]]
+            </div>
+          </div>
+        <</message>>
+      </div>
+
+      <div>
+        <<message 'Settings / Preferences...'>>
+          <div class='card lorecard'>
+            <div>
+            [[User does not ban this content|RestrictionTagNotBanned]]
+            </div>
+            <div>
+            [[Must allow hetero relationship|RestrictionAllowLoversHetero]]
+            </div>
+            <div>
+            [[Must allow gay relationship|RestrictionAllowLoversGay]]
+            </div>
+            <div>
+            [[Must allow lesbian relationship|RestrictionAllowLoversLesbian]]
+            </div>
+          </div>
+        <</message>>
+      </div>
+
+      <div>
+        [[Never|RestrictionNever]]
+      </div>
+      <div>
+        [[Have expanded at least this many times|RestrictionFortLevelAtLeast]]
+      </div>
+      <div>
+        [[Fort total skill bonus is at least|RestrictionFortSkillBonusAtLeast]]
+      </div>
+      <div>
+        [[Money at MOST|RestrictionMoneyAtMost]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+
+<br/>
+<br/>
+<<devtoolreturnbutton>>
+
+:: QGAddRestrictionUnit [nobr]
+
+<div>
+Choose restriction type:
+</div>
+
+<hr/>
+<div><b>Status</b></div>
+
+<div>
+  [[Is a slaver|RestrictionJobSlaver]]
+</div>
+
+<div>
+  [[Is a slave|RestrictionJobSlave]]
+</div>
+
+<div>
+  [[Not in party|RestrictionIsCanBeSold]]
+  <<message '(?)'>>
+    <div class='helpcard'>
+      This means the unit is not currently in a party.
+      This is a QoL restriction, and you should use this on quests where the
+      unit is expected to be gone forever.
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'Busy / Injury / Duty...'>>
+    <div class='marketobjectcard'>
+      <div><b>Status</b></div>
+      <div>
+        [[Is available|RestrictionAvailable]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This means the unit can go on a quest. Note that this includes
+            units on duty.
+          </div>
+        <</message>>
+      </div>
+
+      <div>
+        [[Is available and not on duty|RestrictionNotBusy]]
+      </div>
+
+      <div>
+        [[Is at home|RestrictionHome]]
+        <<message '(?)'>>
+          This is the same with unit being available, but also includes injured units and units on duty.
+        <</message>>
+      </div>
+
+      <div>
+        [[Is on this duty|RestrictionOnDuty]]
+      </div>
+
+      <div>
+        [[Is a slave usable by you|RestrictionSlaveUsableByYou]]
+        <<message '(?)'>>
+          Whether you can interact with this particular slave. You cannot interact with injured slaves
+          and slaves that have been set as a private slave for other slavers.
+        <</message>>
+      </div>
+
+      <div>
+        [[Is at home OR on leave|RestrictionHomeExceptOnLeave]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            Normally, only units that are at home can be assigned as actors in events,
+            quest, or opportunity. Choosing this will also allow units that are on leave to be selected.
+          </div>
+        <</message>>
+      </div>
+
+      <hr/>
+      <div><b>Status</b></div>
+
+      <div>
+        [[Is injured|RestrictionIsInjured]]
+      </div>
+
+      <div>
+        [[Is NOT injured|RestrictionNotInjured]]
+      </div>
+      <br/>
+    </div>
+  <</message>>
+  <br/>
+
+<hr/>
+<div><b>Traits and characteristic</b></div>
+
+<div>
+  <<message "Trait...">>
+    <div class='marketobjectcard'>
+      <div>
+        [['Has ALL these traits'|RestrictionAllTraitsExact]]
+      </div>
+      <div>
+        [[Has AT LEAST ONE of these traits|RestrictionAnyTraitExact]]
+      </div>
+      <div>
+        [['NOT have any of these traits'|RestrictionNoTraitsExact]]
+      </div>
+      <div>
+        [['At least X of these traits'|RestrictionXTraits]]
+      </div>
+      <div>
+        [[Unit must INNATELY have this trait|RestrictionInnateTrait]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            Innate trait are traits that the unit will have when fully purified.
+            Generally, this is the skin traits they started with, e.g.,
+            <<rep setup.trait.body_dragonkin>> for most dragonkin.
+          </div>
+        <</message>>
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message "Level / Skill...">>
+    <div class='marketobjectcard'>
+      <div>
+        [[Level at LEAST|RestrictionLevelAtLeast]]
+      </div>
+      <div>
+        [[Level at MOST|RestrictionLevelAtMost]]
+      </div>
+      <div>
+        [[Skill at LEAST|RestrictionSkillAtLeast]]
+      </div>
+      <div>
+        [[Skill multiplier modifier at LEAST|RestrictionSkillModifierAtLeast]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message "Slave value...">>
+    <div class='marketobjectcard'>
+      <div>
+        [[Slave value at least|RestrictionSlaveValueAtLeast]]
+      </div>
+      <div>
+        [[Slave value at most|RestrictionSlaveValueAtMost]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<hr/>
+<div><b>Title, Identity, and Family</b></div>
+
+<div>
+  <<message "Title...">>
+    <div class='marketobjectcard'>
+      <div>
+        [[Has title|RestrictionHasTitle]]
+      </div>
+      <div>
+        [[NOT have a specific title|RestrictionNoTitle]]
+      </div>
+      <div>
+        [[NOT have ANY title at all|RestrictionZeroTitle]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            Unit cannot have any title at all.
+          </div>
+        <</message>>
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message "You...">>
+    <div class='marketobjectcard'>
+      <div><b>Identity</b></div>
+      <div>
+        [[Is not you|RestrictionNotYou]]
+      </div>
+      <div>
+        [[Is you|RestrictionYou]]
+      </div>
+      <hr/>
+      <div><b>Friendship / Lover</b></div>
+      <div>
+        [[Is your best friend / lover|RestrictionYourBestFriend]]
+      </div>
+      <div>
+        [[Is your lover|RestrictionYourLover]]
+      </div>
+      <div>
+        [[Can become your lover|RestrictionCanBeLoverWithYou]]
+      </div>
+      <div>
+        [[Friendship with you at least|RestrictionFriendshipWithYouAtLeast]]
+      </div>
+      <div>
+        [[Friendship with you at most|RestrictionFriendshipWithYouAtMost]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+
+<div>
+  <<message "Friendship / Lover...">>
+    <div class='marketobjectcard'>
+      <div><b>Existance</b></div>
+
+      <div>
+        [[Must have best friend / lover|RestrictionBestFriendExist]]
+      </div>
+      <div>
+        [[Must have lover|RestrictionLoverExist]]
+      </div>
+
+      <hr/>
+      <div><b>Value</b></div>
+
+      <div>
+        [[Friendship with best friend at least|RestrictionBestFriendFriendshipAtLeast]]
+      </div>
+      <div>
+        [[Friendship with best friend at most|RestrictionBestFriendFriendshipAtMost]]
+      </div>
+      <div>
+        [[Can make best friend into lover|RestrictionCanBeLoverWithBestFriend]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            A unit can turn its best friend into lover when the following is satisfied:
+            <ol>
+              <li>
+                Both units does not already have lovers.
+              </li>
+              <li>
+                Their friendship is at least <<= setup.LOVERS_HOOKUP_FRIENDSHIP >>.
+              </li>
+              <li>
+                Satisfies the orientation settings of the player (e.g., hetero only or gay only).
+              </li>
+              <li>
+                Will not form between family members.
+              </li>
+            </ol>
+          </div>
+        <</message>>
+      </div>
+
+      <div><b>Identity</b></div>
+
+      <div>
+        [[Remember unit|RestrictionRememberUnit]]
+      </div>
+      <div>
+        [[Must be the best friend / lover of remembered unit|RestrictionBestFriendWithRememberedUnit]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This restricts this unit to be the best friend / lover of the unit on which the (Remember Unit)
+            above is located.
+            <br/>
+            <br/>
+            For example, to create an event for two lovers, then you use the following restrictions:
+            <ol>
+              <li>
+                Role a: Unit must have a lover
+                Role a: Unit's best friend / lover must satisfy: Unit is available
+                Role a: Remember unit
+              </li>
+              <li>
+                Role b: Unit must be the best friend / lover of remembered unit
+              </li>
+            </ol>
+          </div>
+        <</message>>
+      </div>
+
+      <hr/>
+      <div><b>Custom</b></div>
+
+      <div>
+        [[Best friend / lover satisfies...|RestrictionBestFriend]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<hr/>
+<div><b>Advanced</b></div>
+
+<div>
+  <<message 'Bedchambers...'>>
+    <div class='marketobjectcard'>
+      <div><b>Basic</b></div>
+      <div>
+        [[Is assigned to some bedchamber|RestrictionSlaveHasBedchamber]]
+      </div>
+      <div>
+        [[Is NOT assigned to some bedchamber|RestrictionSlaveNoBedchamber]]
+      </div>
+      <div>
+        <<message "Slave's owner...">>
+          <div class='card lorecard'>
+            <div>
+              [[Is owned by you|RestrictionSlaveOwnedByYou]]
+            </div>
+            <div>
+              [["Slave's owner must satisfy..."|RestrictionOwner]]
+            </div>
+          </div>
+        <</message>>
+      </div>
+      <div>
+        [[Is usable by you|RestrictionSlaveUsableByYou]]
+      </div>
+
+      <hr/>
+      <div><b>The other slave in the bedchamber</b></div>
+
+      <div>
+        [[Is in a full bedchamber, with both slaves available to you|RestrictionSlaveBedchamberFullUsableByYou]]
+      </div>
+      <div>
+        [[The other slave in the bedchamber must satisfy this|RestrictionBedchamberOtherSlave]]
+      </div>
+
+      <hr/>
+      <div><b>Furniture</b></div>
+
+      <div>
+        [[Is in a bedchamber with this furniture|RestrictionSlaveBedchamberHasFurniture]]
+      </div>
+
+      <div><b>Identity</b></div>
+
+      <div>
+        [[Remember unit|RestrictionRememberUnit]]
+      </div>
+      <div>
+        [[Must be usable by remembered unit|RestrictionCanBeUsedByRememberedUnit]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This restricts this unit to the units usable by the (Remember Unit) above.
+            <br/>
+            <br/>
+            For example, to create an event for a slaver and a slave it can use, then you use the following restrictions:
+            <ol>
+              <li>
+                Role a: Unit must be a slaver
+                Role a: Remember unit
+              </li>
+              <li>
+                Role b: Unit must be usable by a
+              </li>
+            </ol>
+          </div>
+        <</message>>
+      </div>
+      <div>
+        [[Must be able to use remembered unit|RestrictionCanBeUsedByRememberedUnit]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            This restricts this unit to the units that can use the (Remember Unit) above.
+            <br/>
+            <br/>
+            For example, to create an event for a slave and a slaver abusing it, then you use the following restrictions:
+            <ol>
+              <li>
+                Role a: Unit must be a slave
+                Role a: Remember unit
+              </li>
+              <li>
+                Role b: Unit must be able to use a
+              </li>
+            </ol>
+          </div>
+        <</message>>
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'Recursive...'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[OR: At least one of these must be true|RestrictionOrUnit]]
+      </div>
+      <div>
+        [[AND: ALL of these must be true|RestrictionAndUnit]]
+      </div>
+      <div>
+        [[NOT: This requirement must not be true|RestrictionNotUnit]]
+      </div>
+      <div>
+        [[THROUGH: Hide the requirement from the user|RestrictionThrough]]
+      </div>
+    </div>
+  <</message>>
+</div>
+
+<div>
+  <<message 'Others...'>>
+    <div class='marketobjectcard'>
+      <div>
+        [[Allow defiant|RestrictionAllowDefiant]]
+        <<message '(?)'>>
+          <div class='helpcard'>
+            Usually, units with <<rep setup.trait.will_defiant>> or <<rep setup.trait.will_indomitable>>
+            is not eligible to participate in quests, events, duties, etc.
+            This restriction will enable those units to participate in this role specifically.
+          </div>
+        <</message>>
+      </div>
+
+      <hr/>
+      <div><b>Join / Retirement</b></div>
+
+      <div>
+        [['Has been with your company for at least this many weeks'|RestrictionWeeksWithCompanyAtLeast]]
+      </div>
+      <div>
+        [['Has been with your company for at most this many weeks'|RestrictionWeeksWithCompanyAtMost]]
+      </div>
+
+      <div>
+        [[Is a retired slaver|RestrictionJobRetired]]
+      </div>
+      <div>
+        [[Is retired and has the following living|RestrictionLiving]]
+      </div>
+
+      <hr/>
+      <div><b>Others</b></div>
+
+      <div>
+        [['Is equipping this equipment'|RestrictionEquipped]]
+      </div>
+
+      <div>
+        [['Is a bodyshifter'|RestrictionBodyshifter]]
+      </div>
+      <div>
+      <<message "Sex / Slave rule / Restrictions...">>
+        <div class='card lorecard'>
+
+          <div><b>Slave rule + Physical Restrictions</b></div>
+
+          <div>
+            [[Can orgasm|RestrictionIsCanOrgasm]]
+          </div>
+          <div>
+            [[Can walk|RestrictionIsCanWalk]]
+          </div>
+          <div>
+            [[Can talk|RestrictionIsCanTalk]]
+          </div>
+
+          <hr/>
+          <div><b>Slave rule ONLY</b></div>
+
+          <div>
+            [[On cum diet|RestrictionIsDietCum]]
+          </div>
+          <div>
+            [[On milk diet|RestrictionIsDietMilk]]
+          </div>
+
+          <hr/>
+          <div><b>Physical ONLY (ignores slave rule)</b></div>
+
+          <div>
+            [[Can see|RestrictionIsCanSee]]
+          </div>
+          <div>
+            [[Can physically orgasm|RestrictionIsCanPhysicallyOrgasm]]
+          </div>
+          <div>
+            [[Can physically walk|RestrictionIsCanPhysicallyWalk]]
+          </div>
+          <div>
+            [[Can physically talk|RestrictionIsCanPhysicallyTalk]]
+          </div>
+
+        </div>
+      <</message>>
+      </div>
+
+    <div>
+      <<message "Family...">>
+        <div class='card lorecard'>
+          <div>
+            [[Has one of your slavers as a family member|RestrictionHasFamilyWithJobSlaver]]
+          </div>
+          <div>
+            [[Has one of your slaves as a family member|RestrictionHasFamilyWithJobSlave]]
+          </div>
+        </div>
+      <</message>>
+    </div>
+
+
+      <div>
+      <<message "Tag...">>
+        <div class='card lorecard'>
+          <div>
+            [[Has this tag|RestrictionHasTag]]
+          </div>
+          <div>
+            [[NOT have this tag|RestrictionNoTag]]
+          </div>
+        </div>
+      <</message>>
+      <<include 'CostTagHelp'>>
+      </div>
+    </div>
+
+  <</message>>
+</div>
+
+<br/>
+<br/>
+<<devtoolreturnbutton>>
+
+:: QGRestrictionDone [nobr]
+
+<<set _entry = $qrestriction>>
+<<unset $qrestriction>>
+<<include 'DevAddEntry'>>

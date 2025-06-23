@@ -1,0 +1,11 @@
+:: InitInteraction [nobr]
+
+<<set setup.interaction = {}>>
+<<set setup.interactionpool = {}>>
+
+<<run new setup.InteractionPool('unit')>>
+
+<<set _passages = Story.lookup('tags', 'interaction')>>
+<<for _ipassage, _passage range _passages>>
+  <<include _passage.title>>
+<</for>>

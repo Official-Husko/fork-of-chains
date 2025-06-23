@@ -1,0 +1,172 @@
+:: QuestSetupWhoreSquare [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'whore_square', /* key */
+  'The Whoring Square', /* Title */
+  'darko',   /* author */
+  ['city', 'money', 'trait'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'slavetrader': setup.qu.slavetrader,
+    'guard1': setup.qu.guard,
+    'guard2': setup.qu.guard,
+    'slave': setup.qu.slave,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-0.25),
+  ],
+  'QuestWhoreSquare', /* passage description */
+  setup.qdiff.normal30, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestWhoreSquareCrit',
+      [
+        setup.qc.Trait('slave', setup.trait.training_obedience_basic),
+        setup.qc.MoneyUnitValue('slave', 0.5, 5500),
+        
+      ],
+    ],
+    [
+      'QuestWhoreSquareCrit',
+      [
+        setup.qc.Trait('slave', setup.trait.training_obedience_basic),
+        setup.qc.MoneyUnitValue('slave', 0.3, 3000),
+        
+      ],
+    ],
+    [
+      'QuestWhoreSquareCrit',
+      [
+        setup.qc.MoneyUnitValue('slave', 0.1, 2000),
+      ],
+    ],
+    [
+      'QuestWhoreSquareDisaster',
+      [
+        setup.qc.MoneyUnitValue('slave', 0.05, 2000),
+        setup.qc.Injury('slave', 5),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.HasSlave(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestWhoreSquare [nobr]
+
+<p>
+While slavery has been outlawed in the <<rep $company.humankingdom>>,
+it is still very much alive in its undercity.
+A particular famous place within the undercity is the establishment known as The Whoring Square.
+While standard undercity brothels offer slaves who are permanently assigned there,
+the Whoring Square instead setups booths where clients can offer to purchase a booth
+to attempt to sell their slaves' services there.
+Some clients like to use this to punish their slaves -- nothing breaks a slave faster
+than being forced to service unknown and unsatiable list of customers.
+Some others enjoy the tips that the patrons usually give generously to the slaves,
+which almost always covers the booth's renting fee.
+You have heard that the Whoring Square is looking for tenants right now. You
+can send a team of slavers together with a highly valuable slave for profit,
+if you choose. The more valuable the slave, the higher the potential profit, but of
+course there is a limit for such a thing.
+</p>
+
+:: QuestWhoreSquareCrit [nobr]
+
+<<if $g.slave.isMale()>>
+  <<questimage 'whore_square_male.jpg'>>
+<<else>>
+  <<questimage 'whore_square_female.jpg'>>
+<</if>>
+
+<p>
+Your slaver's booth was located in the corner of the place.
+The booth itself was simple, just four set of manacles to chain
+each of your slave's limbs to the ground.
+There were multiple possible chains to choose from, which can be adjusted 
+based on the preferred position of the slave.
+</p>
+
+<p>
+Having setup the slave and just waiting for customers,
+your slavers couldn't help but look around the fine establishment.
+Various other tenants were also offering slaves --
+some of the slaves were positioned in a sitting position for giving blowjobs,
+others were chained in a doggy position to be used as a fuckhole.
+
+<<set _lust = setup.selectUnit([$g.slavetrader, $g.guard1, $g.guard2], {trait: 'per_lustful'})>>
+
+<<if $g.slavetrader.isYou() or $g.guard1.isYou() or $g.guard2.isYou()>>
+Since you personally have come to the establishment,
+the neighboring tenant happen to recognize you, before
+offering their slave for a trial use, if you choose to.
+<<message "(Partake)">>
+The tenant introduced the slave, the aptly named "Cumslut" whose real named had long been stamped away.
+Apparently, cumslut there was a warrior of the northern region who had accumulated quite a bit of bounty before
+being captured. But according to the tenant, these warriors are very easy to break -- in fact,
+he claimed to have broken this slave within only eight hours of torture. The slave was brought here as punishment
+for reacting to their original name -- the punishment being that the slave must service customers since cum
+will be <<their $g.slave>> only nourishment during their stay here.
+The slave was positioned in a kneeling position, with mouth ring-gagged to constantly let dick in.
+<<if $unit.player.isHasDick()>>
+You eagerly began to feed the willing slave, willing given that <<they $g.slave>> had no choice but to suck dick
+if <<they $g.slave>> did not want to starve.
+You inserted your <<udick $unit.player>> into the slave's mouth, before spraying cum straight down
+<<their $g.slave>> throat.
+<</if>>
+As you use the slave, you wonder if such punishment is effective enough to use on your own slaves...
+<</message>>
+<<elseif _lust>>
+<<Rep _lust>>, being the rather lustful <<urace _lust>>, helped <<themself _lust>> test some
+of <<their _lust>> tenants' merchandise before the establishment opened.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+At the end of the week, <<yourrep $g.slave>> slave|was covered in semen and completely exhausted from
+being used by much more customers than your slavers had expected.
+The experience would have broken any normal slave, if they had not been broken already.
+The customers left quite a large amount of tips too.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+<p>
+By the end of the week, <<rep $g.slave>> slave|was covered in quite a bit of semen,
+<<if $g.slave.isHasTrait(setup.trait.dick_tiny)>>both from the client's orgasms
+and <<their $g.slave>> own when <<they $g.slave>> was milked during the downtime
+<<else>>
+from the clients' orgasms.
+<</if>>
+The experience would have broken any normal slave, if they had not broken already.
+Your slavers managed to gather quite a few tips from the customers perusing the slave.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, your neighbor's eloquent story about their slave swayed
+most of the customers in your slavers' area to their slave instead.
+<<Yourrep $g.slave>> slave|was only able to attract a few customers,
+including one particularly well-dressed client who had a specific fetish for
+<<urace $g.slave>> slaves.
+</p>
+
+<</if>>
+
+:: QuestWhoreSquareDisaster [nobr]
+
+<p>
+Unfortunately, a particularly rowdy customer accidentally used your slave
+way too hard and left <<them $g.slave>> injured.
+Your slavers had no choice but to unshackle <<theslaver $g.slave>> and brought
+<<them $g.slave>> home to recover, before retrying again.
+</p>

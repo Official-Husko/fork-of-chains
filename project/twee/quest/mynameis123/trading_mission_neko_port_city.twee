@@ -1,0 +1,144 @@
+:: QuestSetup_trading_mission_neko_port_city [nobr quest]
+
+<<run new setup.QuestTemplate(
+'trading_mission_neko_port_city', /* key */
+"Trading Mission: Neko Port City", /* Title */
+{ /* Author */
+  name: "mynameis123 edited by Matthew Lang",
+  url: "",
+},
+[ /* tags */
+  'money',
+  'forest',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'trader1': [ setup.qu.trader, 1],
+  'trader2': [ setup.qu.trader, 1],
+  'briber': [ setup.qu.briber, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1000),
+],
+'Quest_trading_mission_neko_port_city',
+setup.qdiff.normal24, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_trading_mission_neko_port_cityCrit',
+    [
+      setup.qc.Favor('neko', 50),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_trading_mission_neko_port_cityCrit',
+    [
+      setup.qc.MoneyCustom(2500),
+    ],
+  ],
+  [
+    'Quest_trading_mission_neko_port_cityFailure',
+    [
+      setup.qc.MoneyCustom(1000),
+    ],
+  ],
+  [
+    'Quest_trading_mission_neko_port_cityDisaster',
+    [
+      setup.qc.MoneyCustom(-2000),
+      setup.qc.Ire('neko', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_trading_mission_neko_port_city [nobr]
+<p>
+	<<lore location_npc>> is a bustling trade-hub in the <<lore geo_pawninsula>>, and many merhcants, big and small, make their living bringing goods into and out of the city. You could also try to make a tidy sum of coin there by sending a group of traders. Said traders would need to be able to navigate through the labyrinth of <<rep $company.neko>>... and resist the urge to spend the coin on the many brothels and blandishments of lining the streets.
+</p>
+
+
+:: Quest_trading_mission_neko_port_cityCrit [nobr]
+
+<p>
+	Your <<uadj $g.trader1>> traders brought a large sum of money into your table, and you can't help but grin at the sum.
+
+	<<if $gOutcome == 'crit'>>
+
+		While they may have also nipped some of them for a "tour-de-relations" with the local neko, there is plenty left for you and the company, and your neko contacts spoke highly about your slavers' "performance", increasing your reputation with them. Still, you
+	<<else>>
+		But you know your slavers well enough that much of the coin has gone to the local brothels, and there wasn't that much to begin with. You
+	<</if>>
+
+	glare at them, making your displeasure known in the silence, and
+	
+	<<if $g.trader1.isHasTrait('per_chaste')>>
+		<<rep $g.trader1>> blushed and shifted uncomfortably.
+	<<elseif $g.trader1.isHasTrait('per_sly')>>
+		<<rep $g.trader1>> shrugged nonchalantly, not giving you any real read on how well founded your suspicions are.
+	<<elseif $g.trader2.isHasTrait('per_chaste')>>
+		<<rep $g.trader2>> blushed and shifted uncomfortably.
+	<<elseif $g.trader2.isHasTrait('per_sly')>>
+		<<rep $g.trader2>> shrugged nonchalantly, not giving you any real read on how well founded your suspicions are.
+	<<elseif $g.briber.isHasTrait('per_chaste')>>
+		<<rep $g.briber>> blushed and shifted uncomfortably.
+	<<elseif $g.briber.isHasTrait('per_sly')>>
+		<<rep $g.briber>> shrugged nonchalantly, not giving you any real read on how well founded your suspicions are.
+	<<else>>
+	the trio of slavers accused each other for wasting the money, earning you a sigh.
+	<</if>>
+</p>
+
+
+:: Quest_trading_mission_neko_port_cityFailure [nobr]
+<p>
+	Your <<uadj $g.trader2>> traders managed to earn a decent amount of money. Unfortunately they gave a lot in charity to the brothel owners in <<lore location_npc>>, and only came back with a fraction of what they should have. Annoying, but what did you really expect?
+</p>
+
+
+
+:: Quest_trading_mission_neko_port_cityDisaster [nobr]
+
+<p>
+	Where did you go wrong? Was it your fault?
+</p>
+
+<p>
+	Not only did your <<uadjbad $g.trader1>> traders fail to negotiate a deal, they made fools of themselves in front of the <<rep $company.neko>>. Then they wasted what little money they did earn in the red light district of the city. Then, they had the audacity to come back with DEBT that YOU have to pay.
+</p>
+
+<p>
+	You take a deep, steadying breath. Maybe this wasn't your <<uadjbad $g.trader2>> slavers' fault but instead your own. Perhaps if you stopped treating your slavers as though they were competent people capable of undertaking complex tasks, and instead started seeing them as more dispensible pawns, little better than the slaves you buy and sell you wouldn't run into this problem. Or maybe if you found a higher quality of employee.
+</p>
+
+<<if !$g.briber.isYou() && $unit.player.isDominant()>>
+	<p>
+		You stopped your pondering, and instead decided an abject lesson was in order. Still glaring you, turned your attention to <<rep $g.trader1>><br>
+		"Take off your pants and brace your hands on the desk!" you snapped.<br>
+		<<if $g.trader1.isHasTrait('per_submissive')>>
+			Meekly, <<they $g.trader1>> did as you asked.
+		<<elseif $g.trader1.isHasTrait('per_dominant')>>
+			Scowling, <<rep $g.trader1>> slowly stripped off <<their $g.trader1>> pants and undergarments.
+		<<else>>
+			Hesitantly, <<rep $g.trader1>> slowly stripped off <<their $g.trader1>> pants and undergarments.
+		<</if>>
+
+	Stepping behind them, you <<ustrippantsand $unit.player>>, and shoved your <<udickorstrap $unit.player>> deep inside <<reps $g.trader1>> <<uanus $g.trader1>>. You railed <<them $g.trader1>> mercilessly, using <<them $g.trader1>> as you would a slave. The others watched on, in stunned silence until you spilled both your displeasure and pleasure and paused for breath.
+	</p>
+
+	<p>
+	As you came down from your post orgasmic high you wonder if your lesson was learnt, but it was definitely well deserved.<br>
+	"Fail me again and I'll let the slaves use you," you say, glaring at both of them. "I'm sure more than a few of them would like some revenge."<br>
+	Then you let them leave your office, <<rep $g.trader1>> limping slightly and clutching their pants around their waist, dignity in tatters.
+	</p>
+<</if>>

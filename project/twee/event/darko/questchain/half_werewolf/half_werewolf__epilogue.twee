@@ -1,0 +1,56 @@
+:: EventSetup_half_werewolf__epilogue [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'half_werewolf__epilogue', /* key */
+"Half-Werewolf: Epilogue", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Event_half_werewolf__epilogue',
+{ /* roles */
+},
+{ /* actors */
+  'child': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_avenger_0'),
+    setup.qres.NotInjured(),
+  ],
+  'father': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.HasTag('half_werewolf_father'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('half_werewolf_epilogue'),
+  setup.qc.RemoveTagGlobal('half_werewolf_father'),
+  setup.qc.AddTraitsRandom('child', [setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_hypnotic, setup.trait.skill_connected, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal], 1, false, true),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('half_werewolf_epilogue', '1'),
+],
+0, /* Cooldown */
+setup.rarity.common, /* Rarity */
+)>>
+
+:: Event_half_werewolf__epilogue [nobr]
+
+<p>
+It has been a few weeks since <<yourrep $g.child>> finally got <<their $g.child>>
+revenge. Having <<rep $g.father>> locked securely in the dungeons seems to
+finally work, bringing an end to <<reps $g.child>> nightmares. <<Theslaver $g.child>>
+child|look mighty peaceful nowadays, cheerful even.
+</p>
+
+<p>
+Nowadays, <<therace $g.child>> can usually be found busy learning a new
+hobby. This can only bode well for <<their $g.child>> career as a slaver. But
+more importantly, it seems to be the proof you require that whatever had
+plagued the slaver's heart, it has been completely cleared now.
+</p>
+
+<p>
+You sit back at your desk while reminiscing back about your first meeting
+with <<them $g.child>>...
+</p>

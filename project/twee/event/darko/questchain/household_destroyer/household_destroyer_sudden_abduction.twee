@@ -1,0 +1,32 @@
+:: EventSetup_household_destroyer_sudden_abduction [nobr event]
+
+<<run new setup.Event(
+'household_destroyer_sudden_abduction', /* key */
+"Household Destroyer: Sudden Abduction", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+],
+'Event_household_destroyer_sudden_abduction',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'dom': setup.contacttemplate.quest_household_destroyer_host,
+},
+[ /* outcomes */
+  setup.qc.VarRemove('quest_household_destroyer_progress'),
+  setup.qc.Opportunity('household_destroyer_sudden_abduction', {
+dom: "dom",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarGte('quest_household_destroyer_progress', 3),
+],
+0, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_household_destroyer_sudden_abduction [nobr]
+<<include "Opportunity_household_destroyer_sudden_abduction">>

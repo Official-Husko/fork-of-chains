@@ -1,0 +1,43 @@
+:: ActivitySetup_forge_blacksmith2 [nobr activity]
+
+
+
+<<run new setup.ActivityTemplate({
+key: 'forge_blacksmith2',
+name: "Forge Blacksmith", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+  ],
+  'b': setup.contacttemplate.blacksmithpeddler,
+},
+critical_traits: [
+  setup.trait.skill_ambidextrous,
+],
+disaster_traits: [
+  setup.trait.per_kind,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "b",
+  texts: [
+    "Hey <<rep $unit.player>>, welcome to my smithy. Fancy a new armor?",
+    "Hey <<rep $unit.player>>, welcome to my smithy. Just helping out <<rep $g.a>> here maintain <<their $g.a>> <<uweapon $g.a>>.",
+    "Looking to protect yourself, or deal some damage?",
+    "Do you know what\'s the hardest part of forging? It\'s the anvil.",
+  ],
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.forge,
+],
+})>>

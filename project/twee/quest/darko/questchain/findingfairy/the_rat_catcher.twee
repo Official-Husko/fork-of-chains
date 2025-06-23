@@ -1,0 +1,202 @@
+:: QuestSetup_the_rat_catcher [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'the_rat_catcher', /* key */
+"The Rat-Catcher", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'city',
+  'item',
+  'veteran',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'informer': [ setup.qu.informer, 1],
+  'trapper': [ setup.qu.trapper, 1],
+  'negotiator': [ setup.qu.negotiator, 1],
+},
+{ /* actors */
+  'ratcatcher': 'city_all',
+},
+[ /* costs */
+],
+'Quest_the_rat_catcher',
+setup.qdiff.hardest59, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_rat_catcherCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.SlaveOrderFlex(
+'Anonymous Slave Order', /* name */
+'humankingdom', /* company */
+12, /* expires in */
+-3000, /* base price */
+6000, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.skill_ambidextrous,
+setup.trait.skill_intimidating,
+setup.trait.skill_flight,
+setup.trait.skill_connected,
+setup.trait.skill_hypnotic,
+setup.trait.skill_creative,
+setup.trait.skill_entertain,
+setup.trait.skill_alchemy,
+setup.trait.skill_animal,
+setup.trait.magic_fire,
+setup.trait.magic_water,
+setup.trait.magic_wind,
+setup.trait.magic_earth,
+setup.trait.magic_light,
+setup.trait.magic_dark
+], 4, 3, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+    ],
+  ],
+  [
+    'Quest_the_rat_catcherCrit',
+    [
+      setup.qc.SlaveOrderFlex(
+'Rat-Catcher Slave Order', /* name */
+'humankingdom', /* company */
+50, /* expires in */
+100, /* base price */
+0, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.skill_flight),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.VarRemove('quest_bewitchment_rat_trap'),
+setup.qc.Item(setup.item.quest_bewitchment_trap),
+],
+[ /* unfulfilled outcomes */
+setup.qc.VarRemove('quest_bewitchment_rat_trap'),
+],
+),
+      setup.qc.VarSet('quest_bewitchment_rat_trap', '1', -1),
+    ],
+  ],
+  [
+    'Quest_the_rat_catcherFailure',
+    [
+      setup.qc.MissingUnit('informer'),
+    ],
+  ],
+  [
+    'Quest_the_rat_catcherDisaster',
+    [
+      setup.qc.MissingUnit('trapper'),
+      setup.qc.MissingUnit('negotiator'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoItem(setup.item.quest_bewitchment_trap),
+  setup.qres.VarEqual('quest_bewitchment_alternative', '1'),
+  setup.qres.VarNull('quest_bewitchment_rat_trap'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_rat_catcher [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+A rather infamous rat-catcher lives in the <<lore region_city>>. Everyone can
+attest to <<their $g.ratcatcher>> skills, but making use of <<their
+$g.ratcatcher>> services is... challenging, to say the least. The <<man
+$g.ratcatcher>> is rather eccentric, and would normally only take the most
+eccentric job and for the most absurd of prices.
+</p>
+
+<p>
+As it happens, you have a rather eccentric "flying rat" to catch in the forests, and perhaps the
+rat-catcher would be interested in the job. First, you'll need a good
+informer to be able to find the ratcatcher's contact. Once that's done,
+you'll need a reasonably skilled trapper to disarm the human-sized rat traps
+littering the ratcatcher's vicinity. Finally, a good negotiator is needed to
+unravel the ratcatcher's gibberish speak and get the offer done.
+</p>
+
+
+:: Quest_the_rat_catcherCrit [nobr]
+
+<p>
+Following the instructions found by <<rep $g.informer>>, <<yourrep
+$g.trapper>> and <<utheirrel $g.trapper $g.negotiator>> carefully trudged to
+the city, closing in to the address. As they got nearer, more and more absurd
+traps lied in front of them — from stale cheese suspended in the air by magic
+to human-sized mousetraps — all handled <<uadv $g.trapper>> by <<yourrep
+$g.trapper>>. Eventually, your slavers arrived at a small hut where the
+ratcatcher appeared to live in.
+</p>
+
+<p>
+The ratcatcher was... eccentric, to say the last. Fortunately, <<they
+$g.ratcatcher>> seemed interested in the job: after all, not everyday you
+receive an offer to catch a flying rat. But the payment was rather absurd — "a
+flying rat for a flying rat," as <<they $g.ratcatcher>> put it eloquently.
+You'll have to supply the ratcatcher with a living, flying rat if you want to
+get your <<uhands $unit.player>> on the <<rep setup.item.quest_bewitchment_trap>> that <<they
+$g.ratcatcher>> promised to deliver to your fort...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+While waiting, <<rep $g.informer>> did not spend all <<their $g.informer>>
+time idling around, and managed to find a valuable slave order from a client
+in the undercity of Lucgate.
+</p>
+<</if>>
+
+
+
+:: Quest_the_rat_catcherFailure [nobr]
+<p>
+<<Yourrep $g.trapper>> and <<utheirrel $g.trapper $g.negotiator>> waited very
+patiently for <<rep $g.informer>> to get back to them with the location of
+the ratcatcher's abode. Very... patiently, and after four weeks of waiting,
+they finally realized that something was wrong. Nobody knew what happen to
+<<rep $g.informer>>, but <<reps $g.trapper>> hunch was telling <<them
+$g.informer>> that <<rep $g.informer>> informer|is now living a life as the
+ratcatcher's personal test subject.
+</p>
+
+
+:: Quest_the_rat_catcherDisaster [nobr]
+<p>
+<<Yourrep $g.informer>> returned alone from the mission. Apparently, both
+<<rep $g.trapper>> and <<utheirrel $g.trapper $g.negotiator>> never returned
+from their trip to the ratcatcher's abode. It is up to anyone's guess what
+happened to the slavers...
+</p>

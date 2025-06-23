@@ -1,0 +1,1045 @@
+:: OpportunitySetup_visiting_the_injured [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'visiting_the_injured', /* key */
+"Visiting the Injured", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_visiting_the_injured',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_visiting_the_injured_0',
+    outcome_passage: 'Opportunity_visiting_the_injured_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.Player(setup.qres.AnyTrait([setup.trait.per_lustful, setup.trait.per_sexaddict], true)),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AnyTrait([setup.trait.per_chaste], true)),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('you', -50)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AllTraits([setup.trait.per_lustful], true)),
+setup.qc.FriendshipWithYou('covalescent', 50),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AllTraits([setup.trait.per_sexaddict], true)),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 100)
+], undefined),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 30)
+], undefined))
+], undefined))
+], undefined))
+], undefined),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 50)
+], undefined)),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_visiting_the_injured_1',
+    outcome_passage: 'Opportunity_visiting_the_injured_1_flavor',
+    costs: [ /* costs */
+      setup.qc.MoneyCustom(-5),
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.Player(setup.qres.AnyTrait([setup.trait.per_kind, setup.trait.per_empath], true)),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('you', 100)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Player(setup.qres.AllTraits([setup.trait.per_cruel], true)),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AnyTrait([setup.trait.per_submissive], true)),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', -20),
+setup.qc.BoonizeRandom('covalescent', 5)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AllTraits([setup.trait.per_masochistic], true)),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 100)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AnyTrait([setup.trait.per_dominant, setup.trait.per_stubborn], true)),
+setup.qc.DoAll([
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('covalescent', 5)
+], undefined),
+setup.qc.FriendshipWithYou('you', -5)
+], undefined),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', -50)
+], undefined))
+], undefined))
+], undefined))
+], undefined),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 50)
+], undefined))
+], undefined)),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_visiting_the_injured_2',
+    outcome_passage: 'Opportunity_visiting_the_injured_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.Player(setup.qres.SkillAtLeast(setup.skill.aid, 40)),
+setup.qc.DoAll([
+setup.qc.DoAll([
+setup.qc.Heal('covalescent', 1)
+], 0.2),
+setup.qc.FriendshipWithYou('covalescent', 200)
+], undefined),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 50)
+], undefined)),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_visiting_the_injured_4',
+    outcome_passage: 'Opportunity_visiting_the_injured_4_flavor',
+    costs: [ /* costs */
+      setup.qc.MoneyCustom(-10),
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Building(setup.buildingtemplate.market),
+      setup.qres.Player(setup.qres.NoTraits([setup.trait.per_cruel, setup.trait.per_frugal], true)),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.FriendshipWithYou('you', 10),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_visiting_the_injured_3',
+    outcome_passage: 'Opportunity_visiting_the_injured_3_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Or([
+setup.qres.Actor('covalescent', setup.qres.YourLover()),
+setup.qres.Player(setup.qres.NoTraits([setup.trait.per_chaste], true))
+]),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.YourLover()),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 200)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AllTraits([setup.trait.per_chaste], true)),
+setup.qc.DoAll([
+
+], undefined),
+setup.qc.DoAll([
+setup.qc.FriendshipWithYou('covalescent', 100)
+], undefined))
+], undefined)),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_visiting_the_injured_5',
+    outcome_passage: 'Opportunity_visiting_the_injured_5_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Player(setup.qres.AnyTrait([setup.trait.per_cruel, setup.trait.per_dominant, setup.trait.per_lustful, setup.trait.per_sexaddict], true)),
+      setup.qres.Player(setup.qres.NoTraits([setup.trait.per_submissive, setup.trait.per_chaste, setup.trait.per_kind], true)),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AllTraits([setup.trait.per_chaste], true)),
+setup.qc.MissingUnitForever('covalescent'),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('covalescent', setup.qres.AnyTrait([setup.trait.per_lustful, setup.trait.per_sexaddict, setup.trait.per_submissive, setup.trait.per_masochistic], true)),
+setup.qc.DoAll([
+setup.qc.BoonizeRandom('covalescent', 5),
+setup.qc.FriendshipWithYou('you', 200)
+], undefined),
+setup.qc.DoAll([
+setup.qc.BoonizeRandom('you', 5),
+setup.qc.FriendshipWithYou('covalescent', -500)
+], undefined))
+], undefined)),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_visiting_the_injured_6',
+    outcome_passage: 'Opportunity_visiting_the_injured_6_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.hospital),
+],
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'covalescent': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.IsInjured(1),
+    setup.qres.Home(),
+    setup.qres.HasTag('Convalescing'),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_visiting_the_injured [nobr]
+<p>It's been a surprisingly slow week at <<rep $company.player>> and you find
+yourself wandering the Fortress. It's come a long way from the ruin you first
+came across. In your mind's eye you can still see the scorch marks on the
+cracked pavers where you built your first fire, and the nook over there were you
+set your bedroll and.... </p>
+
+<p>Well. Memories.</p>
+
+<p>
+<<if $g.you.getLover() == $g.covalescent>>
+Passing your hospital reminds you that your lover <<name $g.covalescent>> is currently recovering there,
+and you caught
+<<else>>
+Passing the hospital you glance in and see <<name $g.covalescent>>,
+<</if>>
+a grimace of pain on <<their $g.covalescent>> face as <<they $g.covalescent>> stare moodily out the window. Being injured is a bitch. Well, you have some time.
+</p>
+
+<p>Entering the hospital, you head over to <<reps $g.covalescent>> bed and pull the privacy drapes out to, well, give you both a bit of privacy.<br><br>
+<<if $g.covalescent.isHasTrait('per_submissive')>>
+<<rep $g.covalescent>> looks up as you approach. "Hello Boss."
+<<else>>
+<<rep $g.covalescent>> looks up as you approach. "Hi <<name $g.you>>."
+<</if>>
+</p>
+<p>What do you decide to do?</p>
+
+
+:: Opportunity_visiting_the_injured_0 [nobr]
+Spend some time with <<them $g.covalescent>>
+
+
+:: Opportunity_visiting_the_injured_0_flavor [nobr]
+<p>"I just came to talk," you say with a grin. "Take your mind off everything."<br><br>
+"Great," <<rep $g.covalescent>> says. "I could use a distraction.</p>
+
+<p>
+<<if $unit.player.getSpeech() == setup.speech.friendly>>
+You spend some time in idle banter, and get to know each other better as a result.
+<<elseif $unit.player.getSpeech() == setup.speech.bold>>
+You spend a few hours regaling <<rep $g.covalescent>> with tales of <<uhomeland $g.you>>.
+<<elseif $unit.player.getSpeech() == setup.speech.cool>>
+Since you have a captive audience, so to speak, you spend some time boasting of your recent exploits.
+<<elseif $unit.player.getSpeech() == setup.speech.witty>>
+You catch <<rep $g.covalescent>> up with the latest gossip and happenings since they've been sick, picking the most outrageous tales you can think of and exaggerating them for comic effect. Before long your stomachs remind you that you both need food and when you glance out the window the sun has begun to set.
+<<elseif $unit.player.getSpeech() == setup.speech.debauched>>
+You spend some time telling <<rep $g.covalescent>> some of your more ribald exploits. It's not exactly that you mean to, but it is probably your favourite topic. <<if $g.covalescent.isHasTrait('per_chaste')>>
+Before long it becomes clear that <<rep $g.covalescent>> isn't really comfortable talking about sex so openly, and you make your excuses and leave.
+<<elseif $g.covalescent.isHasTrait('per_sexaddict')>>
+<<rep $g.covalescent>> eggs you on, and it soon goes from storytelling to explicit masturbation instructions that make a mess of their bedding.<br><br>
+"That was exactly what I needed," <<rep $g.covalescent>> says with a contented smile. "We should do that more often."<br><br>
+"Maybe when you're back on your feet," you say, rising to your own, <<if $g.you.isHasDick()>>
+trying to ignore the stiffness in your pants and the smell of cum filling the area.
+<<else>>
+trying to ignore the ache in your pussy and the smell of cum filling the area.
+<</if>>
+<br><br>
+"I'll hold you to that."<br><br>
+<<if $g.you.isHasTrait('per_cruel')>>
+Smiling, you leave the room. Best to keep them hungry for more.
+<<else>>
+You lean down and give <<rep $g.covalescent>> a long, lingering kiss.<br><br> "I look forward to it.
+<</if>>
+<<elseif $g.covalescent.isHasTrait('per_lustful')>>
+<<rep $g.covalescent>> enjoys your stories and shares some of their own with you. When you finally leave, you find yourself thinking about finding a partner to relieve your pent up arousal. That said. This is <<rep $company.player>>. You've got options.
+<<else>>
+<<rep $g.covalescent>> asks you a fair few questions about escapades. If nothing else, they're used to how you speak by now.
+<</if>>
+<</if>>
+</p>
+
+
+:: Opportunity_visiting_the_injured_1 [nobr]
+Bring <<them $g.covalescent>> food
+
+
+:: Opportunity_visiting_the_injured_1_flavor [nobr]
+<p>"Hi <<rep $g.covalescent>>. I thought you could use some food."<br><br>
+<<if $g.you.isHasTrait('per_empath')>>
+<<rep $g.covalescent>> looks at the bowl in your hands. "That's my favorite! How did you know?"<br><br>
+You shrug. "You're my crew. It's my job to know."<br><br>
+<<rep $g.covalescent>> smiles broadly and reaches for the bowl. "Thank you so much. You are the best boss ever."<br><br>
+"I try to be," you say with a smile as you take a seat next to their bed.<br><br>
+<p>You spend an hour or so just talking in general before you take your leave, bringing the bowl and spoon with you.</p>
+<<elseif $g.you.isHasTrait('per_kind')>>
+<<rep $g.covalescent>> looks at the bowl in your hands. "That's my favorite! How did you know?"<br><br>
+You shrug. "You're my crew. It's my job to know."<br><br>
+<<rep $g.covalescent>> smiles broadly and reaches for the bowl. "Thank you so much. You are the best boss ever."<br><br>
+"I try to be," you say with a smile as you take a seat next to their bed.
+<p>You spend an hour or so just talking in general before you take your leave, bringing the bowl and spoon with you.</p>
+<<elseif $g.you.isHasTrait('per_cruel')>>
+<<rep $g.covalescent>> looks at the bowl and their face pales as you try to suppress a grin. It's nourishing, absolutely, but it's heavily laced with the red chilis from across the seas. An acquired taste and one that you love, but <<rep $g.covalescent>> is known for not being great with the spice. "Burns twice" as the joke goes.<br><br>
+<<if $g.covalescent.isHasTrait('per_submissive')>>
+<<rep $g.covalescent>> meets your gaze for a moment and then drops their eyes.<br><br>
+"Yes boss," <<they $g.covalescent>> say, opening their mouth.<br><br>
+With two injured arms, they accept you spooning the curry into them and swallow without complaint, even as sweat starts to dot their brow. You almost consider letting them have some milk, or yoghurt to help with the heat but then, maybe this will incentivize them to not get injured in the future.
+<<elseif $g.covalescent.isHasTrait('per_masochistic')>>
+<<rep $g.covalescent>> meets your gaze for a moment and then drops their eyes, and for a moment you see the ghost of a smile on their face.<br><br>
+"Yes <<mistress $g.you>>," <<they $g.covalescent>> say, opening their mouth.<br><br>
+With two injured arms, they accept you spooning the curry into them and swallow without complaint, even as sweat starts to dot their brow. You almost consider letting them have some milk, or yoghurt to help with the heat but then, why take away that delicious pain you know they crave?
+<<elseif $g.covalescent.isHasTrait('per_dominant')>>
+<<name $g.covalescent>> shakes their head firmly.<br><br>
+"I'm not eating that. You know I'm not good with chilli at the best of times, and I'm not going to suffer through that while I'm hurt."<br><br>
+<<if $g.you.isHasTrait('per_submissive')>>
+"Fine," you say turning around to leave. "I'll have someone send something else up to you."<br><br>
+Honestly, sometimes you wonder why you even try.
+<<elseif $g.you.isHasTrait('per_dominant')>>
+You smile your best smile at them. You're proud of your smile. It's the one that makes all the slaves cower when it's turned on them. "That's fair," you say. "And it's not like I can force you."<br><br>
+You see the realization in <<Reps $g.covalescent>> eyes as it hits <<them $g.covalescent>>, and the way they try not to glance down at their injured arms—both injured arms—is really adorable.<br><br>
+"Oh wait," you say. "I can."<br><br>
+Placing the bowl of curry on the bedside table you reach out and grab their nose. "Open," you say firmly.
+<p>Eventually the need to breathe forces them to comply, and you spoon in a mouthful of the extra spicy curry, and then use your spare hand to force their jaw closed.<br><br>
+"Swallow."<br><br>
+It's a fight to the last mouthful, but they've eventually eaten the entire bowl.<br><br>
+"Good <<girl $g.covalescent>>," you say, patting their head gently. "Now next time you're in the field, remember this and do try harder to avoid careless injuries, hmm?"<br><br>
+You hear <<rep $g.covalescent>> cursing under <<their $g.covalescent>> breath as you leave, bowl in hand.<br><br>
+"What was that?" you call back over your shoulder.<br><br>
+"...yes, Boss."</p>
+<<else>>
+You shrug and place the bowl down on the bedside table.<br><br>
+"That's up to you, but this is your food. You won't be getting anything else today. Maybe think about that next time you're out in the field and try a bit harder to avoid careless injuries."
+<p>Turning on your heel, you leave the room. Plenty of other things to get on with today, even if you don't know exactly what they are yet.</p>
+<</if>>
+
+<<elseif $g.covalescent.isHasTrait('per_stubborn')>>
+<<name $g.covalescent>> shakes their head firmly.<br><br>
+"I'm not eating that. You know I'm not good with chili at the best of times, and I'm not going to suffer through that while I'm hurt."<br><br>
+
+<<if $g.you.isHasTrait('per_submissive')>>
+"Fine," you say turning around to leave. "I'll have someone send something else up to you."<br><br>
+Honestly, sometimes you wonder why you even try.
+
+<<elseif $g.you.isHasTrait('per_dominant')>>
+You smile your best smile at them. You're proud of your smile. It's the one that makes all the slaves cower when it's turned on them. "That's fair," you say. "And it's not like I can force you."<br><br>
+You see the realization in <<Reps $g.covalescent>> eyes as it hits <<them $g.covalescent>>, and the way they try not to glance down at their injured arms—both injured arms—is really adorable.<br><br>
+"Oh wait," you say. "I can."<br><br>
+Placing the bowl of curry on the bedside table you reach out and grab their nose. "Open," you say firmly.
+<p>Eventually the need to breathe forces them to comply, and you spoon in a mouthful of the extra spicy curry, and then use your spare hand to force their jaw closed.<br><br>
+"Swallow."<br><br>
+It's a fight to the last mouthful, but they've eventually eaten the entire bowl.<br><br>
+"Good <<girl $g.covalescent>>," you say, patting their head gently. "Now next time you're in the field, remember this and do try harder to avoid careless injuries, hmm?"<br><br>
+You hear <<rep $g.covalescent>> cursing under <<their $g.covalescent>> breath as you leave, bowl in hand.<br><br>
+"What was that?" you call back over your shoulder.<br><br>
+"...yes, Boss."</p>
+<<else>>
+You shrug and place the bowl down on the bedside table.<br><br>
+"That's up to you, but this is your food. You won't be getting anything else today. Maybe think about that next time you're out in the field and try a bit harder to avoid careless injuries."
+<p>Turning on your heel, you leave the room. Plenty of other things to get on with today, even if you don't know exactly what they are yet.</p>
+<</if>>
+<<else>>
+"Really?" <<rep $g.covalescent>> looks up at you in resignation. "You're punishing me for getting hurt?"<br><br>
+"For getting unnecessarily hurt, yes," you say firmly. "Next time you might not come back—or someone else might not come back. Anyway, it's what we're having tonight and you're not getting special treatment just because you fucked up.
+<p>You place the bowl down on the table and head out of the hospital. Hopefully they'll do better out there next time."</p>
+<</if>>
+<<else>>
+"Thanks, smells good. What is it?"<br><br>
+"Rabbit, bacon and potato stew," you say as you hand the bowl to them. "Nothing fancy, but it'll fill you up."<br><br>
+You spend some time talking with them once they've finished their food, but they tire quickly, and you leave them to sleep as you head back out into the fort once more.
+<</if>>
+</p>
+
+
+:: Opportunity_visiting_the_injured_2 [nobr]
+Tend <<their $g.covalescent>> wounds
+
+
+:: Opportunity_visiting_the_injured_2_flavor [nobr]
+<p>There comes a point where time is the only thing that can heal fully, but you have some knowledge of ways to help the body along, or at the very least, ease some of the pain.<br><br>
+"Hello <<rep $g.covalescent>>, you say. Just here to check on your injuries."<br><br>
+<<if $g.you.getSkill(setup.skill.aid) >= 40>>
+You're fairly confident in your ability with medicine and cures, and you decide to attempt a healing poultice in addition to a painkiller. The downside of course, is the smell.<br><br>
+"Gods, that's rank," <<rep $g.covalescent>> says as you slather the sticky mixture onto a bandage.<br><br>
+"That's the idea," you say lightly. "If it smelled nice then you might decide you want to stay here longer than you need to."<br><br>
+<<rep $g.covalescent>> sighs. "Look, as long as it stops the itching I'm good."<br><br>
+"It will help," you promise. "But some itching is inevitable. It's art of healing."<br><br>
+"So you keep telling me," <<rep $g.covalescent>> says, grimacing as you wrap the bandage over their injury. "Fuck that's cold."<br><br>
+"It'll warm," you say firmly. "I thought you were a tough slaver."<br><br>
+"Boss with all due respect... fuck you."<br><br>
+You chuckle as you tie off the bandage and start cleaning up. Hopefully you got this one right.
+<<else>>
+You're not confident in your knowledge of herbs to really do much more than make their time in the hospital a bit more pleasant, so you mix up a salve to help numb the pain they're in—and smell pleasant while you're at it. <<rep $g.covalescent>> sighs in relief as you apply it to their body.<br><br>
+"Thanks, <<name $unit.player>>, that feels great."<br><br>
+"You're welcome," you say. "Just rub it on whenever you feel you need it."<br><br>
+<<name $g.covalescent>> nods agreeably. "I will."
+<p>You spend a bit of time talking about the company and your goals and dreams, but <<rep $g.covalescent>> tires quickly and is soon nodding off. Smiling, you put away the rest of the herbs and supplies and head back out into the fort.</p>
+<</if>>
+</p>
+
+
+:: Opportunity_visiting_the_injured_3 [nobr]
+Give <<them $g.covalescent>> some...relief
+
+
+:: Opportunity_visiting_the_injured_3_flavor [nobr]
+
+You pause to look at <<them $g.covalescent>>, lying there on the bed, both arms splinted and strapped. They have to rely on someone else for just about everything—eating, bathing, getting to the outhouse, or more often than not, chamber pot. Looking down over their <<utorso $g.covalescent>> and crotch you wonder if anyone's been helping with any other source of tension.<br><br>
+"Uh, boss, why are you looking at me like that?"<br><br>
+You smile and reach for their <<uequipslot $g.covalescent 'legs'>>. "It's been hard enough for you here. I thought I'd help ease some of your tension."<br><br>
+
+<<if $unit.player.getLover() == $g.covalescent>>
+<<rep $g.covalescent>> smiles up at you. "As if I'd turn you down, lover. I've been pent up for days."<br><br>
+You chuckle as you remove their <<uequipslot $g.covalescent 'legs'>> and
+undergarments, revealing the familiar
+<<if $g.covalescent.isHasDick()>>
+sight of <<their $g.covalescent>> rapidly
+stiffening cock. The smell of male musk hits
+<<else>>
+smell of <<their $g.covalescent>> rapidly increasing arousal.
+The smell hits
+<</if>>
+your nostrils and you can feel
+<<if $unit.player.isHasDick()>>
+yourself hardening in response.
+<<else>>
+yourself getting moist down below.
+<</if>>
+
+<p>
+<<if !$g.covalescent.isHasDick()>>
+Looking up into <<reps $g.covalescent>> eyes you lower your head to <<their
+$g.covalescent>> pussy and eat <<them $g.covalescent>> with <<their
+$g.covalescent>> mouth, running your tongue inside the <<them
+$g.covalescent>> and exploring the sensitive area that always sets <<them $g.covalescent>> off.<br><br>
+"Fuck, <<name $unit.player>> I'm gonna-"
+<<their $g.covalescent>> body shudders in response as they climax in ecstasy.
+<<else>>
+Looking up into <<reps $g.covalescent>> eyes you lower your head to <<their
+$g.covalescent>> groin and take <<them $g.covalescent>> into <<their
+$g.covalescent>> mouth, running your tongue into the spot beneath <<their
+$g.covalescent>> cockhead that always sets <<them $g.covalescent>> off.<br><br>
+"Fuck, <<name $unit.player>> I'm gonna-" <<their $g.covalescent>> cock swells in
+your mouth and you feel <<them $g.covalescent>> shoot, sweet, salty and bitter
+all at once filling your mouth and coating your tongue as you swallow rapidly,
+some of it spilling out down the sides of <<their $g.covalescent>> cock despite
+your best efforts.
+<</if>>
+</p>
+
+"That was quick," you say, pulling back with your mouth as you
+<<if $g.covalescent.isHasDick()>>
+stroke <<their $g.covalescent>> still hard cock.
+<<else>>
+withdraw your tongue.
+<</if>>
+
+<br><br>
+"Sorry love," <<they $g.covalescent>> says sheepishly. "Like I said, I've been a bit pent up."
+<br><br>
+
+<<if $g.covalescent.isHasDick()>>
+<p>
+"Well," you say as you let go of <<their $g.covalescent>> cock and remove your own <<uequipslot $unit.player 'legs'>>. "You're still hard. Why don't we take care of that?"</p>
+<p><<rep $g.covalescent>> smiles as you climb up onto the bed, and lower yourself down, <<their $g.covalescent>> hard cock slipping into your
+<<if $unit.player.isHasDick()>>
+<<uanus $unit.player>>.
+<<else>>
+<<uvagina $unit.player>>.
+<</if>>
+A sigh of pleasure escapes you as <<they $g.covalescent>> fills you, and stares up at you, <<their $g.covalescent>> face a mixture of lust, love and frustration.
+</p>
+"What's wrong?" you ask, as you rest your hands on <<their $g.covalescent>> chest, absently toying with <<their $g.covalescent>> nipples just because you can.<br><br>
+"Kiss me?" <<they $g.covalescent>> asks. "Please?"<br><br>
+You smile as you meet <<their $g.covalescent>> lips with yours and slowly start
+to ride <<them $g.covalescent>>. Given <<their $g.covalescent>> condition,
+you're going to be doing most of the work, but that's okay. At least this
+time.
+<<else>>
+
+<p>
+You say nothing but
+smile at <<them $g.covalescent>>, before slowly meeting your lips with <<theirs $g.covalescent>>,
+hospital rules be damned.
+</p>
+<</if>>
+
+<<elseif $g.covalescent.isHasTrait('per_chaste')>>
+
+<<rep $g.covalescent>> moves <<their $g.covalescent>> crotch away from your hands. "Thanks, but I'm okay. I'm not really...you know. I appreciate the offer and all, but if you're looking for fun maybe go use one of the slaves?"
+<p>It takes you a moment to remember that <<rep $g.covalescent>> tends not to care for casual sex.<br><br>
+"Sure," you say, pulling your hand back. "Sorry."<br><br>
+"It's fine boss. I'm sure some of the others would have really appreciated it.</p>
+
+<<else>>
+
+<<rep $g.covalescent>> looks up at you in surprise. "Really? You mean it? Fuck yes! I've been pent up for days."<br><br>
+You chuckle as you remove their <<uequipslot $g.covalescent 'legs'>> and undergarments, revealing
+<<their $g.covalescent>>
+<<if $g.covalescent.isHasDick()>>
+<<udick $g.covalescent>>, dark and throbbing with excitement.
+The smell of male musk hits
+<<else>>
+<<uvagina $g.covalescent>>, wet with excitement.
+The smell of female arousal hits
+<</if>>
+your nostrils and you can feel
+<<if $unit.player.isHasDick()>>
+yourself hardening in response.
+<<else>>
+yourself getting moist down below.
+<</if>>
+
+<<if !$g.covalescent.isHasDick()>>
+<p>Looking up into <<reps $g.covalescent>> eyes you lower your head to <<their
+$g.covalescent>> pussy and eat <<them $g.covalescent>> with <<their
+$g.covalescent>> mouth, running your tongue inside the <<them
+$g.covalescent>> and exploring the sensitive area hidden within.<br><br>
+Given how horny <<they $g.covalescent>> is, it doesn't take long for <<them $g.covalescent>> to
+lose control as you feel <<their $g.covalescent>> body tense as
+<<they $g.covalescent>> gets closer to closer to release.<br><br>
+"Fuck, <<name $unit.player>> I'm gonna-"
+<<their $g.covalescent>> body shudders in response as they climax in ecstasy.
+</p>
+<<else>>
+<p>Looking up into <<reps $g.covalescent>> eyes you lower your head to <<their
+$g.covalescent>> groin and take <<them $g.covalescent>> into <<their
+$g.covalescent>> mouth, using your tongue to tease <<their $g.covalescent>>
+cockhead and suck as <<their $g.covalescent>> precum starts flowing, sweet and
+tasty.<br><br>
+Given how horny <<they $g.covalescent>> is, it doesn't take long for <<them $g.covalescent>> to stuck pushing up towards your face and soon you feel <<their $g.covalescent>> body tense and <<their $g.covalescent>> balls contract.<br><br>
+"Fuck, <<name $unit.player>> I'm gonna-" <<their $g.covalescent>> cock swells in
+your mouth and you feel <<them $g.covalescent>> shoot, sweet, salty and bitter
+all at once filling your mouth and coating your tongue as you swallow rapidly,
+some of it spilling out down the sides of <<their $g.covalescent>> cock despite
+your best efforts.
+</p>
+<</if>>
+
+"Oh gods, I needed that," <<they $g.covalescent>> says when <<their
+$g.covalescent>> breathing returns to normal.<br><br>
+You chuckle and wipe your mouth with the back of your hand.
+"Glad I could
+help."<br><br>
+"Guess I owe you a favor next time you get injured," <<rep $g.covalescent>>
+says, gazing up at you.<br><br>
+"Or I might just collect that when you're back on your feet," you say with a
+smirk. "Why wait?"<br><br>
+<<rep $g.covalescent>> chuckles. "Why indeed. Well, still. Thanks."
+<</if>>
+
+
+:: Opportunity_visiting_the_injured_4 [nobr]
+Bring <<them $g.covalescent>> a gift
+
+
+:: Opportunity_visiting_the_injured_4_flavor [nobr]
+
+"I figured you'd be bored, so I picked up something at the market for you."<br><br>
+"You did? Wow, thanks
+<<if $g.covalescent.isHasTrait('per_submissive')>>
+Boss!
+<<else>>
+<<name $unit.player>>!
+<</if>>
+What is it?"<br><br>
+Pulling your hand out from behind your back you show them
+<<if $g.covalescent.isHasTrait('per_slow')>>
+a clockwork toy. Turning the key in the back you wind it up and place it down on the bedside table where it whirs and clanks as it 'walks' across the surface, and promptly walks off the edge into your waiting hands.<br><br>
+"Pretty cool, right?"<br><br>
+"That's amazing!" <<rep $g.covalescent>> says, <<their $g.covalescent>> eyes wide. "How does it do that?"<br><br>
+"Clockwork or something. I'm told it's definitely not magic."<br><br>
+<<rep $g.covalescent>> shrugs. "Might as well be to me. Thank you."<br><br>
+You smile and hand over the toy. "You're welcome. And get well soon yeah?"<br><br>
+"Sure. I'll get better sooner if you give me one of those healing potions."<br><br>
+You chuckle. "We'll see," you say, waving jauntily as you leave the room and head back to the rest of your day.
+<<else>>
+a book of adventure stories. Books are rare and hard to come by, but one of the city traders sometimes brings some second hand books with her when she visits the fort. It cost a pretty penny, but you know it'll make its way around the fort.<br><br>
+"Brand new to us. No one else has read it yet. Not even me."<br><br>
+<<Reps $g.covalescent>> eye's widen. "Really? Wow, thanks!"<br><br>
+"You're welcome," you say as you hand the book over. "I hope it helps pass the time. But get well soon yeah?"<br><br>
+"Sure. I'll get better sooner if you give me one of those healing potions."<br><br>
+You chuckle. "We'll see," you say, waving jauntily as you leave the room and head back to the rest of your day.
+<</if>>
+
+
+:: Opportunity_visiting_the_injured_5 [nobr]
+Take advantage of <<their $g.covalescent>> helpless state
+
+
+:: Opportunity_visiting_the_injured_5_flavor [nobr]
+
+You pause to look at <<them $g.covalescent>>, lying there on the bed, both arms splinted and strapped. <<They $g.covalescent>> has to rely on someone else for just about everything—eating, bathing, getting to the outhouse, or more often than not, chamber pot. Looking down over <<they $g.covalescent>> <<utorso $g.covalescent>> crotch and butt you have the urge to take <<them $g.covalescent>>. It's not like <<they $g.covalescent>> could stop you. Of course, you have slaves, but slaves are...easy. And always available. A slaver like <<rep $g.covalescent>> on the other hand...<br><br>
+"Uh, boss, why are you looking at me like that?"<br><br>
+You grin as you move forward and raise your hand, revealing the ball gag you were hiding behind your back. "Because you and me are going to have some fun," you say calmly. "After all, you're just lying here...not doing anything or really being able to move much or work. Might as well get some use out of you."<br><br>
+You have the ball gag in their mouth and secured around their head before they can raise much of a protest,
+<<if $unit.player.getLover() == $g.covalescent>>
+but you see <<them $g.covalescent>> smile around the gag as they relax onto the bed, ready for whatever game you have in store for <<them $g.covalescent>> today.<br><br>
+Reaching forward you ease <<theirs $g.covalescent>> <<uequipslot $g.covalescent 'legs'>> and underwear down of <<theirs $g.covalescent>> body, helping <<them $g.covalescent>> raise up to get the clothing out from beneath <<theirs $g.covalescent>> hips.
+
+<<if $g.covalescent.isHasDick()>>
+<<reps $g.covalescent>> cock flicks up as you bare <<their $g.covalescent>> crotch, the hard length hitting <<their $g.covalescent>> belly with an audible slap.
+<<else>>
+<<reps $g.covalescent>> pussy glistens as you pull off her panties.
+<</if>>
+<br><br>
+"I love it when you're so
+<<if $g.covalescent.isHasDick()>>
+hard
+<<else>>
+wet
+<</if>>
+for me," you say with a grin as you step around towards the window, letting the sunlight strike you from behind.<br><br>
+<<reps $g.covalescent>> eyes follow your every move as you slowly draw your <<uequipslot $unit.player 'torso'>> over your head, revealing your <<ubreasts $g.you>> before tossing it aside.<br><br>
+"Hey, babe, my eyes are up here," you say, earning a snort of laughter not quite muffled by the gag.<br><br>
+Raising your head you run your hands down the length of your neck, over your <<ubreasts $g.you>>, lingering over your abs before reaching your hips. When you finally look at them their eyes are glued to your crotch, and you slip one hand inside your <<uequipslot $unit.player 'legs'>> to
+<<if $g.you.isHasDick()>>
+stroke your cock.
+<<else>>
+rub your pussy.
+<</if>>
+<br><br>
+"Want me to keep going?" you ask softly.<br><br>
+<<Reps $g.covalescent>> eyes snap back to meet yours and <<they $g.covalescent>> nods eagerly.<br><br>
+"Eees" they say, trying to force the word past the gag.<br><br>
+"Please...what?"<br><br>
+<<if $g.covalescent.isHasTrait('per_submissive')>>
+<<rep $g.covalescent>> whimpers. "Eees
+<<if $unit.player.isHasTrait('gender_male')>>
+Aataa,"
+<<else>>
+"Issess,"
+<</if>>
+<<they $g.covalescent>> manages around the gag.<<else>>
+<<rep $g.covalescent>> rolls <<their $g.covalescent>> eyes. "Eees
+<<if $unit.player.isHasTrait('gender_male')>>
+Aataa,"
+<<else>>
+"Issess,"
+<</if>>
+<<they $g.covalescent>> manages around the gag. Well, that's probably as good as you're going to get.
+<</if>>
+<p>Smiling, you sway your hips <<if $g.you.isHasTrait('tough_nimble')>> seductively in time to a slow imaginary beat
+<<else>>
+in an approximation of the entertainment slaves
+<</if>>
+as you work your <<uequipslot $unit.player 'legs'>> lower a bit at a time, getting closer and closer to your <<ugenital $g.you>>. Before you get there you turn around, and push the waistband down over your ass instead, bending forward to give <<rep $g.covalescent>> a good view as you push your <<uequipslot $unit.player 'legs'>> and undergarments down off your legs.</p>
+
+<<if $g.you.isHasDick()>>
+Turning around your present your hard cock to <<their $g.covalescent>> hungry gaze, letting <<them $g.covalescent>> soak in your body for just long enough.<br><br>
+<<if $g.covalescent.isHasDick()>>
+Stalking to the foot of the bed you climb onto it, pushing <<reps $g.covalescent>> legs up until they're resting on <<their $g.covalescent>> shoulders, and revealing <<their $g.covalescent>> <<uhole $g.covalescent>> to your lustful gaze. You press the head of your cock up against <<their $g.covalescent>> entrance. Not hard enough to enter, but enough to rub, excite and just start to maybe slip in by accident. Reaching forward you rub <<their $g.covalescent>> chest with your left hand, teasing <<their $g.covalescent>> nipples as your right hand gently grasps <<their $g.covalescent>> cock, and starts gently stroking, working the precum dripping from <<their $g.covalescent>> penis over <<their $g.covalescent>> shaft.
+<p><<rep $g.covalescent>> is torn between pushing into your hand or back onto your cock, and you're forced to hold <<their $g.covalescent>> hips down. Just to keep <<them $g.covalescent>> from hurting <<themself $g.covalescent>> of course. A frustrated
+<<if $g.covalescent.isHasTrait('per_submissive')>>
+moan
+<<else>>
+growl
+<</if>>
+leaves <<their $g.covalescent>> throat as you tease <<them $g.covalescent>>.<br><br>
+"You know you're not supposed to be moving, right?" you say. "So today, I'm setting the pace, and we're going slow... very slow... achingly...slow...." You punctuate each word with a long, languid stroke of <<reps $g.covalescent>> cock. "And there's....nothing...you can do about it. Isn't that going to be fun?"<br><br>
+<<rep $g.covalescent>> looks at you with pleading eyes, words obviously failing <<them $g.covalescent>> right now.<br><br>
+"What?" you say. "I can't fuck you yet. You're far too dry. Know what I'm going to use to lube you up?"<br><br>
+"Mmm?"<br><br>
+"That's right, your precum," you say with a
+<<if $g.you.isHasTrait('race_lizardkin')>>
+toothy grin.
+<<elseif $g.you.isHasTrait('race_greenskin')>>
+toothy grin.
+<<elseif $g.you.isHasTrait('race_wolfkin')>>
+toothy grin.
+<<elseif $g.you.isHasTrait('subrace_tigerkin')>>
+toothy grin.
+<<elseif $g.you.isHasTrait('race_demon')>>
+devilish grin.
+<<else>>
+grin.
+<</if>>
+"So be a good boy and coat my fingers, because that's all your going to get."<br><br>
+A strangled cry rips from <<reps $g.covalescent>> throat as <<they $g.covalescent>> pumps rapidly into your fist, your words taking <<them $g.covalescent>> over the brink as <<they $g.covalescent>> shoots <<their $g.covalescent>> load all over <<their $g.covalescent>> body—and your hand.<br><br>
+"Well that's just rude," you say as you rub your hand through the mess on <<their $g.covalescent>> torso. "You know what this means, right?"<br><br>
+<<rep $g.covalescent>> pauses, unsure of which answer is better right at this moment. Finally, <<they $g.covalescent>> shakes <<their $g.covalescent>> head 'no', <<their $g.covalescent>> face flushed and chest still heaving from orgasm.<br><br>
+"It means, I'm going to have to fuck you anyway until I cum... and you won't have the benefit of being really horny when I do..."</p>
+<p><<rep $g.covalescent>>moans as you slick your cock up with <<their $g.covalescent>> cum and then work the rest of <<their $g.covalescent>> load into <<their $g.covalescent>> ass with your fingers. It's a game you both enjoy, and <<they $g.covalescent>> knows <<they $g.covalescent>> can take you. The fact that <<they $g.covalescent>>'s not in any position to stop you physically just adds to the experience.</p>
+<p>When <<they $g.covalescent>>'s sufficiently lubed—or at least as sufficiently lubed as <<they $g.covalescent>>'s going to get before <<their $g.covalescent>> cum starts drying on you—you line yourself up with <<their $g.covalescent>> hole and nudge gently, signaling your intentions.<br><br>
+"Now
+<<if $g.covalescent.isHasTrait('subrace_werewolf')>>
+puppy,
+<<elseif $g.covalescent.isHasTrait('race_catkin')>>
+kitty,
+<<else>>
+babe,
+<</if>>
+go ahead and scream for me," you say as you push home, your cock meeting only slight resistance as you push into <<their $g.covalescent>> delicious and familiar heat, feeling <<them $g.covalescent>> open up and welcome you into <<them $g.covalescent>>, even as <<they $g.covalescent>> groans at the intrusion.</p>
+<p>
+When you're both finally spent, <<rep $g.covalescent>> is a cumsoaked mess and you're little better, barely managing to fall to one side, rather than on top of <<them $g.covalescent>>. Reaching up you gently remove the gag and give <<them $g.covalescent>> a deep kiss.<br><br>
+"I love you," you whisper as you drop the ball gag off the side of the bed.<br><br>
+<<They $g.covalescent>> licks <<their $g.covalescent>> lips and swallows a few times, getting <<their $g.covalescent>> mouth back in working order before replying. "I love you too, <<name $unit.player>>."<br><br>
+You are tempted to just lie there with <<them $g.covalescent>>, hoping that you can find a snuggle position that doesn't put pressure on <<their $g.covalescent>> arms, but instead, you sigh and push yourself up onto your elbows.<br><br>
+"I should probably find something to clean up with. This place reeks of sex now."<br><br>
+<<rep $g.covalescent>> snorts. "We've been at it for ages, love. The entire fort knows what we've been up to. Just come here."<br><br>
+And so you do.</p>
+<<else>>
+<p>Stalking to the foot of the bed you climb onto it, pushing <<reps $g.covalescent>> legs apart and lowering yourself between them until the tip of your cock rests at the entrance of her pussy. You both moan as you slip into her and lean forward for a kiss.</p>
+
+<p>(Author's note. I do not write vagina based sex, have zero experience with it and at the present time have zero interest in experiencing it. If you or someone else wants to fill this in with sexytimes, please feel free).</p>
+<</if>>
+<<else>>
+Turning around your present your dripping pussy to <<their $g.covalescent>> hungry gaze, letting <<them $g.covalescent>> soak in your body for just long enough.
+<<if $g.covalescent.isHasDick()>>
+Climbing onto the bed, you straddle <<their $g.covalescent>> body and grip <<their $g.covalescent>> cock, sliding it into you in one smooth motion.
+
+<p>(Author's note. I do not write vagina based sex, have zero experience with it and at the present time have zero interest in experiencing it. If you or someone else wants to fill this in with sexytimes, please feel free).</p>
+<<else>>
+Climbing onto the bed you swing your body around so that she can reach you with her mouth, and her inviting snatch is right by your face. It takes a moment for you to find a position that doesn't put pressure on her arms, but the pleasure as her lips find your pussy is worth everything.
+
+<p>(Author's note. I do not write vagina based sex, have zero experience with it and at the present time have zero interest in experiencing it. If you or someone else wants to fill this in with sexytimes, please feel free).</p>
+<</if>>
+<</if>>
+<<elseif $g.covalescent.isHasTrait('per_chaste')>>
+but you can see a rising panic in their eyes as you strip off your <<uequipslot $g.you 'legs'>> and undergarments, revealing
+<<if $g.you.isHasDick()>>
+your cock, stiff with excitement.
+<<else>>
+your strap on, large and ready for action.
+<</if>>
+<<rep $g.covalescent>> starts to shake <<their $g.covalescent>> head, their eyes begging you not to do this, but you're high on the power trip, and after spitting on
+<<if $g.covalescent.isHasDick()>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+and <<their $g.covalescent>> hole, you bury yourself in <<their $g.covalescent>> ass, <<their $g.covalescent>> cries and sobs muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell <<them $g.covalescent>>. "Take it like a <<man $g.covalescent>>. And hey, we've got all day..."
+<p>
+When it's all over, you leave <<rep $g.covalescent>> a huddles mess in the their bed, refusing to look at you. Oh well. They'll get over it. Won't they?</p>
+<<else>>
+your
+<<if $g.you.isHasDick()>>
+cock,
+<<else>>
+strap on,
+<</if>>you bury yourself in her pussy, her <<their $g.covalescent>> cries and sobs muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell her. "And hey, we've got all day..."
+<p>
+When it's all over, you leave <<rep $g.covalescent>> a huddles mess in the their bed, refusing to look at you. Oh well. They'll get over it. Won't they?</p>
+<</if>>
+<<elseif $g.covalescent.isHasTrait('per_submissive')>>
+but you can see desire in their eyes as they submit to your will.<br><br>
+"Good <<girl $g.covalescent>>," you say as you strip off your <<uequipslot $g.you 'legs'>> and undergarments, revealing
+<<if $g.you.isHasDick()>>
+your cock, stiff with excitement.
+<<else>>
+your strap on, large and ready for action.
+<</if>>
+<<rep $g.covalescent>> moans around their gag as you spit on
+<<if $g.covalescent.isHasDick()>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+and <<their $g.covalescent>> hole, working your spit into <<their $g.covalescent>> ass with first one finger, than two. You feel <<their $g.covalescent>> hole relax around your fingers as <<their $g.covalescent>> <<udick $g.covalescent>> rises in front of your eyes, a strand of precum falling down towards <<their $g.covalescent>> belly.<br><br>
+"Someone's excited," you say, glancing up towards <<their $g.covalescent>> face.
+<p><<Reps $g.covalescent>> eye's are glazed with lust as <<they $g.covalescent>> drops into sub space, <<their $g.covalescent>> body existing only for you and your pleasure.<br><br>
+"You want my cock up your ass?" you ask.<br><br>
+"Mmmhmm!" <<they $g.covalescent>> replies, nodding <<their $g.covalescent>> head rapidly.<br><br>
+"Oh I don't know," you say. "You don't sound very enthusiastic about this, you know."<br><br>
+<<Reps $g.covalescent>> eye's widen at the threat and starts begging incoherently through the gag for you to fuck <<them $g.covalescent>>. You let <<them $g.covalescent>> go on for a few minutes before you withdraw your fingers from <<their $g.covalescent>> needy ass.<br><br>
+"All right, slut," you say. "But only because you asked so nicely."</p>
+<p>You both moan as you sink into <<their $g.covalescent>> willing hole, and <<they $g.covalescent>> eagerly wraps <<their $g.covalescent>> legs around your <<uwaist $g.you>>, drawing you in deeper, <<their $g.covalescent>> eyes rolling back as you rub up against <<their $g.covalescent>> prostate.<br><br>
+"Oh yeah," you groan into <<their $g.covalescent>> ear. "You know what's better than fucking you while you're all helpless like this?"<br><br>
+"Mmmm?"<br><br>
+"Fucking you all day while you're helpless like this."<br><br>
+<<reps $g.covalescent>> body tenses beneath you as <<they $g.covalescent>> unloads between your bellies, your words having sent <<them $g.covalescent>> over the edge, but you keep on fucking, not giving <<them $g.covalescent>> time to recover. After all, this isn't about <<them $g.covalescent>> at all.</p>
+<<else>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+before burying yourself in her pussy, her moans muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell her. "Take my cock. And hey, we've got all day..."
+<p>(Author's note. I do not write vagina based sex, have zero experience with it and at the present time have zero interest in experiencing it. If you or someone else wants to fill this in with sexytimes, please feel free).</p>
+<</if>>
+<<elseif $g.covalescent.isHasTrait('per_dominant')>>
+but you see a fear in their eyes as you strip off your <<uequipslot $g.you 'legs'>> and undergarments, revealing
+<<if $g.you.isHasDick()>>
+your cock, stiff with excitement.
+<<else>>
+your strap on, large and ready for action.
+<</if>>
+<<rep $g.covalescent>> starts to shake <<their $g.covalescent>> head, glaring at you in anger, but you're high on the power trip, and after spitting on
+<<if $g.covalescent.isHasDick()>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+and <<their $g.covalescent>> hole, you bury yourself in <<their $g.covalescent>> ass, <<their $g.covalescent>> cries muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell <<them $g.covalescent>>. "Take it like a <<man $g.covalescent>>. And you what I really love about this?"<br><br>
+<<rep $g.covalescent>> shuts <<their $g.covalescent>> eyes, refusing to give you an answer. Grinning you continue anyway.<br><br>
+"The part where I know you'd love to be doing this...if you were me."
+<<else>>
+your
+<<if $g.you.isHasDick()>>
+cock,
+<<else>>
+strap on,
+<</if>>
+you bury yourself in her pussy, her <<their $g.covalescent>> cries and muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell her. " You know what I really love about this?"<br><br>
+<<rep $g.covalescent>> shuts her eyes, refusing to give you an answer. Grinning you continue anyway.<br><br>
+"The part where I know you'd love to be doing this...if you were me."
+<</if>>
+<<elseif $g.covalescent.isHasTrait('per_lustful')>>
+but you can see desire in their eyes as they work out that they're going to get some. You take pity on them and reach out to stroke their
+<<if $g.covalescent.isHasDick()>>
+bulge.
+<<else>>
+pussy.
+<</if>>
+<br><br>
+"I know, you're a horndog, but it's okay. Boss is here to take care of you," you say as you strip off your <<uequipslot $g.you 'legs'>> and undergarments, revealing
+<<if $g.you.isHasDick()>>
+your cock, stiff with excitement.
+<<else>>
+your strap on, large and ready for action.
+<</if>>
+<<rep $g.covalescent>> moans around their gag as you spit on
+<<if $g.covalescent.isHasDick()>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+and <<their $g.covalescent>> hole, working your spit into <<their $g.covalescent>> ass with first one finger, than two. You feel <<their $g.covalescent>> hole relax around your fingers as <<their $g.covalescent>> <<udick $g.covalescent>> rises in front of your eyes, a strand of precum falling down towards <<their $g.covalescent>> belly.<br><br>
+"Someone's excited," you say, glancing up towards <<their $g.covalescent>> face.
+<p><<rep $g.covalescent>> just grunts into the gag, a grunt that you easily translate into "Just fuck me already damn it!"<br><br>
+Knowing subbing isn't really their thing, you line yourself up with their hole and slowly push your way in, giving them time to get used to your girth. <<Reps $g.covalescent>> head falls back onto the pillows as you fill <<them $g.covalescent>>, and <<they $g.covalescent>> manages to push back against you as rock your hips, pushing your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+further into <<them $g.covalescent>>. You soon settle into a comfortable rhythm, and you angle your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+to hit <<their $g.covalescent>> prostate as much as you can, until
+<<if $g.you.isHasDick()>>
+you feel <<them $g.covalescent>> tense around you as <<they $g.covalescent>> orgasm, hot cum painting <<their $g.covalescent>> belly as <<they $g.covalescent>> screams <<their $g.covalescent>> release into the ball gag. Feeling <<them $g.covalescent>> clench sets you off as you lose control of your hips, slamming into <<their $g.covalescent>> ass repeatedly as you shoot your load deep into <<them $g.covalescent>> before collapsing on top of <<their $g.covalescent>> body, spent.
+<p>
+You lie there for a few moments before <<they $g.covalescent>> squirms beneath you, and you gently pull yourself out from <<their $g.covalescent>> <<uanus $g.covalescent>>, the squelching sound as you do making you both chuckle.</p>
+<<else>>
+you feel <<their $g.covalescent>> body tense as <<they $g.covalescent>> orgasms, <<their $g.covalescent>> cum splattering all over <<their $g.covalescent>> chest and belly.<br><br>
+"Oh yeah, shoot that load, stud," you say as you slow your thrusts, before coming to a stop as <<they $g.covalescent>> collapses onto the bed.<br><br>
+After a moment you feel <<them $g.covalescent>> start to push you out, and you pull back, your strap on leaving <<their $g.covalescent>> ass with a squelch and something close to a fart, making <<them $g.covalescent>> blush.
+<</if>>
+You take the ball gag off <<their $g.covalescent>> head and <<rep $g.covalescent>> thrusts <<their $g.covalescent>> jaw out, working out the stiffness. "That was...something," <<they $g.covalescent>> says, grinning up at you.<br><br>
+"A good something, I hope."
+"Hey, I'll take what I can get right now," <<they $g.covalescent>> says. "But maybe we can do something else when my arms are back in action."
+</p>
+<<else>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+before burying yourself in her pussy, her moans muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell her. "Take my cock. And hey, we've got all day for this."
+<p>(Author's note. I do not write vagina based sex, have zero experience with it and at the present time have zero interest in experiencing it. If you or someone else wants to fill this in with sexytimes, please feel free).</p>
+<</if>>
+<<elseif $g.covalescent.isHasTrait('per_sexaddict')>>
+but you can see desire in their eyes as they work out that they're going to get some. You take pity on them and reach out to stroke their
+<<if $g.covalescent.isHasDick()>>
+bulge.
+<<else>>
+pussy.
+<</if>>
+<br><br>
+"I know, you're a horndog, but it's okay. Boss is here to take care of you," you say as you strip off your <<uequipslot $g.you 'legs'>> and undergarments, revealing
+<<if $g.you.isHasDick()>>
+your cock, stiff with excitement.
+<<else>>
+your strap on, large and ready for action.
+<</if>>
+<<rep $g.covalescent>> moans around their gag as you spit on
+<<if $g.covalescent.isHasDick()>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+and <<their $g.covalescent>> hole, working your spit into <<their $g.covalescent>> ass with first one finger, than two. You feel <<their $g.covalescent>> hole relax around your fingers as <<their $g.covalescent>> <<udick $g.covalescent>> rises in front of your eyes, a strand of precum falling down towards <<their $g.covalescent>> belly.<br><br>
+"Someone's excited," you say, glancing up towards <<their $g.covalescent>> face.
+<p><<rep $g.covalescent>> just grunts into the gag, a grunt that you easily translate into "Just fuck me already damn it!"<br><br>
+Knowing subbing isn't really their thing, you line yourself up with their hole and slowly push your way in, giving them time to get used to your girth. <<Reps $g.covalescent>> head falls back onto the pillows as you fill <<them $g.covalescent>>, and <<they $g.covalescent>> manages to push back against you as rock your hips, pushing your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+further into <<them $g.covalescent>>. You soon settle into a comfortable rhythm, and you angle your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+to hit <<their $g.covalescent>> prostate as much as you can, until
+<<if $g.you.isHasDick()>>
+you feel <<them $g.covalescent>> tense around you as <<they $g.covalescent>> orgasm, hot cum painting <<their $g.covalescent>> belly as <<they $g.covalescent>> screams <<their $g.covalescent>> release into the ball gag. Feeling <<them $g.covalescent>> clench sets you off as you lose control of your hips, slamming into <<their $g.covalescent>> ass repeatedly as you shoot your load deep into <<them $g.covalescent>> before collapsing on top of <<their $g.covalescent>> body, spent.
+<p>
+You lie there for a few moments before <<they $g.covalescent>> squirms beneath you, and you gently pull yourself out from <<their $g.covalescent>> <<uanus $g.covalescent>>, the squelching sound as you do making you both chuckle.
+</p>
+<<else>>
+you feel <<their $g.covalescent>> body tense as <<they $g.covalescent>> orgasms, <<their $g.covalescent>> cum splattering all over <<their $g.covalescent>> chest and belly.<br><br>
+"Oh yeah, shoot that load, stud," you say as you slow your thrusts, before coming to a stop as <<they $g.covalescent>> collapses onto the bed.<br><br>
+After a moment you feel <<them $g.covalescent>> start to push you out, and you pull back, your strap on leaving <<their $g.covalescent>> ass with a squelch and something close to a fart, making <<them $g.covalescent>> blush.
+<</if>>
+You take the ball gag off <<their $g.covalescent>> head and <<rep $g.covalescent>> thrusts <<their $g.covalescent>> jaw out, working out the stiffness. "That was...something," <<they $g.covalescent>> says, grinning up at you.<br><br>
+"A good something, I hope."
+"Hey, I'll take what I can get right now," <<they $g.covalescent>> says. "But maybe we can do something else when my arms are back in action."
+</p>
+<<else>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+before burying yourself in her pussy, her moans muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell her. "Take my cock. And hey, we've got all day for this."
+<p>(Author's note. I do not write vagina based sex, have zero experience with it and at the present time have zero interest in experiencing it. If you or someone else wants to fill this in with sexytimes, please feel free).</p>
+<</if>>
+<<elseif $g.covalescent.isHasTrait('per_masochistic')>>
+but you can see desire in their eyes as they work out that what you have in mind. <<rep $g.covalescent>> helps as much as they can as you remove their <<uequipslot $g.covalescent 'legs'>> and reveal their
+<<if $g.covalescent.isHasDick()>>
+ass,
+<<else>>
+pussy,
+<</if>>
+speading their legs to give you access.<br><br>
+"Huh. Eager slut, are you?" you say playfully. "So eager to have my hard cock inside of you."<br><br>
+<<rep $g.covalescent>> moans around the gag as you strip off your <<uequipslot $g.you 'legs'>> and undergarments, revealing
+<<if $g.you.isHasDick()>>
+your cock, stiff with excitement.
+<<else>>
+your strap on, large and ready for action.
+<</if>>
+Climbing up onto the bed, you lift their legs and slam home in one quick motion. <<rep $g.covalescent>> screams into their gag, but
+<<if $g.covalescent.isHasDick()>>
+<<their $g.covalescent>> <<udick $g.covalescent>> is raging hard and drooling onto <<their $g.covalescent>> belly as you go to town on <<their $g.covalescent>> ass, the exquisite mixture of pleasure and pain sending <<them $g.covalescent>> over the edge rapidly as <<they $g.covalescent>> shoots, covering <<their $g.covalescent>> chest and belly with cum.<br><br>
+<<if $g.you.isHasDick()>>
+The clenching of <<their $g.covalescent>> ass around you sets you off and you slam into <<them $g.covalescent>> as your orgasm rushes through your body, your hands digging into <<their $g.covalescent>> shoulder as you pump <<them $g.covalescent>> full of your load. Pulling out, you look down at <<their $g.covalescent>> recumbent form, <<their $g.covalescent>> eyes aglow with happiness but also a bit of discomfort.<br><br>
+"That was hot," you say as you put your clothing back on, and pull back the curtain, exposing <<their $g.covalescent>> sex stained nudity to the rest of the room. "And you look great. Maybe I should just leave you like this for the next person who comes along."<br><br>
+<<rep $g.covalescent>> moans into <<their $g.covalescent>> gag, <<their $g.covalescent>> cock stiffening. You can tell <<they $g.covalescent>> both likes and fears the idea, and the far only makes <<them $g.covalescent>> like it more.<br><br>
+"You know, that's exactly what I'm going to do," you say. "Leave you lying here in your juices like the slut you are, where anyone can see it, just waiting for the next person to come along and take advantage of you."<br><br>
+<<rep $g.covalescent>> whimpers as you turn and stride out of the hospital and into the hallway. You don't go far, stopping just out of sight, relishing <<their $g.covalescent>> whines of frustration. You pull out a book and start to read. You'll go back in eventually, but a good dom always stays close when they've got a sub in bondage. Of course, <<rep $g.covalescent>> doesn't have to know that.
+<<else>>
+You keep pounding <<their $g.covalescent>> ass with your strap on as <<they $g.covalescent>> comes—and keep going afterward until <<they $g.covalescent>>'s soft and begging you to stop. Pulling out, you look down at <<their $g.covalescent>> recumbent form, <<their $g.covalescent>> eyes aglow with happiness but also a bit of discomfort.<br><br>
+"That was hot," you say as you put your clothing back on, and pull back the curtain, exposing <<their $g.covalescent>> sex stained nudity to the rest of the room. "And you look great. Maybe I should just leave you like this for the next person who comes along."<br><br>
+<<rep $g.covalescent>> moans into <<their $g.covalescent>> gag, <<their $g.covalescent>> cock stiffening. You can tell <<they $g.covalescent>> both likes and fears the idea, and the far only makes <<them $g.covalescent>> like it more.<br><br>
+"You know, that's exactly what I'm going to do," you say. "Leave you lying here in your juices like the slut you are, where anyone can see it, just waiting for the next person to come along and take advantage of you."<br><br>
+<<rep $g.covalescent>> whimpers as you turn and stride out of the hospital and into the hallway. You don't go far, stopping just out of sight, relishing <<their $g.covalescent>> whines of frustration. You pull out a book and start to read. You'll go back in eventually, but a good dom always stays close when they've got a sub in bondage. Of course, <<rep $g.covalescent>> doesn't have to know that.
+<</if>>
+<<else>>
+your
+<<if $g.you.isHasDick()>>
+cock
+<<else>>
+strap on
+<</if>>
+before burying yourself in her pussy, her moans muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell her. "Take my cock. And hey, we've got all day for this."
+<p>(Author's note. I do not write vagina based sex, have zero experience with it and at the present time have zero interest in experiencing it. If you or someone else wants to fill this in with sexytimes, please feel free).</p>
+<</if>>
+<<else>>
+but you see a fear in their eyes as you strip off your <<uequipslot $g.you 'legs'>> and undergarments, revealing
+<<if $g.you.isHasDick()>>
+your cock, stiff with excitement.
+<<else>>
+your strap on, large and ready for action.
+<</if>>
+<<rep $g.covalescent>> starts to shake <<their $g.covalescent>> head, but you're high on the power trip, and after spitting on
+<<if $g.covalescent.isHasDick()>>
+your <<udickorstrap $g.you>> and <<their $g.covalescent>> hole, you bury yourself in <<their $g.covalescent>> ass, <<their $g.covalescent>> cries muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell <<them $g.covalescent>>. "I'm going to enjoy this."
+<<else>>
+your <<udickorstrap $g.you>> you bury yourself in her pussy, her <<their $g.covalescent>> cries and muffled by the gag.<br><br>
+"Good <<girl $g.covalescent>>," you tell her. "I'm going to enjoy this."<br><br>
+<</if>>
+<</if>>
+
+
+:: Opportunity_visiting_the_injured_6 [nobr]
+On second thought, just leave.
+
+
+:: Opportunity_visiting_the_injured_6_flavor [nobr]
+<p>"Hi <<name $unit.player>>," you say. "Just checking in on you. How are you doing?"</p>
+<p>You make some small talk but quickly excuse yourself and head back out into the fort.</p>

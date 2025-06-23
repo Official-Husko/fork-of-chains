@@ -1,0 +1,92 @@
+:: QuestSetupUnitTrainingMindbreak [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_mindbreak',  /* id */
+  'Mindbreak',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_mindbreak,
+    'trainer2': setup.qu.training_trainer_mindbreak,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingMindbreak',  /* description */
+  setup.qdiff.normal20,
+  [
+    [
+      'QuestUnitTrainingMindbreakCrit',
+      [
+        setup.qc.Mindbreak('trainee'),
+      ]
+    ],
+    [
+      'QuestUnitTrainingMindbreakSuccess',
+      [
+        setup.qc.Mindbreak('trainee'),
+      ],
+    ],
+    [
+      'QuestUnitTrainingMindbreakFailure',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+    [
+      'QuestUnitTrainingMindbreakDisaster',
+      [
+        setup.qc.Injury('trainee', 3),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingMindbreak [nobr]
+<p>
+Some masters prefer their slaves to be nothing but a hollowed out
+fucktoy. This training will do just that ---
+through severe abuse, this training will transform any slave,
+willing or not, into a soul-less compliant play thing.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: Mindbroken slaves are worth much less than normal slaves.
+</p>
+
+:: QuestUnitTrainingMindbreakCrit [nobr]
+<p>
+The training was a success. Drowned in a pool of bodily fluids,
+<<rep $g.trainee>> almost does not respond when being carried
+away to be stored as a fucktoy for you and <<their $g.trainee>> future
+master.
+</p>
+
+:: QuestUnitTrainingMindbreakSuccess [nobr]
+<p>
+The training was a success. Drowned in a pool of bodily fluids,
+<<rep $g.trainee>> almost does not respond when being carried
+away to be stored as a fucktoy for you and <<their $g.trainee>> future
+master.
+</p>
+
+:: QuestUnitTrainingMindbreakFailure [nobr]
+<p>
+<<Reps $g.trainee>> mental strength proves too much for your
+slavers that somehow <<they $g.trainee>> retained the sense of self
+even after the ordeal <<they $g.trainee>> went through.
+</p>
+
+:: QuestUnitTrainingMindbreakDisaster [nobr]
+<p>
+<<they $g.trainee>> trainee|was wrecked again and again by your team of slavers
+but it proved too much for the slave.
+The training had to be stopped early and the slave to be given time to
+recover.
+</p>

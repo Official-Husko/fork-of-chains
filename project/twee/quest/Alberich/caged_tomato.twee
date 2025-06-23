@@ -1,0 +1,213 @@
+:: QuestSetup_caged_tomato [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriadeliverer = new setup.UnitCriteria(
+null, /* key */
+'Deliverer', /* name */
+[
+setup.trait.bg_slaver,
+setup.trait.bg_whore,
+setup.trait.per_independent,
+setup.trait.per_attentive,
+],
+[
+setup.trait.per_dreamy,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_slow,
+setup.trait.per_submissive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.Trait(setup.trait.gender_female),
+setup.qres.AnyTrait([setup.trait.race_human,], true),
+setup.qres.NoTrait(setup.trait.per_chaste),
+setup.qres.NotYou(),
+],
+{
+slaving: 1,
+social: 1,
+sex: 1,
+}
+)>>
+
+<<set _criteriamerchandise = new setup.UnitCriteria(
+null, /* key */
+'Merchandise', /* name */
+[
+setup.trait.bg_artisan,
+setup.trait.bg_whore,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_kind,
+setup.trait.per_submissive,
+setup.trait.per_empath,
+setup.trait.per_attentive,
+setup.trait.per_calm,
+setup.trait.per_playful,
+setup.trait.per_studious,
+setup.trait.training_oral_basic,
+setup.trait.training_oral_advanced,
+setup.trait.training_oral_master,
+setup.trait.training_vagina_basic,
+setup.trait.training_vagina_advanced,
+setup.trait.training_vagina_master,
+],
+[
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_dreamy,
+setup.trait.per_slow,
+setup.trait.per_chaste,
+setup.trait.per_stubborn,
+],
+[
+setup.qres.IsCanBeSold(),
+setup.qres.Job(setup.job.slave),
+setup.qres.TraitExact(setup.trait.gender_female),
+setup.qres.AnyTrait([setup.trait.race_human], true),
+setup.qres.AnyTrait([setup.trait.training_obedience_basic, setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'caged_tomato', /* key */
+"Caged Tomato", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/joyyfi/v100_is_here_submit_all_your_stories_bug_reports/gcqa0j9/',
+},
+[ 'city', 'order'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'deliverer': [_criteriadeliverer, 3],
+'merchandise': _criteriamerchandise, },
+{ /* actors */
+'buddy': 'city_allmale', },
+[ /* costs */
+],
+'Quest_caged_tomato',
+setup.qdiff.normal25, /* difficulty */
+[ /* outcomes */
+[
+'Quest_caged_tomatoCrit',
+[
+setup.qc.MoneyUnitValue("merchandise", 1.4, 20000),
+setup.qc.MissingUnitForever('merchandise'),
+setup.qc.Favor('humankingdom', 100), ],
+], [
+'Quest_caged_tomatoCrit',
+[
+setup.qc.MoneyUnitValue("merchandise", 1.1, 20000),
+setup.qc.Favor('humankingdom', 100),
+setup.qc.MissingUnitForever('merchandise'), ],
+], [
+'Quest_caged_tomatoCrit',
+[
+setup.qc.MissingUnitRebuy('merchandise', 1), ],
+], [
+'Quest_caged_tomatoCrit',
+[
+setup.qc.MissingUnitRebuy('merchandise', 1),
+setup.qc.MoneyCustom(-1000), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions to generate */
+setup.qres.HasSlaverWithTraits([setup.trait.gender_female]),
+setup.qres.HasSlaveWithTraits([setup.trait.gender_female]),
+],
+)>>
+
+:: Quest_caged_tomato [nobr]
+<p>A specialty buyer in the <<lore region_city>> has placed an order to satisfy needs he can't placate with anyone else. He offers enough to get your attention.</p>
+<p>For this mission you'll need two human females: the merchandise herself, and a trusted slaver to deliver the merchandise after training her up to standards.</p>
+
+<p>
+<<dangertext 'Warning'>>: The slave will most likely be gone forever!  But if you succeed you will recover more than her market value.
+</p>
+
+<p>
+(<<successtextlite "Author's note">>: This story is either an affectionate parody or a shameless corruption of the tales of <a href="http://gutenberg.net.au/ebooks11/1100651h.html">Damon Runyon</a>.)
+</p>
+
+
+:: Quest_caged_tomatoCrit [nobr]
+<p>
+(<<successtextlite "Author's note">>: This story is told from the viewpoint of a third party, rather than your slave or slavers.
+</p>
+
+<p> I am strolling through the merchants' quarter in Lucgate pondering how I am to scare up a little argent to lay on a combat between two barnyard avians that takes place that evening, and to which my old pal <<rep $g.buddy>> invites me, when a pretty young damsel I never see before addresses me as if we are more than a little friendly:
+</p>
+<p>
+“Hey, stud!”
+</p>
+<p>
+In sober fact I am nowise as young as I am previously, and if you want to make a stud out of me, your best bet is to nail me up inside a wall and put some plaster on top, but I do not elect to share this information with the pretty young damsel. Instead I politely suggest that I am by no means overflowing with argent, and that she would do better to find such a guy as can purchase the wares she wishes to lay on the market. But she only laughs.
+</p>
+<p>
+“I do not want you to pay me,” she says. “In fact, I am thinking to pay <i>you</i>.”
+</p>
+<p>
+Now this proposition is as fishy as a seagull's breath, but I have a line from the rooster's beak on this avian contest I mention earlier, where the Grey is sure to murder the Roundhead if no one spikes his feed. A little clinky will go a long way with me at this time. So I ask for further particulars.
+</p>
+<p>
+This young damsel introduces herself as <<rep $g.deliverer>>, from the well established firm of <<rep $company.player>>. It happens I am familiar with this <<rep $company.player>>, as it is notorious as a dealer in caged tomatoes, and caged tomatoes are somewhat less than lawful in His Majesty's Dominions. But I do not wish to see one rooster half-kill another to no purpose, and from where I stand there will be no purpose to it if I do not have some clinky riding on the contest, so I listen for more.
+</p>
+<p>
+It seems this <<rep $g.deliverer>>  deliverer|want to pay me good coin to provide some services in the male-only line, without the benefit of my garments. And as I look her up and down and wonder whether she is blind or infirm, she shushes me with one hand and says it is not for her, but for another damsel entirely, by the name of <<rep $g.merchandise>>. Now I shudder at the thought of what an old crow I am being solicited to be conjugal with, or what non-human species she may belong to, and whether this species eats its mates after mating, but I think again of the Grey getting his spurs into the Roundhead without earning me a copper. So I proceed with <<rep $g.deliverer>> to a quiet little room where the transaction is to take place.
+</p>
+<p>
+To my amazement this <<rep $g.merchandise>> turns out to be both young and comely, and as <<uadj $g.merchandise>> as you please. From the way she follows orders from <<rep $g.deliverer>>, she is a caged tomato from <<rep $company.player>>'s private greenhouse, and not a paying customer at all, but I do not think this is a time to advance unwanted inquiries or be hung up on legal formalities. At a word of command, <<rep $g.merchandise>> peels and falls back on the bed and invites me to be served a single old-fashioned. Now I am not at this time well provided with female company, especially on an unpaid basis, but I do not need to be told how to be served a single old-fashioned. I am soon enough unclad and on top and inside, and <<rep $g.deliverer>> deliverer|is cheering us on as we go at it the way male and female parties have been going at it since before the first bed is built, and maybe earlier.
+</p>
+<p>
+In due course I deliver the goods, give <<rep $g.merchandise>> a peck on the check, and prepare to receive my pay and be off to lay heavy bets on the Grey. But it seems this is not at all the plan as <<rep $g.deliverer>> conceives it. She says my pay is not yet half earned, and while we can have a pause for refreshments, there is no point to me or <<rep $g.merchandise>> getting any garments on just yet.
+</p>
+<p>
+I once spend time with a young lady who thinks a guy my age is something like a Royal Engineer with a ballista, who can change elevation, hold fire, pull the trigger, and reload on command, and she feels entitled to show some resentment when this proves not to be the case. When I see her next, she is with a much younger guy who is commencing to tire of her company, and when I see her last, she is with a large tabby cat. But she does not pay out good argent in time of urgent need, the way this <<rep $g.deliverer>> does, so I keep my reminiscences to myself and plunge once more into the fray. <<Rep $g.deliverer>> deliverer|is still watching our every move, but to make us feel more at ease she peels off her own garments first.
+</p>
+<p>
+Young <<rep $g.merchandise>> gets her chest close to mine, gets to work <<uadv $g.merchandise>>, provides some better-than-good touching and guzzling, then kisses her way down south and gives me the full service with her tasty young pink-lipped bazoo. I will say, this <<rep $company.player>> trains its merchandise very well, because she only has to pump away for ten minutes or so, gulp me halfway down the way her breakfast goes, and I manage to deliver the goods for the <i>second</i> time for the <i>first</i> time since His Majesty's coronation ball, and on the afternoon I speak of His Majesty has been on the throne quite some time.
+</p>
+<p>
+Now I feel sure I can take my wages and be on my way. But <<rep $g.deliverer>> tells me the deal does not work this way. I can rest a few minutes, but more is required of me. So the three of us relax a few minutes in the altogether, and then <<rep $g.merchandise>> guides me back to the bed, picks up a jar of ointment, and proceeds to administer the old rub-a-dub-dub.
+</p>
+<p>
+Now when I am a good bit younger than I am at this time, I am a past master at the old rub-a-dub-dub, and think nothing of rub-a-dub-dubbing four or five times in a row. But a lot of water has gone under a lot of bridges since then, and you start to wonder where pleasure ends and pain begins.
+</p>
+<p>
+The well <<rep $g.merchandise>> merchandise|is drawing from is not producing much water, but <<rep $g.deliverer>> keeps <<rep $g.merchandise>> drawing, and she gets to her work <<uadv $g.merchandise>>. As the painful proceedings continue, <<rep $g.deliverer>> enjoys the sight more and more, and while she never lays a finger on either one of us, she lays two or three fingers on herself, and makes a little music to accompany what we do, so that I wonder if she is on <<rep $company.player>>'s business or just having a good time. Before all is done, the well itself runs dry, and to know when <<rep $g.merchandise>> brings me over the edge again, you have to either listen to my breathing or else take my word for it.
+</p>
+<p>
+No ordeal can last forever, and even executions end eventually, as my dear old dad always says before he is executed himself. <<Rep $g.deliverer>> deliverer|is satisfied, <<rep $g.merchandise>> merchandise|is allowed to rest, I get my purse of coins, I get properly clothed, and I am ready to stagger out of there. “I do not,” I say to <<rep $g.deliverer>>, “wish to seem ungrateful, but I cannot help but wonder why you pick a guy my age for an exercise like this. His Majesty's dominion is full of spring chickens who can rub-a-dub-dub five times in a row, and who would volunteer for an afternoon like this without charging a copper.”
+</p>
+<p>
+“Oh,” she explains, “that is the whole point of the exercise. Young <<rep $g.merchandise>> there is being sold to an aged relic who is past his prime when you are knee high to a wombat's wedding tackle. But the silly old coot does not wish to admit this, and is ready to pay good coin of the realm for a skilled operator who can bring him over the finish when he can barely start, and make him think he has all the juice he ever has, which the old folks at court say is never much to begin with, at that. So I am training <<rep $g.merchandise>> here to bring out the last drop from an older chap in a state of exhaustion, and I must say you are a great training aid. This is one part conjugal arts to two parts gravedigging.”
+</p>
+<p>
+I am commencing to think that what she proposes is less gravedigging than necromancy, and to feel more than a little sorry for the caged tomato assigned to this task. Part of me wishes to speak up and offer my next month's wages to take her off the old relic's hands myself, even adding in my sure winnings from when the Grey gives what-for to the Roundhead. But another part of me reflects that if I do this I am putting myself in for months or years of what I barely survive today, which will mean an early grave for sure, so I keep my tongue where it will do the least harm.
+</p>
+<p>
+So I make my way home with my pouch of coin and collapse into bed again, this time from pure exhaustion. And I suppose it is inevitable that I miss the fight between the barnyard avians that gets me into this ordeal in the first place, and have to listen to my old pal <<rep $g.buddy>>, who cannot shut up about it all the next morning.
+</p>
+<p>
+“It is as I tell you,” he says. “You really should listen to me and lay some clinky argent on the line. The Grey charges in early, scores a quick slash with his spurs, and the rest of the night is pure torture for the Roundhead. I am sure his fighting career is over and I doubt he can look a hen in the face ever again. You never see a cock so worn out.”
+</p>
+<p>
+“Yes I do,” I say, but I decline to elaborate.
+</p>
+<<if $gOutcome == 'crit'>>
+<p>I afterwards hear that the sale goes off without a hitch, <<rep $company.player>> obtains a large bonus from the customer, and <<rep $g.merchandise>> merchandise|is such a hit the old coot marries her and she inherits his fortune after he dies happy three weeks later. Rumor has it she buys a large supply of whips and chains, hires a few unscrupulous adventurers, and sets herself up in business as a dealer in caged tomatoes.</p>
+<<elseif $gOutcome == 'success'>>
+<p>I afterwards hear that the sale goes off without a hitch, and <<rep $g.merchandise>> merchandise|is such a hit the old coot marries her and she inherits his fortune after he dies happy three weeks later. Rumor has it she buys a large supply of whips and chains, hires a few unscrupulous adventurers, and sets herself up in business as a dealer in caged tomatoes.</p>
+<<elseif $gOutcome == 'failure'>>
+<p>I afterwards hear things do not go so well for <<rep $company.player>>. The customer dies from exhaustion the first night, as I can warn him if he thinks to ask my advice. Word gets around that the young lady is nothing but a caged tomato, the purchase price never makes it out of town, and <<rep $g.deliverer>> deliverer|have to take it on the wing to avoid an unpleasant scene.</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>I afterwards hear things do not go so well for <<rep $company.player>>. The customer dies from exhaustion the first night, as I can warn him if he thinks to ask my advice. Word gets around that the young lady is nothing but a caged tomato, the purchase price never makes it out of town, and <<rep $g.deliverer>> deliverer|have to pay a substantial bribe to keep herself on the right side of the cage.</p>
+<</if>>
+

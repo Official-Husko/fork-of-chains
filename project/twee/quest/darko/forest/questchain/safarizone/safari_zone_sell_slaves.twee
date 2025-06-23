@@ -1,0 +1,122 @@
+:: QuestSetup_safari_zone_sell_slaves [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'safari_zone_sell_slaves', /* key */
+'Safari Zone: Sell Slaves', /* Title */
+'darko', /* Author */
+[ 'forest', 'order'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'guard': setup.qu.guard,
+'trader': setup.qu.slavetrader, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_safari_zone_sell_slaves',
+setup.qdiff.easy21, /* difficulty */
+[ /* outcomes */
+[
+'Quest_safari_zone_sell_slavesCrit',
+[
+setup.qc.SlaveOrderSafariZone(0.9),
+setup.qc.SlaveOrderSafariZone(0.9),
+setup.qc.SlaveOrderSafariZone(0.9),
+setup.qc.SlaveOrderSafariZone(0.9),
+setup.qc.SlaveOrderSafariZone(0.9),
+setup.qc.SlaveOrderSafariZone(0.9),
+ ],
+], [
+'Quest_safari_zone_sell_slavesSuccess',
+[
+setup.qc.SlaveOrderSafariZone(0.9),
+setup.qc.SlaveOrderSafariZone(0.9),
+setup.qc.SlaveOrderSafariZone(0.9),
+ ],
+], [
+'Quest_safari_zone_sell_slavesFailure',
+[
+setup.qc.SlaveOrderSafariZone(0.9),
+],
+], [
+'Quest_safari_zone_sell_slavesDisaster',
+[
+setup.qc.Injury('guard', 2),
+setup.qc.Injury('trainer', 1),
+setup.qc.Injury('trader', 1), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_safari_zone_sell_slaves [nobr]
+
+<<include 'Opportunity_safari_zone'>>
+
+<p>
+You have chosen to send some of your slavers to poach for these slaves.</p>
+
+
+:: Quest_safari_zone_sell_slavescommon [nobr]
+
+<p>
+Note that the Safari Zone prefers to buy naked and untrained slaves.
+</p>
+
+:: Quest_safari_zone_sell_slavesCrit [nobr]
+
+<p>
+The Safari Zone was happy to buy slaves from upstanding slaver company
+such as yourself, at their standard slave price of course. Furthermore, <<rep
+$g.trader>>
+<<if $g.trader.isHasTrait('skill_connected')>>
+pulled some strings using <<their $g.trader>> vast network of connections and
+<<else>>
+trader|was so <<uadv $g.trader>> convincing that
+<</if>>
+<<they $g.trader>> trader|was able to negotiate
+multiple slave orders from your company.
+All in all, a good result.
+</p>
+
+<<include 'Quest_safari_zone_sell_slavescommon'>>
+
+:: Quest_safari_zone_sell_slavesSuccess [nobr]
+
+<p>
+The Safari Zone is quite picky in choosing where it buy slaves from, to
+maintain its standards.
+Fortunately, <<rep $g.trader>> trader|was able to <<uadv $g.trader>>
+convince them that your company is capable of supplying high quality slaves. Your slavers
+managed to arrange for several slave orders to be delivered in a few
+days.
+</p>
+
+<<include 'Quest_safari_zone_sell_slavescommon'>>
+
+:: Quest_safari_zone_sell_slavesFailure [nobr]
+
+<p>
+The Safari Zone is quite picky in choosing where it buy slaves from, to
+maintain its standards.
+<<Rep $g.trader>> trader|was unable to <<uadv $g.trader>>
+fully convince them of your company's capabilities and reputation,
+and ultimately only able to secure one deal for a slave to be sent to the safari.
+</p>
+
+<<include 'Quest_safari_zone_sell_slavescommon'>>
+
+:: Quest_safari_zone_sell_slavesDisaster [nobr]
+
+<p>
+Unfortunately, the <<lore region_forest>> is a dangerous place, as your slavers learned the hard way.
+They never made it to the safari zone as they were ambushed by neko hunters along the
+way, who harried them all the way back to the fort with arrows.
+</p>

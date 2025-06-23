@@ -1,0 +1,230 @@
+:: QuestSetup_test_of_slaving [nobr quest]
+
+<<run new setup.Title(
+"quest_master_of_slaving_0", /* key */
+"Master of Slaving", /* name */
+"A true master of slaving", /* description */
+"a|have proven a|themself to be a master of slaving by completing a challenge in the seas", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+slaving: 4,},
+)
+>>
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Slaver', /* name */
+[
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_dominant,
+  setup.trait.skill_intimidating,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_cautious,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.slaving, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_slaving_0')
+]), 'Have not yet mastered the art of slaving'),
+],
+{
+  slaving: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_slaving', /* key */
+"Test of Slaving", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'legendary',
+  'veteran',
+  'prep',
+  'danger',
+  'item',
+  'sea',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'e1': 'all',
+  'e2': 'all',
+},
+[ /* costs */
+],
+'Quest_test_of_slaving',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_slavingCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_slaving_0'),
+      setup.qc.EquipmentDirect('slaving_arms_master'),
+    ],
+  ],
+  [
+    'Quest_test_of_slavingCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_slavingCrit',
+    [
+      setup.qc.Injury('a', 10),
+      setup.qc.Trauma('a', setup.trait.boon_slaving, 20),
+    ],
+  ],
+  [
+    'Quest_test_of_slavingCrit',
+    [
+      setup.qc.MissingUnitRecapture('a', 'capturedhard'),
+      setup.qc.AddTraitsRandom('a', [setup.trait.per_submissive, setup.trait.per_cautious, setup.trait.per_kind], 1, false, false),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_slaving_0'),
+setup.qres.SkillAtLeast(setup.skill.slaving, 100)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_slaving [nobr]
+<<set _slaver = setup.getUnit({
+job: 'slaver',
+skill_max: setup.skill.slaving,
+notyou: true,
+})>>
+
+<p>
+    Your company has received an invitation for a unique competition. It will be held on a particular island in the south, and will feature many slavers from around the continent. The competition is titled "Slaving Deathmatch", which honestly sounded quite ridiculous to you. As to why you got invited, well, the organized apparently has heard of <<reps _slaver>> prowess in slaving, and they felt <<yourrep _slaver>> might just have what it takes to win the grand prize: a mouth-watering <<rep setup.equipment.slaving_arms_master>> that you cannot find anywhere else in the world.
+</p>
+
+<p>
+    You have no idea what is a slaving death match, nor whether you trust <<rep _slaver>> enough to send <<them _slaver>> on what surely will be a suicide mission, but if you really, really want that stupid glove, you might just have no choice but to attempt it. Then again, the letter did mention you could send anyone, not necessarily <<rep _slaver>>...
+</p>
+
+
+
+
+:: Quest_test_of_slavingCrit [nobr]
+<p>
+    The rules for a slaving deathmatch turned out to be exceedly simple: ten slavers would come in, and only one will come out a slaver — the rest have been enslaved one way or another.
+    Without much fanfare, <<rep $g.a>> entered the arena — apparently deep within an ancient crater — to duke it out in an all-out-slaving match.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+    <p>
+        Evidently, however, <<rep $g.a>> a|is no slaver material. <<They $g.a>> became the first slaver to fell after another competitor exploited <<their $g.a>> <<uinsultnoun $g.a>>, which somehow ended up with the competitor holding a leash attached to a new shiny collar at <<reps $g.a>> neck. <<They $g.a>> never returned home, and last you heard, <<they $g.a>> a|is serving <<their $g.a>> new owner somewhere out there. You sigh, and prepare to rescue the <<uadjbad $g.a>> fool yet again...
+    </p>
+<<else>>
+    <p>
+        <<Rep $g.a>> a|is a master slaver, and it was not just for show. <<They $g.a>> enslaved one by exploiting <<their $g.e1>>
+        <<uinsultnoun $g.e1>>,
+        <<if $g.a.isHasTrait('magic_earth_master')>>
+            another by summoning binding tentacles using <<their $g.e1>> mastery over earth magic,
+        <</if>>
+        <<if $g.a.isHasTrait('magic_dark_master')>>
+            one after subtly corrupting the unsuspecting new slave,
+        <</if>>
+        <<if $g.a.isHasTrait('skill_hypnotic')>>
+            another after instilling a couple of hypnotic triggers subconsciously,
+        <</if>>
+        <<if $g.a.isHasTrait('skill_intimidating')>>
+            a poor <<urace $g.e2>> who got intimidated,
+        <</if>>
+        <<if $g.a.isHasTrait('per_dominant')>>
+            a secretly submissive slaver who <<rep $g.a>> exploited <<uadv $g.a>>,
+        <</if>>
+        <<if $g.a.isHasTrait('muscle_verystrong')>>
+            an unlucky slaver, unlucky enough to be the subject of <<reps $g.a>> blunt strength,
+        <</if>>
+        and so and so until only two contestants were left standing (well, since the rest were already on all fours).
+    </p>
+
+    <<if $gOutcome == 'crit'>>
+        <p>
+            The last slaver was a tough nut to crack — a <<urace $g.e1>> master slaver,
+            and it took <<rep $g.a>> everything <<they $g.a>>.
+            First, <<rep $g.a>> proceeded by distracting <<them $g.e1>>.
+
+            <<if $g.a.isHasTrait('skill_hypnotic')>>
+                <<Rep $g.a>> made full use of <<their $g.a>> hypnotic skills to subtly influence <<therace $g.e1>>.
+            <</if>>
+            <<if $g.a.isHasTrait('skill_intimidating')>>
+                Using <<their $g.a>> intimidating presence, <<rep $g.a>> made sure to let <<them $g.e1>> know <<their $g.e1>> place.
+            <</if>>
+            <<if $g.a.isHasTrait('per_dominant')>>
+                <<Rep $g.a>> asserted full dominance over the exchange, drilling obedience into the <<urace $g.e1>>.
+            <</if>>
+
+            With the enemy distracted, <<rep $g.a>> seized the opportunity to tackle <<them $g.a>> down.
+            <<if $g.a.isHasTrait('muscle_verystrong')>>
+                It was no easy task, but <<reps $g.a>> bulging muscles were certainly a great boon.
+            <</if>>
+            <<if $g.a.isHasTrait('magic_dark_master')>>
+                <<Rep $g.a>> subtly applied dark magic to corrupt the situation in <<their $g.a>> favor.
+            <</if>>
+            <<if $g.a.isHasTrait('magic_earth_master')>>
+                <<Rep $g.a>> finally summoned binding tentacles from the ground, immobilizing <<therace $g.e1>>.
+            <</if>>
+            Once down, <<rep $g.a>> got to work quickly, <<their $g.a>> experienced <<uhand $g.a>> efficiently tying <<therace $g.e1>> up.
+            With the enemy finally immobilized, <<rep $g.a>> grabbed a silver collar, and lock it with a clank around <<therace $g.e1>>'s neck, claiming <<their $g.a>> victory.
+        </p>
+
+        <p>
+            With <<them $g.a>> as the only one still standing, the competition ended, and against all odds <<rep $g.a>> came out victorious. All the other nine former slavers are now nothing but slaves, and <<they $g.a>> will be sold by the committee to cover the cost of the competition.
+            <<Yourrep $g.a>> a|was awarded the well deserved title of Master of Slaving, as well as the <<rep setup.equipment.slaving_arms_master>>, to use as <<they $g.a>> see fit.
+        </p>
+
+    <<else>>
+
+        <p>
+            Unfortunately, the last match did not go anywhere. Both <<rep $g.a>> and the opponent were equally matched, and neither side were willing to relent to the other.
+            Realizing that words were not going to bring them anywhere, they resorted to the last resorts: violence, and both were knocked out roughly at the same time.
+            The competition were deemed a draw, with neither your slaver nor the last remaining participant winning.
+        </p>
+
+        <p>
+            <<Rep $g.a>> went home empty-handed, but with a good spirits from knowing that <<they $g.a>> a|was so close to a victory in such a competitive match.
+            <<if $gOutcome == 'success'>>
+                And the competition commitee recognized it too, and sent you another invitation soon after.
+            <</if>>
+        </p>
+
+        <p>
+            Oddly enough, the remaining eight competitors were nowhere to be seen on the boat back, but then again perhaps they were just all sleeping soundly inside their respective cabins...
+        </p>
+
+    <</if>>
+
+<</if>>

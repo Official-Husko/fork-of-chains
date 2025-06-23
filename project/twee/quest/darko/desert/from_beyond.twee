@@ -1,0 +1,163 @@
+:: QuestSetup_from_beyond [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'from_beyond', /* key */
+'From Beyond', /* Title */
+'darko', /* Author */
+[
+  'special',
+  'unit',
+  'danger',
+  'desert',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'warrior1': setup.qu.light_warrior,
+'warrior2': setup.qu.light_warrior,
+'purifier': setup.qu.purifier, },
+{ /* actors */
+'slaver': 'missingslavers', },
+[ /* costs */
+],
+'Quest_from_beyond',
+setup.qdiff.hard42, /* difficulty */
+[ /* outcomes */
+[
+'Quest_from_beyondCrit',
+[
+setup.qc.Slaver('slaver', '', false),
+setup.qc.RemoveFromUnitGroup('slaver'),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_from_beyondCrit',
+[
+setup.qc.Slaver('slaver', '', false),
+setup.qc.RemoveFromUnitGroup('slaver'),
+setup.qc.OneRandom([
+setup.qc.Corrupt('warrior1'),
+setup.qc.Corrupt('warrior2'),
+setup.qc.Corrupt('purifier'),
+]),
+
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_from_beyondCrit',
+[
+setup.qc.Corrupt('warrior1'),
+setup.qc.Corrupt('warrior2'),
+setup.qc.Corrupt('purifier'),
+setup.qc.Injury('warrior1', 2),
+setup.qc.Injury('warrior2', 2), ],
+], [
+'Quest_from_beyondCrit',
+[
+setup.qc.OneRandom([
+  setup.qc.MissingUnit('warrior1'),
+  setup.qc.MissingUnit('warrior2'),
+  setup.qc.MissingUnit('purifier'),
+]),
+setup.qc.Corrupt('warrior1'),
+setup.qc.Corrupt('warrior2'),
+setup.qc.Corrupt('purifier'),
+setup.qc.Injury('warrior1', 3),
+setup.qc.Injury('warrior2', 3),
+setup.qc.Injury('purifier', 3), ],
+], ],
+[ /* quest pool and rarity */
+  [setup.questpool.rescue, setup.rarity.uncommon],
+],
+[
+setup.qres.UnitGroupHasUnit(setup.unitgroup.missingslavers),
+setup.qres.QuestUnique(), ], /* restrictions to generate */
+)>>
+
+:: Quest_from_beyond [nobr]
+
+<p>
+The <<lore region_desert>> is infamous for hosting many areas that are thick
+with <<lore concept_mist>>.
+These areas occasionally allow passage between this world and the next.
+While normally this would be of no interest to you, there are
+rumors that the lusty moans of <<rep $g.slaver>>, one of your former slavers, could occasionally
+be heard from the area.
+</p>
+
+<p>
+In fact,
+you have heard that one of these areas has gone so unstable that
+a gateway can be seen materializing, opening up a way into the land beyond <<lore concept_mist>>.
+It might just be possible for a group of purifiers to attempt to cross <<lore concept_mist>>
+in a daring rescue mission for <<rep $g.slaver>>. Of course, any trinkets
+they get along the way would also be extremely valuable back in this world.
+However, such trip is no doubt very dangerous, and you must be prepared for your
+slavers to come back corrupted or worse.
+</p>
+
+
+:: Quest_from_beyondCrit [nobr]
+<p>
+Led by <<rep $g.purifier>>, your slavers
+<<uadv $g.purifier>>
+braced through the narrow gap in <<lore concept_mist>> into the debauched
+land beyond.
+
+<<if $gOutcome == 'crit'>>
+Ignoring all the demons and slaves writhing around them, your slavers
+moved with the singular purpose of locating <<rep $g.slaver>>. Scouring room
+through room without looking too much at all the broken slaves caged inside tiny
+compartments, they finally found <<rep $g.slaver>> being mercilessly fucked
+by a large demon. With a surprise attack, <<yourrep $g.warrior1>> and <<rep $g.warrior2>> subdued
+the demon while <<rep $g.purifier>> saved <<rep $g.slaver>> before together,
+they exited <<lore concept_mist>>. All in all, it was a successful mission, and
+despite having just experienced such a harrowing experince, your slavers somehow managed to
+keep <<rep $g.slaver>> relatively unchanged from the last time you saw <<them
+$g.slaver>>.
+
+<<elseif $gOutcome == 'success'>>
+
+They were greeted by a vision of such debauchery that they stood in their
+tracks for a while, before resuming their mission to locate and save <<rep
+$g.slaver>>.
+Going from room through room, they tried their best to ignore the many
+visions within
+They finally found <<rep $g.slaver>> being milked dry above a nasty looking
+ritual chamber. Your slavers attempted to undo <<reps $g.slaver>> binding,
+but then a slew of demonkin appeared who proceeded to cast various dark spells. <<Rep $g.purifier>>
+tried <<their $g.purifier>> best to shield against the spells until finally
+<<rep $g.slaver>> slaver|was freed. Together, your slavers ran back to the
+entrance and escaped through the same gap they used earlier.
+<<else>>
+Immediately they were greeted with a vision so debauched that your slavers
+were mesmerized in their tracks,
+forgotting their original mission.
+By the time they regained their senses, <<rep $g.purifier>> purifier|was already
+tied up in one of the cages while <<rep $g.warrior1>> and <<rep $g.warrior2>>
+were being anally used by two demonkin guards. With the senses regained, your slavers attempted to
+break free and escape the place before much worse befall them. They sustained some
+injuries and even got slightly corrupted, but they were able to escape the
+place safely back into the deserts.
+<<if $gOutcome == 'disaster'>>
+Or so they thought until they realize that one of them went missing.
+<</if>>
+<</if>>
+</p>
+
+<<if $gOutcome == 'success'>>
+
+<p>
+The experience of being a demon plaything had physically changed <<rep
+$g.slaver>> — even some of your slavers were also affected during their time
+there. They can be purified later, should the opportunity arises.
+</p>
+
+<<elseif $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+
+<p>
+During their time beyond <<lore concept_mist>>, they found no signs of <<rep $g.slaver>>.
+Perhaps you can encounter the former slaver again some other time.
+</p>
+
+<</if>>

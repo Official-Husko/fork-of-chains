@@ -1,0 +1,74 @@
+:: Classroom [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.classroom)>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<<set _u = setup.getUnitRandom({job: setup.job.slaver, available: true})>>
+<<if Math.random() < 0.3>><<set _u = null>><</if>>
+
+<p>
+You enter the "classroom" of your fort, where you store all your sex manuals
+for anyone to study.
+<<if _u && !_u.isYou()>>
+  You can see <<yourrep _u>> here right now,
+  <<if _u.isHasTrait('per_studious')>>
+    diligently reading through some questionable manuals with one <<uhand _u>> under the table.
+  <<elseif _u.isHasTrait('per_curious')>>
+    curiously looking through some of the picture books with a <<uhand _u>> under the table.
+  <<elseif _u.isHasTrait('per_lustful')>>
+    vigorously stroking something under the table while reading through the manuals.
+  <<elseif _u.isHasTrait('per_chaste')>>
+    sighing as the chaste slaver closes yet another debauched manual.
+  <<elseif _u.isHasTrait('per_dominant')>>
+    grinning in delight as the dominant slaver found another new technique to try out.
+  <<elseif _u.isHasTrait('per_submissive')>>
+    no doubt fantasizing a dominant to top <<their _u>> submissive ass.
+  <<elseif _u.isHasTrait('dick_huge')>>
+    looking for a way to fit <<their _u>> gigantic dong inside particularly tight holes.
+  <<elseif _u.isHasTraitExact('dick_tiny')>>
+    looking if there's some extra fun <<they _u>> can have even with their embarrassment of a dick.
+  <<elseif _u.isHasTrait('vagina_gape')>>
+    trying to see if there's some interesting actions <<they _u>> can do with their gaping pussy.
+  <<elseif _u.isHasTrait('anus_gape')>>
+    trying to see if there's some interesting actions <<they _u>> can do with their gaping anus.
+  <<elseif _u.isHasTrait('per_smart')>>
+    filtering through the many graphic books stored in the room for some actually valuable information.
+  <<elseif _u.isHasTrait('per_slow')>>
+    trying to improve <<their _u>> intelligence... but <<they _u>> probably chose the wrong place for it unfortunately.
+  <<elseif _u.isHasTrait('per_active')>>
+    no doubt looking for new exotic sexual poses to try out.
+  <<elseif _u.isHasTrait('per_stubborn')>>
+    trying to prove the superiority of standard normal sex.
+  <<elseif _u.isHasTrait('per_evil')>>
+    getting as much knowledge as possible for <<their _u>> not-so-secret evil plans.
+  <<elseif _u.isHasTrait('per_honorable')>>
+    disgusted by the many exotic positions described in the manuals.
+  <<elseif _u.isHasTrait('per_dreamy')>>
+    seemingly fell asleep when reading one of the manuals.
+  <<else>>
+    unsure what they are doing.
+  <</if>>
+<<else>>
+  Nobody is in the classroom right now.
+<</if>>
+  While you certainly have better things to do today, there's surely no harm in sitting
+  here and reading a manual or two...
+</p>
+
+<<set _forfilter = setup.sexaction.filter(a => a.isVisibleInClassroom())>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'sexaction',
+  filter_objects: _forfilter,
+  display_callback: sexaction => {
+    if ($menufilter.get('sexaction', 'display') == 'compact') {
+      return setup.DOM.Card.sexactioncompact(sexaction);
+    } else {
+      return setup.DOM.Card.sexaction(sexaction);
+    }
+  },
+})>>
+<<attach _dom>>

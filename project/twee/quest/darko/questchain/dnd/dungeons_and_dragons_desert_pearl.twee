@@ -1,0 +1,224 @@
+:: QuestSetup_dungeons_and_dragons_desert_pearl [nobr quest]
+
+<<set _criteriahero = new setup.UnitCriteria(
+null, /* key */
+'Hero', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.per_attentive,
+  setup.trait.per_lunatic,
+  setup.trait.skill_connected,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_heroic_withdrawal_0'),
+],
+{
+  combat: 1,
+  survival: 1,
+  knowledge: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'dungeons_and_dragons_desert_pearl', /* key */
+"Dungeons and Dragons: Desert Pearl", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'prep',
+  'unknown',
+],
+4, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'hero': [ _criteriahero, 1],
+  'scout1': [ setup.qu.scout_desert, 1],
+  'scout2': [ setup.qu.scout_desert, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_dungeons_and_dragons_desert_pearl',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_dungeons_and_dragons_desert_pearlCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(6000),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_desert_pearlCrit',
+    [
+      setup.qc.VarSet('dungeons_and_dragons_withdrawal_progress', '4', -1),
+      setup.qc.MoneyCustom(6000),
+      setup.qc.SetCooldownEvent('dungeons_and_dragons_lair_of_evil', 10),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_desert_pearlFailure',
+    [
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragons_desert_pearlFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Injury('hero', 4),
+      setup.qc.Injury('scout1', 2),
+      setup.qc.Injury('scout2', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.AllUnitSatisfyDo([setup.qres.HasTitle('quest_heroic_withdrawal_0')],
+[setup.qc.TraumatizeRandom('unit', 50)],
+),
+  setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+
+],
+)>>
+
+:: Quest_dungeons_and_dragons_desert_pearl [nobr]
+<<set _type = 'Desert Pearl'>>
+
+<<set _u = setup.getUnit({title: 'quest_heroic_withdrawal_0'})>>
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+According to credible information that you totally did not just made up on the spot, somewhere within the <<lore region_desert>>
+lies a treasure called the Desert Pearl. It is said to be exceedingly beautiful, and an object longing for many people. The pearl is also said to have medicinal effects, and is the main ingredient of several rare potions, or so the surely credible rumor said...
+</p>
+
+<p>
+Since you have a hero in need of a quest within your company, you uhh.., suddenly remember that for some reason you don't recall, you really need the Desert Pearl. Surely a hero such as <<rep _u>> would be moved by such a tale, and would gladly fetch this Desert Pearl for the needy (that is you), out of the goodness of the hero's heart and without demanding any payment.
+</p>
+
+<p>
+(While your slaver probably won't find anything, it's best to accompany <<them _u>> with two slavers knowledgeable on the desert terrains, just in case.)
+</p>
+
+<</if>>
+
+
+
+:: Quest_dungeons_and_dragons_fetchCommonCrit [nobr]
+
+<p>
+Your little fetch quest has... apparently borne a result, somehow.
+Before you lies the <<= _type>> that you've asked <<yourrep $g.hero>> to fetch, and <<therace $g.hero>> hero|look
+<<if $g.hero.isHasTrait('per_humble')>>
+overjoyed
+<<else>>
+so full of <<themself $g.hero>>
+<</if>>
+having found the object you er... so very needed. Looking at <<yourrep $g.scout1>> or <<yourrep $g.scout2>> with questioning eyes just bring even more shrugs of incomprehension.
+</p>
+
+<p>
+It seems your plan to demotivate the "hero" and return <<them $g.hero>> to earth has backfired spectacularly. <<Therace $g.hero>> hero|look much more confident than before, having apparently found a rare artifact that you've asked for personally, and no doubt will demand more absurd quest in the future...
+</p>
+
+<p>
+That aside, the <<= _type>> turns out to be
+<<if _type == 'Desert Pearl'>>
+<<if $gOutcome == 'crit'>>
+extremely valuable,
+<<else>>
+quite valuable,
+<</if>>
+netting you
+<<if $gOutcome == 'crit'>>
+quite a lot of
+<<else>>
+a huge amount of
+<</if>>
+profit.
+<<elseif _type == 'Wolfstone'>>
+<<if $gOutcome == 'crit'>>
+very magically-enchanted,
+<<else>>
+rather magical
+<</if>>
+and a wizard in your fort gladly traded it for
+<<if $gOutcome == 'crit'>>
+some
+<<else>>
+many
+<</if>>
+of their actual magical artifacts.
+<<else>>
+<<if $gOutcome == 'crit'>>
+extremely popular
+<<else>>
+very popular
+<</if>>
+in the <<lore region_forest>>, and you are able to use it to gain
+<<if $gOutcome == 'crit'>>
+some
+<<else>>
+many
+<</if>>
+favor with its residents.
+<</if>>
+
+Although you never actually know what it really is.
+For all you know, it might as well be
+<<if $gQuest.getSeed() % 5 == 0>>
+a hardened droppings of some creature.
+<<elseif $gQuest.getSeed() % 5 == 1>>
+a garbage some raider threw away.
+<<elseif $gQuest.getSeed() % 5 == 2>>
+a random stone they found along the way.
+<<elseif $gQuest.getSeed() % 5 == 3>>
+a regular stone dumped in paint.
+<<else>>
+a completely useless piece of rock.
+<</if>>
+</p>
+
+
+:: Quest_dungeons_and_dragons_desert_pearlCrit [nobr]
+
+<<set _type = 'Desert Pearl'>>
+<<include 'Quest_dungeons_and_dragons_fetchCommonCrit'>>
+
+
+
+:: Quest_dungeons_and_dragons_fetchFailure [nobr]
+
+<p>
+<<Yourrep $g.hero>> came back home with nothing, and most certainly no <<= _type>> in their belongings. But before you're able to say anything, <<theslaver $g.hero>> hero|insist to give <<them $g.hero>> another try, as <<they $g.hero>> hero|was "so close" to finding it. <<if $gOutcome == 'disaster'>>(Well, after <<they $g.hero>> hero|recover from <<their $g.hero>> newfound injuries, that is.)<</if>>
+You point your questioning eyes to <<yourrep $g.scout1>> and <<rep $g.scout2>>, but both just shrugs, unable to contain the overflowing energy from <<therace $g.hero>>.
+</p>
+
+<p>
+What have you gotten yourself into...
+</p>
+
+:: Quest_dungeons_and_dragons_desert_pearlFailure [nobr]
+<<set _type = 'Desert Pearl'>>
+
+<<include 'Quest_dungeons_and_dragons_fetchFailure'>>

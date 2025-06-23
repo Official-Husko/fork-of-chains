@@ -1,0 +1,228 @@
+:: OpportunitySetup_the_price_of_revenge [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'the_price_of_revenge', /* key */
+"The Price of Revenge", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+1, /* expiration weeks */
+'Opportunity_the_price_of_revenge',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_the_price_of_revenge_0',
+    'Opportunity_the_price_of_revenge_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Money(40000),
+      setup.qc.Slaver('slaver', "", undefined),
+      setup.qc.Equipment(setup.equipmentpool.slaving_good),
+      setup.qc.Equipment(setup.equipmentpool.slaving_good),
+    ],
+  ],
+  [
+    'Opportunity_the_price_of_revenge_1',
+    'Opportunity_the_price_of_revenge_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Friendship('slaver', 'boss', -1000),
+      setup.qc.Event('taste_of_revenge', 1, {
+        slaver: "slaver",
+        boss: "boss",
+      }),
+    ],
+  ],
+  [
+    'Opportunity_the_price_of_revenge_2',
+    'Opportunity_the_price_of_revenge_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Slaver('slaver', "", undefined),
+      setup.qc.Slaver('boss', "a|was a leader of a slaving company whom you defeated", undefined),
+      setup.qc.Friendship('slaver', 'boss', -1000),
+      setup.qc.Equipment(setup.equipmentpool.slaving_good),
+      setup.qc.Equipment(setup.equipmentpool.slaving_good),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+  'boss': [
+  ],
+  'dps': [
+  ],
+  'healer': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_the_price_of_revenge [nobr]
+
+<p>
+For the first time, you come face to face with your adversary.
+You're the victor in this warfare, and with none of <<their $g.boss>> fellow
+slaver in sight, <<they $g.boss>> boss|know it too. Despite the odds being
+stacked against <<them $g.boss>>, the still-dignified leader of the slaving
+company remains self-possessed despite the situation.
+</p>
+
+<p>
+"For what it's worth," <<they $g.boss>> boss|say without preamble,
+"I had nothing against you. It was all business — a little harmless blackmail
+is something you would also do in my position. I never took any sexual
+pleasure from your slaver, and <<they $g.slaver>> slaver|remain healthy under my
+care."
+<<They $g.boss>> boss|look nervous for the first time.
+"So, what do we do now? I've amassed enough personal wealth in my fort,
+enough to pay you back all the money you've sent over to me and then some.
+Let me go. I'll walk away, and I'll give away all the money I have left,
+and also <<rep $g.slaver>> of course."
+</p>
+
+<<unitcard $g.boss 1>>
+
+
+:: Opportunity_the_price_of_revenge_0 [nobr]
+Accept
+
+
+:: Opportunity_the_price_of_revenge_0_flavor [nobr]
+
+<p>
+You accept, magnanimous in victory.
+"I don't think I would have done that," <<they $g.boss>> replies.
+"Thank you. I'll not forget this."
+</p>
+
+<p>
+With that, <<they $g.boss>> left you at the entrance of a hidden door inside
+the fort before leaving for good. A wealth of treasure lies behind, no doubt
+were saved for when <<they $g.boss>> boss|was planning to retire.
+But more importantly, you've also rescued your long-lost slaver.
+</p>
+
+<<include 'ThePriceOfRevengeCommonRescue'>>
+
+:: ThePriceOfRevengeCommonRescue [nobr]
+
+<p>
+Upon seeing you,
+<<rep $g.slaver>>
+<<if $g.slaver.isFemale()>>dives<<else>>runs<</if>>
+into your <<ubreasts $unit.player>>,
+<<if $g.slaver.isHasTrait('per_cautious')>>
+sobbing
+<<elseif $g.slaver.isHasTrait('per_brave')>>
+<<else>>
+holding back <<their $g.slaver>> tears while saying
+<</if>>
+"<<They $g.boss>> made me do such humiliating things...".
+You <<uadv $unit.player>> wrap your <<uarms $unit.player>> around <<them
+$g.slaver>> in a comforting hug.
+True to the former leader's word, <<they $g.slaver>> slaver|look exactly as you
+remember, to your great relief.
+</p>
+
+
+:: Opportunity_the_price_of_revenge_1 [nobr]
+Refuse and enslave <<if $g.boss>><<them $g.boss>><</if>>
+
+
+:: Opportunity_the_price_of_revenge_1_flavor [nobr]
+
+<p>
+You coldly decline. "That was a mistake," <<they $g.boss>> boss|reply, before
+taking a magical scroll and chanting it out loud. As a loud magical sound can be
+heard from all across the fort, the former leader continues.
+"All the remaining valuables in this fort has been teleported away. You'll
+get nothing from me." It's true. Even after <<rep $g.dps>> and <<utheirrel
+$g.dps $g.healer>> <<rep $g.healer>> scour through the entire fort,
+everything of value seems to have gone completely missing.
+</p>
+
+<p>
+Still, <<rep $g.dps>> makes quick work and soon you are treated to the
+delicious moment of finding the former leader on <<their $g.boss>> knees in
+front of you with a black bag over <<their $g.boss>> head and <<their $g.boss>>
+<<uhands $g.boss>> tied securely
+behind <<them $g.boss>>, ready for a long trip home. <<They $g.boss>> boss|is one
+of your slaves now, fundamentally no different than any other.
+</p>
+
+<p>
+As delicious as the sight of a former slave company leader being put in
+<<their $g.boss>> place, you are also here to rescue <<rep $g.slaver>>.
+Fortunately, <<rep $g.slaver>> slaver|was not teleported away, and after some
+scouring <<yourrep $g.dps>> managed to find the <<man $g.slaver>> stowed away in
+the basement of the fort.
+</p>
+
+<p>
+<<include 'ThePriceOfRevengeCommonRescue'>>
+</p>
+
+<p>
+You will hear back from this in a week from now...
+</p>
+
+
+:: Opportunity_the_price_of_revenge_2 [nobr]
+
+Recruit <<if $g.boss>><<them $g.boss>><</if>> instead
+
+
+:: Opportunity_the_price_of_revenge_2_flavor [nobr]
+
+<p>
+You decline, with a different idea in mind. "That was a mistake," <<they
+$g.boss>> boss|reply, before taking a magical scroll and chanting it out.
+Realizing your mistake, you immediately try to convey your true message: that
+you approve of <<their $g.boss>> doings and would like to recruit <<them
+$g.boss>> into your company instead. But by the time your message reaches the <<man
+$g.boss>>, it was already too late — many valuables in the fort has been
+teleported away.
+</p>
+
+<p>
+You have to repeat your offer a few times before the thick-headed <<urace
+$g.boss>> finally boss|get it. As the former slaver boss realizes <<their $g.boss>> luck, you
+can see <<their $g.boss>> dignity returns. "That is incredibly benevolent of
+you, but also a very smart decision," <<they $g.boss>> says after a long pause.
+Having been rescued from a surefire future of slavery will surely earn you
+the loyalty of the slaver, and although <<they $g.boss>> will not lead a
+slaving company again, retirement as a slaver is surely much preferable to
+that of being a slave.
+</p>
+
+<p>
+Still, you are also here to rescue <<rep $g.slaver>>.
+With <<rep $g.boss>> on your side, you locate your <<man $g.slaver>> quickly
+in the basement of the fort. True to <<their $g.boss>> words, your slaver was
+relatively untouched, although you can still sense <<their $g.slaver>> hatred
+towards your new slaver <<rep $g.boss>>.
+</p>

@@ -1,0 +1,172 @@
+:: QuestSetup_brothel_focus [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'brothel_focus', /* key */
+"Brothel Focus", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+2, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'teacher': [ setup.qu.sex_teacher, 1],
+  'helper1': [ setup.qu.whore, 1],
+  'helper2': [ setup.qu.whore, 1],
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+],
+'Quest_brothel_focus',
+setup.qdiff.normal44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_focusCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.BoonizeRandom('teacher', 9),
+      setup.qc.BoonizeRandom('helper1', 9),
+      setup.qc.BoonizeRandom('helper2', 9),
+    ],
+  ],
+  [
+    'Quest_brothel_focusCrit',
+    [
+      setup.qc.MoneyCustom(3000),
+      setup.qc.Opportunity('brothel_focus', {
+owner: "owner",
+head: "head",
+}),
+    ],
+  ],
+  [
+    'Quest_brothel_focusFailure',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+    ],
+  ],
+  [
+    'Quest_brothel_focusDisaster',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '8', -1),
+      setup.qc.Injury('teacher', 3),
+      setup.qc.Injury('helper1', 1),
+      setup.qc.Injury('helper2', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_focus [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+Your brothel, which is known as <<attach _describe>>, is starting to
+flourish. Customers can be seen perusing the available
+<<if $g.head.isHasDick()>>stiff dicks,<<else>>wet pussies,<</if>>
+<<if _class > 0>> in addition to the entertainment provided by the venue.
+<<else>>
+enhanced by the worker's basic sexual skills.
+<</if>>
+The slave bodyguard you assigned is
+doing <<their $g.head>> duties properly too.
+All in all, the operation seems to be going rather smoothly.
+</p>
+
+<p>
+The manager of the place, that is <<yourrep $g.owner>>, owner|agree on it
+too. But <<they $g.owner>> always think that the place could still be
+better. Instead of settling with the current low-middle class customers,
+perhaps the place can aim higher, with the goal of being luxurious enough fit
+for a royal.
+</p>
+
+<p>
+As a starting point, <<they $g.owner>> owner|suggest to enhance the worker's skill even further. Two weeks of dedicated classroom time should suffice. Since <<rep $g.owner>> will be plenty busy already with the daily operations of the brothel, you'll have to provide the teachers and the demonstrators from among your ranks, however.
+</p>
+
+
+
+
+
+:: Quest_brothel_focusCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+<<Yourrep $g.teacher>> and <<their $g.teacher>> two demonstrators spent a good two weeks enhancing the skills of the <<men $g.head>> working in the brothel. <<Rep $g.helper1>> demonstrated many advanced sexual techniques on <<utheirrel $g.helper1 $g.helper2>> <<rep $g.helper2>>, and the two
+enjoyed many sex in various awkward positions across the brothel.
+<<if $g.helper1.isHasTrait('per_chaste') or $g.helper2.isHasTrait('per_chaste')>> (To the great embarrasment of the chaste slaver.)<</if>>
+Your brothel's workers were quite impressed with the show, and they certainly learned a thing or ten from the experience and guidance.
+</p>
+
+<p>
+Throughout the two weeks, the workers learned and practice the techniques on many various day-to-day utensils, furniture, and even vegetables straight from the fridge. By the tenth day, <<yourrep $g.teacher>> teacher|was confident that the students were ready to "graduate".
+</p>
+
+<p>
+In the final day of the training,
+the brothel launched a new package that showcased the new skills of these whores.
+Many customers were interested, and the brothel raked in quite a bit of money as your brothel's <<women $g.head>>
+<<if _class < 0>>
+debauched themselves including one time where one of them used a decorative plant as a substitute for a lover.
+<<else>>
+strutted themselves and showed off their bodies sensuously, exposing the many customers to the pleasure of watching an expert strip show.
+<</if>>
+<<if $gOutcome == 'crit'>>
+Even your slavers themselves were "quite entertained" by the show, and enjoyed a good mood boost.
+<</if>>
+</p>
+
+<p>
+While the whores have considerable skills now, <<yourrep $g.owner>> owner|suggest that a focus be chosen for them to even specialize further. As the proprietor of the place, the decision falls to you and you alone.
+</p>
+
+
+
+:: Quest_brothel_focusFailure [nobr]
+<p>
+Unfortunately, the workers of your brothel were simply too inexperienced to process the new techniques that your slavers had so masterfully demonstrated. In the end, <<yourrep $g.teacher>> judged that these students would need a couple more weeks of "on-the-job-practice" before another training can be attempted.
+</p>
+
+
+
+
+:: Quest_brothel_focusDisaster [nobr]
+<p>
+Your slavers were "overly enthusiastic" when they tried to demonstrate a wall sex to the <<men $g.head>> of the brothel. <<Yourrep $g.head>> fell head-first onto the floor, collapsing the "sex formation" they had precariously maintained, injuring all three of your slavers.
+</p>

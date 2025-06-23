@@ -1,0 +1,60 @@
+:: ActivitySetup_noticeboards_reading [nobr activity]
+
+
+
+<<run new setup.ActivityTemplate({
+key: 'noticeboards_reading',
+name: "Noticeboards Reading", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+  ],
+},
+critical_traits: [
+  setup.trait.per_curious,
+  setup.trait.per_attentive,
+],
+disaster_traits: [
+  setup.trait.per_stubborn,
+  setup.trait.per_dreamy,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "...someone lost their cake again? Who keeps stealing the cake out of our fort!",
+      "<<ugreetingshort $g.a>> can you believe that someone lost their cake again, in our fort?! I swear there\'s some kind of kleptomaniac cake theft hiding in our larder...",
+    ],
+    bold: [
+      "A missing <<urace $g.a>>, and a virgin too? How amusing...",
+      "<<ugreetingshort $g.a>> come join me finding something worthy enough to be done by the one and only <<name $g.a>>.",
+    ],
+    cool: [
+      "Hmph, nothing interesting today.",
+      "<<ugreetingshort $g.a>> come to check out the boards?",
+    ],
+    witty: [
+      "Perfect timing, <<unickname $g.a>>, now just stand there, right in front of the board. Great! Now you\'re on board.",
+      "I like big noticeboards and I cannot lie...",
+    ],
+    debauched: [
+      "...someone wants to buy a bottle of <<ucum $g.a>>? \"For science\" my ass.",
+      "<<ugreetingshort $g.a>> someone is asking for a <<ucum $unit.player>> sample. Mind donating yours?",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.noticeboards,
+],
+})>>

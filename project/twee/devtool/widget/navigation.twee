@@ -1,0 +1,21 @@
+:: DevToolNavigationWidgets [nobr widget]
+
+/* Save the current passage, and switch to the new one supplied as argument */
+/* The saved passage can be restored using <<dtloadpassage>> */
+<<focwidget dtsavepassage>>
+  <<run setup.devQueue('devtoolmainpassage', $gDtSavePassageReturnPassage)>>
+  <<set $gDtSavePassageReturnPassage = $args[0]>>
+<</focwidget>>
+
+<<focwidget dtloadpassage>>
+  <<set $gDtSavePassageReturnPassage = setup.devPop('devtoolmainpassage')>>
+<</focwidget>>
+
+<<focwidget dtloadpassagelink>>
+  <div>
+    <<link '(Cancel)'>>
+      <<dtloadpassage>>
+      <<devgotoreturn>>
+    <</link>>
+  </div>
+<</focwidget>>

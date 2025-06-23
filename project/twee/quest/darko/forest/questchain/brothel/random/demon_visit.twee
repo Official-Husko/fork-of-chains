@@ -1,0 +1,234 @@
+:: QuestSetup_demon_visit [nobr quest]
+
+<<set _criteriaslave1 = new setup.UnitCriteria(
+null, /* key */
+'To-Be-Mindbroken', /* name */
+[
+  setup.trait.per_masochistic,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.IsCanBeSold(),
+  setup.qres.AllTraits([setup.trait.training_masochist_master], true),
+],
+{
+}
+)>>
+
+<<set _criteriaslave2 = new setup.UnitCriteria(
+null, /* key */
+'To-Be-Mindbroken', /* name */
+[
+  setup.trait.per_masochistic,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.IsCanBeSold(),
+  setup.qres.AllTraits([setup.trait.training_masochist_master], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'demon_visit', /* key */
+"Demon Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'unknown',
+],
+4, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'slaver': [ setup.qu.slavehandler, 1.5],
+  'purifier': [ setup.qu.purify_head, 1.5],
+  'slave1': _criteriaslave1,
+  'slave2': _criteriaslave2,
+},
+{ /* actors */
+  'head': [
+    setup.qres.Home(),
+  ],
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+  'target': [
+    setup.qres.Home(),
+  ],
+  'demonkin': 'subrace_demonkin',
+},
+[ /* costs */
+],
+'Quest_demon_visit',
+setup.qdiff.hardest69, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_demon_visitCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('demonkin', "a|was your brothel\'s payment after their services was being used by a demonic royalty", undefined),
+    ],
+  ],
+  [
+    'Quest_demon_visitCrit',
+    [
+      setup.qc.Opportunity('mistwalker_visit', {
+owner: "owner",
+head: "head",
+slave: "slave",
+target: "target",
+}),
+      setup.qc.IfThenElse(
+setup.qres.Actor('slave1', setup.qres.NoTraits([setup.trait.per_masochistic], true)),
+setup.qc.DoAll([
+setup.qc.Mindbreak('slave1')
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+      setup.qc.IfThenElse(
+setup.qres.Actor('slave2', setup.qres.NoTraits([setup.trait.per_masochistic], true)),
+setup.qc.DoAll([
+setup.qc.Mindbreak('slave2')
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_demon_visitFailure',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.MissingUnit('slaver'),
+      setup.qc.MissingUnit('purifier'),
+      setup.qc.Corrupt('slaver', null, 1),
+      setup.qc.Corrupt('purifier', null, 1),
+    ],
+  ],
+  [
+    'Quest_demon_visitFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.MissingUnit('slave1'),
+      setup.qc.MissingUnit('slave2'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+
+],
+)>>
+
+:: Quest_demon_visit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The manager of your brothel, <<yourrep $g.owner>>, owner|have
+heard that a most depraved visitor is planning a visit to <<attach
+_describe>>: a demon from beyond the <<lore concept_mist>>. While demons are
+already very rare, this particular demon happens to be a royalty within the
+demons. <<They $g.target>> target|have taken interest in your depraved
+brothel,
+especially the
+<<if _attraction == 'gravity'>>
+Magic Gravity Room,
+<<else>>
+Magic Bondage Room,
+<</if>>
+and would like to sample the brothel's services.
+</p>
+
+<p>
+Demons are usually sadists, and this one is not an exception. <<They $g.target>> no doubt target|have heard about your brothel's reputation as a haven of dominance. It is unlikely your courtesans will survive on their own against such a client, so it may be best to send a group of experienced slavers to handle this particular client. First of all, you need a slaver proficient in managing slaves. Dealing with demons means corruptions will be abound, so a slaver proficient in <<rep setup.trait.magic_fire>> is also required. Finally, the slavers would need to be accompanied by two slaves masterfully trained in masochism. Once used by the demon, these slaves will likely break forever from the severe abuse, so <<dangertext "you must choose carefully">>.
+</p>
+
+
+
+:: Quest_demon_visitCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The demon royalty arrived with a small demonkin entourage, seemingly <<their $g.target>> servants. The demonkin attended to all the demon's need and arranged for your slavers as well as the two masochist slaves to be brought into the dungeons and be used as the demon's personal playthings for the month.
+</p>
+
+<p>
+The demon was not gentle, to put it lightly. The slaves were put through pain unimaginable using the various apparatus available in your brothel.
+<<if _attraction == 'bondage'>>
+When the demon booked and used the Magic Bondage Room, <<they $g.target>> ripped a small portal into the <<lore concept_mist>>, letting the corruption atmosphere to flow in.
+The effect was immediate — the sex toys vibrate with an intensity never heard before, and the electricity turned purple. Your slaves writhed and screamed in pain as they were toyed with by the cruel demon. Meanwhile, <<yourrep $g.purifier>> had to work very hard to undo the corruption as it flew into your slavers' and the slaves' bodies.
+<</if>>
+</p>
+
+<p>
+<<if $g.slave1.isHasTrait('per_masochistic')>>
+Surprisingly, <<yourrep $g.slave1>> never broke from the cruel abuse. It seemed that the slave is a natural-born masochist, and the intense and unworldly pain only brought pleasure to the slave, and the climaxed so many times from being abused so.
+<<else>>
+<<Rep $g.slave1>> was the first to break — despite <<their $g.slave1>> masterful masochist training, the demon's handling was simply out of this world, and managed to inflict pain far beyond the slave's considerable pain threshold.
+<</if>>
+
+<<if $g.slave2.isHasTrait('per_masochistic')>>
+<<Yourrep $g.slave2>> did not broke from the abuse, and
+<<if $g.slave.isHasDick()>>their dick only grew harder and harder
+<<else>>their pussy only grew wetter and wetter
+<</if>>
+as the intensity of the abuse kept increasing. It seems the slut is a natural masochist, and <<their $g.slave2>> brain wires pain differently than others.
+<<else>>
+Meanwhile, <<reps $g.slave2>> mind broke soon after from the abuse. The masterful masochist training did not prepare them for the otherworldly pain inflicted by the combination of corrupted magic and mortal tools of bondage.
+<</if>>
+</p>
+
+<p>
+After four long and agonizing weeks had passed, the demon's contract with the slaves was finally over.
+Satisfied, the demon promised to reward the proprietor of the brothel personally, and left without saying a word.
+<<if $gOutcome == 'crit'>>
+However, the demon left one of <<their $g.target>> demonkin attendants as "advance-payment" for the excellent entertainment, and your slavers wondered if these attendants were slaves after all...
+<</if>>
+</p>
+
+
+
+
+:: Quest_demon_visitFailure [nobr]
+<p>
+Dealings with demons never end well with mortals, and your slavers learn this the hard way.
+Once the demon, the slavers and the slaves entered the sex dungeons,
+<<if $gOutcome == 'disaster'>>
+none
+<<else>>
+only the slaves
+<</if>>
+came out from the room after the four weeks.
+It's unknown what might have happened to your slavers, but you better get your Rescuer to work if you want to see them ever again...
+</p>

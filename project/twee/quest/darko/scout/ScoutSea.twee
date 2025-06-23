@@ -1,0 +1,95 @@
+:: QuestSetupScoutSea [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'scout_sea',  /* id */
+  'Scout: Southern Sea',  /* Title */
+  'darko',   /* author */
+  ['sea', 'quest'],  /* tags */
+  3, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_sea,
+    'scout2': setup.qu.scout_sea,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestScoutSea',  /* description */
+  setup.qdiff.hard45,
+  [
+    [
+      'QuestScoutSeaCrit',
+      [
+        setup.qc.QuestDelay(setup.questpool.sea, 9),
+        
+      ]
+    ],
+    [
+      'QuestScoutSeaSuccess',
+      [
+        setup.qc.QuestDelay(setup.questpool.sea, 6),
+        
+      ],
+    ],
+    [
+      'QuestScoutSeaFailure',
+      [
+        setup.qc.Injury('scout1', 2),
+        setup.qc.Injury('scout2', 2),
+        setup.qc.Injury('guard', 2),
+      ],
+    ],
+    [
+      'QuestScoutSeaDisaster',
+      [
+        setup.qc.Injury('scout1', 2),
+        setup.qc.Injury('scout2', 2),
+        setup.qc.MissingUnit('guard'),
+      ],
+    ],
+  ],
+  [[setup.questpool.scoutsea, setup.rarity.common],],
+  [setup.qres.QuestAvailableUnique()],
+)>>
+
+:: QuestScoutSea [nobr]
+<p>
+It is said that beyond the <<lore region_sea>>, there are land much unlike our own.
+You have several leads in those lands from your contact, but
+they must be followed immediately or they will be gone.
+Via your harbor, you can send your slavers there on a ship,
+but the journey will take a long time.
+Furthermore, the <<lore region_sea>> is dangerous and unpredictable, and
+the scout guard will be placed at the riskiest position in such a journey.
+</p>
+
+:: QuestScoutSeaCrit [nobr]
+<p>
+The scouting mission was a complete success, with your team returning with more
+quest options than expected.
+</p>
+
+:: QuestScoutSeaSuccess [nobr]
+<p>
+The scouting mission went about as well as expected, and your team returned with
+several quest options.
+</p>
+
+:: QuestScoutSeaFailure [nobr]
+<p>
+Your slavers returned bearing injuries. They say that the ship were attacked
+by some beast of other world. While the injuries are actually light, your slavers
+seem to have been affected by such a severe trauma that it is best to give them
+some time to rest now.
+</p>
+
+:: QuestScoutSeaDisaster [nobr]
+<p>
+Only two of your slavers returned. They tell the story that the ship were
+attacked by some horrific being of other world. They were only able to return thanks to
+<<rep $g.guard>>, who sacrificed his life and his body to buy them
+time to steer the ship back to your port.
+</p>

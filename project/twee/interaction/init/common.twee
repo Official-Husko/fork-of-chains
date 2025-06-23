@@ -1,0 +1,36 @@
+:: LoadInteractionCommon [nobr widget]
+
+<<focwidget 'loadinteractioncommon'>>
+<<set _bedchamber = $args[0].getBedchamber()>>
+
+<<if _bedchamber>>
+  <<set $i.bedchamber = _bedchamber>>
+  <<set $i.owner = _bedchamber.getSlaver()>>
+  <<set $i.bed = _bedchamber.getFurniture(setup.furnitureslot.slaverbed).rep()>>
+  <<set $i.slavebed = _bedchamber.getFurniture(setup.furnitureslot.slavebed).rep()>>
+  <<set $i.location = `the ${$i.bed} in ${_bedchamber.rep()}`>>
+  <<set $i.locgeneral = _bedchamber.rep() >>
+  <<set $i.room = _bedchamber.rep() >>
+  <<set $i.drinktray = _bedchamber.getFurniture(setup.furnitureslot.drinktray).rep()>>
+  <<set $i.floor = _bedchamber.getFurniture(setup.furnitureslot.tile).rep()>>
+  <<set $i.lighting = _bedchamber.getFurniture(setup.furnitureslot.lighting).rep()>>
+  <<set $i.object = _bedchamber.getFurniture(setup.furnitureslot.object)>>
+  <<if $i.object.isBasic()>>
+    <<set $i.object = null>>
+  <<else>>
+    <<set $i.object = $i.object.rep()>>
+  <</if>>
+<<else>>
+  <<set $i.bedchamber = null>>
+  <<set $i.owner = null>>
+  <<set $i.bed = 'bench'>>
+  <<set $i.slavebed = 'bench'>>
+  <<set $i.location = 'the bench in one of the dungeon cells'>>
+  <<set $i.locgeneral = 'dungeons'>>
+  <<set $i.drinktray = 'floor'>>
+  <<set $i.floor = 'floor'>>
+  <<set $i.room = 'dungeon cell'>>
+  <<set $i.lighting = 'candle'>>
+  <<set $i.object = null>>
+<</if>>
+<</focwidget>>

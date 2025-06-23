@@ -1,0 +1,35 @@
+:: InitCompanyOutlaws [nobr company]
+
+<<set _getslave = setup.qc.Function((company) => {
+  var preference = State.variables.settings.getGenderPreference(setup.job.slave);
+  var unit = setup.unitgroup.all.getUnit(preference);
+  setup.qc.Slave('recruit', "", /* is mercenary = */ true).apply({
+    getName: () => company.getName(),
+    getActorUnit: () => unit});
+})>>
+
+<<run new setup.CompanyTemplate(
+  'outlaws',
+  'Outlaws',
+  'CompanyTemplateOutlaws',
+  [ /* favor effects */
+    [
+      _getslave,
+    ],
+    [
+      _getslave,
+      _getslave,
+    ],
+    [
+      _getslave,
+      _getslave,
+      _getslave,
+    ],
+  ],
+)>>
+
+:: CompanyTemplateOutlaws [nobr]
+
+The general lawbreakers, perfect company for a slaving company such as yours.
+If befriending, they will surely be glad to offer your company some of their
+freshly captured slaves for sale.

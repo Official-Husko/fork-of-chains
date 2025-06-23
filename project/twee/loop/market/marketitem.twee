@@ -1,0 +1,72 @@
+:: MarketItem [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.market)>>
+<<set _objects = $market.itemmarket.getMarketObjects()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+<<if $fort.player.isHasBuilding(setup.buildingtemplate.booths)>>
+  You have transformed a small clearing into a bustling
+  market. Various people sell their goods
+  from the many booths setup in the <<rep setup.buildingtemplate.booths>>.
+<<else>>
+  You have transformed a small clearing into a
+  market area. It is a bit barren right now -- perhaps you can consider
+  building the <<rep setup.buildingtemplate.booths>> to populate the place.
+<</if>>
+You came here looking for items to buy.
+<<if _objects.length>>
+  You found <<successtext _objects.length>> items for sale right now in the market.
+<<else>>
+  Unfortunately, nobody seems to be selling any items that are useful for you right now.
+  You can wait until next week for more items for sale.
+<</if>>
+<<set _favor = $favor.getFavor($company.elf)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  The <<rep $company.elf>> views your company as one of its allies.
+  They often send their finest alchemists to your company, to peddle
+  the rare and wondrous <<rep setup.item.mindmend_potion>>.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  The <<rep $company.elf>> views your company as one of its friends.
+  Elven alchemists can often be seen in the market, selling their potions.
+  They even occasionally (but very rarely) carry very high-valued potions in their inventory.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  The <<rep $company.elf>> views your company warmly.
+  They trust you enough to send some of their alchemists to the markets,
+  to sell their potions for you and your slavers.
+<</if>>
+<<set _favor = $favor.getFavor($company.werewolf)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  Your company has allied with the <<rep $company.werewolf>>. Occasionally,
+  master carpenters from the werewolves' camp can be seen peddling their rare
+  <<rep setup.item.f_slaverbed_master>> in the markets.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  Your company has very good relations with the <<rep $company.werewolf>>.
+  They peddle their furniture here in your fort, and very rarely they carry
+  something with a much higher quality than normal.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  Your company has maintained warm relations with the <<rep $company.werewolf>>.
+  They peddle their furniture here in your fort, for you to buy to decorate your bedchambers.
+<</if>>
+<<set _god = setup.dutytemplate.questlivinggod.getLivingGod()>>
+<<if _god>>
+  A small shrine has been erected for the sole worship of <<rep _god>>. When staffed,
+  <<if setup.dutytemplate.questlivinggod.isFavor()>>
+    <<set _company = setup.dutytemplate.questlivinggod.getFavorCompany()>>
+    <<they _god>> would hold divine sermons for <<their _god>> worshippers, who are mostly from
+    <<rep _company>>. This indirectly helps the reputation of your company among these people.
+  <<else>>
+    <<they _god>> would hold speeches for <<their _god>> worshippers, including asking
+    for a generous amount of tithe, some of which goes into your company's coffers.
+  <</if>>
+<</if>>
+</p>
+
+<<set _dom = setup.DOM.Card.market({
+  market: $market.itemmarket,
+  is_can_delete: true,
+})>>
+<<attach _dom>>

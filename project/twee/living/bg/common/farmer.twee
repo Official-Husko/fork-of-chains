@@ -1,0 +1,41 @@
+:: LIVINGSETUP_farmer [nobr living]
+
+<<run new setup.Living({
+  key: 'farmer',
+  name: 'Farmer',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_farmer: setup.LIVING_COMMON_PREFERENCE,
+    magic_earth: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_earth_master: setup.LIVING_MORECOMMON_PREFERENCE,
+  },
+  business: [
+    'growing crops',
+    'tending to a|their crops',
+    'sowing crops',
+  ],
+  location: 'farm',
+})>>
+
+:: LIVING_farmer [nobr]
+
+<p>
+<<Rep $g.a>> got a|themself a patch of land just next to your fort with
+the money a|they amassed during a|their career.
+With the help of some obedient slaves a|they purchased,
+<<if $g.a.isHasTrait('bg_farmer')>>
+as well as a|their knowledge in farming,
+<<elseif $g.a.isHasTrait('magic_earth')>>
+as well as using a little bit of a|their earth magic,
+<</if>>k
+the land is transformed
+into a small farm, growing various crops which are then sold into your fort.
+The slave workhands would be laboring hard during day, and kept rested
+during the night in one of the many slave stables built around the land.
+<<if !$g.a.isHasTrait('per_chaste')>>
+Some "lucky" slaves would occasionally gone missing from a|their resting
+area during the night, and would find themself inside the a|race's bedroom.
+<</if>>
+</p>

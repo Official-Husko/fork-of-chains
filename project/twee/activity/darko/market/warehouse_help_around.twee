@@ -1,0 +1,68 @@
+:: ActivitySetup_warehouse_help_around [nobr activity]
+
+<<run new setup.ActivityTemplate({
+key: 'warehouse_help_around',
+name: "Warehouse Help Around", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.AnyTrait([setup.trait.muscle_strong, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong], true),
+  ],
+},
+critical_traits: [
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_humble,
+  setup.trait.per_direct,
+  setup.trait.per_slow,
+],
+disaster_traits: [
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.tough_nimble,
+  setup.trait.per_proud,
+  setup.trait.per_sly,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "<<ugreetingshort $g.a>> come to join me helping out in the warehouse? Can\'t let these muscles go to waste!",
+      "Hauling stuffs into the warehouse is sure hard work...",
+    ],
+    bold: [
+      "<<ugreetingshort $g.a>> come to join me for a good workout? There\'s plenty of heavy objects to lift in the warehouse.",
+      "Nggh!! And done! Damn, that was a heavy crate, I wonder what\'s inside...",
+    ],
+    cool: [
+      "<<ugreetingshort $g.a>> I\'m just helping around.",
+      "...hmmph! What a heavy crate...",
+    ],
+    witty: [
+      "<<ugreetingshort $g.a>> what do you call a house that turns during a full moon? A werehouse...",
+      "I wonder if I\'ll fit inside one of these crates...",
+    ],
+    debauched: [
+      "<<ugreetingshort $g.a>> come to gaze at my muscles while I do hard work here?",
+      "Is this where they store the booze around? I could use a bottle or three...",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.warehouse,
+],
+})>>

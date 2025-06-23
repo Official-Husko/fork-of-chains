@@ -1,0 +1,43 @@
+:: EventSetup_missing_doppelganged [nobr event]
+
+<<run new setup.Event(
+'missing_doppelganged', /* key */
+"Missing Doppelganged", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_missing_pair',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.AllUnitSatisfyDo([setup.qres.HasTitle('quest_doppelganger')],
+[setup.qc.RemovePerkChoice('unit', 'perk_doppelganger'), setup.qc.RemoveTitle('unit', 'quest_doppelganger')],
+),
+  setup.qc.ContactLose(setup.contacttemplate.quest_doppelganger),
+  setup.qc.VarRemove('quest_doppelganger_progress'),
+],
+[ /* restrictions */
+  setup.qres.HasUnitWithTitle('quest_doppelganger', {
+}),
+  setup.qres.NoUnitWithTitle('quest_doppelganged', {
+}),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_missing_pair [nobr]
+<<set _u = setup.getUnit({title: 'quest_doppelganger'})>>
+
+<<if _u>>
+<p>
+Unfortunately, it seems that whichever unit the doppelganger <<rep _u>> was copying has somehow left the continent.
+The doppelganger is now stuck in whichever body <<they _u>> is currently occupying.
+</p>
+<</if>>

@@ -1,0 +1,94 @@
+:: OpportunitySetup_kobold_hoard [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'kobold_hoard', /* key */
+"Kobold Hoard", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_kobold_hoard',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_kobold_hoard_0',
+    outcome_passage: 'Opportunity_kobold_hoard_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_aggressive),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_kobold_hoard_1',
+    outcome_passage: 'Opportunity_kobold_hoard_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_calm),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'kobold': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_kobold_hoard [nobr]
+<p>
+    Apparently, the kobold has always dreamed to have a sizable hoard. You have heard that all kobolds do, in fact, no doubt something they inherited from their dragonkin bloodline. <<Rep $g.kobold>> asked what would you do to amass such a treasure hoard...
+</p>
+
+
+
+
+:: Opportunity_kobold_hoard_0 [nobr]
+Encourage aggression
+
+
+:: Opportunity_kobold_hoard_0_flavor [nobr]
+<p>
+    Taking from others, of course! By force if necessary.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> appears more wilful overall, even bordering on being aggressive and rude.
+</p>
+
+
+:: Opportunity_kobold_hoard_1 [nobr]
+Encourage patience
+
+
+:: Opportunity_kobold_hoard_1_flavor [nobr]
+<p>
+    By patience, of course. Amassing it little by little.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> appears more patient overall, willing to bide time in order to get the best out of their situation.
+</p>
+

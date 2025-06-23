@@ -1,0 +1,68 @@
+:: InteractionSetup_rough_sex [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'rough_sex', /* key */
+"Rough sex", /* Title */
+"FCdev", /* Author */
+[ ], /* tags */
+'Interaction_rough_sex',
+[ /* costs */
+],
+[ /* prerequisites */
+],
+[ /* unit requirements */
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_basic),
+setup.qres.SlaveUsableByYou(),
+setup.qres.SlaveOwnedByYou(),
+setup.qres.FriendshipWithYouAtMost(-500), ],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_rough_sex [nobr]
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _blind = _u.isHasTrait(setup.trait.eq_blind)>>
+
+<<set _utorsoequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.torso)>>
+<<set _ulegsequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.legs)>>
+
+<<set _unaked = setup.Text.Unit.Equipment.isNaked(_u)>>
+<<set _verymaso = (_u.isHasTrait(setup.trait.training_masochist_advanced) && _maintraining.getTags().includes('trmasochist'))>>
+<<set _maso = (_u.isHasTrait(setup.trait.training_masochist_basic) && _maintraining.getTags().includes('trmasochist'))>>
+
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+
+<<loadinteractioncommon _u>>
+
+Entering your $i.location, you command your devoted slave <<rep _u>> to prepare
+$i.his holes.
+<<ustripanus _u>>
+You order $i.him to kneel. $i.He looks at you with fear,
+which is confirmed when
+you<<if !_hasdick>> don a strap-on and<</if>>
+<<if _hasvagina>>use a couple of fingers to collect some of your pussyjuice for improvised
+lube<<else>>spit on $i.his butthole<</if>>.
+With only a little <<if _hasvagina>>juice<<else>>saliva<</if>> as lubrication,
+you brutally sodomize $i.him, fucking $i.his ass to
+the limit of what you can get away with without damaging $i.him.
+<<if _u.getMainTraining().getTags().includes('tranal')>>
+$i.He loves anal so much that
+after a while pleasure overwhelms pain to the extent that $i.he manages a
+sobbing orgasm<<else>>
+$i.He gets the message: $i.he's your property and
+$i.his desires are entirely subject to your will.
+<</if>>

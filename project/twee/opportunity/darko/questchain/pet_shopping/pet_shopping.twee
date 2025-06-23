@@ -1,0 +1,79 @@
+:: OpportunitySetup_pet_shopping [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'pet_shopping', /* key */
+"Pet Shopping", /* Title */
+"darko", /* Author */
+[ 'city',
+'veteran',
+'unit',
+'money',
+'item',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_pet_shopping',
+setup.qdiff.hardest43, /* difficulty */
+[ /* options */
+[
+'Opportunity_pet_shopping_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Opportunity('pet_shopping__gender'), ],
+], [
+'Opportunity_pet_shopping_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('pet_shop_of_woes'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions to generate */
+setup.qres.OpportunityUnique(),
+setup.qres.NoQuest('pet_shop_of_wonders'),
+setup.qres.NoQuest('pet_shop_of_woes'),
+setup.qres.Building(setup.buildingtemplate.veteranhall), ],
+)>>
+
+:: Opportunity_pet_shopping [nobr]
+<p>
+The citizens of the <<lore region_city>> loves to keep pets of every kind —
+dogs, cats, ravens, fish, you name it! In the undercity, humanlikes also make
+prized pets, and there are several shops which specialized in selling them if
+you know where to look. These shops can usually pre-train their slaves to
+cater to whatever their customers desire — their warehouses are rumored to be
+fully stocked with humanlike pets of every race and background.
+</p>
+
+<p>
+Normally, buying such a pre-trained and made-to-order slaves are exorbitantly
+expensive. However, one of the most famous pet shops is having a very large
+promotion, dropping the price to a mere <<money 10000>>.
+</p>
+
+<p>
+If you are interested in buying such a slave, you can start by filling up the
+form specifying the particulars of the perfect slave you desire.
+Otherwise, you also heard that the pet shop is accepting part-timer slavers right now
+due to the high demand that comes with the promotion.
+You could send a group of slavers to work there and, who knows, you
+may be able obtain rare pet equipment or two if they work sufficiently well.
+</p>
+
+
+:: Opportunity_pet_shopping_0 [nobr]
+Go shopping
+
+
+:: Opportunity_pet_shopping_1 [nobr]
+Go intern

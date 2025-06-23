@@ -1,0 +1,39 @@
+:: EventSetup_fort_restoration_awards_efficiency [nobr event]
+
+<<run new setup.Event(
+'fort_restoration_awards_efficiency', /* key */
+"Fort Restoration Awards: Efficiency", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "darko",
+},
+[ /* tags */
+  'fort',
+],
+'Event_fort_restoration_awards_efficiency',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'inspector': 'all',
+},
+[ /* outcomes */
+  setup.qc.Opportunity('fort_restoration_awards_semi_finals', {
+    inspector: "inspector",
+  }),
+  setup.qc.SetCooldownEvent(null, 50),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_fort_restoration_progress', '1'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_fort_restoration_awards_efficiency [nobr]
+<<run setup.qc.VarSet(
+'quest_fort_restoration_room',
+setup.rng.choice(['questoffice', 'market', 'hospital', 'library']),
+-1,
+).apply($gQuest)>>
+
+<<include "Opportunity_fort_restoration_awards_semi_finals">>

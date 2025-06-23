@@ -1,0 +1,92 @@
+:: ActivitySetup_grand_hall_gossip [nobr activity]
+
+<<run new setup.ActivityTemplate({
+key: 'grand_hall_gossip',
+name: "Great Hall Gossip", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.BestFriendFriendshipAtLeast(300),
+    setup.qres.BestFriend(setup.qres.And([
+setup.qres.Available()
+])),
+    setup.qres.RememberUnit(),
+  ],
+  'b': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.BestFriendWithRememberedUnit(),
+  ],
+},
+critical_traits: [
+  setup.trait.per_gregarious,
+  setup.trait.per_curious,
+],
+disaster_traits: [
+  setup.trait.per_loner,
+  setup.trait.per_stubborn,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "Hey <<rep $g.b>>! Did you hear about the recent news on <<topic>>?",
+      "...and then I watched the poor sod who tried to rob me fell into the river. I actually felt a little bad for <<them $g.b>>.",
+    ],
+    bold: [
+      "Friend! Did you saw what I did during last quest?",
+      "...and I swung my <<uweapon $g.a>>. THWACK, and that\'s one more slave for our company.",
+    ],
+    cool: [
+      "Friend, good to see you.",
+      "...and the bandits never saw us coming.",
+    ],
+    witty: [
+      "Hey friend! Have you ever wondered where to find the war key to open the war lock?",
+      "...I once saw a tall dwarf. Clearly a frawd.",
+    ],
+    debauched: [
+      "Hey friend! Come closer, don\'t be shy...",
+      "...and i pulled the slave\'s leash while I fuck \'em hard! It was fun.",
+    ],
+  },
+}, /* End of Dialogue #1 */
+{ /* Dialogue #2: */
+  actor: "b",
+  texts: {
+    friendly: [
+      "Heh, never change, <<rep $g.a>>.",
+      "That\'s my friend, <<rep $g.a>>.",
+    ],
+    bold: [
+      "Sure, but did you hear what I did on the last mission?",
+      "Hah fun! Well if it were me I\'d...",
+    ],
+    cool: [
+      "Nice.",
+      "Good one.",
+    ],
+    witty: [
+      "Haha!",
+      "Oof, nice.",
+    ],
+    debauched: [
+      "That could have been much worse.",
+      "Sure, let\'s talk a bit more later, maybe in my room...",
+    ],
+  },
+}, /* End of Dialogue #2 */
+],
+room_templates: [
+  setup.roomtemplate.greathall,
+],
+})>>

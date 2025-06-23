@@ -1,0 +1,36 @@
+:: LIVINGSETUP_tavern_owner [nobr living]
+
+<<run new setup.Living({
+  key: 'tavern_owner',
+  name: 'Tavern Owner',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_foodworker: setup.LIVING_COMMON_PREFERENCE,
+    per_dominant: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_submissive: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'washing dishes',
+    'serving liquor to the tavern patrons',
+    'regaling a tale of a|their past to the tavern patrons',
+  ],
+  location: 'tavern',
+})>>
+
+:: LIVING_tavern_owner [nobr]
+
+<p>
+The money <<rep $g.a>> had accumulated during a|their career in your company was spent
+to establish a tavern just next to your fort.
+The a|race
+<<if $g.a.isHasTrait('bg_foodworker')>>
+has plenty of experience in the area,
+<<else>>
+is enthusiastic about the opportunity of owning a|their own drinking establishment,
+<</if>>
+and soon the place becomes quite crowded with visitors as well as some of your slavers
+alike.
+<<Rep $g.a>> would often tell the many tales a|they had amassed working under your employ.
+</p>

@@ -1,0 +1,285 @@
+:: QuestSetup_a_domestic_matter [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriahead = new setup.UnitCriteria(
+null, /* key */
+'Head \"Maid / Butler\"', /* name */
+[
+setup.trait.bg_maid,
+setup.trait.dick_large,
+setup.trait.breast_large,
+setup.trait.muscle_strong,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_proud,
+setup.trait.per_playful,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.skill_hypnotic,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+setup.trait.eq_slutty,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.muscle_thin,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.per_humble,
+setup.trait.per_serious,
+setup.trait.per_chaste,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('seasonal_cleaning_head_full'),
+],
+{
+  slaving: 1,
+  sex: 2,
+}
+)>>
+
+<<set _criteriamaid1 = new setup.UnitCriteria(
+null, /* key */
+'Maid Slave', /* name */
+[
+  setup.trait.bg_maid,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_active,
+  setup.trait.per_kind,
+  setup.trait.training_domestic_master,
+],
+[
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_studious,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.training_domestic_advanced, setup.trait.training_domestic_master], true),
+],
+{
+}
+)>>
+
+<<set _criteriamaid2 = new setup.UnitCriteria(
+null, /* key */
+'Maid Slave', /* name */
+[
+  setup.trait.bg_maid,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_active,
+  setup.trait.per_kind,
+  setup.trait.training_domestic_master,
+],
+[
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_studious,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.training_domestic_advanced, setup.trait.training_domestic_master], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'a_domestic_matter', /* key */
+"A Domestic Matter", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'city',
+  'order',
+  'prep',
+  'veteran',
+  'unknown',
+],
+4, /* weeks */
+25, /* expiration weeks */
+{ /* roles */
+  'head': [ _criteriahead, 3],
+  'maid1': _criteriamaid1,
+  'maid2': _criteriamaid2,
+},
+{ /* actors */
+  'rich': 'quest_seasonal_cleaning1',
+  'maid': 'city_all',
+  'master': 'city_all',
+},
+[ /* costs */
+  setup.qc.Money(-6000),
+],
+'Quest_a_domestic_matter',
+setup.qdiff.hardest48, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_domestic_matterCrit',
+    [
+      setup.qc.Equipment(setup.equipmentpool.social_good),
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_a_domestic_matterCrit',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.MissingUnitForever('maid1'),
+      setup.qc.MissingUnitForever('maid2'),
+      setup.qc.Opportunity('domestic_rewards', {
+master: "master",
+maid: "maid",
+rich: "rich",
+}),
+      setup.qc.RemoveTitle('head', 'seasonal_cleaning_head_full'),
+      setup.qc.SetCooldownQuest('seasonal_cleaning', 50),
+      setup.qc.EmptyUnitGroup('quest_seasonal_cleaning1'),
+    ],
+  ],
+  [
+    'Quest_a_domestic_matterFailure',
+    [
+      setup.qc.RemoveTitle('head', 'seasonal_cleaning_head_full'),
+      setup.qc.SetCooldownQuest('seasonal_cleaning', 10),
+      setup.qc.EmptyUnitGroup('quest_seasonal_cleaning1'),
+      setup.qc.Money(6000),
+    ],
+  ],
+  [
+    'Quest_a_domestic_matterDisaster',
+    [
+      setup.qc.MissingUnit('head'),
+      setup.qc.RemoveTitle('head', 'seasonal_cleaning_head_full'),
+      setup.qc.EmptyUnitGroup('quest_seasonal_cleaning1'),
+      setup.qc.SetCooldownQuest('seasonal_cleaning', 30),
+      setup.qc.Trait('head', setup.trait.bg_maid),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_domestic_matter [nobr]
+<<set _headunit = $company.player.getUnits({title: "seasonal_cleaning_head_full"})>>
+<<if !_headunit.length>>
+<<dangertext "Due to your company missing a slaver important for this quest, this job is no longer able to be completed.">>
+<<else>>
+<<set _headunit = _headunit[0]>>
+<<set $g.headunit = _headunit>>
+
+<p>
+Your company receives a letter from the city. By now, <<yourrep _headunit>> headunit|is already accustomed to the letter, expecting it to be from the city noble <<rep $g.rich>> who <<they _headunit>> basically headunit|have enslaved.
+But the letter turns out to be very different this time — in fact, it was not written by the noble at all.
+</p>
+
+<div class='lettercard'>
+<p>
+To <<name _headunit>>,
+</p>
+<p>
+I have heard about your slave residing brazenly within the <<lore region_city>>. I have taken an interest in the slave, and would like to offer to buy <<them $g.rich>> from you.
+If you accept my offer, you shall pay me <<money 6000>>, and also provide me with two domestic-trained slaves, and then I will lavish you with rewards appropriate for a slave of this stature.
+</p>
+<p>
+<<name $g.maid>>
+</p>
+</div>
+<</if>>
+
+<<if $statistics.isHasSuccess('a_domestic_matter')>>
+<p>
+Having received a similar letter in the past, you carefully noted that this "<<name $g.maid>>" is the pseudonym of the same slave that made a similar deal with you last time.
+This might be another opportunity should you wish to get your hands on those maid gears...
+</p>
+<<else>>
+<p>
+This looks like a scam if you see one, but
+after some careful information gathering, you learn that <<name $g.maid>> is actually a famous "<<maid $g.rich>>-trainer" residing in the <<lore region_city>>. Going with this might actually reward you with something you could not find anywhere else...
+</p>
+<</if>>
+
+
+
+
+:: Quest_a_domestic_matterCrit [nobr]
+<p>
+As usual, <<yourrep $g.head>> found the noble already kneeling in the
+entrance, just like <<they $g.rich>> had been taught to do in the presence of
+<<their $g.rich>> <<master $g.head>>. But this time, <<they $g.rich>> was not
+alone.
+Standing next to <<them $g.rich>> was another <<man $g.maid>> dressed in full <<maid $g.maid>> outfit, who introduced <<themself $g.maid>> as <<name $g.maid>> — the same name with the person who had sent you the letter of offer.
+</p>
+
+<p>
+To demonstrate <<their $g.maid>> credibility, the <<maid $g.maid>> offered to
+take the two slaves that <<yourrep $g.head>> had brought. Under <<their
+$g.maid>> supervision, the trio were able to clean the mansion in what must
+had been record time, erasing all the cumstains that normally would take your
+slavers days to clean in under an hour. While your former slaves were no
+slouch in cleaning,
+
+<<set _maid = setup.selectUnit([$g.maid1, $g.maid2], {trait: 'bg_maid'})>>
+<<if _maid>>
+especially <<yourrep _maid>> who used to work in the industry,
+<</if>>
+
+the master <<maid $g.maid>> <<themself $g.maid>> was a
+cleaning wonder, and cleaned entire rooms by <<themself $g.maid>> in a matter
+of minutes. This must be the master <<maid $g.maid>> that you had heard
+about, and although <<yourrep $g.head>> head|was convinced, <<they $g.head>>
+couldn't help but wonder where did <<they $g.maid>> learn those skills from.
+</p>
+
+<p>
+The exchange was then made, the two slaves and the noble "slave" in exchange for a very rare reward. <<Yourrep $g.head>> gave <<their $g.head>> noble "slave" one last good fucking
+<<if $gOutcome == 'crit'>>
+and took <<their $g.rich>> clothes for a final time as a souvenir
+<</if>>
+before handing over the well-bred toy to the master <<maid $g.maid>>. Once the deal was made, however, the reward was not immediately given.
+</p>
+
+<p>
+After waiting for several more days, another <<man $g.master>>, this time wearing a full suit, arrived at the mansion. The "master <<maid $g.maid>>" then immediately kneeled before <<them $g.master>>, with <<their $g.maid>> head pressed hard against the floor. As the word "<<master $g.master>>" was uttered by the maid, it finally dawned what was going on. The head <<maid $g.maid>> <<themself $g.maid>> is but a slave, and <<their $g.maid>> real <<master $g.master>> had arrived to collect <<their $g.master>> purchase. It is this <<man $g.master>> who would be giving your slavers the promised reward, and judging by how masterful <<they $g.master>> had trained <<their $g.master>> masterful <<maid $g.maid>>, the reward must be great indeed...
+</p>
+
+
+
+:: Quest_a_domestic_matterFailure [nobr]
+<p>
+When <<yourrep $g.rich>> arrived at the mansion, the noble "slave" was nowhere to be seen. The dungeons were empty, the master bedroom was empty, even the kennels was empty. It was unknown what happened exactly to the noble, but perhaps your client had decided to simply take the noble by force without <<reps $g.rich>> consent...
+</p>
+
+
+
+:: Quest_a_domestic_matterDisaster [nobr]
+<p>
+After the mission had ended, only your slaves <<rep $g.maid1>> and <<rep $g.maid2>> returned. <<Yourrep $g.head>> never returned from the mission, and it seemed that your client had decided that <<therace $g.head>> made a better slave than both <<rep $g.maid1>> and <<rep $g.maid2>>. <<They $g.head>> and the noble slave would no doubt be trained together, as a pair of former master and slave.
+<<uneedrescue $g.head>>, although <<rep $g.head>> will probably already receive basic domestic training by the time you rescue <<them $g.head>>...
+</p>

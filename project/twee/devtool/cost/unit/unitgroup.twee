@@ -1,0 +1,64 @@
+:: CostRemoveFromUnitGroup [nobr]
+
+
+
+<p>
+Deletes <<devactordefault>>.
+<<message '(?)'>>
+  Only relevant for unit groups that retain their units.
+  Will make the unit "gone" from that unit group.
+  For example, you can make a slaver in the Missing Slaver unit gone,
+  i.e., no longer rescue-able. Often used in quests with persistent units to make
+  the persistent unit disappear and replaced with a new one.
+<</message>>
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.RemoveFromUnitGroup($qgDefaultActorName)>>
+<</link>>
+
+
+:: CostEmptyUnitGroup[nobr]
+
+<p>
+Deletes all units from the following unit group:
+<<message '(?)'>>
+  This effectively clears this unit group.
+<</message>>
+</p>
+
+<<for _iug, _ug range setup.unitgroup>>
+  <<if _ug.reuse_chance>>
+    <<rep _ug>>
+    <<capture _ug>>
+      <<button 'Select' 'QGCostDone'>>
+        <<set $qcost = setup.qc.EmptyUnitGroup(_ug)>>
+      <</button>>
+    <</capture>>
+    <br/>
+  <</if>>
+<</for>>
+
+
+
+:: CostAddUnitToUnitGroup[nobr]
+
+
+
+<p>
+Adds <<devactordefault>> to the following unit group:
+</p>
+
+<<for _iug, _ug range setup.unitgroup>>
+  <<if _ug.reuse_chance>>
+    <<rep _ug>>
+    <<capture _ug>>
+      <<button 'Select' 'QGCostDone'>>
+        <<set $qcost = setup.qc.AddUnitToUnitGroup($qgDefaultActorName, _ug)>>
+      <</button>>
+    <</capture>>
+    <br/>
+  <</if>>
+<</for>>
+
+

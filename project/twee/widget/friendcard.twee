@@ -1,0 +1,46 @@
+:: LoadFriendWidgets [nobr widget]
+
+<<focwidget 'friendcard'>>
+  <div class='friendcard'>
+    <<set _friendcardunit = $unit[$args[0]]>>
+    <<set _friendcardbestfriend = $friendship.getBestFriend(_friendcardunit)>>
+    <div>
+      <<if _friendcardbestfriend>>
+        <<set _friendcardfriendship = $friendship.getFriendship(_friendcardunit, _friendcardbestfriend)>>
+        Closest with <<= setup.Friendship.rep([_friendcardbestfriend, _friendcardfriendship])>>
+        <<if $friendship.getLover(_friendcardunit)>>
+          (<<= setup.Friendship.loversIcon()>>)
+        <<else>>
+          (<<tfriendtitle _friendcardfriendship>>)
+        <</if>>
+      <<else>>
+        No friends
+      <</if>>
+      <<message '(?)'>>
+        <div class='helpcard'>
+          Slavers can form friendship and rivalries with each other (and to slaves too) during their career.
+          <br/>
+          <br/>
+          When a unit and their best friend / rival are both slavers,
+          then they will gain some skill boost:
+          for each skill,
+          if they are friends, then the slaver with the lower point in that skill will get a large boost,
+          depending on how far the skills of the two slavers are.
+          If they are rivals, then the slaver with the higher point in that skill will get a small boost,
+          depending on how close the skills of the two slavers are.
+          The larger the friendship/rivalry, the larger the skill point gain.
+          Note that these use the base skills, not the skills after modifiers.
+        </div>
+      <</message>>
+    </div>
+
+    <<set _friends = $friendship.getFriendships(_friendcardunit)>>
+    <<if _friends.length>>
+      <<for _ifriend, _friend range _friends>>
+        <div>
+          <<= setup.Friendship.rep(_friend)>> (<<tfriendtitle _friend[1]>>)
+        </div>
+      <</for>>
+    <</if>>
+  </div>
+<</focwidget>>

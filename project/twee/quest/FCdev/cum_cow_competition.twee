@@ -1,0 +1,205 @@
+:: QuestSetup_cum_cow_competition [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_best_in_show_cum_cow_0", /* key */
+"Best in Show: Cum Cow", /* name */
+"Won best-in-show as a cockmilker", /* description */
+"a|is remembered for winning best-in-show as a cockmilker", /* unit text */
+3000, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Cow', /* name */
+[
+  setup.trait.balls_titanic,
+  setup.trait.dick_titanic,
+  setup.trait.training_mindbreak,
+  setup.trait.per_masochistic,
+  setup.trait.per_sexaddict,
+],
+[
+  setup.trait.per_cautious,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.per_aggressive,
+  setup.trait.per_chaste,
+  setup.trait.per_logical,
+  setup.trait.per_stubborn,
+  setup.trait.per_cruel,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.balls_huge, setup.trait.balls_titanic], true),
+  setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master, setup.trait.training_mindbreak], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'cum_cow_competition', /* key */
+"Cum Cow Competition", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'money',
+  'trait',
+  'maleonly',
+  'legendary',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'handler': [ setup.qu.slavetrainer, 1.5],
+  'milker': [ setup.qu.milker, 1.5],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'judge': 'desert_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-2000),
+],
+'Quest_cum_cow_competition',
+setup.qdiff.hard46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_cum_cow_competitionCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.AddTitle('slave', 'quest_best_in_show_cum_cow_0'),
+    ],
+  ],
+  [
+    'Quest_cum_cow_competitionCrit',
+    [
+      setup.qc.MoneyCustom(5000),
+      setup.qc.SetCooldownQuest(null, 150),
+    ],
+  ],
+  [
+    'Quest_cum_cow_competitionCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_cum_cow_competitionDisaster',
+    [
+      setup.qc.Injury('handler', 4),
+      setup.qc.Injury('milker', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.tavern),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_cum_cow_competition [nobr]
+<<include 'Quest_cow_competition_common'>>
+
+<p>
+A slave dairy company in the <<lore region_desert>> is holding a livestock show in the coming weeks.
+They're aware that you serve fresh cockmilk in your <<rep setup.buildingtemplate.tavern>>, so they've sent you an invitation to enter an especially productive livestock to be judged, should you wish. A team of handlers should also be sent together, one to keep the slave in line and another to demonstrate the slave's quantity and quality of cockmilk.
+</p>
+
+<p>
+This is a <<dangertext "rare">> opportunity. The idea of human-like cockmilk is still foreign and understandingly fascinating to many important people, so winning the stock show is likely to bestow some extra value onto the slave. Were your cow to win, they would probably be remembered as a special slave.
+</p>
+
+
+
+:: Quest_cum_cow_competitionCrit [nobr]
+<p>
+<<Yourrep $g.slave>> slave|was shown in public, closely inspected by the judging committee.
+Both <<their $g.slave>> <<udick $g.slave>> and <<uballs $g.slave>> were measured for their width, girth, volume, weight, and even their softness, before they were being fully drained of their ejaculate.
+In the next stage, <<rep $g.milker>> alongside many other slavers demonstrated the slave's milk quality by <<uadv $g.milker>> jerking off the slave, producing strings and strings of cum which was then taste-tested by the judges.
+<<if $g.slave.isHasTrait('balls_titanic')>>
+
+<<if $g.slave.isHasTrait('dick_titanic')>>
+<<reps $g.slave>> unnaturally gigantic balls were complemented with <<their $g.slave>> equally gigantic cock, and the cum leaked out like a stream from the shaft, easily outperforming all the other livestock by quantity alone.
+<<elseif $g.slave.isHasTrait('dick_large')>>
+<<reps $g.slave>> unnaturally gigantic balls were complemented with an adequately big cock, the cum leaked out like a stream from the shaft, easily outperforming all the other livestock by quantity alone.
+<<elseif $g.slave.isHasTrait('dick_small')>>
+<<reps $g.slave>> unnaturally gigantic balls were contrasted with their relatively average penis. The tap struggled to deliver all the cum from the balls, but still the quantity easily outperform all the other livestocks on show.
+<<else>>
+<<reps $g.slave>> unnaturally gigantic balls was the complete opposite of <<their $g.slave>> pathetically small dick, and <<rep $g.milker>> had to work very hard to extract every single bit of cum from the overfull balls.
+<</if>>
+
+<<else>>
+
+<<if $g.slave.isHasTrait('dick_huge')>>
+Your slave was very well hung, with huge dick and balls, and the cum leaked out steadily from the shaft and into the bucket.
+<<elseif $g.slave.isHasTrait('dick_large')>>
+<<reps $g.slave>> huge balls were complemented with an adequately big cock, and the cum leaked out steadily from the shaft and into the bucket.
+<<elseif $g.slave.isHasTrait('dick_small')>>
+<<reps $g.slave>> huge balls were emptied string by string by <<reps $g.milker>> masterful stroke over the slave's <<udick $g.slave>>, and only after the 8-th orgasm in a row did the slave's balls been completely emptied.
+<<else>>
+<<reps $g.slave>> huge balls were the opposite of <<their $g.slave>> pathetically small dick, and <<rep $g.milker>> had to work very hard to extract every single bit of cum from the overfull balls.
+<</if>>
+
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+It was likely there was some bribery behind the scenes, but
+<<their $g.slave>> massive balls <<if $g.slave.isHasTrait('dick_huge')>>, their equally massive junk, <<else>> (despite their <<udick $g.slave>>)<</if>> and the quality of <<their $g.slave>> cockmilk won the day.
+Against all odds <<rep $g.slave>> slave|was named best in show, and will be remembered as cock stock of the highest pedigree. Your slavers were also awarded with a great sum of money, as well as samples of cum from all the other dick-slaves participating in the competition, including a suspicious-looking purple-colored liquid...
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+It was likely there was some bribery behind the scenes, and it was fatal to <<reps $g.slave>> chances of winning.
+<<if $g.slave.isHasTrait('balls_titanic') && $g.slave.isHasTrait('dick_medium')>>
+Though <<their $g.slave>> balls were easily the most impressive on display,
+<<else>>
+Though <<their $g.slave>> cum was easily the tastiest on display,
+<</if>>
+a stock of another slaver company who was more open-handed with the judges took best in show.
+The judges were impressed with <<reps $g.slave>> junk anyway; and your slavers were awarded the second, still sizable consolation prize.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, the judges chose another slave as best in show.
+<<if $g.slave.isHasTrait('balls_titanic')>>
+Despite having the most impressive tits on display,
+<<else>>
+The winner cow had a much more impressive tits, and also
+<</if>>
+<<if $g.slave.isHasTraitExact('dick_tiny')>>
+<<reps $g.slave>> tiny dick proved to be <<their $g.slave>> downfall
+<<elseif $g.slave.isHasTraitExact('dick_small')>>
+<<reps $g.slave>> inadequately-sized dick proved to be <<their $g.slave>> downfall
+<<else>>
+the quality of <<reps $g.slave>> cum left much to be desired,
+<</if>>
+according to the judges.
+Your slavers came back home empty-handed, with no prize in <<uhand $g.handler>>.
+</p>
+
+<</if>>
+
+
+
+:: Quest_cum_cow_competitionDisaster [nobr]
+<p>
+Unfortunately, an unscrupulous slave-emancipation group assaulted the competition. Many dick-cows were freed from their owners that day, but fortunately your slavers were experienced. <<Rep $g.handler>> managed to fight off the invaders while <<rep $g.milker>> hid your slave away. In the aftermath, your slavers suffered some injuries, but their slave remained safe with them.
+</p>

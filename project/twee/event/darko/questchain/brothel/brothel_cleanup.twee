@@ -1,0 +1,52 @@
+:: EventSetup_brothel_cleanup [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"brothel_cleanup0",
+"Brothel Head",
+[], /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+],
+)>>
+
+<<run new setup.Event(
+'brothel_cleanup', /* key */
+"Brothel Cleanup", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_brothel_cleanup',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('brothel_cleanup', {
+    owner: "owner",
+    head: 'head',
+  }),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_brothel_progress', '8'),
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.NoQuest('brothel_cleanup'),
+],
+10, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_brothel_cleanup [nobr]
+<<include "Quest_brothel_cleanup">>
+

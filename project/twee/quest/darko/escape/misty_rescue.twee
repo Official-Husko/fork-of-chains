@@ -1,0 +1,154 @@
+:: QuestSetup_misty_rescue [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'misty_rescue', /* key */
+"Faded Rescue", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'special', 'unit', 'danger', 'desert',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'corruptor': setup.qu.arcanedark,
+'warrior': setup.qu.light_warrior,
+'purifier': setup.qu.purify_assistant, },
+{ /* actors */
+'target': [
+setup.qres.HasTag('captured_slaver'),
+], },
+[ /* costs */
+],
+'Quest_misty_rescue',
+setup.qdiff.hardest58, /* difficulty */
+[ /* outcomes */
+[
+'Quest_misty_rescueCrit',
+[
+setup.qc.TraumatizeRandom('target', 5), ],
+], [
+'Quest_misty_rescueCrit',
+[
+setup.qc.TraumatizeRandom('target', 10),
+setup.qc.Corrupt('target'), ],
+], [
+'Quest_misty_rescueCrit',
+[
+setup.qc.Corrupt('warrior'),
+setup.qc.Corrupt('purifier'),
+setup.qc.Corrupt('target'),
+setup.qc.Corrupt('target'),
+setup.qc.TraumatizeRandom('target', 15), ],
+], [
+'Quest_misty_rescueCrit',
+[
+setup.qc.MissingUnit('warrior'),
+setup.qc.MissingUnit('purifier'),
+setup.qc.Corrupt('target'),
+setup.qc.Corrupt('target'), ],
+], ],
+[ /* quest pool and rarity */
+  [setup.questpool.capturedhard, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTag('captured_slaver')
+]), ],
+[ /* expiration outcomes */
+setup.qc.MissingUnitForever('target'), ],
+)>>
+
+:: Quest_misty_rescue [nobr]
+
+<p>
+You receive both a good and a bad news. The good news is that you have
+located your missing slaver <<rep $g.target>>, who very recently went missing
+during one of your quests. But here comes the bad news: <<rep $g.target>>
+target|have been kidnapped by the demons, who is now surely using the poor
+slaver as their plaything.
+</p>
+
+<p>
+At this point, you might want to consider giving up and let <<theslaver $g.target>> be a
+lost cause. But if you are insistent in rescuing the poor slaver, you could
+try to breach <<lore concept_mist>> from somewhere within the <<lore region_desert>> where the
+mist is thick.
+You will need a slaver preferably proficient in <<rep
+setup.trait.magic_dark>> to open the portal. Once the portal is open, send
+two slavers including a purifier to cleanse the slaver's surely corrupted
+body as much as possible, before bringing the poor soul home.
+If this goes well, you might just see <<rep $g.target>> return to your company...
+</p>
+
+<p>
+<<dangertext 'Warning'>>: Ignoring this quest will ensure that you will
+never see <<rep $g.target>> ever again...
+</p>
+
+
+:: Quest_misty_rescueCrit [nobr]
+
+<p>
+Arriving at the ritual site, <<rep $g.corruptor>> channeled dark energy to
+open the portal.
+<<if $g.corruptor.isHasTrait('magic_dark')>>
+<<Their $g.corruptor>> proficiency with <<rep setup.trait.magic_dark>>
+prevented any negative effects from happening so far.
+<<else>>
+<<run $g.corruptor.corrupt()>>
+Since <<rep $g.corruptor>> corruptor|is not proficient in <<rep
+setup.trait.magic_dark>>, the ritual corrupted the <<uadjper $g.corruptor>>
+slaver a little.
+<</if>>
+With the gates open, <<rep $g.warrior>> <<uadv $g.warrior>> jumped into the portal while <<rep $g.purifier>> followed closely behind.
+</p>
+
+<p>
+Once inside, your slavers met with the most debauched scenery, as is norm in
+the land beyond <<lore concept_mist>>.
+Ignoring all the demons and slaves around them, your slavers moved with the
+singular purpose of locating <<rep $g.target>>. Scouring room through room,
+looking at all the broken slaves caged inside tiny compartments, they finally
+found <<rep $g.target>> being contained in one of the compartments,
+apparently designated as the fresh processing area. <<Rep $g.warrior>>
+swiftly subdued the guard demons as <<rep $g.purifier>> unlocked the
+compartment.
+<<if $g.purifier.isHasTrait('magic_fire')>>
+Using <<their $g.purifier>> mastery over <<rep setup.trait.magic_fire>>,
+<<rep $g.purifier>> cleansed as much corruption as possible from <<rep
+$g.target>>.
+<<else>>
+<<run $g.target.corrupt()>>
+<<rep $g.purifier>> purifier|is not proficient in <<rep
+setup.trait.magic_fire>>, and was only able to cleanse so much of the
+corruption flowing through <<rep $g.target>>.
+<</if>>
+Sensing their time was running out, your slavers
+rushed back through the slew of demons back into the portal with your slaver in tow.
+<<if $gOutcome == 'disaster'>>
+They managed to enter the portal, but as soon as they threw <<rep $g.target>>
+inside the portal, a large bolt of dark energy hit the portal, closing it for
+good. <<Rep $g.warrior>> and <<utheirrel $g.warrior $g.purifier>> <<rep
+$g.purifier>> were trapped inside, with only <<yourrep $g.target>> having successfully
+escaped the fade.
+<<uneedrescue $g.warrior>>. <<uneedrescue $g.purifier>> before they are
+corrupted beyond recognition...
+<<else>>
+<<if $gOutcome == 'crit'>>
+They skillfully dodged most of the attacks threwn on them, which ended up
+hitting the random many slaves around them.
+<<elseif $gOutcome == 'success'>>
+A few stray hits grazed the slavers, but there were no major damage.
+<<else>>
+Your slavers took a few dark spells threwn at them, ended up slightly corrupted.
+<</if>>
+Exiting the portal, your slavers found themselves back at the desert,
+with <<yourrep $g.target>> successfully rescued.
+After a short celebration they went back home to the fort to recover from the ordeal.
+<</if>>
+</p>
+
+

@@ -1,0 +1,127 @@
+:: OpportunitySetup_best_ass_rescue [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'best_ass_rescue', /* key */
+"Best Ass Rescue", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'unit',
+  'money',
+  'special',
+],
+1, /* expiration weeks */
+'Opportunity_best_ass_rescue',
+setup.qdiff.hardest57, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_best_ass_rescue_0',
+    outcome_passage: 'Opportunity_best_ass_rescue_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Event('best_ass_rescue', 30, {
+        'a': 'a',
+      }),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_best_ass_rescue_1',
+    outcome_passage: 'Opportunity_best_ass_rescue_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Actor('a', setup.qres.And([
+setup.qres.NotYou(),
+setup.qres.IsCanBeSold()
+])),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyUnitValue("a", 1, 100000),
+      setup.qc.MissingUnitForever('a'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_best_ass_rescue_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('second_best_ass', {
+a: "a",
+}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'a': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_best_ass_rescue [nobr]
+<p>
+Today, a messenger from the <<lore region_desert>> has come to your fort, surprisingly bringing you a part of <<reps $g.a>> "salary" at <<their $g.a>> new occupation as the orc's assy plaything. Apparently <<rep $g.a>> is "working" under the orc's employ after <<they $g.a>> had won Best Ass in the festival.
+There are a number of options for you here.
+</p>
+
+<p>
+If you think <<rep $g.a>> would do better as a "salary<<man $g.a>>" than a slaver, you could just do nothing and you would no doubt get another cut of the salary in the future...
+</p>
+
+<p>
+Alternatively, the orc is surely willing to arrange a more permanent contract with you for <<reps $g.a>> future. You could cash in a large amount of sum in exchange for never seeing <<rep $g.a>> ever again nor receiving any "future salary". You estimate you would get
+<<set _money = Math.min(100000, $g.a.getSlaveValue())>>
+<<money _money>>
+from the deal.
+</p>
+
+<p>
+Finally, if you are feeling bold and brash, you could try to launch a rescue mission and save <<rep $g.a>> once and for all...
+</p>
+
+
+:: Opportunity_best_ass_rescue_0 [nobr]
+Do nothing and expect another "salary" soon...
+
+
+:: Opportunity_best_ass_rescue_0_flavor [nobr]
+<p>
+Perhaps <<rep $g.a>> in <<their $g.a>> current state would simply be better off earning money in <<their $g.a>> "new occupation" rather than being one of your slavers...
+</p>
+
+
+:: Opportunity_best_ass_rescue_1 [nobr]
+Give up on <<rep $g.a>> and grant <<them $g.a>> a "permanent leave"
+
+
+:: Opportunity_best_ass_rescue_1_flavor [nobr]
+<p>
+You <<uadv $unit.player>> wrote a contract in return, and before long you and the orcs found a common ground. <<Rep $g.a>> a|is now permanently reassigned as the orc's "secretary", while you receive a large sum of gold in exchange.
+Profit?
+</p>
+
+
+:: Opportunity_best_ass_rescue_2 [nobr]
+Try to rescue <<them $g.a>> instead

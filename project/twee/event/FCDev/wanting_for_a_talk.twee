@@ -1,0 +1,81 @@
+:: EventSetup_wanting_for_a_talk [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'wanting_for_a_talk', /* key */
+"Wanting for a Talk", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_wanting_for_a_talk',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [ setup.qres.You(), ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.Home(),
+    setup.qres.Trait(setup.trait.per_smart),
+    setup.qres.Not(setup.qres.IsCanTalk()),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_wanting_for_a_talk [nobr]
+<p>
+Today, you notice that <<yourrep $g.slave>> slave|is behaving a little strangely. <<They $g.slave>>'s following your commands with almost manic attention, trying to anticipate your directions and hanging desperately on your every word. After a moment, you reflect that <<they $g.slave>>'s a <<rep setup.trait.per_smart>> <<man $g.slave>>, and is probably suffering for a lack of conversation. As you regard <<them $g.slave>> standing there, <<their $g.slave>> <<if $g.slave.isCanSee()>><<ueyes $g.slave>> almost scream<<else>>face almost screams<</if>> at you for some sort of stimulation. <<Their $g.slave>> life is not without mental interest, but talking is one of the quintessential human behaviors, and having it taken away is very difficult for someone as intelligent as <<them $g.slave>>.
+</p>
+
+<<choose>>
+
+<<opt "Discuss <<their $g.slave>> future with <<them $g.slave>>">>
+
+<p>
+You announce matter-of-factly that <<they $g.slave>>'s allowed to speak temporarily, and that you'll be discussing where <<they $g.slave>> slave|is and where <<they $g.slave>> sees <<themself $g.slave>> in the near future.
+<<They $g.slave>>'s disconcerted by the subject but so desperate for conversation that <<they $g.slave>>'s overjoyed anyway.
+
+"I understand what you're doing, <<Master $unit.player>>," <<they $g.slave>> says forthrightly. "I'm to be broken down into a devoted slave."
+<<They $g.slave>> looks thoughtful.
+"I'll help you with that. It'll be easier if I do, won't it?"
+<<They $g.slave>> looks up, and you
+<<if $g.slave.isCanSee()>>nod<<else>>acknowledge<</if>>;
+<<they $g.slave>> gives you a rueful smile. "A good slut would offer to <<if !$unit.player.isHasDick()>>give you oral now, I think. So, <<Master $unit.player>>, may I please be allowed to lick your pussy?"<<else>>suck your cock now, I think. So, <<Master $unit.player>>, may I please be allowed to suck your cock?"
+<</if>>
+
+You <<if $g.slave.isCanSee()>>nod<<else>>acknowledge<</if>>, and tell <<them $g.slave>> that the rules are back in effect.
+As <<they $g.slave>> gets down on <<their $g.slave>> knees, <<they $g.slave>> focuses on the task in front of <<them $g.slave>> with all <<their $g.slave>> considerable intelligence, clearly having decided to make things easier on <<themself $g.slave>> by conforming to <<their $g.slave>> new life.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Let <<them $g.slave>> talk during a rough buttfuck">>
+
+<p>
+You push <<them $g.slave>> backwards onto your <<uslaverbed $g.slave>>, groping <<their $g.slave>> butt. You instruct <<them $g.slave>> that <<they $g.slave>>'ll be allowed to talk if <<they $g.slave>> wants, but not yet, as you
+<<if $g.slave.isHasTail()>>raise <<their $g.slave>> tail and<</if>>
+<<if !$unit.player.isHasDick()>>push a couple of fingers up<<else>>line your cock up with<</if>> <<their $g.slave>> <<if $g.slave.isHasTrait('anus_gape')>>gaping<<elseif $g.slave.isHasTrait('anus_loose')>>sizeable<<else>>tight<</if>> asshole.
+As you penetrate <<them $g.slave>>, you tell <<their $g.slave>> that the time to talk is now. <<if $g.slave.isHasTrait('anus_gape')>>To make the sex sufficiently uncomfortable, you <<if !$unit.player.isHasDick()>>finger fuck<<else>>cock<</if>> <<their $g.slave>> without mercy.<<elseif $g.slave.isHasTrait('anus_loose')>>To make the sex sufficiently uncomfortable, you pull yourself out with every stroke, putting <<their $g.slave>> through initial anal penetration over and over.<<else>><<Their $g.slave>> butt is so tight that just a simple assfuck makes <<them $g.slave>> uncomfortable enough.<</if>>
+<<They $g.slave>> opens <<their $g.slave>> <<umouth $g.slave>>, closes it again, grunts at the burning sensation of your rough use of <<their $g.slave>> poor ass, and then shuts up. You ask <<them $g.slave>> if <<they $g.slave>>'s sure <<they $g.slave>> doesn't have anything to say, and <<they $g.slave>> makes <<their $g.slave>> one verbal comment of the day:
+"No, <<Master $unit.player>>."
+<<They $g.slave>> understands the lesson here: fail to conform, get assraped. It's as simple as that.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<</choose>>
+
+
+

@@ -1,0 +1,40 @@
+:: InitCompanyHumanKingdom [nobr company]
+
+<<set _getslaver = setup.qc.Function((company) => {
+  var preference = State.variables.settings.getGenderPreference(setup.job.slaver);
+  var unit = setup.unitgroup.all.getUnit(preference);
+  setup.qc.Slaver('recruit', "", /* is mercenary = */ true).apply({
+    getName: () => company.getName(),
+    getActorUnit: () => unit,
+  });
+})>>
+
+<<run new setup.CompanyTemplate(
+  'humankingdom',
+  'Kingdom of Tor',
+  'CompanyTemplateHumanKingdom',
+  [ /* favor effects */
+    [
+      _getslaver,
+    ],
+    [
+      _getslaver,
+      _getslaver,
+    ],
+    [
+      _getslaver,
+      _getslaver,
+      _getslaver,
+    ],
+  ],
+)>>
+
+:: CompanyTemplateHumanKingdom [nobr]
+
+The glorious Kingdom of Tor, ruled over by <<lore person_gaius>> is perhaps
+the most multicultural of all the nations on <<lore geo_mestia>>.
+The <<lore race_humankingdom>> people are industrious, forward thinking, and are
+known for their inventiveness and machinery.  Although slavery has recently been
+made illegal by royal decree, the practice still exists just under the thin
+veneer of civilization.
+Gaining the favor of the Kingdom will provide you with an influx of mercenaries, especially those whose skills have recently been outlawed.

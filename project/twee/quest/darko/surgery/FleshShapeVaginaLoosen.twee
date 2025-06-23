@@ -1,0 +1,73 @@
+:: QuestSetupSurgeryVaginaLoosen [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_vagina_loosen',  /* id */
+  'Surgery: Loosen Vagina',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SurgeryVaginaLoosen',  /* description */
+  setup.qdiff.hardest60,
+  [
+    [
+      'SurgeryVaginaLoosenCrit',
+      [
+        setup.qc.TraitIncreaseExisting('trainee', setup.trait.vagina_gape),
+        setup.qc.TraitIncreaseExisting('trainee', setup.trait.vagina_gape),
+      ]
+    ],
+    [
+      'SurgeryVaginaLoosenSuccess',
+      [
+        setup.qc.TraitIncreaseExisting('trainee', setup.trait.vagina_gape),
+      ],
+    ],
+    [
+      'SurgeryVaginaLoosenFailure',
+      [],
+    ],
+    [
+      'SurgeryVaginaLoosenDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryVaginaLoosen [nobr]
+<p>
+Loosen the slaver's vagina.
+</p>
+
+:: SurgeryVaginaLoosenCrit [nobr]
+<p>
+The surgery went off without a hitch.
+</p>
+
+:: SurgeryVaginaLoosenSuccess [nobr]
+<p>
+The surgery was successful.
+</p>
+
+:: SurgeryVaginaLoosenFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SurgeryVaginaLoosenDisaster [nobr]
+<p>
+The surgery failed catastrophically, badly injuring <<rep $g.trainee>>.
+</p>

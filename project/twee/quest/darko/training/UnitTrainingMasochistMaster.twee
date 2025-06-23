@@ -1,0 +1,106 @@
+:: QuestSetupUnitTrainingMasochistMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_masochist_master',  /* id */
+  'Masochist Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingMasochistMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingMasochistMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_masochist_master),
+      ]
+    ],
+    [
+      'QuestUnitTrainingMasochistMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_masochist_master),
+        setup.qc.Injury('trainee', 1),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingMasochistMasterFailure',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+    [
+      'QuestUnitTrainingMasochistMasterDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingMasochistMaster [nobr]
+<p>
+When a slave has learned how to sustain a prolonged time of abuse,
+the next step in masochist training is to learn how to quickly
+recover from such treatment and made them available again to their
+master as quickly as possible.
+The master masochist training thus focuses on a repeated cycle
+of intense abuse followed by recovery time.
+An hour or two bound and hanged from the ceiling
+followed by an hour of rest, for example.
+</p>
+
+:: QuestUnitTrainingMasochistMasterCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_masochist_master_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+<<Rep $g.trainee>> turns out to be a natural at being
+an objectified slave.
+</p>
+
+:: QuestUnitTrainingMasochistMasterSuccess [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_masochist_master_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to learn and apply the necessary skills and masochist required
+to qualify as a graduate of this training.
+Still, after such intense training, <<they $g.trainee>> would need at least
+one week of rest.
+</p>
+
+:: QuestUnitTrainingMasochistMasterFailure [nobr]
+<p>
+Unfortunately, the training was unsuccesful.
+At the end of the week, not only <<rep $g.trainee>> trainee|was exhausted,
+the trainings does not seem to stick to <<them $g.trainee>> and has
+to be reattempted once <<they $g.trainee>> recover.
+</p>
+
+:: QuestUnitTrainingMasochistMasterDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+Their now wrecked body would need to fully recover first before reattempting
+this training.
+</p>

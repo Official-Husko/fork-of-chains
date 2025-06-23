@@ -1,0 +1,88 @@
+:: DevToolChooseTitle [nobr widget]
+
+<<focwidget 'devtoolchoosetitle'>>
+
+  <<link '(Create new title)' 'TRGen'>>
+    <<set $gTRReturnPassage = passage()>>
+    <<include 'TRGenInit'>>
+  <</link>>
+
+  <br/>
+  <br/>
+
+  <<for _title range $qcustomtitle>>
+    <<rep _title>>
+    <<capture _title>>
+      <<link '(select this)'>>
+        <<set _chosentitle = _title>>
+        <<include $args[0]>>
+      <</link>>
+    <</capture>>
+    <br/>
+  <</for>>
+
+  <<for _title range setup.title>>
+    <<rep _title>>
+    <<capture _title>>
+      <<link '(select this)'>>
+        <<set _chosentitle = _title>>
+        <<include $args[0]>>
+      <</link>>
+    <</capture>>
+    <br/>
+  <</for>>
+<</focwidget>>
+
+
+:: CostAddTitle [nobr]
+
+
+
+Give <<devactordefault>> the title:
+
+<<devtoolchoosetitle 'CostAddTitleDo'>>
+
+
+:: CostAddTitleDo [nobr]
+
+<<set $qcost = setup.qc.AddTitle($qgDefaultActorName, _chosentitle)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostRemoveTitle [nobr]
+
+
+
+<<devactordefault>> loses the title:
+
+<<devtoolchoosetitle 'CostRemoveTitleDo'>>
+
+
+:: CostRemoveTitleDo [nobr]
+
+<<set $qcost = setup.qc.RemoveTitle($qgDefaultActorName, _chosentitle)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+
+:: CostRemoveTitleGlobal [nobr]
+
+From <<dangertextlite 'ALL'>> units, remove the title:
+
+<<devtoolchoosetitle 'CostRemoveTitleGlobalDo'>>
+
+
+:: CostRemoveTitleGlobalDo [nobr]
+
+<<set $qcost = setup.qc.RemoveTitleGlobal(_chosentitle)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostAddValueTitles [nobr]
+
+Give <<devactordefault>> value title so that their value is increased by
+<<numberbox "_value_increase" 15000>>
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddValueTitles($qgDefaultActorName, _value_increase)>>
+<</link>>

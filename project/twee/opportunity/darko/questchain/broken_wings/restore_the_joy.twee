@@ -1,0 +1,110 @@
+:: OpportunitySetup_restore_the_joy [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'restore_the_joy', /* key */
+"Restore the Joy", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'vale',
+],
+1, /* expiration weeks */
+'Opportunity_restore_the_joy',
+setup.qdiff.hard26, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_restore_the_joy_0',
+    'Opportunity_restore_the_joy_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.Trait('slave', setup.trait.per_kind),
+      setup.qc.AddTitle('slave', 'quest_joy_restored_2'),
+    ],
+  ],
+  [
+    'Opportunity_restore_the_joy_1',
+    'Opportunity_restore_the_joy_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_dark]),
+    ],
+    [ /* outcomes */
+      setup.qc.VarAdd('broken_wings_dark', 1, -1),
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.Trait('slave', setup.trait.per_cruel),
+      setup.qc.AddTitle('slave', 'quest_joy_restored_2'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slave': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_restore_the_joy [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+A stone powerful enough to turn an evil, vindictive witch into a caring woman
+— this must be the essence of kindness that once belonged to <<rep $g.slave>>.
+It is time for the essence to perhaps return to its owner...
+</p>
+
+
+:: Opportunity_restore_the_joy_0 [nobr]
+Bless with kindness
+
+
+:: Opportunity_restore_the_joy_0_flavor [nobr]
+
+<p>
+Reddish light begins to shine brighly from inside the sphere as you bring it
+closer to <<yourrep $g.slave>>. Once pressed again <<their $g.slave>>
+<<ubreasts $g.slave>>, you can see the stone visibly melts, being absorbed
+into the slave's heart until it is swallowed entirely. Immediately the
+slave's complexion begins to shift from pure pale to a livelier color, as if
+<<their $g.slave>> heart works better now that it is filled with kindness.
+Perhaps this is the correct path to eventually unlocking the slave's
+true personality...
+</p>
+
+
+:: Opportunity_restore_the_joy_1 [nobr]
+Corrupt the essence
+
+
+:: Opportunity_restore_the_joy_1_flavor [nobr]
+<<set _u = $company.player.getUnits({job: setup.job.slaver}).filter(u => u.isHasTrait('magic_dark'))[0]>>
+<<if _u>>
+<p>
+This world does not need kindness, and you are doing the slave's a service by
+<<if _u.isYou()>>
+personally using your mastery over <<rep setup.trait.magic_dark>> to corrupt the stone.
+<<else>>
+asking <<yourrep _u>> to use <<their _u>> mastery over <<rep setup.trait.magic_dark>> to corrupt the stone.
+<</if>>
+The once reddish stone soon turns dark purple, and once it's fully corrupted,
+you return to the slave's cell. Pressing the stone onto <<their $g.slave>>
+<<ubreasts $g.slave>>, the slave lets out a moan as the stone slowly dissolves
+into them, spreading the corrupted essence directly into <<their $g.slave>>
+heart. With the stone entirely absorbed, the slave's complexion starts to
+shift from entirely pale into a livelier color, although you can sense trace
+of malice here and there from the slave's body...
+</p>
+<</if>>

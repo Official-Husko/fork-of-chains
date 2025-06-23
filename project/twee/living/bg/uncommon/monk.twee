@@ -1,0 +1,38 @@
+:: LIVINGSETUP_monk [nobr living]
+
+<<run new setup.Living({
+  key: 'monk',
+  name: 'Monk',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_monk: setup.LIVING_COMMON_PREFERENCE,
+    bg_priest: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_serious: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_playful: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'meditating under the waterfall',
+    'honing a|their body',
+    'watching over a|their junior monks',
+  ],
+  location: 'monastery',
+})>>
+
+:: LIVING_monk [nobr]
+
+<p>
+Using the money a|they had saved throughout a|their slaving career,
+a|they built a small monastery in the mountains on <<lore region_vale>>.
+The monastery is open to wanderers as well as people who are looking for a purpose
+in a|their life,
+<<if $g.a.isHasTrait('per_evil')>>
+although little do they know that <<rep $g.a>> would secretly corrupt a|their thoughts
+and turn them into a|their evil monk minions.
+a|They secretly has a|their eyes on domination, but who knows how long it would take
+them to see a|their goal to fruition with such a strange plan?
+<<else>>
+and <<rep $g.a>> would personally guide them in the path of self-reflection.
+<</if>>
+</p>

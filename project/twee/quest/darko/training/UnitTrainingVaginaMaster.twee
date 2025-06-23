@@ -1,0 +1,111 @@
+:: QuestSetupUnitTrainingVaginaMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_vagina_master',  /* id */
+  'Vagina Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_earth,
+    'trainer1': setup.qu.training_trainer_dick_master,
+    'trainer2': setup.qu.training_trainer_dick_master,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingVaginaMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingVaginaMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_vagina_master),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingVaginaMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_vagina_master),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingVaginaMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingVaginaMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_vagina_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingVaginaMaster [nobr]
+<p>
+Slaves who have undergone this training will 
+
+This training will transform the slave into a special kind of vagina bottom,
+one so accustomed and experienced in the art of vagina sex that regardless
+of the girth and width of the dick, they can give back maximum pleasure
+from their asses.
+This ability is so difficult to acquire that usually brothels have a specialized
+dedicated training team to install this ability upon the slaves.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingVaginaMasterCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+<<else>>
+  <<questimage 'unit_training_vagina_master_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into an elite fuckslut
+has been completed.
+</p>
+
+<<else>>
+
+<p>
+It is done. <<Reps $g.trainee>> transformation into an elite fuckslut
+has been completed. <<Rep $g.trainee>> now requires a dildo in their vagina when not being used
+just to ensure that they do not forget all these skills they have amassed,
+as well as to keep them happy all the time.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingVaginaMasterFailure [nobr]
+<p>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into the ultimate fuckslut.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingVaginaMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

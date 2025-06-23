@@ -1,0 +1,54 @@
+:: OpportunitySetupDamselInDistress [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+  'damsel_in_distress',  /* key */
+  'Damsel in Distress',  /* name */
+  'darko',  /* author */
+  ['city', 'unit', 'trait', ],  /* tags */
+  1,  /* deadline weeks, */
+  'OpportunityDamselInDistress',
+  setup.qdiff.hardest40, /* difficulty */
+  [
+    [
+      'OpportunityDamselInDistressOptionSave',
+      null,
+      [],
+      [],
+      [setup.qc.QuestDirect('damsel_in_distress_save')],
+    ],
+    [
+      'OpportunityDamselInDistressOptionKidnap',
+      null,
+      [],
+      [],
+      [setup.qc.QuestDirect('damsel_in_distress_kidnap')],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.always],],
+  [
+    setup.qres.OpportunityUnique(),
+    setup.qres.NoQuest('damsel_in_distress_save'),
+    setup.qres.NoQuest('damsel_in_distress_kidnap'),
+    setup.qres.HasUnitWithTitle('quest_knight_in_training', {job_key: 'slaver'}),
+  ],
+)>>
+
+:: OpportunityDamselInDistress [nobr]
+
+<p>
+A letter has come to your fort, addressed to the knight-in-training that you apparently 
+have in your company now.
+An innocent daughter of a noble family in the <<rep $company.humankingdom>> has been kidnapped,
+and your knight-in-training is urged to save her at the earliest opportunity.
+If done properly, this could be the chance to prove themself that your knight-in-training
+has been waiting for.
+Or alternatively, an innocent noble daughter must fetch a nice price in the market...
+</p>
+
+:: OpportunityDamselInDistressOptionSave [nobr]
+Save the noble daughter
+
+:: OpportunityDamselInDistressOptionKidnap [nobr]
+Enslave the noble daughter

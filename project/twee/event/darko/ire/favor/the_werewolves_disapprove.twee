@@ -1,0 +1,33 @@
+:: EventSetup_the_werewolves_disapprove [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'the_werewolves_disapprove', /* key */
+"The Werewolves Disapprove", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_the_werewolves_disapprove',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('werewolf', -20),
+setup.qc.Favor('werewolf', -500), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('werewolf', 20),
+setup.qres.FavorAtLeast('werewolf', 500), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_the_werewolves_disapprove [nobr]
+
+<p>
+Your company has been a good friend to the <<rep $company.werewolf>>. But
+recently, you have irked them quite a bit, and a result their confidence is
+your company has been shaken to the core. Today, you receive a messenger from them,
+indicating their wishes to become more distant with your company. Ah well,
+perhaps they make better pets than allies.
+</p>

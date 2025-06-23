@@ -1,0 +1,281 @@
+:: QuestSetup_netting_the_mermaid__the_pink_pearl [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_mermaid_hunter_0", /* key */
+"Mermaid Hunter", /* name */
+"Has committed to tracking down and enslaving a mermaid", /* description */
+"has committed to tracking down and enslaving a mermaid", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'bait', /* name */
+[
+  setup.trait.per_gregarious,
+  setup.trait.per_active,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.bg_royal,
+  setup.trait.bg_knight,
+  setup.trait.bg_noble,
+  setup.trait.bg_seaman,
+  setup.trait.bg_whore,
+  setup.trait.bg_courtesan,
+  setup.trait.per_playful,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+  setup.trait.skill_connected,
+],
+[
+  setup.trait.per_loner,
+  setup.trait.per_calm,
+  setup.trait.per_submissive,
+  setup.trait.per_humble,
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.skill_intimidating,
+  setup.trait.bg_mist,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.gender_male),
+  setup.qres.AnyTrait([setup.trait.face_attractive, setup.trait.face_beautiful, setup.trait.bg_royal, setup.trait.bg_knight], true),
+],
+{
+  intrigue: 1,
+  social: 1,
+  sex: 1,
+}
+)>>
+
+<<set _criteriarod = new setup.UnitCriteria(
+null, /* key */
+'fisher', /* name */
+[
+  setup.trait.bg_seaman,
+  setup.trait.bg_pirate,
+  setup.trait.bg_wildman,
+  setup.trait.per_humble,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.per_gregarious,
+],
+[
+  setup.trait.per_gregarious,
+  setup.trait.per_active,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.per_calm),
+],
+{
+  brawn: 1,
+  survival: 1,
+  slaving: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'netting_the_mermaid__the_pink_pearl', /* key */
+"Netting the Mermaid: The Pink Pearl", /* Title */
+"Thavil", /* Author */
+[ /* tags */
+  'money',
+  'sea',
+  'unit',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'navigator': [ setup.qu.navigator, 1],
+  'slaver': [ _criteriaslaver, 1],
+  'rod': [ _criteriarod, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_netting_the_mermaid__the_pink_pearl',
+setup.qdiff.normal45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_netting_the_mermaid__the_pink_pearlCrit',
+    [
+      setup.qc.MoneyCrit(),
+      setup.qc.AddTitle('navigator', 'quest_mermaid_hunter_0'),
+      setup.qc.AddTitle('slaver', 'quest_mermaid_hunter_0'),
+      setup.qc.AddTitle('rod', 'quest_mermaid_hunter_0'),
+    ],
+  ],
+  [
+    'Quest_netting_the_mermaid__the_pink_pearlCrit',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.AddTitle('navigator', 'quest_mermaid_hunter_0'),
+      setup.qc.AddTitle('slaver', 'quest_mermaid_hunter_0'),
+      setup.qc.AddTitle('rod', 'quest_mermaid_hunter_0'),
+    ],
+  ],
+  [
+    'Quest_netting_the_mermaid__the_pink_pearlCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_netting_the_mermaid__the_pink_pearlCrit',
+    [
+      setup.qc.Injury('navigator', 3),
+      setup.qc.Injury('rod', 3),
+      setup.qc.TraumatizeRandom('slaver', 9),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.never],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_netting_the_mermaid__the_pink_pearl [nobr]
+<p>
+There are always rumors of strange and exotic races existing just over the
+horizon. Each of which has tantalizing and lucrative market potential.
+Imagine being the first to bring a grove of dryad slaves to market? To pluck
+an angel from the skies? But none has the enduring appeal as the ancient
+mariner's tale of the Mermaid.
+</p>
+
+<p>
+Of course, you are a rational and jaded slaver, not given to flights of
+fantasy. But as you have deepened your contact with the peoples of the
+<<lore region_sea>>, the stories of these mermaids keep popping up, along with the promise of gold
+coins. In particular, there are stories of beautiful
+silver-skinned mermaids with pink pearls for nipples, often frequenting a
+certain atoll in the southern isles.
+</p>
+
+<p>
+You can decide that the benefits outweigh the risks of wasted time, and you can
+send a team to explore this rumor, and if possible, to capture an actual
+mermaid. Oh yes, it this is successful, then it will be a valuable capture
+worthy of even Kurdwisec's grand lunacy.
+</p>
+
+<p>
+<<dangertextlite 'Warning'>>: This is a special challenge that will pit the
+same team of slavers across multiple challenges.
+</p>
+
+
+
+:: Quest_netting_the_mermaid__the_pink_pearlCrit [nobr]
+
+<p>
+The team rented a schooner and set forth for the atoll.
+<<if $gOutcome == 'disaster'>>
+<<rep $g.navigator>> suffered a sprained wrist injury as <<they $g.navigator>>
+struggled to bring the ship safely through a storm.
+<<elseif $gOutcome == 'failure'>>
+The weather was not always their friend, and <<rep $g.navigator>> barely escaped
+injury as <<they $g.navigator>> struggled to bring the ship safely through a storm.
+<<else>>
+The weather was not always their friend, but <<reps $g.navigator>> experience and solid instincts saw the team through to the atoll safely.
+<</if>>
+On the trip, <<rep $g.slaver>> and <<utheirrel $g.slaver $g.rod>> <<rep $g.rod>>
+had ample time to go over a plan.
+<<Rep $g.slaver>> will slip into the water and splash around. If they attracted sharks,
+<<rep $g.rod>> will quickly haul them up, but if a mermaid appeared and seems interested,
+then <<rep $g.slaver>> will attempt to woo her.
+Meanwhile <<rep $g.navigator>> will bring the ship about and <<rep $g.rod>> will
+prepare to scoop the mermaid into the schooner.
+</p>
+
+<p>
+When the ship approached the atoll, the slavers could barely believe their
+luck. A trio of mermaids were plainly visible, sunning themselves on rocks
+just off shore. they were sleek, feral creatures, but wearing beautiful
+jewelry of shell and pearl, and utterly enchanting. <<Rep $g.slaver>> slipped
+in to the water and swims towards the mermaids, <<uadv $g.slaver>> calling out.
+</p>
+
+<p>
+The three mermaids seemed interested, and slid nimbly into the water to
+investigate. One got close enough for <<rep $g.slaver>> to snatch hold, and
+<<yourrep $g.rod>> nearly had a hook in place to snatch her up and into the
+boat.
+<<if $g.slaver.isHasTrait('per_lustful')>>
+<<rep $g.slaver>> slaver|was taken in by the mermaid's bountiful body and enticing form,
+filling <<their $g.slaver>> lusty mind with dirty thoughts.
+<<else>>
+<<rep $g.slaver>> slaver|was taken in by the mermaid's gleaming and expressive
+eyes, the mysterious yet enticing form, and her easy grace.
+Perhaps there is
+<</if>>
+more than a day's work to be found here?
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+That's when one of the other mermaids sprung out of the water and hauled the hook
+sharply out of <<reps $g.rod>> <<uhand $g.rod>>, and another began to pull <<rep $g.slaver>> under.
+Thinking quickly, <<rep $g.slaver>> managed to grab a kiss from the flummoxed mermaid who had
+approached <<them $g.slaver>>, and snatched the beautiful pearl necklace off of her neck.
+<<Rep $g.rod>> hauled the impudent lothario up and into the boat.
+</p>
+
+<p>
+Soon the mermaids were thumping on the hull of the boat in outrage, and
+<<rep $g.navigator>> exercised the better part of valor, swiftly turning the
+ship around for home. On the way, it became clear that the necklace's pearl pendant is
+enchanted in some way, and might hold the key to finally reeling in the mermaid.
+The rest of the necklace's shells prove quite valuable for resale, and the
+group returned, thinking about next steps.
+</p>
+<<elseif $gOutcome == 'failure'>>
+<p>
+That's when one of the other mermaids sprung out of the water and hauled the
+hook sharply out of <<reps $g.rod>> <<uhand $g.rod>>, and another began to pull <<name
+$g.slaver>> under. Concerned for their lives, <<rep $g.rod>> quickly hauled
+<<rep $g.slaver>> up and into the boat.
+</p>
+
+<p>
+Although the group returned to port empty-handed, they felt that they may
+have learned something that will help them succeed in a future attempt.
+</p>
+<<else>>
+<p>
+That's when one of the other mermaids sprung out of the water and hauled the
+hook sharply out of <<reps $g.rod>> <<uhand $g.rod>>,
+smashing <<yourrep $g.rod>>
+across <<their $g.rod>> <<uface $g.rod>> with it as she did so.
+The playful mermaid who had seemed so
+smitten with <<rep $g.slaver>> lunged in for a kiss... a kiss that seemed to
+draw some of the very essence from <<them $g.slaver>>.
+<<Rep $g.rod>>
+recovered from the head blow to haul <<rep $g.slaver>> up and into the boat,
+and they beat a hasty retreat.
+</p>
+
+<p>
+Although the group returned to port empty-handed, they feel that they may
+have learned something that will help them succeed in a future attempt.
+</p>
+<</if>>
+

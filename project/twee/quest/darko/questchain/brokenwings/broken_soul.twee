@@ -1,0 +1,137 @@
+:: QuestSetup_broken_soul [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_broken_ascent_0", /* key */
+"Broken Ascent", /* name */
+"Looks mindbroken, but somehow you sense there is more to the slave", /* description */
+"a|appear mindbroken, but you can clearly sense that there is something else going on with the slave", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.QuestTemplate(
+'broken_soul', /* key */
+"Broken Soul", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'unknown',
+  'special',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'researcher1': [ setup.qu.scientist, 1.5],
+  'researcher2': [ setup.qu.scientist, 1.5],
+},
+{ /* actors */
+  'slave': [
+  ],
+  'wizard': [
+  ],
+},
+[ /* costs */
+],
+'Quest_broken_soul',
+setup.qdiff.normal21, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_broken_soulCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.QuestDirect('essence_of_joy', null),
+    ],
+  ],
+  [
+    'Quest_broken_soulCrit',
+    [
+      setup.qc.RemoveTitle('slave', 'quest_broken_ascent_0'),
+      setup.qc.AddTitle('slave', 'quest_broken_descent_0'),
+      setup.qc.VarSet('broken_wings_dark', 0, -1),
+    ],
+  ],
+  [
+    'Quest_broken_soulFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_broken_soulFailure',
+    [
+      setup.qc.Injury('slave', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_broken_soul [nobr]
+<p>
+It has been several weeks since you obtained <<yourrep $g.slave>>. On the
+surface, the slave appears to be a simple mindbroken slave.
+But
+<<set _m = $unit.player.getTraitWithTag('magic')>>
+<<if _m>>
+thanks to your mastery over <<rep _m>>, you can sense that
+<<else>>
+your instincts are telling you that
+<</if>>
+there is something else going on with the slave.
+</p>
+
+<p>
+To confirm your suspicion, you've asked your magic-adept slaver <<rep
+$g.wizard>> to conduct a simple magical test on the slave. Indeed, <<they
+$g.wizard>> too can sense something different within the slave. Perhaps it
+might be wise to have a group of slavers, including <<yourrep $g.wizard>>, to try
+to study the slave, and figure out just what is wrong with <<them $g.slave>>...
+</p>
+
+
+:: Quest_broken_soulCrit [nobr]
+
+<p>
+At the end of the experiment, <<yourrep $g.wizard>> concluded that the
+slave's soul had apparently been ripped out forcefully from <<them
+$g.wizard>>. According to the divination <<they $g.wizard>> performed, the
+soul was scattered throughout the region. Fortunately, the slave's body and in
+particular their reproductive organs will always be attracted to their soul,
+and hence you could use the slave's <<if
+$g.slave.isHasDick()>>dick<<else>>clit<</if>> as sort-of a dowsing rod that will
+point to the pieces of <<their $g.slave>> broken soul. It might be the only way if you
+wish to restore the soul of your broken down toy... would you?
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+To start with, <<rep $g.wizard>> managed to find one potential lead in the
+<<lore region_vale>>.
+</p>
+<</if>>
+
+
+
+:: Quest_broken_soulFailure [nobr]
+<p>
+Unfortunately, your slavers were not skilled enough to figure out just what is
+wrong with the slave. While <<rep $g.wizard>> could sense something is off
+about the slave, <<they $g.wizard>> remained unable to put it into words, let
+alone suggest what action to take.
+<<if $gOutcome == 'disaster'>>
+Worse, your slavers were careless in their handling of the slave, injuring the slave somewhat.
+<</if>>
+</p>
+
+<p>
+Perhaps you can try this again some other time.
+</p>

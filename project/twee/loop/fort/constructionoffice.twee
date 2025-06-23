@@ -1,0 +1,189 @@
+:: Fort [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<focwidget 'loadbuildings'>>
+  <<set _room = $fort.player.getBuilding(setup.buildingtemplate.constructionoffice)>>
+
+  <h2><<= _room.getTitleRep()>></h2>
+
+  You enter the <<rep _room>> of your fort <<= $fort.player.rep() >>.
+  Various blueprints for both future and existing improvements are posted along the walls of this office,
+  as well as upgrades for your fort.
+
+  <<set _level = State.variables.fortgrid.getTotalExpansions()>>
+  <<if _level == 0>>
+    It is still the same ruined fortress you first resided in.
+  <<elseif _level <= 5>>
+    You have done your first couple of upgrades on your fort, making it slightly more livable.
+  <<elseif _level <= 10>>
+    You have cleared the rubble surrounding the center part of the fort.
+  <<elseif _level <= 20>>
+    Most of the smaller rubble have been cleared out, and your fort is starting to look livable.
+  <<elseif _level <= 30>>
+    Most of the rubble have been cleared from your fort, and it's starting to look presentable.
+  <<elseif _level <= 40>>
+    You have starting to fix some of the broken infrastructures in the fort back to working condition.
+  <<elseif _level <= 50>>
+    All of the rubble have been cleared from your fort, restoring it to its previous state.
+  <<elseif _level <= 60>>
+    Repairs are made on the fort's secondary level, adding available space to your fort.
+  <<elseif _level <= 70>>
+    Some of the fort's structures have collapsed, and rebuilding efforts are underway for these sections.
+  <<elseif _level <= 80>>
+    The collapsed regions of the fort have almost entirely been repaired, restoring the fort to what it was once.
+  <<elseif _level <= 90>>
+    New structures are starting to be erected to make space for more improvements.
+  <<elseif _level <= 100>>
+    New structures decorate your fort, increasing space available.
+  <<elseif _level <= 120>>
+    You are starting to build your fort into the surrounding lands, incurring great costs.
+  <<elseif _level <= 140>>
+    Your fort has expanded beyond its original scope, and expansion is still ongoing.
+  <<elseif _level <= 160>>
+    Palisades are rebuild as you expand your fort's region beyond what it originally started with.
+  <<elseif _level <= 180>>
+    Your fort now spans a large region including a large open field where your slavers can relax together.
+  <<elseif _level <= 200>>
+    Small settlements are starting to spring around your gigantic fort.
+  <<elseif _level <= 220>>
+    Your fort is effectively a small village by this point.
+  <<elseif _level <= 240>>
+    A bustling town surrounds your fort.
+  <<elseif _level < 250>>
+    Your fort is almost at the maximum possible size, with townfolk busily attending their business all around.
+  <<else>>
+    Your fort is fully upgraded. Together with the surrounding settlement, it truly deserves to be called a proper city.
+  <</if>>
+
+  Currently, this fort has <<successtext $fort.player.getBuildings().length>>
+  <<message '(+)'>>
+    <<for _ibuilding, _building range $fort.player.getBuildings()>>
+      <<rep _building>>
+    <</for>>
+  <</message>>
+  improvements
+  and <<successtext $fort.player.getUpgrades()>> upgrades.
+
+  <<message '(Help)'>>
+    <div class='helpcard'>
+    Improvements are the main way you progress in the game.
+    Most improvement comes with a room, and
+    you will need to place the improvement on the fort map.
+    Many of the improvement unlocks a new menu on the left sidebar --- which unlocks a new part
+    of the game.
+    </div>
+  <</message>>
+  <br/>
+
+  <<focbutton 'Build' 'FortBuild'>>
+  <</focbutton>>
+
+  <<focbutton 'Fort' 'FortGrid'>>
+  <</focbutton>>
+
+  <<set _forfilter = $fort.player.getBuildings()>>
+
+  <div>
+    <<run _dom = setup.DOM.Util.filterAll({
+      menu: 'buildinginstance',
+      filter_objects: _forfilter,
+      display_callback: buildinginstance => {
+        if ($menufilter.get('buildinginstance', 'display') == 'compact') {
+          return setup.DOM.Card.buildinginstancecompact(buildinginstance);
+        } else {
+          return setup.DOM.Card.buildinginstance(buildinginstance);
+        }
+      },
+    })>>
+    <<attach _dom>>
+  </div>
+<</focwidget>>
+
+<<focwidget 'refreshbuildings'>>
+  <<replace '#buildingholder'>>
+    <<loadbuildings>>
+  <</replace>>
+  <<refreshmenu>>
+<</focwidget>>
+
+<div id='buildingholder'>
+  <<loadbuildings>>
+</div>
+
+:: FortBuild [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<focwidget 'loadbuildingtemplates'>>
+
+<h2>Build an improvement</h2>
+
+<<if !$fort.player.isHasBuilding(setup.buildingtemplate.scouthut)>>
+  <div class='helpcard'>
+    <p>
+      You can build various improvements from this menu.
+      At the moment, only the <<rep setup.buildingtemplate.scouthut>> is available
+      for you to build, but as you progress in the game and gather more money,
+      you will be able to afford more options.
+    </p>
+    <p>
+      Click <<successtext "Build">> next to the "Scout Hut" to proceed.
+      Alternatively, you can click <<successtext "Build and auto-place">> to automatically
+      place the building on your fort, if there are enough space for it.
+    </p>
+  </div>
+<<elseif $calendar.getWeek() == 2>>
+  <div class='helpcard'>
+    <p>
+      Now that you have built your <<rep setup.buildingtemplate.scouthut>>, you can either
+      return to the <<successtextlite "Quest">> menu to continue the game,
+      or, you can go to the <<successtextlite "Slaver">> menu to customize your slaver's progression.
+    </p>
+  </div>
+<</if>>
+
+<<focbutton 'View / Upgrade' 'Fort'>>
+<</focbutton>>
+
+<<focbutton 'Fort' 'FortGrid'>>
+<</focbutton>>
+
+<br/>
+
+<<set _forfilter = Object.values(setup.buildingtemplate).filter(a => !a.isHidden())>>
+<<run _forfilter.sort((a, b) => {
+  var ba = a.isBuildable(0);
+  var bb = b.isBuildable(0);
+  if (ba && !bb) {return -1;}
+  if (bb && !ba) {return 1;}
+  return 0;
+})>>
+
+<div>
+  <<run _dom = setup.DOM.Util.filterAll({
+    menu: 'buildingtemplate',
+    filter_objects: _forfilter,
+    display_callback: buildingtemplate => {
+      if ($menufilter.get('buildingtemplate', 'display') == 'compact') {
+        return setup.DOM.Card.buildingtemplatecompact(buildingtemplate);
+      } else {
+        return setup.DOM.Card.buildingtemplate(buildingtemplate);
+      }
+    },
+  })>>
+  <<attach _dom>>
+</div>
+
+<</focwidget>>
+
+<div id='buildingtemplateholder'>
+<<loadbuildingtemplates>>
+</div>
+
+<<focwidget 'refreshbuildings'>>
+  <<replace '#buildingtemplateholder'>>
+    <<loadbuildingtemplates>>
+  <</replace>>
+  <<refreshmenu>>
+<</focwidget>>

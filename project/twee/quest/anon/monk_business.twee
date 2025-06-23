@@ -1,0 +1,252 @@
+:: QuestSetup_monk_business [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriabrewer = new setup.UnitCriteria(
+null, /* key */
+'Brew Inspector', /* name */
+[
+  setup.trait.bg_foodworker,
+  setup.trait.per_frugal,
+  setup.trait.per_curious,
+  setup.trait.per_attentive,
+  setup.trait.skill_alchemy,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_lavish,
+  setup.trait.per_aggressive,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.eq_gagged,
+  setup.trait.mouth_demon,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  knowledge: 2,
+}
+)>>
+
+<<set _criteriamonk1 = new setup.UnitCriteria(
+null, /* key */
+'False Monk', /* name */
+[
+  setup.trait.bg_monk,
+  setup.trait.per_chaste,
+  setup.trait.per_humble,
+  setup.trait.per_submissive,
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+],
+[
+  setup.trait.race_demon,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.per_playful,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 2,
+  intrigue: 1,
+}
+)>>
+
+<<set _criteriamonk2 = new setup.UnitCriteria(
+null, /* key */
+'False Monk', /* name */
+[
+  setup.trait.bg_monk,
+  setup.trait.per_chaste,
+  setup.trait.per_humble,
+  setup.trait.per_submissive,
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+],
+[
+  setup.trait.race_demon,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.per_playful,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 2,
+  intrigue: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'monk_business', /* key */
+"Monk Business", /* Title */
+"", /* Author */
+['vale', 'money' /* tags */
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'brewer': [ _criteriabrewer, 1],
+  'monk1': [ _criteriamonk1, 1],
+  'monk2': [ _criteriamonk2, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_monk_business',
+setup.qdiff.easy8, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_monk_businessCrit',
+    [
+      setup.qc.BoonizeRandom('brewer', 2),
+      setup.qc.BoonizeRandom('monk1', 2),
+      setup.qc.BoonizeRandom('monk2', 2),
+      setup.qc.MoneyNormal(),
+    ],
+  ],
+  [
+    'Quest_monk_businessCrit',
+    [
+      setup.qc.MoneyNormal(),
+    ],
+  ],
+  [
+    'Quest_monk_businessFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_monk_businessDisaster',
+    [
+      setup.qc.OneRandom([
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('brewer', 3),
+setup.qc.TraumatizeRandom('monk1', 3),
+setup.qc.TraumatizeRandom('monk2', 3)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('brewer', 5),
+setup.qc.TraumatizeRandom('monk1', 3),
+setup.qc.TraumatizeRandom('monk2', 1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('monk1', 5),
+setup.qc.TraumatizeRandom('monk2', 3),
+setup.qc.TraumatizeRandom('brewer', 1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('monk2', 5),
+setup.qc.TraumatizeRandom('brewer', 3),
+setup.qc.TraumatizeRandom('monk1', 1)
+], undefined)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_monk_business [nobr]
+<p>
+There are several monasteries in the north. Unlike those in the lands of the <<lore region_sea>>, these are orders focused almost exclusively on their gods and their spirituality. Most of the orders accept converts of all kinds, including the poor, the deformed, and even those whose bodies have become corrupted by demonic forces. All can find a new community within the walls of their monasteries.
+</p>
+<p>
+Although most officially take vows of poverty, and give freely to those in need, many monasteries are incredibly rich, paying nothing in the way of taxes, and producing the highest quality, most desirable, and most expensive meads and ales. 
+You've been observing one in particular, a smaller, less well known monastery. They seem to provide another, larger monastery with their mead once a month, who then onsell the mead under their own name for larger profits. While it would be nice to raid the bigger monastery, this does provide you with an opportunity.</p>
+<p>
+If a group of slavers could pose as their regular contact, you might be able to make off with their booze. Even without the additional markup, it should fetch a nice sum on the market. 
+</p>
+
+
+:: Quest_monk_businessCrit [nobr]
+
+<p>
+Upon arrival at the monastery, <<name $g.monk1>> knocked and introduced
+<<themselves $g.monk1>> and <<name $g.monk2>> as the delivery people for the monthly collection.
+
+<<set _sly = setup.selectUnit([$g.monk1, $g.monk2], {trait: 'per_sly'})>>
+<<if _sly>>
+  <<name _sly>> <<if _sly.isYou()>>are<<else>>is<</if>> an accomplished liar,
+  and <<they _sly>> had the monks eating out of their hands in short order.
+<</if>>
+
+While <<name $g.monk1>> ingratiated <<themselves $g.monk1>> with the locals, a senior monk led <<name $g.brewer>> and <<name $g.monk2>> to a cellar
+storeroom.
+<<name $g.brewer>> <<uadv $g.brewer>> sampled the merchandise, then <<they
+$g.brewer>> picked out some barrels for <<name $g.monk2>> to haul onto their wagon.
+Between <<name $g.monk1>>, <<name $g.monk2>> and some of the other monks, they had the wagon packed in short order.
+</p>
+<<if $gOutcome == 'crit'>>
+<p>
+By the time night fell, <<name $g.monk1>>, <<name $g.monk2>>, and <<name $g.brewer>> were seated around a cozy campfire, miles away from the monastery they had hoodwinked. <<name $g.monk2>> tapped into one of the casks and poured everyone a cup. Or two, or maybe three...
+</p>
+<p>
+By morning, <<name $g.monk2>> monk2|was nursing a splitting headache. Worth it?
+</p>
+<<else>>
+<p>
+A few minutes after the slavers took to the road, they passed several travelers in monk robes heading the opposite way with  with an empty wagon.
+Shortly after, <<name $g.monk2>> heard irate shouts coming from behind them. Fearing their ruse had been uncovered, your slavers drove the wagon down the road and fled, barely stopping to rest until they reached the fort.
+</p>
+<p>
+Success never tasted so malty.
+Too bad <<name $g.brewer>> had to share it with the rest of the fort.
+</p>
+<</if>>
+
+
+
+:: Quest_monk_businessFailure [nobr]
+<p>
+The pickup was quick and easy, with no questions asked.
+<<name $g.brewer>> only needed to knock on the front door and ask for "the regular", and one of the junior monks led the slavers to a storeroom by the gates.
+Once inside, <<name $g.brewer>> waited <<uadv $g.brewer>> while the monk helped <<name $g.monk1>> and <<name $g.monk2>> load up their wagon with casks.
+And with barely a word said, the slavers were out of the monastery with the ale.
+</p>
+<p>
+To celebrate having swindled the monks, <<name $g.monk2>> cracked open one of the casks of hooch and poured everyone a cup.
+As <<they $g.brewer>> gagged at the thin and acrid taste, <<they $g.brewer>> got the feeling that they were not the only swindlers in this corner of the vale.
+</p>
+
+
+:: Quest_monk_businessDisaster [nobr]
+
+<p>
+On the journey to the monastery, the slavers passed opposite several travelers with a cargo-laded wagon.
+<<name $g.monk1>> greeted the wagoner briefly as they trundled down the other side of the road.
+Thinking nothing of it, they arrived at the monastic brewery a day later, ready to cheat, lie, and steal for profit.
+</p>
+
+<p>
+As misfortune would have it, the travelers they'd passed the previous day turned out to be the monks that the slavers were attempting to impersonate.
+As soon as <<name $g.brewer>> introduced <<name $g.monk1>> and <<name $g.monk2>> as traders from the other monastery, they were met with unfriendly stares and a closed door.
+</p>
+
+<p>
+With no other options, your slavers returned to the fort with an empty cart.
+</p>

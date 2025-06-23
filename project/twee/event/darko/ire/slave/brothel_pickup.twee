@@ -1,0 +1,49 @@
+:: EventSetup_brothel_pickup [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'brothel_pickup', /* key */
+"Brothel Pickup", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_brothel_pickup',
+{ /* roles */
+'victim': [
+setup.qres.Available(),
+setup.qres.Job(setup.job.slave),
+],
+
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('humandesert', -20),
+setup.qc.MissingUnit('victim'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humandesert', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_brothel_pickup [nobr]
+<p>
+Today, you have half a mind to tie up <<yourrep $g.slaver>> in your office as
+decoration. <<Theslaver $g.slaver>> had fallen victim to a pick-up scam: <<they $g.slaver>>
+slaver|was promised great rewards in exchange for lending the
+slave <<rep $g.victim>> for a single week. And of course, the slave never
+came back, and the supposed business partner disappears into the vast deserts of the
+east...
+</p>
+
+<p>
+As much as you'd like to castrate <<yourrep $g.victim>> for the stupidity, you
+also took a little part of the blame: this is probably done in part in
+retaliation for your recent transgressions against the <<rep
+$company.humandesert>>. Either way, the task now falls onto your <<uhands $unit.player>>.
+<<uneedrescue $g.victim>>.
+</p>

@@ -1,0 +1,37 @@
+:: BedchamberList [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.bedchamberwing)>>
+<<if _room>>
+  <<set _storage = _room.getLevel() - 1>>
+<<else>>
+  <<set _storage = 0>>
+<</if>>
+<<set _bedchambers = $bedchamberlist.getBedchambers()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You enter the northern wing of your fort, which has been designated as a luxurious
+abode for yourself and your slavers.
+<<if _storage>>
+  It has been expanded and currently contains <<successtext _bedchambers.length>> private chambers.
+<<else>>
+  It only has one private chambers right now. You could expand it by upgrading the
+  <<rep _room>>.
+<</if>>
+</p>
+
+<<for _ibedchamber, _bedchamber range _bedchambers>>
+  <<capture _bedchamber>>
+    <<focbutton 'Enter' 'BedchamberEnter'>>
+      <<set $gBedchamber_key = _bedchamber.key>>
+    <</focbutton>>
+  <</capture>>
+  <<= _bedchamber.getSlaver().rep()>> owns 
+  <<rep _bedchamber>>
+  with <<= _bedchamber.getSlaves().length>> slaves
+  <br/>
+<</for>>
+

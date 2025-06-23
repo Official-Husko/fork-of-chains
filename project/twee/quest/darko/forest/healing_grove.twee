@@ -1,0 +1,128 @@
+:: QuestSetup_healing_grove [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'healing_grove', /* key */
+'Healing Grove', /* Title */
+'darko', /* Author */
+[ 'forest', 'item'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'alchemist': setup.qu.alchemist,
+'biologist': setup.qu.biologist,
+'scout': setup.qu.scout_forest, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_healing_grove',
+setup.qdiff.normal23, /* difficulty */
+[ /* outcomes */
+[
+'Quest_healing_groveCrit',
+[
+setup.qc.Item(setup.item.healing_potion_greater),
+setup.qc.Item(setup.item.healing_potion_greater),
+setup.qc.Item(setup.item.healing_potion_greater), ],
+], [
+'Quest_healing_groveCrit',
+[
+setup.qc.Item(setup.item.healing_potion),
+setup.qc.Item(setup.item.healing_potion),
+setup.qc.Item(setup.item.healing_potion), ],
+], [
+'Quest_healing_groveFailure',
+[
+setup.qc.Item(setup.item.healing_potion), ],
+], [
+'Quest_healing_groveDisaster',
+[
+setup.qc.Injury('alchemist', 1),
+setup.qc.Injury('biologist', 1),
+setup.qc.Injury('scout', 1), ],
+], ],
+[
+[setup.questpool.forest, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_healing_grove [nobr]
+
+<p>
+Several water springs in the <<lore region_forest>> are famous for their
+seemingly magical ability to heal wounds.
+The local residents often travel to these springs to bathe, which would heal whatever
+illness and injuries they have.
+As much as you would like to have your own healing spring in the fort, it
+would not be possible for you to transport the spring physically into your fort.
+But at least you can send a group of slavers to locate the spring and scoop
+the useful water into carefully prepared bottles,
+effectively making you a bunch of <<rep setup.item.healing_potion>> either for your own consumption,
+or to be resold for a decent sum.
+</p>
+
+<p>
+First of all, you need to send a scout to locate the surely well-hidden spring.
+A biologist can help the scout the terrains to find the likely location of the spring.
+Finally, an alchemist slaver is a must, for their knowledge in potion-making is required
+to bottle up these water.
+</p>
+
+:: Quest_healing_groveCrit [nobr]
+
+<p>
+<<if $gOutcome == 'crit'>>
+Your slavers found the spring as pristine as they were rumored to be,
+with animals and butterflies frolicking around the spring.
+As beautiful as the sight was, there was still money to be made and your slavers got to work.
+They scooped some of the water into the many vials they brought.
+Using these water,
+<<rep $g.alchemist>> alchemist|was able to <<uadv $g.alchemist>>
+concoct several <<rep setup.item.healing_potion_greater>>.
+<<else>>
+<<Rep $g.scout>> scout|was unable to lead <<utheirrel $g.scout $g.biologist>> <<rep $g.biologist>> and
+<<utheirrel $g.scout $g.alchemist>> <<rep $g.alchemist>> into the rumored spring.
+Just before they were about to give up,
+<<rep $g.biologist>> found a smalller spring with minor healing properties.
+It might not be the spring your slavers were looking for, but
+<<yourrep $g.alchemist>> thought it was good enough and got to work.
+They scooped some of the water into the vials they brought.
+While the spring's healing properties were not as strong as the rumored one, it was still pretty
+potent and
+<<rep $g.alchemist>> still managed to
+craft several <<rep setup.item.healing_potion>> out of them.
+<</if>>
+
+You can use these potions to immediately heal your slavers of their injuries
+<<inyourbuilding 'warehouse'>>.
+Or, with proper treatment, can also be used to heal even very lengthy wounds.
+Alternatively, there is always demand for these potions in the market,
+and they
+will sell decently
+<<inyourbuilding 'bazaar'>>.
+</p>
+
+
+:: Quest_healing_groveFailure [nobr]
+
+<p>
+Your slavers were lost in the forest when trying to find and locate the spring.
+It took <<reps $g.scout>> greatest efforts to return them back to the exit.
+Still, they managed to stumble upon a small spring on the way out, which turned out to
+have minor healing properties, and <<rep $g.alchemist>> alchemist|was able to
+<<uadv $g.alchemist>> craft something out of it.
+</p>
+
+
+:: Quest_healing_groveDisaster [nobr]
+<p>
+Unfortunately, during your slavers adventure into the forest, a sizable
+earthstorm broke out and trapped your slavers in the forest. They had no choice
+but to retreat after suffering numerous cuts and bruises here and there from the
+upturned vegetations in the forest.
+</p>

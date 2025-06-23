@@ -1,0 +1,184 @@
+:: QuestSetup_trading_mission_desert [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriatrader1 = new setup.UnitCriteria(
+null, /* key */
+'Trader (Desert)', /* name */
+[
+setup.trait.race_greenskin,
+setup.trait.subrace_humandesert,
+setup.trait.tough_tough,
+setup.trait.per_sly,
+setup.trait.per_frugal,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+],
+[
+setup.trait.subrace_humanvale,
+setup.trait.race_wolfkin,
+setup.trait.tough_nimble,
+setup.trait.per_direct,
+setup.trait.per_lavish,
+setup.trait.per_submissive,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+brawn: 1,
+knowledge: 1,
+social: 1,
+}
+)>>
+
+<<set _criteriatrader2 = new setup.UnitCriteria(
+null, /* key */
+'Trader (Desert)', /* name */
+[
+setup.trait.race_greenskin,
+setup.trait.subrace_humandesert,
+setup.trait.tough_tough,
+setup.trait.per_sly,
+setup.trait.per_frugal,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+],
+[
+setup.trait.subrace_humanvale,
+setup.trait.race_wolfkin,
+setup.trait.tough_nimble,
+setup.trait.per_direct,
+setup.trait.per_lavish,
+setup.trait.per_submissive,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+brawn: 1,
+knowledge: 1,
+social: 1,
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'trading_mission_desert', /* key */
+'Trading Mission: Desert', /* Title */
+'darko', /* Author */
+[ 'desert', 'money'
+], /* tags */
+2, /* weeks */
+2, /* expiration weeks */
+{ /* roles */
+'trader1': _criteriatrader1,
+'trader2': _criteriatrader2,
+'guard': setup.qu.guard, },
+{ /* actors */
+},
+[ /* costs */
+setup.qc.MoneyNormal(-0.5), ],
+'Quest_trading_mission_desert',
+setup.qdiff.normal39, /* difficulty */
+[ /* outcomes */
+[
+'Quest_trading_mission_desertCrit',
+[
+setup.qc.MoneyNormal(3.2),
+ ],
+], [
+'Quest_trading_mission_desertSuccess',
+[
+
+setup.qc.MoneyNormal(1.75), ],
+], [
+'Quest_trading_mission_desertFailure',
+[
+setup.qc.Injury('guard', 2), ],
+], [
+'Quest_trading_mission_desertDisaster',
+[
+setup.qc.MoneyNormal(-1), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_trading_mission_desert [nobr]
+
+<p>
+The <<lore region_desert>> may seem like a hostile place to live in, what's
+with its scorching heat and lack of vegetations.
+However, the hardy people of the desert calls the place their home.
+Most of these people are nomads who opportunistically move from locations to locations
+in search for oasis and the sparse vegetations for their animals to graze.
+These nomads often lack in basic
+necessities that are commonly found in other places, and would trade much valuables
+for these basic necessities.
+</p>
+
+<p>
+You can send a group of slavers to attempt to trade with these nomads and made yourself
+some tidy profit.
+However, as with anything desert, this might turn out to be a rather dangerous trip.
+</p>
+
+
+:: Quest_trading_mission_desertCrit [nobr]
+
+<<if $g.trader1.isMale()>>
+  <<questimage 'trading_mission_desert_male.jpg'>>
+<</if>>
+
+<p>
+<<Yourrep $g.trader1>> <<uadv $g.trader1>>
+managed to exchange what is basic necessities for the company with various
+valuable rugs and trinkets from the east.
+
+<<set _fru = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'per_frugal'})>>
+<<set _lav = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'per_lavish'})>>
+<<if _fru>>
+  <<Rep _fru>> was a natural at picking deals, and the frugal slaver was able to
+  choose the best deal around.
+<<elseif _lav>>
+  True to <<their _lav>> lavish nature, <<rep _lav>> carelessly bought more
+  trinkets than what would be profitable, but they still sold suprisingly well.
+<</if>>
+
+These were then sold at a high
+price, netting your company a huge amount of profit in the end.
+</p>
+
+
+:: Quest_trading_mission_desertSuccess [nobr]
+
+<p>
+There were a few ambushes here and there, but <<yourrep $g.guard>> guard|was able to
+<<uadv $g.guard>> fend them all off and safely escorted your traders to the eastern settlements.
+They made a tidy amount of profit by exchanging basic necessities with valuable jewelries.
+</p>
+
+
+:: Quest_trading_mission_desertFailure [nobr]
+<p>
+Unfortunately, your caravan were waylaid by desert bandits who stole all of
+the goods your slavers had brought. They had no choice but to return to the fort with only
+<<reps $g.guard>> wounds to show for it.
+</p>
+
+
+:: Quest_trading_mission_desertDisaster [nobr]
+
+<p>
+Your slavers got swindled by a particularly rowdy desert merchant. Somehow,
+your company now owed them a significant amount of money, which you grudgingly paid.
+</p>

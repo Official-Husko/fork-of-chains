@@ -1,0 +1,204 @@
+:: QuestSetup_orcish_bait [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_orcish_bait1',
+'Orc Raider',
+[
+[setup.unitpool.subrace_orc_male, 0.5],
+[setup.unitpool.subrace_orc_female, 0.5], ],
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_raider), ],
+)>>
+
+
+
+<<set _criteriacapturer = new setup.UnitCriteria(
+null, /* key */
+'Orc Capturer', /* name */
+[
+setup.trait.race_greenskin,
+setup.trait.race_demon,
+setup.trait.muscle_verystrong,
+setup.trait.per_stubborn,
+setup.trait.per_cruel,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.skill_hypnotic,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+],
+[
+setup.trait.subrace_humankingdom,
+setup.trait.subrace_humanvale,
+setup.trait.subrace_humansea,
+setup.trait.muscle_thin,
+setup.trait.per_cautious,
+setup.trait.per_curious,
+setup.trait.per_kind,
+setup.trait.per_submissive,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+brawn: 1,
+slaving: 2,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'orcish_bait', /* key */
+'Orcish Bait', /* Title */
+'darko', /* Author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'defender': setup.qu.defender,
+'support': setup.qu.defendersupport,
+'capturer': _criteriacapturer, },
+{ /* actors */
+'orc': 'quest_orcish_bait1', },
+[ /* costs */
+],
+'Quest_orcish_bait',
+setup.qdiff.normal38, /* difficulty */
+[ /* outcomes */
+[
+'Quest_orcish_baitCrit',
+[
+setup.qc.Favor('humandesert', 100),
+setup.qc.Slave('orc', 'a|was part of an orc raiding party'), ],
+], [
+'Quest_orcish_baitSuccess',
+[
+setup.qc.TraitReplace('orc', setup.trait.per_slow),
+setup.qc.Slave('orc', 'a|was part of an orc raiding party'), ],
+], [
+'Quest_orcish_baitSuccess',
+[
+setup.qc.Injury('defender', 1),
+setup.qc.Injury('support', 2), ],
+], [
+'Quest_orcish_baitDisaster',
+[
+setup.qc.Injury('defender', 6),
+setup.qc.Injury('capturer', 6),
+setup.qc.Injury('support', 3), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_orcish_bait [nobr]
+<p>
+The orcs living on the <<lore region_desert>> are known to be strong but also a bit dumb. This
+property makes them the ideal slave for some nobles, and the demands for orc
+slaves are always steady in the market.
+If one wants to obtain such a slave, they can always try to raid an orc
+encampment. But raiding the encampment directly is too risky — your slavers would
+face the blunt of the orc's combined strength.
+</p>
+
+<p>
+A better idea is to wait for the orcs to raid another encampment, and capture some of
+them during the raid.
+As a bonus, if you successfully repelled the attack, you might even earn the
+gratitude of the settlement.
+</p>
+
+<p>
+You have heard about an imminent attack on one
+of such settlements, and you can send your slavers on this mission
+of "protection".
+</p>
+
+
+:: Quest_orcish_baitCrit [nobr]
+
+<p>
+Led by <<rep $g.defender>>, your slavers
+<<uadv $g.defender>>
+stood in defense with the encampment, and a fight ensued.
+
+<<set _brave = setup.selectUnit([$g.defender, $g.support, $g.capturer], {trait: 'per_brave'})>>
+<<if _brave>>
+  <<Rep _brave>> bravely led your slavers in the fight.
+<</if>>
+
+<<set _cautious = setup.selectUnit([$g.defender, $g.support, $g.capturer], {trait: 'per_cautious'})>>
+<<if _cautious>>
+  The fight was intense, intimidating the somewhat cowardic <<rep _cautious>>.
+<</if>>
+
+<<set _fire = setup.selectUnit([$g.defender, $g.support, $g.capturer], {trait: 'magic_fire'})>>
+<<if _fire>>
+  <<Rep _fire>> used <<their _fire>> fire magic to give your slavers a large advantage.
+<</if>>
+
+<<set _muscle = setup.selectUnit([$g.defender, $g.support, $g.capturer], {trait: 'muscle_strong'})>>
+<<if _muscle>>
+  Despite the size of the orcs, <<rep _muscle>> could hold <<their _muscle>> own,
+  using <<their _muscle>> muscles to
+  <<if _muscle.isHasTrait('muscle_verystrong')>>
+    overpower
+  <<else>>
+    contest
+  <</if>>
+  some of the assault orcs.
+<</if>>
+
+But eventually, together with the villagers your slavers managed to completely
+repel the invasion.
+Your slavers were showered with gifts from the settlement
+for saving them from worse fate of being orcish playthings, which is worse
+than death. Your slavers returned home victorious, with a new
+orc slave picked up from one of the knocked out orc warriors.
+</p>
+
+
+:: Quest_orcish_baitSuccess [nobr]
+
+<p>
+Your slavers <<uadv $g.defender>> waited in the encampment until the fateful day came,
+where they saw a horde of orcs attacking into camp.
+The horde contained numerous amount of orcs -- After realizing they had no hope of actually defeating all of
+them, your slavers instead decided to
+isolate one of the orc raiders.
+<<if $gOutcome == 'success'>>
+One particular orc turned out to be rather dumb, and this made it easy for <<rep $g.capturer>>
+to goad the orc away from the horde.
+Once alone, <<yourrep $g.defender>> swiftly
+knocked the orc out, and <<rep $g.capturer>> proceeded to tie the orc tight. Orc
+slaves are known to be rowdy, so <<rep $g.capturer>> made extra sure to
+insert various toys into the orc's orifices, to keep <<them $g.orc>> busy and distracted
+throughout the long journey home
+With their target in tow, your slavers went back
+home with their new slave, leaving the encampment to their fate.
+<<else>>
+But instead, your slavers got dragged into the fight, and caught in the
+middle of the skirmish. After getting injured, your slavers decided that
+further attempts would be foolish and retreated from the fight, with minor
+injuries.
+<</if>>
+</p>
+
+
+:: Quest_orcish_baitDisaster [nobr]
+<p>
+Your slavers were sloppy in their work and managed to get themselves stuck in
+the middle of the fight between the orc and the settlement.
+<<Rep $g.defender>> defender|was severely injured in
+a fight with a monstrously burly of an orc and your slavers had to risk their
+lives to save <<rep $g.defender>> and retreated back home.
+</p>

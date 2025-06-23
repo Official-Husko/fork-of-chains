@@ -1,0 +1,84 @@
+:: Hospital [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.hospital)>>
+<<set _patients = $company.player.getUnits({injured: true})>>
+<<set _doctor = $dutylist.getDuty('doctor')>>
+<<set _mystic = $dutylist.getDuty('mystic')>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+  You enter the hospital in your fort.
+  <<if _doctor>>
+    <<set _unit = _doctor.getAssignedUnit()>>
+    <<if _unit && _unit.isAvailable()>>
+      <<rep _unit>> works as your <<rep _doctor>>,
+      <<= setup.Text.Duty.competence(_doctor)>>.
+      <<if _patients.length>>
+        <<They _unit>> greets you briefly before returning back to attend <<their _unit>> patients.
+      <<else>>
+        Your doctor has no patients right now, and <<they _unit>> seems to be busy relaxing.
+      <</if>>
+    <<elseif _unit>>
+      <<Yourrep _unit>> is usually holed up here, but <<they _unit>>
+      is currently unavailable to attend to <<their _unit>> duties.
+    <<else>>
+      There is an unoccupied doctor office separate from your hospital for your <<rep _doctor>>.
+    <</if>>
+  <</if>>
+  <<if _patients.length>>
+    There are currently <<successtext _patients.length>> patients
+    recovering here.
+  <</if>>
+
+  <<if _mystic>>
+    <<set _unit = _mystic.getAssignedUnit()>>
+    <<if _unit && _unit.isAvailable()>>
+      In a separate office,
+      <<rep _unit>> busily performs <<their _unit>> duties as your <<rep _mystic>>,
+      including making charms for luck,
+      <<= setup.Text.Duty.competence(_mystic)>>.
+    <<elseif _unit>>
+      <<Yourrep _unit>> is usually holed up here, but <<they _unit>>
+      is currently unavailable to attend to <<their _unit>> duties.
+    <<else>>
+      A separate office has been transformed into a ritual room for
+      your <<rep _mystic>>. It is empty right now.
+    <</if>>
+  <</if>>
+
+  <<set _favor = $favor.getFavor($company.humansea)>>
+  <<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+    The <<rep $company.humansea>> often send their best
+    healers here, to help heal your slavers' injuries.
+  <<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+    The <<rep $company.humansea>> sometimes send their skilled
+    healers here, to help heal your slavers' injuries.
+  <<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+    The <<rep $company.humansea>> sometimes send their
+    healers here, to help heal your slavers' injuries.
+  <</if>>
+
+  <<set _favor = $favor.getFavor($company.demon)>>
+  <<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+    Slavers in your employ often
+    gain sudden dark inspiration, no doubt thanks to your excellent
+    relations with <<rep $company.demon>>.
+  <<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+    Slavers in your employ occasionally
+    gain sudden dark inspiration, which is thanks to your friendly
+    relations with <<rep $company.demon>>.
+  <<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+    Every now and then, slavers in your employ
+    gain sudden dark inspiration, probably thanks to your warm
+    relations with <<rep $company.demon>>.
+  <</if>>
+
+  Is there anything you need to do here today?
+</p>
+
+<<for _iunit, _unit range _patients>>
+  <<unitcard _unit >>
+<</for>>

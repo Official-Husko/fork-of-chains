@@ -1,0 +1,29 @@
+:: Inventory [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.warehouse)>>
+<<set _items = $inventory.getItems()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You enter your warehouse, which currently holds the following items.
+</p>
+
+<<set _display = State.variables.inventory.getItems()>>
+<<set _forfilter = _display.map(a => a.item)>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'item',
+  filter_objects: _forfilter,
+  display_objects: _display,
+  display_callback: item_obj => {
+    if ($menufilter.get('item', 'display') == 'compact') {
+      return setup.DOM.Card.itemcompact(item_obj.item);
+    } else {
+      return setup.DOM.Card.item(item_obj.item);
+    }
+  },
+})>>
+<<attach _dom>>

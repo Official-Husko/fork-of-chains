@@ -1,0 +1,118 @@
+:: EventSetup_pilgrim_visit [nobr event]
+
+<<run new setup.Event(
+'pilgrim_visit', /* key */
+"Pilgrim Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_pilgrim_visit',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'pilgrim': 'subrace_humansea',
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.temple),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_pilgrim_visit [nobr]
+<p>
+Your fort hosts a rather grand <<rep setup.buildingtemplate.temple>> that attracts visitors from near and far. One such visitors came from the <<lore region_sea>>, and, suitable impressed with your temple, would like to give something back in return. To your dismay, the pilgrim is poor and is lacking in money, but <<they $g.pilgrim>> pilgrim|is wise and knowledgeable in the southern arts of blessings. This could be a rare opportunity for you to personally ask for a blessing.
+</p>
+
+<<choose>>
+
+<<opt "Something to protect my body">>
+<p>
+After a whooshing and gestures of hand that are entirely unusual to you, the blessing was complete. You do feel a little more
+robust now, and the next time injury you would suffer is going to be protected by your new blessing.
+</p>
+
+<<run setup.qc.Blessing('you', 1, setup.trait.blessing_protection8).apply($gQuest)>>
+
+<<opt "Something to protect my spirit">>
+
+<p>
+After a whooshing and gestures of hand that are entirely unusual to you, the blessing was complete. You do feel different now, the world looks seemingly clearer to you. The next time you would get traumatized, it would be prevented by your new blessing.
+</p>
+
+<<run setup.qc.Blessing('you', 1, setup.trait.blessing_sanity8).apply($gQuest)>>
+
+
+<<opt "Something to protect my soul">>
+
+<p>
+After a whooshing and gestures of hand that are entirely unusual to you, the blessing was complete. You do feel a little more
+pure now, and the next time you would become corrupted, it would be prevented by the blessing.
+</p>
+
+<<run setup.qc.Blessing('you', 1, setup.trait.blessing_purity8).apply($gQuest)>>
+
+<<opt "Something to protect my life">>
+
+<p>
+After a whooshing and gestures of hand that are entirely unusual to you, the blessing was complete. You don't really feel any different,
+but the blessing has been bestowed.
+The next time something terrible would befall you, the blessing would do its work and save your life.
+</p>
+
+<<run setup.qc.Blessing('you', 1, setup.trait.blessing_life8).apply($gQuest)>>
+
+<<opt "Something to protect my money">>
+
+<p>
+After a whooshing and gestures of hand that are entirely unusual to you, the blessing was complete. You feel a little luckier now, and the next time a disastrous result would hit your company, it may be prevented by your new blessing.
+</p>
+
+<<run setup.qc.Blessing('you', 1, setup.trait.blessing_luck8).apply($gQuest)>>
+
+
+<<opt "Something to protect my ass">>
+
+<p>
+After a whooshing and gestures of hand that are entirely unusual to you, the blessing was complete.
+Your ass twitches, as the blessing seeps into your butt, protecting
+<<if $unit.player.isHasVagina()>>
+both your holes
+<<else>>
+your anus
+<</if>>
+from overly large invaders.
+</p>
+
+<<run setup.qc.Blessing('you', 1, setup.trait.blessing_virginity8).apply($gQuest)>>
+
+
+<<opt "Something to protect my integrity">>
+
+<p>
+After a whooshing and gestures of hand that are entirely unusual to you, the blessing was complete.
+<<if $unit.player.isSubmissive()>>
+Despite your usually submissive self, you feel awkwardly dominant at the same time,
+<<elseif $unit.player.isDominant()>>
+Your already dominant self feels even more dominant,
+<<else>>
+You feel strong and dominant,
+<</if>>
+the blessing protecting you from succumbing to submissive desires<<if $unit.player.isSubmissive()>>
+even more<</if>>.
+</p>
+
+<<run setup.qc.Blessing('you', 1, setup.trait.blessing_wolf8).apply($gQuest)>>
+
+
+<</choose>>

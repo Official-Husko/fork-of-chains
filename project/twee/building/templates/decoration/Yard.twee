@@ -1,0 +1,77 @@
+:: InitBuildingYard [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'tree',
+  tags: ['hidename', 'hideskill', ],
+  description_passage: 'RoomTree',
+  name: 'Tree',
+  width: 1,
+  height: 1,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "brawn",
+      bonus_amount: setup.ROOM_DECORATION_BONUS,
+    },
+    {
+      type: 'always',
+      skill_key: "intrigue",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'yard',
+  tags: [],
+  width: 2,
+  height: 2,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "brawn",
+      bonus_amount: setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+    {
+      type: 'always',
+      skill_key: "intrigue",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'yard',
+  name: 'Yard',
+  tags: ['decoration'],
+  description_passage: 'BuildingYard',
+  costs: setup.BuildingTemplate.getDecorationCosts(),
+  restrictions: setup.BuildingTemplate.getDecorationRestrictions(),
+  main_room_template_key: 'yard',
+  sub_room_template_key: 'tree',
+})>>
+
+
+:: BuildingYard [nobr]
+
+<p>
+A small clearing for your slavers to just enjoy nature.
+When placed at your fort, will increase
+<<rep setup.skill.brawn>> in exchange for <<rep setup.skill.intrigue>>.
+</p>
+
+:: RoomTree [nobr]
+
+<p>
+A normal, regular-sized tree. Not everything in this world has to be abnormally large, you know.
+</p>

@@ -1,0 +1,40 @@
+:: LIVINGSETUP_mistwalker [nobr living]
+
+<<run new setup.Living({
+  key: 'mistwalker',
+  name: 'Mistwalker',
+  tags: ['rare', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_mist: setup.LIVING_RARE_PREFERENCE,
+    magic_dark: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_dark_master: setup.LIVING_COMMON_PREFERENCE,
+  },
+  business: [
+    'guiding people in and out from the mist',
+    'going back and forth between this world and the next',
+    'delivering mortal slaves to the world beyond the mist',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_mistwalker [nobr]
+
+<p>
+Despite the amount of money a|they had made being a slaver,
+boredom eventually came over the a|race and <<rep $g.a>>
+<<if $g.a.isHasTrait('bg_mist')>>
+resumes a|their old occupation of
+<<else>>
+takes up a new occupation in
+<</if>>
+being a mistwalker.
+<<if $g.a.isHasTrait('magic_dark')>>
+With a|their mastery of dark magic, a|they almost effortlessly weave between
+this world and the next.
+<<else>>
+a|They might not possess dark magic, but a|their wealth of expertise as well as the harrowing
+encounters a|they met during a|their slaving tenure help a|them in the difficult task.
+<</if>>
+</p>

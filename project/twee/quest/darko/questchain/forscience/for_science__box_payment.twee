@@ -1,0 +1,110 @@
+:: QuestSetup_for_science__box_payment__labor [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'for_science__box_payment__labor', /* key */
+"For Science: Box Payment: Labor", /* Title */
+"darko", /* Author */
+[ 'veteran', 'danger', 'vale',
+], /* tags */
+12, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'smith1': setup.qu.blacksmith,
+'smith2': setup.qu.blacksmith,
+'maid': setup.qu.housekeeper, },
+{ /* actors */
+'smith': 'vale_all', },
+[ /* costs */
+],
+'Quest_for_science__box_payment__labor',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_for_science__box_payment__laborCrit',
+[
+setup.qc.Item(setup.item.quest_for_science_box),
+setup.qc.TraumatizeRandom('maid', 5),
+setup.qc.BoonizeRandom('smith2', 15),
+setup.qc.BoonizeRandom('smith1', 15), ],
+], [
+'Quest_for_science__box_payment__laborCrit',
+[
+setup.qc.TraumatizeRandom('maid', 5),
+setup.qc.Item(setup.item.quest_for_science_box), ],
+], [
+'Quest_for_science__box_payment__laborCrit',
+[
+setup.qc.TraumatizeRandom('maid', 5),
+setup.qc.Item(setup.item.quest_for_science_box),
+setup.qc.TraumatizeRandom('smith1', 15),
+setup.qc.TraumatizeRandom('smith2', 15), ],
+], [
+'Quest_for_science__box_payment__laborDisaster',
+[
+setup.qc.QuestDirect('for_science__box_payment__labor'),
+setup.qc.SlaverMarker('smith'), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_for_science__box_payment__labor [nobr]
+<p>
+To pay for the smith's services, you have decided to send a group of slavers to serve as <<their $g.smith>> apprentices in the upcoming busy season.
+The job won't be too hard, according to the smith, but it will surely take a long while. Still, you'll have to complete this quest if you want to get your <<uadjper $unit.player>> <<uhands $unit.player>> on
+<<rep setup.item.quest_for_science_box>>...
+</p>
+
+<p>
+That aside, the smith also asked for a housekeeper to keep <<their $g.smith>> house... "warm". You contemplated which poor slaver should go and fulfill this role.
+</p>
+
+
+:: Quest_for_science__box_payment__laborCrit [nobr]
+
+<p>
+In these three long months, your slavers helped the smith measure, craft, and even test the various slave boxes ordered by the clients.
+There were a great many variations of these boxes, from ones with way too many holes that made your slavers
+rethink what bodyparts can be used sexually, to one with absolutely no hole no doubt to be used as a
+punishment box.
+At the end of this apprenticeship, your slavers <<rep $g.smith1>>, <<rep $g.smith2>>, and <<rep $g.maid>> finally went back home bringing along them the <<rep setup.item.quest_for_science_box>>.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Apparently <<rep $g.smith1>> and <<utheirrel $g.smith1 $g.smith2>> <<rep $g.smith2>> managed to learn so much new techniques from the masterful smith. They became greatly inspired by the experience.
+</p>
+<<elseif $gOutcome == 'success'>>
+<<else>>
+<p>
+The unscrupulous smith, however, often tested these new slave boxes on your slavers.
+Being used as a substitue for slaves, especially for the isolation box, greatly traumatized your slavers.
+</p>
+<</if>>
+
+<<if $g.maid.isYou()>>
+<p>
+Having served as the blacksmith's "maid" personally, you think the other slavers had it much luckier
+than what you were forced to suffer through...
+</p>
+<<else>>
+<p>
+You also noticed <<rep $g.maid>> kept averting <<their $g.maid>> gaze from you as
+<<they $g.maid>> head over to <<their $g.maid>> quarters.
+The traumatized slaver deserves a rest after such a job.
+</p>
+<</if>>
+
+
+:: Quest_for_science__box_payment__laborDisaster [nobr]
+<p>
+Unfortunately, your slavers did a sloppy job, managing to mess up some of the finished boxes and botching new ones.
+The smith must be extremely patient to actually offer your company another chance instead of giving up on you.
+</p>
+

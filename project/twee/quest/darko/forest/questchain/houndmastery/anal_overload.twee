@@ -1,0 +1,276 @@
+:: QuestSetup_anal_overload [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'born_tigerkin',  /* key */
+  "Ancient Tigerkin",   /* name */
+  'An ancient tigerkin awakened from their long imprisonment by your company',   /* name */
+  'a|is an ancient tigerkin who was awakened from a|their long stony imprisonment by your company',
+  10000,   /* slave value */
+  {
+    brawn: 5,
+  },
+)>>
+
+<<run new setup.UnitGroup(
+"anal_overload0",
+"Male Tigerkin Statue",
+'subrace_tigerkin_male',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitsReplace('unit', [setup.trait.anus_gape]),
+  setup.qc.Mindbreak('unit'),
+  setup.qc.AddTitle('unit', 'born_tigerkin'),
+],
+)>> <<run new setup.UnitGroup(
+"anal_overload1",
+"Female Tigerkin Statue",
+'subrace_tigerkin_female',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitsReplace('unit', [setup.trait.anus_gape]),
+  setup.qc.Mindbreak('unit'),
+  setup.qc.AddTitle('unit', 'born_tigerkin'),
+],
+)>>
+
+
+<<set _criteriaanal1 = new setup.UnitCriteria(
+null, /* key */
+'Analer', /* name */
+[
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.magic_earth_master,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  arcane: 1,
+  sex: 2,
+}
+)>>
+
+<<set _criteriaanal2 = new setup.UnitCriteria(
+null, /* key */
+'Analer', /* name */
+[
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.magic_earth_master,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  arcane: 1,
+  sex: 2,
+}
+)>>
+
+
+<<set _res = setup.qc.IfThenElse(
+  setup.qres.Actor('gender', setup.qres.Trait(setup.trait.gender_male)),
+  setup.qc.DoAll([
+    setup.qc.AddTag('tigerkinmale', 'quest_neko_statue_marker'),
+    setup.qc.Slave('tigerkinmale', "a|was an ancient tigerkin prisoner that you freed from a|their stony prison", undefined),
+  ]),
+  setup.qc.DoAll([
+    setup.qc.AddTag('tigerkinfemale', 'quest_neko_statue_marker'),
+    setup.qc.Slave('tigerkinfemale', "a|was an ancient tigerkin prisoner that you freed from a|their stony prison", undefined),
+  ]),
+) >>
+
+<<set _criteriaanal3 = new setup.UnitCriteria(
+null, /* key */
+'Analer', /* name */
+[
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.magic_earth_master,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  arcane: 1,
+  sex: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'anal_overload', /* key */
+"Anal Overload", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'prep',
+  'unit',
+  'veteran',
+  'special',
+],
+1, /* weeks */
+setup.INFINITY, /* expiration weeks */
+{ /* roles */
+  'anal1': [ _criteriaanal1, 1],
+  'anal2': [ _criteriaanal2, 1],
+  'anal3': [ _criteriaanal3, 1],
+},
+{ /* actors */
+  'gender': 'all',
+  'tigerkinmale': 'anal_overload0',
+  'tigerkinfemale': 'anal_overload1',
+},
+[ /* costs */
+],
+'Quest_anal_overload',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_anal_overloadCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_anal_overloadCrit',
+    [
+      setup.qc.RemoveTagGlobal('quest_neko_statue_marker'),
+      _res,
+    ],
+  ],
+  [
+    'Quest_anal_overloadCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_anal_overloadCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_anal_overload [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+According to the tomes, the magic binding these tigerkin are concentrated in
+the pole lodged deep within their anus. These statues with no exception are held upright by a
+cruelly shoved stone dildo impaled from below. The dildos
+are enchanted with magic, keeping these poor tigerkin barely alive in their statue
+form.
+</p>
+
+<p>
+The surest way to break these enchantment is by overloading the dildo. That
+is, by shoving in even more dicks inside the already gaping anus of the tigerkin. But while
+more recent statues can be broken by just impaling a second dick alongside them, this
+particular statue you have been frozen for so long that <<yourrep _u>> estimate it
+would take around three more sufficiently large dicks to break the curse.
+</p>
+
+<p>
+The ideal way to do this is by having three slavers, each either possessing a
+huge dick or bigger, or possessing mastery in earth magic, which can then
+substitute the dick with the unworldy tentacles.
+Failing that, you can always buy a large dildo for this occassion, but it has
+to be suitably enchanted, which will not come cheap. <<Rep _u>> estimates
+that each such dildo will set you back by around <<money 5000>>.
+</p>
+
+<p>
+The ritual itself is simple, fortunately. It's just a matter of deciding how
+much you are willing to shell out for this potential slave...
+</p>
+
+
+:: Quest_anal_overloadCrit [nobr]
+
+<p>
+The preparations were complete.
+<<Reps $g.anal1>>
+<<if $g.anal1.isHasTrait('dick_huge')>>
+<<udick $g.anal1>>,
+<<elseif $g.anal1.isHasTrait('magic_earth_master')>>
+tentacles,
+<<else>>
+enchanted dildo,
+<<run setup.qc.Money(-5000).apply($gQuest)>>
+<</if>>
+
+<<reps $g.anal2>>
+<<if $g.anal2.isHasTrait('dick_huge')>>
+<<udick $g.anal2>>,
+<<elseif $g.anal2.isHasTrait('magic_earth_master')>>
+tentacles,
+<<else>>
+enchanted dildo,
+<<run setup.qc.Money(-5000).apply($gQuest)>>
+<</if>>
+
+and
+
+<<reps $g.anal3>>
+<<if $g.anal3.isHasTrait('dick_huge')>>
+<<udick $g.anal3>>
+<<elseif $g.anal3.isHasTrait('magic_earth_master')>>
+tentacles
+<<else>>
+enchanted dildo
+<<run setup.qc.Money(-5000).apply($gQuest)>>
+<</if>>
+
+at the ready, your slavers approached the statue from behind. There, they try
+their earnest to fit their respective phalluses all together alongside the
+already huge stone dildo. Even with the visibly gaping hole from decades of abuse, it
+still took your slavers a lot of effort to shove all their phalluses in, but
+when all of them were lodged simultaneously inside, a loud popping sound could be heard.
+</p>
+
+<p>
+The statue started to melt, and the tigerkin's expression quickly switch to
+those of intense pain, having <<their $g.gender>> hole stretched far beyond
+its original intention. Your slavers kept their phalluses inside, drawing
+pained moan and scream from the melting tigerkin until the ritual ended, with
+the tigerkin fully spent. Having spent years statue-fied meant that the
+tigerkin's mind had long gone by now, and the pain reaction was merely
+automatic physiological reflex. With the tigerkin fully melted, your slavers brought the
+new toy back to the dungeons, successful in their mission.
+</p>
+
+<p>
+<<if $g.anal1.isHasTrait('per_chaste')>>
+Having to so painfully penetrated such a tight hole together with other slavers makes
+the chaste slaver <<rep $g.anal1>>
+question their chosen occupation...
+<<run setup.qc.TraumatizeRandom('anal1', 9).apply($gQuest)>>
+<<elseif $g.anal1.isHasTrait('per_lustful')>>
+Having done such a depraved multi-penetration brought a smile to the lustful
+slaver <<rep $g.anal1>>...
+<<run setup.qc.BoonizeRandom('anal1', 9).apply($gQuest)>>
+<<elseif $g.anal1.isHasTrait('per_cruel')>>
+Having inflicted such massive amount of pain to an unwitting slave brought joy to the cruel slaver <<rep $g.anal1>>...
+<<run setup.qc.BoonizeRandom('anal1', 9).apply($gQuest)>>
+<<elseif $g.anal1.isHasTrait('per_dominant')>>
+Having inserted their chosen phallus to such an ancient and rare hole brought confidence to the dominant slaver <<rep $g.anal1>>...
+<<run setup.qc.BoonizeRandom('anal1', 9).apply($gQuest)>>
+<</if>>
+</p>

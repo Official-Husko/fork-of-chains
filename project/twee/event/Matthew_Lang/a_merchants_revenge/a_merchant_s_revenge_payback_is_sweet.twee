@@ -1,0 +1,39 @@
+:: EventSetup_a_merchant_s_revenge_payback_is_sweet [nobr event]
+
+<<run new setup.Event(
+'a_merchant_s_revenge_payback_is_sweet', /* key */
+"A Merchant\'s Revenge: Payback is Sweet", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'unknown',
+],
+'Event_a_merchant_s_revenge_payback_is_sweet',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+  'player': [
+    setup.qres.You(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('a_merchant_s_revenge_payback_is_sweet', {
+merchant: "merchant",
+player: "player",
+}),
+],
+[ /* restrictions */
+  setup.qres.UnitGroupNotBusy('a_merchant_s_revenge1'),
+  setup.qres.VarEqual('mlangmerchantprincequest', '2'),
+  setup.qres.NoOpportunity('a_merchant_s_revenge_payback_is_sweet'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_a_merchant_s_revenge_payback_is_sweet [nobr]
+<<include "Opportunity_a_merchant_s_revenge_payback_is_sweet">>

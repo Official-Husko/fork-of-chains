@@ -1,0 +1,133 @@
+:: QuestSetup_mist_apprentice_payment_the_second2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Obedient but Chaste', /* name */
+[
+],
+[
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.Trait(setup.trait.training_obedience_advanced),
+  setup.qres.TraitExact(setup.trait.per_chaste),
+],
+{
+}
+)>>
+
+<<set _criteriaescort = new setup.UnitCriteria(
+null, /* key */
+'Chaste Slaver', /* name */
+[
+],
+[
+],
+[
+  setup.qres.NotYou(),
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTrait(setup.trait.per_lustful),
+],
+{
+  slaving: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'mist_apprentice_payment_the_second2', /* key */
+"Mist Apprentice: Payment the Second", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'prep',
+  'danger',
+  'trait',
+],
+1, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'escort': [ _criteriaescort, 3],
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [
+    setup.qres.Home(),
+  ],
+  'demonkin': 'subrace_demonkin',
+},
+[ /* costs */
+],
+'Quest_mist_apprentice_payment_the_second2',
+setup.qdiff.hell1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_mist_apprentice_payment_the_secondCrit',
+    [
+      setup.qc.MissingUnitForever('slave'),
+      setup.qc.AddTag('escort', 'mist_apprentice_victim'),
+      setup.qc.Leave('escort', "went missing in The Mist", undefined),
+      setup.qc.Event('mist_apprentice_final_payment', 4, {
+master: "master",
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_secondCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_secondCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_secondCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('return_shipping', 0, {
+master: "master",
+slaver: "slaver",
+}),
+
+],
+)>>
+
+:: Quest_mist_apprentice_payment_the_second2 [nobr]
+<p>
+Another demonkin messenger arrived at your fort today, bearing another
+message regarding the continued training of <<yourrep $g.slaver>>. While the
+training has been progressing well (whatever that means...), it is apparently
+time for you to make the second payment...
+</p>
+
+<p>
+Having grown bored playing with just slaves, this time the demon asks for a
+slave-slaver combo to be sent over to <<their $g.master>> abode. A slave that has
+so far remains chaste despite having been entirely broken, and a similarly chaste
+slaver to add into the mix.
+It will be interesting to watch the slaver break and use the slave via
+non-sexual means, and <<they $g.master>> master|is looking forward to your
+positive reply.
+</p>
+
+<p>
+The demon assures you that while the slave will permanently become <<their
+$g.master>> property, your slaver will be returned to you "in due time"...
+</p>
+
+<<include 'Quest_mist_apprentice_commonWarning'>>

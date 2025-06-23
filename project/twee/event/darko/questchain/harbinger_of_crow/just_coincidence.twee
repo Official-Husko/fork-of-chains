@@ -1,0 +1,43 @@
+:: EventSetup_just_coincidence [nobr event]
+
+<<run new setup.Event(
+'just_coincidence', /* key */
+"Just Coincidence", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_just_coincidence',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTag('quest_harbinger_of_luck_tagged'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_harbinger_of_luck_progress', '2', -1),
+  setup.qc.SetCooldownEvent('curse_of_misfortune', 8),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_harbinger_of_luck_progress', '1'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_just_coincidence [nobr]
+<p>
+Today <<yourrep $g.a>> reported on duty drenched wet despite the clear sky. Apparently, <<they $g.a>> somehow happened to be in the wrong time and at the wrong place when a sudden, extremely concentrated shower just happened to drench <<therace $g.a>>, almost as if it was targeted specifically for <<them $g.a>>. Coupled with some other "coincidences" last week like how
+<<if $g.a.getTail()>>
+<<their $g.a>> tail got stuck between the door,
+<<else>>
+<<their $g.a>> clothes stuck between the door causing <<them $g.a>> to bang <<their $g.a>> heads against the wall,
+<</if>>
+it seems that <<rep $g.a>> might not have the strongest luck in the company...
+</p>

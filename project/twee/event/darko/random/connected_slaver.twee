@@ -1,0 +1,73 @@
+:: EventSetup_connected_slaver [nobr event]
+
+<<run new setup.Event(
+'connected_slaver', /* key */
+"Connected Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_connected_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.bg_boss, setup.trait.bg_informer, setup.trait.skill_connected], true),
+  ],
+  'rescue': 'missingslavers',
+},
+[ /* outcomes */
+  setup.qc.Slaver('rescue', "", undefined),
+],
+[ /* restrictions */
+  setup.qres.UnitGroupHasUnit('missingslavers'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_connected_slaver [nobr]
+<p>
+Today, you are greeted with the strangest of good news.
+One of your missing slavers, <<rep $g.rescue>>, rescue|have somehow reappear inside the <<rep setup.buildingtemplate.prospectshall>>, and ready to join your company back.
+</p>
+
+<p>
+Apparently, <<they $g.rescue>> rescue|have been independently rescued by <<yourrep $g.slaver>>.
+<<if $g.slaver.isHasTrait('bg_informer')>>
+<<Therace $g.slaver>> slaver|have utilized <<their $g.slaver>> prior connections from when <<they $g.slaver>> slaver|was making <<their $g.slaver>> living as an informer, and slaver|have rescued your missing slaver.
+<<elseif $g.slaver.isHasTrait('bg_boss')>>
+<<Therace $g.slaver>> slaver|have decided to borrow utilize <<their $g.slaver>> vast connection in the criminal underworld to locate and rescue your missing slaver.
+<<else>>
+<<Therace $g.slaver>> slaver|have used <<their $g.slaver>> wide network of connections to ultimately rescue your missing slaver.
+<</if>>
+
+<<if $g.you.isHasTrait('bg_boss')>>
+You nod approvingly at <<their $g.slaver>> ingenuity -- were you still
+in the mob business of old, you'd make great use of such a <<woman $g.slaver>>.
+<<run setup.qc.FriendshipWithYou('slaver', 2000).apply($gQuest)>>
+<<elseif $g.you.isHasTrait('bg_informer')>>
+As a (former) informer yourself, you can appreciate the subtlety that <<they $g.slaver>>
+must had employed for such a deed.
+<<run setup.qc.FriendshipWithYou('slaver', 1000).apply($gQuest)>>
+<<elseif $g.you.isHasTrait('skill_connected')>>
+It seems you do not need to use your own contacts to rescue <<them $g.rescue>>, after all,
+and you grow to like <<rep $g.slaver>> a bit better now.
+<<run setup.qc.FriendshipWithYou('slaver', 500).apply($gQuest)>>
+<<else>>
+An incredible feat, and you make notes to thank <<theslaver $g.slaver>> personally later.
+<</if>>
+</p>
+

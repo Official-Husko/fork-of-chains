@@ -1,0 +1,110 @@
+:: OpportunitySetup_dominant_domicile [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'dominant_domicile', /* key */
+"Dominant Domicile", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'special',
+  'unknown',
+  'trait',
+  'danger',
+],
+1, /* expiration weeks */
+'Opportunity_dominant_domicile',
+setup.qdiff.normal39, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_dominant_domicile_0',
+    outcome_passage: 'Opportunity_dominant_domicile_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarSet('quest_household_destroyer', '100', -1),
+      setup.qc.Contact(setup.contacttemplate.quest_household_destroyer_host, 'drow', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_dominant_domicile_1',
+    outcome_passage: 'Opportunity_dominant_domicile_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarSet('quest_household_destroyer', '200', -1),
+      setup.qc.Contact(setup.contacttemplate.quest_household_destroyer_nearby, 'drow', null),
+      setup.qc.Event('voluntary_enslavement', 10, {
+drow: "drow",
+}, false),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'drow': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_dominant_domicile [nobr]
+<p>
+    Having successfully extracted the drow royal to the surface of <<lore geo_mestia>>, you now have to decide where to let the drow live around here. Money is not a problem this time — the drow brought plenty of those.
+</p>
+
+<p>
+    You could arrange for the drow to live relatively close to your fort. However, knowing just how dominant the drow is, there might be some unfortunate consequences from keeping such a dominant presence near to your slaves and slavers...
+</p>
+
+<p>
+    Alternatively, you could simply pick one of the many villages littering the vale, and let the drow settle there nicely. What could possibly go wrong?
+</p>
+
+
+
+
+:: Opportunity_dominant_domicile_0 [nobr]
+Host in your fort
+
+
+:: Opportunity_dominant_domicile_0_flavor [nobr]
+<p>
+    You decided to host the overly dominant drow in your fort vicinity. <<They $g.drow>> now reside just outside of the walls, in one of the relatively normal-looking house that <<they $g.drow>> bought using the money <<they $g.drow>> carried from the <<lore region_deep>>.
+</p>
+
+<p>
+    What could possibly go wrong, hosting such a dangerous drow so close to your fort?
+</p>
+
+
+
+
+:: Opportunity_dominant_domicile_1 [nobr]
+Unleash to some nearby village
+
+
+:: Opportunity_dominant_domicile_1_flavor [nobr]
+<p>
+    Not wanting to risk hosting the drow too close to your fort, you've decided to arrange for the drow to settle in one of the surrounding villages. The drow brought quite a sum of money from the <<lore region_deep>>, and those money were used to buy <<them $g.drow>> a nice village just at the outskirts of a nearby village.
+</p>
+
+<p>
+    Surely nothing bad could happen hosting such a dangerous drow in a peaceful, normal-looking village?
+</p>

@@ -1,0 +1,168 @@
+:: QuestSetup_brothel_training [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'brothel_training', /* key */
+"Brothel Training", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+1, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'teacher': [ setup.qu.sex_teacher, 1],
+  'helper1': [ setup.qu.whore, 1],
+  'helper2': [ setup.qu.whore, 1],
+},
+{ /* actors */
+  'owner': [
+  ],
+  'head': [
+  ],
+},
+[ /* costs */
+],
+'Quest_brothel_training',
+setup.qdiff.normal32, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_trainingCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.BoonizeRandom('teacher', 5),
+      setup.qc.BoonizeRandom('helper1', 5),
+      setup.qc.BoonizeRandom('helper2', 5),
+    ],
+  ],
+  [
+    'Quest_brothel_trainingCrit',
+    [
+      setup.qc.Opportunity('intense_brothel_training', {
+owner: "owner",
+head: "head",
+}),
+      setup.qc.MoneyCustom(1500),
+    ],
+  ],
+  [
+    'Quest_brothel_trainingFailure',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '2', -1),
+    ],
+  ],
+  [
+    'Quest_brothel_trainingFailure',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '8', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_training [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+A couple of weeks have passed since you've cleaned up
+<<attach _describe>>.
+Customers are starting to flock into the place now, but they're mostly the lower class such as dockworkers and manual laborers.
+</p>
+
+<p>
+The manager of the place, <<yourrep $g.owner>>, comes to you today with an
+idea of how to possibly increase your brothel's profit even further. The first
+step is to give the <<men $g.head>> working there some training. It might
+sound odd that sex workers such as them would need training, but apparently
+<<therace $g.head>> had done <<their $g.head>> research on the other brothels
+in the vicinity, and comes to this conclusion.
+</p>
+
+<p>
+You could try to send a group of slavers from your employ to help teach these people the art of sex. A teacher is required, as well as two helpers to demonstrate the teachings to the students. If they are sufficiently good at their job, they might even be able to teach the workers "on the job", which could earn you some extra coin.
+</p>
+
+
+
+
+
+:: Quest_brothel_trainingCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+The <<men $g.head>> working in the place were unskilled, to say the least.
+When <<yourrep $g.teacher>> asked for a demonstration, they remained
+passive, unsure what to do. Most of the current customers simply go into
+your brothel for a quick, traditional fuck, and no other options were even
+presented on the table.
+</p>
+
+<p>
+This would not do, and <<yourrep $g.teacher>> and <<their $g.teacher>> two assistants demonstrated the various options that should have been made available to the prospective clients.
+<<if $g.teacher.isHasTrait('per_calm')>>
+<<Rep $g.teacher>> teacher|is a patient <<man $g.teacher>>, and it showed. <<They $g.teacher>> patiently guided the students,
+<<elseif $g.teacher.isHasTrait('per_aggressive')>>
+<<Rep $g.teacher>> teacher|is not a patient <<man $g.teacher>>, however, and it showed. <<They $g.teacher>> looked extremely impatient as <<they $g.teacher>> went over the techniques with the students,
+<<elseif $g.teacher.isHasTrait('per_dominant')>>
+<<Reps $g.teacher>> dominant tendencies came out, and a look of delight showed up occasionally in <<therace $g.teacher>> as they demonstrated the techniques to the students,
+<<elseif $g.teacher.isHasTrait('per_submissive')>>
+<<Reps $g.teacher>> submissive tendencies occasionally came out, however, making the training more difficult than it should. Still, <<they $g.teacher>> were able to demonstrate the techniques to the students,
+<<else>>
+<<Rep $g.teacher>> demonstrated advanced sex techniques to the students,
+<</if>>
+using <<rep $g.helper1>> and <<rep $g.helper2>> and their various holes to demonstrate the more advanced sex techniques to the whores. They learned how their anus can also be used to pleasure others, as well as the basics of taking dicks down their throats.
+</p>
+
+<p>
+<<Yourrep $g.teacher>> teacher|was good at <<their $g.teacher>> job, and even managed to continue training the whores as they serviced the clients, earning some coin in the process.
+<<if $gOutcome == 'crit'>>
+Your slavers even managed to have their own fun as they progress the training forwards.
+<</if>>
+</p>
+
+<p>
+There were too many to teach, however, and your slavers could only teach so
+much over the week. In the end, your input was necessary to determine which
+direction the <<if $g.head.isMale()>>man<</if>>whores should continue to hone their skills on.
+</p>
+
+
+
+
+
+:: Quest_brothel_trainingFailure [nobr]
+<p>
+Unfortunately, <<yourrep $g.teacher>> teacher|was terrible at <<their $g.teacher>> job. <<Their $g.teacher>> teachings fell on deaf ears, and by the end of the week it was clear that the students would need some extra whoring experiences first before you could retry another of such training.
+<<if $gOutcome == 'failure'>>
+Give them a couple of weeks to work normally, and you can retry this quest again.
+<<else>>
+Give them a couple of months to work normally, and you can then retry this quest again.
+<</if>>
+</p>

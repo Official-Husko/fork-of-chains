@@ -1,0 +1,145 @@
+:: QuestSetupUnitTrainingOralMaster [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_oral_master',  /* id */
+  'Oral Training: Master',  /* Title */
+  'FCdev and darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_earth,
+    'trainer1': setup.qu.training_trainer_dick_master,
+    'trainer2': setup.qu.training_trainer_dick_master,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingOralMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingOralMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_oral_master),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingOralMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_oral_master),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingOralMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingOralMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_oral_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingOralMaster [nobr]
+<p>
+Slaves completing this training are transformed into one of the world's
+greatest fellatrix.
+To them, each dick is different is a unique canvas for them to draw upon
+with their tongue, creating a pleasurable sensastion unique to each
+and every one of their masters.
+These slaves sexuality are entirely focused on cum, and they almost
+could not orgasm without the salty taste of cum in their mouth.
+</p>
+
+<p>
+Since a humanlike can only produce so much natural juice,
+a slaver with <<rep setup.trait.magic_earth_master>> is required to lead the training,
+to summon tentacles that can spout an exceedingly large amount of
+salty ejaculate-like plant juice into the slave...
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingOralMasterCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+<<else>>
+    <<questimage 'unit_training_oral_master_female_humansea.jpg'>>
+<</if>>
+
+<p>
+Entirely focusing a slave's sexuality on cum isn't as easy as some other manipulations,
+for the simple reason that everyone only have a limited supply of the stuff.
+But fortunately, <<reps $g.head>> mastery over <<rep setup.trait.magic_earth_master>>
+means that <<they $g.head>> can summon phallus-shaped vines from the ground whenever all
+the slave trainers have been exhausted -- these vines can be controlled to spout
+cum-like plant juice into the slave's mouth.
+</p>
+
+<p>
+With the assistance of the vines, <<reps $g.trainee>> <<umouth $g.trainee>> was kept filled
+to the brim with the salty taste of either ejaculate or plant-juice.
+To drive the point home,
+<<they $g.head>> instructed <<rep $g.trainee>>
+to not immediately swallow the cum, but to keep it swirling within <<their $g.trainee>> <<umouth $g.trainee>> for
+a long while.
+Whenever <<they $g.trainee>> meet another slave, <<they $g.trainee>> must exchange the cum stored
+inside <<their $g.trainee>> <<umouth $g.trainee>> -- whenever another slave had just finished being fucked,
+they must suck it out of whichever hole was just used. Most importantly,
+<<rep $g.trainee>> was severely punished if <<they $g.trainee>> ever get <<wet $g.trainee>> without cum in
+<<their $g.trainee>> <<umouth $g.trainee>>.
+<<Rep $g.trainee>> spent the weeks giving blowjobs whenever <<they $g.trainee>> can, and making out
+with other slaves to swap the cum back and forth.
+Soon, <<they $g.trainee>> got aroused by the mere scent of the stuff, and would not get aroused by
+any other mean. <<Their $g.trainee>> sensuality is now entirely focused on cum.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into an elite cocksucker 
+has been completed.
+</p>
+
+<<else>>
+
+<p>
+It is done. <<Reps $g.trainee>> transformation into an elite dicksucker
+has been completed. <<Rep $g.trainee>> now trainee|have an insatiable thirst for dicks to suck,
+so much that a dildo gag is almost necessary for them to wait between their sessions.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingOralMasterFailure [nobr]
+<p>
+While <<rep $g.trainee>> tried <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into the ultimate dicksucking machine.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingOralMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

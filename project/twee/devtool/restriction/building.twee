@@ -1,0 +1,24 @@
+:: RestrictionBuilding [nobr]
+
+<p>Must have built the following improvement:</p>
+
+<<for _ibt, _bt range setup.buildingtemplate>>
+  <<rep _bt>>
+  <<capture _bt>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.Building(_bt)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+
+:: RestrictionFortLevelAtLeast [nobr]
+
+Have expanded fort at least <<numberbox '_level' 5>> times.
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.FortLevelAtLeast(_level)>>
+<</link>>
+

@@ -1,0 +1,295 @@
+:: QuestSetup_regalixir [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<set _criteriaambidextrous = new setup.UnitCriteria(
+null, /* key */
+'Ambidextrous', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_ambidextrous], true),
+],
+{
+}
+)>>
+
+<<set _criteriaintimidating = new setup.UnitCriteria(
+null, /* key */
+'Intimidating', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_intimidating], true),
+],
+{
+}
+)>>
+
+<<set _criteriaconnected = new setup.UnitCriteria(
+null, /* key */
+'Connected', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_connected], true),
+],
+{
+}
+)>>
+
+<<set _criteriahypnotic = new setup.UnitCriteria(
+null, /* key */
+'Hypnotic', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_hypnotic], true),
+],
+{
+}
+)>>
+
+<<set _criteriacreative = new setup.UnitCriteria(
+null, /* key */
+'Creative', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_creative], true),
+],
+{
+}
+)>>
+
+<<set _criteriaentertain = new setup.UnitCriteria(
+null, /* key */
+'Entertain', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_entertain], true),
+],
+{
+}
+)>>
+
+<<set _criteriaalchemy = new setup.UnitCriteria(
+null, /* key */
+'Alchemy', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_alchemy], true),
+],
+{
+}
+)>>
+
+<<set _criteriaanimal = new setup.UnitCriteria(
+null, /* key */
+'Animal', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AllTraits([setup.trait.skill_animal], true),
+],
+{
+}
+)>>
+
+<<set _criteriawizard = new setup.UnitCriteria(
+null, /* key */
+'Wizard', /* name */
+[
+],
+[
+],
+[
+  setup.qres.AnyTrait([
+    setup.trait.magic_fire,
+    setup.trait.magic_fire_master,
+    setup.trait.magic_water,
+    setup.trait.magic_water_master,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+    setup.trait.magic_light,
+    setup.trait.magic_light_master,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+  ], true),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'regalixir', /* key */
+"Regalixir", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'prep',
+  'trait',
+],
+4, /* weeks */
+setup.INFINITY, /* expiration weeks */
+{ /* roles */
+  'you': [_criteriayou, 3],
+  'ambidextrous': _criteriaambidextrous,
+  'intimidating': _criteriaintimidating,
+  'connected': _criteriaconnected,
+  'hypnotic': _criteriahypnotic,
+  'creative': _criteriacreative,
+  'entertain': _criteriaentertain,
+  'alchemy': _criteriaalchemy,
+  'animal': _criteriaanimal,
+  'wizard': _criteriawizard,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_regalixir',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_regalixirCrit',
+    [
+      setup.qc.Opportunity('regalixir', {
+you: "you",
+}),
+      setup.qc.Injury('ambidextrous', 2),
+      setup.qc.Injury('intimidating', 3),
+      setup.qc.Injury('connected', 2),
+      setup.qc.Injury('hypnotic', 1),
+      setup.qc.Injury('creative', 2),
+      setup.qc.Injury('entertain', 3),
+      setup.qc.Injury('alchemy', 2),
+      setup.qc.Injury('animal', 1),
+      setup.qc.Injury('wizard', 2),
+    ],
+  ],
+  [
+    'Quest_regalixirCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_regalixirCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_regalixirCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_regalixir [nobr]
+<p>
+Having spent so much of the company's hard-earned money buying the manual and
+ingredients, all that's left is to follow the instructions on how to concoct
+this mysterious potion.
+</p>
+
+<p>
+In order to imbue a concoction with knowledge, a wide array of skilled people
+must participate in its making. All of
+<<rep setup.trait.skill_ambidextrous>>
+<<rep setup.trait.skill_intimidating>>
+<<rep setup.trait.skill_connected>>
+<<rep setup.trait.skill_hypnotic>>
+<<rep setup.trait.skill_creative>>
+<<rep setup.trait.skill_entertain>>
+<<rep setup.trait.skill_alchemy>>
+<<rep setup.trait.skill_animal>>,
+as well as any branch of magic must be represented. It does not matter if
+they're a slaver or slave. In addition, whoever is going to drink the potion
+must also be present in the ritual, and that means you and you yourself must
+be present throughout...
+</p>
+
+<p>
+The preparation will be extensive and difficult, but the reward is
+mouth-watering: the potion is said to awaken a dormant ability in whoever
+lucky enough to get their <<uhands $unit.player>> on it.
+Fortunately, the ingredients and the manual won't go away anytime soon, and
+there is no rush for you to complete the ritual as soon as possible. Should
+you lack a particular skill, it might be wise to start recruiting slavers or
+capturing slaves with the requisite skills...
+</p>
+
+<p>
+  <<successtext "This quest will always succeed, regardless of the displayed chances.">>
+</p>
+
+
+:: Quest_regalixirCrit [nobr]
+
+<p>
+It... it is done. Your memory was hazy, but you remember <<uadv
+$unit.player>> leading the ritual. It started innocuously, just a couple of
+chant together with each of your units donating an... "essence" of their
+soul.
+You remembered a smoke, an explosion, and the rest was hazy.
+</p>
+
+<p>
+In the aftermath, everyone save for you were injured. Lying in the middle of
+the mess was a bottle of potion, whose color sparkled and changed ever so
+slightly with time. Reddish, greenish, yellowish, it kept shifting under
+your gaze, inviting you to drink it and unlock whatever dormant power you
+have within...
+</p>
+
+
+

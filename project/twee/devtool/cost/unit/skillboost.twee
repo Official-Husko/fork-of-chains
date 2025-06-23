@@ -1,0 +1,15 @@
+:: CostSkillBoost [nobr]
+
+<div>
+Boost <<devactordefault>>'s skill permanently by 1 point.
+This is worth <<money 15000>>.
+<<include "SkillBoostHelpText">>
+</div>
+
+<<for _skill range setup.skill>>
+  <<capture _skill>>
+    <<button _skill.rep() 'QGCostDone'>>
+      <<set $qcost = setup.qc.SkillBoost($qgDefaultActorName, _skill)>>
+    <</button>>
+  <</capture>>
+<</for>>

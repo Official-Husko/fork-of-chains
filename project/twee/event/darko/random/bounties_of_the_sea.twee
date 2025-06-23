@@ -1,0 +1,66 @@
+:: EventSetup_bounties_of_the_sea [nobr event]
+
+<<run new setup.Event(
+'bounties_of_the_sea', /* key */
+"Bounties of the Sea", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+],
+'Event_bounties_of_the_sea',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+  ],
+  'slave': 'subrace_humansea',
+},
+[ /* outcomes */
+  setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AllTraits([setup.trait.bg_pirate], true)),
+setup.qc.DoAll([
+setup.qc.Slave('slave', "a|was an unfortunate traveler in the Southern Seas who got captured by your ex-pirate slaver", undefined)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(5000)
+], undefined)),
+  setup.qc.BoonizeRandom('slaver', 5),
+  setup.qc.Return('slaver'),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_bounties_of_the_sea [nobr]
+<p>
+After four full weeks, <<yourrep $g.slaver>>
+slaver|have returned from their voyage into the <<lore region_sea>>, and it was a great success.
+<<if $g.slaver.isHasTrait('bg_pirate')>>
+With <<their $g.slaver>> hired crew, the ex-pirate was able to raid an undefended ship, just like <<their $g.slaver>> good ol' times. It seems the sea-dog has not lost <<their $g.slaver>> edge, and after splitting the bounties with <<their $g.slaver>> motley crew, your share comes out in the form of a rare slave, who is now waiting in the slave pens.
+<<else>>
+With <<their $g.slaver>> hired fishing boat, the ex-seaman was able to catch a myriad of strange sea creatures, which fetch for quite a large amount of sum in the markets of your fort. In the end, your profit amounts to a whopping <<money 5000>>, surely more than enough to cover the expenses of the trip.
+<</if>>
+</p>
+
+<p>
+Having voyaged into the sea once more, the slaver looks quite content with themselves, and <<their $g.slaver>> mood is much better in the coming weeks.
+</p>
+
+<<if $unit.player.isHasAnyTraitExact(['bg_pirate', 'bg_seaman'])>>
+<p>
+Hearing tales of such adventure and exploits within the sea stirred your long dormant
+seabound spirit.
+Indeed, you too once lived within the sea,
+and you have to admit, you are rather jealous of the opportunity to go back into the sea,
+away from all your responsibilities.
+Still, your slavers are depending on you now, and you know that better than anyone else.
+</p>
+
+<<run setup.qc.BoonizeRandom('you', 50).apply(setup.costUnitHelper($unit.player))>>
+
+<</if>>

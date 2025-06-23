@@ -1,0 +1,93 @@
+:: EventSetup_under_new_management_quality_time [nobr event]
+
+<<run new setup.Event(
+'under_new_management_quality_time', /* key */
+"Under New Management: Quality Time", /* Title */
+{ /* Author */
+  name: "Kyrozis",
+  url: "",
+},
+[ /* tags */
+  'favor',
+  'trait',
+],
+'Event_under_new_management_quality_time',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'guard1': [],
+  'guard2': [],
+  'pimp': [],
+},
+[ /* outcomes */
+  setup.qc.Favor('neko', 300),
+  setup.qc.BoonizeRandom('guard1', 5),
+  setup.qc.BoonizeRandom('guard2', 5),
+  setup.qc.BoonizeRandom('pimp', 5),
+  setup.qc.Return('guard1'),
+  setup.qc.Return('guard2'),
+  setup.qc.Return('pimp'),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_under_new_management_quality_time [nobr]
+<p>
+At the end of this week, your slavers finally returned from their "vacation" with the cuddly neko,
+looking happier
+than ever. <<Yourrep $g.guard1>> recounted all the events of the vacation to you,
+regardless of whether you want to hear it or not.
+</p>
+
+<p>
+According to <<them $g.guard1>> (and backed up by both <<rep $g.guard2>>
+and <<rep $g.pimp>>), the three of them had the time of their lives during
+the week they spent with the brothel's staff. They hiked along the uninhabited sections
+of the <<lore region_forest>>, bathed in hot a spring, cooked various unusual
+of food together, explored the <<lore location_npc>>, and drank while
+partying around a campfire, sometimes even sharing hugs and headpats. (In all
+honestly, who could resist patting a cute cat of any sort?
+
+<<if $g.guard1.isHasTrait('per_playful')>>
+<<set _play = $g.guard1>>
+<<elseif $g.guard2.isHasTrait('per_playful')>>
+<<set _play = $g.guard2>>
+<<elseif $g.pimp.isHasTrait('per_playful')>>
+<<set _play = $g.pimp>>
+<<else>>
+<<unset _play>>
+<</if>>
+<<if _play>>
+  The playful slaver <<rep _play>> may have went a little overboard with the petting, but
+  the neko seem to like it...
+<</if>>
+
+<<if $g.guard1.isHasTrait('per_serious')>>
+<<set _grump = $g.guard1>>
+Even the usually grumpy <<rep $g.guard1>>
+<<elseif $g.guard2.isHasTrait('per_serious')>>
+<<set _grump = $g.guard2>>
+<<elseif $g.pimp.isHasTrait('per_serious')>>
+<<set _grump = $g.pimp>>
+<<else>>
+<<unset _grump>>
+<</if>>
+<<if _grump>>
+  Even the usually grumpy <<rep _grump>> couldn't resist petting a neko's head, or two, or three...
+<</if>>
+)
+Just by looking
+at them, you can tell they had a great time, and their morale is at an all-time high.
+They will surely perform better on their duties for some time.
+</p>
+
+<p>
+Soon after, you heard that the brothel was back to business, this time fully
+owned by its workers. The brothel became one of the best brothels in the
+area, and the workers paid your company back not in money, but by putting in
+good words about your company's deeds and the time they had with your
+slavers.
+</p>

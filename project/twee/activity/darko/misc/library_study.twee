@@ -1,0 +1,61 @@
+:: ActivitySetup_library_study [nobr activity]
+
+<<run new setup.ActivityTemplate({
+key: 'library_study',
+name: "Library Study", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+  ],
+},
+critical_traits: [
+  setup.trait.bg_scholar,
+  setup.trait.bg_wiseman,
+  setup.trait.per_studious,
+  setup.trait.per_logical,
+],
+disaster_traits: [
+  setup.trait.per_active,
+  setup.trait.per_empath,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "It\'s so quiet here...",
+      "What an engrossing read...",
+    ],
+    bold: [
+      "One day my name will be written in the history books.",
+      "The library is really the best place for a nap... zzz...",
+    ],
+    cool: [
+      "Interesting book.",
+      "That was a good read.",
+    ],
+    witty: [
+      "What's the difference between cats and a comma? Cats have claws at the end of their paws and commas are a pause at the end of a clause.",
+      "Past, present, and future walked into a bar. It was tense.",
+      "<<unickname $g.a>>, comma her for a bit and join me for a period.",
+    ],
+    debauched: [
+      "I wonder when will the raunchy part starts...",
+      "I think I\'ve stored my secret world-domination book here somewhere...",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.library,
+],
+})>>

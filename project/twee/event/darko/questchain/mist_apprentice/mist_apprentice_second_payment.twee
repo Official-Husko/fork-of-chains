@@ -1,0 +1,44 @@
+:: EventSetup_mist_apprentice_second_payment [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'mist_apprentice_second_payment', /* key */
+"Mist Apprentice: Second Payment", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'trait',
+],
+'Event_mist_apprentice_second_payment',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [
+    setup.qres.HasTitle('quest_mist_apprentice_0'),
+    setup.qres.HomeExceptOnLeave(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.OneRandomSeed([
+setup.qc.QuestDirect('mist_apprentice_payment_the_second', {
+master: "master",
+slaver: "slaver",
+}),
+setup.qc.QuestDirect('mist_apprentice_payment_the_second2', {
+master: "master",
+slaver: "slaver",
+})
+]),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_mist_apprentice_second_payment [nobr]
+<p>
+Another letter demanding pay for <<reps $g.slaver>> continued tuition is here. Here we go again...
+</p>

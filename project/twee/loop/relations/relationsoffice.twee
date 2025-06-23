@@ -1,0 +1,131 @@
+:: RelationshipManagerDescribe [nobr]
+
+<p>
+<<set _manager = $dutylist.getUnitIfAvailable('relationshipmanager')>>
+<<if _manager>>
+  Your relationship manager is able to maintain favors with maximum of
+  <<= $favor.getMaxManagedCompanies()>> companies right now.
+  This number is based on <<rep _manager>>'s affinity for the job.
+  <<set _managed = $favor.getManagedCompanies()>>
+  <<if _managed.length>>
+    <<They _manager>> is currently managing the favors of the following companies:
+    <<for _company range _managed>><<rep _company>> <</for>>.
+    To do so, <<rep _manager>> requires an upkeep of
+    <<money $favor.getRelationshipManagerUpkeep()>> each week.
+    <<if _managed.length < $favor.getMaxManagedCompanies()>>
+      <<They _manager>> can still manage more companies, and you can assign more, although
+      this will increase <<their _manager>> upkeep costs.
+    <</if>>
+  <<else>>
+    <<They _manager>> is <<dangertext 'not currently managing favor with any company'>>.
+    You should assign some companies to manage.
+  <</if>>
+  <<if $gMenuVisible>>
+    <<focmove '(change managed companies)' 'RelationsOfficeManagedCompanies'>>
+  <</if>>
+<<else>>
+  <<set _duty = $dutylist.getDuty('relationshipmanager')>>
+  <<if _duty>>
+    Nobody is working as the <<rep _duty>> right now. When staffed,
+    this duty is able to prevent favor decay with the companies.
+  <</if>>
+<</if>>
+</p>
+
+
+:: RelationsOffice [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.relationsoffice)>>
+<<set _manager = $dutylist.getDuty('relationshipmanager')>>
+<<set _officer = $dutylist.getDuty('damagecontrolofficer')>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You enter the relations office.
+<<if _manager>>
+  There is a separate desk for your <<rep _manager>>.
+  <<set _unit = _manager.getAssignedUnit()>>
+  <<if _unit && _unit.isAvailable()>>
+    <<rep _unit>> busily works there currying favor with other companies,
+    <<= setup.Text.Duty.competence(_manager)>>.
+    <<include 'RelationshipManagerDescribe'>>
+  <<elseif _unit>>
+    <<Yourrep _unit>> usually works here, but <<they _unit>>
+    is currently unavailable to attend to <<their _unit>> duties.
+  <<else>>
+    It is unoccupied right now. If you have someone attending to this duty,
+    you can prevent relations decay with some companies.
+  <</if>>
+<<else>>
+  Relations will decay each week, but you can prevent some of this
+  by building the <<rep setup.buildingtemplate.relationshipmanageroffice>>.
+<</if>>
+<<if _officer>>
+  A separate room has been renovated into an office for your
+  <<rep _officer>>.
+  <<set _unit = _officer.getAssignedUnit()>>
+  <<if _unit && _unit.isAvailable()>>
+    You can see <<rep _unit>> inside busily making plausible excuses for your company's atrocities.
+    <<= _unit.getName()>> diligently works,
+    <<= setup.Text.Duty.competence(_officer)>>.
+  <<elseif _unit>>
+    <<Yourrep _unit>> usually works here, but <<they _unit>>
+    is currently unavailable to attend to <<their _unit>> duties.
+  <<else>>
+    Nobody is in the office right now.
+  <</if>>
+<</if>>
+<<set _favor = $favor.getFavor($company.bank)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  The <<rep $company.bank>> recognizes your company as one of its few allies,
+  and generously send your company a small interest each week.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  Your company has been formally recognized as a friend by the <<rep $company.bank>>,
+  who expressed their friendship with a gift of money each week.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  The <<rep $company.bank>> views your company favorably, and gifted your company
+  with some money each week as a display of good will.
+<</if>>
+<<set _favor = $favor.getFavor($company.dragonkin)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  occasionally, you receive delegation from other companies offering their modest
+  respect to you and increasing their favor without any particular reason,
+  but you know it's no doubt due to your warm relations with the
+  intimidating <<rep $company.dragonkin>>.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  You often receive delegation from other companies showing their
+  respect for your company, and offering their favor with nothing in exchange.
+  This is no doubt thanks to your friendly relations with the
+  rare and elusive <<rep $company.dragonkin>>.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  Many delegations from other companies come to pay
+  respect to your company, and offering plenty of favor without asking for anything
+  in exchange.
+  No doubt they wish to learn your secret of having an
+  extremely well-maintained relations with <<rep $company.dragonkin>>.
+<</if>>
+
+You find an empty desk to work at, sit there and begin your work here.
+</p>
+
+<<set _companies = Object.values($company).filter(c => c != $company.player && $favor.isCompanyKnown(c))>>
+<<run _companies.sort((a, b) => { return a.getName().localeCompare(b.getName()) })>>
+
+<<filterall 'company' _companies>>
+  <<if $menufilter.get('company', 'display') == 'compact'>>
+    <<companycardcompact _displayobj>>
+  <<else>>
+    <<companycard _displayobj>>
+  <</if>>
+<</filterall>>
+
+
+:: RelationsOfficeManagedCompanies [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.relationsofficemanagedcompanies()>>
+<<attach _dom>>

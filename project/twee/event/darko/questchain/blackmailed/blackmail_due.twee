@@ -1,0 +1,77 @@
+:: EventSetup_blackmail_due [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'blackmail_due', /* key */
+"Blackmail Due", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_blackmail_due',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.VarRemove('rival_blackmail_cancel'),
+  setup.qc.IfThenElse(
+    setup.qres.VarEqual('rival_blackmail_active', '1'),
+    setup.qc.DoAll([
+      setup.qc.MoneyCustom(-2000),
+      setup.qc.Event('blackmail_due', 4, null, true),
+    ], undefined),
+    setup.qc.DoAll([
+
+    ], undefined)),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_blackmail_due [nobr]
+<<set _progress = $varstore.get('rival_blackmail_progress') || 0>>
+
+<<if $varstore.get('rival_blackmail_active')>>
+<p>
+An emissary from the bastard rival slaving company that has come to your fort demanding
+payment for your slaver's continued... ahem, "luxury accomodation" under their care. You
+grudgingly pay the slaver,
+<<if _progress >= 3>>
+while sensing a desperation in the messenger's voice, no doubt thanks to your
+efforts to crumble your rival' company so far...
+<<elseif _progress >= 2>>
+knowing full well that soon, retaliation is at hand...
+<<elseif _progress >= 1>>
+your current retaliation plan in the front of your mind...
+<<else>>
+while wondering if this will continue on forever...
+<</if>>
+</p>
+
+<p>
+The emissary promised to return again next month.
+</p>
+
+<<else>>
+<<if $varstore.get('rival_blackmail_cancel')>>
+  <p>
+    You've made up your mind to not continue the monthly installments.
+    The messenger will return empty-handed.
+    But your former slaver's fate is now sealed...
+  </p>
+<<else>>
+  <p>
+  Having defeated your rival's company, the monthly "accomodation fee" you
+  have been paying for your slaver's continued safety has finally ended. It
+  feels good.
+  </p>
+<</if>>
+
+<</if>>

@@ -1,0 +1,44 @@
+:: LIVINGSETUP_tailor [nobr living]
+
+<<run new setup.Living({
+  key: 'tailor',
+  name: 'Tailor',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_artisan: setup.LIVING_COMMON_PREFERENCE,
+    skill_creative: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_calm: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_aggressive: -setup.LIVING_COMMON_PREFERENCE,
+  },
+  business: [
+    'weaving new clothes',
+    'working the needle',
+    'peddling a|their freshly-knit clothes',
+  ],
+  location: 'tailorshop',
+})>>
+
+:: LIVING_tailor [nobr]
+
+<p>
+With the money a|they had collected, a|they purchased a small tailor shop
+in the small town that has been developing around your fort.
+<<if $g.a.isHasTrait('skill_creative')>>
+a|Their embroidery becomes famous for its complex and mind-evoking designs.
+<<elseif $g.a.isHasTrait('per_calm')>>
+a|Their embroidery becomes famous for its intricate designs, which must have
+taken the patient slaver quite a while to sew.
+<<else>>
+a|Their embroidery becomes rather famous, no small thanks to a|their <<upraisenoun $g.a>>.
+<</if>>
+As a|they receive more and more orders, would buy several slaves to help with a|their duties.
+<<if $g.a.isHasTrait('per_kind')>>
+a|They would treat a|their slaves fairly, punishing them when a|they make a mistake and
+rewarding them for good work.
+<<else>>
+The live of a slaver never truly leave the a|race, however, and these slaves serve other
+purposes during the many nights.
+<</if>>
+</p>

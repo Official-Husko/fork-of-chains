@@ -1,0 +1,138 @@
+:: QuestSetup_future_sight [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'future_sight', /* key */
+"Future Sight", /* Title */
+"darko", /* Author */
+[ 'vale', 'money', 'quest'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'convincer': setup.qu.convincer,
+'seer1': setup.qu.arcanewater,
+'seer2': setup.qu.arcanewater, },
+{ /* actors */
+'seer': 'subrace_humanvale', },
+[ /* costs */
+setup.qc.MoneyNormal(-0.25), ],
+'Quest_future_sight',
+setup.qdiff.easy14, /* difficulty */
+[ /* outcomes */
+[
+'Quest_future_sightCrit',
+[
+  setup.qc.IfThenElse(
+    setup.qres.Building('scouttower'),
+    setup.qc.QuestDelay(setup.questpool.forest, 1),
+    setup.qc.QuestDelay(setup.questpool.vale, 1),
+  ),
+  setup.qc.IfThenElse(
+    setup.qres.Building('scoutoffice'),
+    setup.qc.QuestDelay(setup.questpool.city, 1),
+    setup.qc.QuestDelay(setup.questpool.vale, 1),
+  ),
+  setup.qc.IfThenElse(
+    setup.qres.Building('scoutcarriage'),
+    setup.qc.QuestDelay(setup.questpool.desert, 1),
+    setup.qc.QuestDelay(setup.questpool.vale, 1),
+  ),
+  setup.qc.QuestDelay(setup.questpool.vale, 2),
+  setup.qc.MoneyCrit(),
+],
+], [
+'Quest_future_sightSuccess',
+[
+  setup.qc.IfThenElse(
+    setup.qres.Building('scouttower'),
+    setup.qc.QuestDelay(setup.questpool.forest, 1),
+    setup.qc.QuestDelay(setup.questpool.vale, 1),
+  ),
+  setup.qc.IfThenElse(
+    setup.qres.Building('scoutoffice'),
+    setup.qc.QuestDelay(setup.questpool.city, 1),
+    setup.qc.QuestDelay(setup.questpool.vale, 1),
+  ),
+  setup.qc.QuestDelay(setup.questpool.vale, 1),
+  setup.qc.MoneyNormal(), ],
+], [
+'Quest_future_sightFailure',
+[
+setup.qc.MoneyNormal(0.25), ],
+], [
+'Quest_future_sightDisaster',
+[
+setup.qc.TraumatizeRandom('seer1', setup.TRAUMA_SHORT),
+setup.qc.TraumatizeRandom('seer1', setup.TRAUMA_SHORT),
+setup.qc.Injury('convincer', setup.TRAUMA_SHORT), ],
+], ],
+[
+[setup.questpool.vale, setup.rarity.rare],
+], /* quest pool and rarity */
+[ /* restrictions to generate */
+  setup.qres.QuestUnique(),
+],
+)>>
+
+:: Quest_future_sight [nobr]
+<p>
+A famous seer lives in one of the many settlements on the <<lore region_vale>>.
+<<They $g.seer>> seer|is not only known for great <<their $g.seer>> <<beauty $g.seer>>, but also for <<their $g.seer>> uncanny ability to predict the future.
+</p>
+
+<p>
+You can send a group of slavers with some money to try and use <<their $g.seer>> services —- using <<their $g.seer>> future sight, it would be trivial to profit from the information. <<They $g.seer>> may also grant you insight into upcoming quests, even from faraway regions.
+</p>
+
+
+:: Quest_future_sightCrit [nobr]
+
+<p>
+The seer gracefully accepted the money your slavers brought and provided them with
+multiple future insights on the upcoming droughts as well as opportunities in nearby lands.
+Your slavers contemplated having such a divine <<beauty $g.seer>> as a slave, but
+<<yourrep $g.seer1>> and <<utheirrel $g.seer1 $g.seer2>> <<rep $g.seer2>> could both sense the vast magical power from
+the seer, so much that it would be extremely foolish to even attempt to do so. They just
+had to be satisfied at looking at <<their $g.seer>> divine <<beauty $g.seer>> through the
+scrying ball.
+</p>
+
+
+:: Quest_future_sightSuccess [nobr]
+
+<p>
+The seer accepted the money your slavers brought and while <<they $g.seer>> gave a
+great length of insightful divinations to your slavers,
+your slavers were too busy watching <<their $g.seer>>
+divine <<beauty $g.seer>> to pay attention.
+<<if $g.seer.isMale()>>
+The chiseled face, hint of stubble, and the rugged exterior
+<<else>>
+The wavy hair, hint of blush, and the clear eyes
+<</if>>
+were simply too much,
+and there was no way your slavers could concentrate on the task.
+At the end, your slavers were only able
+to remember very few things from the session, still valuable, but nowhere near
+as productive as it could have been.
+</p>
+
+
+:: Quest_future_sightFailure [nobr]
+
+<p>
+Unfortunately by the time your slavers had arrived at the seer's encampment,
+<<they $g.seer>> seemed to have already moved on to a new place.
+Your slavers were unable to track where the seer has moved to.
+</p>
+
+
+:: Quest_future_sightDisaster [nobr]
+
+<p>
+After accepting the money, the seer divined nothing but bad omens for your slavers.
+A few days later, <<rep $g.convincer>> convincer|was struck by a stray wild boar who appeared out of nowhere as your slavers were returning to the fort.
+</p>
+

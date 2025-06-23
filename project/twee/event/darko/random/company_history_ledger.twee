@@ -1,0 +1,129 @@
+:: EventSetup_company_history_ledger [nobr event]
+
+<<run new setup.Event(
+'company_history_ledger', /* key */
+"Company History Ledger", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_company_history_ledger',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_scholar, setup.trait.join_senior], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.f_object_good_slaver),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.Trait(setup.trait.bg_scholar)),
+    setup.qc.DoAll([
+      setup.qc.Item(setup.item.f_object_good_slaver),
+      setup.qc.Item(setup.item.f_object_good_slaver),
+      setup.qc.Item(setup.item.f_object_good_slaver),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.bedchamberwing),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_company_history_ledger [nobr]
+<p>
+As you work as usual in your office today, <<yourrep $g.slaver>> slaver|come knocking on the office door. Entering, the slaver slaver|is carrying a large stack of books, almost covering <<their $g.slaver>> entire face.
+<<if $g.slaver.isHasTrait('per_attentive')>>
+But despite that, the attentive <<urace $g.slaver>> managed to maintain <<their $g.slaver>> balance and place the tall stack of books on your desk. You
+<<else>>
+You are not surprised when <<therace $g.slaver>> lost balance and the books scattered across the floor of your office.
+After you help the
+<<if $g.slaver.isHasTrait('per_dreamy')>>
+clumsy
+<</if>>
+slaver pick up all the books and place them on your desk, you
+<</if>>
+then ask what these books are about.
+</p>
+
+<p>
+Apparently, the ex-scholar has been spending quite a time chronicling your company's misdeeds into a series of books. Indeed, the first book seemingly detail the start of your company, from its humble beginnings where the fort is nothing but a ruined remnants of a long-lost castle.
+<<if $g.slaver.getSpeech() == setup.speech.friendly>>
+The book is very fun to read, almost like a storybook.
+<<elseif $g.slaver.getSpeech() == setup.speech.bold>>
+The book tells your company's story in a grand way, and sometimes even take creative liberties in explaining the more mundane things.
+<<elseif $g.slaver.getSpeech() == setup.speech.cool>>
+The book gets straight to the point, and is very easy to complete in one go.
+<<elseif $g.slaver.getSpeech() == setup.speech.witty>>
+The book is full of humor, and you laugh at some of the jokes being told here and there.
+<<elseif $g.slaver.getSpeech() == setup.speech.debauched>>
+The book is very fun to read, no small thanks to the many sexual snippets being inserted here and there — accurate ones too!
+<</if>>
+</p>
+
+<<if $g.you.isHasTrait('bg_scholar')>>
+<p>
+But <<yourrep $g.slaver>> is not the only slaver around who had thought about writing such a chronicle.
+You were a scholar too once, and you had been writing a series of similar books as well.
+You invited <<rep $g.slaver>> to come over to one of your bookshelves, and
+<<they $g.slaver>> observed in awe at the multiple volumes of books that you had penned,
+noting all the achievements your company had done up to this point.
+</p>
+
+<p>
+Realizing the common shared interest, you and <<yourrep $g.slaver>> engaged in deep and
+productive discussions over these books. In the end, you were convinced by <<yourrep $g.slaver>>
+that these books should be made public in your fort.
+After all, what good is knowledge if it isn't shared?
+</p>
+
+<<else>>
+
+<p>
+This is an amazing chronicle, and while the book won't go anywhere, you might want to share it with the rest of your company.
+</p>
+
+<<choose>>
+
+<<opt "Share it with the rest of your company">>
+
+<p>
+You share the great news with the rest of your slaving company, and they greatly enjoy the read. Meanwhile, <<yourrep $g.slaver>>
+<<if $g.slaver.isHasTrait('per_humble')>>
+slaver|is completely humbled
+<<else>>
+slaver|look very pleased with <<themself $g.slaver>>
+<</if>>
+by the book's reception. <<name $g.slaver>> slaver|is on the tongue of every conversation that night, and <<therace $g.slaver>>'s mood increase in the coming weeks.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', 5).apply($gQuest)>>
+
+<<opt "Keep it in your office for a day and share it with visitors">>
+
+<p>
+For the rest of the week, you keep the tomes in your office. Many visitor takes interest in them, and they gain a new appreciation for how far the company has come from its humble beginnings. Your company's reputation increase slightly among the nearby residents.
+</p>
+
+<<run setup.qc.Favor('humankingdom', 20).apply($gQuest)>>
+<<run setup.qc.Favor('humanvale', 20).apply($gQuest)>>
+
+<</choose>>
+<</if>>

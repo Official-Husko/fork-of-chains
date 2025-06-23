@@ -1,0 +1,136 @@
+:: OpportunitySetup_blackmailed [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'blackmailed', /* key */
+"Blackmailed", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'unit',
+],
+1, /* expiration weeks */
+'Opportunity_blackmailed',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_blackmailed_0',
+    'Opportunity_blackmailed_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Event('a_permanent_solution', 10, {
+slaver: "slaver",
+boss: "boss",
+}),
+      setup.qc.Event('blackmail_due', 4, null, true),
+    ],
+  ],
+  [
+    'Opportunity_blackmailed_1',
+    'Opportunity_blackmailed_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarRemove('rival_blackmail_active'),
+      setup.qc.SetCooldownEvent('blackmailed', 400),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+  'boss': [
+  ],
+  'messenger': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_blackmailed [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Today, you receive a good news and a bad news.
+</p>
+
+<p>
+The good news is that you've heard back from <<yourrep $g.slaver>>, who went missing sometime ago.
+</p>
+
+<p>
+The bad news is that <<therace $g.slaver>> seems to have found <<themself
+$g.slaver>> under the tender care of a rival slaving company. Their boss, the
+<<urace $g.boss>> named <<rep $g.boss>>, has the nerve the demand payment for <<reps $g.slaver>> "continued safe hospitality" — a sum of <<money 2000>> payable every month.
+</p>
+
+<p>
+If you want to ensure <<reps $g.slaver>> safety, best to acquiesce to this
+reasonable demand. Otherwise you will never see <<rep $g.slaver>> ever again,
+as <<they $g.slaver>> will be shipped to a place somewhere far, far away...
+</p>
+
+
+
+:: Opportunity_blackmailed_0 [nobr]
+Acquiesce... for now
+
+
+:: Opportunity_blackmailed_0_flavor [nobr]
+
+<p>
+Not wanting to put <<rep $g.slaver>> in any peril, you acquiesced to the
+demand for now. You'll have to start pooling money for the monthly
+installments, if you want to maintain the status quo...
+</p>
+
+
+:: Opportunity_blackmailed_1 [nobr]
+Forget it, <<if $g.slaver>><<rep $g.slaver>><</if>> isn't worth it!
+
+
+:: Opportunity_blackmailed_1_flavor [nobr]
+
+<p>
+<<if $unit.player.isHasTrait('per_logical')>>
+Making up your mind, you coldly tell the messenger that you have no need of
+such a <<uadjbad $g.slaver>> slaver anymore, and they can do whatever they
+want with the former slaver.
+The answer sent chills down the messenger's spine, and <<they
+$g.messenger>> almost meekly exited your fort, unnerved by your cold
+decision.
+<<elseif $unit.player.isHasTrait('per_empath')>>
+With a gulp down your throat, you make the painful decision to decline after
+weighing <<reps $g.slaver>> utility and the money it would cost you to rescue <<them $g.slaver>>. The
+messenger can clearly see the hesitation in your empathetic mind, but decides
+not to push it further and exits your fort without a word.
+<<else>>
+Making up your mind, you tell the messenger that you decide to decline the offer.
+The messenger looks almost surprised at your cold answer, but <<they
+$g.messenger>> knows how to shut <<their $g.messenger>> mouth and exits your
+fort without asking questions.
+<</if>>
+</p>
+
+<p>
+This decision will surely seal <<reps $g.slaver>> fate, and you will never see
+<<them $g.slaver>> ever again...
+</p>
+

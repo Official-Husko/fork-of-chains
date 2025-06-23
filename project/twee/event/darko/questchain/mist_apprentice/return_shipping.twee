@@ -1,0 +1,66 @@
+:: EventSetup_return_shipping [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'return_shipping', /* key */
+"Return Shipping", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+],
+'Event_return_shipping',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.AllUnitSatisfyDo(
+    [setup.qres.HasTag('mist_apprentice_victim')],
+    [setup.qc.Injury('unit', 3), setup.qc.TraumatizeRandom('unit', 12), setup.qc.Return('unit')],
+  ),
+  setup.qc.Return('slaver'),
+  setup.qc.Trait('slaver', setup.trait.per_sexaddict),
+  setup.qc.Injury('slaver', 30),
+  setup.qc.TraumatizeRandom('slaver', 90),
+  setup.qc.SetCooldownQuest('mist_apprenticeship', 20),
+  setup.qc.RemoveTitleGlobal('quest_mist_apprentice_0'),
+  setup.qc.RemoveTagGlobal('mist_apprentice_victim'),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_return_shipping [nobr]
+<<set _onleave = $company.player.getUnits({tag: 'mist_apprentice_victim'})>>
+
+<p>
+A suspiciously large box has arrived at your fort today. Knowing full well
+that you've failed to complete the payment to the demon who's holding
+<<yourrep $g.slaver>> hostage, you hurriedly order your slavers to open the
+box. Indeed, <<rep $g.slaver>> slaver|is stuffed in full bondage inside,
+seemingly drenched in aphrodisiacs before being returned to you. <<Their
+$g.slaver>> eyes look completely unfocused, and <<their $g.slaver>>
+<<if $g.slaver.isHasDick()>>
+cock is steadily leaking precum.
+<<else>>
+pussy is steadily leaking pussyjuice.
+<</if>>
+It'll take quite a while before <<therace $g.slaver>> slaver|is functional again...
+</p>
+
+<<if _onleave.length>>
+<p>
+In the coming days, your other slaver<<if _onleave.length > 1>>s<</if>> who
+<<if _onleave.length > 1>>were<<else>>was<</if>>
+being held hostage by the demon <<if _onleave.length >
+1>>are<<else>>is<</if>> returned back to you one by one in similar fashion, although
+much less broken compared to <<rep $g.slaver>>.
+</p>
+<</if>>

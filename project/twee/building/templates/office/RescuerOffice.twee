@@ -1,0 +1,43 @@
+:: InitBuildingRescuerOffice [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'rescueroffice',
+  tags: [],
+  width: 2,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'rescueroffice',
+  name: 'Rescuer office',
+  tags: ['office', ],
+  description_passage: 'BuildingRescuerOffice',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('missioncontrol'),
+      setup.qres.Building('veteranhall'),
+    ],
+  ],
+  on_build: [
+    [setup.qc.Duty('rescuer')],
+  ],
+  main_room_template_key: 'rescueroffice',
+})>>
+
+:: BuildingRescuerOffice [nobr]
+
+<p>
+A lifeline for your slavers especially on veteran missions.
+Unlocks the Rescuer duty, which gives you quests to rescue your missing slaves/slavers.
+
+</p>

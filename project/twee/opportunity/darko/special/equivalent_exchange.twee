@@ -1,0 +1,88 @@
+:: OpportunitySetup_equivalent_exchange [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'equivalent_exchange', /* key */
+"Equivalent Exchange", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'city', 'special', 'order', 'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_equivalent_exchange',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_equivalent_exchange_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.SlaveOrderEquivalentExchange(),
+    ],
+  ],
+  [
+    'Opportunity_equivalent_exchange_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.MoneyUnitValue("you", -5, 100000),
+      setup.qc.FreePlayer(),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'you': null,
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_equivalent_exchange [nobr]
+<p>
+You have found yourself in quite a predicament. With your wrists shackled
+behind you, you are face-to-face with your prospective owner. They
+described in great details about your future "training", to make you into a
+perfectly pliable, compliant, and valuable slave.
+</p>
+
+<p>
+Fortunately for you, they turns out to be a reasonable slaver.
+Seeing how you lead such a successful band of outlaws, your "owner" offered
+you a trade. Your freedom, in exchange for a replacement for you. But the
+replacement must be at least twice as valuable as you are, and for some
+interesting reason must also be completely untrained.
+</p>
+
+<p>
+...or alternatively, you can also simply pay a ransom. An exorbitant ransom,
+five times your actual worth as a slave. A paltry sum of
+<<set _sum = $unit.player.getSlaveValue() * 5>>
+<<money _sum>>.
+</p>
+
+<p>
+Time to decide which option you should write in a letter to your company.
+Don't delay though, for surely your (hopefully temporary) owner will continue on with your
+"training" if you delay...
+</p>
+
+
+:: Opportunity_equivalent_exchange_0 [nobr]
+Trade with a valuable and untrained slave
+
+
+:: Opportunity_equivalent_exchange_1 [nobr]
+Pay your exorbitant ransom

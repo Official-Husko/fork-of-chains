@@ -1,0 +1,30 @@
+:: RestrictionHasSlave [nobr]
+
+<<set $qrestriction = setup.qres.HasSlave()>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionHasSlaveWithTraits [nobr]
+
+Has at least one slave with all the following traits:
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.HasSlaveWithTraits(_chosentraits)>>
+<</link>>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+:: RestrictionNoSlaveWithTraits [nobr]
+
+None of your slaves has <<dangertext 'ALL'>> the following traits (i.e., it
+is ok if they only have one or two, but not ALL of the traits):
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.NoSlaveWithTraits(_chosentraits)>>
+<</link>>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+

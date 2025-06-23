@@ -1,0 +1,143 @@
+:: QuestSetup_infiltration_of_the_heart [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriapupil = new setup.UnitCriteria(
+null, /* key */
+'Pupil', /* name */
+[
+setup.trait.bg_mythical,
+setup.trait.bg_wiseman,
+setup.trait.bg_mystic,
+setup.trait.bg_monk,
+setup.trait.bg_priest,
+setup.trait.bg_healer,
+setup.trait.bg_apprentice,
+setup.trait.bg_scholar,
+setup.trait.per_chaste,
+setup.trait.per_lavish,
+setup.trait.per_humble,
+setup.trait.per_kind,
+setup.trait.per_loyal,
+setup.trait.per_direct,
+setup.trait.per_empath,
+setup.trait.per_honorable,
+setup.trait.per_calm,
+setup.trait.muscle_thin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_extremelythin,
+setup.trait.dick_tiny,
+setup.trait.balls_tiny,
+setup.trait.breast_large,
+setup.trait.breast_huge,
+setup.trait.breast_titanic,
+],
+[
+setup.trait.bg_mist,
+setup.trait.bg_assassin,
+setup.trait.bg_informer,
+setup.trait.bg_slaver,
+setup.trait.bg_raider,
+setup.trait.bg_pirate,
+setup.trait.bg_thug,
+setup.trait.bg_thief,
+setup.trait.bg_mercenary,
+setup.trait.bg_whore,
+setup.trait.bg_unemployed,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_proud,
+setup.trait.per_cruel,
+setup.trait.per_lunatic,
+setup.trait.per_masochistic,
+setup.trait.per_sly,
+setup.trait.per_evil,
+setup.trait.per_aggressive,
+setup.trait.dick_large,
+setup.trait.dick_huge,
+setup.trait.dick_titanic,
+setup.trait.balls_large,
+setup.trait.balls_huge,
+setup.trait.balls_titanic,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.Trait(setup.trait.gender_male),
+setup.qres.HasTitle('quest_enlightenment_1_graduate_0'),
+setup.qres.Trait(setup.trait.magic_light),
+],
+{
+arcane: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'infiltration_of_the_heart', /* key */
+"Infiltration of the Heart", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[
+'veteran', 'trait', 'prep', 'city', 'special',
+], /* tags */
+2, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+'pupil': [_criteriapupil, 3]},
+{ /* actors */
+'master': 'quest_enlightenment_of_the_mind1', },
+[ /* costs */
+setup.qc.Money(-20000), ],
+'Quest_enlightenment_of_the_heart',
+setup.qdiff.normal47, /* difficulty */
+[ /* outcomes */
+[
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.SetCooldownOpportunity('infiltration_of_the_soul', 10),
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.AddTitle('pupil', 'quest_enlightenment_2_graduate_1'),
+setup.qc.TraitRemove('pupil', setup.trait.per_evil),
+setup.qc.MoneyCustom(5000),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 2, true), ],
+], [
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.SetCooldownOpportunity('infiltration_of_the_soul', 10),
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.AddTitle('pupil', 'quest_enlightenment_2_graduate_1'),
+setup.qc.TraitRemove('pupil', setup.trait.per_evil),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 1, true), ],
+], [
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.TraitRemove('pupil', setup.trait.per_chaste), ],
+], [
+'Quest_enlightenment_of_the_heartCrit',
+[
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.MissingUnit('pupil'),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_honorable, setup.trait.per_calm], 2, true),
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoQuest('enlightenment_of_the_heart'),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.ExistUnit([
+  setup.qres.HasTitle('quest_enlightenment_1_graduate_0'),
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.gender_male),
+])
+],
+[ /* expiration outcomes */
+],
+)>>

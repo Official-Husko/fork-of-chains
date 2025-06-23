@@ -1,0 +1,374 @@
+:: QuestSetup_the_serial_bodyswapper [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_the_serial_bodyswapper1',
+"shifter1",
+'desert_all',  /* pools */
+0, /* reuse chance */
+[
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'quest_the_serial_bodyswapper2',
+"shifter3",
+'subrace_humansea', /* pools */
+0, /* reuse chance */
+[
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'quest_the_serial_bodyswapper3',
+"Serial Bodyswapper",
+'desert_all',  /* pools */
+0, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_mystic),
+setup.qc.TraitReplace('unit', setup.trait.magic_water_master), ],
+)>>
+
+<<run new setup.UnitGroup(
+'quest_the_serial_bodyswapper4',
+"Swap victim",
+'all',  /* pools */
+0, /* reuse chance */
+[
+setup.qc.AddRandomBodypart('unit', false), ],
+)>>
+
+
+<<set _criteriadistractor = new setup.UnitCriteria(
+null, /* key */
+'Distractor', /* name */
+[
+setup.trait.dick_large,
+setup.trait.dick_huge,
+setup.trait.dick_titanic,
+setup.trait.balls_large,
+setup.trait.balls_huge,
+setup.trait.balls_titanic,
+setup.trait.breast_large,
+setup.trait.breast_huge,
+setup.trait.breast_titanic,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+],
+[
+setup.trait.dick_tiny,
+setup.trait.balls_tiny,
+setup.trait.breast_tiny,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.per_loner,
+setup.trait.per_chaste,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+arcane: 1,
+sex: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_serial_bodyswapper', /* key */
+"The Serial Bodyswapper", /* Title */
+"darko", /* Author */
+[
+  'desert',
+  'transformation',
+  'special',
+  'veteran',
+  'unknown'
+], /* tags */
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'fighter': setup.qu.fighter,
+'exploder': setup.qu.arcanefire,
+'distractor': _criteriadistractor, },
+{ /* actors */
+'shifter2': 'quest_night_shift231',
+'shifter1': 'quest_the_serial_bodyswapper1',
+'shifter3': 'quest_the_serial_bodyswapper2',
+'thief': 'quest_the_serial_bodyswapper3',
+'victim': 'quest_the_serial_bodyswapper4', },
+[ /* costs */
+],
+'Quest_the_serial_bodyswapper',
+setup.qdiff.hardest47, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_serial_bodyswapperCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.Bodyswap('thief', 'victim'),
+  setup.qc.Slave('thief', "a|was a serial bodyswapper notorious for using long-range bodyswapping magic to \"kidnap\" the bodies of a|their victims", undefined), ],
+], [
+'Quest_the_serial_bodyswapperCrit',
+[
+setup.qc.SetCooldownQuest('night_shift23', 250),
+setup.qc.SetCooldownQuest('night_shift2', 250),
+setup.qc.SetCooldownQuest('night_shift', 250),
+setup.qc.VarAdd('nightshifter', 10, 20),
+setup.qc.VarRemove('nightshifter_bodyswapped'),
+setup.qc.Opportunity('the_serial_bodyswapper__reward',
+{
+  fighter: 'fighter',
+  exploder: 'exploder',
+  distractor: 'distractor',
+  shifter1: 'shifter1',
+  shifter2: 'shifter2',
+  shifter3: 'shifter3',
+}),
+setup.qc.Event('bodyswap_epilogue', 1),
+],
+], [
+'Quest_the_serial_bodyswapperCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.Bodyswap('fighter', 'shifter1'),
+],
+], [
+'Quest_the_serial_bodyswapperDisaster',
+[
+setup.qc.VarAdd('nightshifter', 10, 20),
+setup.qc.VarRemove('nightshifter_bodyswapped'),
+setup.qc.SlaveMarker('victim'),
+setup.qc.SlaveMarker('shifter1'),
+setup.qc.SlaveMarker('shifter2'),
+setup.qc.SlaveMarker('shifter3'),
+setup.qc.RemoveFromUnitGroup('shifter1'),
+setup.qc.RemoveFromUnitGroup('shifter2'),
+setup.qc.RemoveFromUnitGroup('shifter3'),
+setup.qc.MissingUnit('fighter'),
+setup.qc.Bodyswap('fighter', 'thief'),
+setup.qc.Injury('exploder', 8),
+setup.qc.Injury('distractor', 9), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarGte('nightshifter', 3),
+setup.qres.VarLte('nightshifter', 10),
+],
+)>>
+
+:: Quest_the_serial_bodyswapper [nobr]
+<<set _u = null>>
+<<set _ukey = $varstore.get('nightshifter_bodyswapped')>>
+<<if _ukey && _ukey in $unit>>
+<<set _u = $unit[_ukey]>>
+<</if>>
+
+<p>
+Do you remember the serial bodyswapper that went rampant in the
+<<lore region_desert>>, doing remote body-swapping rituals over unsuspecting victims
+<<if _u>> including <<yourrep _u>><</if>>?
+Well, your slavers had finally managed to pinpoint the exact location of
+<<their $g.thief>> den —- in the middle of nowhere in the desert, behind a
+large unmarked stone wall next to an oasis. <<if _u && _u.isSlaver()>>
+<<rep _u>> licks <<their _u>> lips as <<they _u>> can feel that revenge is
+finally within <<their _u>> grasp.
+<</if>>
+</p>
+
+<p>
+You can try to stop this bodyswapping crime once and for all by sending a group of
+slavers to the location. You need one slaver, preferably proficient in
+<<rep setup.trait.magic_fire>>, to blow up the entrance. Once the entrance is
+open, you need a slaver proficient in combat to lead the way down. Finally,
+one of your slavers need to distract the bodyswapper while the rest attempt
+to subdue <<them $g.thief>>.
+</p>
+
+<<if _u && _u.isSlaver()>>
+<p>If <<yourrep _u>> wants <<their _u>> body back, <<they _u>> should definitely
+go on this quest...</p>
+<</if>>
+
+
+:: Quest_the_serial_bodyswapperCrit [nobr]
+<<set _u = null>>
+<<set _ukey = $varstore.get('nightshifter_bodyswapped')>>
+<<if _ukey && _ukey in $unit>>
+<<set _u = $unit[_ukey]>>
+<</if>>
+
+<p>
+Your slavers wisely spent a week first practicing before charging headlong
+into the stronghold.
+<<if $g.exploder.isHasTrait('magic_fire')>>
+<<rep $g.exploder>> practiced <<their $g.exploder>> strongest explosion
+spells in preparation for blasting the door.
+<<else>>
+<<rep $g.exploder>> scoured nearby settlements in search for explosives to
+detonate the door.
+<</if>>
+Meanwhile, <<rep $g.fighter>> <<uadv $g.fighter>> practiced their fighting
+techniques while <<rep $g.distractor>> did <<their $g.distractor>> to, uh,
+appear distracting.
+</p>
+
+<p>
+Once their preparations were complete, your slavers headed into the oasis.
+When they arrived at a stone that looked suspiciously like a door
+ <<rep $g.exploder>> got to work.
+<<if $g.exploder.isHasTrait('magic_fire')>>
+From a safe distance, <<rep $g.exploder>> cast a large explosion spell which
+punched a big hole into the wall safely.
+<<else>>
+<<Yourrep $g.exploder>> placed all the explosives <<they $g.exploder>>
+had purchased and explode them at the same time, which injures <<them
+$g.exploder>> a little.
+<<run $hospital.injureUnit($g.exploder, 2)>>.
+<</if>>
+With the entrance wide open, <<rep $g.fighter>> <<uadv $g.fighter>> led the
+team down the hallways.
+</p>
+
+<p>
+The stronghold was surprisingly small. After passing what seemed to be a
+laboratory next to a bedroom, they arrived at a small ominous clearing. A
+large purple magical circle filled the entire room, and at its center was
+a hooded <<urace $g.thief>> deep in incantation. Your slavers could see as
+<<their $g.thief>> body morphed before their eyes — it seemed they were in luck:
+the serial bodyswapper was too deep in their spell to notice the loud
+explosion from earlier.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+With the serial bodyswapper deep in the ritual, <<rep $g.fighter>> led your team
+of slavers to charge.
+Surprised and greatly distracted by <<yourrep $g.distractor>> swaying <<their $g.distractor>> <<ubody
+$g.distractor>> distractingly,
+the serial bodyswapper lost control of <<their $g.thief>>
+spell, causing it to misfire. Before your slavers' eyes <<their $g.thief>>
+body distorted unnaturally and extremely painfully. Either way it certainly made
+your slavers' job very easy as they tied up, gagged, and secured the
+bodyswapper who was still in deep excruciating pain, to be brought back home to your fort as a trophy slave.
+<<if _u && _u.isSlaver()>>
+<<rep _u>> will finally get <<their _u>> <<uhands _u>> on the bodyswapper for the well-deserved revenge.
+<</if>>
+</p>
+<<elseif $gOutcome == 'success'>>
+
+<p>
+With the serial bodyswapper deep in the ritual, <<rep $g.fighter>> led your team
+of slavers to charge.
+Despite being surprised and distracted by <<yourrep $g.distractor>> swaying <<their $g.distractor>> <<ubody $g.distractor>>,
+the serial bodyswapper still managed to alter the spell <<they $g.thief>>
+thief|was casting into a spell of mass flooding.
+Torrents of water came out of nowhere, flooding the entire chamber and pushing
+your slavers back from approaching the bodyswapper-wizard. It seemed your
+slavers had underestimated the magical prowess of the bodyswapper. By the
+time they managed to break through the magical flood the bodyswapper was
+already nowhere to be seen.
+</p>
+<<else>>
+<p>
+But it seemed the bodyswapper was still ready for a fight — as soon as your slavers
+approached, a familiar purple circle glowed brightly under <<yourrep $g.fighter>>
+— instantly transforming <<them $g.fighter>> before your slavers' eyes.
+<<ubodyswap $g.fighter $g.shifter1>>
+While your slavers were distracted by the transformation, the
+bodyswapper-wizard made <<their $g.thief>> escape from the place.
+</p>
+<</if>>
+
+<p>
+With its owner gone, your slavers spent some time exploring the bunker. In
+the dungeons they found several slaves seemingly already mindbroken for a
+long time. It seemed that the serial bodyswapper bought cheap slaves from the
+slave market and used these fucktoys as <<their $g.thief>> living "body
+storage", to store the bodies that <<they $g.thief>> like by means of bodyswapping.
+<<if $gOutcome == 'failure'>>
+<<rep $g.fighter>> noticed one of the slaves were actually wearing <<their
+$g.fighter>> body, which gave <<them $g.fighter>> hope that perhaps <<they
+$g.fighter>> could reclaim <<their $g.fighter>> original body back.
+<</if>>
+<<if _u && _u.isSlaver()>>
+One of the slaves bore the former body of <<rep _u>>, to your slavers' surprise.
+<</if>>
+</p>
+
+<p>
+After a more thorough search of the place, they found a tome detailing the
+full bodyswapping ritual. While it required an expertise outside the
+capabilities of anyone in your fort, the stronghold currently already have a
+fully-prepared circle ready for the ritual. It would be possible to use it to
+bodyswap one of the participants of this quest with one of the mindbroken
+slaves. This ritual will surely draw unwanted attention, however, and it is
+unlikely you can reclaim the slaves for your own afterwards. Alternatively, you can
+always use more slaves in your roster, and forget about all these bodyswapping shenanigan.
+<<if $gOutcome == 'failure'>>
+Still, this may be the only chance for <<rep $g.fighter>> to reclaim <<their $g.fighter>> original body.
+<</if>>
+</p>
+
+
+:: Quest_the_serial_bodyswapperDisaster [nobr]
+<<set _u = null>>
+<<set _ukey = $varstore.get('nightshifter_bodyswapped')>>
+<<if _ukey && _ukey in $unit>>
+<<set _u = $unit[_ukey]>>
+<</if>>
+
+<p>
+Your slavers made the rash decision to immediately rush into the bodyshaper's
+den as urged by <<yourrep $g.fighter>>, in order to prevent further bodyswapping
+from happening.
+<<if $g.exploder.isHasTrait('magic_fire')>>
+<<rep $g.exploder>> messily cast a large explosion spell which punched a big
+hole into the wall but also emitting a very loud noise.
+<<else>>
+<<rep $g.exploder>> placed all the explosives <<they $g.exploder>> gathered
+and explode them at the same time, which injures <<them $g.exploder>> as well
+as making a very loud noise.
+<<run $hospital.injureUnit($g.exploder, 3)>>
+<</if>>
+With the entrance wide open, <<rep $g.fighter>> <<uadv $g.fighter>> led the team down the hallways.
+</p>
+
+<p>
+Your slavers were then ambushed by the waiting bodyswapper, who was aware of
+their intrusion because of..., well, pick your choice between the giant hole
+in their stronghold or the big ass explosion happening earlier. Either way
+there was no chance in hell your slavers were able to escape the magic of
+this powerful bodyswapper-wizard, and they were immobilized easily as the
+bodyswapper worked <<their $g.thief>> <<lore magic_water>>. Immobilized, they
+were helpless to prevent the advancing hands of the bodyswapper as <<they
+$g.thief>> <<man $g.thief>>handled your slavers, trying to choose which fresh body <<they
+$g.thief>> would like most to bodyswap with. After settling with <<reps
+$g.fighter>> <<ubody $g.fighter>>, your other slavers were blasted away with
+magic far outside from the stronghold, and they suffered great injuries as a
+result.
+</p>
+
+<p>
+<<Reps $g.fighter>> fate is to be bodyswapped again and again and be used as
+the bodyswapper's personal body storage. You might be able to rescue <<therace $g.fighter>>
+later with a rescuer, but <<they $g.fighter>> probably would
+have already occupied a completely different body by then...
+</p>
+
+<<if _u && _u.isSlaver()>>
+  Thanks to your slaver's rash decisions <<rep _u>>'s original body is lost
+  forever...
+<</if>>

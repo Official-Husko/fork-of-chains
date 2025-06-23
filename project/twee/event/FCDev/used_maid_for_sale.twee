@@ -1,0 +1,80 @@
+:: EventSetup_used_maid_for_sale [nobr event]
+
+<<run new setup.UnitGroup(
+"used_maid_for_sale0",
+"Repoed Maid",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_maid),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_gape),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_gape),
+  setup.qc.TraitReplace('unit', setup.trait.face_attractive),
+  setup.qc.TraitReplace('unit', setup.trait.training_obedience_advanced),
+  setup.qc.TraitReplace('unit', setup.trait.training_domestic_basic),
+  setup.qc.TraitReplace('unit', setup.trait.per_lustful),
+  setup.qc.Injury('unit', 4),
+],
+)>>
+
+<<run new setup.Event(
+'used_maid_for_sale', /* key */
+"Used Maid for Sale", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_used_maid_for_sale',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'maid': 'used_maid_for_sale0',
+},
+[ /* outcomes */
+  setup.qc.Slave('maid', "a|was a housekeeper and fucktoy of a dormitory before being collected by the Tiger Bank repo-men and sold to you", true, 0.8),
+  setup.qc.VarSet('quest_tiger_bank_repo_resale', '1', 250),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+  setup.qres.FavorAtLeast('bank', 300),
+  setup.qres.VarNull('quest_tiger_bank_repo_resale'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_used_maid_for_sale [nobr]
+
+<<include 'Event_TigerBankRepoCommon'>>
+
+<p>
+The current sale offer by the bank was taken from a dormitory-house - apparently the people renting the establishment don't know their asses from their elbows in money-management. A few too many parties and frivolous purchases sent an asset reclamation officer to their door, soon leaving with one of those recent purchases - a
+<<if $g.maid.isFemale()>>
+pretty female
+<<else>>
+handsome male
+<</if>>
+slave who doubled as both a housekeeper and fuckhole for the whole bunch of horny tenants. <<They $g.maid>>'s cute and apparently well-trained, if a bit exhausted right now after numerous gang-bangs <<their $g.maid>> former owners put <<them $g.maid>> through.
+</p>
+
+<p>
+Should you wish to purchase the slave, <<they $g.maid>> maid|have been delivered to your
+<<rep setup.buildingtemplate.slavepens>> for your inspection.
+When you inspect <<them $g.maid>> there, <<they $g.maid>> lowers <<their $g.maid>> head
+obediently and asks, "<<Master $unit.player>>, what will my new tasks in your
+household be? Shall I just clean or will there be... other things for me to
+do?" The eager tremble in <<their $g.maid>> voice tells you that <<they $g.maid>>'s more than a little
+aroused by the thought of being used, so you tell <<them $g.maid>> it'll all depend on if
+<<they $g.maid>>'s a good slave...
+</p>
+
+
+:: Event_TigerBankRepoCommon [nobr]
+
+<p>
+The <<rep $company.bank>> is a fair financial establishment. They would offer their customer a safe place to store their valuables, as well as providing loans to those that needs them. But like everywhere else, there are winners and losers of the ever-changing market, and when someone falls upon hard times and fail to pay their loan, the many repo-men and repo-women of the bank start their work. Grim-faced and unmoved by sympathy, they go in to seize the debtor's assets to pay off their debts - which does at times include some quite interesting pieces of merchandise, like a nice slave or two. They would then offer to offload these merchandise quickly for a cheaper fee to their allies, which apparently include your company.
+</p>

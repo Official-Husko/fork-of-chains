@@ -1,0 +1,58 @@
+:: EventSetup_brothel_decline [nobr event]
+
+<<run new setup.Event(
+'brothel_decline', /* key */
+"Brothel Decline", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_brothel_decline',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_brothel_high_income_warning', '1', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_high_income_warning'),
+  setup.qres.VarNull('quest_brothel_high_income'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+],
+10, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_brothel_decline [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+<<Yourrep $g.owner>> owner|come to you with bad news.
+Unfortunately, <<attach _describe>> is getting old, and as a result it is no longer drawing as many customers as it used to. Expect the revenue to steeply decline from now on.
+</p>
+
+<p>
+There are a couple of options you can take from here. There might be a possibility to rejuvenate the brothel from time to time, but it is unclear how effective this would. Alternatively, you can also close your brothel if you feel it is no longer making enough profit for you — you can do so by asking <<yourrep $g.owner>> directly about it. Finally, you might consider selling the brothel, should an offer come...
+</p>
+
+<p>
+Should you wish to close or sell your brothel, you might be able to recruit
+some of its workers back into your company.
+</p>

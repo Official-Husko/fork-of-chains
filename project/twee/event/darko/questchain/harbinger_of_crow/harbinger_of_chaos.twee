@@ -1,0 +1,80 @@
+:: EventSetup_harbinger_of_chaos [nobr event]
+
+
+<<run new setup.Title(
+"quest_harbinger_of_chaos_0", /* key */
+"Harbinger of Chaos", /* name */
+"Blessed with both good and bad luck in excess", /* description */
+"a|is blessed with both good and bad fortune in an excess", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+arcane: 4,},
+)
+>>
+
+
+<<run new setup.Event(
+'harbinger_of_chaos', /* key */
+"Harbinger of Chaos", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_harbinger_of_chaos',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('quest_harbinger_of_luck_done'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_crit'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_progress'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_magic'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_lucky'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_horse'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_clover'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_bath'),
+  setup.qc.VarSet('quest_harbinger_of_crows_radiant', '1', 250),
+  setup.qc.RemoveTitle('a', 'quest_harbinger_of_misfortune_0'),
+  setup.qc.AddTitle('a', 'quest_harbinger_of_chaos_0'),
+  setup.qc.PerkChoice('a', 'perk_harbinger_of_chaos'),
+],
+[ /* restrictions */
+  setup.qres.VarGte('quest_harbinger_of_luck_done', 3),
+  setup.qres.VarGte('quest_harbinger_of_luck_crit', 2),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_harbinger_of_chaos [nobr]
+<p>
+In the past weeks, you and <<yourrep $g.a>> had tried your hardest to remove the curse of misfortunate that has somehow been placed upon <<therace $g.a>>. And it is starting to borne... a strange fruit.
+</p>
+
+<p>
+It does not seem to have done anything for <<reps $g.a>> misfortune. <<Therace $g.a>> would continue to be shat upon by flying birds, and to fall victim to the most awkwardly placed bumps on the floor.
+</p>
+
+<p>
+On the other hand, <<they $g.a>> a|is also starting to receive some awkwardly good luck. Last week, the tavern <<they $g.a>> happened to patron was just celebrating their first anniversary, and the drinks were all entirely on the house. Before arriving at your office today, <<they $g.a>> had just found a shiny gem lying on the road, which they sold for a good fortune to one of the merchants in your fort.
+</p>
+
+<p>
+The rituals seem to indeed boost <<their $g.a>> luck one way or another, but apparently luck and misfortune are two separate entities.
+As it stands right now <<rep $g.a>> is now blessed with both good luck and bad luck at the same time.
+</p>
+
+<p>
+Still, <<therace $g.a>> a|seem to be awfully happy about the result. Indeed, if you were to be cursed with a bad luck, might as well also be blessed with good luck. For every misfortune in <<their $g.a>> life will now be a boon later in <<their $g.a>> life. A much more desirable results, compared to just suffering through your bad luck with nothing to gain.
+</p>
+

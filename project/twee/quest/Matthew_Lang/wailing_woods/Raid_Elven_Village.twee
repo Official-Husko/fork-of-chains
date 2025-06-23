@@ -1,0 +1,246 @@
+:: QuestSetup_raid_elven_village [nobr quest]
+
+<<run new setup.QuestTemplate(
+'raid_elven_village', /* key */
+"Raid: Elven Village", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'forest',
+  'unit',
+  'ire',
+  'money',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'raider1': [ setup.qu.raider, 1],
+  'raider2': [ setup.qu.raider, 1],
+  'support': [ setup.qu.raidersupport, 1],
+},
+{ /* actors */
+  'elves': 'subrace_elf',
+},
+[ /* costs */
+],
+'Quest_raid_elven_village',
+setup.qdiff.normal25, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_raid_elven_villageCrit',
+    [
+      setup.qc.Slave('elves', "a|was a free elf who had the misfortune of being captured by your company", undefined),
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_raid_elven_villageCrit',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.Favor('outlaws', 25),
+      setup.qc.Ire('elf', 1),
+    ],
+  ],
+  [
+    'Quest_raid_elven_villageFailure',
+    [
+      setup.qc.Favor('elf', 20),
+    ],
+  ],
+  [
+    'Quest_raid_elven_villageDisaster',
+    [
+      setup.qc.Injury('raider1', 2),
+      setup.qc.Injury('raider2', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_raid_elven_village [nobr]
+
+<<questimage 'elf_raid.jpg'>>
+
+<p>
+It's come to your attention that a new village of elves has been founded at the edge of the <<lore region_forest>>. You're not entirely certain if this is a settlement with ties to the <<rep $company.elf>>, but they don't appear to have much in the way of guards. This could be an opportunity for you to nab yourself a slave or two.</p>
+<p>On the other hand you could leave them alone and see if there's interest in trading or something, but where's the fun in that?</p>
+
+
+
+
+:: Quest_raid_elven_villageCrit [nobr]
+	<<if $g.raider1.isYou() or $g.raider2.isYou() or $g.support.isYou()>>
+	<p>
+	Led by you, your slavers descended upon the village in the dead of night.
+		<<if $g.raider1.isHasTrait('per_attentive')>>
+		The careful planning <<name $g.raider1>> did beforehand meant your slavers quickly sent the villagers fleeing in a panic, allowing them to help themselves to most of the valuables in the village.
+		<<else>>
+		While some of the residents put up a fight, most fled in fear, allowing <<name $g.raider1>> to ransack many of the houses.
+		<</if>>
+	</p>
+		<<if $gOutcome == 'crit'>>
+		<p>The fighting is really more of a slaughter, and
+			<<if $unit.player.isHasTraitExact('per_cruel','per_evil')>>
+			You laugh as you walk through the road as your slavers pull people from their hiding places, assessing their values as slaves and dispatching the rest who fail to flee.<br>
+			"Found one boss"<br>
+			You turn and see 	
+				<<if $g.raider1.isYou()>>
+				<<name $g.raider2>>	hauling a young <<woman $g.elves>> out of a house.<br>
+				"Leave my <<girl $g.elves>> alone!"<br>
+				A woman throws herself at <<name $g.raider2>>, trying to pull <<their $g.raider2>> <<uhands $g.raider2>> from the <<girl $g.elves>>. Pulling out your <<uweapon $unit.player>> you strike down at her once, twice, and then her grip goes limp as she falls to the ground.<br>
+				"Mothe--" the <<girl $g.elves>>'s cry is muffled by <<name $g.raider2>>'s <<uhands $g.raider2>> over <<their $g.elves>> mouth.<br>
+-				The woman's eyes dim as she stares up into your face. "Curse...you...
+-					<<if $unit.player.isHasTrait('subrace_elf')>>
+					traitor...
+					<<else>>
+					invader...
+					<</if>>
+				" she says as the breath leaves her body.<br>
+				"Whatever," you say as you glance around the village. "All right, let's move out!"
+				<<else>>
+				<<name $g.raider1>>	hauling a young <<woman $g.elves>> out of a house.<br>
+				"Leave my <<girl $g.elves>> alone!"<br>
+				A woman throws herself at <<name $g.raider1>>, trying to pull <<their $g.raider1>> <<uhands $g.raider1>> from the <<girl $g.elves>>. Pulling out your <<uweapon $unit.player>> you strike down at her once, twice, and then her grip goes limp as she falls to the ground.<br>
+				"Mothe--" the <<girl $g.elves>>'s cry is muffled by <<name $g.raider1>>'s <<uhands $g.raider1>> over <<their $g.elves>> mouth.<br>
+				The woman's eyes dim as she stares up into your face. "Curse...you...
+					<<if $unit.player.isHasTrait('subrace_elf')>>
+					traitor...
+					<<else>>
+					invader...
+					<</if>>
+				" she says as the breath leaves her body.<br>
+				"Whatever," you say as you glance around the village. "All right, let's move out!"		
+				<</if>>
+			<<elseif $unit.player.isHasTraitExact('per_kind','per_empath')>>
+				<<if $g.raider1.isYou()>>
+				<<name $g.raider2>>	hauling a young <<woman $g.elves>> out of a house.<br>
+				"Leave my <<girl $g.elves>> alone!"<br>
+				A woman throws herself at <<name $g.raider2>>, trying to pull <<their $g.raider2>> <<uhands $g.raider2>> from the <<girl $g.elves>>. Pulling out your <<uweapon $unit.player>> you aim carefully and strike her once, dealing a mortal blow. Almost immediately her grip goes limp as she falls to the ground.<br>
+				"Mothe--" the <<girl $g.elves>>'s cry is muffled by <<name $g.raider2>>'s <<uhands $g.raider2>> over <<their $g.elves>> mouth.<br>
+				The woman's eyes dim as she stares up into your face. "Curse...you...
+					<<if $unit.player.isHasTrait('subrace_elf')>>
+					traitor...
+					<<else>>
+					invader...
+					<</if>>
+				" she says as the breath leaves her body.<br>
+				"I know," you murmur, although you don't expect anyone to hear you. Kneeling down, you straighten her clothes and close her eyes, ensuring she'll have some dignity when the villagers return and find her.<br>
+				You take a deep breath to steady your nerves. The smells of the forest are overlain with blood, bile and shit from ruptured intestines.<br>
+				"All right," you say, turning towards your slavers. "Secure the slave, and let's move."
+				<<else>>
+				<<name $g.raider1>>	hauling a young <<woman $g.elves>> out of a house.<br>
+				"Leave my <<girl $g.elves>> alone!"<br>
+				A woman throws herself at <<name $g.raider1>>, trying to pull <<their $g.raider1>> <<uhands $g.raider1>> from the <<girl $g.elves>>. Pulling out your <<uweapon $unit.player>> you aim carefully and strike her once, dealing a mortal blow. Almost immediately her grip goes limp as she falls to the ground.<br>
+				"Mothe--" the <<girl $g.elves>>'s cry is muffled by <<name $g.raider1>>'s <<uhands $g.raider1>> over <<their $g.elves>> mouth.<br>
+				The woman's eyes dim as she stares up into your face. "Curse...you...
+					<<if $unit.player.isHasTrait('subrace_elf')>>
+					traitor...
+					<<else>>
+					invader...
+					<</if>>
+				" she says as the breath leaves her body.<br>
+				"I know," you murmur, although you don't expect anyone to hear you. Kneeling down, you straighten her clothes and close her eyes, ensuring she'll have some dignity when the villagers return and find her.<br>
+				You take a deep breath to steady your nerves. The smells of the forest are overlain with blood, bile and shit from ruptured intestines.<br>
+				"All right," you say, turning towards your slavers. "Secure the slave, and let's move."
+				<</if>>
+			<<else>>
+				<<if $g.raider1.isYou()>>
+				<<name $g.raider2>>	hauling a young <<woman $g.elves>> out of a house.<br>
+				"Leave my <<girl $g.elves>> alone!"<br>
+				A woman throws herself at <<name $g.raider2>>, trying to pull <<their $g.raider2>> <<uhands $g.raider2>> from the <<girl $g.elves>>. Pulling out your <<uweapon $unit.player>> you strike her once, twice. Almost immediately her grip goes limp as she falls to the ground.<br>
+				"Mothe--" the <<girl $g.elves>>'s cry is muffled by <<name $g.raider2>>'s <<uhands $g.raider2>> over <<their $g.elves>> mouth.<br>
+				The woman's eyes dim as she stares up into your face. "Curse...you...
+					<<if $unit.player.isHasTrait('subrace_elf')>>
+					traitor...
+					<<else>>
+					invader...
+					<</if>>
+				" she says as the breath leaves her body.<br>
+				You stare at her body for a moment, crumpled unnaturally on the floor and then turn to look for your slavers.<br>
+				"All right," you say. "Secure the slave, and let's move."
+				<<else>>
+				<<name $g.raider1>>	hauling a young <<woman $g.elves>> out of a house.<br>
+				"Leave my <<girl $g.elves>> alone!"<br>
+				A woman throws herself at <<name $g.raider1>>, trying to pull <<their $g.raider1>> <<uhands $g.raider1>> from the <<girl $g.elves>>. Pulling out your <<uweapon $unit.player>> you strike her once, twice. Almost immediately her grip goes limp as she falls to the ground.<br>
+				"Mothe--" the <<girl $g.elves>>'s cry is muffled by <<name $g.raider1>>'s <<uhands $g.raider1>> over <<their $g.elves>> mouth.<br>
+				The woman's eyes dim as she stares up into your face. "Curse...you...
+					<<if $unit.player.isHasTrait('subrace_elf')>>
+					traitor...
+					<<else>>
+					invader...
+					<</if>>
+				" she says as the breath leaves her body.<br>
+				You stare at her body for a moment, crumpled unnaturally on the floor and then turn to look for your slavers.<br>
+				"All right," you say. "Secure the slave, and let's move."
+				<</if>>	
+			<</if>>
+		All in all, you consider the day a success.</p>
+		<</if>>
+	<<else>>
+	<p>
+	Your slavers, led by <<name $g.raider1>>, descended upon the village in the dead of night.
+		<<if $g.raider1.isHasTrait('per_attentive')>>
+		The careful planning <<name $g.raider1>> did beforehand meant your slavers quickly sent the villagers fleeing in a panic, allowing them to help themselves to most of the valuables in the village.
+		<<else>>
+		While some of the residents put up a fight, most fled in fear, allowing <<name $g.raider1>> to ransack many of the houses.
+		<</if>>
+	</p>
+		<<if $gOutcome == 'crit'>>
+
+		<<dialogue $g.support>>
+		Oh and got a gift for you <<unickname $g.support>>.
+		Wrenched this one from the arms of <<them $g.elves>> mummy.
+		<</dialogue>>
+
+		Looking over at the collared figure being tugged along behind <<name $g.support>>.<br>
+		<<set _unit = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_cruel'})>>
+			<<if _unit>>
+			"Stuck <<their $g.elves>> mum with my knife, she really didn't want us to take <<them $g.elves>>," <<name _unit>> says with a coarse laugh.<br>
+			<<else>>
+			<<set _unit = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_evil'})>>
+				<<if _unit>>
+				"Stuck <<their $g.elves>> mum with my knife; she really didn't want us to take <<them $g.elves>>," <<name _unit>> says with a coarse laugh.<br>
+				<<else>>
+				"Had to kill the mother though," <<name $g.raider2>> says <<uadv $g.raider2>>. "She was a scrapper, but she got in our way."<br>
+				<</if>>
+			<</if>>
+		Glancing at your new slave, you see their shoulders tense at the mention of their mother. <br>
+			<<if $unit.player.isHasTrait('per_cruel')>>
+			This one is going to be fun to break.
+			<<elseif $unit.player.isHasTraitExact('per_kind')>>
+			"Put <<them $g.elves>> in the cells," you say, to prevent any further chatter. "I'll look in on <<them $g.elves>> later."
+			<<elseif $unit.player.isHasTrait('per_empath')>>
+			"Put <<them $g.elves>> in the cells," you say, to prevent any further chatter. "I'll look in on <<them $g.elves>> later."
+			<<else>>
+			"You've got bigger problems than her now, <<girl $g.elves>>," you say, not too unkindly. "Put <<them $g.elves>> in a cell," you tell your slavers. "And thanks for the gift."
+			<</if>>
+		<</if>>
+	<</if>>
+
+
+
+
+:: Quest_raid_elven_villageFailure [nobr]
+<<set _diplomat = setup.getAnySlaver()>>
+<p>
+Unfortunately your slavers arrived too late. By the time they reached the village, there were defensive walls, and well armed guards on patrol. Deciding discretion was the better part of valor, your slavers returned to the fort.
+</p>
+<p>
+Later you send <<name _diplomat>> to establish contact with the village. Might as well see if you can wrangle some favour from the <<rep $company.elf>>. Even if you'd rather have a new slave.
+</p>
+
+
+
+:: Quest_raid_elven_villageDisaster [nobr]
+<p>
+Unfortunately your slavers arrived too late. By the time they reached the village, there were defensive walls, and well armed guards on patrol. Deciding they had come too far to turn back, <<name $g.raider1>> led the assault, only for your slavers to be soundly thrashed. Even after the decision had been made to retreat, the elves pursued to the edge of the forest, peppering your slavers with arrows—and causing wounds that are going to take some time to heal.
+</p>

@@ -1,0 +1,136 @@
+:: QuestSetupRecruitmentSea [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'recruitmentsea', /* key */
+  'Recruitment: Sea', /* Title */
+  'darko',   /* author */
+  ['sea', 'veteran', 'unit'],  /* tags */
+  4,  /* weeks */
+  setup.INFINITY,  /* quest expiration weeks */
+  { /* roles */
+    'recruiter1': setup.qu.recruiter,
+    'recruiter2': setup.qu.recruiter,
+    'alchemist': setup.qu.alchemist,
+  },
+  { /* actors */
+    'recruit1': 'sea_all',
+    'recruit2': 'sea_all',
+    'recruit3': 'sea_all',
+    'recruit4': 'sea_all',
+    'recruit5': 'sea_all',
+    'recruit6': 'sea_all',
+    'recruit7': 'sea_all',
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-1),
+  ],
+  'QuestRecruitmentSea', /* passage description */
+  setup.qdiff.normal60, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestRecruitmentSeaCrit',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit5', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit6', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit7', "", /* is mercenary = */ true, 2),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentSeaSuccess',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true, 2),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true, 2),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentSeaFailure',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, 2),
+        setup.qc.Injury('recruiter1', 2),
+        setup.qc.Injury('recruiter2', 2),
+        setup.qc.Injury('alchemist', 2),
+      ],
+    ],
+    [
+      'QuestRecruitmentSeaDisaster',
+      [
+        setup.qc.Injury('recruiter1', 8),
+        setup.qc.Injury('recruiter2', 8),
+        setup.qc.Injury('alchemist', 8),
+      ],
+    ],
+  ],
+  [[setup.questpool.recruitmentsea, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.QuestAvailableUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestRecruitmentSea [nobr]
+
+<p>
+The <<lore geo_mestia>> is not the only continent in the world.
+Many people live far across the <<lore region_sea>> -- people with cultures
+unlike any other you have probably ever seen.
+There are hulking <<rep setup.trait.subrace_lizardkin>>
+going on their everyday life there, as well as the rare and elusive
+<<rep setup.trait.subrace_dragonkin>>.
+These scaled people are known to be proficient in many field.
+Furthermore, there are also many <<rep setup.trait.subrace_humansea>>,
+perhaps most famous for their hypnotic dances.
+They would make excellent slavers, if you are willing to shell out the resources
+to find and hire them.
+</p>
+
+<p>
+This quest is available thanks to your <<rep setup.buildingtemplate.hiringsquaresea>>.
+</p>
+
+
+:: QuestRecruitmentSeaCrit [nobr]
+
+<p>
+<<Reps $g.recruiter1>> and <<reps $g.recruiter2>> trip across the sea
+borne fruit, as they were very successful in their trip and managed to find
+seven potential slavers for your company.
+These recruits from faraway lands are now waiting in the prospects hall for your
+decision, and need to be paid should you want to hire them.
+</p>
+
+
+:: QuestRecruitmentSeaSuccess [nobr]
+
+<p>
+Your recruiters <<rep $g.recruiter1>> and <<rep $g.recruiter2>> sailed across
+the sea in search of comrades and managed to find four potential slavers.
+They are now awaiting your decision in the prospects hall.
+</p>
+
+
+:: QuestRecruitmentSeaFailure [nobr]
+
+<p>
+The seas were unkind to your slavers during their journey -- your slavers
+shipped were washed ashore during one of the storms.
+They spent most of their hiring money for fixing their boat instead, and only managed
+to find one potential recruit to bring back home.
+</p>
+
+
+:: QuestRecruitmentSeaDisaster [nobr]
+
+<p>
+Unfortunately, your slavers' trip to the <<lore region_sea>> got cut short when
+a kraken attacked their ship, forcing them to retreat early to your fort.
+</p>

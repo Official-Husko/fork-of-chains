@@ -1,0 +1,356 @@
+:: QuestSetup_a_merchant_s_revenge2 [nobr quest]
+
+<<run new setup.Title(
+"quest_merchant_s_bandit_0", /* key */
+"Merchant\'s Bandit", /* name */
+"Former bandit leader of special interest to a certain Toran merchant", /* description */
+"a|was a bandit leader hired to attack a certain Toran merchant\'s caravans", /* unit text */
+500, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.UnitGroup(
+"merchantbandit",
+"Residents of the City of Lucgate: All gender",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+  setup.qc.AddTitle('unit', 'quest_merchant_s_bandit_0'),
+
+],
+)>>
+
+<<run new setup.UnitGroup(
+"a_merchant_s_revenge1",
+"Merchant Prince",
+[ /* pools */
+  [setup.unitpool.subrace_humankingdom_male, 0.16666666666666666],
+  [setup.unitpool.subrace_humankingdom_female, 0.16666666666666666],
+  [setup.unitpool.subrace_humanvale_male, 0.16666666666666666],
+  [setup.unitpool.subrace_humanvale_female, 0.16666666666666666],
+  [setup.unitpool.subrace_elf_male, 0.16666666666666666],
+  [setup.unitpool.subrace_elf_female, 0.16666666666666666],
+],
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_merchant),
+  setup.qc.Trait('unit', setup.trait.per_lavish),
+],
+)>>
+
+<<set _criteriainfiltrator = new setup.UnitCriteria(
+null, /* key */
+'Scout (Vale)', /* name */
+[
+  setup.trait.race_wolfkin,
+  setup.trait.subrace_humanvale,
+  setup.trait.bg_raider,
+  setup.trait.per_cautious,
+  setup.trait.per_sly,
+  setup.trait.per_curious,
+  setup.trait.skill_flight,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_royal,
+  setup.trait.bg_noble,
+  setup.trait.per_brave,
+  setup.trait.per_sly,
+  setup.trait.per_stubborn,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 2,
+  knowledge: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge2', /* key */
+"A Merchant\'s Revenge", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'money',
+  'unit',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'infiltrator': [ _criteriainfiltrator, 0.75],
+  'guard': [ setup.qu.fighter, 0.75],
+  'guard2': [ setup.qu.fighter, 0.75],
+  'lookout': [ setup.qu.explorer, 0.75],
+},
+{ /* actors */
+  'bandit': 'merchantbandit',
+  'mlangmerchantprince': 'a_merchant_s_revenge1',
+},
+[ /* costs */
+],
+'Quest_a_merchant_s_revenge2',
+setup.qdiff.harder35, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_location_princeofcups),
+      setup.qc.Slave('bandit', "a|was a bandit, formally raiding merchant caravans from the Kingdom of Tor", undefined),
+      setup.qc.SetCooldownEvent('a_merchant_s_revenge_visiting_the_captured', 20),
+      setup.qc.Outcomes("success"),
+      setup.qc.SlaverMarker('mlangmerchantprince'),
+      setup.qc.MoneyCustom(2000),
+      setup.qc.VarSet('mlangmerchantprincequest', '2', -1),
+      setup.qc.SetCooldownEvent('a_merchant_s_revenge_payback_is_sweet', 6),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_location_princeofcups),
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Favor('humankingdom', 20),
+      setup.qc.VarSet('mlangmerchantprincequest', '1', -1),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_location_princeofcups),
+      setup.qc.Injury('infiltrator', 1),
+      setup.qc.OneRandom([
+setup.qc.Injury('guard', 1),
+setup.qc.Injury('guard', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('lookout', 1),
+setup.qc.TraumatizeRandom('lookout', 5)
+]),
+      setup.qc.Ire('outlaws', 1),
+      setup.qc.VarSet('mlangmerchantprincequest', '1', -1),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_location_princeofcups),
+      setup.qc.TraumatizeRandom('infiltrator', 5),
+      setup.qc.TraumatizeRandom('guard', 5),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.VarNull('mlangmerchantprincequest'),
+  setup.qres.UnitGroupNotBusy('a_merchant_s_revenge1'),
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('mlangmerchantprincequest', '1', -1),
+],
+)>>
+
+:: Quest_a_merchant_s_revenge2 [nobr]
+/* mlangmerchantprincequest 1 = did not find cipher 2=found cipher */
+
+<<dialogue $g.mlangmerchantprince>>
+    <b>Find the outlaws responsible for raiding my caravans. And kill them. Or take them for your sexcapades. I don't care, just make them suffer.</b>
+<</dialogue>>
+
+<<questimage "prince_of_cups.jpg">>
+
+<p>
+    The increasing bandit activity in the <<lore region_vale>> is a common talking point in the taverns and teahouses of Lucgate. That and whose caravans were raided, if anyone's been losing money, and whispered rumours about which of the Merchant Prince's has paid the bandits to attack his competition's caravans.
+</p>
+<p>
+    One merchant frequently mentioned is <<name $g.mlangmerchantprince>>, most frequently as one of those who's had <<their $g.mlangmerchantprince>> caravans attacked more than almost anyone else's. That said, you never expected to receive an invitation to meet them for a glass of wine.
+</p>
+<p>
+    "Thank you for joining me," <<name $g.mlangmerchantprince>> says when you've sat down at their table at <<lore location_princeofcups>>, an exclusive winehouse overlooking the city.
+    <<if $unit.player.isHasTrait('bg_royal')>>
+        "I thought we may as well meet in comfort."<br>
+        "I appreciate it," you reply, accepting the glass of deep red wine <<they $g.mlangmerchantprince>> offers you. "But why exactly am I here?"<br>
+    <<elseif $unit.player.isHasTrait('bg_boss')>>
+        "I thought we may as well meet in comfort."<br>
+        "I appreciate it," you reply, accepting the glass of deep red wine <<they $g.mlangmerchantprince>> offers you. "But why exactly am I here?"<br>
+    <<elseif $unit.player.isHasTrait('bg_noble')>>
+        "I thought we may as well meet in comfort."<br>
+        "I appreciate it," you reply, accepting the glass of deep red wine <<they $g.mlangmerchantprince>> offers you. "But why exactly am I here?"<br>
+    <<elseif $unit.player.isHasTrait('per_lavish')>>
+        "I thought we may as well meet in comfort."<br>
+        "I appreciate it," you reply, accepting the glass of deep red wine <<they $g.mlangmerchantprince>> offers you. "But why exactly am I here?"<br>
+    <<elseif $unit.player.isHasTrait('bg_raider')>>
+        "I appreciate you're not fully comfortable here," <<name $g.mlangmerchantprince>> says apologetically, "but it is secure and the staff are discrete. I needed to make sure our discussions remain confidential - for both our sakes."<br>
+        Sitting gingerly down on a chair that looks flimsy enough to snap at any moment, you pick up your mug of mead and take a gulp. That at least is normal. "And what is it exactly that you want to talk to me about?"<br>
+    <<elseif $unit.player.isHasTrait('per_frugal')>>
+        "I appreciate you're not fully comfortable here," <<name $g.mlangmerchantprince>> says apologetically, "but it is secure and the staff are discrete. I needed to make sure our discussions remain confidential - for both our sakes."<br>
+        The place does seem excessive, but you suppose as long as <<they $g.mlangmerchantprince>> is paying for things you can go with it. "And what exactly are we talking about today?"<br>
+    <<else>>
+        "I don't know if you've been here before, but the wine is excellent and the staff are discreet," <<they $g.mlangmerchantprince>> says, pouring you a glass of rich, red wine. "And that discretion is important to me. Especially now."<br>
+        Picking up the wine you take a small sip, and for a moment your jaw locks up as the flavour plays across your taste buds. This is one of the best wines you've ever tasted. When you can finally move your jaw again, you swallow and settle back into your seat. "All right. And what exactly is it that you want to talk to me about?"<br>
+    <</if>>
+    <<name $g.mlangmerchantprince>>'s mouth pinches and <<their $g.mlangmerchantprince>> nostrils flare.
+    <<dialogue $g.mlangmerchantprince>>
+        <b>Someone, one of my rivals, has been paying bandits to ambush my caravans. And it's getting to become more than a mere annoyance.<br>
+        I've found the location of the bandits' camp—and I want you to destroy them</b>
+    <</dialogue>>
+    "Destroy them?"<br>
+    <<name $g.mlangmerchantprince>> waves his hand dismissively. "Kill them, run them off, enslave them as your playthings and sell them to the highest bidder, whatever you want. I want proof that you have their leader dealt with, and if you find anything leading to the Merchant Prince who hired them, I'll throw in a bonus."<br>
+    "What sort of bonus?"<br>
+    "A big sack of gold," <<name $g.mlangmerchantprince>> says with a grin, pulling out a large pouch of coin and showing it to you.
+    <<if $unit.player.isHasTrait('per_humble')>>
+        "Think of how your company could benefit from that."
+    <<else>>
+        "Think of what you buy with that."
+    <</if>>
+    <br>
+    You try your best not to let your surprise show on your face. They must be somewhat desperate if they're being that blatant in their negotiations.<br>
+    "All right," you say. "If I do that, I'll be in touch."<br>
+    "See that you do," <<name $g.mlangmerchantprince>> says, tucking the pouch away. "You may not be the only mercenary group I make the offer to.
+    <<if $settings.bannedtags.watersport>>
+        "
+    <<else>>
+        Oh, one more thing. Given what I know of your company, you should visit the toilets before you leave. And if you like what you see you may want to speak to the manager about becoming a supplier."<br>
+        "That's... interestingly non-specific," you say.<br>
+        <<name $g.mlangmerchantprince>> grins and takes another sip of <<their $g.mlangmerchantprince>> wine. "One of my eccentricities," <<they $g.mlangmerchantprince>> says. "I like being subtle when I have the luxury."
+    <</if>>
+</p>
+<p>
+    Would you like to do anything else before you leave?"
+</p>
+
+<<choose>>
+<<opt "Ask about the Merchant Princes">>
+    <<dialogue $g.mlangmerchantprince>>
+        W- they're powerful. As powerful as anyone not of noble birth can get, but they're effectively nobility. And if they aren't they buy their way into the aristocracy. It's all for sale if you know who to ask.
+    <</dialogue>>
+<<opt "Just finish your drink and leave.">>
+    <p>
+        You savour your wine and consider buying a bottle before deciding you don't really want to know how much it costs. Taking your leave of <<name $g.mlangmerchantprince>> you head back out into the city, a map showing the location of the bandit camp tucked away into a pocket.
+    </p>
+<<opt "Visit the toilets.">>
+    <<if $settings.bannedtags.watersport>>
+        <p>
+            The toilets are plush. That said, any place that uses the word 'toilet' is going to be plush. There are the marble countertops, a silver pitcher of water for washing your hands, and an attendant to bring you a towel. Finishing your business, you wash your hands and head off into the city, a map showing the location of the bandit camp tucked away into a pocket.
+        </p>
+    <<else>>
+        <p>
+            The toilets are plush. That said, any place that uses the word 'toilet' is going to be plush. There are the marble countertops, a silver pitcher of water for washing your hands, and an attendant to bring you a towel. There are also discreetly partitioned areas for evacuating your bowels. However, along one wall two slaves are chained, restrained such that they are forced to kneel on the ground, their arms shackled above their heads. Their eyes are covered with thick blindfolds and their mouths held open by clever metal gags. Clearly for relieving yourself the other way. Well, who are you to ignore such an opportunity?
+        </p>
+        <<if $unit.player.isHasDick()>>
+            <p>
+                Pulling your soft cock out of your <<uequipslot $unit.player 'legs'>>, you head over to the <<woman $g.bandit>> on the left and shove your prick through the circular gag and into <<theirs $g.bandit>> mouth. <<They $g.bandit>> moans as you let your piss flow into <<theirs $g.bandit>> and swallows eagerly, not spilling a single drop. <<Their $g.bandit>> tongue massaging your cock brings you quickly to full erection, and you go from pissing into <<their $g.bandit>> mouth to fucking <<their $g.bandit>> throat, enjoying the sounds of <<them $g.bandit>> gagging before you fill their stomach with a a hot load of cum.
+            </p>
+        <<else>>
+            Removing your <<uequipslot $unit.player 'legs'>> and undergarments you position yourself over the <<woman $g.bandit>> on the left and let it flow. <<They $g.bandit>> gulp furiously as your piss splatters over their face, the metal gag preventing them from getting their lips around your pussy. It also prevents <<their $g.bandit>> tongue from reaching you, which is disappointing, but still, that was fun.
+        <</if>>
+        <p>
+            Perhaps you should speak to the owner at some point. It seems that even in a place such as this, laws mean little if you have enough wealth.
+        </p>
+         
+    <</if>>
+<</choose>>
+
+
+:: Quest_a_merchant_s_revenge2Crit [nobr]
+<p>You ended up sending more slavers on this job than normal, but a full bandit camp was not something to take lightly.
+<<set _unit = setup.selectUnit([$g.infiltrator, $g.guard, $g.guard2, $g.lookout], {trait: 'per_cautious'})>>
+<<if _unit>>
+<<name _unit>> wisely urged caution, and your slavers attacked just before dawn so the rising sun at their backs to make it harder for the bandits to see them. With most of the camp still asleep, they made short work of the sentries and went from tent to tent, dispatching the outlaws they found within.
+<<else>>
+True to your orders, they snuck in under the cover of night, dispatching the sentries at the edge of camp and using their bandanas to help disguise their own features as they headed for the centre of camp.
+<</if>>
+</p>
+
+<br/>
+
+<<name $g.infiltrator>> found the bandit leader in the largest tent, as you'd expected,
+<<if $gOutcome == 'crit'>>
+and when the slavers stole into <<their $g.bandit>> tent, <<they $g.bandit>> was still asleep. It was a simple matter for <<name $g.guard>> to gag and bind them, eventually muffling <<their $g.bandit>> cries by sitting on <<their $g.bandit>> crushing <<their $g.bandit>> nose up against <<their $g.guard2>> sweaty
+<<if $g.guard2.isHasTrait('gender_male')>>
+ass.
+<<else>>
+crotch.
+<</if>>
+
+<br/>
+
+<p>
+Meanwhile, your slavers had found a good deal of treasure, and <<name $g.lookout>> found a number of messages on finely made parchment. Unfortunately, they were in some kind of cipher and none of your slavers were able to read them. Still, they hoped these would be the additional proof <<name $g.mlangmerchantprince>> had been looking for.
+</p>
+
+<p>Given the quiet in camp, it was a simple matter to steal back out of the camp, leaving the bandits leaderless, penniless, and with a number of dead to bury. It might not be enough to drive them away, but it should give <<name $g.mlangmerchantprince>>'s caravans a better chance at getting through the <<lore region_vale>>.</p>
+
+<p>A few days later, you receive a message from <<name $g.mlangmerchantprince>>, written in a neat, flowing hand.</p>
+
+<div class='lettercard'>
+<i>Dear <<name $unit.player>>,
+<br>
+<br>
+Your work has been exemplary and I am several steps closer to my goal. Please accept this bonus pay for exceptional services rendered, as previously agreed.
+<br>
+<br>
+<<if $unit.player.isHasTrait('bg_royal')>>
+I do look forward to seeing you again, and hope you may find time to join me again at <<lore location_princeofcups>>. I also look forward to visiting your fine establishment and enjoying the services of our mutual friend.
+<<elseif $unit.player.isHasTrait('bg_noble')>>
+I do look forward to seeing you again, and hope you may find time to join me again at <<lore location_princeofcups>>. I also look forward to visiting your fine establishment and enjoying the services of our mutual friend.
+<<else>>
+I look forward to visiting your fine establishment and enjoying the services of our mutual friend.
+<</if>>
+<p>Yours faithfully</p>
+<<name $g.mlangmerchantprince>></i>
+</div>
+
+
+<<elseif $gOutcome == 'success'>>
+and when the slavers stole into <<their $g.bandit>> tent, <<they $g.bandit>> was still asleep. It was a simple matter for <<name $g.guard>> to gag and bind them, eventually muffling <<their $g.bandit>> cries by sitting on <<their $g.bandit>> crushing <<their $g.bandit>> nose up against <<their $g.guard2>> sweaty
+<<if $g.guard2.isHasTrait('gender_male')>>
+ass.
+<<else>>
+crotch.
+<</if>>
+
+<br/>
+
+<p>Meanwhile, your slavers had collected a good deal of treasure, but nothing that looked like a clue to the bandit's employers. <<name $g.infiltrator>> was confident that sneaking back out of camp would be easy enough, but the bandit leader kicked over a crate of weaponry, and the resulting clatter roused the camp. <<They $g.bandit>> died in the ensuing scuffle, but your slavers were able to take <<their $g.bandit>> head. <<name $g.lookout>> had seen a wanted poster with their image on it in the area, and between the two that should be enough to prove the bandit's fate to the merchant <<name $g.mlangmerchantprince>>.</p>
+
+<<elseif $gOutcome == 'failure'>>
+and when the slavers stole into <<their $g.bandit>> tent, <<they $g.bandit>> was still asleep. It was a simple matter for <<name $g.guard>> to gag and bind them, eventually muffling <<their $g.bandit>> cries by sitting on <<their $g.bandit>> crushing <<their $g.bandit>> nose up against <<their $g.guard2>> sweaty
+<<if $g.guard2.isHasTrait('gender_male')>>
+ass.
+<<else>>
+crotch.
+<</if>>
+
+<br/>
+
+<p>Meanwhile, your slavers had collected a good deal of treasure, but nothing that looked like a clue to the bandit's employers. <<name $g.infiltrator>> was confident that sneaking back out of camp would be easy enough, but the bandit leader kicked over a crate of weaponry, and the resulting clatter roused the camp. You slavers barely escaped with their lives—and thankfully with only minor injuries. However, they were forced to leave the valuables they'd looted behind, leaving you with nothing to show for this endeavour.</p>
+
+<<elseif $gOutcome == 'disaster'>>
+and when the slavers stole into <<their $g.bandit>> tent, <<they $g.bandit>> was still asleep. It was a simple matter for <<name $g.guard>> to gag and bind them, eventually muffling <<their $g.bandit>> cries by sitting on <<their $g.bandit>> crushing <<their $g.bandit>> nose up against <<their $g.guard2>> sweaty
+<<if $g.guard2.isHasTrait('gender_male')>>
+ass.
+<<else>>
+crotch.
+<</if>>
+
+<br/>
+
+<p>Meanwhile, your slavers had collected a good deal of treasure, but nothing that looked like a clue to the bandit's employers. <<name $g.infiltrator>> was confident that sneaking back out of camp would be easy enough, but the bandit leader kicked over a crate of weaponry, and the resulting clatter roused the camp. You slavers barely escaped with their lives—and while their injuries were minor, the mental trauma will take longer to heal. They were forced to leave the valuables they'd looted behind, leaving you with nothing to show for this endeavour.</p>
+
+<</if>>
+
+

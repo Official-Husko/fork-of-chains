@@ -1,0 +1,42 @@
+:: InitBuildingStage [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'stage',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'stage',
+  name: 'Stage',
+  tags: ['recreation', ],
+  description_passage: 'BuildingStage',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUMLOW_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('recreationwingsex')],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('dominatrixslave')
+    ],
+  ],
+  main_room_template_key: 'stage',
+})>>
+
+:: BuildingStage [nobr]
+
+<p>
+Unlocks the Dominatrix slave duty, which increases the income
+made by your Sex Pimp
+based on the dominance skill of the slave.
+</p>

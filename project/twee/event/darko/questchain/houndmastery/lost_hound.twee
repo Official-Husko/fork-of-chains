@@ -1,0 +1,55 @@
+:: EventSetup_lost_hound [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'lost_hound', /* key */
+"Lost Hound", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+],
+'Event_lost_hound',
+{ /* roles */
+},
+{ /* actors */
+  'master': 'the_dog_whisperer0',
+},
+[ /* outcomes */
+  setup.qc.VarRemove('houndmastery_sniffer_lent'),
+  setup.qc.RemoveTitleGlobal('quest_houndmaster_s_sniffer_0'),
+  setup.qc.Ire('neko', 20),
+  setup.qc.Ire('elf', 20),
+  setup.qc.Ire('werewolf', 20),
+  setup.qc.Ire('lizardkin', 20),
+  setup.qc.Ire('dragonkin', 20),
+  setup.qc.Ire('orc', 20),
+  setup.qc.Ire('outlaws', 20),
+  setup.qc.Ire('humansea', 20),
+  setup.qc.Ire('humandesert', 20),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('houndmastery_sniffer_lent', '1'),
+  setup.qres.NotExistUnit([
+setup.qres.HasTitle('quest_houndmaster_s_sniffer_0'),
+setup.qres.Job(setup.job.slave),
+setup.qres.NoTrait(setup.trait.training_mindbreak),
+setup.qres.AllTraits([setup.trait.arms_neko, setup.trait.legs_neko, setup.trait.mouth_neko, setup.trait.body_neko, setup.trait.ears_neko, setup.trait.tail_neko], true)
+]),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_lost_hound [nobr]
+
+<p>
+Either due to negligence, miscare, or just plain bad luck, you and your
+company has somehow managed to either lose or damage the tigerkin slave lent
+so generously by the hound<<master $g.master>>. <<They $g.master>> master|is
+far from pleased from this, and although <<they $g.master>> personally will
+not harm your company, <<they $g.master>> master|use <<their $g.master>> vast
+connections to spread growing ire to your company. Even if you were to
+survive the onslaughts of retaliations upon your company, there is no doubt
+that you'll never hear from the hound<<master $g.master>> ever again...
+</p>

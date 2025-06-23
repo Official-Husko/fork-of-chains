@@ -1,0 +1,96 @@
+:: EventSetup_broken_soul_wanders_in [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"broken_soul_wanders_in0",
+"Broken Ascent",
+'subrace_angel',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTitle('unit', 'quest_broken_ascent_0'),
+  setup.qc.TraitReplace('unit', 'subrace_humankingdom'),
+  setup.qc.RemoveTraitsWithTag('unit', 'per'),
+  setup.qc.RemoveTraitsWithTag('unit', 'wings'),
+  setup.qc.RemoveTraitsWithTag('unit', 'skill'),
+  setup.qc.RemoveTraitsWithTag('unit', 'bg'),
+  setup.qc.Trait('unit', 'will_indomitable'),
+  setup.qc.ResetInnateTraits('unit'),
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+<<run new setup.Event(
+'broken_soul_wanders_in', /* key */
+"Broken Soul Wanders In", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_broken_soul_wanders_in',
+{ /* roles */
+},
+{ /* actors */
+  'slave': 'broken_soul_wanders_in0',
+},
+[ /* outcomes */
+  setup.qc.VarSet('broken_wings_cooldown', '1', 15),
+  setup.qc.Slave('slave'),
+],
+[ /* restrictions */
+  setup.qres.VarNull('broken_wings_cooldown'),
+  setup.qres.NoUnitWithTitle('quest_broken_ascent_0', {
+}),
+  setup.qres.NoUnitWithTitle('quest_broken_descent_0', {
+}),
+  setup.qres.Building(setup.buildingtemplate.slavepens),
+],
+500, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_broken_soul_wanders_in [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<<if $fort.player.isHasBuilding('trainingchamber')>>
+
+<p>
+A strange dazed person has wandered into your fort, seemingly fully mindbroken,
+and <<their $g.slave>> only
+possession is <<their $g.slave>> clothes bearing <<their $g.slave>> name:
+<<rep $g.slave>>.
+Gazing aimlessly, the slave eventually hit <<yourrep _u>> who was busy
+<<uhobbyverb _u>>. As punishment, <<rep _u>> brings the <<man $g.slave>>
+into your <<rep setup.buildingtemplate.slavepens>> — perhaps the only
+productive use of such a mindbroken slave.
+</p>
+
+<<else>>
+
+<p>
+With the <<rep setup.buildingtemplate.dungeons>> and the <<rep
+setup.buildingtemplate.slavepens>> ready, your company can finally begin its
+career as a proper slaving company. The incoming slaves will be temporarily located
+in the <<rep setup.buildingtemplate.slavepens>>, and you can keep them
+permanently in the <<rep setup.buildingtemplate.dungeons>> complex,
+waiting either to be used or to be sold for profit.
+</p>
+
+<p>
+As your slavers continue to clear more rubbles from the underground complex of the fort,
+<<yourrep _u>> is surprised to find a living prisoner seemingly abandoned
+in the ruins. <<They $g.slave>> slave|is a little bit malnourished, but is fine
+otherwise — maybe one of the captives of the many raiding bands living in
+the area. Your slaver's question as to why the slave was left alone here is
+soon answered as they notice a blank look coming from the slave — it seems the slave
+has been mindbroken and would worth nothing in the markets. From a nearby
+parchment, you learn that slave's name is <<rep $g.slave>>.
+</p>
+
+<p>
+With your dungeons mostly empty, it might be fine to take such a slave for now. Who
+knows, maybe <<they $g.slave>> will be worth something to the right buyer.
+</p>
+
+<</if>>

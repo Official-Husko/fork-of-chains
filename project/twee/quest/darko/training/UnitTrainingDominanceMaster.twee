@@ -1,0 +1,105 @@
+:: QuestSetupUnitTrainingDominanceMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_dominance_master',  /* id */
+  'Dominance Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+    'slave': setup.qu.training_slave,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingDominanceMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingDominanceMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_dominance_master),
+        setup.qc.Trait('trainee', setup.trait.per_dominant),
+      ]
+    ],
+    [
+      'QuestUnitTrainingDominanceMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_dominance_master),
+        setup.qc.TraitRemove('trainee', setup.trait.per_submissive),
+      ],
+    ],
+    [
+      'QuestUnitTrainingDominanceMasterFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingDominanceMasterDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+        setup.qc.Injury('slave', 2),
+        setup.qc.TraitRemove('trainee', setup.trait.per_dominant),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingDominanceMaster [nobr]
+<p>
+Once a slave completed this training, under the right circumstances
+their mentality will be no different than slavers.
+The most important thing, however, is that this training has instilled
+deep within them that despite looking and acting like a slaver, they are
+still a slave, and must obey without question the orders of their master.
+</p>
+
+<p>
+  Succeeding this training will remove <<rep setup.trait.per_submissive>> from the slave, if any.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+<p>
+<<successtextlite 'Please note'>>: Unlike most other slave trainings,
+the dominance requires an additional slave to be used during the training.
+The slave used this way will not receive the dominance training trait.
+</p>
+
+:: QuestUnitTrainingDominanceMasterCrit [nobr]
+<p>
+The training was a complete success. <<Rep $g.trainee>> trainee|is now indistinguishable with your slavers with the sole
+exception of being completely obedient to your commands.
+As a bonus, the training also revealed the more dominant side of <<rep $g.trainee>>.
+</p>
+
+:: QuestUnitTrainingDominanceMasterSuccess [nobr]
+<p>
+It was difficult, but by the end of the week, <<rep $g.trainee>> trainee|have finally
+understand the lessons. <<Rep $g.trainee>> trainee|is now indistinguishable with your slavers with the sole
+exception of being completely obedient to your commands.
+</p>
+
+:: QuestUnitTrainingDominanceMasterFailure [nobr]
+<p>
+Unfortunately, <<rep $g.head>> head|is not convinced that
+<<rep $g.trainee>> trainee|have grasped all the necessary knowledge.
+</p>
+
+:: QuestUnitTrainingDominanceMasterDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, both <<rep $g.trainee>> and <<rep $g.slave>> managed to get
+severely injured
+and the training had to be stopped early.
+Not only that, it turns out that <<rep $g.trainee>> trainee|was a natural submissive, and this
+will complicate further training.
+</p>

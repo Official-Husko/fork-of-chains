@@ -1,0 +1,110 @@
+:: OpportunitySetup_mistwalker_visit [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'mistwalker_visit', /* key */
+"Demon Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'unit',
+  'ire',
+],
+1, /* expiration weeks */
+'Opportunity_mistwalker_visit',
+setup.qdiff.hardest69, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_mistwalker_visit_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.VarSet('quest_brothel_royal_visit', '1', -1),
+      setup.qc.Slaver('target', "a|was a mistwalker impressed by your brothel and decided to join your company out of boredom", undefined),
+    ],
+  ],
+  [
+    'Opportunity_mistwalker_visit_1',
+    'Opportunity_mistwalker_visit_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_fire_master]),
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.VarSet('quest_brothel_royal_visit', '1', -1),
+      setup.qc.RemoveTitleGlobal('quest_brothel_owner_0'),
+      setup.qc.Ire('demon', 20),
+      setup.qc.Slave('target', "a|was a mistwalker impressed by your brothel and decided to join your company out of boredom, but got enslaved instead", undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+  'target': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_mistwalker_visit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The demon royalty who had patroned your brothel has appeared at your office, to personally meet with you, the proprietor of the brothel. While <<their $g.target>> face feigns indifference, <<their $g.target>> <<if $g.target.isHasDick()>>stiff prick<<else>>wet cunt<</if>> tells a very different story about the quality of your brothel's services. It seems that they were able to satisfy the demon client quite well.
+</p>
+
+<p>
+With that, the demon surprisingly offers to join your company. No doubt <<they $g.target>> target|is hoping that <<they $g.target>> will get <<their $g.target>> <<uhands $g.target>> on even more submissives of the mortal plane, having grown bored with the likes found in the land beyond <<lore concept_mist>>. Having such a powerful and intimidating slaver would no doubt be useful for your company.
+</p>
+
+<p>
+However, if you are feeling particularly brave and foolish, you could feign acceptance, only to enslave the demon later. You would need a slaver proficient with <<rep setup.trait.magic_fire_master>> to bind the demon into this plane forever, however, and you will also no doubt anger the demon's court. They may even retaliate against your brothel, and choosing this option is very likely to <<dangertext "cut your brothel career short">>. But this could be an extremely rare opportunity to get your <<uhands $unit.player>> on a demon royalty...
+</p>
+
+<<unitcard $g.target 1>>
+
+
+:: Opportunity_mistwalker_visit_0 [nobr]
+Recruit
+
+
+
+:: Opportunity_mistwalker_visit_1 [nobr]
+Enslave
+
+
+:: Opportunity_mistwalker_visit_1_flavor [nobr]
+<p>
+Your contacts in the <<lore region_desert>> tell you that a small demonic army was seen marching for <<lore location_npc>>, no doubt to exact revenge on the brothel for the fallen demonic royalty.
+Your brothel is effectively exchanged for a slave. But seeing the dominant slave quivering in anger having being bound to the mortal plane with advanced fire magic makes all of these worth it. Nothing feels better than breaking a former master, after all.
+</p>

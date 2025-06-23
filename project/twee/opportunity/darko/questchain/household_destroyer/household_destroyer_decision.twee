@@ -1,0 +1,97 @@
+:: OpportunitySetup_household_destroyer_decision [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'household_destroyer_decision', /* key */
+"Household Destroyer: Decision", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_household_destroyer_decision',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_household_destroyer_decision_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Opportunity('household_destroyer_the_truth_2', {
+drow: "drow",
+}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_household_destroyer_decision_1',
+    outcome_passage: 'Opportunity_household_destroyer_decision_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarAdd('quest_household_destroyer_progress', -1000, -1),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'drow': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_household_destroyer_decision [nobr]
+<p>
+    <<Reps $g.drow>> excessive dominance has caused problems so far, but being kidnapped somehow has dampened its effect.
+    The drow might be fine now, and perhaps it is time to tell <<them $g.drow>> the truth about the real reason why <<they $g.drow>> drow|was brought to the surface...
+</p>
+
+<p>
+    Hiding away the truth means you can continue to patron the drow, but surely there must be a benefit of telling <<them $g.drow>> about the truth?
+</p>
+
+
+:: Opportunity_household_destroyer_decision_0 [nobr]
+Tell the truth
+
+
+
+:: Opportunity_household_destroyer_decision_1 [nobr]
+Hide the truth
+
+
+:: Opportunity_household_destroyer_decision_1_flavor [nobr]
+<p>
+    Well, there's no point really in telling <<them $g.drow>> the truth. <<They $g.drow>> could go back
+    to
+    <<if setup.qres.VarGte("quest_household_destroyer", 1200).isOk($gQuest)>>
+        <<their $g.drow>> homestead in the nearby village and
+        resume <<their $g.drow>> life.
+        You'll be able to continue sending slaves over to the drow whenever <<they $g.drow>> need extra helpers.
+    <<else>>
+        <<their $g.drow>> homestead next to your fort and resume <<their $g.drow>> life.
+        You'll be able to continue patroning the drow for the time being.
+    <</if>>
+</p>
+

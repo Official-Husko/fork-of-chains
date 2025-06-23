@@ -1,0 +1,77 @@
+:: InitBuildingOilRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'candlestick',
+  tags: ['hidename', 'hideskill', ],
+  description_passage: 'RoomCandlestick',
+  name: 'Candlestick',
+  width: 1,
+  height: 1,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "arcane",
+      bonus_amount: setup.ROOM_DECORATION_BONUS,
+    },
+    {
+      type: 'always',
+      skill_key: "combat",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'oilroom',
+  tags: [],
+  width: 2,
+  height: 2,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "arcane",
+      bonus_amount: setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+    {
+      type: 'always',
+      skill_key: "combat",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'oilroom',
+  name: 'OilRoom',
+  tags: ['decoration'],
+  description_passage: 'BuildingOilRoom',
+  costs: setup.BuildingTemplate.getDecorationCosts(),
+  restrictions: setup.BuildingTemplate.getDecorationRestrictions(),
+  main_room_template_key: 'oilroom',
+  sub_room_template_key: 'candlestick',
+})>>
+
+
+:: BuildingOilRoom [nobr]
+
+<p>
+A storage for storing oil, a precious resource in this time and age.
+When placed at your fort, will increase
+<<rep setup.skill.arcane>> in exchange for <<rep setup.skill.combat>>.
+</p>
+
+:: RoomCandlestick [nobr]
+
+<p>
+A tall candlestick illuminating its surroundings.
+</p>

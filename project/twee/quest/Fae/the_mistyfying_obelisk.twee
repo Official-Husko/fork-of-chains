@@ -1,0 +1,381 @@
+:: QuestSetup_the_mistifying_obelisk2 [nobr quest]
+
+
+
+
+
+<<set _criteriascout = new setup.UnitCriteria(
+null, /* key */
+'Obelisk Scout', /* name */
+[
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_mist,
+  setup.trait.bg_adventurer,
+  setup.trait.bg_nomad,
+  setup.trait.tough_tough,
+  setup.trait.per_cautious,
+  setup.trait.per_direct,
+  setup.trait.per_attentive,
+  setup.trait.skill_flight,
+],
+[
+  setup.trait.subrace_humanvale,
+  setup.trait.subrace_werewolf,
+  setup.trait.bg_mystic,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.per_independent,
+  setup.trait.per_dreamy,
+  setup.trait.per_stubborn,
+  setup.trait.per_playful,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 3,
+}
+)>>
+
+<<set _criteriaresearcherone = new setup.UnitCriteria(
+null, /* key */
+'Researcher(Magical)', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.bg_mystic,
+  setup.trait.bg_apprentice,
+  setup.trait.per_calm,
+  setup.trait.per_studious,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_chaste,
+  setup.trait.skill_creative,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_aggressive,
+  setup.trait.per_gregarious,
+  setup.trait.per_independent,
+  setup.trait.per_stubborn,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 1,
+  arcane: 2,
+}
+)>>
+
+<<set _criteriaresearchertwo = new setup.UnitCriteria(
+null, /* key */
+'Researcher(Scholar)', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.bg_scholar,
+  setup.trait.bg_mystic,
+  setup.trait.per_calm,
+  setup.trait.per_studious,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_chaste,
+  setup.trait.skill_creative,
+  setup.trait.skill_alchemy,
+],
+[
+  setup.trait.per_aggressive,
+  setup.trait.per_independent,
+  setup.trait.per_stubborn,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 2,
+  arcane: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_mistifying_obelisk2', /* key */
+"The Mistifying Obelisk", /* Title */
+{ /* Author */
+  name: "Fae",
+  url: "",
+},
+[ /* tags */
+  'transformation',
+  'desert',
+  'veteran',
+  'unknown',
+  'rare',
+],
+4, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'scout': [ _criteriascout, 1],
+  'researcherone': [ _criteriaresearcherone, 1],
+  'researchertwo': [ _criteriaresearchertwo, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_mistifying_obelisk2',
+setup.qdiff.hard42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_mistifying_obelisk2Crit',
+    [
+      setup.qc.Equipment(setup.equipmentpool.sex_good),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_the_mistifying_obelisk2Success',
+    [
+      setup.qc.SetCooldownQuest(null, 100),
+      setup.qc.QuestDirect('opening_the_obelisk_gate', null),
+    ],
+  ],
+  [
+    'Quest_the_mistifying_obelisk2Failure',
+    [
+      setup.qc.Injury('scout', 2),
+      setup.qc.Injury('researcherone', 2),
+      setup.qc.Injury('researchertwo', 2),
+    ],
+  ],
+  [
+    'Quest_the_mistifying_obelisk2Disaster',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.Injury('researcherone', 2),
+setup.qc.Injury('researchertwo', 2)
+]),
+      setup.qc.OneRandomSeed([
+setup.qc.TraumatizeRandom('researcherone', 10),
+setup.qc.TraumatizeRandom('researchertwo', 10)
+]),
+      setup.qc.Injury('scout', 6),
+      setup.qc.Corrupt('scout', null, 1),
+      setup.qc.Corrupt('researcherone', null, 1),
+      setup.qc.Corrupt('researchertwo', null, 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('opening_the_obelisk_gate'),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_mistifying_obelisk2 [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    Every now and then, you would discuss the recent news with <<yourrep _u>>. Normally, nothing productive comes out of it, but in one recent discussion, <<they _u>> offhandedly mentioned something that caught your attention. Rumors are spreading that somewhere in the <<lore region_desert>>, an eye-catchingly large obelisk has somehow made an appearance, seemingly out of nowhere. It is rife with strange inscriptions, and nobody has any clue what those inscriptions could be. One thing seems clear however — this obelisk did not come from the mortal plane, and everyone seems to agree this might have come from the Mist.
+</p>
+
+<p>
+    As is common sense in the land, nothing good ever comes from toying with the Mist. But <<therace _u>> leans in and smirks, <<uadvcare _u>>, trying to goad you into investigating the obelisk. After all, something so seemingly rare, magical, and otherworldly is bound to be worth something, right?
+</p>
+
+
+:: Quest_the_mistifying_obelisk2Crit [nobr]
+<p>
+    <<Rep $g.scout>>, <<rep $g.researcherone>>, and <<rep $g.researchertwo>> searched through the desert in the blistering heat for just under a week before <<yourrep $g.scout>> managed to spot the obelisk, standing tall in a valley surrounded by dunes, and a week ahead of schedule none the less. With a relieved sigh, <<rep $g.researcherone>> turned to <<rep $g.researchertwo>>, and the pair exchanged words of excitement. Not only would they be able to set up tents and rest in the shade, but they would have an extra week to try and decipher the secrets of the obelisk.
+</p>
+<p>
+    As the group approached the glistening obelisk however, the strangeness of the situation was starting to feel unnerving. The obelisk was an imposing monument, and to your experienced slavers the feeling was instantly recognizable. It was the same sense of unease that always infected areas tied heavily to the mist. Quickly sensing the tension, <<rep $g.scout>> lightened the mood by joking around as <<they $g.scout>> set to setting up their temporary campsite. <<rep $g.researcherone>> and <<rep $g.researchertwo>> appreciated the effort, even if it did little to stunt the growing feeling of danger in the back of their minds.
+</p>
+
+<p>
+    Quickly the three set up camp and for the next few leisurely weeks the researchers butted heads while <<therace $g.scout>> spent <<them $g.scout>> time sunbathing, napping, and warding off the occasional small thirsty bandit pack. Eventually
+
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.researcherone>> realized the obelisk had a magical mechanism built into its side that could be opened by activating the inscribed runes on the obelisk.
+        <<if $g.researcherone.isHasTrait('per_cautious')>>
+            Not one to act without caution however, <<they $g.researcherone>> did not rush to enter the solution. Instead <<they $g.researcherone>> got the attention of <<rep $g.researchertwo>> and together they spent the next day conducting a thorough sweep of the entire obelisk, checking for traps and creating a plan to solve the puzzle safely.
+        <<else>>
+            As <<they $g.researcherone>> told the group of <<their $g.researcherone>> findings, the sense of unease weighed heavy on them all. As this object was from the mist, there was no telling what manner of hideouts traps might be present. Together the three worked out the details of their plan, having <<rep $g.scout>> and <<rep $g.researchertwo>> stay a safe distance away while <<rep $g.researcherone>> carefully and slowly activated the runes. At least this way, if anything did happen <<rep $g.researcherone>> would have help right away.
+        <</if>>
+
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.researchertwo>> realized the obelisk had a magical mechanism built into its side that could be opened by solving a riddle inscribed on the obelisk.
+
+        <<if $g.researchertwo.isHasTrait('per_cautious')>>
+            Not one to act without caution however, <<they $g.researchertwo>> did not rush to enter the solution. Instead <<they $g.researchertwo>> got the attention of <<rep $g.researcherone>> and together they spent the next day conducting a thorough sweep of the entire obelisk, checking for traps and creating a plan to solve the puzzle safely.
+        <<else>>
+
+            As <<they $g.researchertwo>> told the group of <<their $g.researchertwo>> findings, the sense of unease weighed heavy on them all. As this object was from the mist, there was no telling what manner of hideouts traps might be present. Together the three worked out the details of their plan, having <<rep $g.scout>> and <<rep $g.researcherone>> stay a safe distance away while <<rep $g.researchertwo>> carefully answered the riddles aloud. At least this way, if anything did happen <<rep $g.researchertwo>> would have help right away.
+        <</if>>
+
+
+    <</if>>
+</p>
+
+<p>
+    The next morning, with the plan settled on,
+
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.researcherone>> approached the obelisk, as the other two cautiously watched on. As each rune was activated the uneasy sense grew stronger until finally, while holding <<their $g.researcherone>> breath, <<rep $g.researcherone>> activated the final rune. In the next few still moments, the tension was palpable, but as seconds passed and nothing happened <<rep $g.researcherone>> began wondering if maybe <<they $g.researcherone>> had made a mistake. In that moment a small wooden box fell into the sand at <<reps $g.researcherone>><<ufeet $g.researcherone>>.
+
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.researchertwo>> approached the obelisk, as the other two cautiously watched on. As each rune was activated the uneasy sense grew stronger until finally, while holding <<their $g.researchertwo>> breath, <<rep $g.researchertwo>> activated the final rune. In the next few still moments, the tension was palpable, but as seconds passed and nothing happened <<rep $g.researchertwo>> began wondering if maybe <<they $g.researchertwo>> had made a mistake. In that moment a small wooden box fell into the sand at <<reps $g.researchertwo>><<ufeet $g.researchertwo>>.
+    <</if>>
+
+    As the group settled back into camp, the group discussed what to do for a short while before deciding it would be best to open the box before bringing it back to <<rep $company.player>>. As the group cautiously undid the metal latch and slowly lifted the lid of the box they found a piece of rather sexual looking equipment, and a note in frilly handwriting congratulating the group for being the first to correctly solve the obelisk in one attempt. The note also contained instructions on how to provide a proper offering, which would allow an individual to enter the portal to negotiate a business deal.
+</p>
+<p>
+    When the group returned and reported their findings to you, you cant help but feel toyed with. Who ever was behind the obelisk was testing people, but there would only be one way to find out what their business proposal is... Or you could always ignore it and keep the free sex gear.
+</p>
+
+
+
+:: Quest_the_mistifying_obelisk2Success [nobr]
+<p>
+    <<rep $g.scout>>, <<rep $g.researcherone>>, and <<rep $g.researchertwo>> searched through the desert in the blistering heat for a little over a week and a half before <<yourrep $g.scout>> managed to spot the obelisk, standing tall in a valley surrounded by dunes. The group let out a collective sigh of relief, as they could finally set up tents, get out of the sun, and shake the sand from their boots.
+</p>
+
+<p>
+    As the group approached the glistening obelisk however, the strangeness of the situation was starting to feel unnerving. The obelisk was an imposing monument, and to your experienced slavers they all quickly recognized the feeling in the pit of their stomachs. It was the same sense of unease that always infected areas tied heavily to the mist. As the group started setting up camp, they steeled themselves mentally to be able to handle the next few weeks with the mist.
+</p>
+
+<p>
+    Quickly the three set up camp and for the next few leisurely weeks the researchers butted heads while <<therace $g.scout>> spent <<them $g.scout>> time sunbathing, napping, and warding off the occasional small thirsty bandit pack. Eventually
+
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.researcherone>> realized the obelisk had a magical mechanism built into its side that could be opened by activating the inscribed runes on the obelisk.
+
+        <<if $g.researcherone.isHasTrait('per_cautious')>>
+            Not one to act without caution however, <<they $g.researcherone>> did not rush to enter the solution. Instead <<they $g.researcherone>> got the attention of <<rep $g.researchertwo>> and together the two spent the next day conducting a thorough sweep of the entire obelisk, checking for traps and creating a plan to solve the puzzle safely.
+
+        <<else>>
+            As <<they $g.researcherone>> told the group of <<their $g.researcherone>> findings, the sense of unease weighed heavy on them all. As this object was from the mist, there was no telling what manner of hideouts traps might be present. Together the three worked out the details of their plan, having <<rep $g.scout>> and <<rep $g.researchertwo>> stay a safe distance away while <<rep $g.researcherone>> carefully and slowly activated the runes. At least this way, if anything did happen <<rep $g.researcherone>> would have help right away.
+        <</if>>
+
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.researchertwo>> realized the obelisk had a magical mechanism built into its side that could be opened by solving a riddle inscribed on the obelisk.
+
+        <<if $g.researchertwo.isHasTrait('per_cautious')>>
+            Not one to act without caution however, <<they $g.researchertwo>> did not rush to enter the solution. Instead <<they $g.researchertwo>> got the attention of <<rep $g.researcherone>> and together the two spent the next day conducting a thorough sweep of the entire obelisk, checking for traps and creating a plan to solve the puzzle safely.
+        <<else>>
+
+            As <<they $g.researchertwo>> told the group of <<their $g.researchertwo>> findings, the sense of unease weighed heavy on them all. As this object was from the mist, there was no telling what manner of hideouts traps might be present. Together the three worked out the details of their plan, having <<rep $g.scout>> and <<rep $g.researcherone>> stay a safe distance away while <<rep $g.researchertwo>> carefully answered the riddles aloud. At least this way, if anything did happen <<rep $g.researchertwo>> would have help right away.
+        <</if>>
+
+
+    <</if>>
+</p>
+
+
+
+<p>
+    The next morning, with the plan settled on,
+
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.researcherone>> approached the obelisk, as the other two cautiously watched on. As each rune was activated the uneasy sense grew stronger until finally, while holding <<their $g.researcherone>> breath, <<rep $g.researcherone>> activated the final rune. In the next few still moments, the tension was palpable, but as seconds passed and nothing happened <<rep $g.researcherone>> began wondering if maybe <<they $g.researcherone>> had made a mistake. In that moment a small slip of worn paper fell into the sand at <<reps $g.researcherone>><<ufeet $g.researcherone>>.
+
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.researchertwo>> approached the obelisk, as the other two cautiously watched on. As each rune was activated the uneasy sense grew stronger until finally, while holding <<their $g.researchertwo>> breath, <<rep $g.researchertwo>> activated the final rune. In the next few still moments, the tension was palpable, but as seconds passed and nothing happened <<rep $g.researchertwo>> began wondering if maybe <<they $g.researchertwo>> had made a mistake. In that moment a small slip of worn paper fell into the sand at <<reps $g.researchertwo>><<ufeet $g.researchertwo>>.
+    <</if>>
+
+
+    As the group settled back into camp, the group sat down to read the message on the paper. The note simply contained detailed instructions on how to provide a proper offering, which confused the slavers as they wondered what could possibly be going on.
+
+</p>
+<p>
+    When the group returned and reported their findings to you, you cant help but feel toyed with. Who ever was behind the obelisk was testing people, but there would only be one way to find out what their goal is.
+</p>
+
+
+
+:: Quest_the_mistifying_obelisk2Failure [nobr]
+
+<p>
+<<Rep $g.scout>>, <<rep $g.researcherone>>, and <<rep $g.researchertwo>> searched through the desert in the blistering heat for an entire month. Badly sunburned, chafed, and blistered the group returned to the gates of <<rep $company.player>> to tell you the bad news. Apparently there had been heavy sandstorms, only broken up by horrendous blistering heat. Even still you knew your slavers, and them not finding it seemed unlikely. Maybe some other risk taking individuals simply got to it before they did. No matter what happened your slavers looked beaten down and on the brink of death, so you graciously gave them two weeks leave to tend to their wounds and rest.
+</p>
+
+:: Quest_the_mistifying_obelisk2Disaster [nobr]
+<p>
+    <<Rep $g.scout>>, <<rep $g.researcherone>>, and <<rep $g.researchertwo>> searched through the desert in the blistering heat for a little over a week and a half before <<yourrep $g.scout>> managed to spot the obelisk, standing tall in a valley surrounded by dunes. The group let out a collective sigh of relief, as they could finally set up tents, get out of the sun, and shake the sand from their boots.
+</p>
+
+<p>
+    As the group approached the glistening obelisk however, the strangeness of the situation was starting to feel unnerving. The obelisk was an imposing monument, and to your experienced slavers they all quickly recognized the feeling in the pit of their stomachs. Oddly though
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.researcherone>> found themselves strangely comforted, and aided in easing the others worry as the group prepared their camp.
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.researchertwo>> found themselves strangely comforted, and aided in easing the others worry as the group prepared their camp.
+    <</if>>
+</p>
+
+<p>
+    For the next few unfortunate weeks the researchers spent as much time as they could studying the obelisk, but the group was seemingly plagued with misfortune. They found themselves huddled in their tents for the better part of a week as a result of a harsh sandstorm, only to need to spend the next few days defending their camp from a small group of raiders. Finally with so much time unfortunately wasted <<rep $g.researcherone>> and <<rep $g.researchertwo>> turned their attention to the obelisk while <<rep $g.scout>> disposed of the pile of raider bodies.
+</p>
+
+<p>
+    Eventually
+
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.researcherone>> realized the obelisk had a magical mechanism built into its side that could be opened by activating the inscribed runes on the obelisk.
+
+        <<if $g.researcherone.isHasTrait('per_cautious')>>
+            Even though <<rep $g.researcherone>> was normally extremely cautious, <<they $g.researcherone>> felt drawn to the obelisk deeply. Instantly after the solution click in <<their $g.researcherone>><<uhead $g.researcherone>> <<they $g.researcherone>> started the process of solving the puzzle.
+
+        <<else>>
+            In that moment <<rep $g.researcherone>> felt a deep longing to open the obelisk, and a pull to get the prize from within it. Instantly after the solution click in <<their $g.researcherone>><<uhead $g.researcherone>> <<they $g.researcherone>> started the process of solving the puzzle.
+        <</if>>
+
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.researchertwo>> realized the obelisk had a magical mechanism built into its side that could be opened by solving a riddle inscribed on the obelisk.
+
+        <<if $g.researcherone.isHasTrait('per_cautious')>>
+            Even though <<rep $g.researchertwo>> was normally extremely cautious, <<they $g.researchertwo>> felt drawn to the obelisk deeply. Instantly after the solution click in <<their $g.researchertwo>><<uhead $g.researchertwo>> <<they $g.researchertwo>> started the process of solving the puzzle.
+
+        <<else>>
+            In that moment <<rep $g.researchertwo>> felt a deep longing to open the obelisk, and a pull to get the prize from within it. Instantly after the solution click in <<their $g.researchertwo>><<uhead $g.researchertwo>> <<they $g.researchertwo>> started the process of solving the puzzle.
+        <</if>>
+
+    <</if>>
+</p>
+
+<p>
+    As soon as
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.researcherone>> had finished the process, <<they $g.researcherone>> realized <<they $g.researcherone>> had made a terrible mistake. Instantly the trap activated, opening a small portal to somewhere deep within the mist, causing all three slavers to notice themselves beginning to become corrupted. It was at this point your <<uadjgood $g.scout>> realized something had gone wrong, and rushed grabbing <<rep $g.researcherone>>, yanking <<them $g.researcherone>> from the obelisk, shielding them from a blast of dark energy as the portal closed. The whole ordeal left <<rep $g.researcherone>> visibly shaken, and even after the group limped their way back to your company's gates weather <<they $g.researcherone>> was shaken by <<their $g.researcherone>> own mistake or the things <<they $g.researcherone>> saw in the mist remains unclear.
+
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.researchertwo>> had finished the process <<they $g.researchertwo>> realized <<they $g.researchertwo>> had made a terrible mistake. Instantly the trap activated, opening a small portal to somewhere deep within the mist, causing all three slavers to notice themselves beginning to become corrupted. It was at this point your <<uadjgood $g.scout>> realized something had gone wrong, and rushed grabbing <<rep $g.researchertwo>>, yanking <<them $g.researchertwo>> from the obelisk, shielding them from a blast of dark energy as the portal closed. The whole ordeal left <<rep $g.researchertwo>> visibly shaken, and even after the group limped their way back to your company's gates weather <<they $g.researchertwo>> was shaken by <<their $g.researchertwo>> own mistake or the things <<they $g.researchertwo>> saw in the mist remains unclear.
+    <</if>>
+</p>
+
+<p>
+    After hearing the story of what happened, you cant help but feel toyed with. Whoever was behind the obelisk was testing people, but it seems your group failed and what the test was even for still remains unclear.
+</p>

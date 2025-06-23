@@ -1,0 +1,40 @@
+:: LIVINGSETUP_pirate [nobr living]
+
+<<run new setup.Living({
+  key: 'pirate',
+  name: 'Pirate',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_pirate: setup.LIVING_COMMON_PREFERENCE,
+    bg_seaman: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_independent: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_loyal: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'sailing the seven seas',
+    'plundering booties',
+    'stowing away treasures',
+  ],
+  location: 'ship',
+})>>
+
+:: LIVING_pirate [nobr]
+
+<p>
+The a|race returned to the sea,
+<<if $g.a.isHasTrait('bg_pirate') || $g.a.isHasTrait('bg_seaman')>>
+a place the <<man $g.a>> dearly calls home,
+<<else>>
+a place a|they becomes quite fond of,
+<</if>>
+and decided to renew a|their career in piracy.
+Like pirates of legends, a|they began a|their career by stowing away the
+money and treasures a|they had amassed at one of the more secluded islands
+of the <<lore region_sea>>.
+With that settled, a|they recruited a group of wannabe pirates, and become
+a proper pirate by raiding ships and taking away virginities.
+a|They becomes quite infamous, and it is rumored that many expensive slaves are
+being kept away in the hull of a|their ship, as entertainment of a|their many <<men $g.a>>.
+</p>

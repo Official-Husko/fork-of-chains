@@ -1,0 +1,97 @@
+:: QuestSetupUnitTrainingDomesticBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_domestic_basic',  /* id */
+  'Domestic Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingDomesticBasic',  /* description */
+  setup.qdiff.easy12,
+  [
+    [
+      'QuestUnitTrainingDomesticBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_domestic_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingDomesticBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_domestic_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingDomesticBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingDomesticBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingDomesticBasic [nobr]
+
+<p>
+Not all slaves are expected to become sex slaves.
+There are demand for slaves for more mundane tasks, such as
+as maids or gardener.
+The domestic slave training teaches slaves the necessary
+skills for such work.
+</p>
+
+:: QuestUnitTrainingDomesticBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_domestic_basic_male.jpg'>>
+<<else>>
+  <<questimage 'unit_training_domestic_basic_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The training was a complete success. <<Rep $g.trainee>>,
+and your slavers gain a lot of experience from the training.
+</p>
+
+<<else>>
+
+<p>
+At the end of the week, <<rep $g.trainee>> trainee|have gained
+both textbook and first-hand knowledge about the
+basics of domestic work.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingDomesticBasicFailure [nobr]
+<p>
+Unfortunately, the training was unsuccesful, and the lessons were
+lost in <<reps $g.trainee>> thick skull.
+</p>
+
+:: QuestUnitTrainingDomesticBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

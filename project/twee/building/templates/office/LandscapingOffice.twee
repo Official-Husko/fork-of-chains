@@ -1,0 +1,55 @@
+:: InitBuildingLandscapingOffice [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'landscapingoffice',
+  tags: [],
+  name: 'Landscaping office',
+  width: 3,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'landscapingoffice',
+  name: 'Landscaping office',
+  tags: ['office', 'unlocker', 'critical',],
+  description_passage: 'BuildingLandscapingOffice',
+  costs: [
+    [setup.qc.Money(-1000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('greathall'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.Function(() => {
+        State.variables.roomlist.resetCacheAll();
+      })
+    ]
+  ],
+  main_room_template_key: 'landscapingoffice',
+})>>
+
+:: BuildingLandscapingOffice [nobr]
+
+<p>
+An office where you can ensure your fort looks presentable to visitors.
+Once built, your improvements will be able to receive adjacency and vicinity
+bonuses from being built close to others, which grant a small but company-wide
+boosts to all skills.
+Also unlocks various decoration improvements for your fort, which
+increases some skills in exchange for some others.
+</p>
+
+<p>
+Note that skill bonus from adjacencies are <<successtext 'very small'>>, and you can ignore
+this mechanic altogether without any noticable effect.
+</p>

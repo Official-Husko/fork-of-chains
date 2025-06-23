@@ -1,0 +1,44 @@
+:: EventSetup_broken_soul [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'broken_soul', /* key */
+"Broken Soul", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'unknown',
+],
+'Event_broken_soul',
+{ /* roles */
+},
+{ /* actors */
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AllowDefiant(),
+    setup.qres.HasTitle('quest_broken_ascent_0'),
+  ],
+  'wizard': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AnyTrait([setup.trait.magic_dark, setup.trait.magic_dark_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_fire, setup.trait.magic_fire_master], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('broken_soul', {
+slave: "slave",
+wizard: "wizard",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.traininggrounds),
+  setup.qres.NoQuest('broken_soul'),
+  setup.qres.VarNull('broken_wings_cooldown'),
+],
+15, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_broken_soul [nobr]
+<<include 'Quest_broken_soul'>>

@@ -1,0 +1,36 @@
+:: EventSetup_flickering_flame [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'flickering_flame', /* key */
+"Flickering Flame", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Event_flickering_flame',
+{ /* roles */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+  ],
+  'lover': [
+    setup.qres.NotYou(),
+    setup.qres.CanBeLoverWithYou(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('flickering_flame', {
+you: "you",
+lover: "lover",
+}),
+],
+[ /* restrictions */
+],
+100, /* Cooldown */
+setup.rarity.common,  /* Rarity */
+)>>
+
+:: Event_flickering_flame [nobr]
+<<include "Opportunity_flickering_flame">>

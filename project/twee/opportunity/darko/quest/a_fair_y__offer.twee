@@ -1,0 +1,224 @@
+:: OpportunitySetup_a_fair_y__offer [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'a_fair_y__offer', /* key */
+"A Fair(y) Offer", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'unknown',
+  'veteran',
+],
+1, /* expiration weeks */
+'Opportunity_a_fair_y__offer',
+setup.qdiff.hard49, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_a_fair_y__offer_0',
+    'Opportunity_a_fair_y__offer_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.And([
+setup.qres.HasItem(setup.item.quest_bewitchment_nectar),
+setup.qres.HasItem(setup.item.quest_bewitchment_trap)
+]),
+setup.qc.DoAll([
+setup.qc.SetCooldownQuest('finding_fairy2', 400),
+setup.qc.Slave('fairy', "a|was a lecherous fairy in the western forests who kidnapped both travelers and adventurers and remade them as a|their personal harem", undefined),
+setup.qc.EquipmentDirect('survival_neck_master'),
+setup.qc.OneRandomSeed([
+setup.qc.Favor('humankingdom', 150),
+setup.qc.Favor('neko', 150),
+setup.qc.Favor('elf', 150),
+setup.qc.LoseItem('quest_bewitchment_nectar', 1),
+setup.qc.LoseItem('quest_bewitchment_trap', 1),
+])
+], undefined),
+setup.qc.DoAll([
+setup.qc.SetCooldownQuest('finding_fairy2', 12),
+setup.qc.Equipment(setup.equipmentpool.survival_good),
+setup.qc.Equipment(setup.equipmentpool.combat_good),
+setup.qc.Equipment(setup.equipmentpool.brawn_good),
+setup.qc.Equipment(setup.equipmentpool.knowledge_good)
+], undefined)),
+    ],
+  ],
+  [
+    'Opportunity_a_fair_y__offer_1',
+    'Opportunity_a_fair_y__offer_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Through(setup.qres.HasItem(setup.item.quest_bewitchment_nectar), '???'),
+    ],
+    [ /* outcomes */
+      setup.qc.SetCooldownQuest('finding_fairy2', 200),
+      setup.qc.Slaver('fairy', "a|was a lecherous fairy in the western forests who drugged both travelers and adventurers and remade them as a|their personal harem", undefined),
+      setup.qc.TraumatizeRandom('tracker', 12),
+      setup.qc.TraumatizeRandom('rescuer', 12),
+    setup.qc.LoseItem('quest_bewitchment_nectar', 1),
+      setup.qc.LoseItem('quest_bewitchment_trap', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'fairy': 'all',
+  'rescuer': [
+  ],
+  'tracker': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_a_fair_y__offer [nobr]
+
+<p>
+Having rescued all of your captured slavers in somewhat intact conditions, your slavers
+are offered a truce by the unscrupulous fairy: let <<them $g.fairy>> walk
+away in good graces, and your slavers can loot the fairy's former lair for
+all its worth!
+</p>
+
+<<if $inventory.isHasItem('quest_bewitchment_nectar')>>
+<p>
+Seeing the <<rep setup.item.quest_bewitchment_nectar>> that your slavers are carrying,
+however, the fairy's eyes lit up in surprise. Unexpectedly, <<they $g.fairy>>
+fairy|offer your slaver an
+alternative deal: the nectar in exchange for the fairy's services by joining
+your company. It might be good to have such a powerful slaver in your
+company, but choosing this means your slavers will never be able to exact
+their revenge on the fae...
+</p>
+
+<<unitcard $g.fairy 1>>
+
+<</if>>
+
+<<if $inventory.isHasItem('quest_bewitchment_trap') and
+$inventory.isHasItem('quest_bewitchment_nectar')>>
+<p>
+Remembering the <<rep setup.item.quest_bewitchment_trap>> at <<uhand $unit.player>>, however,
+your slavers could pretend to accept the truce with a more sinister goal in
+mind...
+</p>
+
+<</if>>
+
+
+
+
+:: Opportunity_a_fair_y__offer_0 [nobr]
+<<if $inventory.isHasItem('quest_bewitchment_trap') and $inventory.isHasItem('quest_bewitchment_nectar')>> Pretend to accept the truce and set up the trap <<else>> Accept the truce <</if>>
+
+
+:: Opportunity_a_fair_y__offer_0_flavor [nobr]
+<<if $inventory.isHasItem('quest_bewitchment_trap') and
+$inventory.isHasItem('quest_bewitchment_nectar')>>
+<p>
+With a knowing nod, <<rep $g.rescuer>> rescuer|borrow as much time as
+possible from the fairy, delaying the answer with while dangling some of the
+<<rep setup.item.quest_bewitchment_nectar>> in front of the fae. Meanwhile,
+<<yourrep $g.tracker>> tracker|disappear from view into the forest, setting up an
+irresistable trap: the <<rep setup.item.quest_bewitchment_trap>> is setup
+just on the outskirts of the fairy's lair with the <<rep
+setup.item.quest_bewitchment_nectar>> inside.
+With the trap set, <<rep $g.rescuer>> rescuer|pretend to agree to the truce,
+but not to the nectar exchange. Your slavers watch carefully as the fairy
+somewhat dejectedly begins to pack up <<their $g.fairy>> slaves to move to a
+new lair.
+</p>
+
+<p>
+Your slavers then waited for the signal — and there it is. A shriek can be
+heard from just outside the lair. <<Rep $g.tracker>> <<uadv $g.tracker>>
+tracker|rush to the trap set — lo and behold: the fairy is lodged inside,
+trapped within the enchanted rat cage, glaring daggers at your slavers.
+With the quarry safely in tow, <<rep $g.rescuer>> high rescuer|five <<rep
+$g.tracker>> before taking the fairy's prized <<rep
+setup.equipment.survival_neck_master>>, and properly packaging the trapped
+fairy in full bondage gear for the long journey to <<their $g.fairy>> new
+lair: in one of your dungeon cells.
+</p>
+
+<p>
+The trap dispels all of the fairy's magic too, which apparently releases all
+of <<their $g.fairy>> harem's minds.
+Among them,
+<<if $gQuest.getSeed() % 3 == 0>>
+a grateful noble from the <<rep $company.humankingdom>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+a grateful neko adventurer
+<<elseif $gQuest.getSeed() % 3 == 2>>
+a grateful elven herbalist
+<</if>>
+promises to spread the good deeds of your slavers around.
+</p>
+
+<<else>>
+
+<p>
+Despite feeling slightly disgruntled, your slavers agree to the fairy's offer of a
+truce. That settled, the fairy performs an enchantment across <<their
+$g.fairy>> lair, before commanding <<their $g.fairy>> remaining slave puppets
+to follow the fairy into a no-doubt newly hidden lair.
+Once the fairy is out of sight, your slavers scoured through the former lair,
+finding numerous discarded pieces of clothing no doubt formerly belonging to
+the fairy's current harem.
+</p>
+
+<p>
+Still, all your slavers are rescued and accounted for, although some may bear
+permanent mark from their time under the fairy's cruel management. Your slavers are
+concerned, however, by the fairy's parting words: "Well then, see you
+gentle<<men $g.rescuer>> in a year or so!". ...you have a feeling this won't
+be the last time you meet the fairy, and perhaps a more permanent solution is
+required...
+</p>
+<</if>>
+
+
+:: Opportunity_a_fair_y__offer_1 [nobr]
+<<if $inventory.isHasItem('quest_bewitchment_nectar')>> Recruit the fairy <<else>> ??? <</if>>
+
+
+:: Opportunity_a_fair_y__offer_1_flavor [nobr]
+
+<p>
+The deal is struct — your <<rep setup.item.quest_bewitchment_nectar>> in
+exchange for the fairy's services as a slaver in your company.
+<<They $g.fairy>> fairy|perform a final enchantment on <<their $g.fairy>>
+current harem, ensuring the slaves would take care of <<themself $g.fairy>>
+while the fairy is away on official business with your company. Once that's
+done, <<they $g.fairy>> greedily fairy|take the <<rep
+setup.item.quest_bewitchment_nectar>>, before introducing <<themself
+$g.fairy>> to your slavers as <<rep $g.fairy>>.
+</p>
+
+<p>
+<<Yourrep $g.tracker>> can't help but feel slightly disgruntled that the
+fairy who has kidnapped so many of <<their $g.tracker>> comrades were unable
+to be justly punished, but in time <<they $g.tracker>> will understand just
+how useful it is to have a highly powerful slaver in a slaving company.
+</p>
+
+<<if $inventory.isHasItem('quest_bewitchment_trap')>>
+<p>
+Given your decision to recruit the unscrupulous fairy, there is no longer a
+need for your <<rep setup.item.quest_bewitchment_trap>>, which has been
+thrown away by <<yourrep $g.rescuer>>.
+</p>
+<</if>>

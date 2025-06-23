@@ -1,0 +1,85 @@
+:: QuestSetupSlaveCorruptAll [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'slavecorrupt_all',  /* id */
+  'Slave Corruption: Any',  /* Title */
+  'darko',   /* author */
+  [
+    'fort',
+    'transformation'
+  ],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.corruption_head,
+    'assistant1': setup.qu.corruption_assistant,
+    'assistant2': setup.qu.corruption_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SlaveCorruptAll',  /* description */
+  setup.qdiff.normal40,
+  [
+    [
+      'SlaveCorruptAllCrit',
+      [
+        setup.qc.Corrupt('trainee'),
+        setup.qc.Corrupt('trainee'),
+        
+      ]
+    ],
+    [
+      'SlaveCorruptAllSuccess',
+      [
+        setup.qc.Corrupt('trainee'),
+        
+      ],
+    ],
+    [
+      'SlaveCorruptAllFailure',
+      [
+      ],
+    ],
+    [
+      'SlaveCorruptAllDisaster',
+      [
+        setup.qc.TraumatizeRandom('head', setup.TRAUMA_SHORT),
+        setup.qc.TraumatizeRandom('assistant1', setup.TRAUMA_SHORT),
+        setup.qc.TraumatizeRandom('assistant2', setup.TRAUMA_SHORT),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SlaveCorruptAll [nobr]
+<p>
+Corrupt a slave randomly. For this kind of random result, it fortunately
+not necessary to offer a slave as an offering.
+But should you wish to try other types of more directed corruption, it would be
+a different story.
+</p>
+
+:: SlaveCorruptAllCrit [nobr]
+<p>
+The corruption went much better than expected, with the dark powers looking favorable on your company.
+</p>
+
+:: SlaveCorruptAllSuccess [nobr]
+<p>
+The corruption attempt was successful.
+</p>
+
+:: SlaveCorruptAllFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SlaveCorruptAllDisaster [nobr]
+<p>
+The power behind <<lore concept_mist>> were not pleased with the corruption attempt, and showed your slavers
+abhorrent visions which traumatized them greatly.
+</p>

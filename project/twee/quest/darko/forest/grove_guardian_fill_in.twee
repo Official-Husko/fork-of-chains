@@ -1,0 +1,319 @@
+:: QuestSetup_grove_guardian_fill_in [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaguardian1 = new setup.UnitCriteria(
+null, /* key */
+'Grove Guardian', /* name */
+[
+  setup.trait.bg_mythical,
+  setup.trait.race_elf,
+  setup.trait.race_catkin,
+  setup.trait.tough_nimble,
+  setup.trait.per_attentive,
+  setup.trait.per_chaste,
+  setup.trait.per_honorable,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.race_human,
+  setup.trait.bg_raider,
+  setup.trait.bg_pirate,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_dreamy,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  survival: 1,
+  arcane: 1,
+}
+)>>
+
+<<set _criteriaguardian2 = new setup.UnitCriteria(
+null, /* key */
+'Grove Guardian', /* name */
+[
+  setup.trait.bg_mythical,
+  setup.trait.race_elf,
+  setup.trait.race_catkin,
+  setup.trait.tough_nimble,
+  setup.trait.per_attentive,
+  setup.trait.per_chaste,
+  setup.trait.per_honorable,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.race_human,
+  setup.trait.bg_raider,
+  setup.trait.bg_pirate,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_dreamy,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  survival: 1,
+  arcane: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'grove_guardian_fill_in', /* key */
+"Grove Guardian Fill-In", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'unit',
+  'favor',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'guardian1': [ _criteriaguardian1, 1],
+  'guardian2': [ _criteriaguardian2, 1],
+  'spotter': [ setup.qu.spotter, 1],
+},
+{ /* actors */
+  'trespasser': 'all',
+},
+[ /* costs */
+],
+'Quest_grove_guardian_fill_in',
+setup.qdiff.hardest29, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_grove_guardian_fill_inCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('trespasser', "tried to trespass into a sacred elven site but was spotted and subdued by your slavers", undefined),
+    ],
+  ],
+  [
+    'Quest_grove_guardian_fill_inCrit',
+    [
+      setup.qc.Favor('elf', 100),
+      setup.qc.Item(setup.item.healing_potion),
+    ],
+  ],
+  [
+    'Quest_grove_guardian_fill_inFailure',
+    [
+      setup.qc.Ire('elf', 10),
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.TraitDecrease('guardian1', setup.trait.vagina_tight),
+setup.qc.TraitDecrease('guardian1', setup.trait.anus_tight)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraitIncreaseExisting('guardian1', setup.trait.vagina_gape),
+setup.qc.Trait('guardian1', setup.trait.anus_gape)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Trait('guardian1', setup.trait.ears_elf)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Corrupt('guardian1', null, 2)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_grove_guardian_fill_inDisaster',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.MissingUnit('guardian1'),
+setup.qc.MissingUnit('guardian2')
+]),
+      setup.qc.Ire('elf', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_grove_guardian_fill_in [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Many locations in the <<lore region_forest>> are considered sacred by the
+elves, and many elves serve as guardians for these dedicated grove, tasked
+with keeping intruders out of these holy groves.
+There are many rumors what
+treasures are hiding behind these grove guardians — the rumors range from
+simple things such as a healing spring to outrageous ones like the secret
+of immortality. Nothing but hogwash, you are sure.
+</p>
+
+<p>
+Today, <<yourrep _u>> informed you about a rather strange opportunity.
+Apparently, one of the grove guardians is going to need some time to attend
+to their own personal matters, and would like to hire your company's
+services to help guard the grove for a few weeks.
+This might be an easy opportunity to gain friendship with the elves,
+should you take up the offer.
+In addition, should your slavers subdue any trespasser, it is also up
+to your slavers what they would do to the unlucky trespasser. All in all,
+this sounds like a good mission to take.
+</p>
+
+<p>
+You just need to ensure that your slavers are kept far, far away from
+whatever temptation lies in the heart of the grove...
+</p>
+
+
+:: Quest_grove_guardian_fill_inCrit [nobr]
+
+<p>
+Arriving at the forest, <<rep $g.guardian1>> and <<utheirrel $g.guardian1
+$g.guardian2>> <<rep $g.guardian2>> were guided into the sacred site after a
+long lecture about the historical importance of the site.
+<<if $g.guardian1.isHasTrait('per_frugal')>>
+Given <<reps $g.guardian1>> predisposition towards money,
+<<elseif $g.guardian1.isHasTrait('per_dreamy')>>
+Given <<reps $g.guardian1>> extremely limited attention span,
+<<elseif $g.guardian1.isHasTrait('per_slow')>>
+Given <<reps $g.guardian1>> rather lacking intellect,
+<<elseif $g.guardian1.isHasTrait('per_proud')>>
+Given <<reps $g.guardian1>> vanity,
+<<elseif $g.guardian1.isHasTrait('per_lunatic')>>
+Given <<reps $g.guardian1>> affinity for lunacy,
+<<elseif $g.guardian1.isHasTrait('per_evil')>>
+Given <<reps $g.guardian1>> absolute lack of morality,
+<<elseif $g.guardian1.isHasTrait('per_playful')>>
+Given <<reps $g.guardian1>> playful attitude,
+<<elseif $g.guardian1.isHasTrait('per_active')>>
+Given <<reps $g.guardian1>> hatred towards history,
+<<else>>
+Given <<reps $g.guardian1>> <<uinsultnoun $g.guardian1>>,
+<</if>>
+you've no doubt that all these lectures were all lost in <<their $g.guardian1>> thick skull,
+but somehow your slavers were able to resist the temptation of desecrating
+the site and managed to finish the job properly.
+</p>
+
+<p>
+
+<<if $gOutcome == 'crit'>>
+
+In fact, <<rep $g.spotter>> spotted a trespasser during one of the night
+shifts, whom <<rep $g.guardian1>> <<uadv $g.guardian1>> subdued. After
+making sure the elves were impressed by just what sort of danger your slavers had managed to
+prevent, the trespasser was neatly secured, tied on top of a carriage to bring back home as
+a slave.
+
+<<else>>
+
+While the watch turned relatively quiet,
+<<reps $g.guardian1>> <<upraisenoun $g.guardian1>> and <<reps $g.guardian2>>
+<<upraisenoun $g.guardian2>> did not go unnoticed.
+The elves were rather impressed by how consistent your slavers had watched over their grove,
+and your company's reputation with them soared as a result.
+
+<</if>>
+The grateful elves also gifted a <<rep setup.item.healing_potion>> to your slavers
+— a good gift fitting for master alchemists like the elves.
+</p>
+
+
+:: Quest_grove_guardian_fill_inFailure [nobr]
+
+<p>
+The secrets of the grove proved too tempting for your slavers, and <<yourrep
+$g.guardian1>> guardian1|was unable to resist going into the grave and taste
+whatever forbidden secret it held...
+</p>
+
+<p>
+By the time <<yourrep $g.guardian2>> realized, it was already too late.
+<<They $g.guardian2>> found <<utheirrel $g.guardian2 $g.guardian1>> <<rep
+$g.guardian1>> deep inside the grove, gorging on one of the forbidden fruits.
+<<if $gQuest.getSeed() % 4 == 0>>
+<<reps $g.guardian1>> holes were tightened before your slavers' eyes, a seemingly miraculous effect.
+<<elseif $gQuest.getSeed() % 4 == 1>>
+Tendrils came out from within the fruit, assaulting the slaver's holes, but
+the fruit kept <<rep $g.guardian1>> drugged and <<theslaver $g.guardian2>> remained
+irresponsive as <<their $g.guardian1>> holes were ravaged.
+<<elseif $gQuest.getSeed() % 4 == 2>>
+<<if $g.guardian1.isHasTrait('ears_elf')>>
+<p>
+Despite eating the fruit vigorously, nothing seemed to happen to <<rep $g.guardian1>>.
+</p>
+<<else>>
+<p>
+<<Rep $g.guardian1>> now guardian1|sport a pair of sharp pointy ears...
+</p>
+<</if>>
+<<elseif $gQuest.getSeed() % 4 == 3>>
+<p>
+The corrupted fruit spread its corruption deep within <<rep $g.guardian1>>,
+changing their appearance.
+</p>
+<</if>>
+It took <<rep $g.guardian2>> some effort to drag the addled <<urace
+$g.guardian1>> back, but it was already too late. The elves already knew of your
+slavers' treachery, and they were all banished from the grove.
+</p>
+
+
+:: Quest_grove_guardian_fill_inDisaster [nobr]
+<<if $gQuest.getSeed() % 2 == 0>>
+<<set _u = $g.guardian1>>
+<<elseif $gQuest.getSeed() % 2 == 1>>
+<<set _u = $g.guardian2>>
+<</if>>
+
+
+<p>
+During one of the night shifts, your slavers spotted a trespasser attempting
+to cross into the grove. However, only <<yourrep _u>> happened to be awake at
+that time, and <<they _u>> foolishly decided to confront the trespasser
+alone.
+</p>
+
+<p>
+<<Rep _u>> never returned to the rest of your slavers. It remains unknown just what
+might have happened to <<rep _u>>... <<uneedrescue _u>>
+</p>

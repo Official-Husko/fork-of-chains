@@ -1,0 +1,183 @@
+:: QuestSetup_bounty_hunt__bear [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'bounty_hunt__bear', /* key */
+"Bounty Hunt: Bear", /* Title */
+"", /* Author */
+[ /* tags */
+  'vale',
+  'money',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'fighter': [ setup.qu.fighter_vale, 1],
+  'hunter': [ setup.qu.hunter, 1],
+  'tracker': [ setup.qu.scout_vale, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_bounty_hunt__bear',
+setup.qdiff.easy5, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_bounty_hunt__bearCrit',
+    [
+      setup.qc.MoneyCrit(),
+      setup.qc.DoAll([
+setup.qc.Opportunity('the_abominable_valeman', {
+fighter: "fighter",
+hunter: "hunter",
+tracker: "tracker",
+})
+], 0.02),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt__bearSuccess',
+    [
+      setup.qc.MoneyNormal(),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt__bearFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_bounty_hunt__bearFailure',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_bounty_hunt__bear [nobr]
+<p>
+In the cold winters of the <<lore region_vale>> winter tales told around campfires or inside mead halls grow more and more outlandish with every telling. People speak of living snowstorms, screaming spirits, the risen dead, and man-eating monsters that consume the flesh of the unfortunate.
+</p>
+<p>
+Recently, a
+<<switch $gQuest.getSeed() % 5>>
+<<case 0>>
+rancher
+<<case 1>>
+shepherd
+<<case 2>>
+farmer
+<<case 3>>
+merchant
+<<default>>
+chieftain
+<</switch>>
+placed an open bounty on one such monster that has been plaguing their town: The "Abominable Valeman". According to the stories, it is a gigantic, elusive hairy creature that comes down from the mountain to steal their livestock during snowstorms. While stories give the valeman humanlike features, the impact it has sounds like a bear to you. So while you probably won't be able to hunt down a myth, you can probably cash in on the bounty by catching a bear.
+</p>
+
+
+:: Quest_bounty_hunt__bearCrit [nobr]
+<p>
+The light snowfall did little to conceal fresh tracks made in powder snow, and <<name $g.tracker>> made the best of the opportunity to quickly locate a grizzly bear. Strangely enough, <<they $g.tracker>> noticed a
+<<if $g.tracker.isHasTrait('per_attentive')>>
+faint
+<</if>>
+set of secondary tracks intersecting with the ones <<they $g.tracker>> tracker|was following, but didn't stop to investigate. The tracking took only a couple hours, and <<name $g.tracker>> <<uadv $g.tracker>> signaled to <<name $g.fighter>> and <<name $g.hunter>> that their quarry had been found.
+</p>
+<p>
+With ample time to pick an good vantage, <<rep $g.hunter>> landed a disabling shot on the bear's vitals, causing it to stumble and fall. Rushing forward, <<name $g.fighter>> only needed a single blow of <<their $g.fighter>> <<uweapon $g.fighter>> to put the wounded beast down.
+</p>
+
+<p>
+The
+<<switch $gQuest.getSeed() % 5>>
+<<case 0>>
+rancher
+<<case 1>>
+shepherd
+<<case 2>>
+farmer
+<<case 3>>
+merchant
+<<default>>
+chieftain
+<</switch>>
+readily believed the bear to be the "Abominable Valeman" they'd sought, and rewarded the slavers handsomely for the grizzly's high quality pelt on top of the regular bounty.
+</p>
+
+
+:: Quest_bounty_hunt__bearSuccess [nobr]
+
+<p>
+Upon stepping out of the village into a light morning snowfall, <<name $g.hunter>> noticed a long furrow in some of the older, deeper snow. <<name $g.tracker>> confirmed them to be bear tracks, but perhaps from last night or yesterday. Since the trail was a bit old, it took <<name $g.tracker>> several hours to catch up to the bear. By then, the sky was already darkening with storm clouds.
+</p>
+
+<p>
+With the wind picking up and whistling around <<their $g.hunter>> <<uears $g.hunter>>, <<name $g.hunter>> peppered the bear with arrows, driving it into a blind rage. <<name $g.fighter>> <<uadv $g.fighter>> interposed <<themselves $g.fighter>> between the grizzly and <<therace $g.hunter>>, and connected with several <<uweapon $g.fighter>> blows to finish it off. With <<rep $g.fighter>> loading the corpse up onto a sled, the slavers returned back at town only minutes before a blizzard hit, snowing them in.
+</p>
+<p>
+The
+<<switch $gQuest.getSeed() % 5>>
+<<case 0>>
+rancher
+<<case 1>>
+shepherd
+<<case 2>>
+farmer
+<<case 3>>
+merchant
+<<default>>
+chieftain
+<</switch>>
+accepted the bear to be the "Abominable Valeman", and thanked the slavers for solving the town's problem.
+</p>
+
+
+
+:: Quest_bounty_hunt__bearFailure [nobr]
+<p>
+Unfortunately, what was a light snowfall when the slavers left soon turned into a swirling blizzard.
+</p>
+<<if $gOutcome == 'failure'>>
+<p>
+Unable to travel safely in these conditions, <<name $g.tracker>> led <<name $g.fighter>> and <<name $g.hunter>> back to the village. The 
+<<switch $gQuest.getSeed() % 5>>
+<<case 0>>
+rancher
+<<case 1>>
+shepherd
+<<case 2>>
+farmer
+<<case 3>>
+merchant
+<<default>>
+chieftain
+<</switch>>
+ was disappointed at their early return, but not upset, given the blizzard outside. The storm didn't let up for several days, and by the time your slavers were able to leave, the trail they sought was long gone, along with any chance of payment.
+</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>
+<<name $g.tracker>> called out to <<name $g.fighter>> and <<name $g.hunter>> as <<they $g.tracker>> lost sight of the others in the blinding snow. When the snowfall finally ceased and your slavers were able to regroup, they discovered <<switch $gQuest.getSeed() % 3>>
+<<case 0>>
+<<name $g.fighter>>
+<<run setup.qc.Injury('fighter', 6).apply($gQuest)>>
+<<case 1>>
+<<name $g.hunter>>
+<<run setup.qc.Injury('hunter', 6).apply($gQuest)>>
+<<default>>
+<<name $g.tracker>>
+<<run setup.qc.Injury('tracker', 6).apply($gQuest)>>
+<</switch>> slumped against a tree, bleeding from several wounds. <<They $g.tracker>> wasn't able to describe the creature <<they $g.tracker>> fought, but <<they $g.tracker>> hopes it was a bear. The wounds <i>look</i> like they could be from bear claws.
+</p>
+<</if>>

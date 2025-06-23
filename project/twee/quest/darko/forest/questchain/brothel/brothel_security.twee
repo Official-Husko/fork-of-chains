@@ -1,0 +1,175 @@
+:: QuestSetup_brothel_security [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"brothel_security0",
+"Thug",
+'forest_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_thug),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'brothel_security', /* key */
+"Brothel Security", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+2, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'bouncer': [ setup.qu.bodyguard, 1],
+  'merc1': [ setup.qu.mercenary, 1],
+  'merc2': [ setup.qu.mercenary, 1],
+},
+{ /* actors */
+  'owner': [
+  ],
+  'thug': 'brothel_security0',
+  'thug2': 'brothel_security0',
+  'head': [
+  ],
+},
+[ /* costs */
+],
+'Quest_brothel_security',
+setup.qdiff.hard37, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_securityCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('thug2', "a|was the second in command of a band of thugs who tried to occupy a brothel under your protection", undefined),
+    ],
+  ],
+  [
+    'Quest_brothel_securityCrit',
+    [
+      setup.qc.VarSet('quest_brothel_progress', '36', -1),
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.Slave('thug', "a|was the leader of a band of thugs who tried to occupy a brothel under your protection", undefined),
+    ],
+  ],
+  [
+    'Quest_brothel_securityFailure',
+    [
+      setup.qc.Injury('bouncer', 1),
+      setup.qc.Injury('merc1', 2),
+      setup.qc.Injury('merc2', 2),
+      setup.qc.QuestDirectSelf({
+head: "head",
+owner: "owner",
+}),
+    ],
+  ],
+  [
+    'Quest_brothel_securityFailure',
+    [
+      setup.qc.Injury('bouncer', 4),
+      setup.qc.Injury('merc1', 5),
+      setup.qc.Injury('merc2', 5),
+      setup.qc.QuestDirectSelf({
+head: "head",
+owner: "owner",
+}),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_security [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+It has been a couple of months since you acquired <<attach _describe>>, and
+it's steadily growing. Its selection of delectable <<if
+$g.head.isMale()>>male<<else>>female<</if>> whores are starting to appeal to
+a wider audience, and you can occasionally see
+<<if _class > 0>>
+some of the more well-off people from the city market
+<<else>>
+some of the sadistic criminals from the undercity
+<</if>>
+partaking for some fun in the brothel.
+But apparently the fame also attracts unwanted people.
+</p>
+
+<p>
+<<Yourrep $g.owner>> has come to you with a bad news. The brothel's profits and its lack of security had attracted a group of thugs, who wrestled control over the brothel from <<them $g.owner>>. They are now occupying your little brothel, reaping the profits from its operations.
+You must immediately secure your brothel back by sending a group of capable slavers to teach these thugs a lesson.
+</p>
+
+
+
+:: Quest_brothel_securityCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+<<Yourrep $g.bouncer>> <<uadv $g.bouncer>> led the operation to take back <<attach _describe>> from the thugs.
+They entered the brothel with a bang, and the brothel's <<men $g.head>> looked visibly relieved to see familiar faces in your slavers.
+Seeing the reinforcement, the head whore <<name $g.head>> rallied the workers of your brothel, and a fight ensued soon-after.
+<<Rep $g.merc1>> and <<utheirrel $g.merc1 $g.merc2>> <<rep $g.merc2>> <<uadv $g.merc1>> dispatched one thug after another in an attempt to wrest control of the facility back.
+</p>
+
+<p>
+It took several hours, but at the end, your slavers were able to dispatch all ten or so thugs that were occupying the establishment.
+Most were thrown out into the nearby forests as free picking for other slaving companies, but your slavers took
+their leader
+<<if $gOutcome == 'crit'>>
+and <<their $g.thug>> second in command
+<</if>>
+to be made examples and turned into your slaves.
+</p>
+
+<p>
+Your workers rejoiced and hugged each other as their slave drivers were finally routed from your brothels, and order (as well as profit) can finally resume. This incident highlighted an important missing aspect of your brothel, however, and that is one of security. <<Yourrep $g.owner>> owner|promise to follow up on this issue later, after taking the head whore <<name $g.head>>'s feedbacks on the matter.
+</p>
+
+
+
+:: Quest_brothel_securityFailure [nobr]
+<p>
+Your slavers were unfortunately no match for the thugs. They were soundly defeated, and were forced to retreat while
+<<if $gOutcome == 'failure'>>
+suffering minor injuries.
+<<else>>
+suffering major injuries.
+<</if>>
+</p>
+
+<p>
+You should try again with a better team to retake your brothel.
+</p>

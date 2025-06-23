@@ -1,0 +1,307 @@
+:: QuestSetup_the_noble_games__bed_arts [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaescort = new setup.UnitCriteria(
+null, /* key */
+'High-Class Escort', /* name */
+[
+setup.trait.dick_large,
+setup.trait.dick_huge,
+setup.trait.dick_titanic,
+setup.trait.breast_large,
+setup.trait.breast_huge,
+setup.trait.breast_titanic,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_gregarious,
+setup.trait.per_kind,
+setup.trait.eq_veryslutty,
+setup.trait.eq_veryvaluable,
+],
+[
+setup.trait.race_greenskin,
+setup.trait.dick_tiny,
+setup.trait.breast_tiny,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_loner,
+setup.trait.per_cruel,
+setup.trait.per_chaste,
+setup.trait.per_lunatic,
+setup.trait.skill_intimidating,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+sex: 3,
+}
+)>>
+
+<<set _criteriamaid = new setup.UnitCriteria(
+null, /* key */
+'Maid / Butler', /* name */
+[
+setup.trait.per_studious,
+setup.trait.per_loyal,
+setup.trait.per_submissive,
+setup.trait.skill_ambidextrous,
+],
+[
+setup.trait.per_active,
+setup.trait.per_independent,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.skill_connected,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+aid: 3,
+}
+)>>
+
+<<set _criteriaalchemist = new setup.UnitCriteria(
+null, /* key */
+'Alchemist', /* name */
+[
+setup.trait.per_studious,
+setup.trait.per_curious,
+setup.trait.skill_alchemy,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.trait.per_active,
+setup.trait.per_stubborn,
+setup.trait.per_sexaddict,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+arcane: 3,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Slave (Obedient)', /* name */
+[
+setup.trait.per_loyal,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.eq_valuable,
+setup.trait.eq_veryvaluable,
+setup.trait.training_obedience_master,
+setup.trait.training_endurance_master,
+setup.trait.training_domestic_master,
+setup.trait.training_oral_master,
+setup.trait.training_vagina_master,
+setup.trait.training_anal_master,
+setup.trait.training_dominance_master,
+setup.trait.training_masochist_master,
+setup.trait.training_sissy_master,
+setup.trait.training_pet_master,
+setup.trait.training_pony_master,
+setup.trait.training_toilet_master,
+setup.trait.training_horny_master,
+setup.trait.training_roleplay_master,
+],
+[
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_loner,
+setup.trait.per_stubborn,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_basic),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_noble_games__bed_arts', /* key */
+"The Noble Games: Bed Arts", /* Title */
+"darko", /* Author */
+[ 'city', 'item', 'prep', 'special',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'escort': _criteriaescort,
+'maid': _criteriamaid,
+'alchemist': _criteriaalchemist,
+'slave': _criteriaslave, },
+{ /* actors */
+'target': 'subrace_humankingdom', },
+[ /* costs */
+],
+'Quest_the_noble_games__bed_arts',
+setup.qdiff.harder40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_noble_games__bed_artsCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.BoonizeRandom('escort', 12),
+setup.qc.BoonizeRandom('maid', 14),
+setup.qc.BoonizeRandom('alchemist', 11), ],
+], [
+'Quest_the_noble_games__bed_artsCrit',
+[
+setup.qc.VarRemove('the_noble_games_progress'),
+setup.qc.RemoveTitleGlobal('the_noble_games'),
+setup.qc.Item(setup.item.f_slaverbed_good), ],
+], [
+'Quest_the_noble_games__bed_artsFailure',
+[
+setup.qc.VarRemove('the_noble_games_progress'),
+setup.qc.RemoveTitleGlobal('the_noble_games'), ],
+], [
+'Quest_the_noble_games__bed_artsDisaster',
+[
+setup.qc.VarRemove('the_noble_games_progress'),
+setup.qc.RemoveTitleGlobal('the_noble_games'),
+setup.qc.Corrupt('escort'),
+setup.qc.Corrupt('maid'),
+setup.qc.Corrupt('slave'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarEqual('the_noble_games_progress', '2'), ],
+[ /* expiration outcomes */
+setup.qc.VarRemove('the_noble_games_progress'),
+setup.qc.RemoveTitleGlobal('the_noble_games'), ],
+)>>
+
+:: Quest_the_noble_games__bed_arts [nobr]
+
+<p>
+After passing through the last two games in the Noble Games, your slavers
+have finally received the invitation for the final bout of the games. A room
+has been reserved for your slavers in a high-class inn in the <<lore
+region_city>>, where they must transform it into a place of such degeneracy
+to please the host of the game. It is up to the participant's creativity how
+degenerate they want the situation to be.
+</p>
+
+<p>
+With the grand prize (being a rare furniture) so close within your grasp, you
+cannot afford to mess up now. Standard sex would probably not please the
+host, so you need to get creative. A sex slave, first and foremost, to be
+spreadeagled on the bed. An alchemist should concoct a magical potion, with a
+hint of demonic taint, to transform the room's air into an aura of
+debauchery. There should also be a maid, to complete the illusion of a grand
+demonic mansion, and most importantly a high class whore, to engage in
+depraved but surprisingly cultured sex with the bound slave.
+</p>
+
+
+:: Quest_the_noble_games__bed_artsCrit [nobr]
+
+<<if $g.escort.isMale() && $g.maid.isMale() && $g.alchemist.isMale() && $g.slave.isMale()>>
+  <<questimage 'the_noble_games__bed_arts_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+After successfully smuggling the slave into the room, your slavers began
+their preparation. First, <<rep $g.alchemist>> scoured the room for the
+location of the scrying magic, from which the host will watch the scene
+unfold. Finding that, your slavers arranged <<yourrep $g.slave>> at
+the best possible angle to be viewed from the scryer, displaying <<their
+$g.slave>> <<ugenitalall $g.slave>> and <<unipplesall $g.slave>>.
+<<Yourrep $g.maid>> <<uadv $g.maid>> cleaned all traces of dust from the room, while <<rep
+$g.escort>> prepared <<their $g.escort>> <<ubody $g.escort>> for the
+what was surely going to be a long night.
+</p>
+
+<p>
+First, your slavers poured the potion concocted
+<<if $g.alchemist.isHasTrait('skill_alchemy')>>
+professionally
+<<else>>
+amateurishly
+<</if>>
+by <<rep $g.alchemist>> all along <<reps $g.slave>> <<ubody $g.slave>>. The
+slave writhed in pain as the potion began its work, severing the barrier
+between this realm and <<lore concept_mist>> and forming miniscule portals,
+enough to transfer the demonic atmosphere but not much else.
+With the room turning purple, <<rep $g.maid>> got ready to play <<their
+$g.maid>> role as the mansion's devoted maid while <<rep $g.escort>>
+started to <<uadv $g.escort>> strip <<their $g.escort>>
+<<uequipment $g.escort>> sensuously.
+<<Rep $g.escort>> swayed <<their $g.escort>> <<ubody $g.escort>> as <<they
+$g.escort>> approached the gagged and bound <<rep $g.slave>>. <<They
+$g.escort>> crawled on top of the slave,
+pressing <<their $g.slave>> armpits on top of the slave's gags.
+While maintaining that the slave must breathe through the smell of <<their
+$g.slave>> <<urace $g.escort>> armpits, <<rep $g.escort>> moved <<their $g.escort>>
+<<uhands $g.escort>> across <<reps $g.slave>> <<ubody $g.slave>>, fondling
+all the sensitive parts, while
+<<if $g.escort.isHasVagina()>>using the other <<uhand $g.escort>> to rub <<their $g.escort>>
+pussy.<<else>>using the other <<uhand $g.escort>> to jerk their <<udick $g.escort>>. <</if>>
+Feeling aroused, <<if !$g.escort.isHasDick()>><<they $g.escort>> grabbed a
+nearby strap-on<<else>><<they $g.escort>> jerked themself to full
+erection<</if>> and prepared it in front of the slave's <<uhole $g.slave>>.
+With the body heightened in sensitivity (thanks to the potion's effect), <<yourrep
+$g.slave>> moaned incoherently as <<rep $g.escort>> began to insert <<their
+$g.escort>>
+<<udickorstrap $g.escort>>
+into the available hole,
+<<if $g.escort.isHasDick()>>until it was balls-deep.<<else>>until the strap base was touching the slave's ass.<</if>>
+<<Rep $g.escort>> climaxed soon after,
+<<if $g.slave.isHasTrait('eq_chastity')>>
+as if mocking the slave's caged cock.
+<<else>>
+which was followed by the slave soon after.
+<</if>>
+</p>
+
+<p>
+The performance concluded, your slavers returned home as you await news of their
+performance. A few days later, a large shipment arrives at your fort,
+containing a rare noble furniture inside.
+It seems your slavers had impressed the host greatly with their debauchery,
+and won the games. Enjoy your prize!
+</p>
+
+
+:: Quest_the_noble_games__bed_artsFailure [nobr]
+<p>
+Your slavers tried their best to appear as lascivious as possible in the
+room, but it seemed that the host was not impressed at all by the half-hearted
+performances of your slavers and their slave.
+Your slavers' team ended up not victorious, with the grand prize eluding your
+grasps. Maybe you can try again with a different team next time.
+</p>
+
+
+:: Quest_the_noble_games__bed_artsDisaster [nobr]
+<p>
+The potion concocted by <<rep $g.alchemist>> for the games turned out to be
+too potent — when applied to the slave's body, instead of letting just the
+demonic air in, it also let the corruption in. Soon after your slave's
+and slavers' bodies were corrupted, transforming before the hosts' very eyes.
+This caused your slavers to panic, losing all arousal during the intercourse.
+It was not a surprise that they ended up losing the competition at the final and
+the most crucial stage.
+</p>

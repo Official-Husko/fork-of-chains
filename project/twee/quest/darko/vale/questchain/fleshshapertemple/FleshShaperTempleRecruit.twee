@@ -1,0 +1,167 @@
+:: QuestSetupFleshShaperTempleRecruit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _offering = new setup.UnitCriteria(
+  'quest_offeringslave', /* key */
+  'Offering Slave', /* title */
+  [ /* critical traits */
+    setup.trait.per_sexaddict,
+    setup.trait.per_submissive,
+    setup.trait.per_masochistic,
+    setup.trait.training_obedience_advanced,
+    setup.trait.training_obedience_master,
+    setup.trait.eq_slutty,
+  ],
+  [
+    setup.trait.race_elf,
+    setup.trait.race_wolfkin,
+    setup.trait.race_catkin,
+    setup.trait.race_greenskin,
+    setup.trait.race_lizardkin,
+    setup.trait.race_demon,
+    setup.trait.per_chaste,
+    setup.trait.per_dominant,
+    setup.trait.magic_water,
+    setup.trait.magic_water_master,
+  ], /* disaster traits */
+  [
+    setup.qres.IsCanBeSold(),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+  ], /* requirement */
+  { /* skill effects, sums to 3.0 */
+  }
+)>>
+
+<<set _recruiter = setup.CriteriaHelper.CritTraits(
+  [setup.trait.magic_water, setup.trait.per_dominant],
+  setup.CriteriaHelper.DisasterTraits(
+    [
+      setup.trait.race_wolfkin,
+      setup.trait.per_submissive,
+      setup.trait.magic_fire,
+      setup.trait.magic_fire_master,
+    ],
+    setup.qu.recruiter,
+  )
+)>>
+
+<<run new setup.QuestTemplate(
+  'flesh_shaper_temple_recruit', /* key */
+  'Flesh Shaper Temple: Recruit', /* Title */
+  'darko',   /* author */
+  ['transformation', 'vale', 'unit'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'recruiter1': _recruiter,
+    'recruiter2': _recruiter,
+    'guard': setup.qu.guard,
+    'offering': _offering,
+  },
+  { /* actors */
+    'apprentice': 'quest_humanvale_mystic',
+    'leader': 'quest_humanvale_mysticleader',
+  },
+  [ /* costs */
+  ],
+  'QuestFleshShaperTempleRecruit', /* passage description */
+  setup.qdiff.harder19, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestFleshShaperTempleRecruitCrit',
+      [
+        setup.qc.MissingUnitForever('offering'),
+        setup.qc.Slaver('leader', 'a|was the leader of the many flesh shaper temples on the <<lore region_vale>> who was impressed by the quality of your slaves.'),
+        
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleRecruitCrit',
+      [
+        setup.qc.MissingUnitForever('offering'),
+        setup.qc.Slaver('apprentice', 'a|was an apprentice flesh shaper in one of the many water temples on the <<lore region_vale>>.'),
+        
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleRecruitFailure',
+      [
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleRecruitDisaster',
+      [
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+  ],
+  [], /* rarity, pool */
+  [
+  ], /* prerequisites to generate */
+)>>
+
+:: QuestFleshShaperTempleRecruit [nobr]
+
+<<include 'OpportunityFleshShaperTemple'>>
+
+<p>
+You have decided to recruit one of the priests in exchange for a slave.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: upon success, the slave you bring on this quest will
+most likely be given out to the flesh-shaper cult and be gone forever.
+</p>
+
+
+:: QuestFleshShaperTempleRecruitCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Yourrep $g.recruiter1>> practiced <<their $g.recruiter1>> golden tongue,
+upselling the slave so much that
+the leader of the flesh-shaper temple was so
+impressed by the quality of your <<titlelow $g.offering >>.
+In fact, <<they $g.leader>> personally offered to join your company to deepen <<their $g.leader>>
+slave breaking knowledge by working with your company.
+After <<they $g.leader>> <<uadv $g.leader>> anointed the new cult leader of the temple,
+<<they $g.leader>> and your slavers headed back to the fort.
+</p>
+
+<<else>>
+
+<p>
+The temple graciously accepted the slave offering, but unfortunately was low
+on priests at the time. Instead, they compromised by sending one of their apprentices
+into your company, to "continue <<their $g.apprentice>> training" according to the priests.
+While you did not manage to recruit one of the water masters, the apprentice
+is not half-bad at the craft either.
+</p>
+
+<</if>>
+
+<p>
+<<Rep $g.offering>> offering|was given to the flesh-shaping temple as a tribute,
+and <<their $g.offering>> fate is to become an object of worship -- to be continuously transformed
+and worshipped by the members of the cult.
+</p>
+
+
+:: QuestFleshShaperTempleRecruitFailure [nobr]
+
+<p>
+Unfortunately, <<yourrep $g.recruiter1>> recruiter1|was not eloquent enough to convince the flesh shapers
+that <<yourrep $g.offering>> offering|was a slave worthy for being the centerpiece their transformation rituals.
+</p>
+
+
+:: QuestFleshShaperTempleRecruitDisaster [nobr]
+
+<p>
+The negotiation unfortunately went sour, and the priests turned hostile.
+Faced with no other choice, your slavers had to make their run from
+within the inner chambers of the temple, and left <<yourrep $g.offering>> behind.
+</p>

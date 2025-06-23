@@ -1,0 +1,499 @@
+:: OpportunitySetup_a_merchant_s_revenge_visiting_the_captured [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'a_merchant_s_revenge_visiting_the_captured', /* key */
+"A Merchant\'s Revenge: Visiting the Captured", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'watersport',
+  'fort',
+  'order',
+],
+2, /* expiration weeks */
+'Opportunity_a_merchant_s_revenge_visiting_the_captured',
+setup.qdiff.normal20, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_visiting_the_captured_0',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_visiting_the_captured_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_visiting_the_captured_1',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_visiting_the_captured_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyCustom(200),
+      setup.qc.Favor('humankingdom', 10),
+      setup.qc.SlaveOrderFlex(
+'A Merchant\'s Revenge: A Trained Bandit', /* name */
+'humankingdom', /* company */
+1, /* expires in */
+1500, /* base price */
+500, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.training_obedience_basic,
+setup.trait.training_anal_basic,
+setup.trait.training_toilet_basic,
+],
+[ /* disaster traits */
+setup.trait.training_dominance_basic,
+setup.trait.training_dominance_advanced,
+setup.trait.training_dominance_master,
+setup.trait.training_sissy_basic,
+setup.trait.training_sissy_advanced,
+setup.trait.training_sissy_master,
+setup.trait.training_mindbreak,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('quest_merchant_s_bandit_0'),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.training_obedience_advanced,
+setup.trait.training_obedience_master,
+setup.trait.training_anal_advanced,
+setup.trait.training_anal_master,
+setup.trait.training_masochist_basic,
+setup.trait.training_masochist_advanced,
+setup.trait.training_masochist_master,
+setup.trait.training_toilet_advanced,
+setup.trait.training_toilet_master
+], 2, 0, 0),
+],
+[ /* fulfilled outcomes */
+setup.qc.Favor('humankingdom', 35),
+setup.qc.VarSet('mlang_merchantrevenge_banditslave', '1', -1),
+],
+[ /* unfulfilled outcomes */
+],
+),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_visiting_the_captured_2',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_visiting_the_captured_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Through(
+            setup.qres.Or([
+        setup.qres.VarEqual('mlangmerchantprinceflirt', '1'),
+        setup.qres.And([
+        setup.qres.VarNull('mlangmerchantprinceflirt'),
+        setup.qres.Player(setup.qres.AnyTrait([setup.trait.face_attractive, setup.trait.face_beautiful], true))
+        ])
+        ]),
+        'The merchant must want to have sex with you...',
+      ),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyCustom(200),
+      setup.qc.Favor('humankingdom', 20),
+      setup.qc.SlaveOrderFlex(
+'A Merchant\'s Revenge: A Trained Bandit', /* name */
+'humankingdom', /* company */
+20, /* expires in */
+1500, /* base price */
+500, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.training_obedience_basic,
+setup.trait.training_anal_basic,
+setup.trait.training_toilet_basic,
+],
+[ /* disaster traits */
+setup.trait.training_dominance_basic,
+setup.trait.training_dominance_advanced,
+setup.trait.training_dominance_master,
+setup.trait.training_sissy_basic,
+setup.trait.training_sissy_advanced,
+setup.trait.training_sissy_master,
+setup.trait.training_mindbreak,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('quest_merchant_s_bandit_0'),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.training_obedience_advanced,
+setup.trait.training_obedience_master,
+setup.trait.training_anal_advanced,
+setup.trait.training_anal_master,
+setup.trait.training_masochist_basic,
+setup.trait.training_masochist_advanced,
+setup.trait.training_masochist_master,
+setup.trait.training_toilet_advanced,
+setup.trait.training_toilet_master
+], 2, 0, 0),
+],
+[ /* fulfilled outcomes */
+setup.qc.Favor('humankingdom', 35),
+setup.qc.VarSet('mlang_merchantrevenge_banditslave', '1', -1),
+],
+[ /* unfulfilled outcomes */
+],
+),
+      setup.qc.IfThenElse(
+setup.qres.VarNull('mlangmerchantprinceflirt'),
+setup.qc.DoAll([
+setup.qc.VarSet('mlangmerchantprinceflirt', '1', -1)
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'pc': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.HasTitle('quest_merchant_s_bandit_0'),
+    setup.qres.Home(),
+  ],
+  'merchant': 'a_merchant_s_revenge1',
+},
+[ /* expiration outcomes */
+  setup.qc.Favor('humankingdom', -20),
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_a_merchant_s_revenge_visiting_the_captured [nobr]
+You find the following letter on your desk.
+
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        I would like to visit your establishment and sample the services of our re-educated friend. I will, of course, compensate you for the use of your indentured servant.
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            If you are home, perchance you will join me.
+        <<elseif $unit.player.isHasAnyTraitExact(['face_attractive', 'face_beautiful'])>>
+            <<if setup.qres.VarNull("mlangmerchantprinceflirt").isOk($gQuest)>>
+                If you are of a mind to show me <<their $g.slave>> talents, I would not object to the company.
+            <</if>>
+        <</if>>
+    </p>
+    <p>
+        Please send word to our usual meeting place if this is acceptable. I do look forward to visiting and paying my respects upon your servant.
+    </p>
+    <p>
+        Until later,
+    </p>
+    <p>
+        <<name $g.merchant>>
+    </p>
+</div>
+
+All you have to decide now is what message you'll leave with the bartender at <<lore location_princeofcups>>.
+
+
+:: Opportunity_a_merchant_s_revenge_visiting_the_captured_0 [nobr]
+Politely Decline
+
+
+:: Opportunity_a_merchant_s_revenge_visiting_the_captured_0_flavor [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+You send <<name _u>> to <<lore location_princeofcups>> with a note for <<name $g.merchant>> explaining that the servant he requested is currently unwell and perhaps he'd like to visit later.
+
+
+:: Opportunity_a_merchant_s_revenge_visiting_the_captured_1 [nobr]
+Invite the merchant to your fort
+
+
+:: Opportunity_a_merchant_s_revenge_visiting_the_captured_1_flavor [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+    A few days after having <<name _u>> drop a message off at <<lore location_princeofcups>>, <<name $g.merchant>> arrives at your fort, accompanied by a number of guards. After some small talk, you lead <<them $g.merchant>> to the cell where the former bandit leader, <<name $g.slave>> is shackled.
+    <<if !$g.slave.isCanSee()>>
+        <<Their $g.slave>> head turns unseeingly toward the door, straining to for clues as to who is entering the cell.
+    <<else>>
+        <<They $g.slave>> turns toward the door, eyes widening as <<they $g.slave>> sees the <<man $g.merchant>> entering <<their $g.slave>> cell.
+    <</if>>
+    <br>
+    "So," <<name $g.merchant>> says. "You're the dipshit who decided to raid my caravans. Now I know it was just for money, but you've made me very upset. And now you're going to pay for it."
+</p>
+<p>
+    Eventually the screaming turns into sobs and eventually, <<name $g.merchant>> exits the cell, <<their $g.merchant>> clothing impeccable, but <<their $g.merchant>> hair damp with sweat and a wolfish grin on <<their $g.merchant>> face. Peeking into the cell behind <<them $g.merchant>>, you see your slave,
+    <<if $g.slave.isHasAnyTraitExact(["training_toilet_basic", "training_toilet_advanced", "training_toilet_master"])>>
+        lying on the floor, crying
+    <<else>>
+        lying on the floor, face and <<ubreasts $g.slave>> covered in urine which you suspect isn't <<theirs $g.slave>>,
+    <</if>>
+
+    <<if $g.slave.isHasAnyTraitExact(["per_submissive", "per_lunatic", "training_masochist_basic", "training_masochist_advanced", "training_masochist_master"])>>
+        with
+        <<if $g.slave.isHasDick()>>
+        <<their $g.slave>> cock hard and throbbing
+        <<else>>
+        <<their $g.slave>> pussy wet and slick
+        <</if>>
+        despite the puffiness of <<their $g.slave>> asshole.
+    <<else>>
+        and <<their $g.slave>> asshole puffy and red.
+    <</if>>
+    <<if $g.merchant.isHasDick()>>
+    White globs of cum ooze from <<their $g.slave>> ring and the skin of <<their $g.slave>> bottom is red from spanking.
+    <<else>>
+    The skin of <<their $g.slave>> bottom is also visibly red, probably from spanking.
+    <</if>>
+</p>
+<p>
+    "That was wonderful," <<name $g.merchant>> says happily as <<they $g.merchant>> hands you a pouch of gold. "If you're able to train <<them $g.slave>> up to my preferences, I'll buy <<them $g.slave>> off you if you like."
+</p>
+
+
+:: Opportunity_a_merchant_s_revenge_visiting_the_captured_2 [nobr]
+Invite the merchant to your fort and join them in using your slave
+
+
+:: Opportunity_a_merchant_s_revenge_visiting_the_captured_2_flavor [nobr]
+
+<<if $unit.player.isHasDick()>>
+<<set _ucock = 'cock'>>
+<<else>>
+<<set _ucock = 'strap-on'>>
+<</if>>
+
+<<if $g.merchant.isHasDick()>>
+<<set _mcock = 'cock'>>
+<<else>>
+<<set _mcock = 'strap-on'>>
+<</if>>
+
+<<set _u = setup.getAnySlaver()>>
+A few days after having <<name _u>> drop a message off at <<lore location_princeofcups>>, <<name $g.merchant>> arrives at your fort, accompanied by a number of guards. After some small talk, you lead <<them $g.merchant>> to the cell where the former bandit leader, <<name $g.slave>> is shackled.
+<<if !$g.slave.isCanSee()>>
+    <<Their $g.slave>> head turns unseeingly toward the door, straining to for clues as to who is entering the cell.
+<<else>>
+    <<They $g.slave>> turns toward the door, eyes widening as <<they $g.slave>> sees the two of you entering <<their $g.slave>> cell.
+<</if>>
+<br>
+"So," <<name $g.merchant>> says. "You're the dipshit who decided to raid my caravans. Now I know it was just for money, but you've made me very upset. And now you're going to pay for it."<br>
+<<name $g.merchant>> carefully removes <<their $g.merchant>> clothing and folds it carefully, placing it down on the provided table. Your eyes feast on <<their $g.merchant>> <<ubody $g.merchant>> as you hurry to follow suit. When <<they $g.merchant>>'s naked,
+<<name $g.merchant>>
+<<if $g.merchant.isHasDick()>>
+fists his cock a couple of times,
+and then thrusts it into the former bandit leader's mouth.
+<<else>>
+secures a ring gag into the slave's mouth, before
+positioning <<their $g.merchant>> ass just above the former bandit leader's mouth.
+<</if>>
+<br>
+"Drink pig," <<they $g.merchant>> growls. "And you'd better not spill a drop."<br>
+<<name $g.slave>>
+<<if $g.slave.isHasTraitExact('training_toilet_basic')>>
+    swallows the stream dutifully, although <<their $g.slave>> eyes tear up as <<they $g.slave>> performs <<their $g.slave>> duties. You run your hand down the
+    <<if $g.merchant.isMale()>>
+    taut muscles
+    <<else>>
+    smooth and well-maintained skin
+    <</if>>
+    of <<name $g.merchant>>'s back, and <<they $g.merchant>> uses <<their $g.merchant>> free hand to draw you into a kiss.<br>
+    "I see you've been giving this pig some training," <<they $g.merchant>> says.
+    "You got a load for <<them $g.slave>> too?"<br>
+    You grin and nod, an run <<name $g.merchant>>'s back as <<they $g.merchant>> finishes draining <<their $g.merchant>> bladder.<br>
+    <<if $g.merchant.isHasDick()>>
+    "Better get me nice, hard and wet, slut," <<name $g.merchant>> tells the teary eyed slave. "Because the wetter my cock is the easier it's going to be on your ass."
+    <</if>>
+<<elseif $g.slave.isHasTraitExact('training_toilet_advanced')>>
+    swallows the stream, drinking it down without a hint of complaint. You run your hand down the
+    <<if $g.merchant.isMale()>>
+    taut muscles
+    <<else>>
+    smooth and well-maintained skin
+    <</if>>
+    of <<name $g.merchant>>'s back, and <<they $g.merchant>> uses <<their $g.merchant>> free hand to draw you into a kiss.<br>
+    "I see you've been giving this pig some training," <<they $g.merchant>> says. "You got a load for <<them $g.merchant>> too?"<br>
+    You grin and nod, an run <<name $g.merchant>>'s back as <<they $g.merchant>> finishes draining <<their $g.merchant>> bladder.<br>
+    <<if $g.merchant.isHasDick()>>
+    "Better get me nice, hard and wet, slut," <<name $g.merchant>> tells the teary eyed slave. "Because the wetter my cock is the easier it's going to be on your ass."
+    <</if>>
+<<elseif $g.slave.isHasTraitExact('training_toilet_master')>>
+    swallows the stream eagerly<<if $g.merchant.isHasDick()>>, straining at <<their $g.slave>> bonds to take more of <<name $g.merchant>>'s dick into <<their $g.slave>> mouth<</if>>.
+    You run your hand down the
+    <<if $g.merchant.isMale()>>
+    taut muscles
+    <<else>>
+    smooth and well-maintained skin
+    <</if>>
+    of <<name $g.merchant>>'s back, as <<they $g.merchant>> moans,
+    <<if $g.merchant.isHasDick()>>
+    one hand gripping <<name $g.slave>>'s skull and the other wrapping around your waist and pulling you in closer.
+    <<else>>
+    before pulling you in closer.
+    <</if>>
+    <p>
+        You slap <<name $g.slave>>'s face
+        <<if $unit.player.isHasDick()>>
+        with your cock
+        <</if>>
+        as you kiss <<name $g.merchant>>'s shoulder.<br>
+        "Good, isn't <<they $g.slave>>?"<br>
+        <<name $g.merchant>> looks down at the slave, who is
+        <<if $g.slave.isHasDick()>>
+        now nursing his cock to full hardness.
+        <<else>>
+        quite visibly wet from arousal.
+        <</if>>
+        <br>
+        "Amazing," <<they $g.merchant>> pants. "You got a load for <<them $g.slave>> too?"<br>
+        You nod and smile<<if $g.merchant.isHasDick()>> as <<name $g.merchant>> thrusts into <<name $g.slave>>'s lips, enjoying the hot wetness of <<their $g.slave>> mouth and throat.<<else>>.<</if>>
+    </p>
+<<else>>
+    chokes and splutters as the acrid taste of urine fills <<their $g.slave>> mouth, causing it to cascade down over <<their $g.slave>> chin, chest and torso, also soaking into <<name $g.merchant>>'s groin and splattering onto <<their $g.merchant>> thighs.<br>
+    "You dirty pig, you'll pay for that," <<name $g.merchant>> growls, but you can see the delight in <<their $g.merchant>> eyes and the smile on <<their $g.merchant>> lips as <<they $g.merchant>> pulls you toward <<them $g.merchant>>, kissing you soundly as <<they $g.merchant>> continues to relieve <<themself $g.merchant>>.<br>
+    "You have a load for <<them $g.slave>> too?" <<they $g.merchant>> asks as <<they $g.merchant>> forces <<their $g.merchant>> still pissing
+    <<if $g.merchant.isHasDick()>>
+    cock back into <<name $g.slave>>'s throat.
+    <<else>>
+    ass into the gagged mouth.
+    <</if>>
+    "I said swallow bitch."<br>
+    You smile and nod as you watch <<them $g.merchant>>
+    <<if $g.merchant.isHasDick()>>
+    pull his fully erect cock from <<name $g.slave>>'s face and stalk around to the slave's rear.
+    <<else>>
+    pull up and stalk <<their $g.slave>> strap-on just around the slave's rear.
+    <</if>>
+<</if>>
+<p>
+    <<if $unit.player.isHasDick()>>
+    You slide your own cock into <<name $g.slave>>'s mouth.
+    "No biting,"
+    <<else>>
+    You position your own ass above <<reps $g.slave>>'s mouth.
+    "Don't spill a single drop,"
+    <</if>>
+    you remind <<them $g.slave>> sternly as you relax and let your piss start to flow.
+    <br>
+    <<name $g.slave>> stiffens as <<name $g.merchant>> kneels between <<their $g.slave>> thighs, shoving the slave's knees further apart on the bed as <<they $g.merchant>> spreads <<name $g.slave>>'s asscheeks and thwacks <<their $g.merchant>> spit covered
+    _mcock
+    against the slave's <<uanus $g.slave>>.<br>
+    "No, you concentrate on me," you say sternly, tapping <<name $g.slave>> on the forehead.
+</p>
+<<if $g.slave.isHasTraitExact('training_toilet_basic')>>
+    <<name $g.slave>> dutifully swallows your piss, tears running down <<their $g.slave>>
+    <<if $unit.player.isHasDick()>>
+    cheeks as you harden in <<their $g.slave>> mouth.
+    <<else>>
+    cheeks.
+    <</if>>
+<<elseif $g.slave.isHasTraitExact('training_toilet_advanced')>>
+    <<name $g.slave>> swallows your piss as quickly as you release it, and grunts as you
+    <<if $unit.player.isHasDick()>>
+    finish, and then start fucking <<their $g.slave>> face slowly as your cock hardens in <<their $g.slave>> mouth.
+    <<else>>
+    finish.
+    <</if>>
+<<elseif $g.slave.isHasTrait('training_toilet_master')>>
+    <<name $g.slave>> glares up at you pleadingly as you let slow and careful spurts of piss into <<their $g.slave>> mouth, working <<their $g.slave>> tongue on your
+    <<if $unit.player.isHasDick()>>
+    shaft
+    <<else>>
+    asshole
+    <</if>>
+    and begging you to give <<them $g.slave>> more to drink.
+    <<Their $g.slave>> eyes close in bliss when you finally let
+    <<if $unit.player.isHasDick()>>
+    go, and he continues sucking long after you finish, not seeming to care as your <<udick $g.pc>> stiffens in <<their $g.slave>> mouth.
+    <<else>>
+    go.
+    <</if>>
+<<else>>
+    <<name $g.slave>> struggles to breathe as you hold <<them $g.slave>>
+    <<if $unit.player.isHasDick()>>
+    forcefully onto your cock,
+    <<else>>
+    forcefully,
+    <</if>>
+    hooking your fingers into <<their $g.slave>> mouth with your free <<uhand $unit.player>> to stop <<them $g.slave>> from
+    <<if $unit.player.isHasDick()>>
+    biting down on you
+    <<else>>
+    struggling
+    <</if>>
+    as you fill <<their $g.slave>> mouth with even more piss.
+    <<Their $g.slave>> chocking and sputtering is mixed with cries of pain as <<name $g.merchant>> starts unloading smacks on each of <<name $g.slave>>'s asscheeks in turn, keeping the slaps coming until it becomes clear that you've finished
+    <<if $unit.player.isHasDick()>>
+    pissing and start fucking <<name $g.slave>>'s face.
+    <<else>>
+    pissing.
+    <</if>>
+<</if>>
+<p>
+    <<name $g.slave>> screams as <<name $g.merchant>> shoves <<their $g.merchant>> <<udickorstrap $g.merchant>> into <<their $g.slave>> ass in one sudden, harsh movement, not giving <<name $g.slave>> any time to get used to it as <<they $g.merchant>> forcefully pulls out and pushes back in. Leaning forward, <<name $g.merchant>> rests <<their $g.merchant>> chest against <<name $g.slave>>'s back, resting <<their $g.merchant>> hands on the bed for extra leverage as <<they $g.merchant>> slams into the slave's ass, each thrust pushing <<them $g.merchant>> further onto your _ucock.
+</p>
+
+<<if $g.merchant.isHasDick() && $g.slave.isHasDick() && $unit.player.isHasDick()>>
+Reaching down, you lift <<name $g.merchant>>'s head up so you can kiss <<them $g.merchant>> again.<br>
+<<if $g.slave.isHasAnyTraitExact(["training_anal_advanced", "training_anal_master"])>>
+    "Want to really stretch this fucker out?" you ask.<br>
+    <<name $g.merchant>>'s eyes widen and <<they $g.merchant>> nods eagerly.<br>
+    You lie down on the bed next to them both and then you and <<name $g.merchant>> manoeuvre <<name $g.slave>> so <<they $g.slave>>'s kneeling over your body, <<their $g.slave>> ass lined up with your
+    _ucock.
+    He moans as <<name $g.merchant>> shoves him down onto you, and shudders as you hold him still, bent helplessly forward as <<name $g.merchant>> kneels up behind, and you feel the heat of <<name $g.merchant>>'s cockhead pushing up against the point where <<name $g.slave>>'s ass wraps snugly around your cock.
+    <p>
+        <<name $g.slave>> whimpers into your neck as <<name $g.merchant>>'s hard cock pushes into him, stretching him even further, and you feel your cock squeezed even tighter by his ass as <<name $g.merchant>> starts to fuck gently, his cock rubbing deliciously against yours as he does so.<br>
+        "So...fucking...good..." <<name $g.merchant>> groans as he starts thrusting harder, and you feel his cock twitch as he starts to cum, filling <<name $g.slave>>'s ass with even more hot, slick heat and setting off your own orgasm.
+    </p>
+<<else>>
+    "Mmmm," he hums into your mouth, his kiss hard, passionate and somewhat frantic as his thrusts become faster, and then more erratic as he slams deep into <<name $g.slave>>'s ass, moaning into your mouth as he cums. The sight of <<name $g.merchant>>'s body twitching, every muscle taut and covered in a sheen of sweat, pushes you over the edge as you unload into <<name $g.slave>>'s mouth again, this time with a load of cum rather than piss.
+<</if>>
+<</if>>
+
+When you finally untangle yourselves from the slave and kick <<them $g.slave>> down onto the floor, you
+<<if $g.slave.isHasAnyTraitExact(["training_toilet_basic", "training_toilet_advanced", "training_toilet_master"])>>
+    curl up against each other, enjoying the post sex haze and the feeling of holding each other.
+<<else>>
+    spend a few moments cuddled together before the wetness starts becoming clammy, driving you both to get up and take advantage of the cauldron of hot water you'd had delivered for exactly this purpose.
+<</if>>
+<br>
+"You know," <<name $g.merchant>> says, "Maybe next time we can fill <<their $g.slave>> ass with piss before we fuck <<them $g.slave>>."<br>
+<<if $g.slave.isHasAnyTraitExact(["per_submissive", "per_lunatic", "training_masochist_basic", "training_masochist_advanced", "training_masochist_master"])>>
+    You hear a squeak of dismay from <<name $g.slave>>, but when you look over, you can see <<they $g.slave>> 
+    <<if $g.slave.isHasDick()>>
+    has a raging hard
+    <<else>>
+    is still flush with arousal
+    <</if>>
+    despite the punishment already dished out on <<them $g.slave>>.
+<<else>>
+    You hear a sob from <<name $g.slave>>, but ignore it, focusing on cleaning up and getting dressed.
+<</if>>
+<p>
+    Before you exit the chamber, <<name $g.merchant>> pulls you into a long kiss.<br>
+    "That was great," <<they $g.merchant>> says quietly. "Oh, and if you train <<them $g.slave>> up into something I'd like, I'd be interested in buying <<them $g.slave>> off you."<br>
+    When you exit through the cell door back into view of <<their $g.merchant>> guards, <<their $g.merchant>> more distant manner is back, and <<they $g.merchant>> hands you a pouch of gold, gives you a formal 'thank you' and heads back out of your fort, riding back towards the city of Lucgate.
+</p>

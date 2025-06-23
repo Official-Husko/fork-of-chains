@@ -1,0 +1,166 @@
+:: InteractionFuckAnusSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_fuck_anus',
+  'Fuck ass',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionFuckAnus',
+  [],  /* Cost */
+  [  /* Requirements */
+    setup.qres.HasItem('sexmanual_bodypart_anus'),
+  ],
+  [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionFuckAnus [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<pronounload $i _u>>
+
+<<loadinteractioncommon _u>>
+
+You descend into your $i.locgeneral and grabbed
+your <<titlefull _u>>
+<<= _u.getName()>> over
+over so you can fuck $i.his <<uanusall _u>>.
+<<ustripanus _u>>
+
+<<if setup.UnitTitle.getMainTraining(_u).getTags().includes('pony') ||
+     setup.UnitTitle.getMainTraining(_u).getTags().includes('pet')>>
+	$i.His training dictates that $i.he must crawl along on all fours, which makes $i.his anus readily available.
+<</if>>
+
+<<if _u.isMindbroken()>>
+	You instruct $i.him to present $i.his anus.
+  $i.He dully kneels and spreads $i.his buttocks<<if !_hasdick>>as you don a strap-on<</if>>.
+  You spit on $i.his hole and ram <<if !_hasdick>>it<<else>>your <<udick $unit.player>><</if>>
+  up $i.his butt.
+  $i.His butthole spasms as you assrape $i.him,
+  <<if !_hasdick>>an amusing sight<<else>>squeezing your dick nicely<</if>>.
+	<<if _u.isHasDick()>>
+    <<if _u.isHasTrait(setup.trait.eq_chastity)>>
+			Automatic responses give $i.him an erection,
+      which $i.his chastity makes so uncomfortable that $i.he spasms.
+      This cycle continues repeatedly, $i.his rectum squeezing unconsciously each time.
+		<<else>>
+			Despite $i.his mental deficiency,
+      the prostate stimulation gives $i.him an erection anyway.
+		<</if>>
+	<</if>>
+<<elseif _u.isHasTrait(setup.trait.training_none)>>
+	You instruct $i.him to present $i.him anus<<if !_hasdick>> as you don a strap-on<</if>>.
+  Horrified, $i.he tries to back away, but you catch
+  $i.him and throw $i.him on $i.location.
+  $i.He tries to shield $i.his asshole,
+  but you pin $i.his <<uarms _u>> behind
+  $i.him with one <<uhand $unit.player>>,
+  spit on $i.his hole,
+  and ram your <<if !_hasdick>>fake dick<<else>><<udick $unit.player>><</if>>
+  up $i.his butt with the other <<uhand $unit.player>>.
+  $i.His butthole spasms as you assrape $i.him,
+  <<if !_hasdick>>an amusing sight<<else>>squeezing your dick nicely<</if>>.
+	<<if _u.isHasDick()>>
+		Despite $i.his unwillingness to be sodomized, the prostate stimulation
+    <<if _u.isHasTrait(setup.trait.eq_chastity)>>
+			starts to give $i.him an erection,
+      which $i.his dick chastity makes horribly uncomfortable.
+      $i.He bucks with the pain,
+      $i.his asshole spasming delightfully.
+		<<else>>
+			gives $i.him an erection.
+      $i.He's mortified that $i.he would get hard while being anally raped.
+		<</if>>
+	<</if>>
+<<elseif _u.isHasTrait(setup.trait.training_anal_basic) || _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+	$i.He kneels on the couch
+  with $i.his butt facing you, back strongly arched to angle $i.his rectum for
+  more comfortable anal coupling
+  <<if !_hasdick>>; you don a strap-on and rub a little lubricant into $i.his rear<</if>>.
+  You take your time and fuck $i.his butthole for a good long while.
+	<<if _u.isHasTraitExact(setup.trait.anus_tight)>>
+    $i.His ass is so tight that $i.he has to concentrate on relaxing for you.
+	<<elseif _u.isHasTraitExact(setup.trait.anus_loose)>>
+    $i.His experienced ass feels great.
+  <<else>>
+    $i.His asspussy is so loose you can pound it as hard as you like.
+  <</if>>
+  $i.He moans as $i.he rubs $i.his <<ubody _u>> and his
+  <<if _u.isHasDick()>>
+    <<if _u.isHasTrait(setup.trait.eq_chastity)>>
+      caged dick, and brings $i.himself to orgasm before you.
+      <<set _orgasmed = true>>
+    <<else>>
+      hardon, which prevents $i.him from reaching orgasm before you.
+      <<set _orgasmed = false>>
+    <</if>>
+  <<else>>
+    clit, and brings $i.himself to orgasm before you.
+    <<set _orgasmed = true>>
+  <</if>>
+  <<if !_hasdick>>
+  The sight of $i.him gasping and shaking $i.his way through
+    <<if _orgasmed>>
+      an anal orgasm
+    <<else>>
+      what would normally be an orgasm without the chastity device, 
+    <</if>>
+    brings you to climax yourself,
+    and you shove yourself against $i.his <<ubody _u>>
+    with enough force to give the slave's sensitized hole a final brutal stretching.
+  <<else>>
+    $i.His orgasmic rectal spasms squeeze your cock and you blow your load inside $i.his ass.
+  <</if>>
+<<elseif _u.isHasTrait(setup.trait.training_obedience_basic) && !_u.isHasVagina() && _u.isHasTraitExact(setup.trait.anus_tight)>>
+	You instruct $i.him to present $i.him anus<<if !_hasdick>> as you don a strap-on<</if>>.
+	$i.He knows a male slave takes it up the butt,
+  and lies on the couch next to your desk with $i.his <<ulegs _u>> in the air,
+  spreading $i.his buttocks with $i.his <<uarms _u>>.
+  You take your time and fuck $i.his butthole for a good long while
+  <<if _u.isHasDick() && !_u.isHasTrait(setup.trait.eq_chastity)>>
+    as $i.his erect <<udick _u>> waves in the air.
+    This gives you enough time to stroke $i.him until
+    $i.he gets aroused despite $i.his discomfort with anal.
+    $i.He doesn't orgasm, but $i.he's getting accustomed to $i.his asshole being used as a sexual organ.
+  <</if>>
+<<else>>
+	You instruct $i.him to present $i.him anus<<if !_hasdick>> as you don a strap-on<</if>>.
+	$i.He hesitates but eventually lies on $i.location with $i.his <<ulegs _u>>
+  in the air, spreading $i.his buttocks with $i.him <<uarms _u>>.
+  You take your time and fuck $i.his butthole for a good long while.
+	<<if _u.isHasTraitExact(setup.trait.anus_tight)>>
+		$i.His ass is so tight that $i.he winces with anal pain
+	<<elseif _u.isHasTraitExact(setup.trait.anus_loose)>>
+		$i.His experienced ass takes your <<if !_hasdick>>fake dick<<else>>cock<</if>> without trouble
+	<<else>>
+		$i.His asspussy is so loose you can pound it as hard as you like
+	<</if>>
+	<<if _u.isHasDick()>>
+		as $i.his erect dick waves in the air.
+	<<else>>
+		as it substitutes for $i.his pussy.
+	<</if>>
+	$i.He gets aroused despite $i.his discomfort with anal, though $i.he doesn't orgasm.
+<</if>>
+
+<<if _hasdick>>
+  <<if _u.isHasTraitExact(setup.trait.anus_gape)>>
+    Your cum falls out of $i.his gaping hole.
+  <<elseif _u.isHasTraitExact(setup.trait.anus_loose)>>
+    Cum flows out of $i.his gaped butthole.
+  <<else>>
+    $i.His still-tight ass keeps your load inside $i.him.
+  <</if>>
+<</if>>
+
+<<unset $i>>

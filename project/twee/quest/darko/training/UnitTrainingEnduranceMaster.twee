@@ -1,0 +1,104 @@
+:: QuestSetupUnitTrainingEnduranceMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_endurance_master',  /* id */
+  'Endurance Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingEnduranceMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingEnduranceMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_endurance_master),
+        setup.qc.TraitRemove('trainee', setup.trait.tough_nimble),
+      ]
+    ],
+    [
+      'QuestUnitTrainingEnduranceMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_endurance_master),
+        setup.qc.TraitRemove('trainee', setup.trait.tough_nimble),
+      ],
+    ],
+    [
+      'QuestUnitTrainingEnduranceMasterFailure',
+      [
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+    [
+      'QuestUnitTrainingEnduranceMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_endurance_master.getTraitGroup()),
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingEnduranceMaster [nobr]
+<p>
+The final culminating skill that endurance slaves need to learn is
+the ability to be installed as a furniture permanently.
+Be it as a living statue, or a living footstool, once a slave
+is trained in this skill, they would be able to perform such
+duties while keeping a smile constantly on their face.
+Acquiring such skill is without doubt difficult,
+and very skilled trainers are required.
+A slaver skilled in <<rep setup.trait.magic_wind_master>>
+is also required, to be able to imbue the slave's restraint with magic that
+will punish the slave whenever they show discomfort from being used as a furniture.
+</p>
+
+<p>
+  Succeeding this training will remove <<rep setup.trait.tough_nimble>> from the slave, if any.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingEnduranceMasterCrit [nobr]
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Rep $g.trainee>> trainee|is now so absolutely durable
+to any prolonged period of abuse, and can be used safely as a furniture permanently.
+</p>
+
+:: QuestUnitTrainingEnduranceMasterSuccess [nobr]
+<p>
+<<Reps $g.trainee>> transformation into a complete endurance whore
+has been completed, and they are ready to be installed wherever
+you or their future master wish.
+</p>
+
+:: QuestUnitTrainingEnduranceMasterFailure [nobr]
+<p>
+Even after these intense trainings,
+the only visible result was
+<<rep $g.trainee>> sheer exhaustion that would take
+weeks to fully recover from.
+</p>
+
+:: QuestUnitTrainingEnduranceMasterDisaster [nobr]
+<p>
+The training was a complete failure.
+Not only <<rep $g.trainee>> trainee|have been reduced to a wreck,
+<<rep $g.trainee>> must also redo some of the previous training
+again.
+</p>

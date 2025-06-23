@@ -1,0 +1,182 @@
+:: QuestSetup_the_seven_deadly_transformation__envy [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+],
+{
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__envy', /* key */
+"The Seven Deadly Transformation: Envy", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'desert',
+'trait',
+'prep'
+], /* tags */
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'fated': _criteriafated,
+'trainer': setup.qu.slavetrainer,
+'wizard': setup.qu.arcanedark,
+'warrior': setup.qu.dark_warrior, },
+{ /* actors */
+'demon': 'subrace_demon', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__envy',
+setup.qdiff.hard44, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__envyCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_the_seven_deadly_transformation__envyCrit',
+[
+setup.qc.Trait('fated', setup.trait.training_obedience_basic),
+setup.qc.Trait('fated', setup.trait.training_roleplay_basic),
+setup.qc.TraitReplace('fated', setup.trait.legs_demon), ],
+], [
+'Quest_the_seven_deadly_transformation__envyCrit',
+[
+setup.qc.Corrupt('trainer'),
+setup.qc.Corrupt('warrior'), ],
+], [
+'Quest_the_seven_deadly_transformation__envyCrit',
+[
+setup.qc.Corrupt('trainer'),
+setup.qc.Corrupt('warrior'),
+setup.qc.Corrupt('trainer'),
+setup.qc.Corrupt('warrior'),
+setup.qc.SlaverMarker('demon'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slave),
+  setup.qres.HasTitle('seven_deadly_transformation'),
+  setup.qres.NoTrait(setup.trait.legs_demon),
+]),
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__envy [nobr]
+<<set _headunit = setup.getUnit({job: setup.job.slave, title: "seven_deadly_transformation"})>>
+<<if !_headunit>>
+<<dangertext "Due to your company missing a slave important for this quest, this quest is no longer able to be completed.">>
+<<else>>
+
+<p>
+In the recent days, <<yourrep _headunit>> is often found staring blankly
+eastwards towards the <<lore region_desert>>, as if something was calling <<them
+_headunit>> there. <<ustripmouth _headunit>> When you asked <<them _headunit>>
+about it, <<they _headunit>> <<uadv _headunit>> indicated that <<they
+_headunit>> kept hearing seductively disturbing voices in their head coming
+from somewhere in the deserts.
+</p>
+
+<p>
+Normally, such kind of suffering is part of a slave's live. But since <<rep
+_headunit>> is rather special, this could prove to be something more than
+just nightmares — perhaps it is another aspect of <<their _headunit>>
+preordained destiny? You could try to send a group of slavers
+together with the slave eastwards to the desert. Judging by the description,
+it looks like something demonic is at play, so it would be wise to bring
+slavers experienced in the dark arts along.
+</p>
+
+<</if>>
+
+
+:: Quest_the_seven_deadly_transformation__envyCrit [nobr]
+
+<p>
+Your slavers scoured the <<lore region_desert>> for the potential source of the
+nightmares that plagued <<rep $g.fated>> — the slave's
+<<if $g.fated.isHasDick()>>dick twitched<<else>>clit twitched<</if>> whenever
+they were closing into the source. Using it as some sort of dowsing rod, your
+slavers managed to pinpoint what appeared to be the source of the nightmare —
+a large breach in a densely-misted area near an oasis.
+</p>
+
+<<if $gOutcome == 'success' or $gOutcome == 'critical'>>
+
+<p>
+After <<yourrep $g.wizard>> <<uadv $g.wizard>> stabilized the gate, the rest of
+the team went inside the breach and into the land beyond.
+As is norm for the land beyond <<lore concept_mist>>,
+they were met with the most debauched of scenes. Naked bodies
+of various races are on display along the fleshy walls, most had one or more
+of their slave holes filled either by a demon fucking them senseless or just
+with demonic tentacles that appeared out of nowhere.
+Before your slavers fully got their bearing back, they were
+greeted by the realm's <<lady $g.demon>>, <<if $g.demon.isHasDick()>>a buff
+and ridiculously well-endowed incubus
+<<else>>
+a ridiculously well-endowed succubus with an hourglass figure
+<</if>> who proceeded to claim a special connection with <<rep $g.fated>>.
+When <<reps $g.fated>> body began to glow purple, your slavers offered the
+slave (temporarily, they hope) to the <<succubus $g.fated>>. For such offer
+the <<incubus $g.fated>> gladly lent some of <<their $g.fated>> toys for your
+slavers to peruse, while <<they $g.fated>> worked with <<yourrep $g.fated>>.
+</p>
+
+<p>
+To fulfill the aspect of envy, the <<incubus $g.fated>> first placed a cruel
+chastity device covering the entirety of your slave's <<ugenital $g.fated>>.
+In the coming days, <<rep $g.fated>> fated|was forced to service many,
+many other <<if $g.fated.isHasDick()>>cocks, with many repeatedly came with
+abandon inside <<their $g.fated>> <<umouth $g.fated>>.<<else>>pussies, plenty of whose juice
+were absorbed into <<their $g.fated>> throat.<</if>> All were done without
+ever allowing <<rep $g.fated>> to climax. When the slave was returned back to
+your slavers, they noticed that the slave's legs had somehow been
+transformed into a painful-looking pair of demonic hooves, glowing faintly purple.
+</p>
+
+<p>
+The debaucheries ended, your slavers were safely returned back to the desert, to
+the great relief of <<yourrep $g.wizard>> who had waited <<uadv $g.wizard>> in
+the desert for days, all while keeping the breach stable.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Your slavers <<uadv $g.trainer>> managed to stole some treasure from the land
+beyond <<lore concept_mist>>, which fetched for a good price.
+</p>
+
+<</if>>
+
+<<else>>
+
+<p>
+After <<rep $g.wizard>> <<uadv $g.wizard>> attempted to stabilizes the gate,
+the rest of the team went inside into the breach. But <<reps $g.wizard>>
+stabilization was messy, and a massive corrupted blowback repelled your slavers
+and your slave back into the mortal plane. While they sustained no injuries,
+the demonic blowback had corrupted parts of their bodies.
+</p>
+
+<</if>>

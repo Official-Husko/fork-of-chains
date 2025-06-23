@@ -1,0 +1,148 @@
+:: OpportunitySetup_brothel_volunteer [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'brothel_volunteer', /* key */
+"Brothel Volunteer", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'unit',
+  'ire',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_volunteer',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_volunteer_0',
+    'Opportunity_brothel_volunteer_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.VarAdd('quest_brothel_high_income', 2, -1),
+    ],
+  ],
+  [
+    'Opportunity_brothel_volunteer_1',
+    'Opportunity_brothel_volunteer_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.Slave('volunteer', "offered a|themself to work in your brothel to escape a life of boredom, only to be enslaved instead", undefined),
+      setup.qc.Ire('neko', 3),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Home(),
+  ],
+  'volunteer': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_volunteer [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+<<Yourrep $g.owner>> who is responsible for managing <<attach _describe>> owner|send you a discreet message that <<they $g.owner>> may have found a slave for you. <<They $g.owner>> owner|have sent the <<girl $g.volunteer>> together with the head courtesan <<name $g.slave>> into your fort and into your office. The <<girl $g.volunteer>> volunteer|look like a dissolute party <<girl $g.volunteer>>. Face to face with the proprietor of the place — you that is — <<they $g.volunteer>> slave|bite <<their $g.volunteer>> lip nervously, and looks to <<name $g.slave>> for guidance. <<name $g.slave>> slave|nod at <<them $g.volunteer>> reassuringly, so <<they $g.volunteer>> explains <<themself $g.volunteer>>.
+</p>
+
+<p>
+"<<if $unit.player.isMale()>>Sir<<else>>Ma'am<</if>>, my name is <<name $g.volunteer>>. I'm, um, bored, I guess. I go to brothels and get drunk and fuck
+<<if $g.head.isMale()>>guys<<else>>girls<</if>> and it's just kinda boring. But when I go into <<= _name>>, I saw <<name $g.slave>>, and <<they $g.slave>> was just so
+<<if _sub == 'dom'>>
+dominant and
+<<elseif _sub == 'sub'>>
+graceful and
+<<else>>
+skillful and
+<</if>>
+
+<<if $g.slave.isMale()>>
+handsome, and
+<<else>>
+beautiful, and
+<</if>>
+
+<<if _sub == 'sub'>>
+despite being a submissive slut,
+<</if>>
+
+<<They $g.slave>> seemed so confident in what <<they $g.slave>> was doing and who <<they $g.slave>> was and I talked to <<them $g.slave>> and <<they $g.slave>> said <<they $g.slave>> was your head courtesan and... I want to be like <<them $g.slave>>.
+Can I work at <<= _name>>? I'd be good,
+I'm good at
+<<if _sub == 'dom'>>
+dominating others
+<<else>>
+sucking dicks
+<</if>>
+and stuff."
+<<They $g.volunteer>> seems to be a little naive about whoring, and seemingly completely unaware of your company's actual business, but there's no need to tell <<them $g.volunteer>> that.
+</p>
+
+<<unitcard $g.volunteer 1>>
+
+
+:: Opportunity_brothel_volunteer_0 [nobr]
+Let <<them $g.volunteer>> work in the brothel
+
+
+:: Opportunity_brothel_volunteer_0_flavor [nobr]
+<p>
+You accept <<their $g.volunteer>> offer to volunteer, and direct <<name $g.slave>> to begin <<their $g.volunteer>> courtesan training immediately.
+Hearing that <<they $g.slave>> will receive <<name $g.volunteer>>'s attention personally, the <<girl $g.volunteer>> visiblly bounces joyfully on <<their $g.volunteer>> heels. Courtesan training will be hard and expensive for you, but later down the road the <<girl $g.volunteer>> becomes quite adept at <<their $g.volunteer>> job, and your brothel's reputation increases as a result.
+</p>
+
+
+
+:: Opportunity_brothel_volunteer_1 [nobr]
+Enslave <<them $g.volunteer>>
+
+
+:: Opportunity_brothel_volunteer_1_flavor [nobr]
+<p>
+You accept <<their $g.volunteer>> offer to "volunteer". <<Rep $g.volunteer>> bounces nervously on <<their $g.volunteer>> heels.
+Finally <<they $g.volunteer>> volunteer|work up <<their $g.volunteer>> courage and asks,
+"Can I work with <<name $g.slave>>?"
+You sternly tell <<them $g.slave>> to call you <<Master $unit.player>>, to ask questions only with permission, and to strip. <<They $g.slave>> looks at <<name $g.slave>>, but <<they $g.slave>> slave|return <<their $g.volunteer>> look with no compassion at all and tells <<them $g.volunteer>> to do what you say. Looking suddenly fearful, <<name $g.volunteer>> volunteer|strip. Once your inspection of <<their $g.volunteer>> body reaches <<their $g.volunteer>> anus, <<they $g.volunteer>> volunteer|become suddenly nervous. "A-am I going to have t-to do butt stuff, <<Master $unit.player>>?"
+As you finish your inspection on the poor unsuspecting <<girl $g.volunteer>>, you ask <<name $g.slave>> to bring <<them $g.volunteer>> over to the slave pens.
+As <<name $g.slave>> slave|restrain the disbelieving <<girl $g.volunteer>>, you tell <<them $g.volunteer>> <<they $g.volunteer>> is your slave now, so <<they $g.volunteer>> can be sure <<they $g.volunteer>> won't be bored. <<They $g.volunteer>> volunteer|release a wail of utter despair, quickly cut off by a sturdy bag being fastened over <<their $g.volunteer>> head.
+</p>
+
+<p>
+Unfortunately, the story of your cruelty spreads within the <<lore location_npc>>, and its citizens view you with some disdain as a result.
+</p>

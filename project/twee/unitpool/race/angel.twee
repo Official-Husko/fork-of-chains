@@ -1,0 +1,126 @@
+:: InitUnitPoolRaceAngel [nobr unitpool]
+
+<<set _angel = new setup.UnitPoolTraitAlloc(
+  {  /* trait preferences */
+
+    /* =========== */
+    /* RACE */
+    /* =========== */
+    subrace_angel: 1,
+
+    /* =========== */
+    /* BACKGROUNDS */
+    /* =========== */
+
+    bg_soldier: setup.POOL_BG_COMMON_1,
+    bg_entertainer: setup.POOL_BG_COMMON_1,
+    bg_hunter: setup.POOL_BG_COMMON_1,
+    bg_artist: setup.POOL_BG_COMMON_1,
+    bg_priest: setup.POOL_BG_COMMON_1,
+    bg_healer: setup.POOL_BG_COMMON_1,
+
+    bg_wiseman: setup.POOL_BG_UNCOMMON_2,
+    bg_mystic: setup.POOL_BG_UNCOMMON_2,
+    bg_knight: setup.POOL_BG_UNCOMMON_2,
+
+    bg_scholar: setup.POOL_BG_EPIC_4,
+
+    bg_noble: setup.POOL_BG_LEGENDARY_5,
+
+    bg_royal: setup.POOL_BG_MYTHIC_6,
+    bg_mythical: setup.POOL_BG_MYTHIC_6,
+
+    bg_mercenary: setup.POOL_BG_FINAL_8,
+    bg_monk: setup.POOL_BG_FINAL_8,
+    bg_woodsman: setup.POOL_BG_FINAL_8,
+    bg_adventurer: setup.POOL_BG_FINAL_8,
+    bg_assassin: setup.POOL_BG_FINAL_8,
+    bg_metalworker: setup.POOL_BG_FINAL_8,
+    bg_wildman: setup.POOL_BG_FINAL_8,
+    bg_apprentice: setup.POOL_BG_FINAL_8,
+    bg_artisan: setup.POOL_BG_FINAL_8,
+    bg_nomad: setup.POOL_BG_FINAL_8,
+    bg_merchant: setup.POOL_BG_FINAL_8,
+    bg_thug: setup.POOL_BG_FINAL_8,
+    bg_farmer: setup.POOL_BG_FINAL_8,
+    bg_foodworker: setup.POOL_BG_FINAL_8,
+    bg_laborer: setup.POOL_BG_FINAL_8,
+    bg_maid: setup.POOL_BG_FINAL_8,
+    bg_whore: setup.POOL_BG_FINAL_8,
+    bg_unemployed: setup.POOL_BG_FINAL_8,
+    bg_slave: setup.POOL_BG_FINAL_8,
+    bg_courtesan: setup.POOL_BG_FINAL_8,
+    bg_informer: setup.POOL_BG_FINAL_8,
+    bg_slaver: setup.POOL_BG_FINAL_8,
+    bg_clerk: setup.POOL_BG_FINAL_8,
+    bg_seaman: setup.POOL_BG_FINAL_8,
+    bg_thief: setup.POOL_BG_FINAL_8,
+    bg_engineer: setup.POOL_BG_FINAL_8,
+    bg_pirate: setup.POOL_BG_FINAL_8,
+    bg_raider: setup.POOL_BG_FINAL_8,
+    bg_mist: setup.POOL_BG_FINAL_8,
+    bg_boss: setup.POOL_BG_FINAL_8,
+
+    /* =========== */
+    /* PERSONALITY */
+    /* =========== */
+
+    per_honorable: setup.POOL_PER_COMMON_1,
+
+    per_kind: setup.POOL_PER_UNCOMMON_2,
+    per_chaste: setup.POOL_PER_UNCOMMON_2,
+
+    per_brave: setup.POOL_PER_RARE_3,
+    per_loyal: setup.POOL_PER_RARE_3,
+
+    /* =========== */
+    /* MAGIC */
+    /* =========== */
+
+    magic_light: 0.2,
+    magic_light_master: 0.02,
+
+    /* =========== */
+    /* PHYSICAL */
+    /* =========== */
+
+    face_attractive: 0.2,
+    face_beautiful: 0.2,
+
+    /* =========== */
+    /* SKIN */
+    /* =========== */
+
+    wings_angel: 1.0,
+
+  },
+  {  /* trait dispreferences */
+    magic_dark: 20,
+    magic_dark_master: 20,
+
+    per_lustful: 10,
+    per_sexaddict: 10,
+    per_evil: 10,
+    per_cruel: 10,
+  },
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_angel_male',
+    'Angel Male',
+    _angel.computePreferences(setup.trait.gender_male),
+    setup.DEFAULT_INITIAL_SKILLS,
+    [  /* post process */
+    ],
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_angel_female',
+    'Angel Female',
+    _angel.computePreferences(setup.trait.gender_female),
+    setup.DEFAULT_INITIAL_SKILLS,
+    [  /* post process */
+    ],
+)>>

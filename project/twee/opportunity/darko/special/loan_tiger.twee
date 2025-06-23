@@ -1,0 +1,104 @@
+:: OpportunitySetup_loan_tiger [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'loan_tiger', /* key */
+"Loan Tiger", /* Title */
+"darko", /* Author */
+[ 'special', 'fort', 'money',
+], /* tags */
+4, /* opportunity expiration weeks */
+'Opportunity_loan_tiger',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+[
+'Opportunity_loan_tiger_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Money(10000),
+setup.qc.Event('loan_tiger__payment', 52, null, true),
+],
+], [
+'Opportunity_loan_tiger_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+],
+], [
+'Opportunity_loan_tiger_2',
+'Opportunity_loan_tiger_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_loan_tiger [nobr]
+<<set _tiger = setup.unitgroup.quest_event_loan_tiger1.getUnit()>>
+
+<p>
+Recently, you have been visited by a well-dressed neko <<name _tiger>>,
+who represents the <<rep $company.bank>> of the <<lore location_npc>>.
+They offered you a loan document, trusting that your company can pay back the amount it loans to you.
+You take a look at the document — it offers you money for a very simple
+term. <<money 10000>> hard cash now, but you will have to pay <<money 15000>>
+in a year.
+</p>
+
+<p>
+You could accept the deal as it is —- all things considered, it is not a bad
+deal at all. There is also always the option to simply decline.
+The final option is to try to send a strongly worded letter and negotiate for
+a better deal. This is a one-time chance only — if you succeed, you may get
+a better deal. But if you fail, you will not be able to take any loan at all.
+The probability of success is equal to your (2<<rep setup.skill.intrigue>> +
+<<rep setup.skill.social>>)%.
+</p>
+
+
+:: Opportunity_loan_tiger_0 [nobr]
+Accept
+
+
+
+:: Opportunity_loan_tiger_1 [nobr]
+Decline
+
+
+
+:: Opportunity_loan_tiger_2 [nobr]
+Negotiate
+
+
+:: Opportunity_loan_tiger_2_flavor [nobr]
+<<set _chance = ($unit.player.getSkill(setup.skill.intrigue) * 2 + $unit.player.getSkill(setup.skill.social)) / 100.0>>
+
+<<if _chance > Math.random()>>
+The bank agrees to the offer and offers you <<money 12500>> instead of
+<<money 10000>>, while asking the same <<money 15000>> pay in a year.
+<<run $company.player.addMoney(12500)>>
+<<run setup.qc.Event(setup.event.loan_tiger__payment, 52).apply()>>
+<<else>>
+Unfortunately, the bank does not agree to give you a better deal.
+<</if>>
+

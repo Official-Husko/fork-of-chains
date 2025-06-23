@@ -1,0 +1,63 @@
+:: EventSetup_enlightenment_of_the_soul___interlude2 [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'enlightenment_of_the_soul___interlude2', /* key */
+"Enlightenment of the Soul - Interlude", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[ ], /* tags */
+'Event_enlightenment_of_the_soul___interlude2',
+{ /* roles */
+},
+{ /* actors */
+'child': null,
+'pupil': null,
+},
+[ /* outcomes */
+setup.qc.TraitRemove('pupil', setup.trait.per_chaste),
+setup.qc.QuestDirect('enlightenment_of_the_soul', {child: 'child'}),
+],
+[ /* restrictions to generate */
+],
+1,
+setup.rarity.never,  /* Rarity */
+)>>
+
+:: Event_enlightenment_of_the_soul___interlude2 [nobr]
+<<set _p = $g.pupil>>
+<<set _father = $family.getUnitRelation($g.child, 'father')>>
+<<set _doctor = $dutylist.getUnitIfAvailable('doctor')>>
+
+<<if !_father>>
+/* player dismissed the father */
+<p>
+Later that week, <<yourrep _p>>
+was often found missing from the fort. You can only hope they are doing
+their work in the earnest.
+</p>
+<<else>>
+<p>
+Later that week, <<yourrep _p>> and <<rep _father>>
+were often found missing from the fort. You can only hope they are doing
+their work in the earnest.
+</p>
+<</if>>
+
+<p>
+Some days later,
+<<if _doctor>>
+Your physician, <<rep _doctor>>, confirms
+<<else>>
+<<rep _p>> confirms
+<</if>>
+that
+<<if _father>>
+<<rep _father>>
+<<else>>
+your former slaver
+<</if>>
+has done the duty, and the pupil is now ready to return to the academy. </p>

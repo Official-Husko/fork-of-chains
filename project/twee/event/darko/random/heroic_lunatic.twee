@@ -1,0 +1,61 @@
+:: EventSetup_heroic_lunatic [nobr event]
+
+<<run new setup.Event(
+'heroic_lunatic', /* key */
+"Heroic Lunatic", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_heroic_lunatic',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.per_lunatic], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Leave('slaver', "a|is trying to fulfill a|their dream of becoming a hero... or just being stark ravingly mad", undefined),
+  setup.qc.Event('grand_lunacy', 4, {
+lunatic: "slaver",
+}, true),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_heroic_lunatic [nobr]
+<p>
+Among your slavers, <<yourrep $g.slaver>> slaver|stand out for being particularly... eccentric, to say the least. <<Therace $g.slaver>> slaver|is often prone to flights of fancy, bordering of mad, sometimes in very inopportune moments. More than once had the slaver found
+<<if $g.slaver.isHasTrait('per_playful')>>
+playfully dancing in the middle of an intense fight,
+<<else>>
+dancing in the middle of a sparring fight
+<</if>>
+or
+<<if $g.slaver.isHasTrait('per_chaste')>>
+putting clothes on the various animals inside your fort to make them less sexually obscene.
+<<else>>
+running around the fort naked while screaming various obscenities around.
+<</if>>
+</p>
+
+<p>
+And the latest flight of fancy from <<therace $g.slaver>> is apparently here. <<They $g.slaver>> suddenly announces that <<they $g.slaver>> slaver|is going to become a hero, and slaver|take off from your fort. You sigh to yourself, sometimes wondering why you have decided to make such a lunatic as one of your slavers...
+</p>

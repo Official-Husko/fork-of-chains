@@ -1,0 +1,125 @@
+:: OpportunitySetup_household_destroyer_the_truth_2 [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'household_destroyer_the_truth_2', /* key */
+"Household Destroyer: The Truth", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'unit',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_household_destroyer_the_truth_2',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_household_destroyer_the_truth_2_0',
+    outcome_passage: 'Opportunity_household_destroyer_the_truth_2_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_household_destroyer_progress'),
+      setup.qc.VarRemove('quest_household_destroyer'),
+      setup.qc.SetCooldownQuest('household_destruction', 1000),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_host),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_nearby),
+      setup.qc.Slaver('drow', "a|was a drow known for being excessively dominant", undefined),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_household_destroyer_the_truth_2_1',
+    outcome_passage: 'Opportunity_household_destroyer_the_truth_2_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarAdd('quest_household_destroyer', 1000, -1),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_host),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_nearby),
+      setup.qc.IfThenElse(
+setup.qres.VarGte('quest_household_destroyer', 1200),
+setup.qc.DoAll([
+setup.qc.Event('household_destroyer_epilogue_away_', 6, {
+drow: "drow",
+})
+], undefined),
+setup.qc.DoAll([
+setup.qc.Event('household_destroyer_epilogue_home_', 6, {
+drow: "drow",
+})
+], undefined)),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'drow': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_household_destroyer_the_truth_2 [nobr]
+<p>
+    You invited the drow into your office, locked the door, and began explaining from the start. You went from how the drow had accidentally destroyed entire households, how the drows were asking you to "displace" <<them $g.drow>>, and how <<they $g.drow>> could probably return home now that <<their $g.drow>> aura of dominance seems to be under control.
+</p>
+
+<p>
+    The drow remained silent for a while, deep in thought, before
+</p>
+
+<<dialogue $g.drow>>
+    What do you think I should do now?
+<</dialogue>>
+
+<p>
+    You did not expect the drow to defer to you... or do you?
+</p>
+
+<<unitcard $g.drow>>
+
+
+:: Opportunity_household_destroyer_the_truth_2_0 [nobr]
+Join your company
+
+
+:: Opportunity_household_destroyer_the_truth_2_0_flavor [nobr]
+<p>
+    The drow accepted your invitation to stay on the surface for a little while longer. As one of your slavers, this time. You are certain <<their $g.drow>> natural dominance will come very handy for the company.
+</p>
+
+
+
+
+:: Opportunity_household_destroyer_the_truth_2_1 [nobr]
+Go back home
+
+
+:: Opportunity_household_destroyer_the_truth_2_1_flavor [nobr]
+<p>
+    After thanking you for all you've done so far, the drow departed your fort back into the <<lore region_deep>>.
+    Perhaps you will hear back from <<them $g.drow>> in the future...
+</p>
+
+
+

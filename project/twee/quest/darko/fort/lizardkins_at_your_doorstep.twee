@@ -1,0 +1,110 @@
+:: QuestSetup_lizardkins_at_your_doorstep [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'lizardkins_at_your_doorstep', /* key */
+"Lizardkins at Your Doorstep", /* Title */
+"darko", /* Author */
+[
+  'special', 'sea',
+], /* tags */
+2, /* weeks */
+1, /* quest expiration weeks */
+{ /* roles */
+'tank2': [setup.qu.tank, 0.3],
+'tank1': [setup.qu.tank, 0.3],
+'dps1': [setup.qu.fighter, 0.3],
+'dps2': [setup.qu.fighter, 0.3],
+'dps3': [setup.qu.dps, 0.3],
+'dps4': [setup.qu.dps, 0.3],
+'dps5': [setup.qu.dps, 0.3],
+'healer1': [setup.qu.healer, 0.3],
+'healer2': [setup.qu.healer, 0.3],
+'healer3': [setup.qu.healer, 0.3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_lizardkins_at_your_doorstep',
+setup.qdiff.extreme44, /* difficulty */
+[ /* outcomes */
+[
+'Quest_lizardkins_at_your_doorstepCrit',
+[
+setup.qc.BoonizeRandom('tank1', 2),
+setup.qc.BoonizeRandom('tank2', 2),
+setup.qc.BoonizeRandom('dps1', 2),
+setup.qc.BoonizeRandom('dps2', 2),
+setup.qc.BoonizeRandom('dps3', 2),
+setup.qc.BoonizeRandom('dps4', 2),
+setup.qc.BoonizeRandom('dps5', 2),
+setup.qc.BoonizeRandom('healer1', 2),
+setup.qc.BoonizeRandom('healer2', 2),
+setup.qc.BoonizeRandom('healer3', 2),
+],
+], [
+'Quest_lizardkins_at_your_doorstepCrit',
+[
+],
+], [
+'Quest_lizardkins_at_your_doorstepCrit',
+[
+setup.qc.Injury('tank1', 1),
+setup.qc.Injury('tank2', 2),
+setup.qc.Injury('dps1', 2),
+setup.qc.Injury('dps2', 2),
+setup.qc.Injury('dps3', 1),
+setup.qc.Injury('dps4', 1),
+setup.qc.Injury('dps5', 1),
+setup.qc.Injury('healer1', 2),
+setup.qc.Injury('healer2', 1),
+setup.qc.Injury('healer3', 2),
+],
+], [
+'Quest_lizardkins_at_your_doorstepDisaster',
+[
+setup.qc.MoneyCustom(-1000),
+setup.qc.QuestDirect('lizardkins_at_your_doorstep'),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+setup.qc.MoneyCustom(-1000),
+setup.qc.QuestDirect('lizardkins_at_your_doorstep'),
+],
+)>>
+
+:: Quest_lizardkins_at_your_doorstep [nobr]
+<p>
+Thanks to your recent actions, you have fully irked the
+<<rep $company.lizardkin>>.
+They have sent a formidable expedition force over to your company to harass you and your slaving operations.
+You have no choice but to let a lot of your slavers join forces and repel this lizardkin threat. And by a lot, it actually means a lot...
+</p>
+
+<p>
+<<dangertext 'Warning'>>: this quest will remain until you clear it! Each week this quest remain, some money will be deducted from your coffers to cover the repairs for the damages sustained by your fort.
+</p>
+
+
+:: Quest_lizardkins_at_your_doorstepCrit [nobr]
+<p>
+Led by <<rep $g.tank1>> and <<utheirrel $g.tank1 $g.tank2>> <<rep $g.tank2>>, your slavers finally repelled the lizardkin invasion and send the attackers back home.
+<<if $gOutcome == 'crit'>>
+Your slavers were so fierce during the fight that the enemy fled much earlier than expected, inspiring your slavers with confidence.
+<<elseif $gOutcome == 'failure'>>
+Your slavers sustained minor injuries during the fight.
+<</if>>
+</p>
+
+
+:: Quest_lizardkins_at_your_doorstepDisaster [nobr]
+<p>
+Your slavers were handily beaten by the invaders.
+They continue their assault on your fort, and you have to try and send another team to repel them.
+</p>

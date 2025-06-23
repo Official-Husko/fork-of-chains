@@ -1,0 +1,357 @@
+:: QuestSetup_rape_fetishist [nobr quest]
+
+<<run new setup.QuestTemplate(
+'rape_fetishist', /* key */
+"Rape Fetishist", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'city',
+  'prep',
+  'money',
+  'item',
+],
+2, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'negotiator': [ setup.qu.negotiator, 1],
+  'slave': new setup.QuestUnitCriteriaRapeFetishist(),
+  'infiltrator1': [ setup.qu.infiltrator, 1],
+  'infiltrator2': [ setup.qu.infiltrator, 1],
+},
+{ /* actors */
+  'master': 'city_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-500),
+],
+'Quest_rape_fetishist',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_rape_fetishistCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_rape_fetishistCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 12),
+      setup.qc.VarRemove('quest_unit_criteria_rape_fetishist_rng'),
+    ],
+  ],
+  [
+    'Quest_rape_fetishistFailure',
+    [
+      setup.qc.Money(500),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_rape_fetishistDisaster',
+    [
+      setup.qc.SlaverMarker('master'),
+      setup.qc.MissingUnit('slave'),
+      setup.qc.Money(500),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+  setup.qc.Outcomes("success"),
+
+],
+)>>
+
+:: Quest_rape_fetishist [nobr]
+<p>
+    The vast majority of people living in the <<lore region_city>> enjoys consensual sex. But some people are simply wired differently, and gain sexual pleasure only when their partner is an unwilling one.
+    These "rape fetishists" were once able to satiate their cravings simply by owning slaves, but ever since the <<rep $company.humankingdom>> outlawed slavery, their options has grown thin.
+</p>
+
+<p>
+    As a slaver company, you are in a unique position to cater to these rich people. You can sneak in one of your slaves, who is either completely untrained or has been trained to roleplay as a rape victim, right into their mansions. The slave will only be lent for a few weeks — it is far too dangerous for their reputations to keep them inside the city. If the slave is of the right quality, the pay will be rather lucrative.
+</p>
+
+<<set _bg = setup.QuestUnitCriteriaRapeFetishist.getBgTrait()>>
+<<set _race = setup.QuestUnitCriteriaRapeFetishist.getSubraceTrait()>>
+<<set _per = setup.QuestUnitCriteriaRapeFetishist.getPerTrait()>>
+
+<p>
+    One such opportunity has just come to your office. A rich noble<<woman $g.master>> has somehow made it known to you that <<they $g.master>> has been fantasizing a particularly rapey scene.
+    A freshly captured
+    <<rep _race>>
+    <<rep _bg>>,
+    <<if _bg == setup.trait.bg_knight>>
+        all their combat prowess completely useless against their bindings.
+        <<if _per == setup.trait.per_dominant>>
+            A powerful dominant knight soon to be taught a lesson in obedience.
+        <<elseif _per == setup.trait.per_submissive>>
+            One that will soon realize that deep behind their armor lies a submissive little soul.
+        <<elseif _per == setup.trait.per_chaste>>
+            A chaste knight that will soon be despoiled ah so thoroughly.
+        <<else>>
+            The bondage will awaken the knight's secret lust.
+        <</if>>
+    <<elseif _bg == setup.trait.bg_priest>>
+        completely innocent to the depravity that will soon be inflicted upon them.
+        <<if _per == setup.trait.per_dominant>>
+            One that is completely unused to be commanded around.
+        <<elseif _per == setup.trait.per_submissive>>
+            One that will learn the pleasure of serving others submissively.
+        <<elseif _per == setup.trait.per_chaste>>
+            Their prior chaste life will soon change forever.
+        <<else>>
+            Their latent horniness will soon be awaken irreversably.
+        <</if>>
+    <<elseif _bg == setup.trait.bg_slaver>>
+        whose tables have completely been turned.
+        <<if _per == setup.trait.per_dominant>>
+            A powerful dominant slaver to be remade into a brainless slut.
+        <<elseif _per == setup.trait.per_submissive>>
+            Their true submissive nature to be exposed.
+        <<elseif _per == setup.trait.per_chaste>>
+            A chaste slaver too - a rarity in these lands.
+        <<else>>
+            Their horniness will certainly be put to good use.
+        <</if>>
+    <<else>>
+        far away from the comfort of their palace.
+        <<if _per == setup.trait.per_dominant>>
+            Their dominant nature will soon be shattered.
+        <<elseif _per == setup.trait.per_submissive>>
+            Their true submissive nature will soon be revealed.
+        <<elseif _per == setup.trait.per_chaste>>
+            Their life of relative chastity is over.
+        <<else>>
+            They will learn how to use their sexual energy to pleasure others now.
+        <</if>>
+    <</if>>
+</p>
+
+<p>
+    You can try to send a group of slavers to deliver a merchandise into the mansion, should you wish. Your payment will likely depend on just how close your merchandise is to what the noble<<woman $g.master>> have been fantasizing for. Rumors said that these nobles would gift a most outrageous gift to those who can fulfill their exact fantasies...
+</p>
+
+
+
+
+:: Quest_rape_fetishistCrit [nobr]
+<<set _bg = setup.QuestUnitCriteriaRapeFetishist.getBgTrait()>>
+<<set _race = setup.QuestUnitCriteriaRapeFetishist.getSubraceTrait()>>
+<<set _per = setup.QuestUnitCriteriaRapeFetishist.getPerTrait()>>
+
+<<set _score = 0>>
+
+<<if $g.slave.isHasTrait(_race)>>
+    <<set _score = _score + 1>>
+<</if>>
+<<if $g.slave.isHasTrait(_bg)>>
+    <<set _score = _score + 1>>
+<</if>>
+<<if $g.slave.isHasTrait(_per)>>
+    <<set _score = _score + 1>>
+<</if>>
+<<if $g.slave.isHasTrait(setup.trait.training_roleplay_master)>>
+    <<set _score = _score + 1>>
+<</if>>
+<<if $gOutcome == 'crit'>>
+    <<set _score = _score + 1>>
+<</if>>
+
+
+
+<p>
+    <<Yourrep $g.infiltrator2>> and <<yourrep $g.infiltrator1>> jumped from rooftops to rooftops before safely delivering <<rep $g.slave>> — fully bound and gagged — into the mansion.
+    Per your order, they have dressed the slave in
+    <<if _bg == setup.trait.bg_knight>>
+        cheap knight armor
+    <<elseif _bg == setup.trait.bg_priest>>
+        <<if $g.slave.isFemale()>>
+            a nun outfit
+        <<else>>
+            a monk outfit
+        <</if>>
+    <<elseif _bg == setup.trait.bg_slaver>>
+        a slaver harness
+    <<else>>
+        fake noble attire
+    <</if>>
+    they bought from the markets.
+    <<if $gOutcome == 'crit'>>
+        Although your slavers were attentive enough to buy those that looks quite good.
+    <</if>>
+    Your slavers then carefully left the mansion, and lingered just until they finally see the <<master $g.master>> of the house entering the room where they left <<rep $g.slave>> be.
+</p>
+
+
+<<if _score >= 5>>
+    <p>
+        The illusion was so perfect that the <<master $g.master>> of the house thoroughly enjoyed <<themself $g.master>>.
+        Indeed, the slave was once a real
+        <<if _bg == setup.trait.bg_knight>>
+            knight in shining armor,
+        <<elseif _bg == setup.trait.bg_priest>>
+            <<woman $g.slave>> of the cloth,
+        <<elseif _bg == setup.trait.bg_slaver>>
+            slaver,
+        <<else>>
+            nobility,
+        <</if>>
+        and seeing how such a
+        <<if _bg == setup.trait.bg_knight>>
+            knight
+        <<elseif _bg == setup.trait.bg_priest>>
+            priest
+        <<elseif _bg == setup.trait.bg_slaver>>
+            slaver
+        <<else>>
+            noble
+        <</if>>
+        brought down this low brought immense pleasure to the master.
+        The slave is a master roleplayer too, and is able to convincingly play the part of a freshly captured slave, an unwilling partner to the <<master $g.master>>.
+        The <<master $g.master>> of the house spent the precious two weeks with your slave
+        <<if $g.master.isHasDick()>>
+            cumming down the slave's throat
+        <<else>>
+            having sex with the slave
+        <</if>>
+        almost every night
+        as <<they $g.master>>
+        reenact various plays, including
+        <<if _bg == setup.trait.bg_knight>>
+            <<if _per == setup.trait.per_dominant>>
+                torturing and training the powerful knight, unlucky enough to be captured by an evil overlord.
+            <<elseif _per == setup.trait.per_submissive>>
+                the slow transformation of the secretly submissive knight into a willing pet.
+            <<elseif _per == setup.trait.per_chaste>>
+                corrupting the once pure and chaste knight into a sex toy.
+            <<else>>
+                exposing the secretly submissive tendencies of the knight and forcing the reality into <<them $g.slave>>.
+            <</if>>
+        <<elseif _bg == setup.trait.bg_priest>>
+            <<if _per == setup.trait.per_dominant>>
+                spanking the dominant tendencies out of the pure and innocent priest.
+            <<elseif _per == setup.trait.per_submissive>>
+                introducing the joy of serving others instead of serving god.
+            <<elseif _per == setup.trait.per_chaste>>
+                violating every chaste part of the <<woman $g.slave>> of the cloth.
+            <<else>>
+                reveling in delight exposing the true nature of the priest.
+            <</if>>
+        <<elseif _bg == setup.trait.bg_slaver>>
+            <<if _per == setup.trait.per_dominant>>
+                introducing the former dominant and powerful slaver into the life of subservience and constant bondage.
+            <<elseif _per == setup.trait.per_submissive>>
+                enjoying the irony of a submissive slaver.
+            <<elseif _per == setup.trait.per_chaste>>
+                using the slave's every orifice while goading them about their foolish life as a chaste slaver.
+            <<else>>
+                using the slave's for their own pleasure while disregarding the slave's own pleasure.
+            <</if>>
+        <<else>>
+            <<if _per == setup.trait.per_dominant>>
+                lashing the dominant tendencies out of the once commandeering former noble.
+            <<elseif _per == setup.trait.per_submissive>>
+                taking command of the secretly submissive noble and slowly turning <<them $g.slave>> into an obedient pet.
+            <<elseif _per == setup.trait.per_chaste>>
+                introducing more and more act of deprativities into the horrified once chaste and once innocent noble.
+            <<else>>
+                making use of the sexually experienced noble and teaching <<them $g.slave>> discipline and subservience.
+            <</if>>
+        <</if>>
+    </p>
+
+    <p>
+        After a full two weeks, your slave was returned back to your fort, alongside a cargo containing an extremely valuable furniture, the <<rep setup.item.f_slavebed_master>>. This magical cage is said to be able to morph itself into whatever shape its owner wish — a perfect tool for bondage if one ever sees one! Truly a worthy payment for such an excellent slave.
+        You give the obedient slave a few pat before sending <<them $g.slave>> back to <<their $g.slave>> pens.
+    </p>
+
+    <<run setup.qc.Item('f_slavebed_master').apply($gQuest)>>
+
+<<elseif _score >= 2>>
+    <p>
+        The <<master $g.master>> was quite satisfied with the quality of the slave. Sure, it's not perfect.
+
+        <<if !$g.slave.isHasTrait(_race)>>
+            <<They $g.slave>> slave|is not a <<rep _race>>.
+        <</if>>
+        <<if !$g.slave.isHasTrait(_bg)>>
+            The slave is not a real
+            <<if _bg == setup.trait.bg_knight>>
+                knight,
+            <<elseif _bg == setup.trait.bg_priest>>
+                priest,
+            <<elseif _bg == setup.trait.bg_slaver>>
+                slaver,
+            <<else>>
+                noble,
+            <</if>>
+            and the <<master $g.master>> had to pretent <<they $g.slave>> was one.
+        <</if>>
+        <<if !$g.slave.isHasTrait(_per)>>
+            <<if _per == setup.trait.per_dominant>>
+                The slave is lacking in dominant tendencies.
+            <<elseif _per == setup.trait.per_submissive>>
+                The slave is lacking in submissive tendencies.
+            <<elseif _per == setup.trait.per_chaste>>
+                The slave nature is not entirely chaste.
+            <<else>>
+                The slave nature is not entirely depraved.
+            <</if>>
+        <</if>>
+        <<if !$g.slave.isHasTrait(setup.trait.training_roleplay_master)>>
+            It might be better if the slave is fully trained in roleplaying.
+        <</if>>
+        <<if $gOutcome != 'crit'>>
+            The presentation could have been better.
+        <</if>>
+    </p>
+
+    <p>
+        Still, the illusion was close enough.
+        After a few weeks, your slave was returned to your fort, bound inside a small uncomfortable box.
+        Next to the slave was a sizable bag of gold, a fitting payment for your company's services. The money is good, but you wonder what would have happened should you ever deliver the perfect slave for the <<master $g.master>>... Ah well, perhaps another time.
+    </p>
+
+    <<run setup.qc.Money(_score * 2000).apply($gQuest)>>
+<<elseif _score >= 1>>
+    <p>
+        The slave barely satisfy the <<master $g.master>>, but at least it's better than nothing. The slave was returned earlier than normal — only after a week — together with a small pouch of gold.
+    </p>
+
+    <<run setup.qc.Money(_score * 1000).apply($gQuest)>>
+<<else>>
+    <p>
+        The slave understandably did not manage to fulfill the noble<<woman $g.master>>'s fantasies.
+        At a later date, your slave is delivered back to your fort, neatly wrapped inside a box with a single gold coin as payment for your troubles.
+        Perhaps you should pay more attention next time...
+    </p>
+    <<run setup.qc.Money(1).apply($gQuest)>>
+<</if>>
+
+
+
+
+
+:: Quest_rape_fetishistFailure [nobr]
+<p>
+    Unfortunately, a grand parade prevented your slavers from sneaking <<yourrep $g.slave>> into the mansion.
+    Your slavers had no choice but to escape the city, lest worse befallen them.
+</p>
+
+
+
+:: Quest_rape_fetishistDisaster [nobr]
+<p>
+    Unfortunately, after being delivered, <<yourrep $g.slave>> never got returned to your fort. The payment never arrived to, and you started to wonder if <<yourrep $g.infiltrator1>> might have just sold the slave away somewhere for some easy money instead...
+</p>

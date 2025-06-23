@@ -1,0 +1,48 @@
+:: LIVINGSETUP_healer [nobr living]
+
+<<run new setup.Living({
+  key: 'healer',
+  name: 'Healer',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_healer: setup.LIVING_COMMON_PREFERENCE,
+    per_kind: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_cruel: -setup.LIVING_UNCOMMON_PREFERENCE,
+
+    magic_light: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_light_master: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_dark: -setup.LIVING_COMMON_PREFERENCE,
+    magic_dark_master: -setup.LIVING_COMMON_PREFERENCE,
+  },
+  business: [
+    'healing others',
+    'relieving the pain of others',
+    'treating the wounded',
+  ],
+  location: 'clinic',
+})>>
+
+:: LIVING_healer [nobr]
+
+<p>
+Using the money a|they has amassed throughout a|their slaving career,
+<<rep $g.a>>
+<<if $g.a.isHasTrait('bg_healer')>>
+resumes a|their prior calling by
+<<else>>
+fulfills a|their dream of
+<</if>>
+opening a|their own clinic.
+<<if $g.a.isHasTrait('magic_light')>>
+Being gifted with light magic means that a|they is able to heal much more
+efficiently than regular healers,
+<<else>>
+a|They has long experience with wounds, having been working as a slaver,
+<</if>>
+and a|their clinic quickly becomes popular.
+<<if !$g.a.isHasTrait('per_chaste')>>
+Sometimes, a|they would waive payment in exchange for a buttfuck or two.
+<</if>>
+</p>

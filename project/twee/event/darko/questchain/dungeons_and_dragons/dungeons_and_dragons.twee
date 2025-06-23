@@ -1,0 +1,56 @@
+:: EventSetup_dungeons_and_dragons [nobr event]
+
+<<run new setup.Event(
+'dungeons_and_dragons', /* key */
+"Dungeons and Dragons", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_dungeons_and_dragons',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.join_senior, setup.trait.bg_adventurer], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.AddTitle('slaver', 'quest_heroic_withdrawal_0'),
+  setup.qc.VarRemove('dungeons_and_dragons_withdrawal_progress'),
+  setup.qc.QuestDirect('dungeons_and_dragons', null),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.NoUnitWithTitle('quest_heroic_withdrawal_0', {
+}),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_dungeons_and_dragons [nobr]
+<<set _w = setup.getAnySlaver([_u])>>
+
+<p>
+Your slavers originate from many disciplines.
+There's <<rep _w>>, who loves nothing but <<uhobbyverb _w>>. And then there's <<rep $g.slaver>>, who loves nothing but to
+<<if $g.slaver.isHasTrait('per_humble')>>
+tell tales
+<<else>>
+brag
+<</if>>
+about <<their $g.slaver>> many adventures before joining your company.
+To your knowledge, some of your other slavers love (or at least feign interest) in the stories, which apparently has affected the slaver...
+</p>

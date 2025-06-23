@@ -1,0 +1,105 @@
+:: InitSkills [nobr]
+
+<<set setup.skill = []>>
+
+/* 0-4 */
+
+<<run new setup.Skill(
+  'combat',
+  'Combat',
+  'The skill of fighting other humanlikes. ' +
+  'Helpful on missions where you are expected to fight other humanlikes.',
+)>>
+
+<<run new setup.Skill(
+  'brawn',
+  'Brawn',
+  'The measure of physical strength. ' +
+  'Helpful on missions requiring physical feats, and also helps combat to some extent.',
+)>>
+
+<<run new setup.Skill(
+  'survival',
+  'Survival',
+  'Skills for surviving, navigating, and conquering the wilds. ' +
+  'Helpful for scouting missions, as well as missions that venture far into the wilds.',
+)>>
+
+<<run new setup.Skill(
+  'intrigue',
+  'Intrigue',
+  'The art of planning, scheming, and manipulating the stage from the shadows. ' +
+  'Helpful for missions involving stealth, subterfuge, and infiltrations.',
+)>>
+
+<<run new setup.Skill(
+  'slaving',
+  'Slaving',
+  'The skill of efficiently breaking slaves. ' +
+  'Helpful for training slaves.',
+)>>
+
+/* 5-9 */
+
+<<run new setup.Skill(
+  'knowledge',
+  'Knowledge',
+  'The understanding of the world. ' +
+  'Helpful for most missions, as well as missions requiring expert knowledge.',
+)>>
+
+<<run new setup.Skill(
+  'social',
+  'Social',
+  'The skill of manipulating others into doing your bidding with words. ' +
+  'Helpful for diplomacy missions, as well as missions involving negotiations.',
+)>>
+
+<<run new setup.Skill(
+  'aid',
+  'Aid',
+  'The skill of healing and restoring spirit. ' +
+  'Helpful for rescue as well as missions involving long rounds of combat.',
+)>>
+
+<<run new setup.Skill(
+  'arcane',
+  'Arcane',
+  'The understanding of the otherworldly. ' +
+  'Helpful for mysterious missions.',
+)>>
+
+<<run new setup.Skill(
+  'sex',
+  'Sex',
+  'The ancient art of sex. ' +
+  'Helpful for sexual missions, as well as training slaves to some extent.',
+)>>
+
+
+:: SkillBoostHelpTextContent [nobr]
+
+<<set _decay = setup.SKILL_BOOST_DECAY_RATE>>
+
+Skills that have been boosted permanently have a chance to decay whenever you boost another skill.
+The chance is equal to <<= Math.round(_decay * 100)>>% per boost.
+For example, if you have boosted <<rep setup.skill.combat>> three times and
+have boosted <<rep setup.skill.brawn>> two times,
+then when you try to boost any other skill,
+there is a
+<<= Math.round(_decay * 300)>>%
+chance that
+your <<rep setup.skill.combat>> will decrease by 1,
+and a
+<<= Math.round(_decay * 200)>>%
+chance that
+your <<rep setup.skill.brawn>> will decrease by 1.
+
+
+:: SkillBoostHelpText [nobr]
+
+<<message '(?)'>>
+  <div class='helpcard'>
+    <<include "SkillBoostHelpTextContent">>
+  </div>
+<</message>>

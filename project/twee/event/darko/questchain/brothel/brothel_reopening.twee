@@ -1,0 +1,41 @@
+:: EventSetup_brothel_reopening [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'brothel_reopening', /* key */
+"Brothel Reopening", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_brothel_reopening',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('brothel_reopening', {
+owner: "owner",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_brothel_progress', '1'),
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.NoOpportunity('brothel_reopening'),
+],
+10, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_brothel_reopening [nobr]
+<<include "Opportunity_brothel_reopening">>

@@ -1,0 +1,114 @@
+:: EventSetup_priest_blessing [nobr event]
+
+<<run new setup.Event(
+'priest_blessing', /* key */
+"Priest Blessing", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_priest_blessing',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_priest], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.temple),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_priest_blessing [nobr]
+<p>
+Even after becoming a slaver, the former priest <<rep $g.slaver>> can still often be found praying inside the <<rep setup.buildingtemplate.temple>>.
+<<if $g.slaver.isHasTrait('per_evil')>>
+Judging from the eldritch-like chants, however, you've little doubt of what kind of prayer the evil slaver immerse <<themself $g.slaver>> in.
+<<else>>
+The slaver almost look serene inside the temple, praying to whatever deity <<they $g.slaver>> chose to believe in<<if $g.slaver.isHasTrait('per_aggressive')>>,
+a complete turn from <<their $g.slaver>> usually aggressive self.
+<<elseif $g.slaver.isHasTrait('per_active')>>,
+a complete turn from <<their $g.slaver>> usually hyper-active self.
+<</if>>.
+<<if $g.you.isHasTrait('bg_priest')>>
+It reminds you of your past, in fact.
+<</if>>
+<</if>>
+Some of your other slavers like to ask the slaver for <<their $g.slaver>>
+<<if $g.slaver.isHasTrait('per_evil')>>
+dark
+<</if>>
+blessing, and perhaps you could ask for one today.
+</p>
+
+<<choose>>
+
+<<optif $unit.player.isHasTrait('bg_priest')>>
+<<opt 'Pray together'>>
+
+<p>
+You surprise <<them $g.slaver>> by taking your own seat next to the <<urace $g.slaver>>.
+Both of you chant blessings after blessing
+<<if $g.slaver.isHasTrait('per_evil')>>
+(although you suspect it is the evil variant in case of <<rep $g.slaver>>)
+<</if>>
+filling the two of you with power.
+At the end of the ritual, you feel as if the two of you has gain quite a considerable amount
+of blessing.
+</p>
+
+<<run setup.qc.Blessing('you', 5).apply($gQuest)>>
+<<run setup.qc.Blessing('slaver', 5).apply($gQuest)>>
+
+<<optif !$unit.player.isHasTrait('bg_priest')>>
+<<opt "Ask for a blessing">>
+
+<p>
+When you ask for a blessing, <<rep $g.slaver>>
+<<if $g.slaver.isHasTrait('per_evil')>>
+slaver|cackle evilly before chanting an eldritch blessing onto you. Instead of feeling good and empowered, you feel feebled instead, as if a curse has been bestowed upon you. <<Therace $g.slaver>>, on the other hand, certainly look much better than before. You have the suspicion that the evil slaver had just cast the blessing unto <<themself $g.slaver>>, while using you as the payment to <<their $g.slaver>> dark deity. Well, it's your own fault for asking a dark priest for a blessing.
+<<run setup.qc.Blessing('you', 1, null, true).apply($gQuest)>>
+<<run setup.qc.Blessing('slaver', 2).apply($gQuest)>>
+<<else>>
+slaver|smile gently, before patting you on the shoulder and saying soothing words into your ears. The words have power, and soon you feel better than ever. At the end of the small ritual, you feel you can take on the world, but it will wait until you've thanked <<therace $g.slaver>>.
+<<run setup.qc.Blessing('you', 1).apply($gQuest)>>
+<</if>>
+
+</p>
+
+<<opt "Denounce <<their $g.slaver>> faith">>
+
+<<if $g.you.isHasTrait('bg_priest')>>
+<p>
+Instead of asking for a blessing, you've have enough of <<their $g.slaver>> so-called "faith" and finally decide to challenge them with your own version.
+You were a priest too, once, and a rough theological depate ensued.
+Neither side were willing to back down, and by the end of it, you feel like you've just made a new
+lifelong rival.
+</p>
+<<run setup.qc.FriendshipWithYou('slaver', -2000).apply($gQuest)>>
+<<else>>
+<p>
+Instead of asking for a blessing, you've have enough of <<their $g.slaver>> so-called "faith" and finally decide to denounce them. A short theological debate ensues after, filled with many curse words, before the two of you parting bitterly from the experience.
+</p>
+<<run setup.qc.FriendshipWithYou('slaver', -200).apply($gQuest)>>
+<</if>>
+
+
+<</choose>>

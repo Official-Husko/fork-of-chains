@@ -1,0 +1,132 @@
+:: QuestSetup_safari_zone_illegal_hunt2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'safari_zone_illegal_hunt2', /* key */
+'Safari Zone: Illegal Hunt', /* Title */
+'darko', /* Author */
+[ 'forest', 'unit'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'hunter1': setup.qu.hunter,
+'hunter2': setup.qu.hunter,
+'thief': setup.qu.thief, },
+{ /* actors */
+'animal': 'forest_all',
+'animal2': 'forest_all', },
+[ /* costs */
+],
+'Quest_safari_zone_illegal_hunt2',
+setup.qdiff.hard21, /* difficulty */
+[ /* outcomes */
+[
+'Quest_safari_zone_illegal_hunt2Crit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.Slave('animal2', 'a|was a slave in the Safari Zone whom your slavers successfully hunted', undefined), ],
+], [
+'Quest_safari_zone_illegal_hunt2Success',
+[
+
+setup.qc.Slave('animal', 'a|was a slave in the Safari Zone whom your slavers successfully hunted', undefined), ],
+], [
+'Quest_safari_zone_illegal_hunt2Failure',
+[
+setup.qc.Injury('hunter1', 1),
+setup.qc.Injury('hunter2', 1), ],
+], [
+'Quest_safari_zone_illegal_hunt2Failure',
+[
+setup.qc.Injury('hunter1', 1),
+setup.qc.Injury('hunter2', 1),
+setup.qc.MoneyCrit(-1), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_safari_zone_illegal_hunt2 [nobr]
+
+<<include 'Opportunity_safari_zone'>>
+
+<p>
+You have chosen to send some of your slavers to try and poach some of the Safari Zone slaves.
+</p>
+
+
+:: Quest_safari_zone_illegal_hunt2Crit [nobr]
+
+<p>
+The various animals in the Safari Zone developed diverse strategies — some banded
+together, some tried to survive alone.
+Your slavers decided to go look for one
+of the slaves that decided to band together slave groups.
+The group were able to spot your slavers —
+panicking, they flushed into the open. Your slavers, tranquilizer arrows in <<uhand $g.hunter1>>,
+managed to shot down one of the animals.
+
+<<set _hunter = setup.selectUnit([$g.hunter1, $g.hunter2], {trait: 'bg_hunter'})>>
+<<if _hunter>>
+<<Rep $g.hunter1>> went into a hunter's groove -- the former hunter then
+<<else>>
+
+<<set _hunter = setup.selectUnit([$g.hunter1, $g.hunter2], {trait: 'per_attentive'})>>
+<<if _hunter>>
+  <<Reps _hunter>> <<ueyes _hunter>> are quite a perceptive pair, and <<therace _hunter>>
+
+<<else>>
+  <<set _hunter = $g.hunter1>>
+  <<Rep _hunter>> then
+<</if>>
+
+<</if>>
+
+<<uadv $g.hunter1>>
+took control of the bow and aimed straight at another animal —
+arrow were loosened and <<rep $g.hunter1>> triumphantly shot another animal down, for a total of
+two downed animals.
+</p>
+
+<p>
+Your slavers had a good day and considered the hunt a success.
+They tagged the downed slaves and smuggled them out of the safari, to be
+delivered to your fort and began their new lives.
+</p>
+
+
+:: Quest_safari_zone_illegal_hunt2Success [nobr]
+
+<p>
+The various animals in the Safari Zone developed diverse strategies — some banded
+together, some tried to survive alone.
+Your slavers decided to go look for one of the lone slaves.
+They spotted one of them currently sleeping, which made
+it trivial for <<rep $g.hunter2>> to <<uadv $g.hunter2>>
+subdue. Once the slave was down, your slavers considered the hunt successful.
+They bagged the slave and smuggled <<them $g.animal>> out, back into your
+fort.
+</p>
+
+
+:: Quest_safari_zone_illegal_hunt2Failure [nobr]
+
+<p>
+The various animals in the Safari Zone developed diverse strategies — some banded
+together, some tried to survive alone.
+But before your slavers were able to decide which group to pursue,
+they were spotted by the Safari guards, who
+opened fire (with tranquilizing arrows) on your slavers.
+<<if $gOutcome == 'failure'>>
+Your slavers fortunately managed to dodge all of the arrows, but they still received bruises
+and cuts from having to run through all the brambles along in the safari.
+<<else>>
+Unfortunately, your slavers were downed by the arrow.
+In the next few days, your slavers returned to your fort with the Safari Zone's compliments,
+together with a hefty bill addressed to you for the damages incurred.
+<</if>>
+</p>

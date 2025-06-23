@@ -1,0 +1,45 @@
+:: LIVINGSETUP_criminal_boss [nobr living]
+
+<<run new setup.Living({
+  key: 'criminal_boss',
+  name: 'Criminal Boss',
+  tags: ['rare', ],
+  unit_restrictions: [
+    setup.qres.AnyTrait([
+      'bg_boss', 'bg_assassin', 'bg_thug', 'bg_thief',
+    ], true),
+  ],
+  default_preference: 0,
+  trait_preferences: {
+    bg_boss: setup.LIVING_RARE_PREFERENCE,
+    skill_connected: setup.LIVING_COMMON_PREFERENCE,
+  },
+  business: [
+    'making grand evil schemes',
+    'making a silly amount of illegal money',
+    'overseeing a big underworld slaving operations',
+  ],
+  location: 'villa',
+})>>
+
+:: LIVING_criminal_boss [nobr]
+
+<p>
+<<if $g.a.isHasTrait('bg_boss')>>
+With a|their vacation over, <<rep $g.a>> returns to a|their main occupation
+as the leader of a certain underworld criminal networks.
+<<else>>
+After a|they retired from slaving, <<rep $g.a>> takes up crime once again.
+The experiences being a slaver under your employ
+<<if $g.a.isHasTrait('skill_connected')>>
+as well as a|their many connections
+<</if>>
+propel a|them to leadership.
+<</if>>
+a|Their job consists mainly of overseeing all the illegal and underhanded operations,
+<<if $g.a.isHasTrait('per_studious')>>
+a task a|they much prefers than getting a|their a|hands dirty.
+<<else>>
+and sometimes a|they miss the days working under your command and getting a|their a|hands dirty.
+<</if>>
+</p>

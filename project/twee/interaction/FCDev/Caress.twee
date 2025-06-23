@@ -1,0 +1,279 @@
+:: InteractionCaressSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_caress',
+  'Caress',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionCaress',
+  [],  /* Cost */
+  [],  /* Requirements */
+  [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionCaress [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<set _hasbreasts = $unit.player.isHasBreasts()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+
+<<set _umouthequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.mouth)>>
+<<set _friendship = $friendship.getFriendship(_u, $unit.player)>>
+
+<<set _mindbroken = _u.isMindbroken()>>
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+<<set _gagged = _u.isHasTrait(setup.trait.eq_gagged)>>
+
+<<loadinteractioncommon _u>>
+
+You descend into your $i.locgeneral and commands
+your <<titlefull _u>> <<= _u.getName()>>
+to approach you.
+
+<<include 'InteractionKissApproach'>>
+
+You delicately lift $i.his <<uhead _u>>
+and touch your fingertips to $i.his chin,
+tenderly brushing along the line of $i.his <<umouth _u>>
+with the your thumb.
+Then, you gently tilt $i.his <<uface _u>> back and lightly touch $i.his lips
+with your fingertips.
+You use your fingers and thumbs to slowly slide along $i.his mouth,
+$i.his chin, $i.his cheeks then around $i.his face.
+You use a deft touch to thoroughly explore the shape of
+$i.his cheekbones.
+Grazing $i.his temple and brushing $i.his forehead
+simultaneously, you smoothly motion along $i.his
+eyelids and nose and you tenderly stroke $i.his face with both
+hands as you take $i.his head
+lightly and trace around it, gently massaging
+as you go.
+You work your way down, slowly and gradually,
+along $i.his <<uneck _u>> with one <<uhand $unit.player>>,
+then the other,
+briefly pausing before continuing your path down to $i.his shoulders
+and<<if !_mindbroken>> $i.he starts to gasp as<<else>> starts to shudder as<</if>>
+you slide your <<uhands $unit.player>> down $i.his side,
+across $i.his
+<<if _u.getWings()>>
+<<uwings _u>>
+<<else>>
+back
+<</if>>
+and along $i.his belly taking every moment to savour
+the contours of $i.his <<ubody _u>>
+before going back up again to $i.his face.
+
+<<if _mindbroken>>
+	$i.His posture doesn't change.
+  $i.He initially only reacts slightly
+  to your physical touch but then stops reacting completely.
+  When you stop, $i.his <<ueyes _u>>
+  track the movements of your <<uhands $unit.player>> briefly but then stare
+  blankly ahead of $i.his, awaiting further use of $i.his <<ubody _u>>.
+<<elseif _friendship >= 800>>
+	$i.His eyes gradually close and
+  $i.he slowly leans $i.his head back,
+  relaxing as $i.he feels your caress.
+  $i.He gently gasps as $i.he feels your warm <<uarms _u>>.
+  When you finally stop gently caressing $i.him,
+  $i.his <<ueyes _u>>
+  remain closed and $i.his <<umouth _u>>
+  still in a rapturous shape for a moment before $i.he slowly opens
+  $i.his eyes and smiles at you,
+  $i.he has an eager look on $i.his <<uface _u>>.
+  A <<uhand _u>> reaches dumbly up to $i.his face mimicking your last movements.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    "I love you", $i.he says dreamily.
+  <</if>>
+  $i.He looks as though $i.he wants much more than your mere caress.
+<<elseif _u.isHasTrait(setup.trait.training_dominance_advanced) && _maintraining.getTags().includes('trdominance')>>
+	As you start to touch $i.his
+  <<uface _u>>, $i.he smiles at you and takes your <<uhand $unit.player>> in <<theirs _u>>,
+  following its movements.
+  $i.He tries hard to stop $i.himself from losing $i.himself in your masterful <<uhands $unit.player>>.
+  $i.He takes $i.his tendency towards sexual dominance right up to
+  the edge of insubordination, when $i.he starts to caress your <<uface _u>> in turn.
+  When you finally stop, $i.his eyes are closed and $i.he's smiling.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    "That was fun", $i.he says cheerfully.
+  <</if>>
+  $i.He looks at you, $i.his <<ueyes _u>> almost begging you to give $i.his more than your mere caress.
+<<elseif _hasdick && _u.isHasTrait(setup.trait.training_oral_advanced) && _maintraining.getTags().includes('troral')>>
+	$i.He stiffens at your touch but slowly
+  relaxes to your fingers on $i.his face.
+  As you move your fingers along $i.his lips,
+  $i.he reacts almost as though $i.he's receiving oral.
+  $i.He starts to gently suck your fingers, moaning into your <<uhand $unit.player>> and pressing
+  $i.his <<ubody _u>> lewdly against your <<ubreast $unit.player>>.
+  <<if !_chastity>>
+  $i.He achieves a weak orgasm before you stop caressing $i.him.
+  <</if>>
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    "That was fun", $i.he says lustfully.
+  <</if>>
+  $i.He looks at you as if $i.he wants more than your <<uhands $unit.player>> touching $i.him.
+<<elseif _friendship >= 500>>
+	$i.He accepts your touch with devotion,
+  leaning $i.his head back at your gentle caress along $i.his face.
+  $i.He leans $i.his <<ubody _u>> forward,
+  pressing $i.himself against you,
+  and you feel the intense heat from $i.his <<ubody _u>> against your <<ubreast $unit.player>>.
+  $i.He gradually closes $i.his <<ueyes _u>>
+  and when you finally stop, $i.he runs
+  $i.his <<uhand _u>> delightfully across $i.his face where you last touched $i.his,
+  an euphoric look on $i.his <<uface _u>>.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    "I love you", $i.he says jubilantly.
+  <</if>>
+  $i.He looks at you longingly, almost as if $i.he's bursting
+  to say that $i.he wants more than your mere caress.
+<<elseif _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+	$i.He accepts your touch willingly.
+  As you are so close to $i.him,
+  you sense considerable turmoil in the $i.man;
+  $i.he's doing $i.his duty as a slave by complying with your wishes,
+  and is probably struggling with the mixture of resistance,
+  obedience and perhaps even devotion forced to the forefront of
+  $i.his mind by your touch across $i.his face.
+  When you finally move your <<uhand $unit.player>> away,
+  $i.his <<ueyes _u>>
+  gaze into yours searchingly,
+  looking for answers that are not there.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    $i.He asks hesitantly, "I-is that it?".
+  <</if>>
+<<elseif _u.isHasTrait(setup.trait.training_obedience_basic)>>
+	$i.He shakes at your touch fearfully.
+  As you move your <<uhand $unit.player>> along $i.his unresisting face,
+  $i.his eagerness to avoid punishment leads $i.his
+  to stiffen, $i.his nervousness is made apparent.
+  You continue stroking $i.his cheek,
+  enjoying $i.his fear, and the physical intimacy slowly
+  does its work. $i.He starts to relax, $i.his resistance easing
+  and $i.his eyes start to close.
+  When finally move your <<uhand $unit.player>> away, $i.he looks at you for a long moment,
+  $i.his <<ueyes _u>>
+  darting up at you, before visibly catching $i.himself with
+  a reminder that $i.he's a slave and you're $i.his owner.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    $i.He asks hesitantly, "I-is that it?".
+  <</if>>
+<<elseif _friendship <= -100>>
+	$i.He is nearly frozen with fear,
+  and does not resist as you start to caress $i.his face.
+  In fact, $i.he barely reacts at all.
+  $i.He stares at you as you move your fingers across
+  $i.his stiff face, but it's like touching a statue.
+  $i.He is so filled with terror that $i.he remains
+  stiff even as it becomes clear to $i.his you're not going to hurt $i.him.
+  When you bore of touching the $i.man and move your <<uhand $unit.player>> away,
+  $i.he stares at you in utter incomprehension.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    $i.He asks nervously, "I-is that it?".
+  <</if>>
+  Then $i.he cringes.
+<<else>>
+	$i.He reflexively turns away from you, but you catch $i.his <<uhead _u>>
+  with one <<uhand $unit.player>> and slowly but gently move your other <<uhand $unit.player>> along $i.his face.
+  Spluttering, $i.he leans backwards, but
+  you tip forward with $i.him and pin $i.him against the walls of the $i.locgeneral,
+  not stopping your gentle touch on $i.his head.
+  $i.He tries to wriggle out of your grasp desperately, but
+  $i.his struggles slowly subside as $i.he
+  realizes that you're not taking this any farther.
+  When you bore of it and move your <<uhand $unit.player>> away, $i.he
+  stares at you in utter incomprehension.
+  $i.His eyes demand an answer: is that it?
+<</if>>
+
+<<unset $i>>
+
+
+:: InteractionKissApproach [nobr]
+<<if _u.isMindbroken()>>
+	$i.He complies mechanically.
+  $i.He remembers that when
+  your commands are not obeyed, there is punishment.
+<<elseif _friendship >= 900>>
+	$i.He hurriedly complies,
+  happy to be near the object of $i.his longing.
+  Once she's close, you take a moment to gaze deeply into
+  $i.his <<ueyes _u>>.
+  $i.He finds the intense look from the <<man $unit.player>> $i.he loves overwhelming,
+  and $i.his eyes flick downward after a moment.
+  $i.He blushes furiously.
+<<elseif _friendship >= 750>>
+	$i.He hurriedly complies, happy to be near you.
+  Once $i.he's close, you take a moment to gaze deeply into $i.his <<ueyes _u>>.
+  $i.He finds the intense look from $i.his beloved owner disconcerting,
+  and $i.his eyes flick downward after a moment. $i.He blushes furiously.
+<<elseif _friendship >= 500>>
+	$i.He hurriedly complies, happy to be near you.
+  Once $i.he's close, you take a moment to gaze deeply into $i.his <<ueyes _u>>.
+  $i.He finds the intense attention from $i.his owner disconcerting,
+  and $i.he looks down after a moment, blushing.
+<<elseif _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+	$i.He hurriedly complies,
+  happy to be near you.
+  Once $i.he's close,
+  you take a moment to gaze deeply into $i.his <<ueyes _u>>.
+  $i.He finds the intense attention from $i.his owner worrying,
+  and $i.he looks down after a moment, blushing nervously.
+<<elseif _u.isHasTrait(setup.trait.training_obedience_basic)>>
+	$i.He visibly considers disobedience,
+  but decides that complying with such an apparently harmless order
+  is safe, for now.
+  Once $i.he's close, you take a moment to gaze deeply into $i.his
+  <<ueyes _u>>.
+  $i.He finds the intense attention from $i.his owner worrying,
+  and $i.he looks down after a moment,
+  $i.his lower lip trembling with nervousness.
+<<elseif _friendship <= -100>>
+	The command terrifies $i.him,
+  but $i.he's more frightened still of the
+  consequences of disobedience, and $i.he complies.
+  Once $i.he's close, you take a moment to gaze deeply
+  into $i.his <<ueyes _u>>.
+  After a mere instant of locked gazes,
+  $i.he looks down fearfully, and begins to shake with terror,
+  tears leaking silently down $i.his cheeks.
+<<else>>
+	$i.He pauses, obviously considering whether to resist,
+  but eventually decides to save $i.his strength
+  to fight more onerous orders,
+  and gives in.
+  Once $i.he's close, you take a moment to gaze deeply into
+  $i.his <<ueyes _u>>.
+  $i.He stares back, but after a few moments $i.he loses the contest of wills and looks down.
+<</if>>

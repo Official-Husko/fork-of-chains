@@ -1,0 +1,22 @@
+:: CostAddHistory [nobr]
+
+
+
+Give <<devactordefault>> a history record:
+Actor <<textbox '_history' 'killed a demon lord.'>>
+<<message '(?)'>>
+  <div class='helpcard'>
+  The game will automatically record history for important moments,
+  e.g., when a slaver leave the company or when a unit gains a new trait.
+  However, you can use this to add extra flavorful things, e.g.,
+  if a unit got possessed.
+  </div>
+<</message>>.
+<<successtextlite 'Use past tense.'>>
+<<include 'CostWasHelpText'>>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddHistory($qgDefaultActorName, _history)>>
+<</link>>
+

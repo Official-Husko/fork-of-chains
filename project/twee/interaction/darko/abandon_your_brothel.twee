@@ -1,0 +1,34 @@
+:: InteractionSetup_abandon_your_brothel [nobr interaction]
+
+<<run new setup.Interaction(
+'abandon_your_brothel', /* key */
+"Abandon your brothel", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+],
+'Interaction_abandon_your_brothel',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* unit requirements */
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Available(),
+  setup.qres.HasTitle('quest_brothel_owner_0'),
+],
+[ /* outcomes */
+  setup.qc.RemoveTitle('target', 'quest_brothel_owner_0'),
+],
+1,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_abandon_your_brothel [nobr]
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+Seeing no future left in <<attach _describe>>, you've decided to abandon the brothel. You should hear more about this in the coming week...
+</p>

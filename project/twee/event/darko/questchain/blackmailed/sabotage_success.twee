@@ -1,0 +1,67 @@
+:: EventSetup_sabotage_success [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'sabotage_success', /* key */
+"Sabotage Success", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_sabotage_success',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+  ],
+  'boss': [
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarAdd('rival_blackmail_progress', 1, -1),
+  setup.qc.IfThenElse(
+    setup.qres.VarGte('rival_blackmail_progress', 3),
+    setup.qc.DoAll([
+      setup.qc.Event('end_of_a_company', 2, {
+        slaver: "slaver",
+        boss: "boss",
+      })
+    ], undefined),
+    setup.qc.DoAll([
+      setup.qc.Opportunity('subtle_retaliation', {
+        slaver: "slaver",
+        boss: "boss",
+      })
+    ], undefined)),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_sabotage_success [nobr]
+<<set _progress = $varstore.get('rival_blackmail_progress') || 0>>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Your sabotage over <<reps $g.boss>> company is a success!
+<<if _progress >= 2>>
+In fact, <<yourrep _u>> informs you that <<their $g.boss>> company is
+crumbling down as of now, with many of <<their $g.boss>> slavers mysteriously
+disappearing one way or another.
+The end to this affair might be soon at <<uhand $unit.player>>...
+<<elseif _progress >= 1>>
+With the successes you've amassed, you can feel the conflict ending anytime
+now. All you need is a little bit more push in the right direction.
+<<else>>
+This is merely the first step, however, and you would need to dedicate more
+effort should you wish to see your plan come into fruition.
+<</if>>
+</p>

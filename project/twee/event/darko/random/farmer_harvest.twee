@@ -1,0 +1,132 @@
+:: EventSetup_farmer_harvest [nobr event]
+
+<<run new setup.Event(
+'farmer_harvest', /* key */
+"Farmer Harvest", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_farmer_harvest',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_farmer], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_farmer_harvest [nobr]
+<p>
+Your slavers come from quite a variety of backgrounds, and most have not forgotten their old craft even as slavers. This includes <<yourrep $g.slaver>>, who slaver|was a farmer before <<they $g.slaver>> became your slaver. As a hobby, <<therace $g.slaver>> slaver|tend to a small garden just outside of your fort, growing various mundane crops like tomatoes and corn.
+<<if $g.you.isHasTrait('bg_farmer')>>
+Something you are quite accustomed to as well, given your past as a fellow farmer.
+<</if>>
+</p>
+
+<p>
+Today, <<they $g.slaver>> slaver|is reaping quite the harvest, and <<therace $g.slaver>> slaver|is beaming quite proudly about it. Indeed, the produce is of high quality, having been tended carefully both by <<themself $g.slaver>>, and also by some of the fort's slaves. <<Rep $g.slaver>> slaver|have given you a sizable portion of the harvest. Baskets of tomatoes and corn are now sitting in your office, and you wonder what to do with them.
+</p>
+
+<<choose>>
+
+<<opt "Sell them">>
+
+<<if $g.you.isHasTrait('bg_farmer')>>
+<p>
+As a former farmer yourself, you know exactly who would appreciate such a high
+quality harvest, tended so thoroughly with the help of the fort's many slaves.
+You were able to sell the produce for quite a fortune, all going into the company's coffers.
+</p>
+
+<<run setup.qc.Money(4000).apply($gQuest)>>
+
+<<else>>
+
+<p>
+<<Reps $g.slaver>> produce is of quite a high quality, since <<they $g.slaver>> slaver|was able to tend it more thoroughly with the help of the fort's slaves.
+The produce was sold for quite a sum, which goes into the company's coffers.
+</p>
+
+<<run setup.qc.Money(800).apply($gQuest)>>
+
+<</if>>
+
+<<opt "Throw a feast">>
+
+<<if $g.you.isHasTrait('bg_farmer')>>
+
+<p>
+Today's dinner will be cooked personally by you.
+You were a farmer once too, and you know exactly how to best process these very fresh harvest.
+The food comes out exquisite, and all your slavers eat ravenously today.
+You and <<yourrep $g.slaver>> slaver|become the slavers of the night, and <<their $g.slaver>> mood significantly increase in the coming days.
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 50).apply($gQuest)>>
+
+<<else>>
+
+<p>
+Today's dinner will be cooked personally by you, and despite your questionable cooking skills, the fresh ingredients greatly make up for it.
+The food comes out very good, and all your slavers eat heartily today. <<Yourrep $g.slaver>> slaver|become the <<man $g.slaver>> of the night, and <<their $g.slaver>> mood significantly increase in the coming days.
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 10).apply($gQuest)>>
+
+<</if>>
+
+<<opt "That's a nice large cucumber you have there...">>
+
+
+<p>
+
+<<if $g.you.isHasTrait('bg_farmer')>>
+You are quite familiar with farming, given your background, and you were able to discern
+a few quality cucumber suitable for something else other than being eaten. A few vegetable dildos would do wonder for your fort, after all.
+<<set _reps = [1, 1, 1, 1]>>
+<<else>>
+You select a particularly large cucumber and fashion it into a make-shift dildo.
+<<set _reps = [1]>>
+<</if>>
+
+<<if $unit.player.getTraitWithTag('magic')>>
+  Using your own magic mastery, you enchant the cucumber to keep it fresh for a good long while.
+<<else>>
+  <<run setup.qc.Money(-1000).apply($gQuest)>>
+  You then proceed to find an enchanter inside your fort, and pay them to enchant the cucumber
+  with a spell of everlasting. This should keep the cucumber fresh for a good long while.
+<</if>>
+Why you have decided to do such a thing, you never know, but you got yourself rather
+unfortunate enchanted vegetable ready to be inserted into some unwilling anus...
+</p>
+
+<<for _rep range _reps>>
+<<if $g.slaver.isMale() || $gQuest.getSeed() % 2 == 0>>
+  <<run setup.qc.EquipmentDirect('dildo_cucumber_anus').apply($gQuest)>>
+<<else>>
+  <<run setup.qc.EquipmentDirect('dildo_cucumber').apply($gQuest)>>
+<</if>>
+<</for>>
+
+<</choose>>

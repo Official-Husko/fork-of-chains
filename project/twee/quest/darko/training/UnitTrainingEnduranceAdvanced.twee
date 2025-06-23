@@ -1,0 +1,134 @@
+:: QuestSetupUnitTrainingEnduranceAdvanced [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_endurance_advanced',  /* id */
+  'Endurance Training: Advanced',  /* Title */
+  'FCdev and darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingEnduranceAdvanced',  /* description */
+  setup.qdiff.harder42,
+  [
+    [
+      'QuestUnitTrainingEnduranceAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_endurance_advanced),
+      ]
+    ],
+    [
+      'QuestUnitTrainingEnduranceAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_endurance_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingEnduranceAdvancedFailure',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+    [
+      'QuestUnitTrainingEnduranceAdvancedDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingEnduranceAdvanced [nobr]
+<p>
+When a slave has learned how to sustain a prolonged time of abuse,
+the next step in endurance training is to learn how to
+be a proper furniture for your slavers to use.
+They need to be able to withstand the abuse from owners who care
+not about their pleasure, and must maintain comfort in the face
+of utter discomfort.
+After the abuse has ended, the must learn how to
+recover from such treatment and made them available again to their
+owner as quickly as possible.
+The advanced endurance training thus focuses on a repeated cycle
+of intense abuse followed by recovery time.
+An hour or two bound and hanged from the ceiling
+followed by an hour of rest, for example.
+</p>
+
+:: QuestUnitTrainingEnduranceAdvancedCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+<<else>>
+  <<questimage 'unit_training_endurance_advanced_female.jpg'>>
+<</if>>
+
+<p>
+<<Rep $g.trainee>> had completed <<their $g.trainee>> basic endurance training
+and the slave can withstand abuse for a longer time than any other untrained slave.
+To bring this into the next level,
+<<rep $g.head>> began by cuffing <<reps $g.trainee>> wrists and andkles, and bending
+all four limbs behind <<them $g.trainee>>,
+secure them together,
+and hoist <<them $g.trainee>> up to the dungeon ceiling on a rope.
+<<They $g.trainee>> hang up there like a sex slave chandelier,
+<<if $g.trainee.isHasDick()>>dick<<else>>breasts<</if>> swaying in a lovely way
+whenever <<they $g.trainee>> struggled.
+Periodically <<rep $g.head>> let <<them $g.trainee>> down to rest and stretch
+<<their $g.trainee>> aching limbs, but whenever <<rep $g.head>> put the decoration back up,
+<<they $g.head>> added some clips and weighs with little bells on them:
+first the nose, then the nipples, and finally the
+<<if $g.trainee.isHasDick()>>dickhead<<else>>pussylips<</if>>.
+By the end of the first day, the training dungeons were filled by the sweet sounds of
+ringing bells and agonized pleas for mercy in
+<<their $g.trainee>>
+<<if $g.trainee.isMale()>>masculine<<else>>feminine<</if>> voice.
+But this won't do -- a proper furniture slave must not make too much sound, and the future
+sessions taught this the hard way by gagging the poor slave whenever <<they $g.trainee>> trainee|was objectified.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Rep $g.trainee>> turned out to be a natural at being
+an objectified slave.
+There were nothing more to teach by the end of the trainings, and your
+slave graduated with flying colors.
+</p>
+
+<<else>>
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to learn and apply the necessary skills and endurance required
+to qualify as a graduate of this training.
+Still, after such intense training, <<they $g.trainee>> would need at least
+one week of rest.
+</p>
+<</if>>
+
+:: QuestUnitTrainingEnduranceAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccesful.
+At the end of the week, not only <<rep $g.trainee>> trainee|was exhausted,
+the trainings does not seem to stick to <<them $g.trainee>> and has
+to be reattempted once <<they $g.trainee>> recover.
+</p>
+
+:: QuestUnitTrainingEnduranceAdvancedDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+Their now wrecked body would need to fully recover first before reattempting
+this training.
+</p>

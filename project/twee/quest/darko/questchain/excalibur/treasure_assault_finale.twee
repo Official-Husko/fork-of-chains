@@ -1,0 +1,158 @@
+:: QuestSetup_treasury_assault_finale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'treasury_assault_finale', /* key */
+"Treasury Assault Finale", /* Title */
+"darko", /* Author */
+[
+  'veteran',
+  'city',
+  'special',
+  'unknown'
+], /* tags */
+4, /* weeks */
+setup.INFINITY, /* quest expiration weeks */
+{ /* roles */
+'disarmer': setup.qu.trapper, 
+'thief': setup.qu.thief, 
+'seducer': setup.qu.seducer, },
+{ /* actors */
+'knight': [],
+},
+[ /* costs */
+],
+'Quest_treasury_assault_finale',
+setup.qdiff.hardest66, /* difficulty */
+[ /* outcomes */
+[
+'Quest_treasury_assault_finaleCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyNormal(), 
+],
+], [
+'Quest_treasury_assault_finaleCrit',
+[
+setup.qc.Item(setup.item.f_drinktray_master), 
+setup.qc.Event('the_quest_for_excalibur__epilogue', 12), ],
+], [
+'Quest_treasury_assault_finaleCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.Ire('humankingdom', 15), 
+setup.qc.Injury('disarmer', 4), 
+setup.qc.Injury('thief', 2), 
+],
+], [
+'Quest_treasury_assault_finaleCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.Ire('humankingdom', 30), 
+setup.qc.Injury('disarmer', 4), 
+setup.qc.Injury('thief', 2), 
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_treasury_assault_finale [nobr]
+
+<p>
+You have decided to return the Excalibur back to the treasure vaults in the <<lore region_city>>,
+with the hope that it will
+cure <<reps $g.knight>> possession by the cursed sword.
+Hopefully by the end of the trial, <<rep $g.knight>> will be back to <<their
+$g.knight>> <<uadjgood $g.knight>> self.
+</p>
+
+<p>
+To return the Excalibur back to the coffers of Lucgate, your slavers
+ironically had to redo a mission they did a long time ago: infiltrate the
+doffers of the <<lore region_city>>. This time, however, there are no longer a master
+thief to aid them in their efforts, and hence your slavers must rely on
+themselves and their considerable skills alone. This will be an ultimate challenge
+for your slavers to overcome in this quest for Excalibur. Who knows, maybe
+there are still some other things worth stealing within the treasury...
+</p>
+
+
+:: Quest_treasury_assault_finaleCrit [nobr]
+<p>
+Bringing the Excalibur back to the city, your slavers surveyed the castle in the
+coming days.
+After determining the best course of action, your slavers waited until one
+particular night where many of the guards were having an induction party for the new guards. When
+the day came, your slavers were ready. <<Rep $g.seducer>> masterfully seduced
+the remaining guards of the treasury, pointing towards <<their $g.seducer>>
+<<ugenital $g.seducer>> sensuously while simultaneously drawing all the
+guards' attention towards <<their $g.seducer>> bare <<ubreasts $g.seducer>>.
+</p>
+
+<p>
+The distraction was sufficient to allow <<yourrep $g.thief>> and <<utheirrel
+$g.thief $g.disarmer>> <<rep $g.disarmer>> to sneak into the treasury. Thanks
+to the previous theft, the security inside the treasury was tighter than ever,
+with magical traps of various kinds littering the place.
+<<if $gOutcome == 'success' || $gOutcome == 'crit'>>
+It was no trouble for <<reps $g.disarmer>> experienced <<uhands $g.disarmer>>
+however, and <<therace $g.disarmer>> <<uadv $g.disarmer>> disarmed most of
+the traps, allowing your slavers to infiltrate quietly. Finally,
+<<else>>
+<<rep $g.disarmer>> however disarmer|was not skillful enough to dodge all the traps,
+and triggered some in the process. Still,
+<</if>>
+your slavers made it to the inner chamber where the Excalibur was supposed to sit.
+</p>
+
+<p>
+<<Rep $g.thief>> gently placed the cursed sword back on the pedestal, while quietly
+thinking to <<themself $g.thief>> what a shame it was to leave such a valuable
+item alone.
+But as if rewarding your slavers for their efforts, suddenly a hidden door
+opened from the inner sanctum, revealing to your slavers a legendary
+artifact: the <<rep setup.item.f_drinktray_master>><<if $gOutcome == 'crit'>>, as
+well as loads of treasures<</if>>.
+Your slavers took the rewards back to the entrance, and escaped into the dead of the night.
+</p>
+
+<p>
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+Your slaver's infiltration was a massive success. Under <<reps $g.seducer>>
+masterful allure and <<reps $g.disarmer>> trap-disarming skills, none of the
+guards were able to identify any of the thieves. Your reputation with the
+<<rep $company.humankingdom>> did not take a dive even after such a brazen
+thievery.
+<<else>>
+Unfortunately, your slavers were not skilled enough to evade all undue attention.
+The magical trap that <<rep $g.disarmer>> triggered was apparently an identification trap,
+and somehow your company was identified as the mastermind behind said theft.
+<<if $gOutcome == 'disaster'>>
+Worse, <<rep $g.seducer>> failed to detect the faked allure from one of the
+guards, who carefully monitored your slaver and deduced <<their $g.seducer>>
+identity.
+<</if>>
+Your company's relations with <<rep $company.humankingdom>> suffered massively
+as a result, and you can expect retaliation soon...
+<</if>>
+</p>
+
+<p>
+A few days later, <<rep $g.knight>> knight|have finally returned to normal.
+No more crusade this crusade that, <<therace $g.knight>> slaver is back to their
+<<uadjgood $g.knight>> self.
+Interestingly, <<they $g.knight>> knight|retain no memory of the entire sequence of events,
+but still best not to keep <<theslaver $g.knight>> anywhere near the cursed sword in the future.
+</p>
+
+<p>
+The <<rep setup.item.f_drinktray_master>> sits beautifully on your desk,
+waiting for whatever it is you plan for the artifact. Perhaps you can sell
+it, or place it in your own bedchamber.
+</p>

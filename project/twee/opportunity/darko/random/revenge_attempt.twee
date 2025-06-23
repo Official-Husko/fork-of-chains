@@ -1,0 +1,178 @@
+:: OpportunitySetup_revenge_attempt [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'revenge_attempt', /* key */
+"Revenge Attempt", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'unit',
+  'money',
+],
+1, /* expiration weeks */
+'Opportunity_revenge_attempt',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_revenge_attempt_0',
+    outcome_passage: 'Opportunity_revenge_attempt_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.RemoveFromUnitGroup('slave'),
+      setup.qc.MoneyCustom(3000),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_revenge_attempt_1',
+    outcome_passage: 'Opportunity_revenge_attempt_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyUnitValue("slave", -0.5, 10000),
+      setup.qc.Slave('slave', "a|was a slave you sold who escaped and attempted a revenge attack on you", undefined),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_revenge_attempt_2',
+    outcome_passage: 'Opportunity_revenge_attempt_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyUnitValue("slave", -0.5, 10000),
+      setup.qc.Injury('slave', 10),
+      setup.qc.Trait('slave', setup.trait.training_obedience_basic),
+      setup.qc.Slave('slave', "a|was a slave you sold who escaped and attempted a revenge attack on you", undefined),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slave': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_revenge_attempt [nobr]
+<<set _price = Math.floor($g.slave.getSlaveValue() * 0.5)>>
+
+<p>
+    Having captured <<rep $g.slave>> who tried to attack you so brazenly in revenge, you must now decide what to do with your former slave.
+    <<Their $g.slave>> owner has contacted you, and offered you several options.
+    First, the owner would be more than happy to get the slave returned, and would compensate you with some money in exchange. Alternatively, as a sign of apology for letting the slave escaped, they are willing to sell you back the slave for a fraction of <<their $g.slave>> true value: a sum of <<money _price>>.
+</p>
+
+
+
+
+:: Opportunity_revenge_attempt_0 [nobr]
+Return the slave back to <<their $g.slave>> owner in exchange for money
+
+
+:: Opportunity_revenge_attempt_0_flavor [nobr]
+<p>
+    Not wanting to dwell any further on the issue, you've decided that <<rep $g.slave>> isn't worth your time and money to buy and wisely decided to return the <<urace $g.slave>> back to <<their $g.slave>> owner.
+    You receive a chunk of money as a gesture of thanks.
+    <<Their $g.slave>> owner promised you that <<rep $g.slave>> will be severely punished by the time <<they $g.slave>> have been returned, and by the time the surely painful training has finished, <<their $g.slave>> mind will consist of nothing but mindless obedience.
+</p>
+
+
+
+
+:: Opportunity_revenge_attempt_1 [nobr]
+Buy the slave and just put <<them $g.slave>> in your pens
+
+
+:: Opportunity_revenge_attempt_1_flavor [nobr]
+<p>
+    You decided to buy the slave you once sold for a fraction of its actual value. It's a good deal, and as a bonus, <<rep $g.slave>> is now free to punish and abuse as your property.
+    But you're not in a rush to dish out the punishment right now, and ushered the glowering <<rep $g.slave>> back to where <<they $g.slave>> belongs — the slave pits.
+</p>
+
+
+
+
+:: Opportunity_revenge_attempt_2 [nobr]
+Buy the slave and make an example out of <<them $g.slave>>
+
+
+:: Opportunity_revenge_attempt_2_flavor [nobr]
+
+<<if $unit.player.isHasTrait('per_kind')>>
+    <p>
+        You are not one for cruelty, but still, the thought of revenge would occassionally override your kind demeanor. You paid the sum of money to make <<rep $g.slave>> back as one of your properties.
+    </p>
+
+    <p>
+        Not wanting to dish out the punishment yourself, you asked
+        <<set $g.b = setup.getAnySlaver()>>
+        <<yourrep $g.b>> to do it for you.
+        <<if $g.b.isHasTrait('per_kind')>>
+            <<They $g.b>> scoffed at the thought as well — the kind <<urace $g.b>> also abhors unnecessary cruelty — but <<they $g.b>> defers to your judgment.
+        <<elseif $g.b.isHasTrait('per_cruel')>>
+            You know <<rep $g.b>> to be one cruel <<urace $g.b>> — perfect for the job.
+        <<else>>
+            <<They $g.b>> nods in understanding, a hint of sadistic pleasure coming out from the edge of <<their $g.b>> mouth.
+        <</if>>
+    </p>
+
+    <p>
+        The next few nights were filled with screams of pain coming from the <<rep setup.buildingtemplate.trainingchamber>>. It seems <<yourrep $g.b>> was quite thorough with <<their $g.b>> work. After just a few days,
+        <<rep $g.slave>> has already shown signs of obedience from being tortured. <<Their $g.b>> body will need to recover, however, after enduring such a brutal ministration of painful instruments.
+    </p>
+
+    <<if $g.b.isHasTrait('per_kind')>>
+        <p>
+            <<Yourrep $g.b>> resents you a little for making <<them $g.b>> do this dirty work for you.
+            <<run setup.qc.FriendshipWithYou('b', -50).apply(setup.costUnitHelper($g.b))>>
+        </p>
+    <<elseif $g.b.isHasTrait('per_cruel')>>
+        <p>
+            <<Yourrep $g.b>> likes you a bit more for giving <<them $g.b>> such a deliciously cruel job.
+            <<run setup.qc.FriendshipWithYou('b', 50).apply(setup.costUnitHelper($g.b))>>
+        </p>
+    <</if>>
+
+<<else>>
+    <p>
+        Licking your lips <<uadv $unit.player>>,
+        you paid the sum of money and made <<rep $g.slave>> into once again your property. Eager to get started,
+        you brought the struggling slave into the <<rep setup.buildingtemplate.trainingchamber>> for some correctional training.
+    </p>
+
+    <p>
+        The next few nights were filled with tortured screaming coming from the <<rep setup.buildingtemplate.trainingchamber>>.
+        The nights were agonizingly long for the slave as you dish out punishment after punishment on <<them $g.slave>>, savoring the delight of punishing <<them $g.slave>> for trying to attack you.
+        With a masterful combination of gags and rubber, you deprive the slave of most of their senses, and varies the kind of pain <<they $g.slave>> had to endure throughout.
+        <<if !$settings.bannedtags.watersport>>
+            <<Their $g.slave>> only sustenance during the night comes from your bladder.
+        <</if>>
+    </p>
+
+    <p>
+        After you are done with <<them $g.slave>>, <<rep $g.slave>> had become quite a broken mess, both in physique and both in mind.
+        <<They $g.slave>> would need some time to recover from the torture, but <<they $g.slave>> already look more obedient now.
+    </p>
+
+<</if>>

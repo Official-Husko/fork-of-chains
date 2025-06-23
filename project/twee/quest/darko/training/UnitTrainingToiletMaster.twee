@@ -1,0 +1,118 @@
+:: QuestSetupUnitTrainingToiletMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_toilet_master',  /* id */
+  'Toilet Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingToiletMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingToiletMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_toilet_master),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingToiletMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_toilet_master),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingToiletMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingToiletMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_toilet_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingToiletMaster [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+Some masters prefer their slaves to be installed permanently in the toilet
+as their private urinals.
+These slaves require specialized training such as this one in order to
+learn to love being an urinal.
+Once this training is completed, the minimum requirements is for the slave
+to only be taken out of the toilet
+for sustenance and exercise.
+<</if>>
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingToiletMasterCrit [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into an elite toilet slave
+has been completed, and is now ready to be installed.
+<</if>>
+</p>
+
+:: QuestUnitTrainingToiletMasterSuccess [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+It is done. <<Reps $g.trainee>> transformation into an elite toilet slave
+has been completed, and is now ready to be installed in a toilet
+cubicle of your choice.
+<</if>>
+</p>
+
+:: QuestUnitTrainingToiletMasterFailure [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into the ultimate toilet slave.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+<</if>>
+</p>
+
+:: QuestUnitTrainingToiletMasterDisaster [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+<</if>>
+</p>

@@ -1,0 +1,39 @@
+:: EventSetup_end_of_management [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'end_of_management', /* key */
+"End of Management", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_end_of_management',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+setup.dutytemplate.questbrothelmanager.resetChain().concat([
+  /* outcomes */
+
+]),
+[ /* restrictions */
+  setup.qres.NoUnitWithTitle('quest_brothel_owner_0'),
+  setup.qres.VarLte('quest_brothel_progress', 499),
+  setup.qres.Not(setup.qres.VarNull('quest_brothel_progress')),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_end_of_management [nobr]
+<p>
+Unfortunately, due to one way or another,
+the brothel you used to own in the <<lore location_npc>> has to close.
+While this marks the end of your little brothel adventure for now, who
+knows if you'll get another opportunity in the future?
+</p>

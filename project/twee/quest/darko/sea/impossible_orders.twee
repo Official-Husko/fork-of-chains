@@ -1,0 +1,297 @@
+:: QuestSetup_impossible_orders [nobr quest]
+
+<<set _criteriaslave1 = new setup.UnitCriteria(
+null, /* key */
+'Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllTraits([setup.trait.training_none], true),
+  setup.qres.IsCanBeSold(),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'impossible_orders', /* key */
+"Impossible Orders", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'order',
+  'rare',
+],
+3, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'handler': [ setup.qu.slavehandler, 3],
+  'slave1': _criteriaslave1,
+  'slave2': _criteriaslave1,
+  'slave3': _criteriaslave1,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_impossible_orders',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_impossible_ordersCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 100),
+      setup.qc.SlaveOrderFlex(
+'Healthy Slave', /* name */
+'humansea', /* company */
+4, /* expires in */
+10000, /* base price */
+1500, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.tough_tough,
+setup.trait.per_stubborn,
+setup.trait.per_masochistic,
+setup.trait.training_masochist_master,
+],
+[ /* disaster traits */
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.tough_nimble,
+setup.trait.per_curious,
+setup.trait.per_lunatic,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTag('impossible_orders_maso'),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.Item(setup.item.potion_protection),
+setup.qc.Item(setup.item.potion_protection)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(10000)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_slavebed_good),
+setup.qc.Item(setup.item.f_slavebed_good)
+], undefined)
+]),
+],
+[ /* unfulfilled outcomes */
+setup.qc.HideAll([setup.qc.RemoveTagGlobal('impossible_orders_maso')]),
+],
+),
+      setup.qc.SlaveOrderFlex(
+'Pure Slave', /* name */
+'humansea', /* company */
+4, /* expires in */
+10000, /* base price */
+1500, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.race_demon,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+],
+[ /* disaster traits */
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTag('impossible_orders_pure'),
+setup.qres.NoTraits([setup.trait.eyes_demon, setup.trait.ears_demon, setup.trait.mouth_demon, setup.trait.dick_demon, setup.trait.tail_demon, setup.trait.legs_demon, setup.trait.arms_demon, setup.trait.wings_demon, setup.trait.body_demon], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.Item(setup.item.potion_purity),
+setup.qc.Item(setup.item.potion_purity)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_slavebed_good),
+setup.qc.Item(setup.item.f_slavebed_good)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Favor('humansea', 500)
+], undefined)
+]),
+],
+[ /* unfulfilled outcomes */
+setup.qc.HideAll([setup.qc.RemoveTagGlobal('impossible_orders_pure')]),
+],
+),
+      setup.qc.SlaveOrderFlex(
+'Free Slave', /* name */
+'humansea', /* company */
+3, /* expires in */
+10000, /* base price */
+1500, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.per_smart,
+setup.trait.per_brave,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+],
+[ /* disaster traits */
+setup.trait.per_slow,
+setup.trait.per_cautious,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTag('impossible_orders_free'),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.Item(setup.item.potion_life),
+setup.qc.Item(setup.item.potion_life)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_slavebed_good),
+setup.qc.Item(setup.item.f_slavebed_good)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(5000),
+setup.qc.Favor('humansea', 250)
+], undefined)
+]),
+],
+[ /* unfulfilled outcomes */
+setup.qc.HideAll([setup.qc.RemoveTagGlobal('impossible_orders_free')]),
+],
+),
+    ],
+  ],
+  [
+    'Quest_impossible_ordersCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_impossible_ordersCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_impossible_ordersCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.epic],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.SetCooldownQuest(null, 20),
+
+],
+)>>
+
+:: Quest_impossible_orders [nobr]
+<p>
+Far beyond the <<lore region_sea>> lives an emperor known as Emperor Hentei. The emperor is wise and caring for his citizens, and the kingdom lives in prosperity. However, there is a loosely guarded secret about the emperor — the emperor is complete lunatic when it comes to sex, and keeps a stable of various sex slaves at his palace.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+<<Yourrep _u>> informs you today that the emperor is apparently looking for a trio of slaves to add to his stable. Normally, the order would require strange and exotic properties on the slaves, but strangely, this order is completely ordinary. Just three normal slaves, freshly untrained, to be delivered to the palace complex.
+<<if $statistics.isHasSuccess('impossible_orders')>>
+This is not the first time you receive such an order, and you know why no other company is willing to take up such an "easy" order. Should you wish to reattempt fulfilling some rather impossible slave orders, you could try to send a slaver together with three slave candidates away...
+<<else>>
+Even stranger is that no other slaving company is willing to take up the order. This might just be your dumb luck, or there is a catch to the order after all...
+<</if>>
+</p>
+
+
+
+
+
+:: Quest_impossible_ordersCrit [nobr]
+<p>
+After <<yourrep $g.handler>> arrived at the palace complex, the emperor Hentei himself greeted your slaver, before inspecting the three merchandise. The inspection was brief and short, and the emperor was pleased with what he saw — as far as <<rep $g.handler>> could tell anyways — and proceeded to lavish <<them $g.handler>> with a proper feast with the trio of slaves in full display for the party.
+</p>
+
+<p>
+The party did not go as expected. <<Rep $g.handler>> lost all <<their $g.handler>> memory of the party — perhaps <<therace $g.handler>> simply drank too much — but at the end of the party, all that was left is <<their $g.handler>> naked self as well as two of their merchandise. One is completely corrupted, while the other is completely injured. Another is missing entirely, and nobody knew what happened.
+</p>
+
+<p>
+The order was cancelled, for the emperor wanted three slaves — one pure, one healthy, and one existing, but none of the three were! In his kind gracious wisdom, the emperor allowed you a few weeks to recover and restore the slave, but looking at how much damage and corruption they sustained, the deadline seemed downright impossible.
+</p>
+
+<p>
+In the end, three slave orders are sitting on your desk. One asked to fully heal a devastatingly injured slave within a month, another to fully purify a slave within a month, and another is to recapture a missing slave within a few weeks... Three completely useless and impossible orders, or are they?
+</p>
+
+<<if $gQuest.getSeed() % 6 == 0>>
+  <<set _cor = $g.slave1>>
+  <<set _pur = $g.slave2>>
+  <<set _fre = $g.slave3>>
+<<elseif $gQuest.getSeed() % 6 == 0>>
+  <<set _cor = $g.slave1>>
+  <<set _pur = $g.slave3>>
+  <<set _fre = $g.slave2>>
+<<elseif $gQuest.getSeed() % 6 == 0>>
+  <<set _cor = $g.slave2>>
+  <<set _pur = $g.slave1>>
+  <<set _fre = $g.slave3>>
+<<elseif $gQuest.getSeed() % 6 == 0>>
+  <<set _cor = $g.slave2>>
+  <<set _pur = $g.slave3>>
+  <<set _fre = $g.slave1>>
+<<elseif $gQuest.getSeed() % 6 == 0>>
+  <<set _cor = $g.slave3>>
+  <<set _pur = $g.slave1>>
+  <<set _fre = $g.slave2>>
+<<else>>
+  <<set _cor = $g.slave3>>
+  <<set _pur = $g.slave2>>
+  <<set _fre = $g.slave1>>
+<</if>>
+
+<<run setup.qc.AddTag('unit', 'impossible_orders_maso').apply(setup.costUnitHelper(_cor))>>
+<<run setup.qc.Injury('unit', 50).apply(setup.costUnitHelper(_cor))>>
+
+<<run setup.qc.AddTag('unit', 'impossible_orders_pure').apply(setup.costUnitHelper(_pur))>>
+<<run setup.qc.TraitsReplace('unit', [
+  setup.trait.eyes_demon,
+  setup.trait.ears_demon,
+  setup.trait.mouth_demon,
+  setup.trait.tail_demon,
+  setup.trait.legs_demon,
+  setup.trait.arms_demon,
+  setup.trait.wings_demon,
+  setup.trait.body_demon,
+]).apply(setup.costUnitHelper(_pur))>>
+
+<<run setup.qc.AddTag('unit', 'impossible_orders_free').apply(setup.costUnitHelper(_fre))>>
+<<run setup.qc.MissingUnit('unit').apply(setup.costUnitHelper(_fre))>>

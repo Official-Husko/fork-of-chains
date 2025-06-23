@@ -1,0 +1,37 @@
+:: EventSetup_rival_interaction [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'rival_interaction', /* key */
+"Rival Interaction", /* Title */
+"Kyiper", /* Author */
+[ ], /* tags */
+'Event_rival_interaction',
+{ /* roles */
+'you': [
+setup.qres.You(),
+setup.qres.Available(),
+setup.qres.NoTraits([setup.trait.per_dominant], true),
+],
+
+'rival': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.FriendshipWithYouAtMost(-500),
+setup.qres.NoTraits([setup.trait.per_submissive], true),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Opportunity('rival_interaction', {'rival': 'rival',}),
+],
+[ /* restrictions to generate */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.common,  /* Rarity */
+)>>
+
+:: Event_rival_interaction [nobr]
+<<include 'Opportunity_rival_interaction'>>

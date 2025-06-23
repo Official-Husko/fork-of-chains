@@ -1,0 +1,75 @@
+:: EventSetup_living_god [nobr event]
+
+<<run new setup.Event(
+'living_god', /* key */
+"Living God", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'money',
+],
+'Event_living_god',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.join_senior, setup.trait.bg_mythical], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.AddTitle('slaver', 'quest_living_god'),
+  setup.qc.QuestDirect('living_god', {}),
+  setup.qc.VarSet('quest_living_god_active', '1', -1),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.market),
+  setup.qres.NoUnitWithTitle('quest_living_god', {
+}),
+  setup.qres.VarNull('quest_living_god_active'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_living_god [nobr]
+<p>
+Even among your slavers, <<yourrep $g.slaver>> is rather special. <<Therace $g.slaver>> exudes an aura unlike any other, drawing many people in.
+<<if $unit.player.isHasTrait('bg_mythical')>>
+It's not so dissimilar to your own.
+<</if>>
+In fact, before <<they $g.slaver>> became a slaver, <<they $g.slaver>> slaver|was quite used to being worshipped by others.
+</p>
+
+<p>
+Despite having known the slaver for quite some time, you're still unsure what is it exactly that draws people to <<them $g.slaver>>, but you have no plan on making the talent go to waste. Instead, you <<uadv $unit.player>> approached <<rep $g.slaver>>, suggesting to put the talent to good use. Why not setup a small shrine in your <<rep setup.buildingtemplate.market>>, dedicated to <<their $g.slaver>> likeliness, where people can come and worship <<them $g.slaver>> as some sort of deity? Surely there are some fun to be had, as well as coin if one can look carefully enough...
+</p>
+
+<p>
+<<if $g.slaver.isHasTrait('per_honorable')>>
+Of course you don't phrase it like that to the honorable <<urace $g.slaver>>. Instead, you word it as making a platform for <<them $g.slaver>> to share <<their $g.slaver>> wisdom. You skipped the part where the "grateful sheeps" would happily donate <<their $g.slaver>> worldy belongings, of course.
+<<else>>
+
+<<if $g.slaver.isHasTrait('per_evil')>>
+You didn't even have to try to convince the slaver — the evil slaver relishes your cruel idea, and happily go with the plan.
+<<else>>
+It took you some convincing, but the jingling of coin finally convinces the slaver to go with the plan.
+<</if>>
+Setup a shrine, get some followers, and take whatever "offerings" the grateful worshippers would surely bring.
+
+<</if>>
+</p>
+
+<p>
+All you need to do is some money to fund the shrine, as well as a couple of slavers to build it.
+</p>

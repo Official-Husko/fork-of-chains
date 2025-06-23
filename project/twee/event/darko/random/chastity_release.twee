@@ -1,0 +1,143 @@
+:: EventSetup_chastity_relief [nobr event]
+
+<<run new setup.Event(
+'chastity_relief', /* key */
+"Chastity Relief", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_chastity_relief',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.eq_chastity], true),
+    setup.qres.AnyTrait([setup.trait.dick_tiny, setup.trait.dick_small, setup.trait.dick_medium, setup.trait.dick_large, setup.trait.dick_huge, setup.trait.dick_titanic], true),
+    setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_chastity_relief [nobr]
+<p>
+    You keep <<yourrep $g.slave>> in your bedchamber mostly chaste: their <<udick $g.slave>> unable to get anywhere near erect inside its tight and confining <<ucgenital $g.slave>>.
+    <<Their $g.slave>> <<uballs $g.slave>> looks very full as well.
+    <<if $g.slave.isCanSee()>>
+        Looking at <<their $g.slave>> <<ueyes $g.slave>>,
+    <<else>>
+        You can't see <<their $g.slave>> eyes past <<their $g.slave>> <<uceyes $g.slave>>, but
+    <</if>>
+    it was obvious that the <<urace $g.slave>> is pent up and desperate for cum.
+</p>
+
+<<choose>>
+<<opt "Release the poor cock from its cage and decide later whether to allow it to cum">>
+
+    <p>
+        It has been some time since <<reps $g.slave>> cock was uncaged, and you've mercifully decided to release the cock from its cage. The slave
+        <<if $g.slave.isCanTalk()>>
+            moans in gratitude, being unable to talk.
+        <<else>>
+            utters a "Thank you, Master" for the respite that <<they $g.slave>> know won't last long.
+        <</if>>
+        <<They $g.slave>> slave|is obedient enough to know not to ask for permission to cum, but you can basically see the desire rising extremely quickly in <<their $g.slave>> body.
+    </p>
+
+    <p>
+        Grinning <<uadv $g.you>>, you press your <<ucfeet $g.you>> on <<their $g.slave>> dick. The pain intertwines with stimulation, and <<they $g.slave>> can't help but get hard under your <<ucfeet $g.you>>.
+        <<if $g.slave.isMasochistic()>>
+            The masochist loves the pain you cause on <<their $g.slave>> pathetic dick.
+        <</if>>
+        Before long, <<they $g.slave>> slave|look ready to release <<their $g.slave>> sizable load, despite the rough treatment you are giving <<them $g.slave>>. They wordlessly look at you, waiting for permission to release.
+    </p>
+
+    <<choose>>
+    <<opt "Deny it at the end">>
+
+        <p>
+            With a <<uadj $g.you>> smile, you press your <<ucfeet $g.you>> harder to the point of sharp pain.
+            <<if $g.slave.isMasochistic()>>
+                While your intention is to use the pain to deny the pleasure, it backfired spectacularly on the
+                masochistic slave.
+                The pain only enhanced the pleasure, and <<they $g.slave>> came messily onto your <<ucfeet $g.you>>.
+                <<Their $g.slave>> face was in an utter bliss, while you stare at your dirty <<ucfeet $g.you>> "defeated". Ah well, guess you'll just have to punish the slave later after making sure <<they $g.slave>> lick your <<ucfeet $g.you>> squeaky clean with <<their $g.slave>> tongue.
+            <<else>>
+            <</if>>
+            The sudden pain was enough to block the orgasm. You repeat the gentle and cruel pressure, bringing <<them $g.slave>> close to orgasm a few more times only to deny it at the end.
+            Once you had enough, you lock the poor unreleased dick back into its <<ucgenital $g.slave>>, not really caring about how the frustrated slave must have felt. If anything, <<they $g.slave>> should be grateful <<they $g.slave>> had proven amusing to <<their $g.slave>> owner — after all, what else is a slave good for?
+        </p>
+
+        <<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+    <<opt "Give them sweet release">>
+
+        <p>
+            Right after you utter the word, <<they $g.slave>> ejaculated without care. Strings and string of cum that built up over the past weeks shoot down the floor,
+            <<if $g.slave.isHasTrait('balls_titanic')>>
+                and it just won't stop coming out of those <<uballs $g.slave>>. Before long, an extremely thick layer of cum were coating the flooring.
+            <<elseif $g.slave.isHasTrait('balls_large')>>
+                leaving a big mess on the floor.
+            <<elseif $g.slave.isHasTrait('balls_small')>>
+                and while the overall quantity isn't that great, it still makes a mess of the floor.
+            <<else>>
+                although the quantity of each release is pathetically small.
+            <</if>>
+            When <<they $g.slave>> finished, you lock <<their $g.slave>> <<ucgenital $g.slave>> back and made <<them $g.slave>> lick up every drop of <<their $g.slave>> own cum off the floor.
+        </p>
+
+        <<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+    <</choose>>
+
+
+<<opt "Keep the cock in its rightful place inside the cage">>
+
+    <p>
+        Pets are not meant to receive pleasure, only to give pleasure to their owners. You decide to keep <<them $g.slave>> locked and needy, as any good pet should be.
+        Instead of releasing them, you
+        <<if $g.you.isHasDick()>>
+            let out your own erection,
+        <<else>>
+            grab a nearby strap-on and put it on,
+        <</if>>
+        and order your slave to come and swallow it whole.
+        The pent-up <<urace $g.slave>> had no choice but to obey.
+        <<They $g.slave>> gave
+        <<if $g.slave.isHasTrait('training_oral_master')>>
+            a masterful blowjob,
+        <<elseif $g.slave.isHasTrait('training_oral_advanced')>>
+            a skilled blowjob,
+        <<elseif $g.slave.isHasTrait('training_oral_basic')>>
+            a passable blowjob,
+        <<else>>
+            a barely passable blowjob,
+        <</if>>
+        until you finally
+        <<if $g.you.isHasDick()>>
+            came inside <<their $g.slave>> mouth
+        <<else>>
+            climaxed
+        <</if>>
+        while the slave's own dick throb painfully within their tight <<ucgenital $g.slave>>.
+    </p>
+
+<</choose>>
+
+

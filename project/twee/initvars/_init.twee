@@ -1,0 +1,92 @@
+:: InitSetup [nobr]
+<<include 'GameVersion'>>
+
+<<run Config.history.maxStates = 3>>
+<<set setup.INFINITY = 999999999999>>
+
+<<set Save.onSave.add(setup.onSave)>>
+<<set Save.onLoad.add(setup.onLoad)>>
+<<script>>
+  /* Set description used by Save, for all passages, to give some decent information about game state. */
+  Config.passages.descriptions = function () {
+    const sv = State.variables;
+    if (sv.devtooltype) {
+      /* in dev tools */
+      if (sv.devtooltype == 'event') {
+        return `Dev Tool (event): ${sv.dtquest.name}`;
+      } else if (sv.devtooltype == 'quest') {
+        return `Dev Tool (quest): ${sv.dtquest.name}`;
+      } else if (sv.devtooltype == 'opportunity') {
+        return `Dev Tool (opportunity): ${sv.dtquest.name}`;
+      } else if (sv.devtooltype == 'interaction') {
+        return `Dev Tool (interaction): ${sv.dtquest.name}`;
+      } else if (sv.devtooltype == 'activity') {
+        return `Dev Tool (activity): ${sv.dtquest.name}`;
+      } else {
+        throw new Error(`Unknown dev tool name: ${sv.devtooltype}`);
+      }
+    } else {
+      return sv.company.player.getName() + ", Week " + sv.calendar.getWeek() + ", " + sv.company.player.getMoney() + "g";
+    }
+  };
+<</script>>
+
+<<run setup.Cost.initConstructors()>>
+<<run setup.Restriction.initConstructors()>>
+<<run setup.SlaveOrderAddonBase.initConstructors()>>
+
+<<include InitSkills>>
+<<include InitTraits>>
+<<include InitTitle>>
+<<include InitSpeech>>
+
+<<include InitLore>>
+
+<<include InitItemClass>>
+<<include InitItem>>
+
+<<include InitFurniture>>
+
+<<include InitGenericQuestDifficulties>>
+<<include InitGenericUnitCriterias>>
+
+<<include InitCompanyTemplate>>
+
+<<include InitUnitPools>>
+<<include InitUnitGroups>>
+
+<<include InitEquipmentPool>>
+<<include InitEquipment>>
+
+<<include InitLiving>>
+
+<<include InitQuestPool>>
+
+<<include InitContactTemplate>>
+
+<<include InitDutyTemplates>>
+
+<<include InitBuildingTemplate>>
+
+<<include InitOpportunity>>
+
+<<include InitQuestTemplate>>
+
+<<include InitUnitAction>>
+
+<<include InitEvent>>
+
+<<include InitInteraction>>
+
+<<include InitFamilyRelation>>
+
+<<include InitActivity>>
+
+<!-- Init setup -->
+<<run setup.initSetup.call(setup)>>
+
+<!-- Init state -->
+<<run setup.initState.call(State.variables)>>
+
+<<set setup.INIT_DONE = true>>
+

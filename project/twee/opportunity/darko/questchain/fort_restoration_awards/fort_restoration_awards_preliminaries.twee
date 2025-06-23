@@ -1,0 +1,152 @@
+:: OpportunitySetup_fort_restoration_awards_preliminaries [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'fort_restoration_awards_preliminaries', /* key */
+"Fort Restoration Awards: Theme", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'money',
+  'unknown',
+  'fort',
+],
+1, /* expiration weeks */
+'Opportunity_fort_restoration_awards_preliminaries',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_preliminaries_0',
+    outcome_passage: 'Opportunity_fort_restoration_awards_preliminaries_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.QuestFortRestorationAwardsTheme(),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyCustom(10000),
+      setup.qc.VarSet('quest_fort_restoration_progress', '1', -1),
+      setup.qc.VarRemove('quest_fort_restoration_skill'),
+      setup.qc.SetCooldownEvent('fort_restoration_awards_efficiency', 25),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_preliminaries_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_fort_restoration_skill'),
+      setup.qc.VarRemove('quest_fort_restoration_progress'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_preliminaries_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_fort_restoration_skill'),
+      setup.qc.VarRemove('quest_fort_restoration_progress'),
+      setup.qc.SetCooldownEvent('fort_restoration_awards_preliminaries', 2000),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+},
+[ /* expiration outcomes */
+  setup.qc.VarRemove('quest_fort_restoration_skill'),
+  setup.qc.VarRemove('quest_fort_restoration_progress'),
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_fort_restoration_awards_preliminaries [nobr]
+<p>
+The fort you are currently occupying used to belong to some long-lost civilization. As a result, every now and then visitors would come to your fort to see the glory of the past, restored somewhat by your rebuilding efforts.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Apparently, the news of your "charitable deeds" have reached a community of history-lovers, and they seem to be completely unaware of the reason behind your fort refurbishment ventures.
+According to <<yourrep _u>>, the community has decided to award you for your efforts by sending a fort inspector, who is already here by the way, to donate some more money for your fort development attempts. <<Rep _u>> has been doing a good job entertaining the inspector and making sure to hide all your less publicly approvable work, but the inspector stubbornly refuses to give out the grant without seeing progress on the fort restoration.
+</p>
+
+<<set _skill = setup.skill[$varstore.get('quest_fort_restoration_skill')]>>
+<<if !_skill>>
+<<set _skill = setup.skill.brawn>>
+<</if>>
+
+<p>
+Specifically, the inspector somehow believes that your fort was once
+<<if _skill == setup.skill.combat>>
+a formidable bastion, hosting a large group of army,
+<<elseif _skill == setup.skill.brawn>>
+a famous destination for hardened gladiators,
+<<elseif _skill == setup.skill.survival>>
+an academy for aspiring archers,
+<<elseif _skill == setup.skill.intrigue>>
+a den of skullduggery and piracy,
+<<elseif _skill == setup.skill.slaving>>
+a vast prison complex,
+<<elseif _skill == setup.skill.social>>
+a grand and luxurious castle,
+<<elseif _skill == setup.skill.knowledge>>
+a trove of knowledge,
+<<elseif _skill == setup.skill.aid>>
+a place of healing,
+<<elseif _skill == setup.skill.arcane>>
+a necromancer den,
+<<elseif _skill == setup.skill.sex>>
+an artistic center,
+<</if>>
+and demands that the fort must have a sufficiently high
+<<rep _skill>> rating.
+If you want to get that grant money, you must raise your fort's <<rep _skill>> bonus to sufficiently high level.
+This might be a lot of effort, but
+rumors say that the community have access to an extremely rare portal-making technology that you might just be able to get your grubby <<uhands $unit.player>> on should you play your cards right...
+</p>
+
+
+:: Opportunity_fort_restoration_awards_preliminaries_0 [nobr]
+Receive the grant
+
+
+:: Opportunity_fort_restoration_awards_preliminaries_0_flavor [nobr]
+<<set _skill = setup.skill[$varstore.get('quest_fort_restoration_skill')]>>
+<<if !_skill>>
+<<set _skill = setup.skill.brawn>>
+<</if>>
+
+<p>
+You've re-arranged and decorated your fort all in the name of
+<<rep _skill>>, and it was enough to impress the fort inspectors. Your efforts to "restore the lost legacy of the past" has been deemed exemplary, and you receive some funds for your continued maintenance of the fort, as well as promise for another possible refurbishment grant in the future...
+</p>
+
+
+
+
+:: Opportunity_fort_restoration_awards_preliminaries_1 [nobr]
+Decline
+
+
+
+:: Opportunity_fort_restoration_awards_preliminaries_2 [nobr]
+Decline and decline all future offers
+

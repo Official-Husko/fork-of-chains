@@ -1,0 +1,41 @@
+:: InitBuildingCourtyard [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'courtyard',
+  tags: [],
+  width: 3,
+  height: 3,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'courtyard',
+  name: 'Courtyard',
+  tags: ['recreation', ],
+  description_passage: 'BuildingCourtyard',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUMLOW_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('recreationwingservice')],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('furnitureslave')
+    ],
+  ],
+  main_room_template_key: 'courtyard',
+})>>
+
+:: BuildingCourtyard [nobr]
+
+<p>
+Unlocks the Furniture slave duty, which increases the income
+made by your Service Pimp
+based on the endurance skill of the slave.
+</p>

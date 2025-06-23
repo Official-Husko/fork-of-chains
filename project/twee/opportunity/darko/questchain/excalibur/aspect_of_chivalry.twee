@@ -1,0 +1,222 @@
+:: OpportunitySetup_aspect_of_chivalry [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"aspect_of_chivalry", /* key */
+"Aspect of Chivalry", /* name */
+"Known to upheld honor and morality (at some point in their life)", /* description */
+"a|was known to uphold honor and morality at some point in a|their career", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+  social: 2,
+},
+)
+>>
+<<run new setup.UnitGroup(
+'opportunity_aspect_of_chivalry1',
+"Princess from the Aspect of Chivalry",
+'subrace_humandesert', /* pools */
+1, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+setup.qc.Trait('unit', setup.trait.face_beautiful),
+setup.qc.TraitReplace('unit', setup.trait.per_smart),
+setup.qc.Trait('unit', setup.trait.per_kind), ],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'aspect_of_chivalry', /* key */
+"Aspect of Chivalry", /* Title */
+"darko", /* Author */
+[ 'veteran', 'desert', 'special', 'money', 'unit', 'unknown',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_aspect_of_chivalry',
+setup.qdiff.hardest53, /* difficulty */
+[ /* options */
+[
+'Opportunity_aspect_of_chivalry_0',
+'Opportunity_aspect_of_chivalry_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_chivalry1'),
+setup.qc.MoneyCustom(10000), ],
+], [
+'Opportunity_aspect_of_chivalry_1',
+'Opportunity_aspect_of_chivalry_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.Actor('knight', setup.qres.HasTitle('aspect_of_chivalry')), ],
+[ /* outcomes */
+setup.qc.RemoveTitle('knight', 'aspect_of_chivalry'),
+setup.qc.Slave('slave', "a|was a princess of a faraway country in the eastern deserts captured by an evil wizard, rescued, before being captured again by an evil slaving company", undefined),
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_chivalry1'), ],
+], [
+'Opportunity_aspect_of_chivalry_2',
+'Opportunity_aspect_of_chivalry_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.BoonizeRandom('knight', 15),
+setup.qc.IfThenElse(
+setup.qres.Actor('knight', setup.qres.NoTraits([setup.trait.per_cruel, setup.trait.per_evil, setup.trait.magic_dark, setup.trait.magic_dark_master], true)),
+setup.qc.DoAll([
+setup.qc.RemoveTitleGlobal('aspect_of_chivalry'),
+setup.qc.AddTitle('knight', 'aspect_of_chivalry')
+]),
+setup.qc.Nothing()),
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_chivalry1'), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'slave': 'opportunity_aspect_of_chivalry1',
+'knight': [], },
+[ /* expiration outcomes */
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_chivalry1'), ],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_aspect_of_chivalry [nobr]
+
+<p>
+To your surprise, the <<princess $g.slave>> is much more shrewd than your
+slavers initially give <<them $g.slave>> credit for. During the chaos of the
+fight, <<they $g.slave>> makes <<their $g.slave>> way to the
+stables and grabs a nearby horse. But <<they $g.slave>> does not immediately
+escape — rather, <<they $g.slave>> shrewdly comes to parley first with your slavers,
+to see if <<their $g.slave>> intentions are pure. Any hint of impurity and
+the <<princess $g.slave>> will ride the horse to the land yore escaping from your
+slavers.
+</p>
+
+<p>
+Your slavers have a number of options here. The first option is to simply
+bargain with the <<princess $g.slave>> — Your slavers will deliver the
+<<princess $g.slave>> back home safe for a reasonable ransom. The <<princess
+$g.slave>> will surely see the benefit of this deal, and will most likely
+agree to it.
+</p>
+
+<p>
+With a particularly chivalrious knight, your slavers can try to persuade the
+<<princess $g.slave>> to come over with you. Once <<they $g.slave>> let
+<<their $g.slave>> guard down, however, your slavers will immediately seize
+<<them $g.slave>> and tie <<them $g.slave>> for good, to be brought home and
+trained. This will for sure sully the knight's reputation, as well as your
+reputation with <<rep $company.humandesert>>.
+<<if $g.knight.isHasTitle(setup.title.aspect_of_chivalry)>>
+While <<rep $g.knight>> knight|is a little <<uadjbad $g.knight>>, <<they
+$g.knight>> knight|have proven their valor some time ago by letting another <<princess
+$g.knight>> go in a similar situation for free. <<They $g.knight>> can make
+this plan work, although this will surely sully <<their $g.knight>> mood and reputation.
+<<else>>
+Looking at the assigned knight <<rep $g.knight>> however, you doubt any
+chivalrious thought ever cross <<therace $g.knight>>'s <<uadjbad $g.knight>> mind.
+<</if>>
+</p>
+
+<p>
+Finally there is always the option of escorting the <<princess $g.slave>>
+home safely without demanding any pay. But why would ever you do this? Out of the goodness of
+<<reps $g.knight>> heart, perhaps? You actually doubt any of your slavers still have a heart to begin with.
+</p>
+
+<<set _u = setup.getUnit({job: setup.job.slaver, title: 'aspect_of_chivalry'})>>
+<<if _u && _u != $g.knight>>
+<p>
+<<dangertext 'Warning'>>: Choosing the third option will remove <<rep
+setup.title.aspect_of_chivalry>> from <<rep _u>>!
+</p>
+<</if>>
+
+
+:: Opportunity_aspect_of_chivalry_0 [nobr]
+Escort for pay
+
+
+:: Opportunity_aspect_of_chivalry_0_flavor [nobr]
+<p>
+The trip was simple and event-free, and the <<princess $g.slave>> kept
+<<their $g.slave>> distance from your slavers throughout the trip. Once your
+slavers arrived at the <<princess $g.slave>> home, they are paid the promised
+escort fee, a whopping <<money 10000>>. Their job done,
+<<rep $g.knight>> led your slavers back home.
+</p>
+
+
+:: Opportunity_aspect_of_chivalry_1 [nobr]
+Enslave
+
+
+:: Opportunity_aspect_of_chivalry_1_flavor [nobr]
+<p>
+Somehow, <<yourrep $g.knight>> knight|was known to be chivalrious in
+character. The <<princess $g.slave>> apparently knew it too, and decided to
+put <<their $g.slave>> trust in the supposed knight. As the <<princess
+$g.slave>> lowered <<their $g.slave>> guard, once <<they $g.slave>> no longer
+slept with one eye open your slavers got to work. During one of the nights,
+your slavers secured the <<princess $g.slave>> limbs and tied them up. Awaking from the
+disturbance, the last thing the <<princess $g.slave>> saw was the supposed
+knight, <<rep $g.knight>>, personally putting a blindfold and a gag on the poor
+struggling <<princess $g.slave>> with a <<uadjper $g.knight>> smile.
+</p>
+
+<p>
+There is little doubt that whatever chivalrious reputation <<rep $g.knight>>
+had managed built thus far is completely ruined.
+</p>
+
+
+:: Opportunity_aspect_of_chivalry_2 [nobr]
+Escort for free
+
+
+:: Opportunity_aspect_of_chivalry_2_flavor [nobr]
+<p>
+Oh well, why not. Every once and a while you and your slavers have to do a
+good deed, so today seems to be the <<princess $g.slave>>'s lucky day. Led by
+<<rep $g.knight>>, your slavers escort the <<princess $g.slave>> through
+the hot sand dunes of the <<lore region_desert>> back to <<their $g.slave>> country.
+</p>
+<p>
+Refusing any pay, your slavers are instead treated to a banquet at the palace. <<Rep
+$g.knight>> knight|seem to enjoy <<themself $g.knight>> quite a bit!
+
+
+<<if $g.knight.isHasTrait('per_cruel')>>
+<<set _trait = setup.trait.per_cruel>>
+<<elseif $g.knight.isHasTrait('per_evil')>>
+<<set _trait = setup.trait.per_evil>>
+<<elseif $g.knight.isHasTrait('magic_dark')>>
+<<set _trait = setup.trait.magic_dark>>
+<<else>>
+<<set _trait = null>>
+<</if>>
+
+<<if !_trait>>
+Soon after, the <<princess $g.slave>> personally makes sure that <<reps $g.knight>>
+chivalry is known far and wide for defeating an evil wizard and saving a
+helpless <<princess $g.slave>> from a land afar.
+<<else>>
+Unfortunately, <<yourrep $g.knight>> knight|make <<their $g.knight>>
+<<if _trait == setup.trait.magic_dark>>
+mastery over <<rep setup.trait.magic_dark>> known during the banquet.
+<<elseif _trait == setup.trait.per_evil>>
+horrifyingly evil personality known during a drunkon stupor.
+<<else>>
+cruelty known when a maid accidentally spilled a drink on <<their $g.knight>> <<uclegs $g.knight>>.
+<</if>>
+Seeing this, the <<princess $g.slave>> slave|drop all of <<their $g.slave>>
+plans of rewarding <<theslaver $g.knight>> with good words.
+<</if>>
+</p>

@@ -1,0 +1,145 @@
+:: QGAddActor [nobr]
+
+<<if !$dtquest.name>>
+  <<warning 'Please give your quest / opportunity / event a name first.'>>
+  <<devgotoreturn>>
+<</if>>
+
+<div>
+<<devtoolreturnbutton>>
+</div>
+
+<div>
+<<successtext 'Actor name'>>:
+<<message '(?)'>>
+Actor name. Don't forget to fill this in!
+<br/>
+<br/>
+Name should be entirely consist of lowercase characters, numbers, all without space.
+For example, 'bigdick'.
+<</message>>
+<<textbox '$qactorname' '' autofocus>>
+</div>
+
+Choose unit group:
+<<link '(Create new from scratch)' 'UnitGroupGen'>>
+  <<set _baseunitgroup = null>>
+  <<include 'UGGenInit'>>
+<</link>>
+<br/>
+
+<<set _customkeys = {}>>
+
+<<for _iunitgroup, _unitgroup range $qcustomunitgroup>>
+  <<set _customkeys[_unitgroup.key] = true>>
+<</for>>
+
+<<set _ugall = []>>
+<<for _iug, _ug range setup.unitgroup>>
+  <<if !(_ug.key in _customkeys)>>
+    <<run _ugall.push(_ug)>>
+  <</if>>
+<</for>>
+
+<<set _uglist = [
+  ['Unit groups you made...', {ug: $qcustomunitgroup}],
+  ['Units on location...', [
+    ['All locations...', {ug: _ugall.filter(a => a.key.startsWith('all'))}],
+    ['Vale...', {ug: _ugall.filter(a => a.key.startsWith('vale'))}],
+    ['Forest...', {ug: _ugall.filter(a => a.key.startsWith('forest'))}],
+    ['City...', {ug: _ugall.filter(a => a.key.startsWith('city'))}],
+    ['Deep...', {ug: _ugall.filter(a => a.key.startsWith('deep'))}],
+    ['Desert...', {ug: _ugall.filter(a => a.key.startsWith('desert'))}],
+    ['Sea...', {ug: _ugall.filter(a => a.key.startsWith('sea'))}],
+  ]],
+  ['Common races...', [
+    ['Human (vale)...', {ug: _ugall.filter(a => a.key.startsWith('subrace_humanvale'))}],
+    ['Human (kingdom)...', {ug: _ugall.filter(a => a.key.startsWith('subrace_humankingdom'))}],
+    ['Human (desert)...', {ug: _ugall.filter(a => a.key.startsWith('subrace_humandesert'))}],
+    ['Human (sea)...', {ug: _ugall.filter(a => a.key.startsWith('subrace_humansea'))}],
+    ['Werewolf...', {ug: _ugall.filter(a => a.key.startsWith('subrace_werewolf'))}],
+    ['Neko...', {ug: _ugall.filter(a => a.key.startsWith('subrace_neko'))}],
+    ['Wood elf...', {ug: _ugall.filter(a => a.key.startsWith('subrace_elf'))}],
+    ['Drow...', {ug: _ugall.filter(a => a.key.startsWith('subrace_drow'))}],
+    ['Orc...', {ug: _ugall.filter(a => a.key.startsWith('subrace_orc'))}],
+    ['Kobold...', {ug: _ugall.filter(a => a.key.startsWith('subrace_kobold'))}],
+    ['Lizardkin...', {ug: _ugall.filter(a => a.key.startsWith('subrace_lizardkin'))}],
+    ['Demonkin...', {ug: _ugall.filter(a => a.key.startsWith('subrace_demonkin'))}],
+  ]],
+  ['Rare races...', [
+    ['Tigerkin...', {ug: _ugall.filter(a => a.key.startsWith('subrace_tigerkin'))}],
+    ['Angel...', {ug: _ugall.filter(a => a.key.startsWith('subrace_angel'))}],
+    ['Fairy...', {ug: _ugall.filter(a => a.key.startsWith('subrace_fairy'))}],
+    ['Dragonkin...', {ug: _ugall.filter(a => a.key.startsWith('subrace_dragonkin'))}],
+    ['Demon...', {ug: _ugall.filter(a => a.key.startsWith('subrace_demon') && !a.key.startsWith('subrace_demonkin'))}],
+  ]],
+  ['Persistent unit groups...', {ug: _ugall.filter(a => !(a.key in _customkeys) && a.reuse_chance)}],
+  ['All unit groups...', {ug: _ugall.filter(a => !(a.key in _customkeys))}],
+]>>
+
+<<focwidget 'DisplayUnitGroup'>>
+  <<message $args[0]>>
+    <div class='card lorecard'>
+    <<for _iunitgroup, _unitgroup range $args[1]>>
+      <<set _customkeys[_unitgroup.key] = true>>
+      <<set _text = `Select ${_unitgroup.getName()} (${_unitgroup.key})`>>
+      <<capture _unitgroup>>
+        <<link _text>>
+          <<devroleaddunitgroup $qactorname _unitgroup>>
+        <</link>>
+        or
+        <<link '(New based on this)' 'UnitGroupGen'>>
+          <<set _baseunitgroup = _unitgroup>>
+          <<include 'UGGenInit'>>
+        <</link>>
+      <</capture>>
+      <<capture _unitgroup>>
+        <<message '(+)'>>
+          <<unitgroupcard _unitgroup>>
+        <</message>>
+      <</capture>>
+      <br/>
+    <</for>>
+    </div>
+  <</message>>
+<</focwidget>>
+
+
+<<for _iuglist, _uglisten range _uglist>>
+  <<if !Array.isArray(_uglisten[1])>>
+    <<if _uglisten[1].ug.length>>
+      <<DisplayUnitGroup _uglisten[0] _uglisten[1].ug>>
+      <br/>
+    <</if>>
+  <<else>>
+    <<capture _uglisten>>
+      <<message _uglisten[0]>>
+      <div class='marketobjectcard'>
+        <<for _iuglistdeep, _uglistdeep range _uglisten[1]>>
+          <<DisplayUnitGroup _uglistdeep[0] _uglistdeep[1].ug>>
+          <br/>
+        <</for>>
+      </div>
+      <</message>>
+    <</capture>>
+    <br/>
+  <</if>>
+<</for>>
+
+
+<div>
+  <<message 'Contact...'>>
+    <<for _contact range setup.contacttemplate>>
+      <<if _contact.getTags().includes('hasunit')>>
+        <<set _text = `Select ${_contact.getName()}`>>
+        <<capture _contact>>
+          <div>
+            <<link _text>>
+              <<devroleaddunitgroup $qactorname _contact>>
+            <</link>>
+          </div>
+        <</capture>>
+      <</if>>
+    <</for>>
+  <</message>>
+</div>

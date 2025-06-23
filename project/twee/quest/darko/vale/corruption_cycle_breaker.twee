@@ -1,0 +1,313 @@
+:: QuestSetup_corruption_cycle_breaker [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriapurifier = new setup.UnitCriteria(
+null, /* key */
+'Master Purifier', /* name */
+[
+  setup.trait.bg_priest,
+  setup.trait.per_kind,
+  setup.trait.per_chaste,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.race_demon,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_curious,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.magic_fire_master),
+],
+{
+  aid: 1.5,
+  arcane: 1.5,
+}
+)>>
+
+<<set _criteriacorruptor = new setup.UnitCriteria(
+null, /* key */
+'Master Corruptor', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.bg_priest,
+  setup.trait.per_kind,
+  setup.trait.per_chaste,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.magic_dark_master),
+],
+{
+  arcane: 1.5,
+  sex: 1.5,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Defiant Slave', /* name */
+[
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.tough_nimble,
+  setup.trait.face_hideous,
+  setup.trait.per_cautious,
+  setup.trait.per_dreamy,
+],
+[
+  setup.trait.race_lizardkin,
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.face_beautiful,
+  setup.trait.corruptedfull,
+  setup.trait.corrupted,
+  setup.trait.per_brave,
+  setup.trait.per_attentive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.Trait(setup.trait.will_defiant),
+  setup.qres.HasTag('in_training_defiant_slave'),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'corruption_cycle_breaker', /* key */
+"Corruption Cycle Breaker", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'vale',
+  'prep',
+  'danger',
+  'trait',
+],
+12, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'purifier': [ _criteriapurifier, 1.5],
+  'corruptor': [ _criteriacorruptor, 1.5],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_corruption_cycle_breaker',
+setup.qdiff.harder54, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_corruption_cycle_breakerCrit',
+    [
+      setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+      setup.qc.TraitRemove('slave', setup.trait.will_defiant),
+      setup.qc.PermanentlyCorrupt('slave'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('purifier'),
+      setup.qc.Corrupt('corruptor'),
+      setup.qc.AddHistory('slave', "a|was broken from a|their defiancy via continuous weeks of being corrupted and purified non-stop"),
+    ],
+  ],
+  [
+    'Quest_corruption_cycle_breakerCrit',
+    [
+      setup.qc.Outcomes('crit'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('purifier'),
+      setup.qc.Corrupt('corruptor'),
+    ],
+  ],
+  [
+    'Quest_corruption_cycle_breakerCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.PermanentlyCorrupt('slave'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('slave'),
+      setup.qc.Corrupt('purifier'),
+      setup.qc.Corrupt('purifier'),
+      setup.qc.Corrupt('corruptor'),
+      setup.qc.Corrupt('corruptor'),
+    ],
+  ],
+  [
+    'Quest_corruption_cycle_breakerCrit',
+    [
+      setup.qc.Outcomes('failure'),
+      setup.qc.Mindbreak('slave'),
+      setup.qc.Corrupt('purifier'),
+      setup.qc.Corrupt('corruptor'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+
+],
+)>>
+
+:: Quest_corruption_cycle_breaker [nobr]
+<<set _u = setup.getUnit({tag: 'in_training_defiant_slave'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+
+<p>
+After long weeks of research, your slavers were able to come up with one particular way of intense slave-breaking procedure that should break even <<yourrep _u>>. An intense corruption procedure performed in a secluded valley of the north. But that alone won't be anywhere near sufficient, no, what you need to do is to have two slavers — one corrupting while the other purifying.
+The slave will be subjected to an intense session of alternating between corruption and purification.
+Seeing their entire body morph and shift uncontrollably, while being completely powerless to do anything about it, should no doubt shatter the mind of even the most stubborn warrior and reshape it into that of a plaything's mind.
+</p>
+
+<p>
+Doing this requires two specialist slavers, however, one specializing in corruption, while the other specializing in purification.
+Furthermore, such an intense alternating session between corruption and purification will take a long while,
+and having undergone such massive sequence of transformation is extremely likely to cause some
+<<dangertext 'permanent'>> changes to <<rep _u>>'s <<ubody _u>>.
+</p>
+
+<p>
+Alternatively, you can always ignore this quest, and try to break the slave via other means.
+</p>
+
+<</if>>
+
+
+
+:: Quest_corruption_cycle_breakerCrit [nobr]
+<p>
+It only took your slavers a week to find a particularly secluded valley brimming with both dark and light energies.
+Once there, <<rep $g.purifier>> and <<utheirrel $g.purifier $g.corruptor>> <<rep $g.corruptor>> setup camp, while unloading all the rations and arcane equipments they brought along with them, as well as the fully bound and gagged <<rep $g.slave>>.
+Your slavers made a makeshift altar from the surrounding trees, before placing the struggling slave on top of the altar,
+securing <<them $g.slave>> so very tightly with multiple enchanted ropes, strong enough to not buckle under
+the debauched ordeal <<theslaver $g.slave>> was going to be subjected soon.
+<<if $g.slave.isHasTrait('muscle_verystrong')>>
+In fact, given the enormous strength of <<therace $g.slave>>,
+your slavers had to spent more money to buy expensive silk rope,
+capable of withstanding all the struggles from the very muscular slave.
+<<run setup.qc.Money(-3000).apply($gQuest)>>
+<</if>>
+</p>
+
+<p>
+Once the preparation were completed,
+your slavers began the ritual.
+It started... harmlessly enough, with <<rep $g.corruptor>> summoning dark energies that all flew into the unfortunate slave,
+corrupting their body little by little. As expected, the slave took it all
+with steely resolve, but <<they $g.slave>> never expected the sudden opposite
+energy suddenly flowing inside them. As <<rep $g.purifier>> began working
+<<their $g.purifier>> magic, conflicting powers of energies started to swirl
+inside of <<rep $g.corruptor>>, inflicting extreme amount of pain into
+<<therace $g.slave>>.
+Before <<their $g.slave>> eyes, every inch of <<their $g.slave>> body morphed,
+<<their $g.slave>> <<uskin $g.slave>> turning multiple shades of color,
+all within a single minute.
+Bat wings quickly got shed into butterfly wings, before draconic wing bursted painfully from their back, all while <<their $g.slave>> face kept on morphing, forming horrifying amalgamations of the faces of many races.
+</p>
+
+<p>
+Eventually, the day ended when both <<rep $g.corruptor>> and <<utheirrel $g.corruptor $g.purifier>> <<rep $g.purifier>> had fully exhausted of their magical energies.
+By the end of the first day,
+the slave laid completely exhausted on the altar — still bound tightly to it.
+To <<their $g.slave>> horrors, the next days all proceeded in a similar manner, with <<their $g.slave>> body getting corrupted more and more, while <<their $g.slave>> senses were completely overwhelmed by the extreme amount of pain the transformations brought.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Unfortunately, your slaver masteries over their magic were not pretty bad, and during one unfortunate day, <<rep $g.corruptor>> lost control of <<their $g.corruptor>> magic.
+It spiraled into <<reps $g.slave>> head,
+shattering <<their $g.slave>> mind completely.
+Still, being mindbroken means that the slave is no longer <<rep setup.trait.will_defiant>>, so it could be said that the training succeeded to some extent...
+Meanwhile, the magical energies continued spiraling out of control, before corrupting everyone involved in the ritual including your sloppy slavers.
+</p>
+<<else>>
+
+<p>
+After ten long weeks of continuous torture, <<reps $g.slave>> mind finally snapped. At the end of the intense torture session, the defiance that once so filled <<their $g.slave>> eyes was almost entirely gone, as <<they $g.slave>> begged with their new corrupted eyes for the punishments to end.
+Seeing the slave's malleable behavior, your slavers finally decided to end the mission,
+successfully completing their goal.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Your slavers' expertise over their respective domains of magic means that they managed to minimize the side-effects of the ritual. Both of your slavers were minimally corrupted, and the slave only had several corruptions left on them. However, having been continuously corrupted for weeks left a permanent corruption on <<their $g.slave>> body, which will likely stick with <<them $g.slave>> forever throughout <<their $g.slave>> life...
+</p>
+
+<<elseif $gOutcome == 'success'>>
+<p>
+Your slavers performed admirably well for such a difficult task, with only a small amount of side-effects lingering from the ritual.
+Both of your slavers ended up somewhat corrupted, but these can be purified if you so desire.
+Meanwhile, the slave's body is a far cry from what <<they $g.slave>> once were,
+but thankfully the ritual only left one permanent corruption on <<them $g.slave>>.
+While the rest of the corruptions can be purified later, this particulary permanent corruption
+will likely stick with <<them $g.slave>> forever throughout the rest of <<their $g.slave>> life...
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+<p>
+Even though the slave-breaking was successful,
+it was not without cost.
+As your slavers were not very proficient with their respective school of magic,
+they were somewhat sloppy in the ritual, ending up with both of your slavers corrupted.
+The slave <<themself $g.slave>> was corrupted on an entirely different level, becoming an unrecognizable form
+compared to <<their $g.slave>> previously <<urace $g.slave>> body.
+While most of these can be purified later, several of these corruptions became permanently affixed
+to the slave's body...
+</p>
+
+<</if>>
+
+<</if>>
+
+
+
+
+
+

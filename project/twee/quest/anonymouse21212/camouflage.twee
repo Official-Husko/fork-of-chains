@@ -1,0 +1,265 @@
+:: QuestSetup_camouflage [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaoverseer = new setup.UnitCriteria(
+null, /* key */
+'Overseer', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.per_lustful,
+  setup.trait.per_proud,
+  setup.trait.per_brave,
+  setup.trait.per_cruel,
+  setup.trait.per_stubborn,
+  setup.trait.per_dominant,
+  setup.trait.per_attentive,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.per_chaste,
+  setup.trait.per_humble,
+  setup.trait.per_kind,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.per_dreamy,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1,
+  slaving: 1.5,
+  sex: 0.5,
+}
+)>>
+
+
+<<set _criteriatoilet1 = new setup.UnitCriteria(
+null, /* key */
+'Toilet Slave', /* name */
+[
+  setup.trait.bg_slave,
+  setup.trait.per_lustful,
+  setup.trait.per_humble,
+  setup.trait.per_submissive,
+  setup.trait.training_toilet_master,
+  setup.trait.per_masochistic,
+],
+[
+  setup.trait.bg_slaver,
+  setup.trait.per_chaste,
+  setup.trait.per_proud,
+  setup.trait.per_stubborn,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.training_toilet_basic, setup.trait.training_toilet_advanced, setup.trait.training_toilet_master], true),
+],
+{
+}
+)>>
+
+<<set _criteriatoilet2 = new setup.UnitCriteria(
+null, /* key */
+'Toilet Slave', /* name */
+[
+  setup.trait.bg_slave,
+  setup.trait.per_lustful,
+  setup.trait.per_humble,
+  setup.trait.per_submissive,
+  setup.trait.training_toilet_master,
+  setup.trait.per_masochistic,
+],
+[
+  setup.trait.bg_slaver,
+  setup.trait.per_chaste,
+  setup.trait.per_proud,
+  setup.trait.per_stubborn,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.training_toilet_basic, setup.trait.training_toilet_advanced, setup.trait.training_toilet_master], true),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'camouflage', /* key */
+"Camouflage", /* Title */
+{  /* Author */
+  name: "anonymouse21212",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/ksjs30/hello_and_my_first_submission/',
+},
+[ /* tags */
+  'watersport',
+  'city',
+  'money',
+  'favor',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'overseer': [ _criteriaoverseer, 1],
+  'handler1': [ setup.qu.slavehandler, 1],
+  'handler2': [ setup.qu.slavehandler, 1],
+  'toilet1': _criteriatoilet1,
+  'toilet2': _criteriatoilet2,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_camouflage',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_camouflageCrit',
+    [
+      setup.qc.MoneyCustom(3000),
+      setup.qc.Favor('outlaws', 100),
+      setup.qc.Trait('toilet1', setup.trait.training_toilet_advanced),
+      setup.qc.Trait('toilet2', setup.trait.training_toilet_advanced),
+    ],
+  ],
+  [
+    'Quest_camouflageCrit',
+    [
+      setup.qc.MoneyCustom(2000),
+      setup.qc.Favor('outlaws', 80),
+    ],
+  ],
+  [
+    'Quest_camouflageFailure',
+    [
+      setup.qc.Injury('toilet1', 1),
+      setup.qc.Injury('toilet2', 1),
+      setup.qc.MoneyCustom(500),
+    ],
+  ],
+  [
+    'Quest_camouflageDisaster',
+    [
+      setup.qc.Injury('handler1', 1),
+      setup.qc.Injury('handler2', 1),
+      setup.qc.TraumatizeRandom('overseer', 3),
+      setup.qc.Injury('toilet1', 2),
+      setup.qc.Injury('toilet2', 2),
+      setup.qc.Ire('outlaws', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_camouflage [nobr]
+
+<p>
+A gang of thieves in the outskirts of the city are worried about keeping their trail covered. They've put out an unusual request: toilet slaves to accompany the gang for a while, drinking their piss so it won't leave their scent behind. They also request slave handlers to keep the slaves in line. While they promise monetary rewards, fulfilling such an ususual request would no doubt also earn much of their gratitude, and what better reward is there than friendship?
+</p>
+
+
+:: Quest_camouflageCrit [nobr]
+
+<p>
+Outlaws rarely have time to bother with hygiene. As a result, <<rep $g.toilet1>> and <<rep $g.toilet2>> frequently found themselves faced with large amounts of disgustingly strong piss, poured down their throats straight from the bandits' filthy dicks and pussies.
+</p>
+
+<p>
+<<if $g.toilet1.isHasTrait('training_toilet_master')>>
+Instead of being disgusted, <<reps $g.toilet1>> training held strong, and <<they $g.toilet1>> even actually craved the next opportunity the bandits relieve themselves.
+<<elseif $g.toilet1.isHasTrait('training_toilet_advanced')>>
+Thankfully, <<reps $g.toilet1>> training proved to be more than enough for <<them $g.toilet1>> to be up to the task. <<They $g.toilet1>> drank <<their $g.toilet1>> share of outlaw piss without much complaint.
+<<else>>
+<<reps $g.toilet1>> basic toilet training was ultimately not enough to keep <<them $g.toilet1>> from choking on the piss <<they $g.toilet1>> drank, but a timely intervention by <<rep $g.overseer>>, who <<uadv $g.overseer>> bought some ring gags to help <<rep $g.toilet1>> swallow everything, resolved the issue.
+<</if>>
+
+<<if $g.toilet2.isHasTrait('training_toilet_master')>>
+Meanwhile, <<rep $g.toilet2>> seemingly couldn't get enough of the gang members' acrid waste.
+<<elseif $g.toilet2.isHasTrait('training_toilet_advanced')>>
+<<rep $g.toilet2>>, for <<their $g.toilet2>> part, proved more than capable of doing <<their $g.toilet2>> share to keep the gang's trail clean.
+<<else>>
+<<reps $g.toilet2>> rudimentary training looked like it might not be enough to let <<them $g.toilet2>> stomach the strong piss at first, but with the help of a timely ring gag, <<they $g.toilet2>> found <<their $g.toilet2>> footing.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<rep $g.toilet1>> and <<rep $g.toilet2>> performed admirably, without causing any problem for <<yourrep $g.overseer>>, <<rep $g.handler1>>, or <<rep $g.handler2>>. At the end of the little excursion, the gang leader expressed <<their $g.overseer>> gratitude to <<rep $g.overseer>>, before paying <<them $g.overseer>> an extra, and telling <<them $g.overseer>> that he hoped he could hire the team again in the future. The duo of slaves even seem to have enjoyed their week with the gang...
+</p>
+
+<<else>>
+
+<p>
+Under <<rep $g.handler1>> and <<reps $g.handler2>> command and <<reps $g.overseer>> watchful eye, <<rep $g.toilet1>> and <<rep $g.toilet2>> proved competent toilets. At mission's end, you receive the promised reward and the gratitude of the local outlaws.
+</p>
+
+<</if>>
+
+:: Quest_camouflageFailure [nobr]
+
+<p>
+Outlaws rarely have time to bother with hygiene. As a result, <<rep $g.toilet1>> and <<rep $g.toilet2>> frequently found themselves faced with large amounts of disgustingly strong piss, poured down their throats straight from the bandits' filthy dicks and pussies.
+</p>
+
+<p>
+At first, it looked like
+<<if $g.toilet1.isHasTrait('training_toilet_master')>>
+<<rep $g.toilet1>> would enjoy the mission greatly and
+<<elseif $g.toilet1.isHasTrait('training_toilet_advanced')>>
+<<rep $g.toilet1>> would perform well enough and
+<<else>>
+<<rep $g.toilet1>> would struggle, but would pull through with the aid of a ring gag, and
+<</if>>
+
+<<if $g.toilet2.isHasTrait('training_toilet_master')>>
+<<rep $g.toilet2>> would perform admirably.
+<<elseif $g.toilet2.isHasTrait('training_toilet_advanced')>>
+<<rep $g.toilet2>> would prove a competent toilet.
+<<else>>
+<<rep $g.toilet2>> would need a few days to find <<their $g.toilet2>> footing.
+<</if>>
+But unfortunately, about a week in, things went very wrong.
+Either <<rep $g.toilet1>> and <<rep $g.toilet2>> weren't trained quite well enough or the bandits were just too careless, because <<rep $g.overseer>> ended up having to call the mission off early after both slaves nearly choked on outlaw piss.
+Luckily, they'll both be fine with a bit of rest, and the gang agreed to give <<rep $g.overseer>> partial pay.
+</p>
+
+
+:: Quest_camouflageDisaster [nobr]
+
+<p>
+Outlaws rarely have time to bother with hygiene. As a result, <<rep $g.toilet1>> and <<rep $g.toilet2>> frequently found themselves faced with large amounts of disgustingly strong piss, poured down their throats straight from the bandits' filthy dicks and pussies.
+</p>
+
+<p>
+<<if $g.toilet1.isHasTrait('training_toilet_master')>>
+<<rep $g.toilet1>> seemed quite content with the task at first, and
+<<elseif $g.toilet1.isHasTrait('training_toilet_advanced')>>
+<<rep $g.toilet1>> performed well at first, and
+<<else>>
+<<rep $g.toilet1>> struggled at first, but seemed determined to pull through, while
+<</if>>
+
+<<if $g.toilet2.isHasTrait('training_toilet_master')>>
+<<rep $g.toilet2>> appeared to be in <<their $g.toilet2>> element.
+<<elseif $g.toilet2.isHasTrait('training_toilet_advanced')>>
+<<rep $g.toilet2>> looked like a capable toilet.
+<<else>>
+<<rep $g.toilet2>> seemed resolved to not let <<their $g.toilet2>> inexperience with the task hold <<them $g.toilet2>> back.
+<</if>>
+But in truth, neither of them were up for the task.
+Near the end of the mission, the slaves decided to make a break for it.
+Luckily, <<yourrep $g.handler1>> and <<rep $g.handler2>> caught them.
+Unluckily, this led to a brutal fistfight leaving all four of them injured and
+<<rep $g.overseer>> unharmed but severely rattled. The noise of the scuffle drew attention to the gang, as well, and they were understandably furious that your attempts at helping camouflage them have completely backfired.
+</p>

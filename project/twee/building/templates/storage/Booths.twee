@@ -1,0 +1,74 @@
+:: InitBuildingBooths [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'booths',
+  tags: [],
+  width: 4,
+  height: 4,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.UnitGroup(
+'contact_alchemist',
+'Alchemist',
+'subrace_elf',
+0,
+[
+  setup.qc.BgTraitReset('unit', setup.trait.bg_scholar),
+  setup.qc.TraitsReplace('unit', [
+    setup.trait.skill_alchemy,
+    setup.trait.per_smart,
+  ]),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'contact_lumberjack',
+'Tailor',
+'subrace_werewolf',
+0,
+[
+  setup.qc.BgTraitReset('unit', setup.trait.bg_woodsman),
+  setup.qc.TraitsReplace('unit', [
+    setup.trait.muscle_verystrong,
+    setup.trait.per_loner,
+  ]),
+],
+)>>
+
+<<run new setup.BuildingTemplate({
+  key: 'booths',
+  name: 'Booths Area',
+  tags: ['storage', ],
+  description_passage: 'BuildingBooths',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('market'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.Contact(setup.contacttemplate.furniturepeddler, null, 'contact_lumberjack'),
+      setup.qc.Contact(setup.contacttemplate.itempeddler, null, 'contact_alchemist'),
+    ]
+  ],
+  main_room_template_key: 'booths',
+})>>
+
+
+:: BuildingBooths [nobr]
+
+<p>
+Several booths placed strategically around your market to attract outside vendors.
+Unlocks contacts that can sell items and furniture for your fort.
+You can use the furniture once you build the <<rep setup.buildingtemplate.bedchamberwing>>.
+</p>
+

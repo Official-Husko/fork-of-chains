@@ -1,0 +1,43 @@
+:: EventSetup_waking_dream [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'waking_dream', /* key */
+"Waking Dream", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_waking_dream',
+{ /* roles */
+},
+{ /* actors */
+  'elf': 'subrace_elf',
+},
+[ /* outcomes */
+setup.qc.Ire('elf', -20),
+setup.qc.TraumatizeRandomSlaverHome(),
+setup.qc.TraumatizeRandomSlaverHome(),
+setup.qc.TraumatizeRandomSlaverHome(),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('elf', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_waking_dream [nobr]
+
+<p>
+Recently, you notice some of your slavers look as if they haven't slept in days.
+When you question them, they have apparently been unable to sleep due to seeing
+the same unnerving dream each time:
+They are seated in front of the sternest looking elf <<lady $g.elf>> they have ever seen,
+lecturing them on their evil deeds and making them promise to do better in the future.
+Fortunately it does not seem to affect most of your slavers, which means only a select few
+were traumatized by this.
+</p>
+
+<p>
+You wonder if this is the work of some dissidents of the <<rep $company.elf>>.
+Perhaps you should try not to anger them next time...
+</p>

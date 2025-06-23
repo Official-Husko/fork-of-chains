@@ -1,0 +1,298 @@
+:: QuestSetup_the_school_of_hard_knobs2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"the_school_of_hard_knobs1",
+"Nice Student",
+'subrace_humankingdom_male',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_loose),
+  setup.qc.TraitDecrease('unit', setup.trait.dick_small),
+  setup.qc.Trait('unit', setup.trait.muscle_thin),
+  setup.qc.Trait('unit', setup.trait.per_submissive),
+],
+)>>
+
+<<set _criteriateacher = new setup.UnitCriteria(
+null, /* key */
+'teacher', /* name */
+[
+  setup.trait.bg_scholar,
+  setup.trait.bg_wiseman,
+  setup.trait.per_studious,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.per_logical,
+  setup.trait.per_serious,
+  setup.trait.gender_male,
+],
+[
+  setup.trait.gender_female,
+  setup.trait.dick_tiny,
+  setup.trait.dick_small,
+  setup.trait.per_slow,
+  setup.trait.per_playful,
+  setup.trait.per_kind,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  knowledge: 2,
+}
+)>>
+
+<<set _criteriateachersassisstant = new setup.UnitCriteria(
+null, /* key */
+'Teacher Assistants', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.per_dominant,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.per_lustful,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.dick_small,
+  setup.trait.per_kind,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.per_chaste,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTrait(setup.trait.eq_chastity),
+],
+{
+  slaving: 2,
+  sex: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_school_of_hard_knobs2', /* key */
+"The School of Hard Knobs", /* Title */
+{  /* Author */
+  name: "Da_Shem",
+  url: 'https://discord.com/channels/774271990571335710/780362824047394827/804270432689455104',
+},
+[ /* tags */
+  'maleonly',
+  'city',
+  'unit',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'teacher': [ _criteriateacher, 2.8],
+  'teachersassisstant': [_criteriateachersassisstant, 0.1],
+  'teachersass2': [_criteriateachersassisstant, 0.1],
+},
+{ /* actors */
+  'student1': 'the_school_of_hard_knobs1',
+  'headteacher': 'the_principle_of_the_matter0',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-4000),
+],
+'Quest_the_school_of_hard_knobs2',
+setup.qdiff.hard34, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_school_of_hard_knobs2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+      setup.qc.Slave('student1', "a|was a nobleman taken from a harsh school", undefined),
+      setup.qc.QuestDirect('the_principle_of_the_matter2', {
+        headteacher: "headteacher",
+      }),
+      setup.qc.SetCooldownQuest(null, 50),
+    ],
+  ],
+  [
+    'Quest_the_school_of_hard_knobs2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+      setup.qc.Slave('student1', "a|was a nobleman mysteriously broken before your slavers took ", undefined),
+      setup.qc.Mindbreak('student1'),
+      setup.qc.SetCooldownQuest(null, 20),
+    ],
+  ],
+  [
+    'Quest_the_school_of_hard_knobs2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+      setup.qc.SetCooldownQuest(null, 10),
+    ],
+  ],
+  [
+    'Quest_the_school_of_hard_knobs2Crit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_institute_of_higher_learning),
+      setup.qc.Trait('teachersassisstant', setup.trait.per_submissive),
+      setup.qc.Trait('teachersass2', setup.trait.per_submissive),
+      setup.qc.SetCooldownQuest(null, 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+  [setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('the_principle_of_the_matter2'),
+],
+[ /* expiration outcomes */
+  setup.qc.SetCooldownQuest(null, 10),
+],
+)>>
+
+:: Quest_the_school_of_hard_knobs2 [nobr]
+<p>
+Even among the rich living in the <<lore region_city>>, there are black sheep among the families. Even the most prominent families sometimes produce drunkards, layabouts and thrill seekers. However for people willing to pay the entrance fee they can always send the lot of them to the
+<<lore location_institute_of_higher_learning>> for Men
+where young men are thought far away from the temptations of drink or women. The teachers have more or less free reign to do what they wish with the young layabouts to make them less of an embarrassment. Rumor has it that whomever sent there no matter how obstinate turn sweet and pliable in the hands of the experienced teachers. If you could just infiltrate the staff you might very well have the pick of the litter.
+</p>
+
+<p>
+To do that however you need someone with the actual skills to impersonate a teacher. Their assistants however could be better suited to try out the students for someone that might fetch good coin. Now to bribe your way into a teaching license...
+</p>
+
+
+:: Quest_the_school_of_hard_knobs2Crit [nobr]
+
+<p>
+<<if $g.teacher.isHasTitle('quest_certified_instructor_0')>>
+Having actually graduated some time ago from the instructor academy of
+<<lore location_institute_of_higher_learning>>, <<rep $g.teacher>>
+immediately makes a grand impression on the students.
+<<else>>
+<<Yourrep $g.teacher>> showed up for <<their $g.teacher>> first day of class bright and early
+and <<their $g.teacher>> student didn't know what hit them.
+<</if>>
+It turned out that food and sleep deprivations were additional tools the teachers here use to enforce their will and the hollowed eyed students made the perfect victims to <<their $g.teacher>> whims.
+<<if $g.teacher.isHasTrait('per_cruel')>>
+<<Rep $g.teacher>>
+teacher|was merciless and not a lesson went by without a student leaving with a reddened ass after <<they $g.teacher>> gleefully paddled them because <<upunishreason $g.student1>>.
+<<elseif $g.teacher.isHasTrait('per_evil')>>
+<<Rep $g.teacher>>
+took delight in tormenting the students however <<they $g.teacher>> could.
+<<elseif $g.teacher.isHasTrait('per_attentive')>>
+<<Rep $g.teacher>>
+had <<their $g.teacher>> gaze follow the students without fail and every inattentive moment was severely punished.
+<<elseif $g.teacher.isHasTrait('per_serious')>>
+<<Reps $g.teacher>> humorless smile struck fear in the hearts of the students.
+<<else>>
+<<Rep $g.teacher>>
+teacher|was ready and willing to drive the poor students to desperation with <<their $g.teacher>> demands.
+<</if>>
+</p>
+
+<p>
+The poor students turned to <<rep $g.teachersassisstant>> and <<rep $g.teachersass2>>
+who were more than willing to suggest various ways to get them in <<reps $g.teacher>> good graces.
+Hasty
+<<if $g.teachersassisstant.isHasDick()>>
+blowjob sessions
+<<else>>
+make-out sessions
+<</if>>
+turned to almost full orgies as <<rep $g.teachersassisstant>> and <<rep $g.teachersass2>> had the students competing to get out of punishments and better their grades.
+</p>
+
+<p>
+One <<uadjgood $g.student1>> young man in particular caught <<reps $g.teachersass2>> eyes.
+<<They $g.teachersass2>> and <<rep $g.teachersassisstant>> spent a many long detention hours sharing <<rep $g.student1>> between them. <<Rep $g.teachersassisstant>> made <<rep $g.student1>>
+
+<<if $g.teachersassisstant.isHasTrait('per_lustful')>>
+
+pleasure <<them $g.teachersassisstant>> with his mouth while giving lustful praises
+
+<<elseif $g.teachersassisstant.isHasTrait('per_sexaddict')>>
+
+almost pass out as <<they $g.teachersassisstant>>
+  <<if $g.teachersassisstant.isHasDick()>>
+    forced <<their $g.teachersassisstant>> <<udick $g.teachersassisstant>> down his throat relentlessly,
+  <<else>>
+    made <<them $g.student1>> eat <<them $g.teachersassisstant>> out all night long,
+  <</if>>
+
+<<elseif $g.teachersassisstant.isHasTrait('per_dominant')>>
+  grovel and beg for mercy as he pleasured <<them $g.teachersassisstant>>,
+
+<<else>>
+
+  pleasure <<them $g.teachersassisstant>> with his mouth,
+<</if>>
+
+while <<rep $g.teachersass2>>
+
+<<if $g.teachersass2.isHasTrait('dick_huge')>>
+  used <<their $g.teachersass2>> <<ugenital $g.teachersass2>> to make the young man scream.
+
+<<elseif $g.teachersass2.isHasTrait('per_cruel')>>
+  <<if $g.teachersass2.isHasDick()>>
+    fucked the young man while spanking him harshly.
+  <<else>>
+    donned a strap-on and fucked the young man while spanking him harshly.
+  <</if>>
+
+<<elseif $g.teachersass2.isHasTrait('per_evil')>>
+  whispered to him what a little dirty little slut he was.
+<<elseif $g.teachersass2.isHasTrait('per_lavish')>>
+  <<if $g.teachersass2.isHasDick()>>fucked the young man while giving him a reach-around.
+<<else>>
+donned a strap-on and fucked the young man while giving him a reach-around.
+<</if>>
+<<else>>
+were more interested in his <<uhole $g.student1>>.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+They were just finishing up with the <<uadj $g.student1>> student when they noticed they had an observer. The head teacher <<rep $g.headteacher>> headteacher|was smirking at them but while your slavers were still trying to figure out what to say <<they $g.headteacher>> left without another word. Your slavers trio hastily packed their bags, forced a gagged <<rep $g.student1>> into a trunk and fled into the night.
+</p>
+
+<p>
+A few days later, you receive a follow-up offer from the head-teacher...
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+The next night they found an empty-eyed <<rep $g.student1>> in their quarters with a note saying "leave".
+They took the hint and packed the young man up and before taking off into the night. Someone had decorated the broken young man with a nice accessory, however, which should be worth something.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+The next day however <<rep $g.student1>> could not be found despite <<rep $g.teachersassisstant>> and <<rep $g.teachersass2>> searching up and down the location where they safely deposited the young man the night before. This spooked your slavers bad enough they decided to return early and empty handed, which is not good but could have been so much worse.
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+
+<p>
+The next day, the two assistants were called to the head principles office and were promptly fired for conducting behaviors unbecoming of teachers assistants. They apologetically spent the rest of the day taking turns under <<reps $g.headteacher>> desk, sucking him off and keeping his <<udick $g.headteacher>> warm before packing their bags and leaving during the night.
+<<if $g.teachersass2.isHasTrait('per_submissive') and $g.teachersassisstant.isHasTrait('per_submissive')>>
+While this isn't that out of character for your slavers they were still on the job and
+<<elseif $g.teachersassisstant.isHasTrait('per_submissive')>>
+While this isn't that out of character for <<rep $g.teachersassisstant>>, <<rep $g.teachersass2>> surprised you with <<theirs $g.teachersass2>> submission and
+<<elseif $g.teachersass2.isHasTrait('per_submissive')>>
+While this isn't that out of character for <<rep $g.teachersass2>>, <<rep $g.teachersassisstant>> surprised you with <<theirs $g.teachersassisstant>> submission and
+<<else>>
+This is very much out of character for your slavers and
+<</if>>
+you give them a stern talking to when they get back.
+</p>
+
+<</if>>

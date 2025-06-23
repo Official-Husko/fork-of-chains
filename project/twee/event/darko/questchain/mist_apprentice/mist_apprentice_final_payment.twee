@@ -1,0 +1,51 @@
+:: EventSetup_mist_apprentice_final_payment [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'mist_apprentice_final_payment', /* key */
+"Mist Apprentice: Final Payment", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'unknown',
+  'trait',
+],
+'Event_mist_apprentice_final_payment',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [
+    setup.qres.HasTitle('quest_mist_apprentice_0'),
+    setup.qres.HomeExceptOnLeave(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.Trait(setup.trait.join_senior)),
+setup.qc.DoAll([
+setup.qc.Opportunity('consumed_by_darkness', {
+master: "master",
+slaver: "slaver",
+})
+], undefined),
+setup.qc.DoAll([
+setup.qc.QuestDirect('to_master_the_dark', {
+master: "master",
+slaver: "slaver",
+})
+], undefined)),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_mist_apprentice_final_payment [nobr]
+<p>
+The final letter demanding your pay for <<reps $g.slaver>> tuition is finally
+here. Best make your time to read the letter thoroughly, for surely it is
+going to be the most demanding payment...
+</p>

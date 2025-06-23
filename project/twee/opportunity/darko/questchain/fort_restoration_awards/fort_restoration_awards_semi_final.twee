@@ -1,0 +1,152 @@
+:: OpportunitySetup_fort_restoration_awards_semi_finals [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'fort_restoration_awards_semi_finals', /* key */
+"Fort Restoration Awards: Efficiency", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'money',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_fort_restoration_awards_semi_finals',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_semi_finals_0',
+    outcome_passage: 'Opportunity_fort_restoration_awards_semi_finals_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.QuestFortRestorationAwardsEfficiency(),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_fort_restoration_room'),
+      setup.qc.MoneyCustom(20000),
+      setup.qc.VarSet('quest_fort_restoration_progress', '2', -1),
+      setup.qc.SetCooldownEvent('fort_restoration_awards', 25),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_semi_finals_1',
+    outcome_passage: 'Opportunity_fort_restoration_awards_semi_finals_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_fort_restoration_room'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_semi_finals_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_fort_restoration_progress'),
+      setup.qc.VarRemove('quest_fort_restoration_room'),
+      setup.qc.SetCooldownEvent('fort_restoration_awards_preliminaries', 200),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'inspector': [
+  ],
+},
+[ /* expiration outcomes */
+  setup.qc.VarRemove('quest_fort_restoration_room'),
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_fort_restoration_awards_semi_finals [nobr]
+<p>
+Some time ago, a fort inspector from a history-reservator community has come and given some money for your "history preservation efforts". Another instructor has come to your fort today, also carrying a large bag of gold. Like before, however, <<they $g.inspector>> demands to see the results of your restoration efforst first before <<they $g.inspector>> hands over the money.
+</p>
+
+<<set _room = $roomlist.getRoomInstances({template: setup.roomtemplate[$varstore.get('quest_fort_restoration_room')]})[0]>>
+<<if !_room>>
+<<set _room = $roomlist.getRoomInstances()[0]>>
+<</if>>
+
+<p>
+The inspector this time is similarly delusional as before, and <<they $g.inspector>> stubbornly thinks that your fort was once
+<<if _room.getTemplate() == setup.roomtemplate.questoffice>>
+a center of bureaucracy,
+<<elseif _room.getTemplate() == setup.roomtemplate.library>>
+a scholarly academy,
+<<elseif _room.getTemplate() == setup.roomtemplate.market>>
+a bustling hub of commerce,
+<<elseif _room.getTemplate() == setup.roomtemplate.hospital>>
+a serene place of healing,
+<</if>>
+and demands that your <<rep _room>> be as efficient as possible. This means that the room must provide a sufficiently high skill bonus by being near the other various improvements that grant it bonus.
+You may even need to <<dangertextlite 'built new buildings'>> to grant those bonuses.
+</p>
+
+<p>
+You sighed to yourself while thinking just how far you are willing to go for a big fat bag of money... actually who wouldn't go far for that?
+</p>
+
+
+
+
+:: Opportunity_fort_restoration_awards_semi_finals_0 [nobr]
+Receive the grant
+
+
+:: Opportunity_fort_restoration_awards_semi_finals_0_flavor [nobr]
+<<set _room = $roomlist.getRoomInstances({template: setup.roomtemplate[$varstore.get('quest_fort_restoration_room')]})[0]>>
+<<if !_room>>
+<<set _room = $roomlist.getRoomInstances()[0]>>
+<</if>>
+
+<p>
+It took you quite a bit of efforts to move things around, but now connections with your <<rep _room>> is much better.
+The inspector is impressed, and hands you over the money.
+The money is always appreciated, but perhaps you will be able to also appreciate that
+<<if _room.getTemplate() == setup.roomtemplate.questoffice>>
+you will be able to access everything easier from your office now.
+<<elseif _room.getTemplate() == setup.roomtemplate.library>>
+everyone will be able to reach the library faster now.
+<<elseif _room.getTemplate() == setup.roomtemplate.market>>
+more visitors will appear in your market now.
+<<elseif _room.getTemplate() == setup.roomtemplate.hospital>>
+everyone can have easy access to the hospital now.
+<</if>>
+You get the feeling this isn't the end of this, however, and an even more challenging task is up ahead...
+</p>
+
+
+:: Opportunity_fort_restoration_awards_semi_finals_1 [nobr]
+Decline for now
+
+
+:: Opportunity_fort_restoration_awards_semi_finals_1_flavor [nobr]
+<p>
+The inspector tells you that <<they $g.inspector>> will be back in a year or so, should you change your mind by then.
+</p>
+
+
+
+
+:: Opportunity_fort_restoration_awards_semi_finals_2 [nobr]
+Decline and drop all connections with the community

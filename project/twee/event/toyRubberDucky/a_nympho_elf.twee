@@ -1,0 +1,206 @@
+
+:: EventSetup_a_nympho_elf [nobr event]
+
+
+<<run new setup.Title(
+"quest_slut_0", /* key */
+"Slut", /* name */
+"Loves sex more than anything else", /* description */
+"a|was a sex addict who volunteered to be your slave", /* unit text */
+1500, /* slave value */
+{ /* skill additives */
+ social: 1, sex: 2,},
+{
+ is_negative: false,
+},
+)
+>>
+<<run new setup.UnitGroup(
+"a_nympho_elf2",
+"Nympho Elf",
+[ /* pools */
+  [setup.unitpool.subrace_elf_female, 0.5],
+  [setup.unitpool.subrace_elf_male, 0.5],
+],
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Trait('unit', setup.trait.per_sexaddict),
+  setup.qc.Trait('unit', setup.trait.per_playful),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_large),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_large),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape),
+  setup.qc.AddTitle('unit', 'quest_slut_0'),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_whore),
+],
+)>>
+
+<<run new setup.Event(
+'a_nympho_elf', /* key */
+"A Nympho Elf", /* Title */
+{ /* Author */
+  name: "toyRubberDucky",
+  url: "",
+},
+[ /* tags */
+  'unit',
+],
+'Event_a_nympho_elf',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'player': [
+    setup.qres.You(),
+  ],
+  'alerter': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.SkillAtLeast(setup.skill.sex, 50),
+  ],
+  'nymphoelf': 'a_nympho_elf2',
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Prestige(10),
+  setup.qres.FortSkillBonusAtLeast(setup.skill.sex, 5),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_a_nympho_elf [nobr]
+Sitting in your office you are pulled from your paperwork by <<rep $g.alerter>>
+<<dialogue $g.alerter>>
+    Hey boss, you might want to check out the situation at the front gates.
+<</dialogue>>
+
+Going to see what is happening you are met by an elven <<woman $g.nymphoelf>> who seems to be wondering around looking for something. Upon realizing that you are present <<they $g.nymphoelf>> rushes up to you.
+<<dialogue $g.nymphoelf>>
+    Oh thank god, please tell me you're in charge around here.
+<</dialogue>>
+<<They $g.alerter>> begins to strip off <<their $g.nymphoelf>> pants before you can even reply.
+<<if $g.nymphoelf.isHasDick()>>
+    <<Their $g.nymphoelf>> cock throbbing hard and <<theirs $g.nymphoelf>> <<uhole $g.nymphoelf>> bare and ready.
+<<else>>
+    Their pussy dripping with anticipation.
+<</if>>
+<<dialogue $g.nymphoelf>>
+    I was told there was a band of slavers here who go by <<rep $company.player>>. I also heard they fuck slaves so good they never want to leave.
+<</dialogue>>
+<<They $g.nymphoelf>> stands there waiting expectedly.
+
+<<choose>>
+
+<<opt "Fuck the horny elf yourself">>
+
+    No point in keeping the horny elf waiting. You pull out your <<udickorstrap $unit.player>>, slapping it on the elf's <<uhole $g.nymphoelf>>. You spit onto <<their $g.nymphoelf>> hole, rubbing it in, before grabbing <<them $g.nymphoelf>> by <<their $g.nymphoelf>> <<uwaist $g.nymphoelf>> and sliding in.
+
+    <<if $g.player.getSkill(setup.skill.sex) >= 50>>
+        After several minutes of expertly fucking their <<uhole $g.nymphoelf>> you feel it clamp down around your <<udickorstrap $unit.player>>.
+        <<dialogue $g.nymphoelf>>
+            Oh fuck! I'm going to come! Can I come? Can I please come!?
+        <</dialogue>>
+        <<choose>>
+        <<opt "Don't you dare come!">>
+            The elf grits <<their $g.nymphoelf>> teeth and clenches <<them $g.nymphoelf>> fists.
+            You continue to ruthlessly fuck them with your <<udickorstrap $unit.player>> as they tense their whole body trying not to come.
+            After awhile of enjoying them struggling to hold back, you decide they have been good enough and give them permission to release.
+            <<dialogue $g.nymphoelf>>
+                Oh thank you, thank you!
+            <</dialogue>>
+            <<They $g.nymphoelf>> screams, <<their $g.nymphoelf>> eyes rolling into the back of <<their $g.nymphoelf>> head, <<their $g.nymphoelf>> whole body shuddering.
+            <<if $g.nymphoelf.isHasDick()>>
+            <<Their $g.nymphoelf>> <<ugenital $g.nymphoelf>> releasing wave after wave of <<ucum $g.nymphoelf>>
+            <<else>>
+            <<Their $g.nymphoelf>> <<ugenital $g.nymphoelf>> leaking <<ucum $g.nymphoelf>>
+            <</if>>
+            onto the floor as
+            the orgasm sweeps through <<them $g.nymphoelf>>. Exhausted they slide off your <<udickorstrap $unit.player>> letting out one final whimper.
+            <<dialogue $g.nymphoelf>>
+                I think I'm going to love it here...
+            <</dialogue>>
+            <<run setup.qc.Slave('nymphoelf', "a|was an elven slut.", undefined).apply($gQuest)>>
+            <<run setup.qc.Trait('nymphoelf', setup.trait.training_obedience_basic).apply($gQuest)>>
+        <<opt "Come! Come on this dick!">>
+            <<They $g.nymphoelf>> moans loudly, <<their $g.nymphoelf>> body shuddering. <<Their $g.nymphoelf>> <<ugenital $g.nymphoelf>>
+            <<if $g.nymphoelf.isHasDick()>>
+            squirts a load of <<ucum $g.nymphoelf>> onto the floor as <<they $g.nymphoelf>> cums. 
+            <<else>>
+            leaks <<ucum $g.nymphoelf>> onto the floor as <<they $g.nymphoelf>> climaxes. 
+            <</if>>
+            Satisfied they slide off your <<udickorstrap $unit.player>>, whispering in a daze.
+            <<dialogue $g.nymphoelf>>
+                I think I'm going to like it here...
+            <</dialogue>>
+            <<run setup.qc.Slave('nymphoelf', "a|was an elven slut.", undefined).apply($gQuest)>>
+            <<run setup.qc.Trait('nymphoelf', setup.trait.training_obedience_basic).apply($gQuest)>>
+        <</choose>>
+
+    <<else>>
+        After a half an hour of sloppily fucking their <<uhole $g.nymphoelf>> they pull themselves away from you in frustration.
+        <<dialogue $g.nymphoelf>>
+            Is this what passes for a good fuck around here?! I would be better off going back to getting passed around my village. I'm out of here.
+        <</dialogue>>
+        <<They $g.nymphoelf>> begin to walk away, not even bothering to collect <<their $g.nymphoelf>> pants.
+        <<choose>>
+        <<opt "You're not going anywhere...">>
+
+            You order <<name $g.alerter>> to go fetch the elf, they will learn that <<rep $company.player>> is in the business of breaking in slaves, not giving out free fucks.
+            <<run setup.qc.Slave('nymphoelf', "a|was an elven slut.", undefined).apply($gQuest)>>
+            <<run setup.qc.Ire('elf', 5).apply($gQuest)>>
+        <<opt "Whatever, leave...">>
+            You let them leave, your ego somewhat hurt by the rejection.
+        <</choose>>
+    <</if>>
+
+
+<<opt "Get one of your slavers to fuck the horny elf">>
+    No point in keeping the horny elf waiting. You order <<name $g.alerter>> to fuck them.
+    <<dialogue $g.alerter>>
+        With pleasure boss.
+    <</dialogue>>
+    <<They $g.alerter>> says, pulling out their <<udickorstrap $g.alerter>> and slapping it on the horny elf's <<uhole $g.nymphoelf>>. They spit onto <<their $g.nymphoelf>> hole, rubbing it in, before grabbing <<them $g.nymphoelf>> by <<their $g.nymphoelf>> <<uwaist $g.nymphoelf>> and sliding in.
+    After several minutes of expertly fucking their <<uhole $g.nymphoelf>> you see the elf's face go blank for a moment, <<name $g.alerter>> beginning to pound them harder in response.
+    <<dialogue $g.nymphoelf>>
+        Oh fuck! I'm going to come! Can I come? Can I please come!?
+    <</dialogue>>
+    <<dialogue $g.alerter>>
+        Come! Come on this dick you <<uadjbad $g.nymphoelf>> elf!
+    <</dialogue>>
+    <<They $g.nymphoelf>> moans loudly, <<their $g.nymphoelf>> body shuddering. <<Their $g.nymphoelf>> <<ugenital $g.nymphoelf>>
+    <<if $g.nymphoelf.isHasDick()>>
+    squirts a load of <<ucum $g.nymphoelf>> onto the floor as <<they $g.nymphoelf>> comes.
+    <<else>>
+    leaks pussyjuice onto the floor as <<they $g.nymphoelf>> climaxes.
+    <</if>>
+    Satisfied they slide off of <<reps $g.alerter>> <<udickorstrap $g.alerter>>, whispering in a daze.
+    <<dialogue $g.nymphoelf>>
+        I think I'm going to like it here...
+    <</dialogue>>
+    <<run setup.qc.Slave('nymphoelf', "a|was an elven slut.", undefined).apply($gQuest)>>
+    <<run setup.qc.Trait('nymphoelf', setup.trait.training_obedience_basic).apply($gQuest)>>
+    <<run setup.qc.Ire('elf', 2).apply($gQuest)>>
+<<opt "Take the chance to enslave the gullible elf">>
+    You motion to <<name $g.alerter>> to grab the stupid elf, its not every day that the slaves come to you so willingly.
+    <<dialogue $g.nymphoelf>>
+        Huh? Where are we going? Is <<they $g.alerter>> going to fuck me? Do you have rooms you do it in?
+    <</dialogue>>
+    The elf drones on while getting dragged away into your fort. If <<they $g.nymphoelf>> doesn't realise <<their $g.nymphoelf>> fate now, <<they $g.nymphoelf>> will soon.
+    <<run setup.qc.Slave('nymphoelf', "a|was an elven slut.", undefined).apply($gQuest)>>
+    <<run setup.qc.Ire('elf', 5).apply($gQuest)>>
+<<opt "Send the elf away.">>
+    The elf's face suddenly turns into a snarl of pain and anger.
+    <<dialogue $g.nymphoelf>>
+        Really?! You don't want to fuck this?
+    <</dialogue>>
+    The elf wiggles their <<uhole $g.nymphoelf>> side to side alluringly.
+    <<dialogue $g.nymphoelf>>
+        Fine! Suit yourself moron!
+    <</dialogue>>
+    <<They $g.nymphoelf>> screams out, storming off.
+    Your deeds of refusing to enslave a gullible elf at least earned you some good words,
+    but it is worth it?
+    <<run setup.qc.Favor('elf', 20).apply($gQuest)>>
+<</choose>>
+

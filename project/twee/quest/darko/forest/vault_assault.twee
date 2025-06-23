@@ -1,0 +1,371 @@
+:: QuestSetup_vault_assault [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_vault_trophy_0", /* key */
+"Vault Trophy", /* name */
+"Special prize for the annual Tiger Bank vault assault", /* description */
+"a|was your trophy for winning the annual Tiger Bank vault assault", /* unit text */
+8000, /* slave value */
+{ /* skill additives */
+sex: 4,},
+)
+>>
+<<run new setup.UnitGroup(
+"vault_assault2",
+"Vault Trophy",
+'subrace_elf', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.dick_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.dick_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.dick_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_huge),
+  setup.qc.AddTitle('unit', 'quest_vault_trophy_0'),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_clerk),
+],
+)>>
+
+
+
+<<set _criteriainfiltrator2 = new setup.UnitCriteria(
+null, /* key */
+'Infiltrator', /* name */
+[
+  setup.trait.race_catkin,
+  setup.trait.bg_clerk,
+  setup.trait.bg_thief,
+  setup.trait.tough_nimble,
+  setup.trait.per_smart,
+  setup.trait.per_sly,
+  setup.trait.per_attentive,
+  setup.trait.per_evil,
+  setup.trait.skill_creative,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.race_elf,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_slow,
+  setup.trait.per_direct,
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 3,
+}
+)>>
+
+<<set _criteriainfiltrator1 = new setup.UnitCriteria(
+null, /* key */
+'Infiltrator', /* name */
+[
+  setup.trait.race_catkin,
+  setup.trait.bg_clerk,
+  setup.trait.bg_thief,
+  setup.trait.tough_nimble,
+  setup.trait.per_smart,
+  setup.trait.per_sly,
+  setup.trait.per_attentive,
+  setup.trait.per_evil,
+  setup.trait.skill_creative,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.race_elf,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_slow,
+  setup.trait.per_direct,
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'vault_assault', /* key */
+"Vault Assault", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'veteran',
+  'unknown',
+],
+4, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'banker': [ setup.qu.bureaucrat, 1],
+  'infiltrator2': [ _criteriainfiltrator2, 1],
+  'infiltrator1': [ _criteriainfiltrator1, 1],
+},
+{ /* actors */
+  'agent': 'quest_event_loan_tiger1',
+  'slave': 'vault_assault2',
+},
+[ /* costs */
+  setup.qc.Favor('bank', -600),
+],
+'Quest_vault_assault',
+setup.qdiff.harder44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_vault_assaultCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.Slave('slave', "a|is your trophy for winning the annual Tiger Bank vault assault", undefined),
+    ],
+  ],
+  [
+    'Quest_vault_assaultCrit',
+    [
+      setup.qc.Item(setup.item.potion_isolation),
+      setup.qc.SetCooldownQuest(null, 53),
+      setup.qc.IfThenElse(
+setup.qres.NoItem(setup.item.isolation_technology),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.isolation_technology)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(4000)
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_vault_assaultCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 53),
+      setup.qc.Equipment(setup.equipmentpool.all_nonsex_good),
+      setup.qc.ItemPool(setup.itempool.furniture_normal),
+      setup.qc.ItemPool(setup.itempool.all),
+      setup.qc.Equipment(setup.equipmentpool.all_sex),
+    ],
+  ],
+  [
+    'Quest_vault_assaultDisaster',
+    [
+      setup.qc.SetCooldownQuest(null, 53),
+      setup.qc.Ire('bank', 3),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.FavorAtLeast('bank', 800),
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_vault_assault [nobr]
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The <<rep $company.bank>> treasure vault is located deep within the <<lore
+location_npc>>. The imposing vault is infamous for being completely
+impenetrable, no small thanks to the bank's ingenuity. Each year, the bank
+invites some of its most unscrupulous allies in a competition to break
+through the vault, which often reveals security vulnerabilities that they
+quickly fix. The aptly dubbed "Vault Assault" event promises great treasures
+to the winner, to those who are able to breach the vault into its inner
+chambers... or so <<yourrep _u>> said.
+</p>
+
+<p>
+Of course, the bank themselves never fully acknowledge the existence of this
+Vault Assault, and its existence remains largely a mystery. That is, until
+you have received a mysterious letter inviting you for the event. Having
+consulted with <<rep _u>>, you are sure that the letter is legitimate, which
+makes sense given your strong connections with the bank. There is a small
+catch though — a small "registration fee" in the form of your favor to them.
+</p>
+
+<p>
+You can try to send a group of infiltrators to participate in this event. A
+white-collar criminal to smooth out the entrance, and two infiltrators to get
+past the security should do it.
+<<if $inventory.isHasItem(setup.item.isolation_technology)>>
+You've already obtained the <<rep setup.item.isolation_technology>>, but
+perhaps you can still stock up on that <<rep setup.item.potion_isolation>>...
+<<else>>
+While the entry fee is steep, the vaults promises rewards that can never be found anywhere else...
+<</if>>
+</p>
+
+
+:: Quest_vault_assaultCrit [nobr]
+
+<p>
+Arriving at the vault entrance, <<rep $g.banker>> could already see some
+other shady people loosely gathering around the place.
+Clearly your slaves had arrived at the right place. With many guards
+surrounding the vault, it would be a daunting task to try and infiltrate the
+structure.
+</p>
+
+<p>
+<<Yourrep $g.banker>> began their work by going into the security office,
+while flashing your credentials as strong allies to <<rep $company.bank>>.
+With <<rep $g.banker>> <<uadv $g.banker>> distracting the security officers,
+<<rep $g.infiltrator1>> and <<utheirrel $g.infiltrator1 $g.infiltrator2>>
+<<rep $g.infiltrator2>> seized the opportunity and managed to sneak in from
+within the security office and into the vault.
+</p>
+
+<p>
+The vault complex appeared to be a maze, with numerous traps littering every
+nook and corner. <<Rep $g.infiltrator1>> had to bend <<their
+$g.infiltrator1>> limbs in various questionable positions to get through some
+of the traps.
+<<if $g.infiltrator1.isHasTrait('bg_thief') or $g.infiltrator1.isHasTrait('bg_assassin')>>
+But <<rep $g.infiltrator1>> managed to fully recall their shady past and
+dodged all of these traps with ease.
+<<elseif $g.infiltrator1.isHasTrait('tough_nimble')>>
+But <<rep $g.infiltrator1>> infiltrator1|is a nimble slaver and had no
+problem dodging and going through all these traps.
+<<elseif $g.infiltrator1.isHasTrait('tough_tough')>>
+<<reps $g.infiltrator1>> inflexible body meant that <<they $g.infiltrator1>>
+hit several of the traps, injuring <<theslaver $g.infiltrator1>>.
+<<run $hospital.injureUnit($g.infiltrator1, 3)>>
+<<else>>
+While <<rep $g.infiltrator1>> managed to dodge most of the traps, some still
+hit <<them $g.infiltrator1>> and lightly injuring <<theslaver $g.infiltrator1>>.
+<<run $hospital.injureUnit($g.infiltrator1, 1)>>
+<</if>>
+</p>
+
+<p>
+They eventually arrived at what appeared to be an imposing door, surely hiding
+great treasures behind it. All that's blocking your slaver's way was a simple,
+or at least simple-looking lock. On a closer look, it actually resembled a
+puzzle more than a lock,
+<<if $g.infiltrator2.isHasTrait('bg_clerk') or $g.infiltrator2.isHasTrait('bg_scholar')>>
+which was not a problem for <<yourrep $g.infiltrator2>>, given <<their
+$g.infiltrator2>> studious background.
+<<elseif $g.infiltrator2.isHasTrait('per_smart') or $g.infiltrator2.isHasTrait('per_studious') or $g.infiltrator2.isHasTrait('per_curious')>>
+which was not a problem for <<yourrep $g.infiltrator2>>, given <<their
+$g.infiltrator2>> studious nature.
+<<elseif $g.infiltrator2.isHasTrait('per_evil')>>
+which your evil slaver <<rep $g.infiltrator2>> somehow infiltrator2|was able
+to make short work of. Looks like there was a shortcut designed specifically
+for evil slavers, but for what purpose?
+<<elseif $g.infiltrator2.isHasTrait('race_catkin')>>
+which turned out to be a puzzle of neko origin. Your neko slaver <<rep
+$g.infiltrator2>> made quick work of the sloppy lock.
+<<else>>
+which greatly puzzled <<rep $g.infiltrator2>>, and ultimately took your
+slavers a long time to unlock, painting them as sloppy thieves in the eyes of the bank.
+This earned you some ire from the <<rep $company.bank>>, who had expected you to send
+your best infiltrators.
+<<run $ire.adjustIre($company.bank, 1)>>
+<</if>>
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+The door unlocked, opening up the room behind it for your slavers. Various
+baubles, trinkets, and equipments lied and scattered around the room, ripe for
+your slaver's takings.
+<<Rep $g.infiltrator1>> <<uadv $g.infiltrator1>> took all the treasures they
+could found, satisfied with the loot, before bringing them home in a supposed
+glory.
+</p>
+<p>
+Little did they know that the room was a decoy room, designed specifically to
+hide the actual treasure behind them.
+</p>
+<<else>>
+
+<p>
+The door unlocked, opening up the room behind it for your slavers. Various
+baubles, trinkets, and equipments lied and scattered around the room, ripe for
+your slaver's takings.
+But thanks to <<reps $g.infiltrator1>>
+<<if $g.infiltrator1.isHasTrait('per_attentive')>>
+keen eyes,
+<<elseif $g.infiltrator1.isHasTrait('per_dreamy')>>
+keen intuition,
+<<else>>
+dumb luck,
+<</if>>
+your slavers were able to deduce that the room hid even greater secret.
+Sure enough, after carefuly prodding around the room they uncovered a secret
+hatch under one of the expensive-looking rugs. Your slavers <<uadv
+$g.infiltrator2>> pressed forward inside the hatch.
+</p>
+
+<p>
+Following the tunnel, they ended up in a small clearing,
+with the <<rep setup.item.isolation_technology>> sitting
+majestically on top of a pedestal.
+A truly magnificent piece of work, it is said that every former employee of
+the <<rep $company.neko>> will be subjected to this "therapy" before they
+leave the company, erasing all confidential information from their memories.
+<<if $inventory.isHasItem(setup.item.isolation_technology)>>
+You already have the <<rep setup.item.isolation_technology>>, but your
+slavers were still able to gather the valuable
+<<else>>
+This truly is a fitting prize for such a contest, and your slavers gathered
+both the technology and the valuable
+<</if>>
+<<rep setup.item.potion_isolation>> sitting next to it.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+But still, <<reps $g.infiltrator2>> gut feeling kept telling <<therace $g.infiltrator2>>
+that there was still more to be had in the place. Indeed, with extreme scrutiny
+they were able to discover several oddly misplaced pots in the corners of the
+room. After they rearranged the pots in order, a clicking sound could be heard
+from somewhere around the room, revealing a hidden chamber for your slavers.
+Behind the chamber lied an elf, probably a former employee, fully bound from
+head to toe in bondage. A letter was hanged from the clamps on <<their $g.slave>> nipples,
+congratulating the slavers for "winning" the Vault Assault!
+</p>
+<p>
+With the new slave in tow and all other trophies they had gathered, your
+slavers returned back home in full glory, having fully bested the Vault
+Assault.
+</p>
+<</if>>
+
+<</if>>
+
+
+:: Quest_vault_assaultDisaster [nobr]
+<p>
+In a great display of incompetence, your slavers broke the completely wrong
+vault, a small off-shoot branch of the <<rep $company.neko>>. This earned
+your company the ire of the bank, not because of the breach itself, but
+because of your disrespect having sent such an unskillful team of slavers for
+the prestigious event.
+</p>

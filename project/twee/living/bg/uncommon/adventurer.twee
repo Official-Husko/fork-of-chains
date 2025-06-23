@@ -1,0 +1,32 @@
+:: LIVINGSETUP_adventurer [nobr living]
+
+<<run new setup.Living({
+  key: 'adventurer',
+  name: 'Adventurer',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_adventurer: setup.LIVING_COMMON_PREFERENCE,
+    per_curious: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_active: setup.LIVING_MORECOMMON_PREFERENCE,
+  },
+  business: [
+    'traveling the land',
+    'taking up a quest from a village',
+    'going on an adventure',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_adventurer [nobr]
+
+<p>
+Money alone is unable to satiate <<reps $g.a>> wanderlust, and last you heard,
+the a|race has
+<<if $g.a.isHasTrait('bg_adventurer')>>
+once again
+<</if>>
+taken up the mantle of an adventurer.
+a|They spends a|their days scouring the land in search of treasure and adventure.
+</p>

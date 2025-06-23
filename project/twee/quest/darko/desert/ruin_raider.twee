@@ -1,0 +1,141 @@
+:: QuestSetup_ruin_raider2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'ruin_raider2', /* key */
+'Ruin Raider', /* Title */
+'darko', /* Author */
+[ 'desert', 'money'
+], /* tags */
+2, /* weeks */
+2, /* quest expiration weeks */
+{ /* roles */
+'explorer1': setup.qu.explorer,
+'explorer2': setup.qu.explorer,
+'scout': setup.qu.scout_desert, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_ruin_raider2',
+setup.qdiff.harder44, /* difficulty */
+[ /* outcomes */
+[
+'Quest_ruin_raider2Crit',
+[
+
+setup.qc.MoneyNormal(),
+setup.qc.Equipment(setup.equipmentpool.sextoy_good), ],
+], [
+'Quest_ruin_raider2Success',
+[
+
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_ruin_raider2Failure',
+[
+setup.qc.Injury('explorer1', 2),
+setup.qc.Injury('explorer2', 2),
+setup.qc.Injury('scout', 2), ],
+], [
+'Quest_ruin_raider2Disaster',
+[
+setup.qc.MissingUnit('explorer1'), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_ruin_raider2 [nobr]
+
+<p>
+The <<lore region_desert>> are littered with various ruins from times past. These
+ruins often went unexcavated, protected by the shifting sands. There are many
+who made their living from finding hidden treasures in such ruins, but there
+are equally many who ended their journey crushed by some trap within such ruins.
+</p>
+
+<p>
+You have a lead on a possible such ruins that has just resurfaced after a sandstorm.
+If you want to follow up on this
+lead, you'd have to act fast before the shifting sands rebury the ruins back to
+where it was hidden.
+</p>
+
+
+:: Quest_ruin_raider2Crit [nobr]
+<p>
+The ruins turned out to be the ruins of a temple. The temple
+were flanked by engravings on all sides, depicting various
+raunchy sexual act. One side depicted the various methods one could pursue
+in order to maximize the chance of getting a male heir, including impregnating
+multiple women all with a single climax.
+The other side depicted various methods
+of sexual torture to break even the most resilient of prisoners. There were
+depictions of men and women chained to the same dildo which pushed both at
+the same time, harder when they struggled,
+while another depicted multiple weights being attached to the prisoners' genitals and
+nipples while they were being whipped mercilessly.
+</p>
+
+<p>
+The ancient drawings were kinda sexy,
+<<set _lust = setup.selectUnit([$g.explorer1, $g.explorer2, $g.scout], {trait: 'per_lustful'})>>
+<<set _chaste = setup.selectUnit([$g.explorer1, $g.explorer2, $g.scout], {trait: 'per_chaste'})>>
+
+<<if _lust>>
+  <<Rep _lust>> even lustfully masturbated to one, earning <<therace _lust>> strange looks from <<their _lust>>
+  teammates.
+<<elseif _chaste>>
+  <<Rep _chaste>> tried <<their _chaste>> best not to look too much into the engravings as the chaste
+  slaver could feel
+  <<if _chaste.isHasDick()>>
+    <<their _chaste>> dick rising.
+  <<else>>
+    the heat rising from inside.
+  <</if>>
+<</if>>
+Still, sexiness alone could not pay your slavers' wages, and they <<uadv $g.explorer1>>
+proceeded to carve out these engravings and gathered up the usable gold.
+At the top of
+the altar, they also found an ancient sex toy made of pure gold, which they decided
+to keep for the company.
+</p>
+
+
+:: Quest_ruin_raider2Success [nobr]
+
+<p>
+Your slavers arrived at what appears to be an ancient trading hall. It seemed
+that these halls once were a center of trade, dealing in both various goods and also in slaves.
+There were many ancient pots that remained intact, which your slaver took with them.
+There were also numerous shackles all over the walls and the ceilings.
+Your slavers could only imagine what this place must have looked like back
+then, when every shackle was filled by a slave for sale.
+</p>
+
+
+:: Quest_ruin_raider2Failure [nobr]
+<p>
+Your slavers arrived at what appeared to be a tomb. But due to excitement,
+they did not tread carefully. Both <<yourrep
+$g.explorer1>> and <<rep $g.explorer2>> were smacked in the face by a swinging trap.
+Your slavers had no choice but to head back and tend to their injuries,
+instead of risking their lives by going in further.
+</p>
+
+
+:: Quest_ruin_raider2Disaster [nobr]
+<p>
+Your slavers arrived at what appeared to be the ruins of a royal palace. Thinking that it
+was such an easy place to loot, they rushed in only to discover that the place was
+heavily trapped.
+<<Rep $g.explorer1>> fell into one of the pit traps, and it is
+unknown what fate awaits <<them $g.explorer1>> down there.
+Your other slavers were unable to rescue <<therace $g.explorer1>>, and they had to come back
+without their teammate.
+</p>

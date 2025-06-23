@@ -1,0 +1,23 @@
+:: ItemPickerDialog [nobr]
+
+<<unset _selitem>>
+
+<div>
+  <<button 'Cancel'>>
+    <<run Dialog.close()>>
+  <</button>>
+</div>
+
+<div>
+  <<for _item range Object.values(setup.item)>>
+    <<capture _item>>
+      <div>
+      <<set _text = _item.rep()>>
+      <<button _text>>
+        <<set _selitem = _item>>
+        <<run Dialog.close()>>
+      <</button>>
+      </div>
+    <</capture>>
+  <</for>>
+</div>

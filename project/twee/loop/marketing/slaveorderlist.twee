@@ -1,0 +1,41 @@
+:: SlaveOrderList [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.marketingoffice)>>
+<<set _orders = $slaveorderlist.getSlaveOrders()>>
+<<set _marketer = $dutylist.getDuty('marketer')>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You enter the room you designated as the marketing office.
+<<if _marketer>>
+  <<set _unit = _marketer.getAssignedUnit()>>
+  <<if _unit && _unit.isAvailable()>>
+    Your <<rep _marketer>> <<rep _unit>> is busy finding new purchase orders for slaves,
+    <<= setup.Text.Duty.competence(_marketer)>>.
+  <<elseif _unit>>
+    <<Yourrep _unit>> usually works here, but <<they _unit>>
+    is currently unavailable to attend to <<their _unit>> duties.
+  <<else>>
+    Next to your desk is an empty desk for your <<rep _marketer>>.
+  <</if>>
+<</if>>
+<<if _orders.length >>
+  Papers describing full slave specifications for various slave orders
+  are scattered on your desk.
+  It is time to get to work.
+<<else>>
+  The desk is empty right now, and there is not much work.
+  Maybe it's time to find some new orders?
+<</if>>
+</p>
+
+<<filterall 'slaveorder' $slaveorderlist.getSlaveOrders()>>
+  <<if $menufilter.get('slaveorder', 'display') == 'compact'>>
+    <<slaveordercardcompact _displayobj>>
+  <<else>>
+    <<slaveordercard _displayobj>>
+  <</if>>
+<</filterall>>

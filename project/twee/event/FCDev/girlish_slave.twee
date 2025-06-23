@@ -1,0 +1,100 @@
+:: EventSetup_girlish_slave [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'girlish_slave', /* key */
+"Girlish Slave", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_girlish_slave',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [ setup.qres.You(), ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.Or([
+setup.qres.TraitExact(setup.trait.training_obedience_basic),
+setup.qres.TraitExact(setup.trait.training_obedience_advanced)
+]),
+    setup.qres.NoTrait(setup.trait.breast_large),
+    setup.qres.NoTrait(setup.trait.muscle_strong),
+    setup.qres.NoTrait(setup.trait.tough_tough),
+    setup.qres.NoTrait(setup.trait.dick_large),
+    setup.qres.NoTrait(setup.trait.balls_large),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.market),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_girlish_slave [nobr]
+<p>
+
+<<Yourrep $g.slave>> slave|is nice and slim, with a trim chest, narrow hips and not much of an ass to speak of.
+<<if $g.slave.isHasTrait('tough_nimble')>>
+The body allows <<therace $g.slave>> to remain lithe and nimble.
+<</if>>
+Today, <<they $g.slave>> slave|is obediently standing before you with <<their $g.slave>> hands crossed over <<their $g.slave>> flat stomach.
+You strips <<them $g.slave>> and places <<their $g.slave>> naked torso on your <<uslaverbed $g.slave>> for your pleasure.
+A perfectly devoted slave might display <<themself $g.slave>>, and a rebellious one might try to cover <<themself $g.slave>>: <<they $g.slave>>'s neither. <<if $g.slave.isHasDick()>>Though <<they $g.slave>>'s not sexually aroused, <<their $g.slave>> <<udick $g.slave>> is visible and contributes greatly to <<their $g.slave>> androgyny.<<else>><<Their $g.slave>> bare pussy completes the picture of simultaneous innocence and availability.<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Let <<them $g.slave>> get dressed and spend some quality time with <<them $g.slave>>">>
+
+<p>
+You let <<name $g.slave>> don a nice clothes and take <<them $g.slave>> out. <<They $g.slave>>'s a little suspicious at first but when you reach the
+first balcony on your lazy route around your fort,
+the sun on <<their $g.slave>> face and the gentle breeze around <<their $g.slave>> <<uears $g.slave>> convince <<them $g.slave>> there's no trick. <<They $g.slave>> watches you <<uadv $g.slave>> as you lead <<them $g.slave>> around, soaking in the scenery and relaxing. Though you still speak as <<their $g.slave>> <<master $unit.player>>,
+you chat about goings on around the fort, and you buy <<them $g.slave>> a fresh fruit from a vendor in your <<rep setup.buildingtemplate.market>>. The unexpected show of care and compassion has <<their $g.slave>> quite agog. By the time you take <<their $g.slave>> out onto a secluded corner of your fort and fuck <<them $g.slave>>,
+<<if $g.slave.isHasDick() && $g.slave.isInChastity()>>
+<<their $g.slave>> chastity cage is dribbling precum, a sign <<they $g.slave>> wouldn't mind having to take it up the ass.
+<<elseif $g.slave.isHasDick()>>
+<<they $g.slave>>'s happy to take it up the ass, and you can see <<their $g.slave>> dick is tenting the front of <<their $g.slave>>clothes.
+<<else>><<they $g.slave>>'s wet and ready and moans happily as you enter <<them $g.slave>>.
+<</if>>
+There's no hesitation or fear at all on <<their $g.slave>> face when <<they $g.slave>> sees you're returning <<them $g.slave>> to your bedchamber; <<their $g.slave>> trust in you has increased.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<optif $g.slave.isHasTraitExact('anus_tight') and $g.slave.isFemale()>>
+<<opt "Dominate <<their $g.slave>> narrow ass">>
+
+<p>
+You make a show of examining <<them $g.slave>> with a critical air that makes <<their $g.slave>> aware of <<their $g.slave>> modest endowments.
+Finished, you announce in a serious tone that you're concerned that you can't tell if <<they $g.slave>>'s a <<girl $g.slave>>, since <<girl $g.slave>>s have breasts and butts.
+<<if !$g.slave.isCanTalk()>>
+<<They $g.slave>> protests wordlessly, gesturing desperately at <<themself $g.slave>>.
+<<else>>
+<<They $g.slave>> protests, "<<Master $unit.player>>, I'm a slave <<girl $g.slave>>! Please, just look at me, <<Master $unit.player>>!"
+<</if>>
+
+<<if $g.slave.isCanSee()>>
+Shaking your head
+<<else>>
+Tutting
+<</if>>
+with pretended doubt, you say that since you're not sure you'll have to make do. Your order <<their $g.slave>> to lie face down on the <<uslaverbed $g.slave>>
+<<if $g.slave.isHasTail()>>and raise <<their $g.slave>> <<utail $g.slave>><</if>>
+<<if !$unit.player.isHasDick()>> while you don a strap-on<</if>>. <<They $g.slave>> does doubtfully, only realizing what you intend when <<they $g.slave>> feels <<if !$unit.player.isHasDick()>>the strap-on<<else>>your dickhead<</if>> forcing its way between <<their $g.slave>> narrow buttcheeks. <<They $g.slave>> whimpers and moans into the couch as you roughly sodomize <<them $g.slave>>. It's true, <<they $g.slave>>'s pretty androgynous from this angle, especially while <<they $g.slave>> takes it up the butthole.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<</choose>>

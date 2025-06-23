@@ -1,0 +1,117 @@
+:: EventSetup_renovation_feast [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'renovation_feast', /* key */
+"Great Hall Built", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_renovation_feast',
+{ /* roles */
+'slaver1': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+
+'slaver2': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+
+'slaver3': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+
+'slaver4': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.sexmanual_sit),
+],
+[ /* restrictions to generate */
+  setup.qres.NoItem(setup.item.sexmanual_sit),
+  setup.qres.Building('greathall'),
+],
+0,
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_renovation_feast [nobr]
+<p>
+This week, you have built the
+<<rep setup.buildingtemplate.greathall>> of your fort. The fort is starting
+to feel like home now, with all the basic improvements required for a slaving
+career finally fully built.
+You decide to do a little tour of the fort for today.
+</p>
+
+<p>
+You find <<yourrep $g.slaver1>> <<uadv $g.slaver1>> snoozing away in the <<rep
+setup.buildingtemplate.lodgings>> area, on a comfortable bed this time rather
+than outside in the rain.
+Exiting the lodging area, you arrive at an open space designated as the
+<<rep setup.buildingtemplate.hiringsquare>>, where you can hire new slavers
+into your fort, who will then go into the <<rep
+setup.buildingtemplate.prospectshall>>. Next is the newly built <<rep
+setup.buildingtemplate.greathall>> — a wide open space where you can gather
+your slavers for important occassions and celebrations. It is empty right now, save for <<yourrep
+$g.slaver2>> who slaver2|is busy <<uadv $g.slaver2>> arguing with <<rep $g.slaver3>>.
+</p>
+
+<p>
+Not wanting to get into their argument, you enter the work area of your fort: a series of
+office rooms to sort out the various paperwork that will surely become your daily
+business. The incoming mails are received in the <<rep
+setup.buildingtemplate.mailroom>>, which is next to your main office. A
+separate room has been designated as the <<rep
+setup.buildingtemplate.marketingoffice>>, where you can arrange slaves to be
+pawned for money.
+</p>
+
+<p>
+Finally, you descend into the basements of your fort. While initially it was
+full of rubble, they have been mostly cleared up and part of the basement has
+been turned into a dungeons complex. Here, you can keep your slaves either to sell
+them later, or for your own and your slavers' amusement. Who knows, maybe one
+day you'll be able to afford the <<rep setup.buildingtemplate.bedchamberwing>>
+and keep a harem for your own. Newly gathered slaves will be placed in the
+<<rep setup.buildingtemplate.slavepens>> just outside your fort.
+</p>
+
+<p>
+Your fellow slaver, <<rep $g.slaver4>>, <<uadv $g.slaver4>> slaver4|greet you, and
+slaver4|express <<their $g.slaver4>> appreciation for all your work leading the group so
+far. The team indeed feels a little more like family now. Still, there are
+more work to be done. Perhaps you can aim to renovate the empty space above
+your <<rep setup.buildingtemplate.greathall>> — a <<rep
+setup.buildingtemplate.veteranhall>> would surely be a nice addition to your
+fort.
+</p>
+
+<p>
+Later, you find a <<rep setup.item.sexmanual_sit>> sitting on your desk
+wrapped nicely with a bow.
+A "thank you" card was attached on top of it, and judging from the
+<<if $g.slaver4.isHasTrait('per_studious')>>
+beautiful
+<<elseif $g.slaver4.isHasTrait('per_active')>>
+horrible
+<<else>>
+decent
+<</if>>
+handwriting you can only guess
+that <<yourrep $g.slaver4>> must have written it. It seems that all your slavers have decided to pool a little bit
+of their
+<<if $settings.challengemode>>
+  outrageously large
+<<else>>
+  modest
+<</if>>
+wage and get you a little present for the achievement.
+</p>

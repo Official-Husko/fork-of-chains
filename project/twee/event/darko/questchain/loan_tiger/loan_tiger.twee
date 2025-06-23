@@ -1,0 +1,67 @@
+:: EventSetup_loan_tiger [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_event_loan_tiger1',
+"Loan Tiger Agent",
+'subrace_neko', /* pools */
+1, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_clerk),
+setup.qc.TraitReplace('unit', setup.trait.per_frugal), ],
+)>>
+
+<<run new setup.Event(
+'loan_tiger', /* key */
+"Loan Tiger", /* Title */
+"darko", /* Author */
+[ 'special',
+], /* tags */
+'Event_loan_tiger',
+{ /* roles */
+'you': [
+setup.qres.You(),
+],
+},
+{ /* actors */
+'tiger': 'quest_event_loan_tiger1', },
+[ /* outcomes */
+setup.qc.SlaverMarker('tiger'),
+setup.qc.Favor('bank', 100),
+setup.qc.Opportunity('loan_tiger'),
+],
+[ /* restrictions to generate */
+],
+1,
+setup.rarity.never,  /* Rarity */
+)>>
+
+:: Event_loan_tiger [nobr]
+
+<p>
+It's not everyday that a slaver such as yourself receive visitors, but today
+you are visited by a representative from the <<rep $company.bank>>. The
+<<name $company.bank>> is perhaps the largest banking institution in the
+region, and they are headquartered in the <<lore location_npc>> — a city in
+the <<lore region_forest>> predominantly inhabited by <<rep setup.trait.subrace_neko>> people.
+</p>
+
+<p>
+<<They $g.tiger>> tiger|introduce <<themself $g.tiger>> as <<rep $g.tiger>>.
+"You must be <<name $g.you>>, the leader of a" - <<they $g.tiger>> tiger|pause a bit -
+"new mercenary company in this area. <<name $g.tiger>> tiger|have heard of your
+recent deeds, and is quite impressed." As it turns out, your company's
+activities has reached the institution. You do not have to guess what such
+institution wants from your company as <<rep $g.tiger>> tiger|proceed to open
+<<their $g.tiger>> expensive-looking suitcase filled to the brim with
+documents, and tiger|hand you over a loan agreement. "The bank and also <<name
+$g.tiger>> trust that your company can benefit from this offer." - <<they
+$g.tiger>> tiger|add.
+</p>
+
+<p>
+You put the documents on your desk to read later. You then ask one of your
+slavers to give the good <<urace $g.tiger>> a tour of your fort while you get back to
+work.
+</p>

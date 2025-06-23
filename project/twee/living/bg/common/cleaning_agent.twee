@@ -1,0 +1,35 @@
+:: LIVINGSETUP_cleaning_agent [nobr living]
+
+<<run new setup.Living({
+  key: 'cleaning_agent',
+  name: 'Cleaning Agent',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_maid: setup.LIVING_COMMON_PREFERENCE,
+    per_submissive: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_dominant: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    "sending a|their boys and girls to clean a client's mansion",
+    "personally cleaning a client's mansion",
+    'managing a|their cleaning company',
+  ],
+  location: 'agency',
+})>>
+
+:: LIVING_cleaning_agent [nobr]
+
+<p>
+With a|their hard-earned money, <<rep $g.a>> had decided to seize an opening in the market
+niche and opens a cleaning company.
+The company offers temporary cleaning services to the many opulent mansion littering
+the <<lore region_city>>.
+The niche turns out to be attractive, and soon <<rep $g.a>> has a steady stream of clients
+for a|their boys and girls to send to.
+<<if $g.a.isHasTrait('per_submissive')>>
+<<Rep $g.a>> would occassionally offer to clean the mansions a|themself,
+while secretly enjoying the ordering and occasional abuse by the hiring nobles.
+<</if>>
+</p>

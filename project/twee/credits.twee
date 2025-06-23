@@ -1,0 +1,329 @@
+:: InnoxiaCredits [nobr]
+
+<p>
+The interactive sex scene is highly inspired by the free and very fun game
+[[Lilith's Throne|https://github.com/Innoxia/liliths-throne-public]] by
+[[Innoxia|https://subscribestar.adult/innoxia]], and borrows many text
+from the game.
+If you want more of these scenes, please consider giving Lilith's Throne a try!
+The use of these content from Lilith's Throne into this game is in no way endorsed by Innoxia.
+Innoxia has
+kindly [[permitted|https://gitgud.io/darkofocdarko/fort-of-chains/-/blob/master/docs/img/ltconsent.png]]
+their use in this game.
+Lilith's Throne is released under <<message "this license (click to view)">>
+<div class='helpcard'>
+<p>
+You must read and agree to the attached disclaimer before viewing any part of this Project.
+</p>
+
+<p>
+Although this Project is publicly available, it is not open source software. All Content is under sole ownership and Copyright 2016 Innoxia (innoxia7@gmail.com) all rights reserved.
+</p>
+
+<hr/>
+
+<p>
+<b>Definitions:</b>
+</p>
+
+<p>
+"Project" shall be defined as the source code and/or modifications/alterations comprising the software package known as "Lilith's Throne"; its assets, source code, Content, and all associated repositories, tools, configuration, and archives.
+</p>
+
+<p>
+"Binaries" refers to the executable produced from the source code and/or modified/altered source code.
+</p>
+
+<p>
+"Content" shall be defined to include machine or programming code; text of any kind, including written narratives and descriptions, markup and formatting, and any other information that may be represented in the Unicode specification; images, drawings, video, animations, sound, or music; adjustments to Project settings, configuration, parameters, or environment; or any other tangible or intangible thing which the user voluntarily makes available to the Project creator(s) and/or maintainers.
+</p>
+
+<p>
+"Contribution" shall be defined as submitting any Content, idea, or suggestion available to the Project creator(s) and/or maintainers by any means, including e-mail, file transfer protocols of any kind, git pull requests, git pushes, or any other electronic or physical transfer of any kind which makes available to the project creator(s) and/or maintainers for inclusion in the Project.
+</p>
+
+<hr/>
+
+<p>
+<b>License:</b>
+</p>
+
+<p>
+Redistribution, use, and modification of the Project and its Content, with or without modification, are permitted provided that the following conditions are met:
+</p>
+
+<ol>
+<li>The Project must retain the above copyright notice and this license as is.</li>
+<li>The Binaries must reproduce the above copyright notice (i.e. leave Innoxia's name in the credits page).</li>
+<li>The Project, its Content, and Binaries:
+  <ul>
+    <li>3a. must carry prominent notices stating it is modified, and not endorsed by Innoxia, if applicable.</li>
+    <li>3b. must be available free of charge, if distributed.</li>
+    <li>3c. may not be used for commercial purposes.</li>
+  </ul>
+</li>
+</ol>
+
+<p><i>
+  Points 3b and 3c are to protect the player base from having to pay for modded copies of the game. I don't want modders to try and take advantage of players (by adding a paywall to their mods).
+</i></p>
+
+<hr/>
+
+<p>
+<b>On Content submissions and Contributions:</b>
+</p>
+
+<p>
+By making any Contribution to the Project, potential contributers agree to give the project creator(s) and/or maintainers a perpetual, unlimited, royalty-free license to reuse, incorporate, distribute, modify, or extend the aforementioned Contribution in any fashion they see fit.
+</p>
+
+<p>
+<i>
+This is to prevent the case of someone submitting code or content to the game, then coming back at a later date and demanding removal unless certain conditions are met. I need to retain control over all of the game's content, and, while I will always do my very best to respect your submitted content's themes and intentions, I need to be able to have the final say in the event of any conflicts.
+</i>
+</p>
+</div>
+<</message>>.
+</p>
+
+
+:: OtherCredits [nobr]
+
+[[(Icon Credits)|ImageCredits]]
+
+<h3>Inspirations</h3>
+
+<p>
+BedlamGames, who made No Haven, which this games takes an enormous amount of inspirations from.
+FCdev, who made Free Cities, which this games also takes an enormous amount of content from.
+</p>
+
+<p>
+Many texts in this game are adapted from the Free Cities game, released under GPL v3 license
+by FCdev.
+</p>
+
+<<include 'InnoxiaCredits'>>
+
+<h3>Playtesters</h3>
+
+<p>
+Thanks to the many playtesters for feedback, bug reports, and playtestings.
+</p>
+
+<h3>Unit names</h3>
+
+<p>
+Norse names from:
+Coats, Steven. (2019). Language choice and gender in a Nordic social media corpus. Nordic Journal of Linguistics 42(1).
+</p>
+
+<p>
+TES names:
+https://en.uesp.net/wiki/Main_Page
+https://github.com/KieranMcCool/TESGen
+Name data are scraped from UESP and in accordance with their Copyright & Ownership guidelines, they are provided freely under the Creative Commons Attribution-ShareAlike 2.5 Generic license.
+https://en.uesp.net/wiki/Lore:Khajiit_Names
+https://en.uesp.net/wiki/Lore:Orc_Names
+</p>
+
+<p>
+Kobold names are taken from: [[Fantasy Name Generators|https://www.fantasynamegenerators.com/]].
+They are being used respecting the following policy from the website:
+"You're free to use names on this site to name anything in any of your own works, assuming they aren't already trademarked by others of course."
+</p>
+
+<h3>Others</h3>
+
+<p>
+Thanks to ChapelR for various Twine and SugarCube templates.
+And of course, many thanks to Chris Klimas for making Twine, and
+Thomas M. Edwards for making SugarCube 2.
+</p>
+
+:: PortraitCredits [nobr]
+
+<<set _credits = setup.UnitImage.getCreditsByArtist()>>
+
+<<set _artists = Object.keys(_credits)>>
+<<run _artists.sort()>>
+
+<<for _artist range _artists>>
+  <<capture _artist>>
+    <<message _artist>>
+      <<set _images = _credits[_artist]>>
+      <<run _images.sort((a, b) => a.info.title.localeCompare(b.info.title))>>
+      <<for _image range _images>>
+        <<set _info = _image.info>>
+        <<set _path = _image.path>>
+        "<<= _info.title>>" 
+        <<if _info.url>>
+          [[(source)|_info.url]]
+        <</if>>
+        (<<= _info.license>>)
+        <<if _info.extra>>
+          [<<= _info.extra>>]
+        <</if>>
+        <<capture _path>>
+          <<message _path>>
+            <<set _dom = setup.DOM.Util.Image.load({image_name: _path})>>
+            <<attach _dom>>
+          <</message>>
+        <</capture>>
+        <br/>
+      <</for>>
+    <</message>>
+    (<<= _credits[_artist].length>> artworks)
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: AuthorCredits [nobr]
+
+<<set _credits = setup.getAuthorCredits()>>
+
+<<set _authors = Object.keys(_credits)>>
+<<run _authors.sort()>>
+
+<<for _author range _authors>>
+  <<capture _author>>
+    <<message _author>>
+      <<set _items = setup.CONTENT_CREATOR_TYPES>>
+      <<for _item range _items>>
+        <<if _credits[_author][_item].length>>
+          <<capture _item>>
+            <<message _item>>
+              <<for _title range _credits[_author][_item]>>
+                <<nameof _title.content>>
+                <br/>
+              <</for>>
+            <</message>>
+            (<<= _credits[_author][_item].length>>)
+            <br/>
+          <</capture>>
+        <</if>>
+      <</for>>
+    <</message>>
+  <</capture>>
+  : |
+    <<if _credits[_author].quest.length>>
+      <<= _credits[_author].quest.length>> quests |
+    <</if>>
+    <<if _credits[_author].opportunity.length>>
+      <<= _credits[_author].opportunity.length>> opportunities |
+    <</if>>
+    <<if _credits[_author].event.length>>
+      <<= _credits[_author].event.length>> events |
+    <</if>>
+    <<if _credits[_author].interaction.length>>
+      <<= _credits[_author].interaction.length>> interactions |
+    <</if>>
+  <br/>
+<</for>>
+
+
+:: CoderCredits [nobr]
+
+<h3>Repository contributors</h3>
+
+<p>
+This game is the result of the combined effort of many
+[[repository contributors|https://gitgud.io/darkofocdarko/fort-of-chains/-/graphs/master]].
+Special mention to Naraden, Matthew Lang, stevenjackson121, and acciabread for
+the many, many improvements they have made into the game.
+Give your thanks to them!
+</p>
+
+<p>
+You are also welcome to join and contribute into the game.
+[[Learn more here|https://gitgud.io/darkofocdarko/fort-of-chains/-/blob/master/docs/images.md#adding-new-portraits-to-the-repository]]
+</p>
+
+
+:: RoomCredits [nobr]
+
+<<set _credits = setup.RoomTemplate.getCreditsByArtist()>>
+
+<<set _artists = Object.keys(_credits)>>
+<<run _artists.sort()>>
+
+<<for _artist range _artists>>
+  <<capture _artist>>
+    <<message _artist>>
+      <<set _images = _credits[_artist]>>
+      <<run _images.sort((a, b) => a.info.title.localeCompare(b.info.title))>>
+      <<for _image range _images>>
+        <<set _info = _image.info>>
+        <<set _path = _image.path>>
+        "<<= _info.title>>" 
+        <<if _info.url>>
+          [[(source)|_info.url]]
+        <</if>>
+        (<<= _info.license>>)
+        <<if _info.extra>>
+          [<<= _info.extra>>]
+        <</if>>
+        <<if _info.directional>>
+          <<capture _image>>
+            <<message _path>>
+              <<= setup.repImg({imagepath: setup.RoomInstance.getDirectionalImagePath(_image, 0)})>>
+              <<= setup.repImg({imagepath: setup.RoomInstance.getDirectionalImagePath(_image, 1)})>>
+              <<= setup.repImg({imagepath: setup.RoomInstance.getDirectionalImagePath(_image, 2)})>>
+              <<= setup.repImg({imagepath: setup.RoomInstance.getDirectionalImagePath(_image, 3)})>>
+            <</message>>
+          <</capture>>
+        <<else>>
+          <<capture _path>>
+            <<message _path>>
+              <<= setup.repImg({imagepath: _path})>>
+            <</message>>
+          <</capture>>
+        <</if>>
+        <br/>
+      <</for>>
+    <</message>>
+    (<<= _credits[_artist].length>> artworks)
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: ContentImagesCredits [nobr]
+
+<<set _credits = setup.ContentImage.getCreditsByArtist()>>
+
+<<set _artists = Object.keys(_credits)>>
+<<run _artists.sort()>>
+
+<<for _artist range _artists>>
+  <<capture _artist>>
+    <<message _artist>>
+      <<set _images = _credits[_artist]>>
+      <<run _images.sort((a, b) => a.info.title.localeCompare(b.info.title))>>
+      <<for _image range _images>>
+        <<set _info = _image.info>>
+        <<set _path = _image.path>>
+        "<<= _info.title>>" 
+        <<if _info.url>>
+          [[(source)|_info.url]]
+        <</if>>
+        (<<= _info.license>>)
+        <<if _info.extra>>
+          [<<= _info.extra>>]
+        <</if>>
+        <<capture _path>>
+          <<message _path>>
+            <<= setup.repImg({imagepath: _path})>>
+          <</message>>
+        <</capture>>
+        <br/>
+      <</for>>
+    <</message>>
+    (<<= _credits[_artist].length>> artworks)
+    <br/>
+  <</capture>>
+<</for>>
+
+

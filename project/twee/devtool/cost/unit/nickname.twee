@@ -1,0 +1,51 @@
+:: CostNickname [nobr]
+
+<div>
+Give <<devactordefault>> the nickname: <<textbox '_nickname' ''>>.
+</div>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Nickname($qgDefaultActorName, _nickname)>>
+<</link>>
+
+
+:: CostFirstName [nobr]
+
+<div>
+Give <<devactordefault>> the first name: <<textbox '_nickname' ''>>.
+</div>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.FirstName($qgDefaultActorName, _nickname)>>
+<</link>>
+
+
+:: CostSurname [nobr]
+
+<div>
+Give <<devactordefault>> the surname: <<textbox '_nickname' ''>>.
+</div>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Surname($qgDefaultActorName, _nickname)>>
+<</link>>
+
+
+:: CostGenName [nobr]
+
+
+<<include LoadSelectTrait>>
+
+Change <<devactordefault>>'s name to a generated one based on:
+<<message '(?)'>>
+  The game will generate a name based on their traits. In particular, race
+  and gender are the two most important traits that will determine the name.
+  So here, if you want to replace a unit's name with a demon name, put the demon race in
+  and don't put any gender --- if the gender is not put, then it will use the unit's original gender.
+<</message>>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.GenName($qgDefaultActorName, _chosentraits)>>
+<</link>>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>

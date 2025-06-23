@@ -1,0 +1,225 @@
+:: QuestSetup_dark_excalibur [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Mounted-on-a-Sword', /* name */
+[
+setup.trait.per_submissive, 
+setup.trait.per_sexaddict, 
+setup.trait.training_endurance_basic, 
+setup.trait.training_endurance_advanced, 
+setup.trait.training_endurance_master, 
+setup.trait.training_vagina_basic, 
+setup.trait.training_vagina_advanced, 
+setup.trait.training_vagina_master, 
+setup.trait.training_anal_basic, 
+setup.trait.training_anal_advanced, 
+setup.trait.training_anal_master, 
+],
+[
+setup.trait.per_dominant, 
+setup.trait.training_mindbreak, 
+],
+[
+setup.qres.Job(setup.job.slave), 
+setup.qres.AnyTrait([setup.trait.vagina_gape, setup.trait.anus_gape], true), 
+],
+{ 
+}
+)>> 
+<<run new setup.QuestTemplate(
+'dark_excalibur', /* key */
+"Dark Excalibur", /* Title */
+"darko", /* Author */
+[
+  'veteran',
+  'special',
+  'item',
+  'unknown',
+  'fort',
+], /* tags */
+4, /* weeks */
+setup.INFINITY, /* quest expiration weeks */
+{ /* roles */
+'corruptor': setup.qu.corruptor, 
+'trainer': setup.qu.slavetrainer, 
+'ritualist': setup.qu.ritualist, 
+'slave': _criteriaslave, },
+{ /* actors */
+'knight': [], },
+[ /* costs */
+],
+'Quest_dark_excalibur',
+setup.qdiff.abyss69, /* difficulty */
+[ /* outcomes */
+[
+'Quest_dark_excaliburCrit',
+[
+setup.qc.Event('the_quest_for_excalibur__epilogue', 12), 
+setup.qc.AddTraitsRandom('knight', [setup.trait.per_sly, setup.trait.per_proud, setup.trait.per_cruel, setup.trait.per_lunatic, setup.trait.per_dominant, setup.trait.per_evil], 3, false), 
+setup.qc.Corrupt('knight'), 
+setup.qc.RemoveTitle('knight', 'quest_excalibur_chosen_1'), 
+setup.qc.AddTitle('knight', 'quest_corrupted_wielder_of_the_excalibur_0'), 
+setup.qc.Corrupt('slave'), 
+setup.qc.EquipmentDirect('slaving_weapon_master'), ],
+], [
+'Quest_dark_excaliburCrit',
+[
+setup.qc.Event('the_quest_for_excalibur__epilogue', 12), 
+setup.qc.AddTraitsRandom('knight', [setup.trait.per_loner, setup.trait.per_proud, setup.trait.per_cruel, setup.trait.per_lunatic, setup.trait.per_sly, setup.trait.per_evil, setup.trait.per_dominant], 1, false), 
+setup.qc.Corrupt('knight'), 
+setup.qc.RemoveTitle('knight', 'quest_excalibur_chosen_1'), 
+setup.qc.AddTitle('knight', 'quest_corrupted_wielder_of_the_excalibur_0'), 
+setup.qc.Corrupt('slave'), 
+setup.qc.EquipmentDirect('slaving_weapon_master'), ],
+], [
+'Quest_dark_excaliburCrit',
+[
+setup.qc.VarSet('quest_excalibur_radiant', '1', 250),
+setup.qc.Event('the_quest_for_excalibur__epilogue', 12), 
+setup.qc.Corrupt('knight'), 
+setup.qc.RemoveTitle('knight', 'quest_excalibur_chosen_1'), 
+setup.qc.AddTitle('knight', 'quest_corrupted_wielder_of_the_excalibur_0'), 
+setup.qc.Corrupt('slave'), 
+setup.qc.Corrupt('corruptor'), 
+setup.qc.Corrupt('trainer'), 
+setup.qc.Corrupt('ritualist'), 
+setup.qc.TraumatizeRandom('corruptor', 30), 
+setup.qc.TraumatizeRandom('trainer', 30), 
+setup.qc.TraumatizeRandom('ritualist', 30), 
+setup.qc.Injury('corruptor', 7), 
+setup.qc.Injury('ritualist', 6), 
+setup.qc.Injury('trainer', 8), 
+setup.qc.EquipmentDirect('slaving_weapon_master'), ],
+], [
+'Quest_dark_excaliburCrit',
+[
+setup.qc.Event('the_quest_for_excalibur__epilogue', 12), 
+setup.qc.Corrupt('knight'), 
+setup.qc.RemoveTitle('knight', 'quest_excalibur_chosen_1'), 
+setup.qc.Corrupt('slave'), 
+setup.qc.TraumatizeRandom('knight', 50), 
+setup.qc.Corrupt('knight'), 
+setup.qc.EquipmentDirect('slaving_weapon_master'), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_dark_excalibur [nobr]
+
+<p>
+You have decided to follow the foolish suggestion of one of your slavers: to fully corrupt the sword and turn it into a tool of evil. This will be an extremely difficult ritual, requiring slavers of many disciplines to congregate, as well as a specifically designated slave as a centerpiece.
+</p>
+
+<p>
+To begin with, you need a corruptor skilled in <<rep setup.trait.magic_dark>>. The corruptor will lead the ritual, which must be prepared thoroughly by a knowledgeable slaver. A gaping slave is also required for the ritual, and although the text does not detail what the slave will need to do, you don't have to guess very much where this is going. And finally, <<yourrep $g.knight>> must watch the entire ritual unfolds, secured from near the compound lest <<they $g.knight>> go berserk again.
+</p>
+
+
+:: Quest_dark_excaliburCrit [nobr]
+<p>
+Your slavers and especially <<yourrep $g.ritualist>> spent many weeks studying the minute details of the ritual, but there wasn't much information in the texts. Outside of the necessary circle to be drawn, most of the rituals themselves seemed to have to be improvised on the spot. Still, with the combined knowledge of your slavers, what could possibly go wrong?
+</p>
+
+<p>
+<<Rep $g.trainer>> placed the Excalibur sword in the middle of the ritual room.
+With the struggling <<rep $g.knight>> secured at the corner of the room with
+a generous amount of chains (borrowed from the dungeons), <<rep
+$g.ritualist>> watched in anticipation as <<yourrep $g.corruptor>> started the
+ritual. As the chanting begins, the candles surrounding the circles turned
+purple and the air turned suffocating. Sensing the depravity around it, the
+Excalibur sword attempted to radiate its light again, but this time it was quickly
+engulfed by the spawning darkness spreading from the center of the magic
+circle. Light and darkness visibly clashed in the middle of the room,
+neither willing to give out to each other.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success' || $gOutcome == 'failure'>>
+<p>
+<<Rep $g.ritualist>> <<uadv $g.ritualist>> noticed that the next step of the
+ritual should now commence, but what? Before <<they $g.ritualist>> suggested
+anything, <<rep $g.trainer>> trainer|was already bringing the slave <<rep
+$g.slave>> closer to the circle, nearing the sword. With the darkness
+gripping the sword handle, the sword now appeared like an oversized and
+overly sharp dildo to the right minds, and <<rep $g.trainer>> had the idea of
+impaling the slave (very carefully!) on the sword. Soon enough the slave's
+<<if $g.slave.isHasTrait('anus_gape')>>
+gaping anus
+<<else>>
+gaping vagina
+<</if>>
+was positioned right above the sword, and the moment of truth began as
+<<therace $g.slave>> was slowly lowered into the sword's tip.
+The slave screamed in pain, but it was not due to any physical damage nor
+blood — before your eyes the Excalibur visibly transformed, the once pure and
+brightly shining sword turned dark and corrupted, although it remained
+beautiful. The blade turned ethereal, no longer affecting the flesh, but now
+affecting the mind, inflicting much pain to whoever it touches. Seeing this,
+<<rep $g.trainer>> fully impaled the poor <<urace $g.slave>> on the sword,
+earning a bloodcurling scream from the slave<<if
+$g.ritualist.isHasTrait('per_cruel')>>, to the delight of the cruel slaver
+<<rep $g.ritualist>>.
+<<else>>, making <<rep $g.ritualist>> winced from the cruel act.
+<</if>>
+</p>
+
+<p>
+Your slavers never noticed when <<reps $g.knight>> bindings were broken, and <<rep $g.knight>> calmly walked into the center of the pandemonium. Crouching, <<they $g.knight>> grabbed the pommel of the sword, and effortlessly hoisted the sword upwards still with <<rep $g.slave>> stuck on it.
+<<if $gOutcome == 'crit'>>
+It seemed the ritual went perfectly as your slavers could see the dark energy transferring directly from the sword into <<rep $g.knight>>, corrupting and empowering <<them $g.knight>> greatly. Calmly,
+<<elseif $gOutcome == 'success'>>
+It seemed the ritual were successful, as your slavers could see power and corrupting transferring from the sword into <<yourrep $g.knight>>. Calmly,
+<<else>>
+It seems the ritual was somewhat successful, as your slavers could see power and corrupting transferring from the sword into <<yourrep $g.knight>>. But then a big backlash occurred, spreading corruption all over the room and corrupting everyone involved, both physically and mentally, from the pain caused by the sword. The room became a complete mess. Calmly,
+<</if>>
+<<rep $g.knight>> unsheathed the sword from the slave and stared at the sword, <<their $g.knight>> mind finally returned to <<themself $g.knight>> and <<they $g.knight>> was no longer controlled by the sword.
+</p>
+
+<p>
+After a few days, <<yourrep $g.knight>> knight|was thankfully back to <<their
+$g.knight>> <<uadjgood $g.knight>> self, albeit slightly corrupted. <<They
+$g.knight>> somehow retained no memory of the entire turn of events, save for
+the fact that <<they $g.knight>> now knight|have an unbreakable bond with the
+sword. Per <<their $g.knight>> request, the corrupted Excalibur is aptly
+named <<rep setup.equipment.slaving_weapon_master>>. Interestingly, the sword
+retains its feisty personality and refused to be wielded by anyone save <<rep
+$g.knight>>.
+</p>
+
+<<else>>
+<p>
+In the midst of the chaos, your slavers were unable to come up with any
+bright idea on what they was supposed to do in the ritual. They never noticed when
+<<reps $g.knight>> bindings broke, and <<theslaver $g.knight>> wordlessly walked into the
+center of the circle. Crouching, <<therace $g.knight>> grabbed the pommel of
+the sword, and the darkness could be seen giving out to the forces of the light. Sensing that the ritual was about
+to fail, in a last ditch effort <<yourrep $g.corruptor>> hurled <<their
+$g.corruptor>> strongest dark spell towards both the sword and <<yourrep $g.knight>>,
+severely corrupting <<therace $g.knight>> and the sword alike.
+</p>
+
+<p>
+It seemed the gambit was successful, and after the chaos settled your slavers
+were left with a fully transformed Excalibur and the unconscious <<ubody
+$g.knight>> of <<rep $g.knight>>. The Excalibur, now <<rep
+setup.equipment.slaving_weapon_master>>, is now fully at your disposal, its
+mind controlling effect seemingly gone entirely. But it still refused to be wielded
+by anyone, even by <<rep $g.knight>>, and there is nothing else you could do
+with it but to sell it to collectors for a decent sum...
+</p>
+
+<p>
+A few days later, <<rep $g.knight>> knight|have finally returned to normal.
+No more crusade this crusade that, <<therace $g.knight>> knight|is back to their
+<<uadjgood $g.knight>> self.
+Interestingly, <<they $g.knight>> knight|retain no memory of the entire sequence of events,
+save for the trauma and corruption <<they $g.knight>> must now endure.
+</p>
+<</if>>

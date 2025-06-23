@@ -1,0 +1,78 @@
+:: OpportunitySetupMilkFactory [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+  'milk_factory',  /* key */
+  'Factory Facts',  /* name */
+  'darko',  /* author */
+  ['city', 'money', 'unit',],  /* tags */
+  1,  /* deadline weeks, */
+  'OpportunityMilkFactory',  /* passage */
+  setup.qdiff.normal29, /* difficulty */
+  [  /* choices */
+    [
+      'OpportunityMilkFactoryOptionRaid',
+      null,
+      [],
+      [],
+      [setup.qc.QuestDirect('milk_factory_raid')],
+    ],
+    [
+      'OpportunityMilkFactoryOptionKidnapMale',
+      null,
+      [],
+      [setup.qres.Building(setup.buildingtemplate.slavepens)],
+      [setup.qc.QuestDirect('milk_factory_kidnap_male')],
+    ],
+    [
+      'OpportunityMilkFactoryOptionKidnapFemale',
+      null,
+      [],
+      [setup.qres.Building(setup.buildingtemplate.slavepens)],
+      [setup.qc.QuestDirect('milk_factory_kidnap_female')],
+    ],
+    [
+      'OpportunityMilkFactoryOptionOfferEmployees',
+      null,
+      [],
+      [],
+      [setup.qc.QuestDirect('factoryopen_position')],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.uncommon],],  /* questpool */
+  [  /* requirement */
+  ],
+)>>
+
+:: OpportunityMilkFactory [nobr]
+
+<p>
+The <<rep $company.humankingdom>> had outlawed slavery over ten years ago.
+But that does not mean
+all of the numerous slaves in the city were immediately freed. Some unscrupulous owner proceeded to sell them
+immediately to the undercity.
+It is mostly unknown where to then these slaves would go, but
+rumors often tell that many end up in one of the many factories located within the undercity...
+</p>
+
+<p>
+Little is known about what is produced within those factories, but rumors often
+tell of weird noises and industrial chugging noises coming out from the factory.
+In the coming weeks, one of these factories will undergo renovation, which would potentially
+allow some of your slavers to sneak in and obtain some of the factory slaves for yourselves.
+Alternatively, the rumors also said that the factory is always looking for more "employees" to hire...
+</p>
+
+
+:: OpportunityMilkFactoryOptionRaid [nobr]
+Steal valuables
+
+:: OpportunityMilkFactoryOptionKidnapMale [nobr]
+Kidnap a male worker
+
+:: OpportunityMilkFactoryOptionKidnapFemale [nobr]
+Kidnap a female worker
+
+:: OpportunityMilkFactoryOptionOfferEmployees [nobr]
+Offer some of your slaves as "employees"

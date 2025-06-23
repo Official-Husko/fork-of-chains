@@ -1,0 +1,32 @@
+:: LIVINGSETUP_noble [nobr living]
+
+<<run new setup.Living({
+  key: 'noble',
+  name: 'Noble',
+  tags: ['uncommon', ],
+  unit_restrictions: [
+    setup.qres.Trait(setup.trait.bg_noble),
+  ],
+  default_preference: setup.LIVING_UNCOMMON_PREFERENCE,
+  trait_preferences: {
+  },
+  business: [
+    'attending a high-class party',
+    'mingling in high society',
+    'drinking high-quality wine',
+  ],
+  location: 'mansion',
+})>>
+
+:: LIVING_noble [nobr]
+
+<p>
+<<Rep $g.a>> a|retires back to a|their noble abode.
+<<if $g.a.isHasTrait('per_kind')>>
+Being a slaver meant the a|race has known the worst in a <<man $g.a>>,
+and as a result a|they is said to treat a|their lessers magnanimously.
+<<else>>
+While never confirmed, it is rumored that all maids and butlers serving
+in the noble's new home must undergone what is akin to slave training.
+<</if>>
+</p>

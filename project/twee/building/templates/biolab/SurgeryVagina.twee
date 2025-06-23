@@ -1,0 +1,41 @@
+:: InitBuildingSurgeryVagina [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'surgeryvagina',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+
+<<run new setup.BuildingTemplate({
+  key: 'surgeryvagina',
+  name: 'Surgery: Vagina Operating Room',
+  tags: ['biolab'],
+  description_passage: 'BuildingSurgeryVagina',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_HIGH_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('surgery'),
+      setup.qres.HasItem(setup.item.rear_technology),
+    ],
+  ],
+  main_room_template_key: 'surgeryvagina',
+})>>
+
+
+:: BuildingSurgeryVagina [nobr]
+
+<p>
+Unlocks tightening of you and your slavers' vagina.
+
+</p>

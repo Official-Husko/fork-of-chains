@@ -1,0 +1,106 @@
+:: QuestSetup_shepherd_of_men_raid [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'shepherd_of_men_raid', /* key */
+'Shepherd of Men: Raid', /* Title */
+  'darko',   /* author */
+[ 'desert', 'money'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'raider1': setup.qu.raider,
+'raider2': setup.qu.raider,
+'support': setup.qu.raidersupport, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_shepherd_of_men_raid',
+setup.qdiff.normal38, /* difficulty */
+[ /* outcomes */
+[
+'Quest_shepherd_of_men_raidCrit',
+[
+setup.qc.MoneyCrit(0.75),
+
+setup.qc.Equipment(setup.equipmentpool.restraint), ],
+], [
+'Quest_shepherd_of_men_raidSuccess',
+[
+setup.qc.MoneyNormal(),
+ ],
+], [
+'Quest_shepherd_of_men_raidFailure',
+[
+setup.qc.Injury('raider1', 1), ],
+], [
+'Quest_shepherd_of_men_raidDisaster',
+[
+setup.qc.Injury('raider1', 4),
+setup.qc.Injury('raider2', 3),
+setup.qc.Injury('support', 4), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_shepherd_of_men_raid [nobr]
+
+<<include 'Opportunity_shepherd_of_men'>>
+
+<p>
+You have chosen the safest option, which is to simply raid the farm.
+</p>
+
+
+:: Quest_shepherd_of_men_raidCrit [nobr]
+
+<p>
+Your slavers decided to target a particular supply cottage which was
+significantly less guarded than the others.
+The guards stood no chance as
+
+<<set _vm = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'muscle_verystrong'})>>
+<<set _nimble = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'tough_nimble'})>>
+<<if _vm>>
+<<rep _vm>> used <<their _vm>> bulging muscles to knock them out in one hit.
+<<elseif _dark>>
+<<rep _dark>> used <<their _dark>> dark magic to put them out.
+<<else>>
+your slavers jumped out from the darkness
+and knocked them out.
+<</if>>
+Your slavers quickly looted the entire cottage as well as some of the bondage equipments currently
+being used on an unfortunate slave before escaping into the night.
+</p>
+
+
+:: Quest_shepherd_of_men_raidSuccess [nobr]
+<p>
+Your slavers decided to target one of the smaller huts, which was less
+guarded than the others. With number advantage on their side, the guards were
+quickly dispatched, allowing your slavers to loot the hut before the
+commotion drew in the rest of the guards.
+</p>
+
+
+:: Quest_shepherd_of_men_raidFailure [nobr]
+
+<p>
+Your slaver chose the wrong building to assault. The building
+was much more well guarded than your slavers thought. In the ensuing fight,
+your slavers saw their mistake, and escaped with only slight injuries on <<yourrep $g.raider1>>.
+</p>
+
+
+:: Quest_shepherd_of_men_raidDisaster [nobr]
+
+<p>
+Your slavers ignorantly chose to attack the guard barracks, of all places.
+This of course meant their swift defeat, and your slavers were forced to retreat with heavy injuries.
+</p>

@@ -1,0 +1,74 @@
+:: QuestSetupSurgeryDickGrow [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_dick_grow',  /* id */
+  'Surgery: Dick Growth',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SurgeryDickGrow',  /* description */
+  setup.qdiff.extreme52,
+  [
+    [
+      'SurgeryDickGrowCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.dick_large),
+        
+      ]
+    ],
+    [
+      'SurgeryDickGrowSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.dick_large),
+        
+      ],
+    ],
+    [
+      'SurgeryDickGrowFailure',
+      [],
+    ],
+    [
+      'SurgeryDickGrowDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryDickGrow [nobr]
+<p>
+Grows both the length and girth of the slaver's dick.
+</p>
+
+:: SurgeryDickGrowCrit [nobr]
+<p>
+The surgery went off without a hitch.
+</p>
+
+:: SurgeryDickGrowSuccess [nobr]
+<p>
+The surgery was successful.
+</p>
+
+:: SurgeryDickGrowFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SurgeryDickGrowDisaster [nobr]
+<p>
+The surgery failed catastrophically, badly injuring <<rep $g.trainee>>.
+</p>

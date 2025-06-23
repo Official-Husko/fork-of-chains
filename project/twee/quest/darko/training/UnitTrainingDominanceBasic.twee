@@ -1,0 +1,93 @@
+:: QuestSetupUnitTrainingDominanceBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_dominance_basic',  /* id */
+  'Dominance Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+    'slave': setup.qu.training_slave,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingDominanceBasic',  /* description */
+  setup.qdiff.easy28,
+  [
+    [
+      'QuestUnitTrainingDominanceBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_dominance_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingDominanceBasicSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_dominance_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingDominanceBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingDominanceBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+        setup.qc.Injury('slave', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingDominanceBasic [nobr]
+<p>
+It is sometimes useful to have a slave trained in dominating other slaves.
+Such a slave can be used as head slaves, or for helping you manage your other slaves.
+Still, they are still your slaves, and obedience must be firmly instilled on them first
+before this training can be easily applied.
+</p>
+
+<p>
+<<successtextlite 'Please note'>>: Unlike most other slave trainings,
+the dominance requires an additional slave to be used during the training.
+The slave used this way will not receive the dominance training trait.
+</p>
+
+:: QuestUnitTrainingDominanceBasicCrit [nobr]
+<p>
+The training was a complete success. <<Rep $g.trainee>> dominated <<rep $g.slave>> with such force that
+the training finished way earlier than scheduled.
+Using the free time, your slavers gain a lot of experience from studying other topics.
+</p>
+
+:: QuestUnitTrainingDominanceBasicSuccess [nobr]
+<p>
+At the end of the week, <<rep $g.trainee>> finally grasp what is required
+of them to dominate other slaves without breaking them,
+and managed to demonstrate it on <<rep $g.slave>> enough to convince
+<<rep $g.head>> that the slave has graduated from this training.
+</p>
+
+:: QuestUnitTrainingDominanceBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> trainee|was simply not suited for this training,
+and another effort must make made for <<rep $g.trainee>>.
+</p>
+
+:: QuestUnitTrainingDominanceBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, both <<rep $g.trainee>> and <<rep $g.slave>> managed to get injured
+and the training had to be stopped early.
+</p>

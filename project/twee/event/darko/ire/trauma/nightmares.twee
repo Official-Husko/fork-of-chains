@@ -1,0 +1,45 @@
+:: EventSetup_nightmares [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'nightmares', /* key */
+"Nightmares", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_nightmares',
+{ /* roles */
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('demon', -20),
+setup.qc.TraumatizeRandomSlaverHome(),
+setup.qc.TraumatizeRandomSlaverHome(),
+setup.qc.TraumatizeRandomSlaverHome(),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('demon', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_nightmares [nobr]
+<p>
+In the recent weeks, you and some other slavers have started to experience
+more and more haunting nightmares. While initially it started innocuously
+such as dreams of falling into an endless pit, lately the nightmares have become more
+intrusive. At one point you dreamt of being held in front of a succubus, being
+forced to watch as your <<uadjgood $g.slaver>> <<urace $g.slaver>> slaver
+<<rep $g.slaver>> slaver|was sexually tortured in front of you.
+</p>
+
+<p>
+The experience has deeply traumatized some inhabitants of the fort. You are
+certain this is the work of some other companies out there, perhaps as a
+result of you angering the <<rep $company.demon>> recently.
+</p>

@@ -1,0 +1,61 @@
+:: InitBuildingRecreationWingService [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'recreationwingservice',
+  tags: [],
+  width: 4,
+  height: 4,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "aid",
+      room_keys: [
+        'courtyard',
+        'cleaning',
+        'pasture',
+        'tavern',
+        'theatre',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'recreationwingservice',
+  name: 'Recreation wing: Service',
+  tags: ['recreation',  'unlocker', ],
+  description_passage: 'BuildingRecreationWingService',
+  costs: [
+    [setup.qc.Money(-5000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('recreationwing'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('servicepimp'),
+    ],
+  ],
+  main_room_template_key: 'recreationwingservice',
+})>>
+
+:: BuildingRecreationWingService [nobr]
+
+<p>
+Designate a part of your <<rep setup.buildingtemplate.recreationwing>> for dining and
+drinking activities.
+Unlocks the Service Pimp duty, who can earn money from dining-related slaves that can be unlocked
+by further building the
+<<rep setup.buildingtemplate.courtyard>>, the
+<<rep setup.buildingtemplate.cleaning>>, the
+<<rep setup.buildingtemplate.pasture>>, the
+<<rep setup.buildingtemplate.tavern>>, and the
+<<rep setup.buildingtemplate.theatre>> improvements.
+</p>

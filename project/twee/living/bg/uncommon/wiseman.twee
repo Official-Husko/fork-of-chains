@@ -1,0 +1,37 @@
+:: LIVINGSETUP_wiseman [nobr living]
+
+<<run new setup.Living({
+  key: 'wiseman',
+  name: 'Wiseman',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_wiseman: setup.LIVING_COMMON_PREFERENCE,
+    per_smart: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_slow: -setup.LIVING_COMMON_PREFERENCE,
+  },
+  business: [
+    'advising the less wise',
+    'relaxing in a|their home',
+    'receiving guests in a|their new home',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_wiseman [nobr]
+
+<p>
+<<Rep $g.a>> knows that a|they a|is lucky to leave the slaving business relatively intact,
+and spends the money a|they had earned to purchase a humble home in one of the villages
+near your fort.
+Despite planning to retire there in peace,
+<<if $g.a.isHasTrait('bg_wiseman')>>
+a|their reputation as a former wiseman spreads,
+<<elseif $g.a.isHasTrait('per_smart')>>
+a|their reputation as an intellectually gifted a|race spreads,
+<<else>>
+a|their reputation as an experienced <<man $g.a>> spreads,
+<</if>>
+and before long many villagers would patron a|their home, seeking a|their wisdom in many fields.
+</p>

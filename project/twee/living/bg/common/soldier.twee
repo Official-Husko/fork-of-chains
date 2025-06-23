@@ -1,0 +1,36 @@
+:: LIVINGSETUP_soldier [nobr living]
+
+<<run new setup.Living({
+  key: 'soldier',
+  name: 'Soldier',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_soldier: setup.LIVING_COMMON_PREFERENCE,
+    per_brave: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_cautious: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'practicing with a|their a|weapon',
+    'doing combat drills',
+    'marching',
+  ],
+  location: 'barracks',
+})>>
+
+:: LIVING_soldier [nobr]
+
+<p>
+<<Rep $g.a>> decided to
+<<if $g.a.isHasTrait('bg_soldier')>>
+return to being a soldier, this time
+<<else>>
+try a|their a|hands at being a proper soldier, but
+<</if>>
+not for the money, but rather for the thrill that comes with the job.
+a|They spends most of a|their time drilling and practicing,
+and it was obvious to a|their superiors that the a|race is so much better at combat
+than the average person.
+a|They would quickly rise up the ranks, and become a respected soldier in the army.
+</p>

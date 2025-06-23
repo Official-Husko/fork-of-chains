@@ -1,0 +1,135 @@
+:: EventSetup_head_courtesan_meeting [nobr event]
+
+<<run new setup.Event(
+'head_courtesan_meeting', /* key */
+"Head Courtesan Meeting", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_head_courtesan_meeting',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 300),
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+],
+53, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_head_courtesan_meeting [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+Your head courtesan of <<attach _describe>>, <<rep $g.slave>>, is a
+<<if $g.slave.isHasTrait('per_dreamy')>>
+resourceful
+<<else>>
+perceptive
+<</if>>
+whore mistress.
+The brothel manager <<rep $g.owner>>owner|is a
+<<uadjgood $g.owner>> manager, of course, and
+the
+<<if _promotion == 'money'>>
+business manager <<name $g.head>>
+is as well-informed as <<they $g.head>> could be with the brothel's financials,
+<<else>>
+customer relations officer <<name $g.head>>
+is as well-informed as <<they $g.head>> could be with the brothel's customers,
+<</if>>
+but the head courtesan has special insight. <<They $g.slave>> slave|see more sex in person than anyone in the brothel, and may even know some of the brothel courtesans better than anyone else. This certainly extends to <<their $g.slave>> sexualities and skills; if <<they $g.slave>> ever slave|have any doubts about any of them,
+<<if _dom == 'dom'>>
+<<they $g.slave>> usually invite the troubled dominant for some private time
+<<else>>
+<<they $g.slave>> usually fucks
+the
+<<if _dom == 'sub'>>
+submissive courtesan
+<<else>>
+flexible courtesan
+<</if>>
+<<themself $g.slave>> to get at the truth.
+<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Review <<their $g.slave>> charges' skills with <<them $g.slave>>">>
+
+<p>
+You've decided to go to the brothel and into <<reps $g.owner>> office, before calling the head courtesan <<name $g.slave>> inside.
+Upon seeing the both of you,
+<<they $g.slave>> immediately slave|assume slave mentality and slave|get ready with the clear anticipation of being thrown over the desk, but instead slave|find <<themself $g.slave>> sitting across it from you and your slaver, taking part in a three-way strategy session between you and <<yourrep $g.owner>>.
+The three of you carefully review the sexual advantages and disadvantages of each of the brothel's courtesans. <<They $g.slave>> is properly deferential, but definitely slave|have insight to offer about how many of them satisfy customers. With <<their $g.slave>> input, you together put a plan to address their issues with instruction and hands-on correction. Your brothel's fame increases slightly.
+</p>
+
+<<run setup.qc.VarAdd('quest_brothel_high_income', 2, -1).apply($gQuest)>>
+
+<<opt "Remind <<them $g.slave>> of <<their $g.slave>> status as a slave">>
+
+<p>
+You've decided to go to the brothel and into <<reps $g.owner>> office, before calling the head courtesan <<name $g.slave>> inside.
+Upon seeing the both of you,
+<<they $g.slave>> immediately slave|assume slave mentality and slave|get ready with the clear anticipation of being thrown over the desk.
+And <<they $g.slave>> is right.
+You push <<them $g.slave>> down across the desk, giving <<them $g.slave>> a playful swat across the rump. When you begin to grope <<their $g.slave>> ass, <<yourrep $g.owner>>,
+<<if !$g.owner.isHasDick()>>
+already donning a strap-on,
+<<else>>
+already stripping of <<their $g.owner>> pants,
+<</if>>
+roughly shove the <<udickorstrap $g.owner>> into the head courtesan's <<umouth $g.slave>>.
+At the same time, you work your way towards <<their $g.slave>> backdoor.
+When <<they $g.slave>> slave|feel
+<<if $unit.player.isHasDick()>>
+your lubed cockhead
+<<else>>
+a lubed strap-on
+<</if>> sliding between <<their $g.slave>> buttocks and then pressing against <<their $g.slave>> anus, <<rep $g.slave>> slave|close <<their $g.slave>> eyes, being reminded that despite being a head courtesan for your brothel, <<they $g.slave>> still remains your slave at heart.
+You give <<them $g.slave>> a few seconds to get used to your girth and then begin to fuck <<their $g.slave>> <<uanus $g.slave>>.
+The oral and <<if !$g.slave.isHasDick()>>anal stimulations get <<them $g.slave>> wet.<<else>>prostate stimulations get <<them $g.slave>> hard.<</if>>
+<<They $g.slave>> slave|continue to muffle incoherently into <<reps $g.owner>>
+<<if $g.owner.isHasDick()>>prick,<<else>>rubber dick,<</if>> and
+<<if !$g.slave.isHasDick()>>
+you reach around to cup <<their $g.slave>> soaking cunt possessively.
+<<else>>
+<<they $g.slave>> slave|start to leak precum.
+<</if>>
+You finally orgasm, and <<yourrep $g.owner>> too judging from <<their $g.owner>> expression.
+</p>
+
+<p>
+If <<rep $g.slave>> ever forgot that <<they $g.slave>> slave|is a slave, <<they $g.slave>> won't forget anytime soon. In fact, some customer who are in the know within your brothel are also reminded of the fact that the main attraction of your prestigious brothel remains your obedient slave, and view your company with a little more respect.
+</p>
+
+<<run setup.qc.Favor('neko', 50).apply($gQuest)>>
+
+<</choose>>

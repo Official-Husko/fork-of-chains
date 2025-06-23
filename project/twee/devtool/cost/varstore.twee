@@ -1,0 +1,41 @@
+:: CostVarSet [nobr]
+
+Set the value of variable <<textbox '_key' ''>> to <<textbox '_value' ''>>
+for <<numberbox '_expires' -1>> weeks.
+<<message '(?)'>>
+If expiration is 0 or negative, then will never expires.
+<</message>>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.VarSet(_key, _value, _expires)>>
+<</link>>
+
+
+:: CostVarRemove [nobr]
+
+Unsets the value of the variable <<textbox '_key' ''>>.
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.VarRemove(_key)>>
+<</link>>
+
+
+
+:: CostVarAdd [nobr]
+
+Add into variable <<textbox '_key' ''>> a value of <<numberbox '_value' ''>>
+and resets expiration to <<numberbox '_expires' -1>> weeks.
+<<message '(?)'>>
+If the value did not exist before, it becomes 0.
+If expiration is 0 or negative, then will never expires.
+<</message>>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.VarAdd(_key, _value, _expires)>>
+<</link>>
+
+
+

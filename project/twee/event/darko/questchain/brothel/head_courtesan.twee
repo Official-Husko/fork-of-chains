@@ -1,0 +1,97 @@
+:: EventSetup_head_courtesan [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"brothel_head_courtesan",
+"Head Courtesan",
+[], /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+],
+)>>
+
+<<run new setup.Event(
+'head_courtesan', /* key */
+"Head Courtesan", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_head_courtesan',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.SlaveOrderHeadCourtesan(),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '100'),
+],
+53, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_head_courtesan [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+Thanks to your recent efforts, <<attach _describe>> is almost ready to become a high-class sex venue. There is still a glaring emptiness in one position, however. With <<name $g.head>> serving as the brothel's
+<<if _promotion == 'money'>>
+business manager,
+<<else>>
+customer relations officer,
+<</if>>
+the prestigious position of head courtesan is now empty. A new highly qualified courtesan is required.
+</p>
+
+<p>
+In order to bring your venue to the highest level, <<yourrep $g.owner>>
+owner|suggest that whoever you hire as the head courtesan to be a wonder in
+<<themself $g.owner>>. Hiring such a person would normally cost an
+astronomical amount of money, but for a final time your position as the
+leader of a slaving company put you in a unique position. You can instead
+supply the head courtesan from among your stable of slaves. Still, given the
+requirements, you would need something very special indeed for the position.
+First, the slave should have a mastery over some domain of magic -- it would
+certainly make for an interesting sex play.
+In addition,
+<<if _dom == 'sub'>>
+  since you've decided to make <<= _name>> a heaven of submissive debauchery,
+  the head courtesan <<themself $g.head>> must be similarly submissive.
+<<elseif _dom == 'dom'>>
+  since you've decided to make <<= _name>> a heaven of dominant courtesans,
+  the head courtesan <<themself $g.head>> must be similarly dominant.
+<<else>>
+  since you've decided to make <<= _name>> to cater to both dominants and submissives,
+  the head courtesan <<themself $g.head>> must be neither dominant and submissive,
+  but remain a highly valuable slave.
+<</if>>
+Finally, and perhaps more importantly, the slave <<themself $g.head>> should
+be a valuable slave, which should translate to a highly sought-after courtesan.
+</p>
+
+<p>
+Given the stringent requirements, it may take you some time to find the special, lucky slave...
+</p>

@@ -1,0 +1,30 @@
+:: EventSetup_choose_your_own_adventure_chapter_2 [nobr event]
+
+<<run new setup.Event(
+'choose_your_own_adventure_chapter_2', /* key */
+"Choose Your Own Adventure: Chapter 2", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+'fort',
+],
+'Event_choose_your_own_adventure_chapter_2',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.VarSet('choose_your_own_adventure_progress', '2a', -1),
+  setup.qc.Opportunity('choose_your_own_adventure__chapter_2', null),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('choose_your_own_adventure_progress', '2'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_choose_your_own_adventure_chapter_2 [nobr]
+<<include "Opportunity_choose_your_own_adventure__chapter_2">>

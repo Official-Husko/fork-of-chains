@@ -1,0 +1,43 @@
+:: InitBuildingDeepAltarOfDarkness [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'deepaltarofdarkness',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+
+<<run new setup.BuildingTemplate({
+  key: 'deepaltarofdarkness',
+  name: 'Deep Altar of Darkness',
+  tags: ['corruption'],
+  description_passage: 'BuildingDeepAltarOfDarkness',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_ASTRO_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('deepritualchamber'),
+      setup.qres.HasItem(setup.item.wings_technology),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_dark_master]),
+    ],
+  ],
+  main_room_template_key: 'deepaltarofdarkness',
+})>>
+
+
+:: BuildingDeepAltarOfDarkness [nobr]
+
+<p>
+Unlocks targeted corruptions on the tails, wings, and dicks of slavers.
+
+</p>
+

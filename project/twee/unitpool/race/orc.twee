@@ -1,0 +1,155 @@
+:: InitUnitPoolRaceOrc [nobr unitpool]
+
+<<set _orc = new setup.UnitPoolTraitAlloc(
+  {  /* trait preferences */
+
+    /* =========== */
+    /* RACE */
+    /* =========== */
+    subrace_orc: 1,
+
+    /* =========== */
+    /* BACKGROUNDS */
+    /* =========== */
+
+    bg_mercenary: setup.POOL_BG_COMMON_1,
+    bg_slaver: setup.POOL_BG_COMMON_1,
+
+    bg_foodworker: setup.POOL_BG_COMMON_1,
+    bg_laborer: setup.POOL_BG_COMMON_1,
+    bg_nomad: setup.POOL_BG_COMMON_1,
+    bg_pirate: setup.POOL_BG_COMMON_1,
+    bg_raider: setup.POOL_BG_COMMON_1,
+    bg_soldier: setup.POOL_BG_COMMON_1,
+    bg_thug: setup.POOL_BG_COMMON_1,
+
+    bg_hunter: setup.POOL_BG_UNCOMMON_2,
+
+    bg_thief: setup.POOL_BG_UNCOMMON_2,
+
+    bg_unemployed: setup.POOL_BG_UNCOMMON_2,
+
+    bg_metalworker: setup.POOL_BG_RARE_3,
+
+    bg_merchant: setup.POOL_BG_RARE_3,
+    bg_whore: setup.POOL_BG_RARE_3,
+
+    bg_wildman: setup.POOL_BG_EPIC_4,
+
+    bg_entertainer: setup.POOL_BG_EPIC_4,
+    bg_farmer: setup.POOL_BG_EPIC_4,
+    bg_seaman: setup.POOL_BG_EPIC_4,
+
+    bg_slave: setup.POOL_BG_EPIC_4,
+
+    bg_adventurer: setup.POOL_BG_LEGENDARY_5,
+    bg_mystic: setup.POOL_BG_LEGENDARY_5,
+
+    bg_artisan: setup.POOL_BG_LEGENDARY_5,
+    bg_monk: setup.POOL_BG_LEGENDARY_5,
+
+    bg_mist: setup.POOL_BG_MYTHIC_6,
+
+    bg_engineer: setup.POOL_BG_MYTHIC_6,
+    bg_healer: setup.POOL_BG_MYTHIC_6,
+    bg_scholar: setup.POOL_BG_MYTHIC_6,
+
+    bg_apprentice: setup.POOL_BG_MYTHIC_6,
+    bg_informer: setup.POOL_BG_MYTHIC_6,
+    bg_wiseman: setup.POOL_BG_MYTHIC_6,
+
+    bg_clerk: setup.POOL_BG_MYTHIC_6,
+    bg_maid: setup.POOL_BG_MYTHIC_6,
+    bg_woodsman: setup.POOL_BG_MYTHIC_6,
+
+    bg_assassin: setup.POOL_BG_ULTRA_7,
+    bg_knight: setup.POOL_BG_ULTRA_7,
+    bg_noble: setup.POOL_BG_ULTRA_7,
+
+    bg_priest: setup.POOL_BG_ULTRA_7,
+
+    bg_boss: setup.POOL_BG_FINAL_8,
+    bg_royal: setup.POOL_BG_FINAL_8,
+
+    bg_courtesan: setup.POOL_BG_FINAL_8,
+
+    bg_artist: setup.POOL_BG_FINAL_8,
+
+    bg_mythical: 0,
+
+    /* =========== */
+    /* PERSONALITY */
+    /* =========== */
+
+    per_slow: setup.POOL_PER_UNCOMMON_2,
+    per_aggressive: setup.POOL_PER_UNCOMMON_2,
+
+    per_active: setup.POOL_PER_RARE_3,
+    per_dominant: setup.POOL_PER_RARE_3,
+
+    per_masochistic: setup.POOL_PER_LEGENDARY_5,
+
+    /* =========== */
+    /* MAGIC */
+    /* =========== */
+
+    skill_intimidating: 0.1,
+    magic_fire: 0.1,
+    magic_fire_master: 0.01,
+
+    /* =========== */
+    /* PHYSICAL */
+    /* =========== */
+
+    muscle_strong: 0.1,
+    muscle_verystrong: 0.03,
+    muscle_extremelystrong: 0.001,
+
+    height_tall: 0.2,
+    height_giant: 0.01,
+
+    face_scary: 0.1,
+    face_hideous: 0.03,
+
+    dick_large: 0.3,
+    dick_huge: 0.1,
+    dick_titanic: 0.005,
+
+    balls_large: 0.3,
+    balls_huge: 0.1,
+    balls_titanic: 0.005,
+
+    breast_large: 0.3,
+    breast_huge: 0.1,
+    breast_titanic: 0.005,
+
+    /* =========== */
+    /* SKIN */
+    /* =========== */
+
+    mouth_orc: 0.95,
+    body_orc: 0.95,
+    ears_elf: 0.9,
+
+  },
+  {  /* trait dispreferences */
+    magic_water: 5,
+    magic_water_master: 5,
+  },
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_orc_male',
+    'Orc Male',
+    _orc.computePreferences(setup.trait.gender_male),
+    setup.DEFAULT_INITIAL_SKILLS,
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_orc_female',
+    'Orc Female',
+    _orc.computePreferences(setup.trait.gender_female),
+    setup.DEFAULT_INITIAL_SKILLS,
+)>>

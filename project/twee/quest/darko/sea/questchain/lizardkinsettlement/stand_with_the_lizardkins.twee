@@ -1,0 +1,417 @@
+:: QuestSetup_stand_with_the_lizardkins [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"stand_with_the_lizardkins0",
+"pirate",
+'subrace_humansea',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+],
+)>> <<run new setup.UnitGroup(
+"stand_with_the_lizardkins2",
+"reg",
+'subrace_humankingdom',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+],
+)>> <<run new setup.UnitGroup(
+"stand_with_the_lizardkins3",
+"Wizard",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+  setup.qc.Trait('unit', setup.trait.magic_dark),
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'stand_with_the_lizardkins', /* key */
+"Stand with the Lizardkin", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+  'scaley',
+  'danger',
+  'favor',
+  'veteran',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'healer': [ setup.qu.healer, 1],
+  'archer': [ setup.qu.archer, 1],
+  'defender': [ setup.qu.defender, 1],
+},
+{ /* actors */
+  'lizardkin': 'subrace_lizardkin',
+  'pirate': 'stand_with_the_lizardkins0',
+  'reg': 'stand_with_the_lizardkins2',
+  'wiz': 'stand_with_the_lizardkins3',
+},
+[ /* costs */
+],
+'Quest_stand_with_the_lizardkins',
+setup.qdiff.hardest52, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_stand_with_the_lizardkinsCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('lizardkin', 150),
+      setup.qc.Favor('humansea', 100),
+      setup.qc.Favor('dragonkin', 50),
+      setup.qc.SlaverMarker('lizardkin'),
+      setup.qc.SlaveMarker('pirate'),
+      setup.qc.SlaveMarker('reg'),
+      setup.qc.SlaveMarker('wiz'),
+    ],
+  ],
+  [
+    'Quest_stand_with_the_lizardkinsCrit',
+    [
+      setup.qc.Favor('lizardkin', 150),
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.Slave('pirate', "a|was a crew member of a fierce pirate company of the Southern Seas who chose the wrong timing to attack a lizardkin settlement which your slavers fiercely defended", undefined),
+setup.qc.Injury('defender', 6),
+setup.qc.Injury('archer', 3),
+setup.qc.Injury('healer', 3)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('reg', "a|was a wanna-be pirate from the City of Lucgate who read too many romanticized pirate tales", undefined)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('wiz', "a|was a pirate-wizard who raids settlements in the southern seas in search of more slave crews for a|their ship", undefined),
+setup.qc.Corrupt('defender', null, 2),
+setup.qc.Corrupt('healer', null, 1)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_stand_with_the_lizardkinsFailure',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.MissingUnitRecapture('defender', 'capturedmedium'),
+setup.qc.Injury('healer', 4),
+setup.qc.Injury('archer', 4)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MissingUnit('archer')
+], undefined),
+setup.qc.DoAll([
+setup.qc.MissingUnit('healer'),
+setup.qc.Corrupt('healer', null, 2),
+setup.qc.Corrupt('archer', null, 1),
+setup.qc.Corrupt('defender', null, 1)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_stand_with_the_lizardkinsFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Ire('lizardkin', 12),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_stand_with_the_lizardkins [nobr]
+<p>
+You've decided to stand with the sturdy lizardkin folks and help them fight
+whatever raid that is coming their way.
+</p>
+
+
+:: Quest_stand_with_the_lizardkinsCrit [nobr]
+<<set _betray = ($gQuest.getTemplate().key == 'betray_the_lizardkins')>>
+
+<p>
+The lizardkin were understandably wary of your slavers' offer of
+<<if _betray>>
+"help",
+<<else>>
+help,
+<</if>>
+and kept their distance from your slavers, who setup their own camp someway a
+distance from the settlement. After a few days, the fated war horn was sounded,
+and your slavers
+<<if _betray>>
+rushed into the settlement, not forgetting their ultimate goal of getting
+their <<uhands $g.defender>> on one of these scaly people...
+<<else>>
+rushed into the settlement...
+<</if>>
+</p>
+
+<<if $gQuest.getSeed() % 3 == 0>>
+
+<p>
+Your slavers were greeted with the sight of a battlefield happening on the shore of the
+settlements. The lizardkin fought bravely, but the pirates were seemingly
+fighting on equal grounds with the fearsome scaley warriors.
+<<Yourrep $g.defender>> joined into the fray to turn the favor in the
+lizardkin's favor — backed with <<reps $g.healer>> masterful healing and
+<<reps $g.archer>> long range support, your slavers weaved through the
+battlefield,
+downing pirate after pirate in quick succession, although they suffered some
+injuries in the grueling process.
+</p>
+
+<<if _betray>>
+<p>
+Surprised by your slavers reinforcement, the pirate captain wisely ordered a
+retreat, cutting <<their $g.pirate>> losses.
+As the lizardkin continued to pursue the fleeing invaders, your slavers
+noticed this to be the perfect opportunity to grab a fallen lizardkin
+<<if $gOutcome == 'crit'>>
+or two
+<</if>>
+aside.
+<<Rep $g.archer>> stealthily scoured the battlefield, and managed to found
+<<if $gOutcome == 'crit'>>
+two downed lizardkin,
+<<else>>
+a downed lizardkin,
+<</if>>
+whom your slavers tied up and hide behind the bushes.
+Eventually the pirate withdrew their ship, and peace returned to the settlement for the moment.
+</p>
+<<else>>
+<p>
+Surprised by your slavers reinforcement, the pirate captain wisely ordered a
+retreat, cutting <<their $g.pirate>> losses as the pirates struggled to
+rescue their teammates back onto the ship. Eventually the pirates withdrew
+their ship, and peace returned to the settlement for the moment.
+</p>
+<</if>>
+
+<p>
+<<if _betray>>
+Pretending nothing else happened, while surveying
+<<else>>
+Surveying
+<</if>>
+the battlefield, your slavers managed to notice one of the pirates who
+remained unconscious from the fight. After receiving
+the gratitude from the lizardkin,
+your slavers packed the unconscious pirate to your ship, to be brought home as an extra prize.
+</p>
+
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<p>
+Once your slavers arrived, they were greeted by a mighty ship on the shore of the
+settlement, captained by what seems to be a very young <<lass $g.reg>> —
+clearly a <<rep setup.trait.subrace_humankingdom>>. "Your money or your
+life!," shouted the <<lass $g.reg>> dramatically, just before <<they $g.reg>>
+stumbled across the edge of <<their $g.reg>> ship and down into the sea.
+</p>
+
+<p>
+Being in the sea means the captain was no match against the lizardkin's swimming prowess,
+and your slavers observed as some of the lizardkin warriors dived into the
+sea to secure the captain. With the captain held hostage, the ship
+second-in-command ordered an immediate retreat, and soon after the ship was
+gone from your slavers' sight.
+<<if _betray>>
+Unfortunately, this meant no battle took place, and there was no opportunity for your slavers
+to get their <<uhands $g.defender>> on the lizardkin...
+<</if>>
+</p>
+
+<p>
+Once the captain was secured, after some questioning it seemed that this
+captain was not responsible for the usual threat the settlement often
+received. In fact, this was <<their $g.reg>> first venture into the <<lore
+region_sea>>, fueled by <<their $g.reg>> parent's money and <<their $g.reg>>
+love for pirate tales.
+</p>
+
+<p>
+<<Yourrep $g.defender>> made sure to put an early end to the captain's career as <<they
+$g.defender>> took the captain, together with the lizardkin's gratitude, as
+payment for their services.
+<<if _betray>>
+  A gratitude that did not last long, as your slavers were careless and left some hints of what they
+  were planning to do on their compound, which was discovered soon later by the lizardkin...
+<</if>>
+</p>
+
+<<elseif $gQuest.getSeed() % 3 == 2>>
+
+<p>
+By the time your slavers arrived, the coast had been transformed into a
+corrupted battlefield. The pirate captain — a clearly powerful sorcerer —
+launched dark magic upon dark magic, which the lizardkin warriors barely
+managed to dodge. Using the advantage of surprise, <<rep $g.archer>> notched
+a single arrow up onto the ship, catching the wizard by surprise and gravely
+injuring <<them $g.wiz>>. As the wizard ordered a retreat, <<rep
+$g.defender>> and <<utheirrel $g.defender $g.healer>> <<uadv $g.defender>>
+charged into the ship, using the pirates' own boarding planks to went inside.
+Ignoring the rows of rows of slaves writhing inside the ship, <<rep
+$g.defender>> headed into the top of the ship where the wizard was.
+</p>
+
+<p>
+In a fierce two-to-one duel, your slavers managed to seize victory against
+the injured wizard, albeit suffering some corruption here and there.
+With the wizard fully secured, the lizardkin freed all the captives inside the ship,
+with the wizard unconscious they were free of <<their $g.wiz>> mind control.
+<<if _betray>>
+Seeing the lizardkin busy rescuing the prisoners, your slavers seized the
+opportunity to scour the battlefield for downed lizardkin, before finding
+<<if $gOutcome == 'crit'>>
+two of them
+<<else>>
+one of them
+<</if>>
+at the edge of the battlefield.
+Your slavers swiftly bound and gagged
+<<if $gOutcome == 'crit'>>
+these lizardkin, and hid them
+<<else>>
+the lizardkin, and hid the lizardkin
+<</if>>
+aside
+until the battle fully ended.
+Once that's done, your slavers returned to the "grateful" lizardkin,
+<<else>>
+Your slavers earned much gratitude from the lizardkin for the timely help,
+<</if>>
+before heading home secretly bringing the wizard — still alive but fully bound — as an extra bonus prize.
+</p>
+<</if>>
+
+<<if _betray && $gQuest.getSeed() % 3 != 1>>
+<p>
+Only when your slavers were already far away from the settlement with their
+new slaves in tow did the lizardkin
+settlement finally realized some of their missing comrades, who were
+struggling in your slavers'
+tight bindings... This will surely raise the ire of these lizardkin towards your company, for better
+or for worse.
+</p>
+<</if>>
+
+<<if !_betray && $gOutcome == 'crit'>>
+<p>
+Words of the good deeds done by your slavers spread far and wide, increasing
+your company's reputation not just with the lizardkin, but also with other
+settlements in the <<lore region_sea>>.
+</p>
+<</if>>
+
+
+
+:: Quest_stand_with_the_lizardkinsFailure [nobr]
+
+<<set _betray = ($gQuest.key == 'Quest_betray_the_lizardkins')>>
+
+<p>
+The lizardkin were understandably wary of your slavers' offer of
+<<if _betray>>
+"help",
+<<else>>
+help,
+<</if>>
+and kept their distance from your slavers, who setup their own camp someway a
+distance from the settlement. After a few days, the fated war horn was
+sounded, and your slavers rushed into the
+<<if _betray>>
+settlement with their ultimate goal of capturing one of these scaly beasts as a reward...
+<<else>>
+settlement...
+<</if>>
+</p>
+
+<<if $gQuest.getSeed() % 3 == 0>>
+<p>
+Your slavers were greeted with the sight of a battlefield on the shore of the
+settlements. The lizardkin fought bravely, but the pirates were seemingly
+fighting on equal grounds with the fearsome warriors.
+<<Yourrep $g.defender>> attempted to turn the battle in the lizardkin's favor by <<uadv $g.defender>> charging in, but <<their $g.defender>> <<uinsultnoun $g.defender>> turned out to be <<their $g.defender>> downfall.
+</p>
+
+<p>
+<<Rep $g.healer>> and <<utheirrel $g.healer $g.archer>> <<rep $g.archer>>
+were helpless to watch as <<rep $g.defender>> defender|was struck down, before
+being brought into the ship together with several other downed lizardkin no doubt
+to be sold together as slaves. The remaining slavers wisely decided to retreat and run
+from the fight, nursing their injuries on the way back home to the fort.
+<<urescuenow $g.defender>>, before <<they $g.defender>> defender|is sold
+together with the lizardkin off to some distant
+continent...
+</p>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<p>
+Once your slavers arrived, they were greeted by a mighty ship on the shore of the
+settlement, captained by what seems to be a very young <<lass $g.reg>> —
+clearly a <<rep setup.trait.subrace_humankingdom>>. "Your money or your
+life!," shouted the <<lass $g.reg>> dramatically, before ordering <<their
+$g.reg>> underlings to attack while the <<lass $g.reg>> <<themself $g.reg>>
+sit on a chair on top of the ship.
+</p>
+
+<p>
+From observing the battle, your slavers noticed that the pirates were clearly
+newbies and they were no match for the lizardkin's prowess. Your slavers
+became complacent, which turned out to be a grave mistake as one of the
+pirate wannabes snatched <<rep $g.archer>> from behind, and kidnapped
+<<therace $g.archer>> unbeknownst to the rest of the team.
+</p>
+
+<p>
+Only when the ship retreated that your slavers realized what a grave mistake
+they had made, being complacent in the <<lore region_sea>>.
+</p>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+
+<p>
+By the time your slavers arrived, the coast had been transformed into a
+corrupted battlefield. The pirate captain — a clearly powerful sorcerer —
+launched dark magic upon dark magic, which the lizardkin warriors barely
+managed to dodge. Attempting to use the advantage of surprise, <<rep
+$g.archer>> notched a single arrow up onto the ship, which bounced harmlessly
+off the wizard's magical barrier. In retaliation, the wizard launched a dark
+sphere of energy, catching <<rep $g.healer>> and hauling <<therace
+$g.healer>> afloat to the wizard's ship. Your other slavers were helpless as
+they were caught in a corruption spell, visibly transforming in front
+of the lizardkin, before losing consciousness.
+</p>
+
+<p>
+When your slavers regained consciousness, they were the only ones remaining
+on the battlefield, and <<rep $g.healer>> healer|was nowhere to be seen. In
+perhaps their wisest judgement throughout the quest, they decided to return
+quickly to the fort, and reported <<reps $g.healer>> abduction as fast as
+possible.
+<<uneedrescue $g.healer>>, preferably before the wizard turns <<them $g.healer>> into yet another mindless
+sex slave in <<their $g.wiz>> disposal...
+</p>
+<</if>>
+
+<p>
+<<if _betray>>
+With the battle not turning the way your slavers wanted, there was simply no opportunity
+for them to grab one of the lizardkin warriors as a slave.
+<</if>>
+<<if $gOutcome == 'disaster'>>
+The lizardkin even blamed your company for the losses, accusing your slavers of treachery.
+<</if>>
+</p>

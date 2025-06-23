@@ -1,0 +1,49 @@
+:: EventSetup_a_letter_of_challenge [nobr event]
+
+<<run new setup.UnitGroup(
+"sacred_duel0",
+"Lucgate Knight",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_knight),
+  setup.qc.Trait('unit', setup.trait.will_defiant),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_honorable, setup.trait.magic_light_master, setup.trait.per_loyal, setup.trait.per_brave], 2, false, false),
+],
+)>>
+
+<<run new setup.Event(
+'a_letter_of_challenge', /* key */
+"A Letter of Challenge", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+],
+'Event_a_letter_of_challenge',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Equipped('slaving_weapon_master'),
+  ],
+  'k': 'sacred_duel0',
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('a_letter_of_challenge', {
+k: "k",
+}),
+  setup.qc.VarSet('quest_excalibur_radiant', '1', 250),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_excalibur_radiant'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_a_letter_of_challenge [nobr]
+<<includereplace "Quest_a_letter_of_challenge">>

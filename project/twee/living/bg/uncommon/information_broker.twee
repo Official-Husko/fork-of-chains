@@ -1,0 +1,46 @@
+:: LIVINGSETUP_information_broker [nobr living]
+
+<<run new setup.Living({
+  key: 'information_broker',
+  name: 'Information Broker',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_informer: setup.LIVING_COMMON_PREFERENCE,
+    bg_thief: setup.LIVING_MORECOMMON_PREFERENCE,
+    skill_connected: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_sly: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_direct: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'trading in secrets',
+    'holding a meeting under the guise of darkness',
+    'tailing a target',
+  ],
+  location: 'office',
+})>>
+
+:: LIVING_information_broker [nobr]
+
+<p>
+Using the money a|they had gathered during a|their career as a slaver,
+a|they decided to
+<<if $g.a.isHasTrait('bg_informer')>>
+return to a|their former area of information gathering.
+<<else>>
+a|try a|their a|hands at information gathering.
+<</if>>
+
+<<if $g.a.isHasTrait('skill_connected')>>
+With the help of a|their many connections,
+<<elseif $g.a.isHasTrait('per_sly')>>
+With the help of a|their slithery tongue,
+<<else>>
+With the help of a|their experiences as a slaver,
+<</if>>
+a|they a|was able to secure a handful of reliable informants, and before long,
+a|their name starts to spread across the underworld.
+Before long, a|they would be known as the information broker of the underworld,
+specializing in trading and dealing secrets.
+</p>

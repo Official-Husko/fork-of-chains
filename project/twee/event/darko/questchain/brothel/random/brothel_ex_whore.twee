@@ -1,0 +1,93 @@
+:: EventSetup_brothel_ex_whore [nobr event]
+
+<<run new setup.Event(
+'brothel_ex_whore', /* key */
+"Brothel Ex-Whore", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_brothel_ex_whore',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 300),
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+],
+53, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_brothel_ex_whore [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+There are many people working in <<attach _describe>>, and not all of them are courtesans. There is of course <<yourrep $g.owner>>, who is responsible for managing the brothel. There are also the bouncers, including one of your former slave. And finally, there is <<name $g.head>>, a former whore who you have promoted as the brothel's
+<<if _promotion == 'money'>>
+business manager.
+<<else>>
+customer relations officer.
+<</if>>
+</p>
+
+<p>
+<<if _promotion == 'money'>>
+
+As the business manager, the <<girl $g.head>> is almost always busily working in <<their $g.head>> office. <<They $g.head>> must ensure that resources are used within an appropriate limit, and also ensure that no expense went unrecorded. At the end of each day, <<name $g.head>> can often be seen working downstairs, ensuring that all the customer have paid for the services rendered.
+
+<<else>>
+As the customer relations officer, the <<girl $g.head>> is almost always seen working within the brothel. Whenever a customer looks unhappy, <<they $g.head>> approaches them, and tries <<their $g.head>> best to appease them. At the end of each day, <<name $g.head>> can usually be found near the entrance, bowing and thanking the customers for their patronage.
+<</if>>
+It's quite a busy life.
+</p>
+
+<<choose>>
+
+<<opt "Give <<them $g.head>> a week of well-deserved vacation">>
+
+<p>
+The next day, you wait for <<them $g.head>> in <<their $g.head>> office, and give them an all-expenses-paid trip to the <<lore region_vale>>. When the diligent <<man $g.head>> tries to refuse, you insist, and eventually <<therace $g.head>> relents and agree to go on a vacation.
+</p>
+
+<p>
+The vacation does wonder for the overworked <<name $g.head>>, and they never realize how jaded they had been up until the vacation. When <<they $g.head>> returns, <<they $g.head>> appears much more cheerful than before, and is able to work more efficiently than before. Your brothel's reputation increased slightly as a result.
+</p>
+
+<<run setup.qc.Money(-2000).apply($gQuest)>>
+<<run setup.qc.VarAdd('quest_brothel_high_income', 6, -1).apply($gQuest)>>
+
+<<opt "Enjoy some consensual sex with the hard-working <<man $g.head>>">>
+
+<p>
+When <<name $g.head>> head|return to <<their $g.head>> luxurious bedroom, <<they $g.head>> head|was surprised to find you lying on the bed naked. Taking the hint, <<they $g.head>> head|leap into the bed, and you slowly caress the overworked <<urace $g.head>>. You make out for a while under the sheets, before going raunchier and raunchier into the night. Neither of you get too much sleep that night, but despite that, in the next day <<name $g.head>> appears more refreshed and less jaded than ever.
+</p>
+
+<<run setup.qc.VarAdd('quest_brothel_high_income', 2, -1).apply($gQuest)>>
+
+<</choose>>

@@ -1,0 +1,40 @@
+:: LIVINGSETUP_whore [nobr living]
+
+<<run new setup.Living({
+  key: 'whore',
+  name: 'Whore',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_whore: setup.LIVING_COMMON_PREFERENCE,
+    per_lustful: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_sexaddict: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_chaste: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'selling a|their body',
+    'sexually servicing a customer',
+    'blowing a paying customer',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_whore [nobr]
+
+<p>
+Being a slaver means one would be sexually satisfied, but <<rep $g.a>> seeks something more
+than sex between a master and a slave.
+a|Their pursue of sex between equals ends in the a|race
+<<if $g.a.isHasTrait('bg_whore')>>
+returning to a|their prior occupation
+<<else>>
+trying out a new occupation
+<</if>>
+in being a free whore.
+They would stay around near your fort, offering a sexual service from a free
+<<man $g.a>> in exchange for a meager amount of gold.
+a|They doesn't need the gold -- a|they already have quite a plenty of them --
+this, as well as the tale of a slaver that turns into a whore makes a|them
+rather famous already around your fort.
+</p>

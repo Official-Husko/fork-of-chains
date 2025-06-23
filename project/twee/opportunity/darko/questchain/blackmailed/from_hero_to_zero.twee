@@ -1,0 +1,121 @@
+:: OpportunitySetup_from_hero_to_zero [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'from_hero_to_zero', /* key */
+"Taste of Revenge", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_from_hero_to_zero',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_from_hero_to_zero_0',
+    'Opportunity_from_hero_to_zero_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Trait('boss', setup.trait.training_obedience_basic),
+      setup.qc.Slave('boss'),
+      setup.qc.Slaver('slaver'),
+      setup.qc.AllUnitSatisfyDo([setup.qres.Job(setup.job.slaver), setup.qres.Home()],
+        [setup.qc.BoonizeRandom('unit', 15)],
+      ),
+    ],
+  ],
+  [
+    'Opportunity_from_hero_to_zero_1',
+    'Opportunity_from_hero_to_zero_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Slave('boss'),
+      setup.qc.Slaver('slaver'),
+      setup.qc.BoonizeRandom('slaver', 200),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'boss': [
+  ],
+  'slaver': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_from_hero_to_zero [nobr]
+
+<p>
+It has been some time since your victory over <<rep $g.boss>>, now a slave
+under your care, awaiting yours and your slavers' pleasure. If you are
+feeling generous, you could share <<them $g.boss>> with the rest of your
+slaving family. Or you can let <<yourrep $g.slaver>> takes <<their
+$g.slaver>> well-deserved revenge against the former boss who had abused
+<<them $g.slaver>> so...
+</p>
+
+
+:: Opportunity_from_hero_to_zero_0 [nobr]
+<<if $g.slaver>>Break <<their $g.boss>> ass and make it available for the
+entire fort to use<</if>>
+
+
+:: Opportunity_from_hero_to_zero_0_flavor [nobr]
+
+<p>
+<<Rep $g.boss>>, who has been fairly dignified up to this point, breaks down
+when <<they $g.boss>> boss|is placed in stocks with <<their $g.boss>> ass in the
+air in the middle of your fort.
+<<Their $g.boss>> sobs become screams when,
+for the first time in <<their $g.boss>> life, <<they $g.boss>> boss|feel the
+burning sensation of a well-lubricated
+<<if $unit.player.isHasDick()>>cockhead<<else>>strap-on<</if>>
+forcing its way past <<their $g.boss>> virgin sphincter. Raping a virgin anus is not a new pleasure for you,
+but the usual shrieking, struggling and spasming is all the sweeter this time.
+By the end of the first day, more than half of your slavers at home have used
+<<their $g.boss>> poor injured butthole, which remains available for use
+throughout the rest of the week.
+Your slavers are enjoying the priviledge of having to fuck such a prestigious
+slave, while the experience paves the way for <<reps $g.boss>> training as a
+slave.
+</p>
+
+
+:: Opportunity_from_hero_to_zero_1 [nobr]
+<<if $g.slaver>>Let <<rep $g.slaver>> slaver|have <<their $g.slaver>> revenge<</if>>
+
+
+:: Opportunity_from_hero_to_zero_1_flavor [nobr]
+<p>
+<<Rep $g.slaver>> slaver|lead <<them $g.boss>> out into the fort square, before
+locking <<them $g.boss>> securely in a makeshift pillory. In full view from
+the fort, <<rep $g.slaver>> slaver|proceed to
+<<if !$g.slaver.isHasDick()>>don a strap-on and<</if>>
+orally rape <<therace $g.boss>>, who
+was until recently a leader of a slaving company <<themself $g.boss>>.
+Seeing such a prestigious slave all devoted for <<reps $g.slaver>> singular
+pleasure instills some jealousy to your other slavers, but they understand how
+much well-deserved the punishment is. <<Rep $g.slaver>>, meanwhile, slaver|is almost
+unsufferably pleased with your decision to force <<rep $g.boss>> to pleasure
+<<them $g.slaver>>.
+</p>

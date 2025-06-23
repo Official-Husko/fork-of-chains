@@ -1,0 +1,43 @@
+:: InteractionSetup_break_up_with_your_lover [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'break_up_with_your_lover', /* key */
+"Break up with your lover", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Interaction_break_up_with_your_lover',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* unit requirements */
+  setup.qres.YourLover(),
+],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_break_up_with_your_lover [nobr]
+<p>
+Are you sure you want to break up with your lover <<rep $g.target>>?
+</p>
+
+<div>
+<<linkreplace 'Yes'>>
+
+<<run setup.qc.BreakupWithYou('target').apply($gQuest)>>
+
+<p>
+You have broken up with your <<urace $g.target>> lover, or now ex-lover <<rep
+$g.target>>. The break-up stings, and will haunt your thoughts in the coming
+days. But you know your that ex-lover <<rep $g.target>> will also suffer the
+same pain, and you take a little solace in that.
+</p>
+
+<</linkreplace>>
+</div>

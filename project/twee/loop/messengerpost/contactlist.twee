@@ -1,0 +1,27 @@
+:: ContactList [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.messengerpost)>>
+<<set _contacts = $contactlist.getContacts()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You enter the small building designatedas your <<rep setup.buildingtemplate.messengerpost>>.
+It is here that you receive messages and order messengers to
+deliver your messages.
+<<if _contacts.length >>
+  You check on your list of contacts and see if there is anything you'd like to do.
+<<else>>
+  As you have no contacts right now, there is nothing to be done here.
+<</if>>
+</p>
+
+<<filterall 'contact' _contacts>>
+  <<if $menufilter.get('contact', 'display') == 'compact'>>
+    <<contactcardcompact _displayobj>>
+  <<else>>
+    <<contactcard _displayobj>>
+  <</if>>
+<</filterall>>

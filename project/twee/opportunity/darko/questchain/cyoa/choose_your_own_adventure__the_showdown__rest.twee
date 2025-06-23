@@ -1,0 +1,138 @@
+:: OpportunitySetup_choose_your_own_adventure__the_showdown___rest [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__the_showdown___rest2', /* key */
+"Choose Your Own Adventure: The Showdown - Rest", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown',], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__the_showdown___rest',
+setup.qdiff.hardest39, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__the_showdown___rest2_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarAdd('choose_your_own_adventure_changes', 1, -1),
+setup.qc.VarSet('choose_your_own_adventure_oasis', 'oasis', -1),
+setup.qc.OneRandom([
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach2'),
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach'),
+]),
+],
+], [
+'Opportunity_choose_your_own_adventure__the_showdown___rest2_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_oasis', 'caverns', -1),
+setup.qc.OneRandom([
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach2'),
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach'),
+]),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__the_showdown___rest', /* key */
+"Choose Your Own Adventure: The Showdown - Rest", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown',], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__the_showdown___rest',
+setup.qdiff.hardest39, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__the_showdown___rest_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarAdd('choose_your_own_adventure_changes', 1, -1),
+setup.qc.VarSet('choose_your_own_adventure_oasis', 'oasis', -1),
+setup.qc.OneRandom([
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach2'),
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach'),
+]),
+],
+], [
+'Opportunity_choose_your_own_adventure__the_showdown___rest_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_oasis', 'caverns', -1),
+setup.qc.OneRandom([
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach2'),
+  setup.qc.Opportunity('choose_your_own_adventure__the_showdown___approach'),
+]),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_choose_your_own_adventure__the_showdown___rest [nobr]
+<<include 'Opportunity_choose_your_own_adventure__the_interlude___bondCommon'>>
+
+<p>
+Fully equipped
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+head to toe with armor,
+<<else>>
+with magical robes and artefacts,
+<</if>>
+the pair of siblings go to the desert with the help of the same mercenary
+company they have been patroning thus far. They travel for days, each day reaching
+closer and closer to their destination.
+And finally, the destination is just one more day of travel.</p>
+
+<p>
+In this final decisive day, the party decides to camp in the ...
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__the_showdown___rest_0 [nobr]
+Oasis
+
+:: Opportunity_choose_your_own_adventure__the_showdown___rest2_0 [nobr]
+Oasis (Default)
+
+
+
+:: Opportunity_choose_your_own_adventure__the_showdown___rest_1 [nobr]
+Caverns (Default)
+
+:: Opportunity_choose_your_own_adventure__the_showdown___rest2_1 [nobr]
+Caverns

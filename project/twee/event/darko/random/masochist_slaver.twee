@@ -1,0 +1,133 @@
+:: EventSetup_masochist_slaver [nobr event]
+
+<<run new setup.Event(
+'masochist_slaver', /* key */
+"Masochist Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'gore',
+],
+'Event_masochist_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.per_masochistic], true),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+  ],
+  'other': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTraits([setup.trait.per_masochistic], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Injury('slaver', 2),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.hospital),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_masochist_slaver [nobr]
+<p>
+<<Yourrep $g.slaver>> has been with your company for some time now, and by now, it is not a secret that <<their $g.slaver>> brain is wired a little differently than most others. While other people tend to avoid pain, <<therace $g.slaver>> instead often seek the embrace of the pain to a dangerous extent. Instead of running in the face of danger, <<therace $g.slaver>> sometimes choose to do foolish things.
+</p>
+
+<p>
+In fact, <<yourrep $g.other>> has just informed you that strange sounds could be heard from inside <<reps $g.slaver>> room. As you approach the lodgings area, you hear the distinct sound of whip hitting flesh, and both of you rush into the room. Once inside, you are greeted with bruised back of <<therace $g.slaver>>, who apparently has somehow got <<their $g.slaver>> <<uhands $g.slaver>> on a horse whip, and got too excited with trying it out on <<themself $g.slaver>>. The naked slaver is in a very excruciating pain, which translates to excruciating pleasure for the masochist slaver, and
+<<their $g.slaver>>
+<<if $g.slaver.isHasDick()>>
+<<udick $g.slaver>> stands proudly erect.
+<<else>>
+<<uvagina $g.slaver>> is leaking wet.
+<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Tend to <<their $g.slaver>> wounds">>
+
+<p>
+You can't really blame the <<man $g.slaver>> for being born that way<<if $unit.player.isMasochistic()>> — in fact, as a fellow masochist you understand the urge as well — <<else>>,<</if>>
+but as a slaver under your employ this behavior just cannot be maintained. Still, what's done is done, and you immediately carried the battered <<urace $g.slaver>> into your
+<<rep setup.buildingtemplate.hospital>>.
+Your quick action saved <<therace $g.slaver>> a lot of pain, and while that's a good thing for your company, you are unsure if the utter masochist feels similarly.
+</p>
+
+<p>
+You make a mental note to hide all manners of self-harming tools far, far away from <<reps $g.slaver>> reach.
+</p>
+
+<<run setup.qc.Heal('slaver', 1).apply($gQuest)>>
+
+<<opt "Whip <<them $g.slaver>> some more">>
+
+<p>
+Seeing <<their $g.slaver>> blissful face in front of such excruciating pain,
+<<if $unit.player.isHasTrait('per_cruel')>>
+you cruelly lick your lips in anticipation of a rare opportunity to whip your own slaver.
+You know this is what they want too, so
+<<else>>
+you sighed deeply.
+<<if $unit.player.isMasochistic()>>
+As a fellow masochist, you understand what needs to be done in such a situation.
+<<else>>
+Since the milk is already spoiled, might as well make use of the opportunity to increase <<therace $g.slaver>>'s morale, and you only know one way to do that.
+<</if>>
+Letting out another sigh,
+<</if>>
+you raise the whip high before raining it down on <<reps $g.slaver>> <<uback $g.slaver>>, earning a shriek that's most certainly not a shriek of pain from <<rep $g.slaver>>.
+Eventually,
+<<they $g.slaver>>
+<<if $g.slaver.isHasDick()>>
+cums
+<<else>>
+climaxes
+<</if>>
+from the pain alone, before losing consciousness.
+You finally bring the well-beaten
+<<urace $g.slaver>> to the
+<<rep setup.buildingtemplate.hospital>>. While <<they $g.slaver>> slaver|become quite injured from the whipping, <<their $g.slaver>> morale is as high as it could be right now.
+</p>
+
+<p>
+<<if $unit.player.isHasTrait('per_cruel')>>
+You secretly get off too from your sadism fetish, and starting to wonder if you could arrange with <<them $g.slaver>> to make the relationship permanent...
+<</if>>
+<<run setup.qc.FriendshipWithYou('slaver', 300).apply($gQuest)>>
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 8).apply($gQuest)>>
+
+<<optif $unit.player.isMasochistic()>>
+<<opt "Get whipped together">>
+
+<p>
+Well, <<rep $g.slaver>> just happens to not be the only masochist in the room.
+Secretly, you too crave pain, and seeing as nobody else is around, you sit next to <<rep $g.slaver>>
+and join in the self flagellation.
+<<Rep $g.slaver>> looked surprised at first, but then found the company enjoyable.
+As a fellow masochist, you understand what needs to be done in such a situation.
+The rest of the day were filled with the sound of rope hitting flesh.
+Thankfully, all the other residents of the fort thought that some random slave were getting whipped,
+and certainly not the leader of the company <<themself $unit.player>>.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', 500).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('slaver', 8).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('you', 8).apply($gQuest)>>
+<<run setup.qc.Injury('you', 2).apply($gQuest)>>
+
+<</choose>>

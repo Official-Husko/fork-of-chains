@@ -1,0 +1,184 @@
+:: QuestSetup_lucky_horseshoe [nobr quest]
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Horseshoe Crafter', /* name */
+[
+  setup.trait.bg_metalworker,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_aggressive,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_calm,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+],
+{
+  brawn: 2,
+  slaving: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'lucky_horseshoe', /* key */
+"Lucky Horseshoe", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'special',
+  'prep',
+  'trait',
+  'desert',
+],
+4, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 1],
+  'smith2': [ setup.qu.blacksmith, 1],
+  'smith1': [ setup.qu.blacksmith, 1],
+},
+{ /* actors */
+  'smith': 'desert_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_lucky_horseshoe',
+setup.qdiff.hard59, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_lucky_horseshoeCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_crit', 1, -1),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_lucky_horseshoeCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_done', 1, -1),
+      setup.qc.VarSet('quest_harbinger_of_luck_horse', '1', -1),
+      setup.qc.Blessing('smith1', 1, 'blessing_protection8', undefined),
+      setup.qc.Blessing('smith2', 1, 'blessing_protection8', undefined),
+      setup.qc.SetCooldownEvent('harbinger_of_chaos', 10),
+      setup.qc.SetCooldownEvent('harbinger_of_crows', 10),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_lucky_horseshoeCrit',
+    [
+      setup.qc.Blessing('a', 1, 'curse_weakness8', undefined),
+      setup.qc.SetCooldownEvent('luck_chaser', 10),
+    ],
+  ],
+  [
+    'Quest_lucky_horseshoeCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Blessing('smith1', 1, 'curse_weakness8', undefined),
+      setup.qc.Blessing('smith2', 1, 'curse_weakness8', undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_lucky_horseshoe [nobr]
+<<set _unit = setup.getUnit({title: 'quest_harbinger_of_misfortune_0'})>>
+<<if !_unit>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+In the continent of <<lore geo_mestia>>, horseshoes have long been considered lucky. One would nail a horseshoe inside their room upwards, so that the horseshoe would catch luck and bestow it upon the room's resident. <<Yourrep _unit>>, being the unlucky <<urace _unit>> that <<they _unit>> is, had tried this, of course, but as expected it didn't work out. But <<they _unit>> has come to you with another attempt, this time using a specially made horseshoe from a famous blacksmith in the <<lore region_desert>>.
+</p>
+
+<p>
+The <<lore region_desert>> is home to many horse-takers, be it regular horse or humanlike horses, and it is not surprising that many horse-shoe makers live there. <<Rep _unit>> has identified the creations of one particular blacksmith to be rather lucky, based on the stories <<they _unit>> had heard from the many tavern wenches. You have your doubts, of course, but given how desperate <<therace _unit>> is at removing <<their _unit>> bad luck, you might just swallow your pride and logic this time and send a group of slavers to patron the smith and help craft the lucky shoe...
+</p>
+
+<</if>>
+
+
+
+:: Quest_lucky_horseshoeCrit [nobr]
+<p>
+Per the tradition, one must craft <<their $g.a>> own horseshoe to maximize the luck it would bestow.
+An easy task, were it not for <<reps $g.a>> bad luck.
+When <<they $g.a>> a|was to bellow the fire, a strong gust of wind just happen to blow through. When the horseshoe was hot and ready to be cooled off, <<they $g.a>> would trip and fell, dropping the hot horseshoe into the fire once more. And the misfortune continues to plague <<therace $g.a>> throughout.
+<<if $g.a.isHasTrait('bg_metalworker')>>
+<<Rep $g.a>> a|was a blacksmith before a slaver, however, and the experience did help.
+<</if>>
+<<if $g.a.isHasTrait('muscle_verystrong')>>
+<<Their $g.a>> bulging muscles made the smithing easier, however.
+<<elseif $g.a.isHasTrait('muscle_strong')>>
+<<Their $g.a>> muscles made the smithing job easier, however.
+<</if>>
+<<if $g.a.isHasTrait('muscle_verythin')>>
+<<They $g.a>> a|was too thin for the job, making the smithing harder.
+<</if>>
+<<if $g.a.isHasTrait('per_aggressive')>>
+<<Their $g.a>> aggressiveness was channeled into the hammer, speeding up the entire process.
+<</if>>
+<<if $g.a.isHasTrait('per_calm')>>
+<<They $g.a>> a|was a bit too patient on the craft, slowing down the entire process.
+<</if>>
+<<if $g.a.isHasTrait('magic_fire')>>
+<<Their $g.a>> affinity to fire helped <<them $g.a>> work with the forge.
+<</if>>
+<<if $g.a.isHasTrait('magic_water')>>
+<<Their $g.a>> instinctual water magic meant <<they $g.a>> had a harder time working in the searing heat.
+<</if>>
+</p>
+
+<p>
+After four long weeks and with the aid of both <<rep $g.smith1>> and <<utheirrel $g.smith1 $g.smith2>> <<rep $g.smith2>>, the job was finally over.
+The horseshoe is completed, glittering and smelling of new. And it was time to test its effectiveness. Your slavers had rented a small hut in one of the many desert settlements, and nailed the horseshoe on its door. Night fell, and it was time for <<rep $g.a>> to try and sleep inside.
+</p>
+
+<<if $gOutcome == 'success' || $gOutcome == 'crit'>>
+<p>
+Instead of feeling blessed or stronger, however, <<rep $g.a>> appeared much more haggard and restless the next day. Looking at <<therace $g.a>>, you could tell that the slaver was absolutely more cursed than before, the charm seemingly didn't work. However, you've noticed that the other two slavers who had accompanied <<therace $g.a>> did got blessed somehow instead — perhaps <<reps $g.a>> bad luck was just so strong that the blessing that was supposed to be meant for <<them $g.a>> go to <<their $g.a>> allies instead?
+</p>
+
+<p>
+Either way, it seems that this method is yet another failure, and you shoudl try another one...
+</p>
+
+<<else>>
+
+<p>
+Instead of feeling blessed or stronger, however, <<rep $g.a>> appeared much more haggard and restless the next day. Looking at <<therace $g.a>>, you could tell that the slaver was absolutely more cursed than before, the charm seemingly didn't work. And the reason was obvious (or at least obvious according to <<rep $g.a>>): the horseshoe had several dents here and there from poor craftsmanship. It seemed that the slavers you've sent to the task were subpar for the job, and the horseshoe did not come up well.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+The poor craftsmanship is such that even <<rep $g.smith1>> and <<rep $g.smith2>> were both affected by the curse...
+</p>
+<</if>>
+
+<p>
+Perhaps you could try again later, when you got the chance. But send a better team next time!
+</p>
+
+<</if>>

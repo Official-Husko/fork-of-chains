@@ -1,0 +1,250 @@
+:: QuestSetup_treasure_hunt_deeprealms [nobr quest]
+
+<<run new setup.QuestTemplate(
+'treasure_hunt_deeprealms', /* key */
+"Treasure Hunt: Deeprealms", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'unknown',
+  'danger',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'fighter': [ setup.qu.fighter_deep, 1],
+  'healer': [ setup.qu.support, 1],
+  'scholar': [ setup.qu.explorer, 1],
+},
+{ /* actors */
+  'slave': 'deep_all',
+},
+[ /* costs */
+],
+'Quest_treasure_hunt_deeprealms',
+setup.qdiff.normal35, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_treasure_hunt_deeprealmsCrit',
+    [
+      setup.qc.SlaveMarker('slave'),
+    ],
+  ],
+  [
+    'Quest_treasure_hunt_deeprealmsCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_treasure_hunt_deeprealmsCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_treasure_hunt_deeprealmsCrit',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_treasure_hunt_deeprealms [nobr]
+<p>
+    The <<lore region_deep>> is connected by ancient highways, build by civilization of old that have been long lost to time.
+    Some of the highways remain present and well-used to this day, especially for trading between the subterran settlements. Many, however, lies decrepit, inhabited by monsters of many kinds.
+    The <<lore region_deep>> citizens believe that many treasures are hidden behind those ruins, should one be foolish enough to venture into the unknown, risking their lives for a meager sum of gold...
+</p>
+
+
+
+:: Quest_treasure_hunt_deeprealmsCrit [nobr]
+<p>
+    Having identified a pristine and unlooted location deep from a tavern in the <<lore region_deep>>,
+    your slavers <<uadv $g.scholar>> braved the dangers of the <<lore region_deep>> on the way there. And there was quite a number of monsters along the way.
+    First was the giant spiders, whom
+    <<rep $g.fighter>>
+    <<if $g.fighter.isHasTrait('magic_fire')>>
+        burned with fire.
+    <<elseif $g.fighter.isHasTrait('skill_ambidextrous')>>
+        slayed with <<their $g.fighter>> dual wielding technique.
+    <<elseif $g.fighter.isHasTrait('magic_water')>>
+        froze in ice.
+    <<elseif $g.fighter.isHasTrait('magic_light')>>
+        blinded with light.
+    <<else>>
+        slayed with <<their $g.fighter>> <<uweapon $g.fighter>>.
+    <</if>>
+    There was also the horde of undead, whom
+    <<rep $g.healer>>
+    <<if $g.healer.isHasTrait('magic_light')>>
+        cleansed with the power of the light.
+    <<elseif $g.healer.isHasTrait('magic_fire')>>
+        purified with the power of the fire.
+    <<elseif $g.healer.isHasTrait('magic_water')>>
+        froze in place.
+    <<elseif $g.healer.isHasTrait('skill_alchemy')>>
+        purified with a purifying concoction.
+    <<else>>
+        bashed repeatedly in the head with <<their $g.healer>> <<uweapon $g.healer>>.
+    <</if>>
+    And there were much more your slavers defeated in order to reach the supposed treasure-bearing location.
+</p>
+
+<<if $gQuest.getSeed() % 4 == 0>>
+    <p>
+        The ruins your slavers stumbled upon turned out to be an ancient treasury of some sort.
+    </p>
+
+    <<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+        <p>
+            Unfortunately, all of the treasures has been lost to time.
+        </p>
+    <<else>>
+        <p>
+            Most of the treasures have been lost to time, but there was an exceptionally durable pieces of ancient dwarven armor which survived the test of the ages.
+        </p>
+        <<run setup.qc.Equipment('dwarf_armor').apply($gQuest)>>
+    <</if>>
+
+    <<if $gOutcome == 'crit'>>
+        <p>
+            <<Rep $g.scholar>>,
+            <<if $g.scholar.isHasTrait('per_attentive')>>
+                being the attentive <<urace $g.scholar>>,
+            <<else>>
+                by pure chance,
+            <</if>>
+            spotted a few trap triggers littering the place, indicating that the treasure was not fully unguarded.
+            Thanks to the detection, they were able to navigate through it, and obtained the armor without injuries.
+        </p>
+    <<else>>
+        <p>
+            But the treasury was not completely unguarded.
+            A false step, and <<rep $g.fighter>> triggered an ancient dwarven defense mechanism, firing deadly arrows throughout the area.
+            Your slavers suffered
+            <<if $gOutcome == 'disaster'>>
+                massive
+            <</if>>
+            injuries as a result.
+        </p>
+        <<if $gOutcome == 'disaster'>>
+            <<run setup.qc.Injury('fighter', 6).apply($gQuest)>>
+            <<run setup.qc.Injury('healer', 5).apply($gQuest)>>
+            <<run setup.qc.Injury('scholar', 6).apply($gQuest)>>
+        <<else>>
+            <<run setup.qc.Injury('fighter', 2).apply($gQuest)>>
+            <<run setup.qc.Injury('healer', 2).apply($gQuest)>>
+            <<run setup.qc.Injury('scholar', 2).apply($gQuest)>>
+        <</if>>
+    <</if>>
+
+<<elseif $gQuest.getSeed() % 4 == 1>>
+    <p>
+        The place turns out to be a catacomb, a final resting place for people of ancient times.
+        <<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+            To make things worse, the place seems to have already been looted clean, with no treasure whatsoever in sight.
+        <<else>>
+            But it is also brimming with treasure unlooted from long past, which your slavers <<uadv $g.scholar>> looted clean.
+            <<run setup.qc.Money(6000).apply($gQuest)>>
+        <</if>>
+    </p>
+
+    <p>
+        <<if $gOutcome == 'crit'>>
+            Nothing bad seems to happen — it seems whatever spirit used to haunt these halls have also long been lost to time.
+        <<else>>
+            However, the catacombs were not as abandoned as your slavers had thought. It seems your slavers had angered the spirits who remained there, who
+            <<if $gOutcome == 'disaster'>>
+                cursed all your slavers for their desecration of the sacred place...
+                <<run setup.qc.Blessing('fighter', 1, null, true).apply($gQuest)>>
+                <<run setup.qc.Blessing('healer', 1, null, true).apply($gQuest)>>
+                <<run setup.qc.Blessing('scholar', 1, null, true).apply($gQuest)>>
+            <<else>>
+                cursed
+                <<if $gQuest.getSeed() % 3 == 0>>
+                    <<set $g.o = $g.fighter>>
+                <<elseif $gQuest.getSeed() % 3 == 1>>
+                    <<set $g.o = $g.healer>>
+                <<elseif $gQuest.getSeed() % 3 == 2>>
+                    <<set $g.o = $g.scholar>>
+                <</if>>
+                <<rep $g.o>>
+                for the desecration...
+                <<run setup.qc.Blessing('unit', 1, null, true).apply(setup.costUnitHelper($g.o))>>
+            <</if>>
+        <</if>>
+    </p>
+
+<<elseif $gQuest.getSeed() % 4 == 2>>
+    <p>
+        The place turns out to be the remains of a temple, although ravaged by time.
+        <<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+            Whatever power it used to have, it has been long gone.
+        <<else>>
+            The temple was still brimming with power, bestowing blessings upon blessings on two of your slavers.
+            <<run setup.qc.Blessing('fighter', 1).apply($gQuest)>>
+            <<run setup.qc.Blessing('healer', 1).apply($gQuest)>>
+        <</if>>
+    </p>
+
+    <p>
+        <<if $gOutcome == 'crit'>>
+            With the last brim of power absorbed into your slavers, the temple crumbled to the ground, its eternal service seemingly at an end.
+        <<else>>
+            Being so deep within the infested <<lore region_deep>> has corrupted the temple, however, and in addition to the blessings, it also grant
+            <<if $gOutcome == 'disaster'>>
+                great
+                <<run setup.qc.TraumatizeRandom('fighter', 30).apply($gQuest)>>
+                <<run setup.qc.TraumatizeRandom('healer', 30).apply($gQuest)>>
+                <<run setup.qc.TraumatizeRandom('scholar', 30).apply($gQuest)>>
+            <<else>>
+                <<run setup.qc.TraumatizeRandom('fighter', 12).apply($gQuest)>>
+                <<run setup.qc.TraumatizeRandom('healer', 12).apply($gQuest)>>
+                <<run setup.qc.TraumatizeRandom('scholar', 12).apply($gQuest)>>
+            <</if>>
+            trauma upon your slavers...
+        <</if>>
+    </p>
+
+<<elseif $gQuest.getSeed() % 4 == 3>>
+
+    <p>
+        The place turns out to be a demonic altar, and seemingly rather recently built too.
+        <<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+            It seems to have already completed its purpose, however, and nothing of value was found.
+        <<else>>
+            In fact, on top of the altar lies a single writhing slave, whom your slavers freed only to enslave right after.
+            <<run setup.qc.Slave('slave').apply($gQuest)>>
+        <</if>>
+    </p>
+
+    <p>
+        <<if $gOutcome == 'crit'>>
+            Thankfully, there was no repercussion whatsoever of intruding into such corrupted ritual. Your slavers had to count their lucks for that.
+        <<else>>
+            On the way back, however, the altar suddenly reactivated, seemingly on its own.
+            Dark corrupted tendrils shot out,
+            <<if $gOutcome == 'crit'>>
+                <<run setup.qc.Corrupt('fighter', 2).apply($gQuest)>>
+                <<run setup.qc.Corrupt('healer', 2).apply($gQuest)>>
+                greatly
+            <<else>>
+                <<run setup.qc.Corrupt('fighter').apply($gQuest)>>
+                <<run setup.qc.Corrupt('healer').apply($gQuest)>>
+            <</if>>
+            corrupting your slavers...
+        <</if>>
+    </p>
+
+<</if>>

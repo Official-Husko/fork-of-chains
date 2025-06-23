@@ -1,0 +1,65 @@
+:: EventSetup_elvish_hex [nobr event]
+
+<<run new setup.Event(
+'elvish_hex', /* key */
+"Elvish Hex", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_elvish_hex',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'elf': 'subrace_elf',
+},
+[ /* outcomes */
+  setup.qc.Ire('elf', -20),
+  /* elven hex is slightly weaker, only 4 curses instead of 5 */
+  setup.qc.CurseRandomSlaverHome(),
+  setup.qc.CurseRandomSlaverHome(),
+  setup.qc.CurseRandomSlaverHome(),
+  setup.qc.CurseRandomSlaverHome(),
+],
+[ /* restrictions */
+  setup.qres.IreAtLeast('elf', 20),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_elvish_hex [nobr]
+
+<p>
+Your slavers don't spend all their free time inside the fort.
+Sometimes, they would go out into the nearby taverns to enjoy something else other than slave sex and
+peruse the local selection of wares.
+They usually return to your fort with nothing but smile on their face, but sometimes, they would also get something else during the r&r.
+</p>
+
+<p>
+Yesterday, some of your slavers returned from those taverns and bragged about how they had
+been blessed by a
+<<if $g.elf.isMale()>>
+ruggedly handsome
+<<else>>
+exotically beautiful
+<</if>>
+elven priest they just so happen to find in the tavern while being quite drunk.
+You raised an eyebrow on this, of course, since there was so many things wrong with the story.
+What's an elven priest doing in the vales, far from their home?
+A priest going into the taverns?
+And why would they bless your slavers known for their depravities?
+</p>
+
+<p>
+Your questions are answered today, as instead of a blessing, it seems that your slavers
+were bestowed by a terrible curse instead. Throughout the day, they would find themself in strange
+precarious situations. It seems that instead of a blessing, your slavers were bestowed with
+an elven hex instead. Come to think of it, you did anger some factions among the
+<<rep $company.elf>> recently, and perhaps this is their way of showing their "gratitude"
+for all you've done...
+</p>

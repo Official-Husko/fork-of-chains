@@ -1,0 +1,135 @@
+:: EventSetup_doppelganger_show [nobr event]
+
+<<run new setup.Event(
+'doppelganger_show', /* key */
+"Doppelganger Show", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_doppelganger_show',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_doppelganged'),
+    setup.qres.Available(),
+    setup.qres.Home(),
+  ],
+  'dop': setup.contacttemplate.quest_doppelganger,
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_doppelganger_event_cooldown', '1', 100),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_doppelganger_progress'),
+  setup.qres.VarNull('quest_doppelganger_event_cooldown'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+
+<<run new setup.Event(
+'doppelganger_show2', /* key */
+"Doppelganger Show", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_doppelganger_show',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_doppelganged'),
+    setup.qres.Available(),
+    setup.qres.Home(),
+  ],
+  'dop': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_doppelganger'),
+    setup.qres.Available(),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_doppelganger_event_cooldown', '1', 100),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_doppelganger_progress'),
+  setup.qres.VarNull('quest_doppelganger_event_cooldown'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_doppelganger_show [nobr]
+
+<<set _guest = $gQuest.getTemplate().key == 'doppelganger_show'>>
+
+<p>
+<<Rep $g.slaver>> and <<their $g.slaver>> doppelganger <<rep $g.dop>> now both live at your fort —
+<<if _guest>>
+<<rep $g.slaver>> slaver|remain your slaver, of course, while <<rep $g.dop>> stays at your guest.
+<<else>>
+they are both now working as your slavers.
+<</if>>
+<<if $g.slaver.getLover() == $g.dop>>
+Since they are lovers,
+<<elseif $g.slaver.getLover()>>
+Despite already having a lover,
+<<else>>
+As <<they $g.slaver>> slaver|do not yet have a lover,
+<</if>>
+<<rep $g.slaver>> would occasionally enjoy the sex with <<their $g.slaver>> own clone, occasionally enjoying
+<<if $g.slaver.isHasDick()>>
+the taste of <<their $g.slaver>> own dick,
+<<else>>
+the taste of <<their $g.slaver>> own cunt,
+<</if>>
+as well as the feeling of being serviced by what is basically <<their $g.slaver>> own <<umouth $g.slaver>>.
+</p>
+
+<p>
+Today, they decide to pay you back for your generosity by giving you some private show, if you'd like?
+</p>
+
+<<choose>>
+
+<<opt "Enjoy watching some self-sex action">>
+
+<p>
+They invited you to their room, knowing how much you enjoy watching sex. Once inside, they shuffle around, making you unable to distinguish who is who, and their bodies become nothing but interchangeable pair of flesh. They begin by caressing each other, touching their own sensitive spots that are also present in their other body, before eagerly kissing with each other. They then jump on the bed, and press their
+<<if $g.dop.isHasDick()>>cocks<<else>>pussies<</if>> against one another, making sure everything is pleasantly symmetrical.
+One of them breaks the symmetry by rotating their body, and positioning <<their $g.dop>> <<umouth $g.dop>> just right in front of the other's <<ugenital $g.slaver>>, before
+<<if $g.slaver.isHasDick()>>
+sucking it eagerly with the pace <<they $g.dop>> dop|know <<they $g.dop>> dop|like best.
+<<else>>
+eating it eagerly with the pace <<they $g.dop>> dop|know <<they $g.dop>> dop|like best.
+<</if>>
+They roll over the bed every now and then, their symmetrical body making the experience of watching them unlike any other.
+In the end, they climaxes simultaneously, and both ends up lying on the bed together, giving each other a tired but satisfied kiss.
+</p>
+
+<<opt "Pass on the offer">>
+
+<p>
+With the stable of slaves being kept deep down in your dungeons, if you want to enjoy sex, you can skip the watching part and get straight to action. With this in mind, you decline the offer, telling them that if they want to pay you back, just work hard as a slaver under your employ.
+</p>
+
+<p>
+It seems your words did motivate <<rep $g.slaver>> to work a little harder in the coming weeks.
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 5).apply($gQuest)>>
+
+<</choose>>

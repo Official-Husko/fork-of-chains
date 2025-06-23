@@ -1,0 +1,174 @@
+:: QuestSetup_the_seven_deadly_transformation__lust [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+],
+{
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__lust', /* key */
+"The Seven Deadly Transformation: Lust", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'forest',
+'trait',
+'prep'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'fated': _criteriafated,
+'trainer': setup.qu.slavetrainer,
+'whore1': setup.qu.whore,
+'whore2': setup.qu.whore, },
+{ /* actors */
+'whore': 'subrace_neko', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__lust',
+setup.qdiff.hard23, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__lustCrit',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_location_purrloin),
+setup.qc.Outcomes('success'),
+setup.qc.BoonizeRandom('trainer', 4),
+setup.qc.BoonizeRandom('whore1', 4),
+setup.qc.BoonizeRandom('whore2', 4),
+],
+], [
+'Quest_the_seven_deadly_transformation__lustCrit',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_location_purrloin),
+setup.qc.Trait('fated', setup.trait.training_obedience_basic),
+setup.qc.Trait('fated', setup.trait.training_endurance_basic),
+setup.qc.Trait('fated', setup.trait.eyes_neko), ],
+], [
+'Quest_the_seven_deadly_transformation__lustCrit',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_location_purrloin),
+],
+], [
+'Quest_the_seven_deadly_transformation__lustCrit',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_location_purrloin),
+setup.qc.MoneyCustom(-1500),
+setup.qc.SlaveMarker('whore'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slave),
+  setup.qres.HasTitle('seven_deadly_transformation'),
+  setup.qres.NoTrait(setup.trait.eyes_neko),
+]),
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__lust [nobr]
+<<set _headunit = setup.getUnit({job: setup.job.slave, title: "seven_deadly_transformation"})>>
+<<if !_headunit>>
+<<dangertext "Due to your company missing a slave important for this quest, this quest is no longer able to be completed.">>
+<<else>>
+
+<p>
+A letter arrived at your company from the <<lore location_npc>> (NPC) in the
+<<lore region_forest>>. Apparently, one of your slaves, <<rep _headunit>>, has an
+upcoming booking for one of the most famous whorehouses in NPC, the <<lore
+location_purrloin>>.
+</p>
+
+<p>
+Recalling <<reps _headunit>> supposed grand destiny, this could be one of the
+trials that <<they _headunit>> has to face. But really? A whorehouse? Well,
+might as well enjoy it then and send a group of lucky slavers proficient in the art of
+whoring. At the very least, your slavers will have their fun, if this turns
+out to be nothing but dead lead.
+</p>
+
+<</if>>
+
+
+:: Quest_the_seven_deadly_transformation__lustCrit [nobr]
+
+<p>
+Your slavers arrived the <<lore location_purrloin>> — immediately several
+slutty neko threw themselves on the floor and writhed for your slavers'
+attention, a normal greeting for the upstanding location.
+But they were here on a mission... kinda, of uh... what mission
+again?
+</p>
+
+<p>
+The hostess, seeing your slavers' valid reservation for the place, escorted them
+to one of the private rooms. There,
+four sexy neko were strewn around in the bed, <<if $g.whore.isHasDick()>>all
+with stiff pricks<<else>>all with wet pussies<</if>> ready for whatever their
+clients desired.
+</p>
+
+<p>
+Initially, they let <<rep $g.fated>> played with the four neko toys
+available in the room. But <<rep $g.fated>> did not seem to be overly
+enthusiastic by the idea and nothing seemed to happen.
+</p>
+
+<<if $gOutcome == 'failure' or $gOutcome == 'disaster'>>
+
+<p>
+Disappointed, your slavers turned to leave the establishment without perusing
+any of the wares.
+<<if $gOutcome == 'failure'>>
+The hostess saw the dissatisfaction in your slavers, and
+assumed the worst. <<They $g.whore>> promised to send another invitation to your company,
+with compliments of course.
+Well, at least this means you can try again for free some time later.
+<<else>>
+Before leaving, they made another appointment so you could try again —- albeit
+having to pay quite a large sum of money for it.
+<</if>>
+</p>
+
+<<else>>
+
+<p>
+Frustrated, your
+slavers decided to <<uadv $g.trainer>> unleashed their frustrations by joining
+in the orgy —
+The mission was soon forgotten as
+they made <<rep $g.fated>> join the neko as the fifth orgy slave. Your
+slavers proceeded to use all five slaves with abandon. For a few hours the room
+— locked tight — were filled with nothing but hard rough sex and aroused moans
+coming from both the slaves and the slavers. Your slavers never noticed when or how,
+but by the end of the orgy, <<rep $g.fated>> sported a new pair of
+neko eyes — rewarding the slave for such a debauched servicing of <<their
+$g.fated>> betters.
+</p>
+
+<p>
+Having fully exhausted the slaves, your slavers spent a few more hours
+recuperating before collaring <<rep $g.fated>> back for a long journey home,
+successful in the journey worthy of being called the trial of love.
+</p>
+
+<</if>>

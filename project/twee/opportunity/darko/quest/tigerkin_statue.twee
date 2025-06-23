@@ -1,0 +1,102 @@
+:: OpportunitySetup_tigerkin_statue [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'tigerkin_statue', /* key */
+"Tigerkin Statue", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'item',
+  'unit',
+],
+1, /* expiration weeks */
+'Opportunity_tigerkin_statue',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_tigerkin_statue_0',
+    'Opportunity_tigerkin_statue_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.IfThenElse(
+setup.qres.Actor('gender', setup.qres.Trait(setup.trait.gender_male)),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_object_master_tigerkinstatuemale)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_object_master_tigerkinstatuefemale)
+], undefined)),
+    ],
+  ],
+  [
+    'Opportunity_tigerkin_statue_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('anal_overload', {
+gender: "gender",
+}),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'gender': 'all',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_tigerkin_statue [nobr]
+<p>
+Having acquired an extremely rare tigerkin statue from your slavers'
+misadventure, it is time to decide what to do with them.
+</p>
+
+<p>
+The first option is to simply keep the statue as prestigious decorations.
+After being imprisoned for so long, there is no doubt that the minds of these
+tigerkin are long gone, and it might best to leave them as statues which
+will surely worth more than the actual tigerkin. Plus,
+<<if $g.gender.isHasDick()>>
+there is surely fun to be had with a statue blessed with a permanently erect and leaking dick...
+<<else>>
+there is surely fun to be had with a statue blessed with a permanently wet and leaking pussy...
+<</if>>
+</p>
+
+<p>
+Alternatively you could try to undo the petrification in the same way with
+all other statues — via anal overload. Given the age of the statue, it will
+require a special kind of anal overload ritual however, and the resulting
+slave will also no doubt came out mindbroken. Is it really worth all these
+efforts?
+</p>
+
+
+:: Opportunity_tigerkin_statue_0 [nobr]
+Keep the statue as a decoration
+
+
+:: Opportunity_tigerkin_statue_0_flavor [nobr]
+<p>
+The tigerkin statue will surely look nice in whoever slaver is lucky enough to have
+it being installed in their bedchamber!
+</p>
+
+
+:: Opportunity_tigerkin_statue_1 [nobr]
+Try to reverse the petrification and get yourself a tigerkin slave

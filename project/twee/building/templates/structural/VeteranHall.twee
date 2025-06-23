@@ -1,0 +1,99 @@
+:: InitBuildingVeteranHall [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'veteranhall',
+  tags: [],
+  width: 6,
+  height: 8,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "slaving",
+      room_keys: [
+        'greathall',
+        'bedchamberwing',
+        'dungeons',
+        'inn',
+        'lodgings',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'veteranhall',
+  name: 'Veteran Hall',
+  tags: ['critical', 'unlocker', 'structural', ],
+  description_passage: 'BuildingVeteranHall',
+  costs: [
+    [setup.qc.MoneyMult(-20)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('armory'),
+      setup.qres.Building('bedchamberwing'),
+      setup.qres.Building('classroom'),
+      setup.qres.Building('dutyroom'),
+      setup.qres.Building('inn'),
+      setup.qres.Building('hospital'),
+      setup.qres.Building('library'),
+      setup.qres.Building('moraleoffice'),
+      setup.qres.Building('recreationwing'),
+      setup.qres.Building('relationsoffice'),
+      setup.qres.Building('scouttunnel'),
+      setup.qres.Building('scoutcarriage'),
+      setup.qres.Building('scoutoffice'),
+      setup.qres.Building('trainingchamber'),
+      setup.qres.Building('traininggrounds'),
+      setup.qres.Building('viceleaderoffice'),
+      setup.qres.Building('warehouse'),
+      setup.qres.Building('warroom'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.IfThenElse(
+        setup.qres.UnitGroupHasUnit('new_game_plus_slaves'),
+        setup.qc.DoAll([
+          setup.qc.Event('slavecoming', 3, null)
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined)
+      ),
+      setup.qc.IfThenElse(
+        setup.qres.Function(() => {
+          return !State.variables.statistics.get('new_game_plus_count');
+        }),
+        setup.qc.DoAll([
+          setup.qc.Event('retirement', 25, null)
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined)
+      ),
+    ]
+  ],
+  main_room_template_key: 'veteranhall',
+})>>
+
+
+:: BuildingVeteranHall [nobr]
+
+<p>
+Renovates the floor above your great hall into a grand area suitable to display your company's
+achievements.
+Unlocks seeing your company statistics in the company info.
+Also enables veteran quests to be scouted, which are considerably harder than normal quests.
+Furthermore, this improvement is a requirement for many veteran improvements.
+</p>
+
+<p>
+Building this improvement will also <<successtextlite 'permanently'>> ramp up all the quest
+rewards of low-level quests to the equivalent of a level <<= setup.LEVEL_VETERANHALL >> quest.
+The difficulties do not change.
+</p>
+

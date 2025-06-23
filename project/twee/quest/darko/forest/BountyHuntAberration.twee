@@ -1,0 +1,202 @@
+:: QuestSetupBountyHuntAberration [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _mercenary = new setup.UnitCriteria(
+  null, /* key */
+  'Mercenary', /* title */
+  [
+    setup.trait.vagina_gape,
+    setup.trait.anus_gape,
+    setup.trait.per_proud,
+    setup.trait.per_chaste,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+    setup.trait.eq_plug_anus,
+    setup.trait.eq_plug_vagina,
+  ], /* critical traits */
+  [
+    setup.trait.race_elf,
+    setup.trait.race_catkin,
+    setup.trait.per_lustful,
+    setup.trait.per_sexaddict,
+    setup.trait.per_masochistic,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    combat: 3.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'bounty_hunt_aberration', /* key */
+  'Bounty Hunt: Aberration', /* Title */
+  'darko',   /* author */
+  ['forest', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'negotiator': setup.qu.negotiator,
+    'merc1': _mercenary,
+    'merc2': _mercenary,
+  },
+  { /* actors */
+    'slave': 'all',
+  },
+  [ /* costs */
+  ],
+  'QuestBountyHuntAberration', /* passage description */
+  setup.qdiff.easy16, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestBountyHuntAberrationCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.Favor('elf', 10),
+        setup.qc.SlaveMarker('slave'),
+      ],
+    ],
+    [
+      'QuestBountyHuntAberrationCrit',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('elf', 10),
+      ],
+    ],
+    [
+      'QuestBountyHuntAberrationFailure',
+      [
+      ],
+    ],
+    [
+      'QuestBountyHuntAberrationDisaster',
+      [
+        setup.qc.Injury('merc1', 1),
+        setup.qc.Injury('merc2', 1),
+        setup.qc.Trait('merc1', setup.trait.anus_loose),
+        setup.qc.IfActorSatisfyThen(
+          'merc1',
+          setup.qres.Trait(setup.trait.vagina_tight),
+          setup.qc.Trait('merc1', setup.trait.vagina_loose)),
+        setup.qc.Trait('merc2', setup.trait.anus_loose),
+        setup.qc.IfActorSatisfyThen(
+          'merc2',
+          setup.qres.Trait(setup.trait.vagina_tight),
+          setup.qc.Trait('merc2', setup.trait.vagina_loose)),
+      ],
+    ],
+  ],
+  [[setup.questpool.forest, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestBountyHuntAberration [nobr]
+
+<p>
+The <<lore region_forest>> is the home to two main races: the neko and the elves.
+But the forests also host a myriad of other creatures.
+One of the most infamous inhabitants of the forest is known as simply
+the aberration: 
+A freakish amalgamation of countless tentacles seemingly spawning from a
+central core.
+This once-plant had evolved its
+vines into a specific appendage specialized for absorbing
+liquid from living creatures, to survive during times when there are scarce rain.
+Fortunately, the attacks are usually non-lethal, although it always leave the victims
+gaping and spent.
+</p>
+
+<p>
+Every now and then, a group of these aberrations can occupy a location far
+too close to the homes of the neko and the elves.
+They would invite adventurers on a mission to slay these beasts, rewarding
+great wealth in exchange.
+You can try to send a group of slavers to slay these beasts, although
+there is little room for imagination of what could happen to them should
+they fail...
+</p>
+
+
+:: QuestBountyHuntAberrationCrit [nobr]
+
+<<if $g.slave.isMale()>>
+  <<questimage 'bounty_hunt_aberration_male.jpg'>>
+<<else>>
+  <<questimage 'bounty_hunt_aberration_female.jpg'>>
+<</if>>
+
+<p>
+<<Rep $g.merc1>> <<uadv $g.merc1>> led the team deep into the forests.
+They finally appeared in what seems to be the den of the creature.
+<<if $g.merc1.isHasTrait('magic_fire')>>
+  As much as <<rep $g.merc1>> would like to use <<their $g.merc1>> <<rep
+  setup.trait.magic_fire>> to burn the nest,
+<<elseif $g.merc2.isHasTrait('magic_fire')>>
+  As much as <<rep $g.merc2>> would like to use <<their $g.merc2>> <<rep
+  setup.trait.magic_fire>> to burn the nest,
+<<else>>
+  As much as your slavers would like to simply slay off all these creatures,
+<</if>>
+some of the aberrations were holding a few elves hostage, each deep within the
+creature's embrace as their juices
+were sucked from all their available openings.
+Your slavers decided to think of another way to eliminate the aberrations without harming
+the victims, perhaps thinking they could make use of the victims later.
+</p>
+
+<p>
+Fortunately, <<rep $g.merc1>> came up with a
+<<if $g.merc1.isHasTrait('skill_creative')>>creative<</if>> plan
+to drench the creatures in water from a nearby stream.
+It is common knowledge that the creature is incredibly weak to water, since
+with enough water it no longer needs to absorb the liquids from their victims.
+The plan went without a hitch as your slavers carried buckets and buckets of water
+and drenched the aberrations one by one, making them release their corresponding victim.
+It was then easy work for your slavers to slay the "drunken" aberrations one by one.
+</p>
+
+<p>
+<<Rep $g.merc1>> contemplated on enslaving the victims, but they were far too
+broken and gaped to be made into any useful slave<<if !$g.merc1.isHasTrait('per_chaste')>>,
+<<if $g.merc1.isHasDick()>>
+although it didn't stop <<rep $g.merc1>> from trying to insert <<their
+$g.merc1>> <<udick $g.merc1>>
+into the cavernous hole<<else>>
+although it didn't stop <<rep $g.merc1>> from trying to insert a wooden
+makeshift dildo
+into the cavernous hole<</if>><</if>>.
+They ended up returning the victims back to the settlements,
+<<if $gOutcome == 'crit'>>
+earning them a bigger reward than what was promised.
+<<else>>
+although it was unclear what the settlements could do for these poor souls.
+<</if>>
+</p>
+
+:: QuestBountyHuntAberrationFailure [nobr]
+
+<p>
+Your slavers were too late --- by the time they arrived to take up the quest,
+the beasts were already slain by another mercenary company.
+</p>
+
+<p>
+You keep hearing rumors of this mercenary company specializing in all things
+tentacles. You wonder if this is one of their work.
+</p>
+
+
+:: QuestBountyHuntAberrationDisaster [nobr]
+
+<p>
+During the mission, your slavers were ambushed by one such aberration, who
+waited in the ground masquerading as a bush before lunging into your slavers.
+Once the slavers were immobilized, the aberration mindlessly proceeded to violate
+your slavers holes, absorbing as much juice be it cum, girlcum, and milk until it is full.
+Suffice to say, after such an experience your slavers orifice tightness will be but a
+distant memory.
+</p>

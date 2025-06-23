@@ -1,0 +1,224 @@
+
+
+:: InitCodeEditorWidgets [nobr widget]
+ 
+ <!-- Used for tooltips for macro info -->
+<<focwidget 'devmacroinfo'>>
+  <<set _macroname = $args[0]>>
+  <<set _meta = setup.getMacroMetadata(_macroname)>>
+  <header style="margin: 6px 0; padding-left: 4px">
+    <<set _aliases = setup.getMacroAliases(_macroname).join(' / ')>>
+    <b><<= _aliases >></b>
+    &nbsp;
+    <small>(macro)</small>
+  </header>
+  <<if _meta>>
+    <<= _meta.info >>
+    <<if _meta.args>>
+      <<set _overloads = Array.isArray(_meta.args[0]) ? _meta.args : [_meta.args]>>
+      <hr/>
+      <<for _ioverload, _overload range _overloads>>
+        <div>
+          Parameters:
+          <span class="language-twee3">
+            <span class="token macro">&lt;&lt;<<= _macroname>> <b class="token macro-inner"><<= _overload.join(' ')>></b>&gt;&gt;</span>
+          </span>
+        </div>
+      <</for>>
+    <</if>>
+  <<elseif _meta === null>>
+    This macro is for internal use only
+  <<else>>
+    No info available
+  <</if>>
+<</focwidget>>
+
+
+
+<<focwidget 'devcodeeditorpreview'>>
+  <<set _devpreviewvalue = $args[0]>>
+  <<set _devpreviewvar = $args[1]>>
+
+  <<switch $devtooltype>>
+
+    <<case 'quest'>>
+      <<include 'CodeEditorPreviewQuest'>>
+
+    <<case 'event'>>
+      <<include 'CodeEditorPreviewEvent'>>
+
+    <<case 'opportunity'>>
+      <<include 'CodeEditorPreviewOpportunity'>>
+
+    <<case 'interaction'>>
+      <<include 'CodeEditorPreviewInteraction'>>
+
+    <<case 'activity'>>
+      <<include 'CodeEditorPreviewActivity'>>
+
+    <<default>>
+      [Preview not supported for this content]
+  
+  <</switch>>
+<</focwidget>>
+
+
+
+
+:: CodeEditorPreviewContextDetails [nobr]
+
+<aside>
+  <<set _actors = setup.DevToolHelper.getActors()>>
+
+  Actors:
+  <<link '(reset quest)'>>
+    <<unset $compiledquest>>
+    <<run setup.DevToolHelper.saveScrollPos()>>
+    <<devgotoreturn>>
+  <</link>>
+  <div class="indented">
+    <<for _iactor, _actor range _actors>>
+      <div>
+        _actor[0]: <<rep setup.evalJsPath(_actor[1])>>
+        <<capture _actor>>
+          <<link '(edit)'>>'
+            <<set $gUnit_key = setup.evalJsPath(_actor[1]).key>>
+            <<run setup.DevToolHelper.saveScrollPos()>>
+            <<focgoto 'UnitDebugDo'>>
+          <</link>>
+          <<if _actor[0] != 'Player'>>
+            <<link '(replace)'>>
+              <<set $dtEditActor = _actor[0]>>
+              <<run setup.DevToolHelper.saveScrollPos()>>
+              <<focgoto 'CodeEditorReplaceUnit'>>
+            <</link>>
+          <</if>>
+        <</capture>>
+      </div>
+    <</for>>
+  </div>
+</aside>
+
+
+:: CodeEditorReplaceUnit [nobr]
+
+<div>
+  <<link '(Cancel)'>>
+    <<unset $dtEditActor>>
+    <<devgotoreturn>>
+  <</link>>
+</div>
+
+<<set _dom = setup.DOM.Roster.codeeditorreplaceunit()>>
+<<attach _dom>>
+
+
+:: CodeEditorPreviewDisplayText [nobr]
+
+
+<<questvarload $compiledquest>>
+
+<<include 'CodeEditorPreviewContextDetails'>>
+
+<<run $notification.popAll()>>
+
+<div>
+<<printreplace setup.DevToolHelper.debugDevToolTwine(_devpreviewvalue)>>
+</div>
+
+<div>
+  <<notificationscard>>
+</div>
+
+
+:: CodeEditorPreviewInteraction [nobr]
+
+<<if !$compiledquest>>
+  <<set setup.interaction[$dtquest.key] = $dtquest>>
+  <<set $compiledquest = $dtquest.debugMakeInstance()>>
+<</if>>
+
+<<run $notification.popAll()>>
+
+<<include 'CodeEditorPreviewDisplayText'>>
+
+
+:: CodeEditorPreviewOpportunity [nobr]
+
+<<if !$compiledquest>>
+  <<set setup.opportunitytemplate[$dtquest.key] = $dtquest>>
+  <<set $compiledquest = $dtquest.debugMakeInstance()>>
+<</if>>
+
+<<run $notification.popAll()>>
+
+<<include 'CodeEditorPreviewDisplayText'>>
+
+
+:: CodeEditorPreviewEvent [nobr]
+
+<<if !$compiledquest>>
+  <<set setup.event[$dtquest.key] = $dtquest>>
+  <<set $compiledquest = $dtquest.debugMakeInstance()>>
+<</if>>
+
+<<run $notification.popAll()>>
+
+<<include 'CodeEditorPreviewDisplayText'>>
+
+
+:: CodeEditorPreviewQuest [nobr]
+
+<<set _outcome = 'crit'>>
+
+<<switch _devpreviewvar>>
+  <<case '$qoutcomedesc[1]'>>
+    <<set _outcome = 'success'>>
+  <<case '$qoutcomedesc[2]'>>
+    <<set _outcome = 'failure'>>
+  <<case '$qoutcomedesc[3]'>>
+    <<set _outcome = 'disaster'>>
+<</switch>>
+
+/* Hack for quests, since their outcomes can roll into the next */
+
+<<if _devpreviewvar == '$qoutcomedesc[3]' && !$qoutcomedesc[3].trim()>>
+  <<set _devpreviewvar = '$qoutcomedesc[2]'>>
+  <<set _devpreviewvalue = $qoutcomedesc[2]>>
+<</if>>
+
+<<if _devpreviewvar == '$qoutcomedesc[2]' && !$qoutcomedesc[2].trim()>>
+  <<set _devpreviewvar = '$qoutcomedesc[1]'>>
+  <<set _devpreviewvalue = $qoutcomedesc[1]>>
+<</if>>
+
+<<if _devpreviewvar == '$qoutcomedesc[1]' && !$qoutcomedesc[1].trim()>>
+  <<set _devpreviewvar = '$qoutcomedesc[0]'>>
+  <<set _devpreviewvalue = $qoutcomedesc[0]>>
+<</if>>
+
+/* TODO: creating a quest will create their users and quest instances.
+These needs to be destroyed too, otherwise will fill variables with garbage. */
+<<if !$compiledquest>>
+  <<set setup.questtemplate[$dtquest.key] = $dtquest>>
+  <<set $compiledquest = $dtquest.debugMakeFilledInstance(_outcome)>>
+<<else>>
+  <<set $compiledquest.outcome = _outcome>>
+<</if>>
+
+<<run $notification.popAll()>>
+
+<<include 'CodeEditorPreviewDisplayText'>>
+
+:: CodeEditorPreviewActivity [nobr]
+
+<<if !$compiledquest>>
+  <<set setup.activitytemplate[$dtquest.key] = $dtquest>>
+  <<set $compiledquest = $dtquest.debugMakeInstance()>>
+<</if>>
+
+<<run $notification.popAll()>>
+
+<<include 'CodeEditorPreviewDisplayText'>>
+
+

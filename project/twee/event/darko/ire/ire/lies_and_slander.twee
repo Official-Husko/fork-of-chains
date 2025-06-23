@@ -1,0 +1,44 @@
+:: EventSetup_lies_and_slander [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'lies_and_slander', /* key */
+"Lies and Slander", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_lies_and_slander',
+{ /* roles */
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('humankingdom', -20),
+setup.qc.IreSpread('humankingdom'),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humankingdom', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_lies_and_slander [nobr]
+
+<p>
+Recently, your company activities have irked certain powerful people in the
+undercity of Lucgate. And they have decided to retaliate against your company
+in the way they know best: by spreading lies and slander: "Let it be known
+that <<rep $company.player>> often raided villages in order to rape and
+enslave their women!", they say. Surely a total lie and slander! You make a
+mental note to ask your <<uadjgood $g.slaver>> <<ufriend $unit.player
+$g.slaver>> <<rep $g.slaver>> about this later.
+</p>
+
+<p>
+Either way, many other companies now view your company with a level of
+disdain...
+</p>

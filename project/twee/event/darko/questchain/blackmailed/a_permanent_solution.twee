@@ -1,0 +1,54 @@
+:: EventSetup_a_permanent_solution [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'a_permanent_solution', /* key */
+"A Permanent Solution", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_a_permanent_solution',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+  ],
+  'boss': [
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('rival_blackmail_progress'),
+  setup.qc.Opportunity('subtle_retaliation', {
+    slaver: "slaver",
+    boss: "boss",
+  }),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_a_permanent_solution [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+It has been several weeks ever since that damnable <<rep $g.boss>> got hold
+of <<yourrep $g.slaver>>. It will simply not do for you to keep paying
+<<their $g.slaver>> "accomodation costs", and a more permanent solution would
+be desirable.
+</p>
+
+<p>
+Given that <<reps $g.slaver>> life is at stake, however, a full-on assault would
+not be advisable. No, this is a war where you must use subterfuge and your
+connections to win. Consulting <<yourrep _u>>, it seems if you truly wish to
+end this problem once and for all, you will simply have to bankrupt the
+slaving company to the ground...
+</p>

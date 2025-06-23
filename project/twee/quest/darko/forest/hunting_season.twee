@@ -1,0 +1,177 @@
+:: QuestSetup_hunting_season [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_hunting_season1',
+'Hunter',
+'forest_all',  /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_hunter), ],
+)>>
+
+<<set _criteriabait = new setup.UnitCriteria(
+null, /* key */
+'Slave2', /* name */
+[
+setup.trait.per_loyal,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.training_obedience_basic,
+setup.trait.training_obedience_advanced,
+setup.trait.training_obedience_master,
+setup.trait.training_horny_basic,
+setup.trait.training_horny_advanced,
+setup.trait.training_horny_master,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.per_loner,
+setup.trait.per_stubborn,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+],
+[
+setup.qres.Job(setup.job.slave),
+],
+{
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'hunting_season', /* key */
+'Hunting Season', /* Title */
+'darko', /* Author */
+[ 'forest', 'unit'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'scout': setup.qu.scout_forest,
+'trapper': setup.qu.trapper,
+'bait': _criteriabait, },
+{ /* actors */
+'hunter': 'quest_hunting_season1', },
+[ /* costs */
+],
+'Quest_hunting_season',
+setup.qdiff.hard24, /* difficulty */
+[ /* outcomes */
+[
+'Quest_hunting_seasonCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.Equipment(setup.equipmentpool.survival),
+  setup.qc.Equipment(setup.equipmentpool.survival),
+  setup.qc.Equipment(setup.equipmentpool.survival), ],
+], [
+'Quest_hunting_seasonCrit',
+[
+setup.qc.Slave('hunter', 'a|was a slave hunter who ended up being the hunted', undefined),
+],
+], [
+'Quest_hunting_seasonFailure',
+[
+],
+], [
+'Quest_hunting_seasonDisaster',
+[
+setup.qc.MissingUnitRebuy('bait', 1),
+],
+], ],
+[
+[setup.questpool.forest, setup.rarity.rare],
+], /* quest pool and rarity */
+[
+setup.qres.HasSlave(), ], /* restrictions to generate */
+)>>
+
+:: Quest_hunting_season [nobr]
+
+<p>
+Residents of the <<lore region_forest>> are used to both owning slaves and being a
+slave. The lawless nature of the forests means that the forest offers itself as a peculiar
+hunting ground for slavers looking to expand their harem.
+</p>
+
+<p>
+You have heard of an inexperienced hunter who wants to capture <<their
+$g.hunter>> own slave, by venturing into the forest and using <<their
+$g.hunter>> considerable animal hunting skills. While you have no interest in recruiting
+the hunter, having one as a slave might prove an interesting endeavor. A former hunter
+could be just the pet that you have always wanted.
+</p>
+
+<p>
+The easiest way to bait such a prey is to use a... well bait. An obedient
+slave tied to a post in the middle of the forest. While others would find
+that suspicious, a very green slave-hunter such as this one would have no chance to
+resist such a seemingly easy victory.
+</p>
+
+
+:: Quest_hunting_seasonCrit [nobr]
+
+<p>
+Your slavers set up the bait: <<rep $g.bait>> bait|was gagged and tied to
+a pole in the middle of a clearing in the forest. Then, your slavers waited: first a
+few minutes, until what seemed to be hour.
+<<set _pat = setup.selectUnit([$g.trainer, $g.scout, $g.trapper], {trait: 'per_calm'})>>
+<<if _pat>>
+  <<Reps _pat>> patience helped them stay calm.
+<</if>>
+When they were about to give up out of boredom, <<yourrep $g.scout>> <<uadv $g.scout>>
+spotted the hunter headed towards the clearing.
+</p>
+
+<p>
+With such an alluring slave on display, the hunter had no chance to resist
+and approached the slave. Overcame with excitement, <<they $g.hunter>> immediately started to
+"train" the slave. But it made the perfect opportunity for your slavers to
+ambush <<them $g.hunter>>, who stood no chance.
+Having secured <<them $g.hunter>> in complete bondage, your slavers petted
+<<rep $g.bait>> for being such a good slave and <<rep $g.trainer>>
+<<uadv $g.trainer>>
+<<if $g.trainer.isHasVagina()>>
+permitted <<them $g.bait>> to lick <<their $g.trainer>> pussy
+<<else>>
+permitted <<them $g.bait>> to choke on <<their $g.trainer>> dick
+<</if>>
+as a reward.
+<<if $gOutcome == 'crit'>>
+Your slavers even managed to find the hunter's encampment before heading back
+home with a new trophy in tow, which they proceeded to ransack for valuables.
+<<else>>
+Your slavers then head back home with a new trophy in tow.
+<</if>>
+</p>
+
+
+:: Quest_hunting_seasonFailure [nobr]
+
+<p>
+Unfortunately, your bait never caught the prey as the hunter were nowhere to be seen
+by your slavers. Even after hours of <<rep $g.bait>> tied naked to a pole in
+the forest, nobody seemed to pay attention except some animals who came and
+licked <<their $g.bait>> <<ugenital $g.bait>>.
+</p>
+
+
+:: Quest_hunting_seasonDisaster [nobr]
+<p>
+With <<rep $g.bait>> suitably tied up on a pole, your slavers became
+complacent and they never figured out just when and how <<rep $g.bait>> bait|was
+stolen from the pole.
+</p>
+
+<p>
+In a couple of days, you received an offer to purchase slave exactly matching <<reps
+$g.bait>> specifications.
+The slave is available in the <<= setup.buildingtemplate.slavepens.rep()>>.
+</p>

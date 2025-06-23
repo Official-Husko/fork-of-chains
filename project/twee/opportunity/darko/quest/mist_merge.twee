@@ -1,0 +1,88 @@
+:: OpportunitySetup_mist_merge [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'mist_merge', /* key */
+'Mist Merge', /* Title */
+'darko', /* Author */
+[ 'desert', 'favor', 'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_mist_merge',
+setup.qdiff.hardest45, /* difficulty */
+[ /* options */
+[
+'Opportunity_mist_merge_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('mist_merge_disrupt2'), ],
+], [
+'Opportunity_mist_merge_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('mist_merge_complete23'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions to generate */
+setup.qres.NoQuest('mist_merge_complete23'),
+setup.qres.NoQuest('mist_merge_disrupt2'),
+setup.qres.OpportunityUnique(), ],
+)>>
+
+:: Opportunity_mist_merge [nobr]
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Many residents from beyond <<lore concept_mist>> have attempted to cross to this
+world, but only very few succeed.
+A direct trip is extremely dangerous for the demons,
+and the preferrred method seems to be of that of possession: With a proper sacrifice
+and high level <<lore magic_dark>>, one could invite one of <<lore
+concept_mist>> residents to come to this world by entering a sacrifice's
+body and overriding their mind.
+The sacrifice's real self will be locked securely deep within their body
+while the demon will be granted full control over the body, potentially forever.
+</p>
+
+<p>
+An eastern settlement has come asking for your company's help to thwart an
+upcoming dark ritual held too close to their village.
+But <<yourrep _u>> informs you that this is no ordinary dark ritual — this
+is actually a powerful dark wizard's attempt to try and wrest control a demon over to their
+side, using the sacrificial possession ritual.
+</p>
+
+<p>
+There are a number of options for you here.
+First, if you are feeling particularly good-hearted,
+you could try do as the village ask and send your best purifiers to
+thwart and disrupt the ritual. This will surely earn the gratitude of the
+settlement.
+On the other hand, demons make for incredibly powerful allies.
+You could try to send your slavers to help the wizard in exchange
+for recruiting one of the possessive demons as a slaver.
+Just be warned that should the ritual fails, the consequences will be disastrous.
+</p>
+
+
+:: Opportunity_mist_merge_0 [nobr]
+Disrupt
+
+
+
+:: Opportunity_mist_merge_1 [nobr]
+Complete
+
+

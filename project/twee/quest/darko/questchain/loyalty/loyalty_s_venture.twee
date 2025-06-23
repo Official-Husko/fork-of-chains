@@ -1,0 +1,224 @@
+:: QuestSetup_loyalty_s_venture [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Studious Slaver', /* name */
+[
+setup.trait.bg_scholar,
+setup.trait.bg_apprentice,
+setup.trait.per_smart,
+setup.trait.per_calm,
+setup.trait.per_studious,
+setup.trait.per_loyal,
+setup.trait.per_curious,
+setup.trait.join_senior,
+],
+[
+setup.trait.bg_slave,
+setup.trait.bg_unemployed,
+setup.trait.per_slow,
+setup.trait.per_aggressive,
+setup.trait.per_active,
+setup.trait.per_independent,
+setup.trait.per_stubborn,
+setup.trait.per_sexaddict,
+setup.trait.per_lunatic,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('loyalty_reward'),
+],
+{
+knowledge: 2,
+social: 1,
+}
+)>>
+
+<<set _criteriawriter = new setup.UnitCriteria(
+null, /* key */
+'Writer', /* name */
+[
+setup.trait.per_studious,
+setup.trait.per_curious,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.skill_entertain,
+setup.trait.skill_creative,
+],
+[
+setup.trait.per_active,
+setup.trait.per_stubborn,
+setup.trait.per_lunatic,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+{
+knowledge: 3,
+}
+)>>
+
+<<set _criterianegotiator = new setup.UnitCriteria(
+null, /* key */
+'Negotiator', /* name */
+[
+setup.trait.per_calm,
+setup.trait.per_sly,
+setup.trait.per_logical,
+],
+[
+setup.trait.per_aggressive,
+setup.trait.per_direct,
+setup.trait.per_empath,
+setup.trait.skill_intimidating,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+{
+social: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'loyalty_s_venture', /* key */
+"Loyalty\'s Venture", /* Title */
+"darko", /* Author */
+[ 'city', 'prep', 'unknown'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'slaver': _criteriaslaver,
+'writer': _criteriawriter,
+'negotiator': _criterianegotiator, },
+{ /* actors */
+},
+[ /* costs */
+setup.qc.MoneyCustom(-1500), ],
+'Quest_loyalty_s_venture',
+setup.qdiff.normal27, /* difficulty */
+[ /* outcomes */
+[
+'Quest_loyalty_s_ventureCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.ItemPool(setup.itempool.all_normal),
+setup.qc.Equipment(setup.equipmentpool.all_sex),
+setup.qc.BoonizeRandom('slaver', 20),
+],
+], [
+'Quest_loyalty_s_ventureCrit',
+[
+setup.qc.AddTag('slaver', 'loyalty_reward_final'),
+setup.qc.Equipment(setup.equipmentpool.all_combat),
+setup.qc.BoonizeRandom('slaver', 20),
+setup.qc.VarSet('loyalty_reward_cd', '1', 8),
+],
+], [
+'Quest_loyalty_s_ventureCrit',
+[
+setup.qc.Equipment(setup.equipmentpool.all_combat),
+setup.qc.VarSet('loyalty_reward_cd', '1', 3),
+],
+], [
+'Quest_loyalty_s_ventureCrit',
+[
+setup.qc.Injury('slaver', 4),
+setup.qc.Injury('writer', 3),
+setup.qc.Injury('negotiator', 2),
+setup.qc.RemoveTitleGlobal('loyalty_reward'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarNull('loyalty_reward_cd'),
+setup.qres.Building(setup.buildingtemplate.scoutoffice),
+setup.qres.HasUnitWithTitle('loyalty_reward', {job: 'slaver'}),
+setup.qres.NoUnitWithTag('loyalty_reward_final'), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_loyalty_s_venture [nobr]
+<<set _unit = setup.getUnit({job: setup.job.slaver, title: 'loyalty_reward'})>>
+<<if !_unit>>
+  <<missingunitquest>>
+<<else>>
+<p>
+<<Yourrep _unit>> has asked to borrow some of the company's money. According to the <<uadjper
+_unit>> slaver, <<they _unit>> found a great bargain in the <<lore region_city>>,
+and can make you some money with the small investment. Normally, you would
+put your trust in <<them _unit>>, as <<rep _unit>> has served you and your
+company 
+<<if _unit.isHasTrait('per_loyal')>>
+loyally
+<</if>>
+for quite a while now. But something is odd about <<their _unit>> overall
+demeanor this time.
+</p>
+
+<p>
+Still, money is money and there is no harm in sending <<them _unit>> on such
+an easy quest. You'd best accompany <<them _unit>> with a negotiator to
+get the best bang for the gold.
+</p>
+
+<</if>>
+
+
+:: Quest_loyalty_s_ventureCrit [nobr]
+
+<p>
+<<Yourrep $g.slaver>> had returned from <<their $g.slaver>> quest together with <<utheirrel $g.slaver
+$g.negotiator>> <<rep $g.negotiator>> and <<rep $g.writer>>.
+<<if $gOutcome == 'crit'>>
+<<They $g.slaver>> grinned as <<they $g.slaver>> brought back quite a
+selection of items, surely worth over the money borrowed from you.
+<<if $unit.player.isHasTrait('per_attentive')>>
+Still, you were perceptive enough to note that they were still hiding something from you.
+<<else>>
+Certainly a good selection of items. Still, something felt off there.
+<</if>>
+
+<<elseif $gOutcome == 'success'>>
+They brought an item they claimed to have bought with the money, but it was obvious that the
+item was not worth anywhere near the amount of money they borrowed. Something was
+suspicious there.
+<<elseif $gOutcome == 'failure'>>
+They brought an item they claimed to have bought with the money, but it was
+obvious that the item was not worth anywhere near the amount of money they borrowed. From
+the dejected look on the slavers and especially on <<rep $g.slaver>>, you
+could only guess what happened.
+<<else>>
+They returned injured, with their money gone. It was not hard to imagine what
+happened to your slavers during their short trip.
+<</if>>
+Either way, your slavers looked exhausted from the trip. Maybe this once you'll
+not press your slavers too much, and let them get their well-deserved rest. A
+little money is lost here, but at least your slavers are all intact. That's what
+matters most, isn't it?
+</p>
+
+
+<<if $gOutcome == 'disaster'>>
+<p>
+In the coming days, you noted that <<rep $g.slaver>> slaver|look particularly
+dejected, as if the bandit attack on their team had shattered some particular
+dream <<they $g.slaver>> was chasing.
+</p>
+<</if>>
+
+<<if $gOutcome == 'success' || $gOutcome == 'crit'>>
+<p>
+In the coming days, you noted that <<rep $g.slaver>> slaver|is acting a
+little strange. The usually <<uadjper $g.slaver>> <<urace $g.slaver>> slaver|is now often holed up in
+<<their $g.slaver>> room. You decide to make a note of this for now and do nothing else.
+</p>
+<</if>>

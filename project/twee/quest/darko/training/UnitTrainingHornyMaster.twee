@@ -1,0 +1,111 @@
+:: QuestSetupUnitTrainingHornyMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_horny_master',  /* id */
+  'Horny Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingHornyMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingHornyMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_horny_master),
+        setup.qc.Trait('trainee', setup.trait.per_lustful),
+      ]
+    ],
+    [
+      'QuestUnitTrainingHornyMasterSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_horny_master),
+        setup.qc.TraitRemove('trainee', setup.trait.per_chaste),
+      ],
+    ],
+    [
+      'QuestUnitTrainingHornyMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingHornyMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_horny_master.getTraitGroup()),
+        setup.qc.TraitRemove('trainee', setup.trait.per_lustful),
+        setup.qc.TraitDecrease('trainee', setup.trait.per_lustful),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingHornyMaster [nobr]
+<p>
+  This training will reform the slave's body so that being horny is their body's
+  natural resting space.
+  A slave that has completed this training will always be aroused, regardless of how
+  many times they have climaxed or whatever activity they are doing.
+  Having a consistently aroused slave is pleasing to some, which is why
+  such high-libido slaves are valued highly in some aristocratic community.
+</p>
+
+<p>
+  Succeeding this training will remove <<rep setup.trait.per_chaste>> from the slave, if any.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingHornyMasterCrit [nobr]
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into a permanently-<<hard $g.trainee>> slave
+has been completed.
+</p>
+
+:: QuestUnitTrainingHornyMasterSuccess [nobr]
+<p>
+It is done. <<Reps $g.trainee>> transformation into a permanently-<<hard $g.trainee>> slave
+has been completed.
+<<if $g.trainee.isHasTrait(setup.trait.dick_tiny)>>
+<<reps $g.trainee>> dick is now permanently hard, and always stand
+proudly in front of them. As a slave, this dick is now <<their $g.trainee>> master's
+property, to be used as the master see fit.
+<<else>>
+<<reps $g.trainee>> pussy is now permanently wet, and always glisten
+and glow under her legs. As a slave, this pussy is now <<their $g.trainee>> master's
+property, to be used as the master see fit.
+<</if>>
+</p>
+
+:: QuestUnitTrainingHornyMasterFailure [nobr]
+<p>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into a permanently-<<hard $g.trainee>> slave.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingHornyMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

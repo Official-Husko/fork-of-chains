@@ -1,0 +1,207 @@
+:: EventSetup_standard_punishment [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'standard_punishment', /* key */
+"Standard Punishment", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_standard_punishment',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.training_none, setup.trait.training_obedience_basic], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_standard_punishment [nobr]
+<p>
+<<Rep $g.slave>> slave|is still not fully broken, and still require a lot of punishing.
+In fact, <<they $g.slave>> <<upunishreason $g.slave>> just now, and you should think of an appropriate punishment for that.
+</p>
+
+<<choose>>
+
+<<opt "Confine <<them $g.slave>> firmly but fairly">>
+
+<p>
+One of the dungeon cells have been modified into a tiny little cubicles designed for the purpose of confining disobedient slaves. You order <<name $g.slave>> into one of these. <<They $g.slave>> obeys,
+
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+knowing <<they $g.slave>> deserves punishment and eager to get it over with.
+<<elseif $friendship.getFriendship($unit.player, $g.slave) <= -500>>
+if only out of terror, knowing <<they $g.slave>>'ll make <<their $g.slave>> situation far worse if <<they $g.slave>> doesn't.
+<<else>>
+warily, willing to go along until something worth real resistance happens.
+<</if>>
+
+Restraints are installed within the cell;
+you use these to secure <<them $g.slave>> to the wall, preventing <<them $g.slave>> from doing anything to relieve boredom in the tiny space. You restate the rule <<they $g.slave>> broke, state the length of <<their $g.slave>> punishment,
+and remonstrate firmly with <<them $g.slave>> before closing the cell door.
+As it shuts on <<them $g.slave>>, plunging <<them $g.slave>> into darkness, you hear <<if $g.slave.isCanTalk()>><<them $g.slave>> try at an apology in a tiny voice<<else>>a sad little intake of breath<</if>>.
+You're there to let <<their $g.slave>> out after a reasonable time, and <<they $g.slave>> exits the soft little cell with relief.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Confine <<them $g.slave>> cruelly">>
+
+<p>
+The dungeon cells are for good and well-behaving cells, and for misbehaving ones you have empty boxes designed for a very specific purpose. You order <<name $g.slave>> to the dungeons, and direct a box to be brought one of the cells.
+<<They $g.slave>> begins to <<if $g.slave.isFemale()>>cry<<else>>resist<</if>> when <<they $g.slave>> sees it,
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+but obediently gets inside, not wanting <<their $g.slave>> punishment to be extended. <<Their $g.slave>> obedience notwithstanding,
+<<elseif $friendship.getFriendship($unit.player, $g.slave) <= -500>>
+but desperately hurries to get inside, terrified that you might extend <<their $g.slave>> sentence. <<Their $g.slave>> obedience notwithstanding,
+<<else>>
+making no move towards it. <<They $g.slave>> knows that active resistance will merely extend <<their $g.slave>> sentence, and lets you stuff <<their $g.slave>> sobbing <<ubody $g.slave>> inside. Once <<they $g.slave>>'s in,
+<</if>>
+<<if $g.slave.isCanTalk()>><<they $g.slave>> begs tearfully<<else>><<they $g.slave>> uses <<their $g.slave>> <<uhands $g.slave>> to supplicate you<</if>>
+as you close the lid with exquisite slowness.
+The harshest thing you do is keep silent, not giving <<them $g.slave>> any indication of when <<they $g.slave>>'s getting out. When you finally let <<them $g.slave>> out, <<they $g.slave>>'s
+almost crazy with fear of ever going back in the box and, for now, willing to do almost anything to avoid it.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<<opt "Give <<them $g.slave>> a solid whipping">>
+
+<p>
+You order <<their $g.slave>> to one of the dungeon cells, and secure <<their $g.slave>> <<uhands $g.slave>> to one of the restraints hanging from the ceiling. <<They $g.slave>>
+
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+sobs with fear but obeys, obviously hoping you'll be reasonable.
+
+<<elseif $friendship.getFriendship($unit.player, $g.slave) <= -500>>
+starts to cry but doesn't let that stop <<their $g.slave>> from hurriedly obeying. <<They $g.slave>> knows that resistance will earn <<their $g.slave>> more strokes.
+
+<<else>>
+breaks down and makes no move to obey, but does not resist as you take <<their $g.slave>> wrists in your <<uhands $unit.player>> and lift them into the restraints.
+
+<</if>>
+
+<<They $g.slave>> struggles a little to find <<their $g.slave>> balance, and is distracted when the first stroke lands on <<their $g.slave>> buttocks. Your leather instrument is designed to produce pain without breaking the <<uskin $g.slave>> or leaving a permanent mark.
+You tell <<them $g.slave>> to count, and <<they $g.slave>> <<if $g.slave.isCanTalk()>>gasps "one" through <<their $g.slave>> agony<<else>>sticks up one finger despite <<their $g.slave>> restrained <<uhands $g.slave>><</if>>. You flog <<their $g.slave>> bottom until it's pleasantly warm to the touch, and then let <<them $g.slave>> down. <<They $g.slave>>'s relieved at your moderation.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Whip <<them $g.slave>> cruelly">>
+
+<p>
+You order <<their $g.slave>> to one of the dungeon cells, and secure <<their $g.slave>> <<uhands $g.slave>> to one of the restraints hanging from the ceiling. <<They $g.slave>>
+
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+sobs with fear but obeys, despite something in your tone that makes <<their $g.slave>> knees go weak with terror.
+<<elseif $friendship.getFriendship($unit.player, $g.slave) <= -500>>
+starts to cry but doesn't let that stop <<their $g.slave>> from hurriedly obeying. <<They $g.slave>> stumbles once, something in your tone that making <<their $g.slave>> knees go weak with terror.
+<<else>>
+breaks down and makes no move to obey, but does not resist as you take <<their $g.slave>> wrists in your <<uhands $unit.player>> and hoist <<their $g.slave>> into the restraints.
+<</if>>
+
+You let <<them $g.slave>> anticipate the pain for a long time before you start whipping <<their $g.slave>> buttocks. Your leather instrument is designed to produce pain without breaking the <<uskin $g.slave>> or leaving a permanent mark, and you make cruel use of it. After a short preliminary asswhipping, you vary your strokes, letting <<them $g.slave>> feel the whip on <<their $g.slave>> thighs, calves and flanks before placing strokes against <<their $g.slave>> <<if $g.slave.isHasDick()>>poor ballsack<<else>>poor pussy<</if>>.
+<<They $g.slave>> loses all control, <<if $g.slave.isCanTalk()>>shamelessly begging for mercy.<<else>>rasping pathetic little sobs past <<their $g.slave>>
+<<ucmouth $g.slave>>.<</if>>
+When you're done, <<they $g.slave>>'s almost crazy with fea of future whippings.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<<opt "Restrain <<them $g.slave>> in your office">>
+
+<p>
+Planning to use chastity as a punishment, you bring <<them $g.slave>> into your office to supervise the denial and restrain <<them $g.slave>> standing, <<uhands $g.slave>> over <<their $g.slave>> head in one of the makeshift shackles set high on the walls, facing out so <<they $g.slave>> can see everything that goes on in your office.
+You gag <<them $g.slave>> securely, not wanting your work disturbed by unseemly noises. Then you ignore <<them $g.slave>>.
+<<if $g.slave.isHasTrait('per_lustful')>>
+<<Their $g.slave>> sex drive makes this a torture for <<them $g.slave>>; <</if>> <<they $g.slave>> watches everything that happens in the office with desperate longing. Before long,
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+<<They $g.slave>>'s used to the idea of sexual slavery, and inevitably sees people <<they $g.slave>> finds attractive doing things <<they $g.slave>> considers sexy in the office. Before long,
+<<else>>
+<<They $g.slave>>'s not comfortable with sexual slavery, but the unusually sexually heavy atmosphere of the work today affects even <<them $g.slave>>. After a few hours,
+<</if>>
+<<they $g.slave>>'s quite horny. Restrained as <<they $g.slave>> is, <<they $g.slave>> can't hide
+
+<<if $g.slave.isHasDick()>>
+<<their $g.slave>> <<if $g.slave.isHasTrait('dick_large')>>prominent<<elseif $g.slave.isHasTrait('dick_medium')>><<else>>pathetic<</if>> erection,
+<<else>>
+
+how flushed and eager <<their $g.slave>> cunt is,<</if>>
+
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+even if <<they $g.slave>> wanted to.
+<<else>>
+though <<they $g.slave>> seems to want to.
+<</if>>.
+Satisfied that <<they $g.slave>>'s been tormented enough for today, you let <<them $g.slave>> down and send <<them $g.slave>> on <<their $g.slave>> way back to your bedchamber.
+<<They $g.slave>>'s obviously more willing than usual to apply <<themself $g.slave>> to <<their $g.slave>> next sexual task, whatever it is.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Punish <<their $g.slave>> ass">>
+
+<p>
+Deciding that the most appropriate punishment is some corrective assrape, you shove the slave to <<their $g.slave>> knees<<if $g.slave.isHasTail()>>, raise <<their $g.slave>> <<utail $g.slave>>,<</if>> and stuff <<if $unit.player.isHasDick()>>your cock<<else>>a formidable dildo<</if>> up <<their $g.slave>>
+<<if $g.slave.isHasTrait('anus_gape')>>
+big butthole. It slides right in, the slave's relaxed sphincter offering no resistance. Announcing that you'll find <<their $g.slave>> limits, wherever they are, you insert fingers until it's cruelly stretched and you're almost jerking <<if $unit.player.isHasDick()>>yourself<<else>>the phallus<</if>> off inside <<them $g.slave>>.
+<<elseif $g.slave.isHasTrait('anus_loose')>>
+defenseless asshole. You meet some delicious resistance and push past it, enjoying the feeling of the slave's sphincter spasming as you do. You pound <<them $g.slave>> hard, much harder than <<they $g.slave>> can comfortably take it up the ass.
+<<else>>
+tight hole. <<Their $g.slave>> poor little anus doesn't want to let you in, but you force yourself in anyway, making the slave wriggle desperately beneath you as <<they $g.slave>> feels the invading phallus force <<their $g.slave>> anal ring to accommodate its girth.
+<</if>>
+You recite the rules as you assfuck the slave, but the slave below you is too discomfited by anal pain to respond coherently. Still,<<they $g.slave>> gets the message.
+</p>
+
+<<optif $g.slave.isHasVagina()>>
+<<opt "Punish <<their $g.slave>> pussy">>
+
+<p>
+Deciding that the most appropriate punishment is some corrective rape, you push the slave down on <<their $g.slave>> back and shove <<if $unit.player.isHasDick()>>your cock<<else>>a formidable dildo<</if>> inside <<their $g.slave>>
+<<if $g.slave.isHasTrait('vagina_gape')>>
+roomy cunt, which can take it easily. Announcing that you'll find <<their $g.slave>> limits, wherever they are, you insert fingers until <<they $g.slave>>'s cruelly stretched and you're almost jerking <<if $unit.player.isHasDick()>>yourself<<else>>the phallus<</if>> off inside <<them $g.slave>>.
+<<elseif $g.slave.isHasTrait('vagina_loose')>>
+poor <<woman $g.slave>>hood. You fuck <<their $g.slave>> mercilessly, intentionally pulling out far enough that you have to spear <<their $g.slave>> again. You use <<their $g.slave>> poor <<ubreasts $g.slave>> as leverage, pulling against them to batter <<them $g.slave>> harder.
+<<else>>
+poor tight pussy. <<They $g.slave>>'s tight, and the initial penetration was uncomfortable for <<them $g.slave>>, but you make it worse by treating <<their $g.slave>> cunt like a veteran whore's. <<They $g.slave>> begins to struggle a little as you hammer <<them $g.slave>>.
+<</if>>
+You recite the rules as you assfuck the slave, but the slave below you is too discomfited to respond coherently. Still, <<they $g.slave>> gets the message.
+</p>
+
+<<opt "Punish <<their $g.slave>> mouth">>
+
+<p>
+Deciding that the most appropriate punishment is some corrective face-fuck,
+you <<if $g.slave.isHasTrait('eq_collar')>>
+grab <<them $g.slave>> by the <<ucneck $g.slave>> and pull<<else>>put a <<uhand $unit.player>> on <<their $g.slave>> shoulder and shove<</if>> <<them $g.slave>> to the ground. <<They $g.slave>> goes down without resistance, <<if $unit.player.isHasDick()>>already opening wide for your stiff prick.<<else>><<their $g.slave>> look of unconcern vanishing when <<they $g.slave>> sees you pulling out a strap-on. <<They $g.slave>> doesn't get to eat pussy today; today <<they $g.slave>> gets fucked in the face.<</if>> You shove it down <<their $g.slave>>
+<<if $g.slave.getMainTraining().getTags().includes('troral')>>
+eager throat. The cumslut loves giving oral, but soon realizes that you have no intention of letting <<them $g.slave>> love this. You rape <<their $g.slave>> face without mercy, hilting <<their $g.slave>> lips against <<if $unit.player.isHasDick()>>your base<<else>>the harness<</if>>.
+<<else>>
+gagging throat, enjoying the sensations of <<their $g.slave>> lips and tongue writhing against you as <<they $g.slave>> desperately tries to accommodate the intruder.
+<</if>>
+
+<<They $g.slave>> begins to struggle a little, so you snake a <<uhand $unit.player>> down behind <<their $g.slave>> head to hold <<them $g.slave>> in place. When you're done, <<they $g.slave>>'s an inelegant mess, coughing and gasping for air.
+<<if $g.slave.isCanTalk()>>Once <<they $g.slave>>'s got <<their $g.slave>> breath back, <<they $g.slave>> <<else>>Even as <<they $g.slave>> pants, <<they $g.slave>> uses shaky gestures to beg forgiveness, and <<they $g.slave>> even<</if>> promises to be a better slave.
+</p>
+
+<</choose>>

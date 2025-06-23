@@ -1,0 +1,29 @@
+:: CostSlaveOrder [nobr]
+
+<p>
+Choose a slave order to gain:
+<<link '(Create new slave order)' 'SlaveOrderGen'>>
+  <<set _sobaserole = null>>
+  <<include 'SOGenInit'>>
+<</link>>
+</p>
+
+<<for _islaveorder, _slaveorder range $qcustomslaveorder>>
+  <<capture _slaveorder>>
+    <<= _slaveorder.explain()>>
+    <<link '(Choose this)' 'QGCostDone'>>
+      <<set $qcost = _slaveorder>>
+    <</link>>
+
+    <<link '(Create new slave order based on this)' 'SlaveOrderGen'>>
+      <<set _sobaserole = _slaveorder>>
+      <<include 'SOGenInit'>>
+    <</link>>
+
+    <br/>
+  <</capture>>
+<</for>>
+
+<br/>
+<br/>
+<<devtoolreturnbutton>>

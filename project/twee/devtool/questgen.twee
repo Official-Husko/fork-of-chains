@@ -1,0 +1,364 @@
+:: QuestGenSetup [nobr]
+
+<<set $devtooltype = 'quest'>>
+
+<<set $qcustomslaveorder = []>>
+<<set $qcustomcriteria = []>>
+<<set $qcustomunitgroup = []>>
+<<set $qcustomtitle = []>>
+
+<<set _qkey = '__devtool_quest'>>
+<<set _dpassage = 'DummyPassageDesc'>>
+
+<<set $qpool = null>>
+<<set $qrarity = setup.rarity.never>>
+
+<<set $qoutcomedesc = ['', '', '', '']>>
+<<set $qdesc = ''>>
+
+<<if _qkey in setup.questtemplate>>
+  <<run delete setup.questtemplate[_qkey]>>
+<</if>>
+
+<<if !_qbase>>
+  <<set $dtquest = new setup.QuestTemplate(
+    _qkey,
+    "",  /* name */
+    {name: '', url: ''},  /* author */
+    [],  /* tag list */
+    1,  /* weeks */
+    setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+    {}, /* roles */
+    {}, /* actors */
+    [], /* costs */
+    _dpassage,  /* description passage */
+    setup.qdiff.easiest1,  /* difficulty */
+    [  /* outcomes */
+      [`DummyPassage0`, []],
+      [`DummyPassage1`, []],
+      [`DummyPassage2`, []],
+      [`DummyPassage3`, []],
+    ],
+    [  /* quest pools */
+    ],
+    [],  /* restriction */
+    [],  /* expired outcomes */
+  )>>
+
+<<else>>
+
+  <<set _criterias = _qbase.getUnitCriterias()>>
+  <<set _toinputroles = {}>>
+  <<for _actorname, _criteriaobj range _criterias>>
+    <<set _toinputroles[_actorname] = _criteriaobj.criteria>>
+  <</for>>
+
+  <<set $dtquest = new setup.QuestTemplate(
+    _qkey,
+    _qbase.getName(),  /* name */
+    _qbase.getAuthor(),  /* author */
+    _qbase.getTags(),  /* tag list */
+    _qbase.getWeeks(),  /* weeks */
+    _qbase.getDeadlineWeeks(),  /* deadline weeks */
+    _toinputroles, /* roles */
+    _qbase.getActorUnitGroups(), /* actors */
+    _qbase.getCosts(), /* costs */
+    _dpassage,  /* description passage */
+    _qbase.getDifficulty(),  /* difficulty */
+    [  /* outcomes */
+      [`DummyPassage0`, _qbase.outcomes[0][1]],
+      [`DummyPassage1`, _qbase.outcomes[1][1]],
+      [`DummyPassage2`, _qbase.outcomes[2][1]],
+      [`DummyPassage3`, _qbase.outcomes[3][1]],
+    ],
+    [  /* quest pools */
+    ],
+    _qbase.getPrerequisites(), /* restriction */
+    _qbase.getExpiredOutcomes(), /* expired outcomes */
+  )>>
+  <<set $dtquest.old_key = _qbase.key>>
+
+  /* get the descriptions */
+  <<for _ioutcome, _outcome range _qbase.getOutcomes()>>
+    <<if _ioutcome && _outcome[0] == _qbase.getOutcomes()[_ioutcome-1][0]>>
+    <<else>>
+      <<set $qoutcomedesc[_ioutcome] = Story.get(_outcome[0]).text>>
+    <</if>>
+  <</for>>
+
+  <<set $qdesc = Story.get(_qbase.getDescriptionPassage()).text>>
+
+  /* pool and rarity */
+  <<set _poolrarity = _qbase.getAnyQuestPoolRarity()>>
+  <<if _poolrarity>>
+    <<set $qpool = _poolrarity.pool>>
+    <<set $qrarity = _poolrarity.rarity>>
+  <</if>>
+<</if>>
+
+/* Remove the auto-generated exps */
+
+<<for _i range [0, 1, 2, 3]>>
+  <<set $dtquest.outcomes[_i][1] = $dtquest.outcomes[_i][1].filter(c => !c.IS_EXP_AUTO)>>
+<</for>>
+
+
+:: QuestGen [nobr]
+
+<<run setup.DevToolHelper.restoreScrollPos()>>
+
+<<dtauthor "$dtquest.author" $dtquest.author>>
+
+<<dtname "$dtquest.name" $dtquest.name>>
+
+<<dtquestpool "$qpool" $qpool 'QGChooseQuestPool'>>
+
+<<dtrarity "$qrarity" $qrarity 'QGChooseRarity'>>
+
+<<dtduration "$dtquest.weeks" $dtquest.weeks>>
+
+<<dtexpires "$dtquest.deadline_weeks" $dtquest.deadline_weeks>>
+
+<<dtdifficulty $dtquest 'QGChooseDifficulty'>>
+
+<<dttags $dtquest>>
+
+<div class='card livingcard'>
+  <b>Roles</b> (max. 5)
+  <<message '(?)'>>
+    <div class='helpcard'>
+      The details about your units that go on this quest.
+      <br/>
+      <br/>
+      For balance reason, most quests are encouraged to have three slavers participating in it.
+      You can have less or more, but you must be careful with balancing the quest if you do.
+    </div>
+  <</message>>
+  <<if Object.keys($dtquest.unit_criteria_map).length < 5>>
+    <<link '(Add new role)'>>
+      <<run setup.DevToolHelper.saveScrollPos()>>
+      <<goto 'QGAddRole'>>
+    <</link>>
+  <</if>>
+
+  <<for _irole, _role range $dtquest.unit_criteria_map>>
+    <br/>
+    <<= _irole>>: <<= _role.criteria.getName()>>
+    <<capture _irole, _role>>
+      <<message '(+)'>>
+        <<criteriacard _role.criteria>>
+      <</message>>
+      <<set _text = `(remove ${_irole})`>>
+      <<link _text>>
+        <<run delete $dtquest.unit_criteria_map[_irole]>>
+        <<run setup.DevToolHelper.saveScrollPos()>>
+        <<goto 'QuestGen'>>
+      <</link>>
+    <</capture>>
+  <</for>>
+</div>
+
+<<dtactor $dtquest>>
+
+<<dtcost '$dtquest.costs'>>
+
+<<dtrestriction '$dtquest.quest_prerequisites'>>
+
+<div class='companycard'>
+  <b>Outcomes</b>:
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Outcomes of the quest.
+      <br/>
+      <br/>
+      See the help texts in their corresponding area for more information.
+    </div>
+  <</message>>
+
+  <<for _ioutcome, _outcome range $dtquest.outcomes>>
+    <div class='card buildingcard'>
+      <<if _ioutcome == 0>>
+        <<successtext 'CRITICAL SUCCESS'>>
+        <<message '(?)'>>
+          <<dtrewardhelp>>
+        <</message>>
+        <<button 'Compute recommended total quest reward'>>
+          <<replace '#critrewarddiv'>>
+            <<set _money = $dtquest.computeRecommendedReward('crit')>>
+            Your quest should reward a total of <<money _money>> on <<successtext 'critical success'>>.
+          <</replace>>
+        <</button>>
+        <div id='critrewarddiv'>
+          Please compute your recommended <<successtext 'critical success'>> quest reward by clicking the button above.
+        </div>
+      <<elseif _ioutcome == 1>>
+        <<successtextlite 'SUCCESS'>>
+        <<message '(?)'>>
+          <<dtrewardhelp>>
+        <</message>>
+        <<button 'Compute recommended total quest reward'>>
+          <<replace '#successrewarddiv'>>
+            <<set _money = $dtquest.computeRecommendedReward('success')>>
+            Your quest should reward a total of <<money _money>> on <<successtextlite 'success'>>.
+          <</replace>>
+        <</button>>
+        <div id='successrewarddiv'>
+          Please compute your recommended <<successtextlite 'success'>> quest reward by clicking the button above.
+        </div>
+      <<elseif _ioutcome == 2>>
+        <<dangertextlite 'FAILURE'>>
+        <<message '(?)'>>
+          <<dtfailurehelp>>
+        <</message>>
+      <<elseif _ioutcome == 3>>
+        <<dangertext 'DISASTER'>>
+        <<message '(?)'>>
+          <<dtfailurehelp>>
+        <</message>>
+      <</if>>
+
+      <<set _listpath = "$dtquest.outcomes[" + _ioutcome + "][1]">>
+      <<devlist _listpath '(Add new result)' 'QGAddCost' 'QuestGen'>>
+    </div>
+  <</for>>
+</div>
+
+<<dtexpireoutcome '$dtquest.expired_outcomes'>>
+
+<hr/>
+
+<<dtstoryhelp>>
+
+<div class="overflow-story-container">
+
+<hr/>
+
+<p>
+<h4>Quest description:</h4>
+</p>
+
+<p>
+<<codeeditor '$qdesc' $qdesc>>
+</p>
+
+<hr/>
+
+There are two ways to write your quest outcomes.
+First, you can write each of the outcomes below.
+Alternatively, you can only write several outcomes, and use the
+same text for multiple results.
+<<message '(Click for more information)'>>
+  <div class='helpcard'>
+  If you leave some of the fields blank, then it will use the first non-blank one
+  above it.
+  For example, if you leave both <<successtextlite 'SUCCESS'>> and <<dangertextlite 'FAILURE'>> blank,
+  but fill in <<dangertext 'DISASTER'>>, then
+  then both <<successtextlite 'SUCCESS'>> and
+  <<dangertextlite 'FAILURE'>> will use the <<successtext 'CRITICAL SUCCESS'>> text,
+  while <<dangertext 'DISASTER'>> will use its own.
+  To refer to the quest result, Click "Quest" then "If... outcomes" from the toolbar.
+  For example, it can look like this:
+
+  <div class='companycard'>
+  <code>
+  Your slavers venture into the abandoned temple.<br/>
+  """<<if $gOutcome == 'crit'>>"""<br/>
+    They found a treasure!<br/>
+  """<<elseif $gOutcome == 'success'>>"""<br/>
+    They found a bag of gold.<br/>
+  """<<elseif $gOutcome == 'failure'>>"""<br/>
+    They fell into a hole.<br/>
+  """<<elseif $gOutcome == 'disaster'>>"""<br/>
+    They fell into a spike trap.<br/>
+  """<</if>>"""<br/>
+  They then went home.
+  """
+  </code>
+  </div>
+
+  <hr/>
+
+  <p>
+  In <<successtextlite 'SUCCESS'>>,
+  the above would become: <br/>
+  Your slavers venture into the abandoned temple. They found a bag of gold. They then went home.
+  As an example quest, you can open in Content Creator the
+  "Bounty Hunt: Wolves" quest in the <<lore region_vale>>.
+  </p>
+  </div>
+<</message>>
+
+<<for _iqod, _qod range $qoutcomedesc>>
+  <hr/>
+  <p>
+    <<if _iqod == 0>>
+      <<successtext 'CRITICAL SUCCESS'>>
+    <<elseif _iqod == 1>>
+      <<successtextlite 'SUCCESS'>>
+    <<elseif _iqod == 2>>
+      <<dangertextlite 'FAILURE'>>
+    <<elseif _iqod == 3>>
+      <<dangertext 'DISASTER'>>
+    <</if>>
+    text:
+  </p>
+  <p>
+    <<set _receiver = `$qoutcomedesc[${_iqod}]`>>
+    <<codeeditor _receiver $qoutcomedesc[_iqod]>>
+  </p>
+<</for>>
+
+<hr/>
+
+<p class="center">
+<br/>
+<<button 'CREATE NEW QUEST!'>>
+  <<run setup.DOM.Menu.devtoolverifycreate()>>
+<</button>>
+</p>
+
+<<if $dtquest.old_key>>
+
+<p class='center'>
+<<link 'create quest (override existing)'>>
+  <<run setup.DOM.Menu.devtoolverifycreate(true)>>
+<</link>>
+</p>
+
+<</if>>
+
+</div>
+
+
+:: QGChooseQuestPool [nobr]
+
+<p>Choose where quest can appear</p>
+
+<<dtquestpoolchoose 'QGChooseQuestPoolDo'>>
+
+
+:: QGChooseQuestPoolDo [nobr]
+
+<<set $qpool = _questpoolchosen>>
+<<gotowipehistory 'QuestGen'>>
+
+
+:: QGChooseDifficulty [nobr]
+
+<<devchoosedifficulty 'QGChooseDifficultyDo'>>
+
+:: QGChooseDifficultyDo [nobr]
+
+<<set $dtquest.difficulty = _diffchosen>>
+<<gotowipehistory 'QuestGen'>>
+
+
+:: QGChooseRarity [nobr]
+
+<<dtraritychoose 'QGChooseRarityDo'>>
+
+
+:: QGChooseRarityDo [nobr]
+
+<<set $qrarity = _raritychosen>>
+<<gotowipehistory 'QuestGen'>>

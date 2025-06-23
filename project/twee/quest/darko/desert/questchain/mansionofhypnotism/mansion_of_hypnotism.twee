@@ -1,0 +1,217 @@
+:: QuestSetup_mansion_of_hypnotism [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaorc = new setup.UnitCriteria(
+null, /* key */
+'Orc Slave', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.IsCanBeSold(),
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_none),
+setup.qres.Trait(setup.trait.race_greenskin),
+setup.qres.AnyTrait([
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.dick_titanic,
+  setup.trait.balls_titanic,
+  setup.trait.breast_titanic,
+  setup.trait.height_giant,
+], true),
+],
+{
+}
+)>>
+
+
+<<run new setup.UnitGroup(
+'quest_mansion_of_hypnotism_master',
+"Master",
+'subrace_humandesert', /* pools */
+1, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_boss),
+setup.qc.TraitsReplace('unit', [setup.trait.skill_hypnotic]), ],
+)>>
+
+<<run new setup.QuestTemplate(
+'mansion_of_hypnotism', /* key */
+"Mansion of Hypnotism", /* Title */
+"darko", /* Author */
+[ 'desert',
+'veteran',
+'upgrade'
+], /* tags */
+4, /* weeks */
+12, /* quest expiration weeks */
+{ /* roles */
+'hypnotist': setup.qu.hypnotist_veteran,
+'assistant': setup.qu.hypnotist,
+'trainer': setup.qu.slavetrainer,
+'orc': _criteriaorc, },
+{ /* actors */
+'master': 'quest_mansion_of_hypnotism_master',
+'slave': 'subrace_orc', },
+[ /* costs */
+],
+'Quest_mansion_of_hypnotism',
+setup.qdiff.hardest50, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mansion_of_hypnotismCrit',
+[
+setup.qc.MoneyNormal(),
+setup.qc.Item(setup.item.brainwash_technology),
+setup.qc.Item(setup.item.potion_slavertraining),
+setup.qc.MissingUnitForever('orc'),
+],
+], [
+'Quest_mansion_of_hypnotismCrit',
+[
+setup.qc.MissingUnitForever('orc'),
+setup.qc.Item(setup.item.potion_slavertraining),
+setup.qc.Item(setup.item.brainwash_technology),
+],
+], [
+'Quest_mansion_of_hypnotismCrit',
+[
+setup.qc.Mindbreak('orc'),
+setup.qc.TraumatizeRandom('hypnotist', 12),
+setup.qc.TraumatizeRandom('assistant', 8),
+setup.qc.TraumatizeRandom('trainer', 6), ],
+], [
+'Quest_mansion_of_hypnotismCrit',
+[
+setup.qc.MissingUnitForever('orc'),
+setup.qc.TraumatizeRandom('hypnotist', 18),
+setup.qc.TraumatizeRandom('assistant', 15),
+setup.qc.TraumatizeRandom('trainer', 12),
+setup.qc.SlaverMarker('master'),
+setup.qc.SlaveMarker('slave'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(),
+setup.qres.NoItem(setup.item.brainwash_technology), ],
+)>>
+
+:: Quest_mansion_of_hypnotism [nobr]
+
+<p>
+Hypnotism - the act of influencing the subconcious mind. Contrary to
+popular belief, it does not work the way most people think — hypnotism only
+work when the subject has a subconscious desire to get hypnotized. It does
+not work to make others do whatever the hypnotizer desires — there is a very
+strong limit to this ability, rendering it useless for anything but party
+tricks.
+</p>
+
+<p>
+You have caught wind of a rumor that someone is living inside a mansion secluded
+somewhere in the <<lore region_desert>>, staffed exclusively with brainwashed orcs.
+Apparently, the <<master $g.master>> of the mansion is somehow capable of
+using hypnotism to alter the conscious minds of these orcs. There is no doubt
+that the <<master $g.master>> is using some kind of artifact to be able to
+achieve this improbable feat.
+</p>
+
+<p>
+It is far too dangerous to attempt to steal this artifact — orcs being
+orcs means they are very capable of mauling your slavers to smitherens. A better idea
+is to befriend the perhaps lonely <<master $g.master>> — you can try sending
+a slaver skilled in <<rep setup.trait.skill_hypnotic>>, together with an
+untrained and positively voluptuous <<rep setup.trait.race_greenskin>> slave
+and demonstrate to the <<master $g.master>> your slaver's capability of
+hypnotism. Perhaps <<they $g.master>> would be willing to share their secrets
+with a friend of similar background.
+</p>
+
+<p>
+<<dangertext 'WARNING:'>> the slave you send on this mission is likely to end
+up as one of the <<master $g.master>>'s servant and be gone forever from your
+company...
+</p>
+
+
+:: Quest_mansion_of_hypnotismCrit [nobr]
+
+<<if $g.slave.isMale() && $g.orc.isMale()>>
+  <<questimage "mansion_of_hypnotism_male.jpg">>
+<</if>>
+
+<p>
+Arriving at the mansion, your slavers were greeted by a
+<<if $g.slave.isFemale()>>
+freakishly voluptouous orc dressed in a skimpy maid outfit.
+<<else>>
+freakishly muscular orc dressed in overly tight butler outfit.
+<</if>>
+With none of the usual orcish slang, <<they $g.slave>> escorted your slavers
+to meet the <<master $g.master>> — the <<man $g.master>> radiated mystery
+with <<their $g.master>> every movement.
+Your slavers exchanged pleasantries and the <<master $g.master>> was
+apparently indeed rather lonely, and greatly appreciated the shared interest
+in hypnotism.
+When <<they $g.master>> asked for a demonstration,
+your slaver immediately set the bound and gagged <<rep $g.orc>> down and
+<<rep $g.hypnotist>> <<uadv $g.hypnotist>> demonstrated <<their
+$g.hypnotist>> well practiced hypnotism on the slave.
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+Within moments, <<yourrep $g.orc>> fell into a trance, although not much else.
+The <<master $g.master>> offered to take over, and your slavers were in
+awe as the <<uadjper $g.orc>> slave fell deeper and deeper into trance until
+<<they $g.orc>> snapped, and took whatever instructions the <<master
+$g.master>> gave. As a gesture of goodwill, <<they $g.master>> shared the
+secret of
+<<rep setup.item.brainwash_technology>> with your slavers,
+as well as a bottle of <<rep setup.item.potion_slavertraining>> to aid your slavers in mastering their newfound
+knowledge.
+</p>
+
+<p>
+Your slavers spent the remaining days enjoying the hospitality of the master while
+perusing all the various orc slaves available in the mansion.
+Your former slave <<rep $g.orc>> settled nicely in the mansion,
+currently being "trained" by the orc butler that escorted you earlier before fulfilling
+<<their $g.orc>> destiny
+serving as
+the <<master $g.master>>'s personal
+<<if $g.master.isFemale()>>rear-eater<<else>>cumdump<</if>>.
+<<if $gOutcome == 'crit'>>
+Before leaving,
+the master gave your slavers some lavish gifts, which they bring back home.
+<</if>>
+</p>
+
+<<else>>
+
+<p>
+But something went wrong and <<reps $g.hypnotist>>
+hold over the slave was broken.
+Unimpressed, the <<master $g.master>> took over and put the slave <<themself
+$g.master>> into a deep trance, while
+simultaneously hypnotizing all your slavers as well.
+By the time they came by, they found themselves stranded in the desert with
+<<if $gOutcome == 'failure'>>
+a mindbroken <<rep $g.orc>>.
+They went home, traumatized by the experience.
+<<else>>
+<<rep $g.orc>> nowhere in sight. They went home, greatly
+traumatized by the experience.
+<</if>>
+</p>
+
+<</if>>

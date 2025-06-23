@@ -1,0 +1,263 @@
+:: EventSetup_a_very_special_wine_order2 [nobr event]
+
+
+
+
+<<run new setup.Event(
+'a_very_special_wine_order2', /* key */
+"A Very Special Wine Order", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'watersport',
+  'money',
+  'order',
+  'city',
+],
+'Event_a_very_special_wine_order2',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'mlangmerchantprince': 'a_merchant_s_revenge1',
+  'wineagent': 'city_all',
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AnyTrait([
+      'training_toilet_basic', 'training_toilet_advanced', 'training_toilet_master',
+    ], true),
+    setup.qres.SlaveUsableByYou(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.SlaveMarker('wineagent'),
+  setup.qc.SlaveOrderFlex(
+'Order: The Prince of Cups', /* name */
+'independent', /* company */
+12, /* expires in */
+2000, /* base price */
+200, /* trait multi */
+0.8, /* value multi */
+[ /* crit traits */
+setup.trait.training_obedience_advanced,
+setup.trait.training_obedience_master,
+setup.trait.training_endurance_basic,
+setup.trait.training_endurance_advanced,
+setup.trait.training_endurance_master,
+setup.trait.training_toilet_basic,
+setup.trait.training_toilet_advanced,
+setup.trait.training_toilet_master,
+setup.trait.eq_blind,
+],
+[ /* disaster traits */
+setup.trait.vagina_gape,
+setup.trait.anus_gape,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.training_mindbreak,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.training_toilet_basic, setup.trait.training_toilet_advanced, setup.trait.training_toilet_master], true),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.training_oral_basic,
+setup.trait.training_masochist_basic,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.face_attractive,
+setup.trait.per_lustful
+], 2, 0, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+],
+[ /* restrictions */
+  setup.qres.VarGte('mlangmerchantprincequest', 1),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_a_very_special_wine_order2 [nobr]
+<<dialogue $g.wineagent>>
+I'm looking for an...employee with special qualities. I understand you can help me obtain them?
+<</dialogue>>
+
+<p>The late morning finds you in your office, bored and with little to do except paperwork that you're putting off until at least this afternoon. The day is overcast and cloudy, and with nothing else to do you
+<<set _eq = $unit.player.getGenitalCovering()>>
+<<if _eq>>
+  <<ustripverb $unit.player _eq>> revealing
+<<else>>
+  reach down to play with
+<</if>>
+
+your <<ugenital $unit.player>>.
+
+<<set _slave = $g.slave>>
+
+<<if _slave>>
+Crooking your finger at <<name _slave>> you sit down on the edge of your chair and spread your legs.<br>
+"Get on it," you say, pointing at your <<ugenital $unit.player>>.<br>
+<<if $unit.player.isHasDick()>>
+<<name _slave>> takes your cock into <<their _slave>> mouth and you lean back, willing yourself to relax and let loose, when there is a knock on your door. Looking up you see a <<therace $g.wineagent>> <<woman $g.wineagent>> who is looking at you with interest.<br>
+"Don't stop on my account," <<they $g.wineagent>> says, leaning against the door. "I'm just here to talk business and I <i>like</i> to watch."<br>
+<<if $unit.player.isHasTrait('per_chaste')>>
+A flush creeps up your face at your leering audience. Shoving <<name _slave>> away you pull back behind your desk and grab for you clothes.<br>
+"That's fine," you say. "Who are you?"
+<<elseif $unit.player.isHasTrait('per_submissive')>>
+You freeze, a trickle of piss seeping out of your cock and down into <<name _slave>>'s eager throat. For a moment you're unsure of what to do and then give in and let go, the gentle sucking on your penis draining you and relieving your bladder. When you're done, <<name _slave>> continues to suckle, familiar enough with you to know what follows a drink.<br>
+"Beautiful," the <<woman $g.wineagent>> says, entering the room and taking the seat opposite yours. "I do love seeing such devotion."<br>
+For a moment you aren't sure if she's talking about you or <<name _slave>> but decide it doesn't matter. "Who are you, exactly?"
+<<elseif $unit.player.isHasTrait('per_lustful')>>
+Grinning, you spread your legs wider, grab the back of <<name _slave>>'s neck and pull <<them _slave>> into your crotch. "Great, I love an audience."<br>
+There's a spin...a rush.... a vibration in your cock when you piss normally. The feeling of liquid leaving your aptly named piss slit at high speed. When there's a slave on your dick drinking you down, the feeling is different. Not really there. Just the deflation of pressure in your belly and the knowledge that <<name _slave>> is drinking your piss.
+<br><br>
+You start to stiffen before you're fully done, but you're empty enough that it doesn't bother you. As <<name _slave>> starts bobbing up and down your shaft, you look up at the <<therace $g.wineagent>> by the door.<br>
+"Well, now that I've drained my bladder, why don't you come in and we can talk. This could take a while."<br>
+The <<woman $g.wineagent>> smiles and walks into the room. "Can I sit on the desk? I'll get a better view there."<br>
+You shrug. "Be my guest. Who are you anyway?"
+<<elseif $unit.player.isHasTrait('per_sexaddict')>>
+Grinning, you spread your legs wider, grab the back of <<name _slave>>'s neck and pull <<them _slave>> into your crotch. "Great, I love an audience."<br>
+There's a spin...a rush.... a vibration in your cock when you piss normally. The feeling of liquid leaving your aptly named piss slit at high speed. When there's a slave on your dick drinking you down, the feeling is different. Not really there. Just the deflation of pressure in your belly and the knowledge that <<name _slave>> is drinking your piss.
+<br><br>
+You start to stiffen before you're fully done, but you're empty enough that it doesn't bother you. As <<name _slave>> starts bobbing up and down your shaft, you look up at the <<therace $g.wineagent>> by the door.<br>
+"Well, now that I've drained my bladder, why don't you come in and we can talk. Unless you want to join in?"<br>
+The <<woman $g.wineagent>> smiles and walks into the room. "I'm strictly a voyeur. Can I sit on the desk? I'll get a better view there."<br>
+You shrug. "Be my guest. Who are you anyway?"
+<<else>>
+You fight the urge to push back to your desk and hide. Whoever this <<woman $g.wineagent>> is, <<they $g.wineagent>> clearly knows who you are and what business to run—and <<they $g.wineagent>>'s still here.<br>
+"I'll just finish up then," you say. Closing your eyes you finish relaxing, and feel your piss start to flow into the eager suckling mouth of your slave, <<name _slave>>. <<They $g.slave>> gulp you down dutifully, and when your flow finally slows to a trickle, <<they $g.slave>> starts to nurse you to backhardness.
+<<if $unit.player.isHasTrait('per_cruel')>>
+You slap <<them _slave>> away from your crotch and push <<them _slave>> under your desk.<br>
+"I'm working," you say bluntly. "Keep me hard but don't distract me."<br>
+You smile as you feel <<name _slave>> get to work.
+<<elseif $unit.player.isHasTrait('per_kind')>>
+You gently push <<them _slave>> under your desk.<br>
+"I'm working," you say. "Keep me hard but don't distract me."<br>
+You smile as you feel <<name _slave>> get to work.
+<<elseif $unit.player.isHasTrait('per_empath')>>
+You gently push <<them _slave>> under your desk.<br>
+"I'm working," you say. "Keep me hard but don't distract me."<br>
+You smile as you feel <<name _slave>> get to work.
+<<else>>
+You push <<them _slave>> off your cock and snap your fingers, pointing under your desk.<br>
+"I'm working," you say. "Get in there, keep me hard but don't distract me."<br>
+<<name _slave>> scrambles to obey and you slide your chair in so that your crotch is back within range of <<their _slave>> mouth. You smile as you feel <<them _slave>> get to work.
+<</if>>
+<</if>>
+<<else>>
+<<name _slave>> presses <<their _slave>> lips to your pussy, doing <<their _slave>> best to not make a mess as you relax. Still, <<they _slave>> ends up with a lot of piss over <<their _slave>> face.<br>
+"You're cleaning up anything you miss," you remind <<them _slave>>.<br>
+"Is that why you've gone with stone floors and no rugs?"<br>
+Looking up you see a <<therace $g.wineagent>> <<woman $g.wineagent>> who is looking at you with interest.<br>
+"Yes," you say, arching your eyebrows. "And who exactly are you?"
+<</if>>
+<<else>>
+<<set _slave = setup.getUnit({job: 'slave'})>>
+<<if $unit.player.isHasDick()>>
+<<name _slave>> leans forward and starts to suck on your <<udick $unit.player>>, <<their _slave>> lips sliding down over your manhood as <<they _slave>> attempts to get down to the base of your dick.<br>
+"Oh, that's nice," you sigh, as lean your head back against the back of your chair, eyes closed as you push <<name _slave>> further and further down on your cock.<br>
+"Yes it is."<br>
+Looking up you see a <<therace $g.wineagent>> <<woman $g.wineagent>> who is looking at you with interest.<br>
+"Don't stop on my account," <<they $g.wineagent>> says, leaning against the door. "I'm just here to talk business and I <i>like</i> to watch."<br>
+<<if $unit.player.isHasTrait('per_chaste')>>
+You close your legs so suddenly that your knees slam into <<name _slave>>'s head. Thankfully the pain makes <<them _slave>> cry out, rather than bite down, and you pull your cock out of their mouth, grabbing at your clothing to cover your crotch.<br>
+"Who the hell are you?" you ask as you push <<name _slave>> away and drag your chair in under the desk so that your lower body is hidden from the <<woman $g.wineagent>>'s gaze.
+<<elseif $unit.player.isHasTrait('per_submissive')>>
+You feel the familiar flush creep up your belly, over your chest and tint your cheeks. It's embarrassing how easily you get embarrassed. It's also embarrassing how horny it makes you.<br>
+"All...all right," you say as you shove your cock further down <<name _slave>>'s throat, causing <<them _slave>> to cough and sputter around your girth. "Who are you again?"
+<<elseif $unit.player.isHasTrait('per_lustful')>>
+"I didn't plan to," you say as you scooch back to give <<them $g.wineagent>> a better view. "Who are you anyway?"
+<<elseif $unit.player.isHasTrait('per_sexaddict')>>
+"I didn't plan to," you say as you scooch back to give <<them $g.wineagent>> a better view. "Want to join in?"
+The <<woman $g.wineagent>> smiles and walks into the room. "I'm strictly a voyeur. Can I sit on the desk? I'll get a better view there."<br>
+You shrug. "Be my guest. Who are you anyway?"
+<<else>>
+You fight the urge to push back to your desk and hide. Whoever this <<therace $g.wineagent>> is, <<they $g.wineagent>> clearly knows who you are and what business to run—and <<they $g.wineagent>>'s still here.<br>
+"I won't then," you say cheerfully. "Slave, show the nice <<woman $g.wineagent>> how you treat your <<Mistress $unit.player>>.<br>
+<<name _slave>> redoubles their efforts as the <<therace $g.wineagent>> walks closer, seating herself on the side of your desk to maintian her view.<br>
+"So," you say. "Who are you anyway?"<br>
+<</if>>
+<<else>>
+<<name _slave>> leans forward and starts tonguing your pussy, aware that <<their _slave>> welfare depends on how well <<they _slave>> do.
+"Oh yeah," you moan as you grind into their face. "You look so fucking nasty down there between by legs you little bitch."<br>
+"Yes <<they _slave>> does."<br>
+Looking up you see a <<therace $g.wineagent>> <<woman $g.wineagent>> who is looking at you with interest.<br>
+"Don't stop on my account," <<they $g.wineagent>> says, leaning against the door. "I'm just here to talk business and I <i>like</i> to watch."<br>
+<<if $unit.player.isHasTrait('per_chaste')>>
+You close your legs so suddenly that your knees slam into <<name _slave>>'s head. Thankfully the pain makes <<them _slave>> cry out, rather than bite down, and <<they _slave>> don't lose their tongue. Shoving them away, you grab at your clothing to cover your crotch.<br>
+"Who the hell are you?" you ask as you drag your chair in under the desk so that your lower body is hidden from the <<woman $g.wineagent>>'s gaze.
+<<elseif $unit.player.isHasTrait('per_submissive')>>
+You feel the familiar flush creep up your belly, over your chest and tint your cheeks. It's embarrassing how easily you get embarrassed. It's also embarrassing how horny it makes you.<br>
+"All...all right," you say as you grind harder against <<their _slave>> mouth. "Who are you again?"
+<<elseif $unit.player.isHasTrait('per_lustful')>>
+"I didn't plan to," you say as you scooch back to give <<them $g.wineagent>> a better view. "Who are you anyway?"
+<<elseif $unit.player.isHasTrait('per_sexaddict')>>
+"I didn't plan to," you say as you scooch back to give <<them $g.wineagent>> a better view. "Want to join in?"
+The <<woman $g.wineagent>> smiles and walks into the room. "I'm strictly a voyeur. Can I sit on the desk? I'll get a better view there."<br>
+You shrug. "Be my guest. Who are you anyway?"
+<</if>>
+<</if>>
+<</if>>
+</p>
+<p>"My name is <<name $g.wineagent>>, and I'm an procurement agent for <<lore location_princeofcups>>. "<br>
+<<if $unit.player.isHasTrait('per_slow')>>
+" What do you procure?" you ask.<br>
+"Whatevever is needed. Wine. Food, employees and indentured servants."<br>
+"Indentured servants?"<br>
+"You might call them slaves.<br>
+Oh. Suddenly you understand. "Well, I sell slaves," you say.<br>
+"I know," she says with a smile. "That's why I'm here."
+<<else>>
+"And you're here for slaves."<br>
+<<name $g.wineagent>> holds up a hand. "My client prefers the term 'indentured servants'. For purely legal reasons, you understand.<br>
+You shrug. "If you like," you say. "I don't sell out my clients."<br>
+<<They $g.wineagent>> smile. "I'm so very glad to hear that."
+<</if>>
+<br>
+<<dialogue $g.wineagent>>
+I do not have information on whether you visited the toilets during your visit to my client's establishment. But I need an...indentured servant who will be able to serve in that capacity. And I'm authorised to pay well.
+<</dialogue>>
+<<if $unit.player.isHasTrait('per_direct')>>
+"You need a piss slave," you say flatly.<br>
+<<name $g.wineagent>> sighs. "If you want to be crude about it, yes."<br>
+"I like to keep things simple," you say <<uadv $unit.player>>. "Let's talk terms."
+<<elseif $unit.player.isHasTrait('per_slow')>>
+"You want to buy a piss slave?" you venture.<br>
+<<name $g.wineagent>> sighs. "Yes. I want to buy a piss slave."<br>
+"You want them to do anything else?"
+<<else>>
+"I can help with that."
+<</if>>
+<br>
+"Excellent," <<name $g.wineagent>> says, pulling a piece of parchement from the inside of her coat. "I have our requirements—and payment offer—here. Have one of your...crew deliver the employee to their new workplace and you'll be paid on delivery. Just don't tell the guards."<br>
+<<if $unit.player.isHasTrait('per_slow')>>
+"I ain't that thick," you say with a chuckle.
+<<name $g.wineagent>> smiles. "Glad to hear it. Well, thank you for your time"<br>
+<<else>>
+"Why would I do that?" you ask.<br>
+"You'd be amazed how many other mercenary companies don't seem to understand that concept," <<name $g.wineagent>> says drily. "Well, thank you for your time."
+<</if>>
+<br>
+<<if $unit.player.isHasTrait('per_chaste')>>
+"And you for your business," you say. "I won't rise if that's all right by you."<br>
+<<else>>
+<<if $unit.player.isHasDick()>>
+Beneath your desk the constant ministrations of your slave have been keeping you on edge the entire meeting and as <<name $g.wineagent>> stands to leave, <<name _slave>> redoubles <<their _slave>> efforts, sending you over the edge as you grip the edge of your desk and cry out in release as you shoot your load down <<their _slave>> throat.<br>
+"Thank you for yours too, <<name $g.wineagent>>. I'll stay seated if that's all right by you."<br>
+<<else>>
+Beneath the desk the oral ministrations of <<name _slave>> have kept you dripping all through the meeting, and now they tip you over the edge as <<name _slave>> guzzles your pussyjuice.<br>
+"Thank you for yours too, <<name $g.wineagent>>. I'll stay seated if that's all right by you."<br>
+<</if>>
+"I am disappointed, I won't lie," <<name $g.wineagent>> says. "But business is business. I'll see myself out."
+<</if>>
+</p>

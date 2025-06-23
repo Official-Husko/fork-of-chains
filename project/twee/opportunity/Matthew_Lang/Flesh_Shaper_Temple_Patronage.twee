@@ -1,0 +1,143 @@
+:: OpportunitySetup_flesh_shaper_temple_patronage [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'flesh_shaper_temple_patronage', /* key */
+"Flesh Shaper Temple: Patronage", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'transformation',
+  'vale',
+  'prep',
+  'trait',
+  'rare',
+  'veteran',
+],
+1, /* expiration weeks */
+'Opportunity_flesh_shaper_temple_patronage',
+setup.qdiff.harder40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_flesh_shaper_temple_patronage_0',
+    outcome_passage: 'Opportunity_flesh_shaper_temple_patronage_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 100),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_flesh_shaper_temple_patronage_1',
+    outcome_passage: 'Opportunity_flesh_shaper_temple_patronage_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('flesh_shaper_temple_patronage_attractiveness', null),
+      setup.qc.SetCooldownOpportunity(null, 100),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+{
+    description_passage: 'Opportunity_flesh_shaper_temple_patronage_2',
+    outcome_passage: 'Opportunity_flesh_shaper_temple_patronage_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('flesh_shaper_temple_patronage_fearsomeness', null),
+      setup.qc.SetCooldownOpportunity(null, 100),
+    ],
+    visibility_restrictions: [
+    ],
+  },  
+],
+[ /* quest pool and rarity */
+  [setup.questpool.vale, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.OpportunityUnique(),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.Building(setup.buildingtemplate.surgery),
+],
+{ /* actors */
+  'watermage': [
+    setup.qres.AnyTrait([setup.trait.magic_water, setup.trait.magic_water_master], true),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_flesh_shaper_temple_patronage [nobr]
+<<dialogue $g.watermage>>
+    It doesn't happen often but sometimes one of the Flesh Shaper temples opens their doors and will help people change their bodies—for a price.
+<</dialogue>>
+<<if $g.watermage.isYou()>>
+    <<set _u = setup.getAnySlaver()>>
+    <p>
+        "Why can't we push flesh shaping further?" <<name _u>> asks. "I'm not complaining, or nothing, but the Flesh Shapers can do more, right?"<br>
+        You sigh <<uadv $unit.player>>. "Because there's delicate magical requirements for that sort of thing that cannot be achieved here in this fort," you say. "Basically, because magic."<br>
+        "Oh. Right."<br>
+        It wasn't much of a conversation, but it got you thinking, and you remember that every now and again, Flesh Shaper Temples will open up to those brave, rich, hardy and/or desperate enough to pay to have their features changed. They never provide extreme alterations, as those are considered sacred, but they could offer a few things that cannot be done at your own facilities. It would just cost a fair amount of coin, and given that more people are likely to show up than the cult is willing to offer services to, a bribe in the form of a suitable slave would allow you to jump the queue. As it happens, <<name _u>> had mentioned they'd heard rumors that one of the temples would be opening their doors soon, and this might provide you with an opportunity to hire their services. If you can afford it.
+    </p>
+
+
+<<else>>
+    <p>
+        "Why can't we push flesh shaping further?" you asked. "I know it's possible.<br>
+        You were standing in the hallway, talking to one of your resident flesh shapers, <<rep $g.watermage>> outside the <<rep setup.buildingtemplate.biolab>>.<br>
+        <<name $g.watermage>> shrugs, "Because our fort won't handle that sort of magical stress, <<unickname $g.watermage>>."<br>
+        "What do you mean?<br>
+        "The fort's not set up for it. It's not built on a nexus of water magic we can tap into and there's structures and buildings you have here that interfere with more...delicate operations."<br>
+        "Any chance of a Flesh Shaper Temple going some body modifications for us?" you ask.<br>
+        "More than we can do ourselves?" <<name $g.watermage>> asks. "Maybe. They do open their doors every now and again..."
+    </p>
+    <p>
+        <<name $g.watermage>> goes on explain that occasionally, Flesh Shaper Temples will open up to those brave, rich, hardy and/or desperate enough to pay to have their features changed. They never provide extreme alterations, as those are considered sacred, but they could offer a few things that cannot be done at your own facilities. It would just cost a fair amount of coin, and given that more people are likely to show up than the cult is willing to offer services to, a bribe in the form of a suitable slave would allow you to jump the queue. As it happens, <<name $g.watermage>> mentioned one of the temples should be opening their doors soon, and this might provide you with an opportunity to hire their services. If you can afford it.
+    </p>
+<</if>>
+
+<p>
+    <<dangertext 'WARNING'>>: a face altered via flesh-shaping will never match
+    a natural one. Having a face altered this way will surely have a
+    <<dangertextlite 'permanent'>> negative effect on the unit.
+</p>
+
+
+:: Opportunity_flesh_shaper_temple_patronage_0 [nobr]
+Ignore the opportunity
+
+
+:: Opportunity_flesh_shaper_temple_patronage_0_flavor [nobr]
+Whatever the Flesh Shapers might do, it would take a lot of time, and that would be a few slavers gone for several weeks while they did that. No doubt hiring their services would also be costly, both in terms of coin, and, if you wanted to ensure they see your slavers rather than anyone else seeking their services, a bribe in the form of a suitable slave offering.
+
+
+:: Opportunity_flesh_shaper_temple_patronage_1 [nobr]
+Increase a slaver's attractivenes
+
+
+:: Opportunity_flesh_shaper_temple_patronage_1_flavor [nobr]
+There's only so much you can do with <<rep setup.buildingtemplate.surgery>> in the fort. Or the <<rep setup.buildingtemplate.biolab>> for that matter. The Flesh Shapers have abilities and mystical resources far beyond what you're able to provide, and you know they can make a plain or even disfigured person look if not beautiful, at least less scary. This is something that might be useful for someone in the company.
+
+
+:: Opportunity_flesh_shaper_temple_patronage_2 [nobr]
+Increase a slaver's fearsomeness
+
+
+:: Opportunity_flesh_shaper_temple_patronage_2_flavor [nobr]
+There's only so much you can do with <<rep setup.buildingtemplate.surgery>> in the fort. Or the <<rep setup.buildingtemplate.biolab>> for that matter. The Flesh Shapers have abilities and mystical resources far beyond what you're able to provide, and you know they can make a plain or even beautiful person look if not horrendous, at least more scary. This is something that might be useful for someone in the company.
+

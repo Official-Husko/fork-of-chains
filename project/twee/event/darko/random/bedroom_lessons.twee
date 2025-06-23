@@ -1,0 +1,94 @@
+:: EventSetup_bedroom_lessons [nobr event]
+
+<<run new setup.Event(
+'bedroom_lessons', /* key */
+"Bedroom Lessons", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_bedroom_lessons',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.bg_whore, setup.trait.bg_courtesan], true),
+    setup.qres.Not(setup.qres.OnDuty('entertainmentpimp')),
+  ],
+  'pimp': [
+    setup.qres.OnDuty('entertainmentpimp'),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AllTraits([setup.trait.bg_courtesan], true)),
+setup.qc.DoAll([
+setup.qc.Trauma('pimp', setup.trait.boon_slaving, 16)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Trauma('pimp', setup.trait.boon_slaving, 11)
+], undefined)),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.AnyTrait([setup.trait.bg_whore, setup.trait.bg_courtesan], true)),
+    setup.qc.DoAll([
+      setup.qc.Trauma('pimp', setup.trait.boon_slaving, 80)
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.recreationwing),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_bedroom_lessons [nobr]
+<p>
+You've recently noticed that <<yourrep $g.pimp>> pimp|have been much more effective at <<their $g.pimp>> duty. <<They $g.pimp>> pimp|is directing the slaves more passionately, which translates to a higher income from your <<rep setup.buildingtemplate.recreationwing>>.
+</p>
+
+<p>
+Our of pure curiosity, you asked <<therace $g.pimp>> what had changed. Apparently, <<they $g.pimp>> pimp|have received some pointers from <<yourrep $g.slaver>>. As you recall, <<rep $g.slaver>> used to be
+<<if $g.pimp.isHasTrait('bg_courtesan')>>
+a high-class courtesan, trading in flesh but only to the most deserving and wealthy clients.
+<<else>>
+a free whore, trading in flesh to everyone paying.
+<</if>>
+It seems <<they $g.slaver>> still recall the experience of <<their $g.slaver>> past life, and have decided to put them to good use by imparting them unto your pimp.
+</p>
+
+<<if $g.you.isHasAnyTraitExact(['bg_whore', 'bg_courtesan'])>>
+<p>
+  Given that you, yourself, were also a former "professional",
+  you decide to give even more pointers to your pimp.
+  You tell how to best utilize the tongue to pleasure clients, how to wiggle those
+  slithery bits to lick the most sensitive parts the <<urace $g.you>> body could have.
+</p>
+<</if>>
+
+<p>
+Given <<reps $g.pimp>> <<uinsultnoun $g.pimp>>, however, you've little doubt that whatever lesson the <<man $g.pimp>> pimp|have learned, it will be gone and forgotten before long. But at least for the next few weeks, you can expect
+<<if $g.you.isHasAnyTraitExact(['bg_whore', 'bg_courtesan'])>>
+  a great increase in
+<<else>>
+  increased
+<</if>>
+expected profits from the <<rep setup.buildingtemplate.recreationwing>>.
+</p>
+
+

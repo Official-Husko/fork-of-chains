@@ -1,0 +1,149 @@
+:: QuestSetup_the_essence_of_life [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'you', /* name */
+[
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  arcane: 3.0,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_essence_of_life', /* key */
+"The Essence of Life", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'prep',
+  'trait',
+],
+1, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'you': [_criteriayou, 3],
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+  setup.qc.LoseItem('healing_potion', 10),
+],
+'Quest_the_essence_of_life',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_essence_of_lifeCrit',
+    [
+      setup.qc.Event('the_sour_and_salty_taste', 15, {
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Quest_the_essence_of_lifeCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_essence_of_lifeCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_essence_of_lifeCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('withering_plant', 0, {
+slaver: "slaver",
+}),
+
+],
+)>>
+
+:: Quest_the_essence_of_life [nobr]
+<<include "PlantOfLewdityEssenceOfLifeCommon">>
+
+<p>
+You have chosen to supply 10 bottles of <<rep setup.item.healing_potion>>.
+You'd have to deliver them yourself once you gathered enough of them, but it
+shouldn't take too long.
+</p>
+
+:: PlantOfLewdityEssenceOfLifeCommon [nobr]
+
+<p>
+After a few days, the Plant of Lewdity that <<yourrep $g.slaver>> had been
+tending to sprouted.
+But this is only the first step towards finishing <<reps $g.slaver>>
+attempt to master <<their $g.slaver>> <<rep setup.trait.magic_earth_master>>,
+but it's an important step nonetheless.
+</p>
+
+<p>
+The Plant of Lewdity is rather special, and requires very specific
+nourishment to grow strong and healthy. <<Rep $g.slaver>> must channel
+<<their $g.slaver>> <<rep setup.trait.magic_earth>> magic every single day
+into the plant, imbuing it with magic. But on top of that, there are extra
+nourishment that the plant will require from time to time, including right
+now.
+</p>
+
+<p>
+Apparently, the plant requires so much energy that the nutrients inside the earth itself won't
+be sufficient to support it. <<Rep $g.slaver>> estimated that some
+essence of life would be beneficial as fertilizer for the plant, and since
+<<they $g.slaver>> slaver|is going to be fully occupied taking care of the plant,
+<<therace $g.slaver>> decided to ask for your help.
+</p>
+
+
+:: Quest_the_essence_of_lifeCrit [nobr]
+
+<p>
+You handed over the potion to your slaver, who proceed to uncork one bottle
+and generously spray it on the sapling. Before your eyes, you could see the
+reddish liquid being absorbed very quickly by the roots, the ground drying almost
+instantly.
+<<if $g.you.isHasTrait('magic_earth_master')>>
+Being a practitioner of <<rep setup.trait.magic_earth_master>> yourself, you
+can definitely feel the plant's power growing from absorbing the liquid. A
+strange feeling.
+<<elseif $g.you.isHasTrait('magic_earth')>>
+Being a beginner practitioner of <<rep setup.trait.magic_earth>>, you can
+definitely sense that the plant was doing something with the liquid, but it was
+quite vague.
+<<else>>
+Having no knowledge of earth magic, you could only guess whether it was actually
+absorbed by the plant, or you were duped into buying a false healing potion...
+<</if>>
+</p>
+
+<p>
+All that's left is to wait for the plant to continue to grow, under the
+supervision of <<yourrep $g.slaver>>...
+</p>

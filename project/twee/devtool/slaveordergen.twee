@@ -1,0 +1,212 @@
+:: SOGenInit [nobr]
+
+<<if _sobaserole>>
+  <<set $soname = _sobaserole.getName()>>
+  <<set $socompany = _sobaserole.getCompany()>>
+  <<set $soexpires_in = _sobaserole.expires_in>>
+  <<set $sobase_price = _sobaserole.base_price>>
+  <<set $sotrait_mult = _sobaserole.trait_multi>>
+  <<set $sovalue_mult = _sobaserole.value_multi>>
+  <<set $socrit_traits = Object.keys(_sobaserole.criteria.crit_trait_map).map(a => setup.trait[a])>>
+  <<set $sodisaster_traits = Object.keys(_sobaserole.criteria.disaster_trait_map).map(a => setup.trait[a])>>
+  <<set $socritmap = setup.deepCopy(_sobaserole.criteria.crit_trait_map)>>
+  <<set $sodisastermap = setup.deepCopy(_sobaserole.criteria.disaster_trait_map)>>
+  <<set $sorestrictions = _sobaserole.criteria.restrictions>>
+  <<set $soaddons = _sobaserole.addons>>
+  <<set $sofulfilled = _sobaserole.fulfilled_outcomes>>
+  <<set $sounfulfilled = _sobaserole.unfulfilled_outcomes>>
+<<else>>
+  <<set $soname = ''>>
+  <<set $socompany = $company.independent>>
+  <<set $soexpires_in = 12>>
+  <<set $sobase_price = 1500>>
+  <<set $sotrait_mult = 0>>
+  <<set $sovalue_mult = 1>>
+  <<set $socrit_traits = []>>
+  <<set $sodisaster_traits = []>>
+  <<set $socritmap = {}>>
+  <<set $sodisastermap = {}>>
+  <<set $sorestrictions = [setup.qres.Job(setup.job.slave)]>>
+  <<set $soaddons = []>>
+  <<set $sofulfilled = []>>
+  <<set $sounfulfilled = []>>
+<</if>>
+
+<<dtsavepassage 'SlaveOrderGen'>>
+
+:: SlaveOrderGen [nobr]
+
+<<run setup.DevToolHelper.restoreScrollPos()>>
+
+<<dtloadpassagelink>>
+
+<p>
+Slave order name:
+<<message '(?)'>>
+Enter the slave order's name. For example: "Order from the Safari Zone"
+<</message>>
+<<textbox "$soname" $soname>>
+</p>
+
+<p>
+Order source:
+<<message '(?)'>>
+  Which company logically generate this order. If none is applicable, use the default "Independent" company.
+  <<dangertextlite 'Not used'>> for anything but flavor text.
+<</message>>
+<<= $socompany.rep()>>
+<<message '(Change)'>>
+  |
+  <<for _icompany, _company range $company>>
+    <<capture _company>>
+      <<link _company.getName()>>
+        <<set $socompany = _company>>
+        <<focgoto 'SlaveOrderGen'>>
+      <</link>>
+      |
+    <</capture>>
+  <</for>>
+<</message>>
+</p>
+
+<p>
+Expires in:
+<<numberbox "$soexpires_in" $soexpires_in>>
+weeks.
+</p>
+
+<p>
+Base price:
+<<numberbox "$sobase_price" $sobase_price>>g.
+</p>
+
+<p>
+Gold per trait match (or negative per disaster match):
+<<numberbox "$sotrait_mult" $sotrait_mult>>g.
+</p>
+
+<p>
+Gold per slave value (can put fraction, e.g., 1.5):
+<<numberbox "$sovalue_mult" $sovalue_mult>>g.
+</p>
+
+<div class='equipmentcard'>
+  Unit Restrictions:
+  <<message '(?)'>>
+    Only units that satisfies these requirements can fulfill this requirement.
+    There's also a second "hidden" requirement where the unit must sell for some positive value.
+    This requirement is ALWAYS here --- if you want random requirements, use the (Addons) field later.
+  <</message>>
+  <<devlist '$sorestrictions' '(Add new restriction)' 'QGAddRestrictionUnit' 'SlaveOrderGen'>>
+</div>
+
+<<focwidget 'loadcatcrit'>>
+  <div class='dutycard'>
+    <<successtext 'CRITICAL'>>:
+    <<message '(?)'>>
+      Slaves having this trait will sell for more for this order.
+      These criterias are ALWAYS here --- if you want random criterias, use the (Addons) field later.
+    <</message>>
+    <<run _dom = setup.DOM.Menu.traitpickermulti({raw_traits: Object.values(setup.trait), init_selected: $socrit_traits})>>
+    <<attach _dom>>
+  </div>
+<</focwidget>>
+
+<<focwidget 'loadcatdisaster'>>
+  <div class='contactcard'>
+    <<dangertext 'DISASTER'>>:
+    <<message '(?)'>>
+      Slaves with these traits will sell for less for this order.
+      These criterias are ALWAYS here --- if you want random criterias, use the (Addons) field later.
+    <</message>>
+    <<run _dom = setup.DOM.Menu.traitpickermulti({raw_traits: Object.values(setup.trait), init_selected: $sodisaster_traits})>>
+    <<attach _dom>>
+  </div>
+<</focwidget>>
+
+<div id='catdivcrit'>
+  <<loadcatcrit>>
+</div>
+
+<<focwidget 'refreshcatcrit'>>
+  <<replace '#catdivcrit'>>
+    <<loadcatcrit>>
+  <</replace>>
+<</focwidget>>
+
+<div id='catdivdisaster'>
+  <<loadcatdisaster>>
+</div>
+
+<<focwidget 'refreshcatdisaster'>>
+  <<replace '#catdivdisaster'>>
+    <<loadcatdisaster>>
+  <</replace>>
+<</focwidget>>
+
+<div class='bedchambercard'>
+  Addons:
+  <<message '(?)'>>
+    Special modifiers to this order. For example, you can add an addon that requires the slave
+    to be of a random gender, or an addon that adds random critical traits.
+  <</message>>
+  <<link '(Add new addon)' 'QGAddAddon'>>
+  <</link>>
+  <<for _iccaddon, _ccaddon range $soaddons>>
+    <br/>
+    <<= _ccaddon.explain()>>
+    <<capture _iccaddon>>
+      <<link '(delete)' 'SlaveOrderGen'>>
+        <<run $soaddons.splice(_iccaddon, 1)>>
+      <</link>>
+    <</capture>>
+  <</for>>
+</div>
+
+<div class='companycard'>
+  Outcomes on Fulfillment:
+  <<message '(?)'>>
+    Extra things that happen when the order is fulfilled (outside of getting the money specified).
+    Usually empty, but sometimes can be things such as gaining relations.
+  <</message>>
+  <<devlist '$sofulfilled' '(Add new result)' 'QGAddCost' 'SlaveOrderGen'>>
+</div>
+
+<div class='eventcard'>
+  Outcomes on expiration without fulfilling:
+  <<message '(?)'>>
+    What happens when you fail to fulfill the order. Usually empty, but sometimes can be
+    used to substract money from the player.
+  <</message>>
+  <<devlist '$sounfulfilled' '(Add new result)' 'QGAddCost' 'SlaveOrderGen'>>
+</div>
+
+<<button 'CREATE SLAVE ORDER' >>
+  <<if !$soname>>
+    <<warning 'Name cannot be empty'>>
+  <<elseif $soexpires_in <= 0>>
+    <<warning 'Expiration must be positive'>>
+  <<else>>
+    <<set _order = setup.qc.SlaveOrderFlex(
+      $soname,
+      $socompany.key,
+      $soexpires_in,
+      $sobase_price,
+      $sotrait_mult,
+      $sovalue_mult,
+      $socrit_traits,
+      $sodisaster_traits,
+      $sorestrictions,
+      $soaddons,
+      $sofulfilled,
+      $sounfulfilled,
+    )>>
+    <<run $qcustomslaveorder.push(_order)>>
+    <<dtloadpassage>>
+    <<devgotoreturn>>
+  <</if>>
+<</button>>
+
+<br/>
+<br/>
+<<dtloadpassagelink>>

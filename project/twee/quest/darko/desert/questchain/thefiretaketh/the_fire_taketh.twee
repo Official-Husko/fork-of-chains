@@ -1,0 +1,370 @@
+:: QuestSetup_the_fire_taketh [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_consumed_by_fire_0", /* key */
+"Consumed by Fire", /* name */
+"Let their entire self be consumed by fire, in order to mastery it. There might still be hope of recovering what they have lost, however...", /* description */
+"sacrificed a|their entire self, body and spirit, in order to obtain mastery over the fire domain, although it might still be possible to recover some of a|them...", /* unit text */
+2000, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.Title(
+"quest_scorched_by_fire_1", /* key */
+"Scorched by Fire", /* name */
+"Their entire self has been cleansed with fire, with no hope of ever regaining their past self back, all in exchange for mastery over fire", /* description */
+"sacrificed a|their entire self in order to master fire, with no hope of every gaining them back", /* unit text */
+5000, /* slave value */
+{ /* skill additives */
+combat: 4,arcane: 4,},
+)
+>>
+
+<<set _criteriastudent = new setup.UnitCriteria(
+null, /* key */
+'Student of Fire', /* name */
+[
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_smart,
+  setup.trait.per_gregarious,
+  setup.trait.per_loner,
+  setup.trait.per_chaste,
+  setup.trait.per_stubborn,
+  setup.trait.per_sly,
+  setup.trait.per_direct,
+  setup.trait.per_active,
+  setup.trait.per_studious,
+  setup.trait.per_independent,
+  setup.trait.per_loyal,
+  setup.trait.per_serious,
+  setup.trait.per_playful,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+  setup.trait.per_calm,
+  setup.trait.per_aggressive,
+  setup.trait.per_cruel,
+  setup.trait.per_kind,
+  setup.trait.per_dreamy,
+  setup.trait.per_attentive,
+  setup.trait.per_cautious,
+  setup.trait.per_brave,
+  setup.trait.per_humble,
+  setup.trait.per_proud,
+  setup.trait.per_frugal,
+  setup.trait.per_lavish,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lustful,
+  setup.trait.per_curious,
+  setup.trait.per_dominant,
+  setup.trait.per_submissive,
+  setup.trait.per_logical,
+  setup.trait.per_empath,
+  setup.trait.per_honorable,
+  setup.trait.per_evil,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_consumed_by_fire_0'),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<set _criteriawizard1 = new setup.UnitCriteria(
+null, /* key */
+'Wizard', /* name */
+[
+  setup.trait.bg_mystic,
+  setup.trait.magic_fire_master,
+  setup.trait.per_attentive,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.magic_light_master,
+  setup.trait.magic_water_master,
+  setup.trait.per_kind,
+  setup.trait.per_dreamy,
+  setup.trait.per_honorable,
+  setup.trait.bg_slave,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.magic_fire_master, setup.trait.magic_water_master, setup.trait.magic_wind_master, setup.trait.magic_earth_master, setup.trait.magic_light_master, setup.trait.magic_dark_master], true),
+],
+{
+  knowledge: 1,
+  arcane: 2,
+}
+)>>
+
+<<set _criteriawizard2 = new setup.UnitCriteria(
+null, /* key */
+'Wizard', /* name */
+[
+  setup.trait.bg_mystic,
+  setup.trait.magic_fire_master,
+  setup.trait.per_attentive,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.magic_light_master,
+  setup.trait.magic_water_master,
+  setup.trait.per_kind,
+  setup.trait.per_dreamy,
+  setup.trait.per_honorable,
+  setup.trait.bg_slave,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.magic_fire_master, setup.trait.magic_water_master, setup.trait.magic_wind_master, setup.trait.magic_earth_master, setup.trait.magic_light_master, setup.trait.magic_dark_master], true),
+],
+{
+  knowledge: 1,
+  arcane: 2,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_fire_taketh', /* key */
+"The Fire Taketh", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'prep',
+  'special',
+  'veteran',
+  'trait',
+],
+4, /* weeks */
+1000, /* expiration weeks */
+{ /* roles */
+  'student': [ _criteriastudent, 1],
+  'wizard1': [ _criteriawizard1, 1],
+  'wizard2': [ _criteriawizard2, 1],
+  'slave': setup.qu.slave,
+  'slave2': setup.qu.slave,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_fire_taketh',
+setup.qdiff.harder53, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_fire_takethCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.OneRandomSeed([
+        setup.qc.TraitReplace('student', setup.trait.per_honorable),
+        setup.qc.TraitReplace('student', setup.trait.per_evil)
+      ]),
+    ],
+  ],
+  [
+    'Quest_the_fire_takethCrit',
+    [
+      setup.qc.Mindbreak('slave'),
+      setup.qc.Mindbreak('slave2'),
+      setup.qc.RemoveTitle('student', 'quest_consumed_by_fire_0'),
+    ],
+  ],
+  [
+    'Quest_the_fire_takethFailure',
+    [
+      setup.qc.QuestDirect('the_fire_taketh'),
+    ],
+  ],
+  [
+    'Quest_the_fire_takethDisaster',
+    [
+      setup.qc.Injury('student', 16),
+      setup.qc.Injury('slave', 24),
+      setup.qc.Injury('slave2', 24),
+      setup.qc.Injury('wizard1', 12),
+      setup.qc.Injury('wizard2', 12),
+      setup.qc.QuestDirect('the_fire_taketh'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Function(() => {
+    const unit = setup.getUnit({title: 'quest_consumed_by_fire_0'});
+    if (unit) {
+      setup.qc.RemoveTitle('student', 'quest_consumed_by_fire_0').apply(setup.costUnitHelper(unit));
+      setup.qc.AddTitle('student', 'quest_scorched_by_fire_1').apply(setup.costUnitHelper(unit));
+    };
+  }),
+  setup.qc.VarRemove('be_cleansed_in_fire_traits'),
+],
+)>>
+
+:: Quest_the_fire_taketh [nobr]
+
+<<set _u = setup.getUnit({job: setup.job.slaver, title: 'quest_consumed_by_fire_0'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+
+<p>
+  You have discovered a way to recover part of <<rep _u>>'s long lost mind, if you choose to.
+  It will be incredibly difficult, and also requires a suitable amount of preparation.
+  First of all, two accomplished wizards are required to perform the
+  gruelingly long and challenging ritual.
+  But that's not the difficult part...
+</p>
+
+<p>
+  To restore <<rep _u>>'s personalities back, the spell requires two other units
+  to take the personalities from.
+  Two slaves, whose personalities combined matches as much as possible with <<rep _u>>
+  prior to being emptied.
+  If you recall correctly, <<rep _u>> used to have the following traits:
+  <<for _traitkey range $varstore.get('be_cleansed_in_fire_traits')>>
+    <<if _traitkey in setup.trait>>
+      <<rep setup.trait[_traitkey]>>
+    <</if>>
+  <</for>>.
+  The ritual will restore all of these traits that are also present in one of the slaves.
+  But of course, there is no question what will happen to the slaves once their spirits have been
+  entirely emptied out...
+</p>
+
+<p>
+  Meanwhile, <<yourrep _u>> looks perfectly content, despite looking somewhat
+  blank-faced and having no
+  enthusiasim in anything. Still, it would be also a perfectly normal
+  strategy to just ignore this
+  opportunity, and accept <<rep _u>> for what <<they _u>> is now.
+</p>
+
+<</if>>
+
+
+:: Quest_the_fire_takethCrit [nobr]
+
+<p>
+<<Yourrep $g.wizard1>> and <<utheirrel $g.wizard1 $g.wizard2>> scoured the
+vast deserts of the eastern land, and with <<yourrep $g.student>> in tow, they
+finally found the temple of fire, hidden under the sands. Standing
+magnificently there was the very same statue that blessed <<rep $g.student>>
+with <<their $g.student>> magic. There could be no mistaking it, this must be
+the ritual site that your slavers were looking for.
+</p>
+
+<p>
+After setting and securing both <<yourrep $g.slave>> and <<rep $g.slave2>> on the altar,
+<<rep $g.wizard1>> began chanting as <<rep $g.student>> stood in front of the
+altar, remaining as blank and unnervingly neutral as ever.
+The spell was incredibly difficult, requiring a chant to be chanted together
+by your two slavers, but <<rep $g.wizard2>> and <<utheirrel $g.wizard2
+$g.wizard1>> are not strangers to magic, and they <<uadv $g.wizard1>> performed
+the rite.
+</p>
+
+<p>
+Your slavers could see a reddish aura starting to form around the statue.
+The aura then slowly transferred over into the struggling slaves, bound over
+the altar, before encasing the slaves entirely within its embrace.
+Then slowly, bits of histories and personality transferred over from the slaves onto
+<<rep $g.student>>, and your slavers can see the living being absorbed out of
+both <<rep $g.slave>> and <<rep $g.slave2>>,
+and put into <<yourrep $g.student>>.
+</p>
+
+<<set _restore = $varstore.get('be_cleansed_in_fire_traits')>>
+<<if _restore && _restore.length>>
+<<set _recovered = 0>>
+<<for _trait range _restore>>
+  <<if _trait in setup.trait>>
+    <<if $g.slave.isHasTraitExact(_trait) || $g.slave2.isHasTraitExact(_trait)>>
+      <<run setup.qc.TraitReplace('student', _trait).apply($gQuest)>>
+      <<run _recovered += 1>>
+    <</if>>
+  <</if>>
+<</for>>
+<</if>>
+
+<p>
+The ritual took hours to complete, but by the end the result was apparent.
+Light had returned to <<reps $g.student>> eyes, and once again the color of
+live had returned to <<their $g.student>> world.
+All it took in exchange was two slaves who became completely mindbroken, and only
+suitable to be used as fucktoys for a lucky owner.
+<<if !_recovered>>
+  While <<their $g.student>> personality is now lost permanently, at least
+  <<they $g.student>> student|is slightly
+  more eager to learn new things now.
+  <<run setup.qc.TraitReplace('student', 'per_curious').apply($gQuest)>>
+<</if>>
+<<if $gOutcome == 'crit'>>
+  Also, <<rep $g.student>> seemed to also gain a personality <<they
+  $g.student>> never had before, a fortunate side effect.
+<</if>>
+With their mind somewhat returned to <<them $g.student>>, <<rep $g.student>>
+student|is now back to <<their $g.student>> eager self, and <<they $g.student>>
+can't wait to get back home and start <<= setup.Text.Hobby.verb($g.student)>>
+again.
+</p>
+
+
+:: Quest_the_fire_takethFailure [nobr]
+<p>
+Despite the few weeks scouring through the deserts, <<rep $g.wizard1>> and
+the rest of the team were unable to find the Temple of Fire, hidden
+under the sands. They eventually gave up, heading back to the fort while
+half-dragging <<yourrep $g.student>> along, who remained as blank as ever.
+</p>
+
+
+:: Quest_the_fire_takethDisaster [nobr]
+
+<p>
+<<Yourrep $g.wizard1>> and <<utheirrel $g.wizard1 $g.wizard2>> scoured the
+vast deserts of the eastern land, and with <<yourrep $g.student>> in tow, they
+finally found the temple of fire, hidden under the sands. Standing
+magnificently there was the very same statue that blessed <<rep $g.student>>
+with <<their $g.student>> magic. There could be no mistaking it, this must be
+the ritual site that your slavers were looking for.
+</p>
+
+<p>
+After setting and securing <<yourrep $g.slave>> and <<rep $g.slave2>> on the altar,
+<<rep $g.wizard1>> began chanting as <<rep $g.student>> stood in front of the
+altar, remaining as blank and unnervingly neutral as ever.
+The spell was incredibly difficult, requiring a chant to be chanted together
+by your two slavers, but <<rep $g.wizard2>> and <<utheirrel $g.wizard2
+$g.wizard1>> are not strangers to magic, and they <<uadv $g.wizard1>> performed
+the rite.
+</p>
+
+<p>
+Unfortunately, the ritual backfired and the magic went out of control,
+swirling from the statue into all your slavers. Your slavers were scorched by
+the pure fire, who detected all the evil deeds of your slavers and attempted
+to purify all of them. The slaves suffered the worst blunt of the explosion,
+incurring injuries that would take months to heal.
+</p>
+
+<p>
+Fortunately, all the injuries seem temporary, with no permanent damage being
+inflicted upon your team. You'll just have to try again later, hopefully
+with a more prepared team this time.
+</p>

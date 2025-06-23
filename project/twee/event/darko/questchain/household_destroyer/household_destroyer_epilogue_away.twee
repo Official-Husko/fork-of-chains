@@ -1,0 +1,66 @@
+:: EventSetup_household_destroyer_epilogue_away_ [nobr event]
+
+
+
+
+<<run new setup.Event(
+'household_destroyer_epilogue_away_', /* key */
+"Household Destroyer: Epilogue (Away)", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+],
+'Event_household_destroyer_epilogue_away_',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'drow': [
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('quest_household_destroyer'),
+  setup.qc.VarRemove('quest_household_destroyer_progress'),
+  setup.qc.SetCooldownQuest('household_destruction', 1000),
+  setup.qc.Item(setup.item.potion_slaving_boost, 1),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_household_destroyer_epilogue_away_ [nobr]
+<p>
+    It has been a few weeks since <<rep $g.drow>> had returned to <<their $g.drow>> city, "cured" of <<their $g.drow>> excessive dominance aura. Today, you receive a package from the drow, likely a farewell for having hosted the drow before. On top of it is a letter.
+</p>
+
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        I've returned to my people, after the long stay on the surface. They were initially suspicious about my return, but after no longer seeing random passerbies being "subbed", I am accepted back home. I'm starting to learn how to control this power of dominance, and I've taken up a rather comfortable job as an overseer. My experience on the surface gave me new appreciations for the surfacer slaves, and how easily they would succumb to my orders.
+    </p>
+
+    <p>
+        You've done me a great service, and I wish to repay you back. Please find your gift attached within the package.
+    </p>
+
+    <p>
+        Goodbye,
+    </p>
+    <p>
+        <<name $g.drow>>
+    </p>
+</div>
+
+<p>
+    Inside the package lies a single, incredibly rare potion. A <<rep setup.item.potion_slaving_boost>>, an incredibly rare potion worthy of being called an artifact. It's unclear to you how the drow could have gotten <<their $g.drow>> hands on this, but you get the feeling it is related to their newfound control over their power...
+</p>
+
+<p>
+    In either case, you are likely never going to meet the drow again. The potion makes for a fine parting gift.
+</p>

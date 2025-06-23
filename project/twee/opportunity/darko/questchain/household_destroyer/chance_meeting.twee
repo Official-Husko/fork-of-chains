@@ -1,0 +1,223 @@
+:: OpportunitySetup_chance_meeting [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'chance_meeting', /* key */
+"Chance Meeting", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+  'danger',
+],
+1, /* expiration weeks */
+'Opportunity_chance_meeting',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_chance_meeting_0',
+    outcome_passage: 'Opportunity_chance_meeting_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_chance_meeting_1',
+    outcome_passage: 'Opportunity_chance_meeting_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Sluttify('you'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_chance_meeting_2',
+    outcome_passage: 'Opportunity_chance_meeting_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_household_destroyer'),
+      setup.qc.VarRemove('quest_household_destroyer_progress'),
+      setup.qc.SetCooldownQuest('household_destruction', 1000),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_host),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_nearby),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'you': [
+  ],
+  'drow': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_chance_meeting [nobr]
+<p>
+    As you are walking leisurely across your fort, you stumbled across <<yourrep $g.drow>> by pure happenchance. You fell down, and the drow offered a <<uhand $g.drow>> to let you up.
+    As your gaze met, you are met with an overwhelming urge to bow down and prostrate yourself in front of the drow.
+    <<if $g.you.isSubmissive()>>
+        And you might as well do it, you little submissive slut.
+    <<elseif $g.you.isDominant()>>
+        And you are trying your best to resist the thoughts, your dominant personality helping along the way.
+    <</if>>
+    You know if you do nothing, you'd likely ended up like your slaver previously, being sluttified by the drow's sheer dominance right there and right now...
+</p>
+
+<p>
+    If you think you have the right personalities to simply resist being sluttified, you can do just that. Otherwise, you might be able to resist as long as you immediately send the drow far and away from your fort. Or perhaps submitting to others is your true heart desire, after all...
+</p>
+
+
+
+
+:: Opportunity_chance_meeting_0 [nobr]
+Try to resist (Warning: May not succeed...)
+
+
+:: Opportunity_chance_meeting_0_flavor [nobr]
+<p>
+    You try your best to resist the incoming barrage of submissive thoughts, coming out of nowhere. Can you do it?
+    <<set _score = 0>>
+    <<if $g.you.isHasTrait('per_smart')>>
+        <<run _score += 1>>
+        Your smart mind resists the thoughts better than others.
+    <</if>>
+    <<if $g.you.isHasTrait('per_slow')>>
+        <<run _score -= 1>>
+        You might be a little too dumb to resist the thoughts entirely.
+    <</if>>
+    <<if $g.you.isHasTrait('bg_slaver')>>
+        <<run _score += 1>>
+        You had always been a slaver for a good chunk of your life, and you know how to resist these kind of thoughts.
+    <</if>>
+    <<if $g.you.isHasTrait('bg_slave')>>
+        <<run _score -= 1>>
+        The thoughts brought up memories of the time you spent as a slave in the past.
+    <</if>>
+    <<if $g.you.isHasTrait('per_proud')>>
+        <<run _score += 1>>
+        You are simply too proud to submit to others — they should submit to you not the other way around!
+    <</if>>
+    <<if $g.you.isHasTrait('per_humble')>>
+        <<run _score -= 1>>
+        Your humble self wonders if it is finally time for you to submit to others in return.
+    <</if>>
+    <<if $g.you.isHasTrait('per_stubborn')>>
+        <<run _score += 1>>
+        You are as stubborn as a rock, not willing to submit to others.
+    <</if>>
+    <<if $g.you.isHasTrait('per_curious')>>
+        <<run _score -= 1>>
+        Your curious mind wonders how it must feel to be dominated...
+    <</if>>
+    <<if $g.you.isHasTrait('per_chaste')>>
+        <<run _score += 1>>
+        The thought of sexually servicing others repulses your chaste mind.
+    <</if>>
+    <<if $g.you.isHasTrait('per_lustful')>>
+        <<run _score -= 1>>
+        Your lustful mind wonders how good it might feel to be dominated sexually.
+    <</if>>
+    <<if $g.you.isHasTrait('per_lunatic')>>
+        <<run _score += 1>>
+        Your mind is an enigma, and you a lunatic, not to be trusted to submit to others.
+    <</if>>
+    <<if $g.you.isHasTrait('per_masochistic')>>
+        <<run _score -= 1>>
+        As a complete masochist, the thoughts of being abused and dominated excites you.
+    <</if>>
+
+    <<if $g.you.isHasTrait('per_submissive')>>
+        <<run _score -= 10>>
+        You are a natural born submissive, however, and there was simply nothing you can do to resist...
+    <</if>>
+    <<if $g.you.isHasTrait('per_dominant')>>
+        <<run _score += 10>>
+        Thankfully, you are a natural dominant, and there was simply no way for you to not resist...
+    <</if>>
+</p>
+
+<<if _score <= 0>>
+    <p>
+        In the end, it was all too much. Thoughts of submitting to others as their sexual plaything floods your every mind, and before long it was the only thing your feeble mind was capable of thinking. The first thing you remember afterwards is lying down on the street in a pool of questionable liquid, the drow nowhere to be seen...
+    </p>
+    <<run setup.qc.Sluttify('you').apply($gQuest)>>
+<<else>>
+    <p>
+        Thankfully, your mind proves more than able to resist such thoughts. You accepted the drow's aid without too much side effect, and parted ways with the drow with nothing but a racing heart.
+    </p>
+<</if>>
+
+
+
+
+:: Opportunity_chance_meeting_1 [nobr]
+Give in
+
+
+:: Opportunity_chance_meeting_1_flavor [nobr]
+<p>
+    "Why bother resisting?" you thought to yourself.
+    <<if $g.you.isSubmissive()>>
+        Being dominated is a gift for your submissive self, after all.
+    <<elseif $g.you.isDominant()>>
+        Perhaps your dominant actions were simply a facade for what you truly are.
+    <<else>>
+        Perhaps deep down, you know that you are nothing but a slut to be dominated.
+    <</if>>
+    Accepting the offer of help, your body shivered as you rose up, unable to break free from the gaze.
+    <<if $g.you.isHasDick()>>
+        Your dick is hardening,
+    <<else>>
+        Your body flushing,
+    <</if>>
+    your mind wondering to how it must feel living under the drow's management,
+    lapping away at <<their $g.drow>>
+    <<if $g.drow.isHasDick()>>
+        <<udick $g.drow>>.
+    <<else>>
+        pussy.
+    <</if>>
+    Your mind blurs, and the first thing you remember was the sight of the drow walking away from you, as if nothing had happened...
+</p>
+
+
+
+
+:: Opportunity_chance_meeting_2 [nobr]
+Dismiss the drow from your fort straight away and resist
+
+
+:: Opportunity_chance_meeting_2_flavor [nobr]
+<p>
+    You went into panic mode, not sure you are strong-willed enough to resist. In a fit of panicky judgment, you order the drow to get the hell out of your fort.
+    The drow was surprised, understandably, but not wanting to argue with the fort's leader, <<they $g.drow>> packed <<their $g.drow>> belongings later the night and left, never to be seen by you again.
+</p>
+
+<p>
+    You might just have saved your own sanity from being sluttified, but at what cost?
+</p>

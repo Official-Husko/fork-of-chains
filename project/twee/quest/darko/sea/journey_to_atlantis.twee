@@ -1,0 +1,320 @@
+:: QuestSetup_journey_to_atlantis [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriadiver1 = new setup.UnitCriteria(
+null, /* key */
+'Diver', /* name */
+[
+setup.trait.bg_pirate,
+setup.trait.bg_seaman,
+setup.trait.subrace_humanvale,
+setup.trait.subrace_werewolf,
+setup.trait.subrace_lizardkin,
+setup.trait.per_brave,
+setup.trait.per_calm,
+setup.trait.per_attentive,
+setup.trait.per_curious,
+setup.trait.per_serious,
+setup.trait.per_lunatic,
+setup.trait.per_honorable,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+],
+[
+setup.trait.subrace_humandesert,
+setup.trait.race_greenskin,
+setup.trait.per_cautious,
+setup.trait.per_aggressive,
+setup.trait.per_dreamy,
+setup.trait.per_stubborn,
+setup.trait.per_playful,
+setup.trait.per_sexaddict,
+setup.trait.per_masochistic,
+setup.trait.per_evil,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+brawn: 1,
+survival: 1,
+intrigue: 0.5,
+knowledge: 0.5,
+}
+)>>
+
+<<set _criteriadiver2 = new setup.UnitCriteria(
+null, /* key */
+'Diver', /* name */
+[
+setup.trait.bg_pirate,
+setup.trait.bg_seaman,
+setup.trait.subrace_humanvale,
+setup.trait.subrace_werewolf,
+setup.trait.subrace_lizardkin,
+setup.trait.per_brave,
+setup.trait.per_calm,
+setup.trait.per_attentive,
+setup.trait.per_curious,
+setup.trait.per_serious,
+setup.trait.per_lunatic,
+setup.trait.per_honorable,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+],
+[
+setup.trait.subrace_humandesert,
+setup.trait.race_greenskin,
+setup.trait.per_cautious,
+setup.trait.per_aggressive,
+setup.trait.per_dreamy,
+setup.trait.per_stubborn,
+setup.trait.per_playful,
+setup.trait.per_sexaddict,
+setup.trait.per_masochistic,
+setup.trait.per_evil,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+brawn: 1,
+survival: 1,
+intrigue: 0.5,
+knowledge: 0.5,
+}
+)>>
+
+<<set _criteriafighter = new setup.UnitCriteria(
+null, /* key */
+'Diver Fighter', /* name */
+[
+setup.trait.bg_pirate,
+setup.trait.bg_seaman,
+setup.trait.subrace_humanvale,
+setup.trait.subrace_werewolf,
+setup.trait.subrace_lizardkin,
+setup.trait.per_brave,
+setup.trait.per_calm,
+setup.trait.per_attentive,
+setup.trait.per_curious,
+setup.trait.per_serious,
+setup.trait.per_lunatic,
+setup.trait.per_honorable,
+setup.trait.skill_ambidextrous,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+setup.trait.eq_veryvaluable,
+],
+[
+setup.trait.subrace_humandesert,
+setup.trait.race_greenskin,
+setup.trait.per_cautious,
+setup.trait.per_aggressive,
+setup.trait.per_dreamy,
+setup.trait.per_stubborn,
+setup.trait.per_playful,
+setup.trait.per_sexaddict,
+setup.trait.per_masochistic,
+setup.trait.per_evil,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+setup.trait.eq_slutty,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 2,
+brawn: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'journey_to_atlantis', /* key */
+'Journey to Atlantis', /* Title */
+'darko', /* Author */
+[ 'sea',
+'transformation',
+'veteran',
+'upgrade',
+'rare',
+], /* tags */
+4, /* weeks */
+20, /* quest expiration weeks */
+{ /* roles */
+'diver1': _criteriadiver1,
+'diver2': _criteriadiver2,
+'fighter': _criteriafighter, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_journey_to_atlantis',
+setup.qdiff.hell55, /* difficulty */
+[ /* outcomes */
+[
+'Quest_journey_to_atlantisCrit',
+[
+setup.qc.Item(setup.item.water_technology),
+setup.qc.MoneyCrit(),
+
+setup.qc.Injury('fighter', 2), ],
+], [
+'Quest_journey_to_atlantisCrit',
+[
+setup.qc.Item(setup.item.water_technology),
+setup.qc.MoneyNormal(),
+setup.qc.Injury('diver1', 2),
+
+setup.qc.Injury('diver2', 2),
+setup.qc.MissingUnit('fighter'), ],
+], [
+'Quest_journey_to_atlantisCrit',
+[
+setup.qc.MissingUnit('fighter'),
+setup.qc.Injury('diver1', 6),
+setup.qc.Injury('diver2', 6), ],
+], [
+'Quest_journey_to_atlantisDisaster',
+[
+setup.qc.MissingUnit('diver1'),
+setup.qc.MissingUnit('diver2'),
+setup.qc.MissingUnit('fighter'), ],
+], ],
+[
+[setup.questpool.sea, setup.rarity.epic],
+], /* quest pool and rarity */
+[
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(),
+setup.qres.NoItem(setup.item.water_technology), ], /* restrictions to generate */
+)>>
+
+:: Quest_journey_to_atlantis [nobr]
+
+<p>
+There are rumors that a thriving civilization once thrived under the southern
+seas — literally, this time.
+Beneath the water surface, there are numerous ruins from older civilization
+littering the grounds. How these civilization came to be extinct remains
+unknown, but most scholars agree that these civilizations have technology far
+beyond that of ours.
+</p>
+
+<p>
+You have heard rumors that a bold noble is funding expedition into the depths
+of the sea in order to find treasures. You could send a party of your slaver
+to join the expedition, but no doubt it will be an incredibly dangerous
+journey. The expedition members will theoretically be shielded from the water
+as they descend by a group of water mystics, but it is unclear if the bubble
+will hold so far beneath the sea. If you send your slavers down here, you
+have to be prepared for losses, but succeeding might reward you with a
+technology long past gone.
+</p>
+
+
+:: Quest_journey_to_atlantisCrit [nobr]
+
+<p>
+Once the expedition reaches the target spot, several bold participants
+gathered in a water bubble and descend into the sea.
+Your slavers got their own enchanted water bubble too.
+
+<<set _water = setup.selectUnit([$g.diver1, $g.diver2, $g.fighter], {trait: 'magic_water'})>>
+<<if _water>>
+  <<Rep _water>> used <<their _water>> knowledge of water magic to double-check that the water bubble
+  was properly enchanted.
+<</if>>
+
+Using the bubble, your slavers slowly but surely
+descended to the bottom, when they suddenly discovered that they were not alone.
+Surrounding them were a group of water monsters, with tentacles ready to greet these unsuspecting victims.
+</p>
+
+<p>
+<<if $gOutcome == 'crit'>>
+
+Your slavers by virtue of their prowess managed to actually slip through
+these monsters unnoticed, using the other expedition members as bait. They
+
+<<else>>
+
+One of these monsters approached your slavers' bubbles — and when escape
+seems impossible, <<rep $g.fighter>> selflessly sacrificed <<themself $g.fighter>> to be
+intimately acquintanced with the tentacled monsters.
+This sacrifice offered your other
+slavers a chance to slip through these monsters unnoticed, although they did
+so with heavy heart.
+Ultimately, your slavers
+
+<</if>>
+
+were the only team who managed to eventually reached the underwater city, or
+what was left of it. They entered the biggest ruin in the vicinity —-
+the apparent ruin of a temple dedicated to worshipping the flesh.
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+Unfortunately, the ruins seemed to already have been looted in some prior
+expedition. Searching here and there only yielded minor trinkets and nothing of
+value can be brought to the surface.
+Defeated, your slavers ascended back to the surface and received their "bravery
+reward" from the noble. Your slavers spent all of the reward drinking to both
+remember and forget <<reps $g.fighter>> sacrifices. By the
+time they arrived at your fort, your slaver were a wreck and all the money was gone.
+</p>
+
+<<else>>
+
+<p>
+Deep within the temple, they found great riches. But among all these
+riches, they also found an ancient tablet detailing the secrets of these
+people — how they could safely alter the shape of other people safely using a
+technique known as "surgery".
+Your slavers made sure to jolt this knowledge
+down before returning to the surface, both with riches and with the new
+<<if $gOutcome == 'crit'>>
+knowledge, surprisingly with only minor injuries.
+<<else>>
+knowledge, all dedicated to <<rep $g.fighter>>.
+<</if>>
+</p>
+
+<p>
+The expedition investors took some of the treasures as payment, but left your
+slavers with most of the loot.
+
+<<if $gOutcome == 'crit'>>
+
+Your slavers were careful not to pass on
+the secret knowledge to them, and this knowledge now belongs to your company
+and your company alone.
+
+<<else>>
+
+Your slavers spent a significant chunk of the loot
+trying to remember and forget <<reps $g.fighter>> sacrifices,
+leaving your company with only a portion of the treasure.
+But you also now possess the lost knowledge of the past,
+which will surely be useful in the future of your company.
+
+<</if>>
+</p>
+
+<</if>>
+
+:: Quest_journey_to_atlantisDisaster [nobr]
+
+<p>
+Your slavers never returned to the fort after departing for the
+expedition... Perhaps you will see them again some day, or perhaps not.
+</p>

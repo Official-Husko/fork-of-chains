@@ -1,0 +1,45 @@
+:: EventSetup_ex_leader [nobr event]
+
+<<run new setup.Event(
+'ex_leader', /* key */
+"Ex-Leader", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_ex_leader',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.join_senior], true),
+    setup.qres.HasTitle('ex_leader'),
+  ],
+},
+[ /* outcomes */
+      setup.qc.Opportunity('ex_leader', {
+you: "you",
+slaver: "slaver",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_ex_leader [nobr]
+
+<<includereplace 'Opportunity_ex_leader'>>

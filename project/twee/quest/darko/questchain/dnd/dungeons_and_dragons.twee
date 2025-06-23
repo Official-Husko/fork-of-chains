@@ -1,0 +1,158 @@
+:: QuestSetup_dungeons_and_dragons [nobr quest]
+
+<<set _criteriahero = new setup.UnitCriteria(
+null, /* key */
+'Hero', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.per_brave,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cautious,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_heroic_withdrawal_0'),
+],
+{
+  combat: 0.3,
+  brawn: 0.3,
+  survival: 0.3,
+  intrigue: 0.3,
+  slaving: 0.3,
+  knowledge: 0.3,
+  social: 0.3,
+  aid: 0.3,
+  arcane: 0.3,
+  sex: 0.3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'dungeons_and_dragons', /* key */
+"Dungeons and Dragons", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'unknown',
+  'vale',
+],
+4, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'hero': [ _criteriahero, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_dungeons_and_dragons',
+setup.qdiff.easy39, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_dungeons_and_dragonsCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Favor('humanvale', 200),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragonsCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Favor('humanvale', 100),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragonsCrit',
+    [
+      setup.qc.VarSet('dungeons_and_dragons_withdrawal_progress', '3', -1),
+      setup.qc.SetCooldownEvent('dungeons_and_dragons_fetch_quest', 10),
+    ],
+  ],
+  [
+    'Quest_dungeons_and_dragonsDisaster',
+    [
+      setup.qc.RemoveTitle('hero', 'quest_heroic_withdrawal_0'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+
+],
+)>>
+
+:: Quest_dungeons_and_dragons [nobr]
+<<set _u = setup.getUnit({title: 'quest_heroic_withdrawal_0'})>>
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+<<set $g.slaver = _u>>
+
+<<set _w = setup.getAnySlaver([_u])>>
+
+<<include 'Event_dungeons_and_dragons'>>
+
+<p>
+Indeed, <<rep $g.slaver>> slaver|is apparently starting to miss <<their $g.slaver>> days as an adventurer, and went into a "Heroic Withdrawal". <<Theslaver $g.slaver>> slaver|enter your office, and
+<<if $g.slaver.isDominant()>>
+demands
+<<else>>
+asks
+<</if>>
+to be given a suitably "heroic" mission, instead of the standard raiding or slaving missions your company specialize in.
+</p>
+
+<p>
+This is a rather absurd request, so it's probably best to ignore it. After all, according to <<rep _w>>, the withdrawal is temporary and will go away in a week or so. But alternatively, you could also try to "cure" the withdrawal by making up an arbitrary quest on the spot. Surely the slaver will then fail the quest, and be brought to reality that this world is in no need of a hero.
+Should you wish to ignore this, you should <<dangertext 'remove this quest'>> and get it over with.
+</p>
+
+<p>
+Otherwise, you'll just have to make up a story that some random settlement nearby is seeking a hero for purpose unknown...
+</p>
+
+<</if>>
+
+
+
+:: Quest_dungeons_and_dragonsCrit [nobr]
+<p>
+After four long weeks, <<yourrep $g.hero>> had returned from <<their $g.hero>> heroic quest scouring the vales for settlement in need of a hero. To your complete surprise, <<they $g.hero>> "succeeded", at least according to them. Apparently, one of the settlements had just been raided by a group of vale bandits, and the village's statue of fertility was stolen in the brazen raid. Your slaver went alone into the encampment, and
+<<uadv $g.hero>>
+defeated all of the inexperienced bandits by <<themself $g.hero>>. The statue of fertility was returned successfully to the villagers.
+<<if $gOutcome == 'failure'>>
+Although the village did not show much gratitude for it (since <<they $g.hero>> somehow knew that <<rep $g.hero>> is working for the vile slaving company that is yours),
+<<rep $g.hero>> still felt good from the heroic actions <<they $g.hero>> did.
+<<elseif $gOutcome == 'crit'>>
+The village was extremely grateful to your slaver, and your company's reputation increased much among them.
+<<else>>
+The village was grateful to your slaver, and your company's reputation increased among them.
+<</if>>
+Meanwhile, you're wondering how much money you have lost by <<them $g.hero>> returning the idol instead of giving it to you to pawn...
+</p>
+
+<p>
+Instead of being "cured" of <<their $g.hero>> Heroic Withdrawal, however, it seems that having a successful adventure only reignites the flame within <<rep $g.hero>>. You should expect more absurd requests in the future from <<therace $g.hero>>, all thanks to your decision to go through with this absurd quest...
+</p>
+
+
+
+
+
+:: Quest_dungeons_and_dragonsDisaster [nobr]
+<p>
+After four long weeks, <<yourrep $g.hero>> came back home, completely dejected. While <<they $g.hero>> indeed found many people in need of help, all of them are mundane tasks, such as fetching water from a nearby river, or unclogging a clogged chimney. Rather than feeling heroic, <<rep $g.hero>> felt quite humbled by the experience, and
+<<if $g.hero.isHasTrait('per_kind')>>despite <<their $g.hero>> kind nature,<</if>> would much prefer the raiding and slaving quests <<they $g.hero>> hero|is offered daily by your company.
+</p>
+
+

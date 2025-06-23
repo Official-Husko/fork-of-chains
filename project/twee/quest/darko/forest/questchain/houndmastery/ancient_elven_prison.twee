@@ -1,0 +1,302 @@
+:: QuestSetup_ancient_elven_prison [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaadventurer1 = new setup.UnitCriteria(
+null, /* key */
+'Elven Ruins Specialist', /* name */
+[
+  setup.trait.race_elf,
+  setup.trait.bg_adventurer,
+  setup.trait.per_brave,
+  setup.trait.per_studious,
+  setup.trait.per_curious,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.race_human,
+  setup.trait.race_catkin,
+  setup.trait.per_cautious,
+  setup.trait.per_active,
+  setup.trait.per_stubborn,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 1,
+  knowledge: 1,
+  arcane: 1,
+}
+)>>
+
+<<set _criteriaadventurer2 = new setup.UnitCriteria(
+null, /* key */
+'Elven Ruins Specialist', /* name */
+[
+  setup.trait.race_elf,
+  setup.trait.bg_adventurer,
+  setup.trait.per_brave,
+  setup.trait.per_studious,
+  setup.trait.per_curious,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.race_human,
+  setup.trait.race_catkin,
+  setup.trait.per_cautious,
+  setup.trait.per_active,
+  setup.trait.per_stubborn,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 1,
+  knowledge: 1,
+  arcane: 1,
+}
+)>>
+
+
+<<set _criteriapet = new setup.UnitCriteria(
+null, /* key */
+'Pet', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllTraits([setup.trait.ears_neko, setup.trait.arms_neko, setup.trait.mouth_neko, setup.trait.legs_neko, setup.trait.tail_neko, setup.trait.body_neko, setup.trait.training_pet_master, setup.trait.eq_pet], true),
+  setup.qres.HasTitle('quest_houndmaster_s_sniffer_0'),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'ancient_elven_prison', /* key */
+"Ancient Elven Prison", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'unknown',
+  'prep',
+  'veteran',
+  'rare',
+],
+6, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'adventurer1': [ _criteriaadventurer1, 1],
+  'adventurer2': [ _criteriaadventurer2, 1],
+  'muscle': [ setup.qu.carrier, 1],
+  'pet': _criteriapet,
+},
+{ /* actors */
+  'gender': 'all',
+},
+[ /* costs */
+],
+'Quest_ancient_elven_prison',
+setup.qdiff.hardest46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_ancient_elven_prisonCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.MoneyCustom(10000),
+      setup.qc.SlaveMarker('gender'),
+    ],
+  ],
+  [
+    'Quest_ancient_elven_prisonCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 35),
+      setup.qc.Opportunity('tigerkin_statue', {
+        gender: "gender",
+      }),
+    ],
+  ],
+  [
+    'Quest_ancient_elven_prisonFailure',
+    [
+      setup.qc.Injury('adventurer2', 4),
+      setup.qc.Injury('muscle', 4),
+      setup.qc.MissingUnit('adventurer1'),
+      setup.qc.QuestDirect('ancient_elven_prison'),
+    ],
+  ],
+  [
+    'Quest_ancient_elven_prisonDisaster',
+    [
+      setup.qc.MissingUnit('muscle'),
+      setup.qc.Leave('adventurer1', "stepped onto a teleporting trap and a|was teleported somewhere far. a|They will make a|their way back to your company in due time", 12),
+      setup.qc.MissingUnitRebuy('adventurer2', 1),
+      setup.qc.QuestDirect('ancient_elven_prison'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('anal_overload'),
+  setup.qres.HasUnitWithTitle('quest_houndmaster_s_sniffer_0', {
+    job_key: 'slave'
+}),
+],
+[ /* expiration outcomes */
+  setup.qc.SetCooldownQuest(null, 20),
+
+],
+)>>
+
+:: Quest_ancient_elven_prison [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The <<lore region_forest>> is full of ancient ruins, from bygone era when
+ancient elves and tigerkin inhabited the land. However, thanks to the elven
+enchantments which are still present until today, most of these ruins are hidden
+from human eyes and has so far remains mostly untouched.
+</p>
+
+<p>
+Normally, it would be impossible for anyone to breach these compounds. But
+<<yourrep _u>> reminded you that currently you are being lent a certain
+tigerkin pet with you blessed with a very keen nose. As the history books tell, some
+tigerkin are capable of sniffing out these ancient enchanted ruins, and
+discover them even without breaking the enchantment.
+Perhaps this particular pet can be used for that...
+</p>
+
+<p>
+You could try to send the pet together with a group of slavers on an
+adventure to the forests. With the pet on a leash, with luck it'll sniff its
+way to one of the ruins. From the history books, you have learned the
+location of one of the ancient elven prisons situated within the forests.
+There might be valuables and dangers lurking inside, so best prepare your
+team!
+</p>
+
+
+:: Quest_ancient_elven_prisonCrit [nobr]
+
+<p>
+Fully geared with puppy gear, <<rep $g.pet>> pet|was led by your slavers to
+scour the woods. While the first week looked fruitless, in the second week the
+pup suddenly stopped mid-walk and began to sniff the surrounding
+suspiciously. <<They $g.pet>> then suddenly begged for your slavers to go on
+a certain direction, no doubt feeling something inhabiting the place.
+</p>
+
+<p>
+Soon enough, your slavers can feel the air around them suddenly turned
+ancient, and the open field before them morphed into an ancient building — no
+doubt the ancient elven prison they had been looking for. It looked both
+derelict and pristine, with ancient pots still intact. But instead of
+looking like a regular prison, the ancient elves seemed to use their
+petrification magic to store their prisoners. Lines and lines of ancient
+tigerkin statues filled the halls, no doubt prisoners of some bygone era forced
+into a petrified state.
+</p>
+
+<p>
+Many of the statues were placed behind magically barred barrier, which meant
+that your slavers were unable to get these highly valuable statues. But <<rep
+$g.adventurer2>> <<uadv $g.adventurer2>> stumbled into what seems to be the
+interrogation room, and therein lied a single pristine tigerkin statue.
+<<if $g.gender.isHasDick()>>
+Like all other male tigerkin statues, his dick is permanently erect and
+leaking what seems to be precum.
+<<else>>
+Like all the female tigerkin statues, her pussy is permanently wet and
+leaking what seems to be girlcum.
+<</if>>
+Thanking their luck, your slavers decided to bring the statue as a valuable
+loot back home, and <<yourrep $g.muscle>> heaved the heavy statue up to be carried
+away.
+<<if $g.muscle.isHasTrait('muscle_verystrong')>>
+  <<Rep $g.muscle>> looked mildly fatigued by the end of the adventure,
+  but that's still exceptional considering how heavy the statue must have weighted.
+  <<Their $g.muscle>> <<ubody $g.muscle>> certainly did good work.
+<<elseif $g.muscle.isHasTrait('muscle_strong')>>
+  <<Rep $g.muscle>> looked mildly fatigued by the end of the adventure,
+  but that's still exceptional considering how heavy the statue must have weighted.
+  <<Their $g.muscle>> <<ubody $g.muscle>> certainly did good work.
+<<else>>
+  <<Rep $g.muscle>> muscle|was completely exhausted by the end of the adventure,
+  <<therace $g.muscle>> not really build to lug such a heavy statue around.
+  <<run setup.qc.Injury('muscle', 1).apply($gQuest)>>
+<</if>>
+
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+As luck would have it, <<rep $g.adventurer2>> accidentally uncovered a hidden
+door when <<they $g.adventurer2>> <<uadv $g.adventurer2>> leaned on it for a
+little break. Your slavers found valuables behind, which they pawned along the
+way for a large sum of money.
+</p>
+<</if>>
+
+<p>
+Your pet never broke character throughout the adventure, and <<rep
+$g.adventurer1>> rewarded the obedient puppy with a treat at the end of the
+adventure. <<if $g.adventurer1.isHasDick()>> Fresh cream straight from the
+eclair — which the puppy eagerly sucked dry.<<else>>
+Fresh juice straight from the melons — which the puppy eagerly lapped up.
+<</if>> Such was the happy daily life of the puppy in your company.
+</p>
+
+<p>
+Pet aside, now you have to decide what to do with this tigerkin statue of yours...
+</p>
+
+
+:: Quest_ancient_elven_prisonFailure [nobr]
+
+<p>
+Unfortunately, the pet <<reps $g.pet>> nose was not as keen as your slavers
+had thought. <<They $g.pet>> instead led your slavers into one of the ancient
+elven traps, and <<rep $g.adventurer1>> fell victim to the trap, being
+teleported to who knows where. Your other slavers were not completely
+unharmed either, having stepped into arrow traps which grazed some of them.
+In the end, your remaining slavers returned home with the bad news. All the
+while <<rep $g.pet>> stared with puppy eyes towards you and your slavers, and
+nobody had the heart to punish such a good little puppy.
+</p>
+
+<p>
+At least you can always give the quest another attempt, perhaps with a different team this time.
+</p>
+
+
+:: Quest_ancient_elven_prisonDisaster [nobr]
+
+<p>
+Unfortunately, the pet <<reps $g.pet>> nose was not as keen as your slavers
+thought. <<They $g.pet>> instead led all of the team into a big ancient
+elven teleporting trap, which teleported all of them all around the place.
+<<Rep $g.adventurer1>> adventurer1|was teleported to a faraway land, but a
+safe one and should return to your company given some time. <<Rep
+$g.adventurer2>> adventurer2|was not as lucky, and got teleported into
+another slaver company, which you happened to get in contact with. You can
+rebuy <<them $g.adventurer2>> immediately. And nobody knew where <<rep
+$g.muscle>> muscle|was teleported to...
+All the while <<rep $g.pet>> pet|was conveniently teleported back to your
+office, and stared with you in confusion about everything that have just unfolded.
+</p>
+
+<p>
+At least you can always give the quest another attempt, perhaps with a different team this time.
+</p>

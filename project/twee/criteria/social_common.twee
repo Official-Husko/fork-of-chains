@@ -1,0 +1,356 @@
+:: InitCriteriaSocialCommon [nobr]
+
+<<run new setup.UnitCriteria(
+  'negotiator', /* key */
+  'Negotiator', /* title */
+  [ /* critical traits */
+    setup.trait.bg_merchant,
+    setup.trait.per_calm,
+    setup.trait.per_sly,
+    setup.trait.per_gregarious,
+    setup.trait.per_attentive,
+    setup.trait.per_logical,
+  ],
+  [
+    setup.trait.face_hideous,
+    setup.trait.per_aggressive,
+    setup.trait.per_direct,
+    setup.trait.per_loner,
+    setup.trait.per_dreamy,
+    setup.trait.per_empath,
+    setup.trait.skill_intimidating,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 3.0,
+  }
+)>>
+
+<<run new setup.UnitCriteria(
+  'trader', /* key */
+  'Trader', /* title */
+  [ /* critical traits */
+    setup.trait.bg_merchant,
+    setup.trait.per_smart,
+    setup.trait.per_sly,
+    setup.trait.per_frugal,
+    setup.trait.per_logical,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_hideous,
+    setup.trait.per_direct,
+    setup.trait.per_lavish,
+    setup.trait.per_empath,
+    setup.trait.per_submissive,
+    setup.trait.skill_intimidating,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 2.0,
+    knowledge: 1.0,
+  }
+)>>
+
+<<run new setup.UnitCriteria(
+  'recruiter', /* key */
+  'Recruiter', /* title */
+  [ /* critical traits */
+    setup.trait.muscle_verystrong,
+    setup.trait.muscle_extremelystrong,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_gregarious,
+    setup.trait.per_curious,
+    setup.trait.per_kind,
+    setup.trait.per_dominant,
+    setup.trait.skill_intimidating,
+  ],
+  [ /* disaster traits */
+    setup.trait.muscle_verythin,
+    setup.trait.muscle_extremelythin,
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_loner,
+    setup.trait.per_stubborn,
+    setup.trait.per_cruel,
+    setup.trait.per_submissive,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 3.0,
+  }
+)>>
+
+<<run new setup.UnitCriteria(
+  'convincer', /* key */
+  'Convincer', /* title */
+  [ /* critical traits */
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_gregarious,
+    setup.trait.per_attentive,
+    setup.trait.per_stubborn,
+    setup.trait.skill_intimidating,
+    setup.trait.skill_hypnotic,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_aggressive,
+    setup.trait.per_loner,
+    setup.trait.per_dreamy,
+    setup.trait.per_curious,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 3.0,
+  }
+)>>
+
+
+<<run new setup.UnitCriteria(
+  'informer', /* key */
+  'Informer', /* title */
+  [ /* critical traits */
+    setup.trait.bg_informer,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_sly,
+    setup.trait.per_gregarious,
+    setup.trait.per_attentive,
+    setup.trait.per_logical,
+    setup.trait.skill_connected,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_direct,
+    setup.trait.per_loner,
+    setup.trait.per_dreamy,
+    setup.trait.per_empath,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 2.0,
+    intrigue: 1.0,
+  }
+)>>
+
+
+<<run new setup.UnitCriteria(
+  'veteran_informer', /* key */
+  'Veteran Informer', /* title */
+  [ /* critical traits */
+    setup.trait.bg_informer,
+    setup.trait.face_beautiful,
+    setup.trait.per_sly,
+    setup.trait.per_gregarious,
+    setup.trait.per_attentive,
+    setup.trait.per_logical,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_direct,
+    setup.trait.per_loner,
+    setup.trait.per_dreamy,
+    setup.trait.per_empath,
+  ],
+  [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait('skill_connected'),
+  ], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 2.0,
+    intrigue: 1.0,
+  }
+)>>
+
+
+<<run new setup.UnitCriteria(
+  'salesman', /* key */
+  'Salesman', /* title */
+  [ /* critical traits */
+    setup.trait.bg_merchant,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_frugal,
+    setup.trait.per_stubborn,
+    setup.trait.per_logical,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_lavish,
+    setup.trait.per_curious,
+    setup.trait.per_empath,
+    setup.trait.per_lunatic,
+    setup.trait.skill_intimidating,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 3.0,
+  }
+)>>
+
+
+<<run new setup.UnitCriteria(
+  'attentionseeker', /* key */
+  'Attention Seeker', /* title */
+  [ /* critical traits */
+    setup.trait.bg_artist,
+    setup.trait.bg_entertainer,
+    setup.trait.muscle_thin,
+    setup.trait.muscle_verythin,
+    setup.trait.muscle_extremelythin,
+    setup.trait.muscle_strong,
+    setup.trait.muscle_verystrong,
+    setup.trait.muscle_extremelystrong,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_aggressive,
+    setup.trait.per_proud,
+    setup.trait.per_gregarious,
+    setup.trait.per_active,
+    setup.trait.per_lunatic,
+    setup.trait.per_dominant,
+    setup.trait.skill_connected,
+    setup.trait.skill_entertain,
+    setup.trait.eq_veryvaluable,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_calm,
+    setup.trait.per_humble,
+    setup.trait.per_loner,
+    setup.trait.per_studious,
+    setup.trait.per_submissive,
+    setup.trait.per_masochistic,
+    setup.trait.skill_intimidating,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 1.0,
+    sex: 1.0,
+    brawn: 1.0,
+  }
+)>>
+
+
+<<run new setup.UnitCriteria(
+  'performer', /* key */
+  'Performer', /* title */
+  [ /* critical traits */
+    setup.trait.bg_artist,
+    setup.trait.bg_entertainer,
+    setup.trait.muscle_thin,
+    setup.trait.muscle_verythin,
+    setup.trait.muscle_extremelythin,
+    setup.trait.muscle_strong,
+    setup.trait.muscle_verystrong,
+    setup.trait.muscle_extremelystrong,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_active,
+    setup.trait.per_dreamy,
+    setup.trait.per_playful,
+    setup.trait.skill_entertain,
+    setup.trait.eq_veryvaluable,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_studious,
+    setup.trait.per_attentive,
+    setup.trait.per_serious,
+    setup.trait.skill_intimidating,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 1.5,
+    brawn: 1.5,
+  }
+)>>
+
+
+<<run new setup.UnitCriteria(
+  'briber', /* key */
+  'Briber', /* title */
+  [ /* critical traits */
+    setup.trait.bg_informer,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_sly,
+    setup.trait.per_frugal,
+    setup.trait.per_evil,
+    setup.trait.skill_intimidating,
+    setup.trait.skill_hypnotic,
+  ],
+  [ /* disaster traits */
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_direct,
+    setup.trait.per_lavish,
+    setup.trait.per_honorable,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 2.0,
+    intrigue: 1.0,
+  }
+)>>
+
+
+<<set _criterianegotiator = new setup.UnitCriteria(
+'abyssal_negotiator', /* key */
+'Abyssal Negotiator', /* name */
+[
+setup.trait.bg_mist,
+setup.trait.per_calm,
+setup.trait.per_stubborn,
+setup.trait.per_cruel,
+setup.trait.per_logical,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.trait.per_direct,
+setup.trait.per_lavish,
+setup.trait.per_curious,
+setup.trait.per_kind,
+setup.trait.per_lustful,
+setup.trait.per_submissive,
+setup.trait.per_honorable,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+social: 1,
+arcane: 1,
+sex: 1,
+}
+)>>
+
+

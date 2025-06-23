@@ -1,0 +1,141 @@
+:: QuestSetup_for_science__something_long [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'for_science__something_long', /* key */
+"For Science: Something Long", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'desert',
+'danger'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'tank': setup.qu.tank,
+'dps': setup.qu.dps,
+'healer': setup.qu.healer, },
+{ /* actors */
+'chieftain': 'subrace_orc', },
+[ /* costs */
+],
+'Quest_for_science__something_long',
+setup.qdiff.hardest49, /* difficulty */
+[ /* outcomes */
+[
+'Quest_for_science__something_longCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.Equipment(setup.equipmentpool.brawn_good),
+],
+], [
+'Quest_for_science__something_longCrit',
+[
+setup.qc.Opportunity('for_science__the_trial', {
+  dps: 'dps',
+  tank: 'tank',
+  healer: 'healer',
+}),
+],
+], [
+'Quest_for_science__something_longFailure',
+[
+setup.qc.Injury('tank', 8),
+setup.qc.Injury('dps', 9),
+setup.qc.Injury('healer', 8), ],
+], [
+'Quest_for_science__something_longDisaster',
+[
+setup.qc.MissingUnit('tank'),
+setup.qc.Injury('dps', 4),
+setup.qc.Injury('healer', 5), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.HasItem(setup.item.quest_for_science_list),
+setup.qres.NoItem(setup.item.quest_for_science_stick),
+setup.qres.NoOpportunity('for_science__the_trial'), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_for_science__something_long [nobr]
+<p>
+During your continued search for the <<rep
+setup.item.quest_for_science_list>> requested by the inventor, you have
+learned about a certain orcish encampment living near the mountains in the
+<<lore region_desert>>. It is said that these orcs would bestow the pole of heavens into
+adventurers brave enough (or foolish enough) to face their trials. This
+"pole", from your investigation, is apparently a perfect fit for the <<rep
+setup.item.quest_for_science_stick>>, the third item in the list.
+</p>
+
+<p>
+Venturing to the <<lore region_desert>> is dangerous, and even more so directly into
+an orcish encampment. You must provide a well-prepared team for this mission
+— a tank, to protect your team, a healer, to sustain the team, and a rogue, to
+dispatch the enemies. But they must be prepared for injuries, for whatever
+this "trial" is, it does not sound good.
+</p>
+
+
+:: Quest_for_science__something_longCrit [nobr]
+
+<p>
+Your slavers journeyed to the northern side of the desert, where the camp
+dwelled between the desert and the mountains.
+Dispatching thugs along the way,
+they finally arrived at the encampment, to meet with the chieftain. <<Rep
+$g.tank>> <<uadv $g.tank>> discussed with the chieftain about obtaining the
+pole being displayed inside the tent — the pole of heavens, as they put it.
+The discussion went surprisingly easy — all your slavers had to do was to prove
+their worth by completing one of their trials.
+</p>
+
+<p>
+Your slavers awaited your decision on which trial they should take part in.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+As a welcoming gift, your slavers were given a piece of gladiator outfit, an
+expensive and rare gift that you should use carefully.
+</p>
+<</if>>
+
+
+:: Quest_for_science__something_longFailure [nobr]
+
+<p>
+An errant sandstorm led your slavers away from their destination, leaving
+them wounded and exhausted in the middle of nowhere. It took them several
+days to finally find a settlement to rest, before returning back home with
+heavy injuries.
+</p>
+
+
+:: Quest_for_science__something_longDisaster [nobr]
+<p>
+Your slavers were ambushed by a large group of other slaver group. When there
+was seemingly to hope to escape capture, <<rep $g.tank>> <<uadv $g.tank>>
+threw <<themself $g.tank>> into the enemy to buy the rest of the team a time
+to escape.
+<<Rep $g.dps>> and <<rep $g.healer>> <<uadv $g.dps>> escaped, and they won't
+forget <<reps $g.tank>> sacrifice anytime soon.
+</p>
+
+<<set _rescuer = $dutylist.getUnitIfAvailable('rescuer')>>
+<<if _rescuer>>
+<p>
+Hearing the news of <<utheirrel _rescuer $g.tank>> <<rep $g.tank>> disappearance,
+<<yourrep _rescuer>> sighed and began to work.
+</p>
+<<else>>
+<p>
+If you want to save <<rep $g.tank>>, perhaps you can consider hiring a rescuer...
+</p>
+<</if>>

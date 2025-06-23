@@ -1,0 +1,185 @@
+:: QuestSetup_capturethe_protagonist [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_capturethe_protagonist1',
+'leader',
+'all',  /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_adventurer),
+setup.qc.TraitReplace('unit', setup.trait.skill_ambidextrous),
+setup.qc.TraitReplace('unit', setup.trait.per_smart), ],
+)>>
+
+<<run new setup.QuestTemplate(
+'capturethe_protagonist', /* key */
+'Capture the Protagonist', /* Title */
+'darko', /* Author */
+[ 'desert', 'item', 'unit', 'rare',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'tank': setup.qu.tank,
+'dps': setup.qu.dps,
+'healer': setup.qu.healer, },
+{ /* actors */
+'leader': 'quest_capturethe_protagonist1', },
+[ /* costs */
+],
+'Quest_capturethe_protagonist',
+setup.qdiff.hardest44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_capturethe_protagonistCrit',
+    [
+    setup.qc.Slave('leader', 'a|was a leader of an adventurer group who sacrificed a|themself in order to let a|their friends escape'),
+    setup.qc.Equipment(setup.equipmentpool.combat_good), ],
+    ],
+  [
+    'Quest_capturethe_protagonistCrit',
+    [
+    
+    setup.qc.Equipment(setup.equipmentpool.combat),
+    setup.qc.Equipment(setup.equipmentpool.survival),
+    setup.qc.Equipment(setup.equipmentpool.aid), ],
+    ],
+  [
+    'Quest_capturethe_protagonistFailure',
+    [
+    setup.qc.Injury('tank', 4),
+    setup.qc.Injury('dps', 3),
+    setup.qc.Injury('healer', 2), ],
+    ],
+  [
+    'Quest_capturethe_protagonistFailure',
+    [
+      setup.qc.OneRandom([
+        setup.qc.MissingUnit('tank'),
+        setup.qc.MissingUnit('dps'),
+        setup.qc.MissingUnit('healer'),
+      ]),
+      setup.qc.Injury('dps', 4),
+      setup.qc.Injury('healer', 3),
+      setup.qc.Injury('tank', 4),
+    ],
+  ],
+],
+[
+[setup.questpool.desert, setup.rarity.epic],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_capturethe_protagonist [nobr]
+
+<p>
+The <<lore region_desert>> are full of the unknown and unexplored ruins. This makes
+it a prime destination for adventuring companies, and many adventurer groups
+set out to the desert in search of fame and glory.
+</p>
+
+<p>
+You have heard of a relatively new but particularly well equipped adventuring
+company who just went into the deserts. Their trail is still fresh, and if you
+want you can send a group of slavers to try and trail them, in hope of
+stealing their gear and pawning them off. If you are lucky, you might even
+catch yourself some new rare breed of adventuring slave.
+</p>
+
+<p>
+To match these adventurers in combat, you will need a typical adventurer
+team. A tank, to bait their attackers, a healer to keep the tank healthy, and
+a damager to incapacitate the enemy.
+</p>
+
+
+:: Quest_capturethe_protagonistCrit [nobr]
+
+<p>
+Your slavers were able to pick up the trail easily enough -- these adventurers
+were still green, and it showed.
+<<set _att = setup.selectUnit([$g.tank, $g.dps, $g.healer], {trait: 'per_attentive'})>>
+<<set _dreamy = setup.selectUnit([$g.tank, $g.dps, $g.healer], {trait: 'per_dreamy'})>>
+<<if _att>>
+<<Reps _att>> attentiveness means <<theslaver _att>> never failed to notice the next camping spots,
+and
+<<elseif _dreamy>>
+<<Rep _dreamy>> did not help much with the tracking (given how inattentive <<therace _dreamy>> is),
+but the other slavers were able to pick up the slack, and
+<<else>>
+A few abandoned campfires were passed by until a recent footsteps in the deserts was visible,
+and
+<</if>>
+soon enough the party was in view.
+Your slavers found the adventurers resting near an empty oasis. Your slavers waited until the night fall
+before <<uadv $g.tank>> launching a sudden attack on the encampment as you see them
+strip to bathe in the oasis.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The adventurers, being new, were caught completely off guard and were not able to put up any fight
+at all.
+But the leader of the adventurer company selflessly bought 
+<<their $g.leader>> friends some time to escape.
+</p>
+
+<p>
+As a result, your slavers were able to subdue the leader alone.
+They bound the still naked leader, to be carried home as a prize, but not before
+looting the campsite and pawning everything of value found there, as well as taking
+one of the more valuable-looking piece of armor.
+</p>
+
+<<else>>
+
+<p>
+Despite them being naked with their genitals lewdly flopping around,
+the adventurers were able to put up a decent fight, until at one point their hedge
+wizard was able to cast a teleportation spell, teleporting the adventurers to
+safety. With nobody around the campsite anymore, your slavers got to work and
+stripped the encampment of anything of value. They sold most of the valuables
+before coming back with the money and a particularly valuable piece of gear that
+they decided to keep.
+</p>
+
+<</if>>
+
+
+:: Quest_capturethe_protagonistFailure [nobr]
+
+<p>
+Your slavers were able to pick up the trail easily enough.
+After a few days of traversing the trail, they found the
+adventurers resting near an empty oasis.
+But the adventurers managed to spot
+your slavers, and a decisive battle ensued.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+<<Rep $g.tank>> tried <<their $g.tank>> best to withstood all the enemy
+attacks while <<rep $g.healer>> healed as much as possible from behind.
+But it was not enough.
+A stray arrow caught <<rep $g.healer>> in its wake and soon after
+your slaver's formation were thrown into disarray. Seeing no hope to recover,
+your slavers immediately retreated back to safety. Fortunately for them, the
+adventurers did not give chase, and your slavers were free to recover from
+their injuries back at the fort.
+</p>
+<<else>>
+
+<p>
+Your slavers stood no chance as the adventurer's resident wizard overwhelmed <<reps
+$g.tank>> defenses. Soon enough all three of your slavers were at the
+adventurer's mercy, who decided to strip them naked and used them as the sexual
+playthings for the next few nights. After few long nights of being used as toys,
+they released your slavers except one that the adventurers had grown attached to and decided
+to keep as a pet and a mascot.
+</p>
+
+<</if>>

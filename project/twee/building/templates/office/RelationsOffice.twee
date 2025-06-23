@@ -1,0 +1,52 @@
+:: InitBuildingRelationsOffice [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'relationsoffice',
+  tags: [],
+  width: 2,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "social",
+      room_keys: [
+        'greathall',
+        'messengerpost',
+        'damagecontroloffice',
+        'relationshipmanageroffice',
+        'questoffice',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'relationsoffice',
+  name: 'Relations office',
+  tags: ['office', 'critical', 'unlocker', ],
+  description_passage: 'BuildingRelationsOffice',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('greathall'),
+    ],
+  ],
+  main_room_template_key: 'relationsoffice',
+})>>
+
+:: BuildingRelationsOffice [nobr]
+
+<p>
+A room for managing your company's relationship with other forces.
+Allows you to see your current favors and ires with those forces.
+Unlocks an improvement which opens up the Relationship Manager
+as well as another improvement which allows you to manage your contacts.
+</p>

@@ -1,0 +1,91 @@
+:: QuestSetupDamselInDistressSave [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'quest_knight_in_training_complete',  /* key */
+  'Knight of Tor',   /* name */
+  'Has been knighted by the Kingdom of Tor',   /* name */
+  'a|have been properly knighted by the Kingdom of Tor for saving a damsel in distress',  /* unit description */
+  3000,   /* slave value */
+  {
+    combat: 3,
+    aid: 2,
+  },
+)>>
+
+<<set _knight = setup.CriteriaHelper.Restrictions(
+  [
+    setup.qres.HasTitle('quest_knight_in_training'),
+  ],
+  setup.qu.knight,
+)>>
+
+<<run new setup.QuestTemplate(
+  'damsel_in_distress_save', /* key */
+  'Damsel in Distress: Save', /* Title */
+  'darko',   /* author */
+  ['city', 'money', 'prep', 'favor', 'rare', ],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'knight': _knight,
+    'squire1': setup.qu.squire,
+    'squire2': setup.qu.squire,
+  },
+  { /* actors */
+    'ravaged': 'quest_humankingdom_nobledaughter_ravaged',
+  },
+  [ /* costs */
+  ],
+  'QuestDamselInDistressSave', /* passage description */
+  setup.qdiff.extreme40, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestDamselInDistressKidnapCrit',
+      [
+        setup.qc.RemoveTitle('knight', 'quest_knight_in_training'),
+        setup.qc.AddTitle('knight', 'quest_knight_in_training_complete'),
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humankingdom', 100),
+        setup.qc.Favor('royal', 100),
+      ],
+    ],
+    [
+      'QuestDamselInDistressKidnapCrit',
+      [
+        setup.qc.SlaveMarker('ravaged'),
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humankingdom', 50),
+        setup.qc.Favor('royal', 50),
+      ],
+    ],
+    [
+      'QuestDamselInDistressKidnapFailure',
+      [
+        setup.qc.Injury('knight', 2),
+        setup.qc.Injury('squire1', 2),
+        setup.qc.Injury('squire2', 2),
+      ],
+    ],
+    [
+      'QuestDamselInDistressKidnapDisaster',
+      [
+        setup.qc.RemoveTitle('knight', 'quest_knight_in_training'),
+      ],
+    ],
+  ],
+  [ /* quest pool and rarity */
+  ],
+  [
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestDamselInDistressSave [nobr]
+
+<<include 'OpportunityDamselInDistress'>>
+
+<p>
+For better or worse, you have decided to save the noble daughter.
+</p>

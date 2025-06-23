@@ -1,0 +1,77 @@
+:: QuestSetupForestContact [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'forest_contact',  /* id */
+  'Establish Contact: Western Forest',  /* Title */
+  'darko',   /* author */
+  ['forest', 'special', 'quest'],  /* tags */
+  1, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_forest,
+    'scout2': setup.qu.scout_forest,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestForestContact',  /* description */
+  setup.qdiff.normal15,
+  [
+    [
+      'QuestForestContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.forestlead),
+        setup.qc.QuestDelay(setup.questpool.forest, 9),
+        
+      ]
+    ],
+    [
+      'QuestForestContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.forestlead),
+        setup.qc.QuestDelay(setup.questpool.forest, 5),
+        
+      ],
+    ],
+    [
+      'QuestForestContactFailure',
+      [
+        setup.qc.QuestDirect('forest_contact'),
+      ],
+    ],
+    [
+      'QuestForestContactFailure',
+      [
+        setup.qc.QuestDirect('forest_contact'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestForestContact [nobr]
+
+<p>
+Building <<rep setup.buildingtemplate.scouttower>> is not enough to start doing
+quests in the <<lore region_forest>>. You also need
+to find some promising contacts in the <<lore region_forest>> who might
+be willing to send to your company quest leads, among the
+elves and the neko living in the forest.
+</p>
+
+:: QuestForestContactCrit [nobr]
+
+<p>
+Your slavers happened upon a rather unscrupulous elf, who is willing
+to supply your company with leads in exchange for the occasional visits to your
+fort to enjoy the provided "entertainments".
+</p>
+
+:: QuestForestContactFailure [nobr]
+<p>
+Unfortunately, you failed to find any such contact. You should try again.
+</p>

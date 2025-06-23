@@ -1,0 +1,71 @@
+:: InitBuildingGreatHall [nobr]
+
+/* TODO: rename to Great Hall */
+
+<<run new setup.RoomTemplate({
+  key: 'greathall',
+  tags: [],
+  width: 6,
+  height: 6,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "combat",
+      room_keys: [
+        'veteranhall',
+        'bedchamberwing',
+        'dungeons',
+        'inn',
+        'lodgings',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'greathall',
+  name: 'Great Hall',
+  tags: ['critical', 'unlocker', 'structural', ],
+  description_passage: 'BuildingGreatHall',
+  costs: [
+    [setup.qc.Money(-2000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('dungeons'),
+      setup.qres.Building('hiringsquare'),
+      setup.qres.Building('noticeboards'),
+      setup.qres.Building('lodgings'),
+      setup.qres.Building('mailroom'),
+      setup.qres.Building('marketingoffice'),
+      setup.qres.Building('missioncontrol'),
+      setup.qres.Building('noticeboards'),
+      setup.qres.Building('prospectshall'),
+      setup.qres.Building('renovationoffice'),
+      setup.qres.Building('slavepens'),
+      setup.qres.Building('scouttower'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.Event('loan_tiger', 5),
+      setup.qc.Event('open_for_visitors', 1),
+    ]
+  ],
+  main_room_template_key: 'greathall',
+})>>
+
+
+:: BuildingGreatHall [nobr]
+
+<p>
+Renovate the first floor of your fort into a great hall suitable for your fledging company.
+Unlocks seeing your company information, as well as many filter options in various menus.
+This improvement is also required to build many of the advanced improvements.
+</p>
+

@@ -1,0 +1,51 @@
+:: EventSetup_kobold_advice [nobr event]
+
+
+
+
+<<run new setup.Event(
+'kobold_advice', /* key */
+"Kobold Advice", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+'Event_kobold_advice',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'kobold': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+    setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+    setup.qres.Home(),
+    setup.qres.NotInjured(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_shunned_kobold_progress', '15', -1),
+  setup.qc.OneRandomSeed([
+setup.qc.Opportunity('kobold_approach', {
+kobold: "kobold",
+}),
+setup.qc.Opportunity('kobold_learning', {
+kobold: "kobold",
+})
+]),
+  setup.qc.SetCooldownEvent('kobold_growth', 8),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_shunned_kobold_progress', '5'),
+],
+0, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_kobold_advice [nobr]
+<p>
+    It took a while, but thanks to your fort's careful efforts, <<rep $g.kobold>> has been nourished back to full health. <<Their $g.kobold>> many injuries has been healed, and <<therace $g.kobold>>'s complexion is back to normal, no longer malnourished. True to <<their $g.kobold>> word, <<they $g.kobold>> has begun training immediately, but wants to ask for your advice regarding what to train on.
+</p>

@@ -1,0 +1,147 @@
+:: QuestSetup_pet_shop_of_woes [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'pet_shop_of_woes', /* key */
+"Pet Shopping: Internship", /* Title */
+"darko", /* Author */
+[ 'city',
+'veteran',
+'item'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'trainer1': setup.qu.slavetrainer,
+'trainer2': setup.qu.slavetrainer,
+'salesman': setup.qu.salesman, },
+{ /* actors */
+'pet': 'quest_pet_shop_of_wonders1', },
+[ /* costs */
+],
+'Quest_pet_shop_of_woes',
+setup.qdiff.harder43, /* difficulty */
+[ /* outcomes */
+[
+'Quest_pet_shop_of_woesCrit',
+[
+setup.qc.Equipment(setup.equipmentpool.pet_good),
+setup.qc.Equipment(setup.equipmentpool.pet_good),
+setup.qc.MoneyCustom(2000), ],
+], [
+'Quest_pet_shop_of_woesCrit',
+[
+setup.qc.Equipment(setup.equipmentpool.pet_good),
+setup.qc.MoneyCustom(1000), ],
+], [
+'Quest_pet_shop_of_woesCrit',
+[
+setup.qc.MissingUnitRecapture('salesman', 'capturedmedium'),
+],
+], [
+'Quest_pet_shop_of_woesCrit',
+[
+setup.qc.MissingUnit('salesman'),
+setup.qc.SlaveMarker('pet'), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_pet_shop_of_woes [nobr]
+
+<<include 'Opportunity_pet_shopping'>>
+
+<p>
+You have decided to send a team of slavers as "interns".
+</p>
+
+:: Quest_pet_shop_of_woesCrit [nobr]
+
+<p>
+The pet shop was disguised as an ordinary pet shop — the front counter
+showcased dogs, cats, and other ordinary and cute pets for sale. Coming
+to work, your slavers were escored to an employee-only area.
+</p>
+
+<p>
+<<Rep $g.salesman>> salesman|was immediately put to work for helping
+customers choose their perfect pet. Meanwhile, <<rep $g.trainer1>> and <<rep
+$g.trainer2>> were tasked with training a newly captured slave, a former
+raider, into the perfect pet. Fortunately, the shop has
+a standard training procedure to help your slavers with the training process.
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+Either because the slave was truly unruly, or because of your slavers were
+incompentence, by the end of the internship,
+the slave remained defiant but badly injured.
+Seeing the failure, your slavers were kicked out of the compound while
+the shop salvaged the broken wreck of the slave by turning the slave into a
+prospective pony slave instead.
+</p>
+
+<p>
+For such awful work your slavers were not paid a single penny despite their hard work,
+while <<rep $g.salesman>> salesman|was taken as due recompense.
+<<urescuenow $g.salesman>>, before <<they $g.salesman>> salesman|is fully trained as just another nameless pet...
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+
+<p>
+It was unclear how, but during the training the prospective pet snapped and
+its mind broke. Your slavers were held accountable and <<rep $g.salesman>>
+salesman|was taken by the shop as a payment for the damages, to be trained as
+a replacement for the pet your slavers had broke.
+</p>
+
+<<else>>
+
+<p>
+With the help of various training equipment including blindfolds, gags,
+chastity belt, as well as plenty and plenty of leashes and puppy gears,
+your slavers slowly transformed
+the initially unwilling slave until finally, at the end of the month, the
+slave would willingly come and lick your slaver's feet clean while having
+their butt stuffed full with a large tailplug.
+
+<<set _slaver = setup.selectUnit([$g.trainer1, $g.trainer2], {trait: 'bg_slaver'})>>
+<<if _slaver>>
+  <<Reps _slaver>> past as a slaver made the training slightly easier, and <<they _slaver>>
+  employed some rather unorthodox technique in training the slave.
+<</if>>
+
+<<set _wind = setup.selectUnit([$g.trainer1, $g.trainer2], {trait: 'magic_wind'})>>
+<<if _wind>>
+  <<Reps _wind>> mastery over wind magic was instrumental during the trainings.
+<</if>>
+
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers went above and beyond and the pet would now qualify as
+a masterful pet slut. For such impressive work, your slavers were given
+double the promised reward — two golden pet gears suitable for high class
+pets.
+The pet your slavers had fully trained will live a fulfilling live in
+the kennel provided by its prospective <<master $unit.player>>.
+</p>
+<<else>>
+
+<p>
+When their internship ended, your slavers were given the promised reward — a
+golden pet gear suitable for high class pets, for the good work they had
+done. The pet they trained will live a fulfilling live in the feet of its new
+<<master $unit.player>>.
+</p>
+
+<</if>>
+
+<</if>>

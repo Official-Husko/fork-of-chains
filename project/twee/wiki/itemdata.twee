@@ -1,0 +1,18 @@
+:: WikiItem [nobr]
+
+<<set _display = Object.values(setup.item).map(item => {return {item: item, quantity: 1}})>>
+<<set _forfilter = _display.map(a => a.item)>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'item',
+  filter_objects: _forfilter,
+  display_objects: _display,
+  display_callback: item_obj => {
+    if ($menufilter.get('item', 'display') == 'compact') {
+      return setup.DOM.Card.itemcompact(item_obj.item, true);
+    } else {
+      return setup.DOM.Card.item(item_obj.item, true);
+    }
+  },
+})>>
+<<attach _dom>>

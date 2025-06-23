@@ -1,0 +1,75 @@
+:: InitFurnitureSlaveBed [nobr]
+
+<<run new setup.Furniture(
+  'f_slavebed_none',
+  'floor',
+  'Sleep on the floor', 
+  /* value = */ 0,
+  setup.furnitureslot.slavebed,
+  ['basic'],
+  {},
+  {  /* texts */
+    bedchamber: "If you are feeling generous, you can replace it with something nicer.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_slavebed_normal',
+  'iron cages',
+  'Iron cages to keep your slaves comfortable inside', 
+  /* value = */ setup.FURNITURE_PRICE_NORMAL,
+  setup.furnitureslot.slavebed,
+  ['normal'],
+  {
+    intrigue: setup.FURNITURE_SKILL_NORMAL,
+  },
+  {  /* texts */
+    bedchamber: "The slaves are locked inside every night.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_slavebed_good',
+  'gilded cages',
+  'Gilded cages to keep and showcase your slaves inside', 
+  /* value = */ setup.FURNITURE_PRICE_GOOD,
+  setup.furnitureslot.slavebed,
+  ['good'],
+  {
+    intrigue: setup.FURNITURE_SKILL_GOOD,
+  },
+  {  /* texts */
+    bedchamber: "As nice as the cages are, the slaves are still confined inside every night.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_slavebed_master',
+  'morphing cages',
+  'A magical cage who can be shaped, distorted, and modeled by imbuing it with magic',
+  /* value = */ setup.FURNITURE_PRICE_MASTER,
+  setup.furnitureslot.slavebed,
+  ['master'],
+  {
+    intrigue: setup.FURNITURE_SKILL_MASTER,
+  },
+  {  /* texts */
+    bedchamber: "The cages change shape every night, in such a way that forces the slave to spend the night while training their posture.",
+  },
+)>>
+
+<<run new setup.Furniture(
+  'f_slavebed_good_slaver',
+  'bondage cage',
+  "An iron cage equipped with slots to secure the slave's limbs and neck, for maximum bondage.", 
+  /* value = */ setup.FURNITURE_PRICE_GOOD,
+  setup.furnitureslot.slavebed,
+  ['good'],
+  {
+    slaving: 1,
+    intrigue: setup.FURNITURE_SKILL_NORMAL,
+  },
+  {  /* texts */
+    bedchamber: "When the slaves are in need of punishment, their limbs can be further secured inside the cage at night, forcing them in a doggy-style position all night long.",
+  },
+)>>

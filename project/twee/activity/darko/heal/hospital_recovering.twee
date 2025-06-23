@@ -1,0 +1,55 @@
+:: ActivitySetup_hospital_recovering [nobr activity]
+
+<<run new setup.ActivityTemplate({
+key: 'hospital_recovering',
+name: "Hospital Recovering", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.IsInjured(1),
+  ],
+},
+critical_traits: [
+],
+disaster_traits: [
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.common,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "Ouch... that stings.",
+      "Oww... my body feels so bad.",
+    ],
+    bold: [
+      "<<ugreetingshort $g.a>> I\'m ready for action, just let me o- YEOUCH! Don\'t touch my legs, it still hurts like hell.",
+      "...sigh being in the hospital is so boring. Why can\'t my wounds heal faster?!",
+    ],
+    cool: [
+      "...ouch.",
+      "The hospital is quiet, at least. I like it.",
+    ],
+    witty: [
+      "<<ugreetingshort $g.a>> come join my writing profanities on my bandage and adding insults to the injury.",
+      "I could handle a couple of bruises and wounds, but please don\'t subject me to wage cuts!",
+    ],
+    debauched: [
+      "My entire body hurts, but most of all it\'s the pain in my ass that\'s bothering me the most...",
+      "I wonder if it\'s hygienic to get a slave or two to service me in the hospital...",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.hospital,
+],
+})>>

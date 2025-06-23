@@ -1,0 +1,291 @@
+:: QuestSetup_test_of_combat [nobr quest]
+
+<<run new setup.Title(
+"quest_master_of_combat_0", /* key */
+"Master of Combat", /* name */
+"A true master of combat", /* description */
+"a|have proven a|themself to be a master combatant by completing a challenge in the southern seas", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+combat: 4,},
+)
+>>
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Fighter', /* name */
+[
+  setup.trait.bg_knight,
+  setup.trait.bg_mercenary,
+  setup.trait.skill_creative,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.face_beautiful,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.combat, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_combat_0')
+]), 'Have not yet mastered the art of combat'),
+],
+{
+  combat: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_combat', /* key */
+"Test of Combat", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'prep',
+  'item',
+  'veteran',
+  'legendary',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_test_of_combat',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_combatCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_combat_0'),
+      setup.qc.EquipmentDirect('combat_weapon_master'),
+      setup.qc.ItemIfNew(setup.item.lorebook_doppelganger),
+    ],
+  ],
+  [
+    'Quest_test_of_combatCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_combatCrit',
+    [
+      setup.qc.Injury('a', 10),
+      setup.qc.Trauma('a', setup.trait.boon_combat, 20),
+      setup.qc.ItemIfNew(setup.item.lorebook_doppelganger),
+    ],
+  ],
+  [
+    'Quest_test_of_combatCrit',
+    [
+      setup.qc.MissingUnitRecapture('a', 'capturedhard'),
+      setup.qc.ItemIfNew(setup.item.lorebook_doppelganger),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building('veteranhall'),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_combat_0'),
+setup.qres.SkillAtLeast(setup.skill.combat, 100)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_combat [nobr]
+<p>
+It is not a secret that you have a master fighter under your employ. And the word spread out fast too. Be it the lustful ladies lusting over your slaver, or the criminals looking for new hires, many have known the existence of such master within your employ.
+</p>
+
+<p>
+Words have spread south too, into the <<lore region_sea>>, and you receive a letter today from one of the southern isle's hermits. A sword hermit of the sword — master of cutting blades and cutting wit — or so it was supposedly sent by. The letter is an invitation for a trial, to prove their mastery of combat and earn the title of Master of Combat.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+<p>
+You are hard pressed to believe for such rumor be true, but <<yourrep _u>> convinces you that there is more to the letter. Included in the letter is a piece of old, decrepit looking metal. You thought of it as trash, but according to <<rep _u>>, it is the exceedingly rare dilithium, capable of being forged into the strongest, most durable sword. It might just be possible to get your <<uhands $unit.player>> on a rather legendary sword, should your slaver succeed.
+</p>
+
+<p>
+You have your doubts about <<rep _u>>'s knowledge on the craft,
+<<if _u.isHasTrait('skill_alchemy')>>
+although then again, <<they _u>> is a capable alchemist, so maybe there is something more to it.
+<<else>>
+but <<they _u>> might just have a point. Looking back at the stone, you are reminded by the similarity between jewels and rare metal — it is always the false ones that look the most real, the most brilliant.
+<</if>>
+</p>
+
+
+
+
+
+:: Quest_test_of_combatCrit [nobr]
+<p>
+<<Yourrep $g.a>> traveled alone, as directed, to a lonesome island sitting quietly in the middle of the ocean, surrounded by nothing but the sparkling blue ocean.
+<<They $g.a>> embarked on the pristine shore, but <<they $g.a>> did not have to wait long to confirm <<they $g.a>> did not get mislaid — the fresh sound of sword against wood — the sure signs of combat practice.
+And the sound came in fast and rapidly too — a master of the craft, no doubt.
+<<if $g.a.isHasTrait('per_proud')>>
+But <<rep $g.a>> a|is a proud <<urace $g.a>>, and <<they $g.a>> not in the slightest intimidated by the prospect of tough opponent.
+<<elseif $g.a.isHasTrait('per_humble')>>
+<<Rep $g.a>> felt a little humbled to meet a fellow master of combat soon.
+<<else>>
+But <<rep $g.a>> a|is certainly no slouch in combat, and <<they $g.a>> rested <<their $g.a>> <<uhands $g.a>> as <<they $g.a>> proceeded deeper into the isle.
+<</if>>
+</p>
+
+<p>
+A lone <<man $g.a>> awaited <<them $g.a>> there, masterfully wielding a <<uweapon $g.a>>, practicing against a poor dummy. <<Their $g.a>> face wasn't visible — but it was clear that <<they $g.a>> a|is a fellow <<urace $g.a>>. Seeing <<rep $g.a>>, the hermit swung the weapon heavily, effortlessly splitting the dummy into two, ending the wicked straw man's life, before greeting your slaver, face still covered by the hood <<they $g.a>> wore.
+</p>
+
+<p>
+Instead of a bloodthirsty, battle-hungry warrior, <<rep $g.a>> was met with a humble, almost meek <<urace $g.a>>, the same race with <<themself $g.a>>. <<They $g.a>> a|was offered some refreshments before finally going down to business. Apparently, the hermit had been testing warriors, seeking to master <<their $g.a>> craft and bestowing wisdom in return. <<They $g.a>> finally challenged <<yourrep $g.a>> to a proper duel, before opening <<their $g.a>> small armory and picking up <<their $g.a>> preferred weapon — a <<rep setup.equipment.combat_weapon_master>>. At first, only the tip was visible to <<rep $g.a>>, but it was already wondrous and great. The blade gleamed like a beacon in the shadowy room, emitting a shade of red, shaking from the power contained within. A weapon befitting of the master of swords, no doubt.
+</p>
+
+<p>
+<<Rep $g.a>> agreed to the duel, of course, but
+<<if $g.a.isHasTrait('per_frugal')>>
+being the worldly slaver that <<they $g.a>> a|is,
+<<else>>
+remembering the entire reason for the quest,
+<</if>>
+<<they $g.a>> only agreed to the duel after the hermit promised to put the sword as an ante.
+With the sword as a suitable reward, it was time for the duel to begin.
+</p>
+
+<p>
+The two combatants circled each other for a while, before <<rep $g.a>> decided to make the first attack, or so <<they $g.a>> thought. The hermit also took the opportunity to launch an attack, and the clash of weapon upon weapon began.
+Both fighters were evenly matched, <<reps $g.a>> <<uweapon $g.a>> meeting the <<rep setup.equipment.combat_weapon_master>> without giving any opening for both fighters to seize.
+The two almost danced on the battlefield, and while no hit were scored cleaned yet, a glancing strike hit the hermit's hood, tearing it apart.
+</p>
+
+<p>
+<<They $g.a>> had the same face. The same
+<<if $g.a.isHasTrait('eyes_neko')>>
+cat-like eyes, glowing even in the dark,
+<<elseif $g.a.isHasTrait('eyes_dragonkin')>>
+dragon-like eyes, red with anger,
+<<elseif $g.a.isHasTrait('eyes_demon')>>
+demonic eyes, tainted with corruption,
+<<else>>
+color of eyes,
+<</if>>
+
+
+<<if $g.a.isHasTrait('mouth_neko')>>
+the same sensitive whiskers adoring <<their $g.a>> cheek,
+<<elseif $g.a.isHasTrait('mouth_orc')>>
+the same pair of tusks jutting from <<their $g.a>> mouth,
+<<elseif $g.a.isHasTrait('mouth_werewolf')>>
+the same fangs hidden under <<their $g.a>> muzzle,
+<<elseif $g.a.isHasTrait('mouth_dragonkin')>>
+the same draconic snout replacing <<their $g.a>> mouth,
+<<elseif $g.a.isHasTrait('mouth_demon')>>
+the same terrifying demonic smile,
+<<else>>
+the same shape of mouth,
+<</if>>
+
+and even the same shape of jawline.
+It was like looking at a mirror — a perfect copy of <<themself $g.a>>
+</p>
+
+<p>
+There could be only one answer — <<they $g.a>> a|was fighting a doppelganger. But there was no time to contemplate the fact, as the hermit continued <<their $g.a>> relentless assault.
+<<if $g.a.isHasTrait('bg_knight')>>
+<<Rep $g.a>> tried to rely on <<their $g.a>> fighting instincts long honed from <<their $g.a>> days as a knight, but the double copied that too.
+<</if>>
+<<if $g.a.isHasTrait('bg_mercenary')>>
+<<Rep $g.a>> tried to rely on <<their $g.a>> fighting instincts long honed from <<their $g.a>> days as a mercenary, but the double copied that too.
+<</if>>
+<<if $g.a.isHasTrait('face_beautiful')>>
+<<Reps $g.a>> gorgeous face distracted <<themself $g.a>>.
+<</if>>
+<<if $g.a.isHasTrait('skill_hypnotic')>>
+<<Their $g.a>> own hypnotic eyes were reflected on the doppelganger's.
+<</if>>
+<<if $g.a.isHasTrait('magic_water')>>
+<<Their $g.a>> mastery of water was copied over too, and doppelgangers' natural affinity to water meant <<they $g.a>> had the advantage.
+<</if>>
+<<if $g.a.isHasTrait('magic_dark')>>
+<<Reps $g.a>> mastery of dark magic proved detrimental, as the doppelganger copied that too, and used the corruption to great effect.
+<</if>>
+</p>
+
+<<if $gOutcome != 'disaster'>>
+<p>
+But fortunately, <<reps $g.a>> mastery of combat and years of experience is not something a doppelganger could just easily copy.
+<<if $g.a.isHasTrait('skill_creative')>>
+<<Their $g.a>> creative brain came up with surprise and flank attacks to mix up the fight.
+<</if>>
+<<if $g.a.isHasTrait('magic_light')>>
+<<Their $g.a>> mastery over light is not so easily used by doppelgangers, who are less attuned to the domain.
+<</if>>
+<<if $g.a.isHasTrait('magic_fire')>>
+<<Their $g.a>> mastery over fire is not so easily used by doppelgangers, who are less attuned to the domain.
+<</if>>
+<<if $g.a.isHasTrait('eq_veryvaluable')>>
+<<Their $g.a>> expensive gears did not get copied.
+<</if>>
+<<They $g.a>> took whatever opening and advantage <<they $g.a>> could, for <<they $g.a>> a|was truly facing <<their $g.a>> worst enemy of all — <<themself $g.a>>.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The fight was long, but <<rep $g.a>> a|is a master fighter, and it showed. Even against <<themself $g.a>>, <<they $g.a>> a|was still able to open up an opening, and a single opening was all <<they $g.a>> needed to secure the blow. The hermit was downed in one strike, <<their $g.a>> <<rep setup.equipment.combat_weapon_master>> clattered harmlessly out of <<their $g.a>> <<uhands $g.a>> and into the floor. The battle was finally over.
+</p>
+
+<p>
+A doppelganger does not have a true form, and <<they $g.a>> stayed within <<reps $g.a>> body. But as the old saying go, it is never wise to face your own reflection, and hence <<rep $g.a>> decided to keep <<their $g.a>> prize of winning — the <<rep setup.equipment.combat_weapon_master>> — and sail back home. But although the sword is rare and wondrous and great, it was the other treasure that was clearly visible even by the other slavers in your fort. <<Rep $g.a>> had changed — had rediscovered what it means to be a warrior after fighting fiercely with <<themself $g.a>> — and is now worthy of the title <<rep setup.title.quest_master_of_combat_0>>.
+</p>
+
+<p>
+<<Rep $g.a>> never found out about the hermit's true purpose, nor the large complex of dungeons hidden beneath the small cottage...
+</p>
+
+<<else>>
+
+<p>
+The fight was long, and despite <<rep $g.a>> being a master fighter, luck was not on <<their $g.a>> side. An errant bump on the ground shook <<their $g.a>> posture for just a moment, and lesser swords<<men $g.a>> would not be able to take notice. But <<rep $g.a>> is a masterful one, and hence so is <<their $g.a>> clone, and the doppelganger seized the opportunity to strike a deciding blow. <<Rep $g.a>> slumped into the ground, defeated as <<their $g.a>> <<uweapon $g.a>> was thrown out of <<their $g.a>> <<uhands $g.a>>.
+</p>
+
+<p>
+Still, it seemed to have satisfy the hermit greatly, for they applauded the efforts and the mastery shown by your slaver. <<Rep $g.a>> a|was returned to <<their $g.a>> ship and sailed back home with injuries, but despite that, <<they $g.a>> a|was smiling all the time. It seems <<they $g.a>> a|was uplifted from the invigorating fight, and it might be a good idea to try again once <<they $g.a>> recovered.
+<<if $gOutcome == 'success'>>
+The hermit even re-send the invitation to you, should you wish to do so.
+<</if>>
+</p>
+
+<</if>>
+
+<<else>>
+
+<p>
+The doppelganger however had too much advantage — unlike <<rep $g.a>>, <<they $g.a>> fought on a familiar terrain of <<their $g.a>> home, and <<rep $g.a>> soon find themselves on the other end of the <<rep setup.equipment.combat_weapon_master>>. Instead of showing graciousness in winning, the hermit instead knocked <<rep $g.a>> out, and hauled <<them $g.a>> into the vast dungeon complex hidden beneath <<their $g.a>> small cottage. Myriads of other prideful warriors were chained down there, being slowly but surely turned into obedient warrior slaves for the doppelganger's perverted pleasure. Your slaver finally find the hard way the real reason why the doppelganger is sending invites to master swords<<men $g.a>> across the land. From your side, however, you best get going and rescue your missing slaver as soon as possible, before <<their $g.a>> mind is fully transformed into that of an obedient warrior slut.
+</p>
+
+<</if>>

@@ -1,0 +1,44 @@
+:: InitCompanyNeko [nobr company]
+
+<<set _item = setup.qc.EquipmentForSale(
+  'all_sex',
+  /* amount = */ 1,
+)>>
+
+<<set _rare = setup.qc.EquipmentForSaleSingle(
+  'buttplug_master',
+)>>
+
+<<run new setup.CompanyTemplate(
+  'neko',
+  "Neko",
+  'CompanyTemplateNeko',
+  [ /* favor effects */
+    [
+      _item,
+      _item,
+      _item,
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_MEDIUM),
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_HIGH),
+    ],
+  ],
+)>>
+
+:: CompanyTemplateNeko [nobr]
+
+The catfolk of the <<lore region_forest>>. Most have lost their fully furry ancestries,
+and mostly just sport cat ears and cat tails.
+Many can be found peddling in sex toys, and if you befriend them, they might be
+willing to sell their wares at your fort.
+Rumors have it that they sell the rarest of their toys to their most staunch allies...
+

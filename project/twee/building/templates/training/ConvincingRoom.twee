@@ -1,0 +1,43 @@
+:: InitBuildingConvincingRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'convincingroom',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'convincingroom',
+  name: 'Convincing Room',
+  tags: ['training'],
+  description_passage: 'BuildingConvincingRoom',
+  costs: [
+    [
+      setup.qc.Money(-3000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('trainingchamber'),
+      setup.qres.Building('greathall'),
+    ],
+  ],
+  main_room_template_key: 'convincingroom',
+})>>
+
+
+:: BuildingConvincingRoom [nobr]
+
+<p>
+Where you can practice your best manipulation techniques to convince a slave to do terrible things.
+Unlocks a training that can convert a completely untrained slave into a
+slaver, although it will cost you quite a bit of money. The slaver will
+also be traumatized for a good while, but there is no long-term damage.
+</p>

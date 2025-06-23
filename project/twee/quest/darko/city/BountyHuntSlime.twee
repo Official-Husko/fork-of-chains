@@ -1,0 +1,174 @@
+:: QuestSetupBountyHuntSlime [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _mercenary = new setup.UnitCriteria(
+  null, /* key */
+  'Mercenary', /* title */
+  [
+    setup.trait.tough_nimble,
+    setup.trait.per_loner,
+    setup.trait.per_chaste,
+    setup.trait.per_lunatic,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* critical traits */
+  [
+    setup.trait.subrace_humankingdom,
+    setup.trait.balls_large,
+    setup.trait.balls_titanic,
+    setup.trait.breast_large,
+    setup.trait.breast_titanic,
+    setup.trait.per_gregarious,
+    setup.trait.per_lustful,
+    setup.trait.per_sexaddict,
+    setup.trait.per_masochistic,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    combat: 2.0,
+    knowledge: 1.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'bounty_hunt_slime', /* key */
+  'Bounty Hunt: Slime', /* Title */
+  'darko',   /* author */
+  ['city', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'negotiator': setup.qu.negotiator,
+    'merc1': _mercenary,
+    'merc2': _mercenary,
+  },
+  { /* actors */
+    'alchemist': 'all',
+    'slave': 'all',
+  },
+  [ /* costs */
+  ],
+  'QuestBountyHuntSlime', /* passage description */
+  setup.qdiff.normal26, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestBountyHuntSlimeCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.SlaveMarker('slave'),
+      ],
+    ],
+    [
+      'QuestBountyHuntSlimeSuccess',
+      [
+        setup.qc.MoneyNormal(),
+      ],
+    ],
+    [
+      'QuestBountyHuntSlimeFailure',
+      [
+      ],
+    ],
+    [
+      'QuestBountyHuntSlimeDisaster',
+      [
+        setup.qc.Injury('merc1', 4),
+        setup.qc.Injury('merc2', 4),
+        setup.qc.Injury('negotiator', 4),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestBountyHuntSlime [nobr]
+
+<p>
+The <<lore region_city>> has a massive underground sewers system.
+While most of the sewers are kept functional, some deeper parts of the sewers
+were apparently built in ancient times, and it is said to be inhabited by
+otherworldly monsters.
+One of the most infamous among these monsters are the slimes,
+who is said to feed upon the bodily fluids of other creatures.
+</p>
+
+<p>
+One of the alchemists in the city is posting an open request for a vial of the slime's
+liquid body for <<their $g.alchemist>> research.
+<<They $g.alchemist>> is offering a great amount of reward for adventurers brave enough to best
+these creatures.
+</p>
+
+
+:: QuestBountyHuntSlimeCrit [nobr]
+
+
+<<if $g.slave.isMale()>>
+  <<questimage 'bounty_hunt_slime_male.jpg'>>
+<<else>>
+  <<questimage 'bounty_hunt_slime_female.jpg'>>
+<</if>>
+
+<p>
+During their adventure below the city,
+your slavers happened upon a slime "mating" with an unlucky victim,
+a resident of the undercity of Lucgate.
+With the slime distracted, it was easy for your slavers to defeat the creature.
+As your slavers put the slime's body into the vial,
+<<set _alc = setup.selectUnit([$g.merc1, $g.merc2, $g.negotiator], {trait: 'skill_alchemy'})>>
+<<if _alc>>
+<<yourrep _alc>> perceptively noted that a rare alchemical component was absorbed into the vial --
+<<else>>
+they were lucky that a rare component flew into the vial -- 
+<</if>>
+a mixture of its latest victim cum mixed together with the slime's natural aphrodisiac.
+<<Yourrep $g.negotiator>> managed to use this rare material to
+<<uadv $g.negotiator>> negotiate a better pay with
+the alchemist, who happily paid nearly double the rewards that was originally agreed on.
+</p>
+
+:: QuestBountyHuntSlimeSuccess [nobr]
+
+<p>
+Your slavers turned out to be more than an even match for such a slime monstrosity,
+and managed to dispatch it cleanly without any problem.
+Your slavers then put samples from the slime's remains into the vial.
+The vial smelled weird, and <<yourrep $g.negotiator>> could not help but somehow
+became aroused by it.
+It made <<them $g.negotiator>> wonder just what kind of potion the
+alchemist needed such an ingredient for.
+</p>
+
+:: QuestBountyHuntSlimeFailure [nobr]
+
+<p>
+Unfortunately, despite having the upper hand, your slavers sloppily allowed
+the slime to escape in the middle of the fight by sliding into the gutter.
+Your slavers did not manage to find any other slime during their venture
+and had to return back to the fort empty-handed.
+</p>
+
+
+:: QuestBountyHuntSlimeDisaster [nobr]
+
+<p>
+Your slavers lost to the slime, and ended up submitting to the creature's whims.
+<<if $g.negotiator.isHasDick() and $g.merc1.isHasDick() and $g.merc2.isHasDick()>>
+The trio's balls were completely drained
+<<elseif $g.negotiator.isHasVagina() and $g.merc1.isHasVagina() and $g.merc2.isHasVagina()>>
+The trio's breasts were completely drained
+<<else>>
+They were drained
+both from their balls and from their breasts,
+<</if>>
+over and over again for a few hours.
+It would require several weeks for them to recover mentally from such trauma.
+You have the sneaking suspicion that the slavers deliberately submitted to the slime
+out of pure curiosity, but there was just no way to confirm this suspicion.
+</p>

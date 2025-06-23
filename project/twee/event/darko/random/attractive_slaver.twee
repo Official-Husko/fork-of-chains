@@ -1,0 +1,151 @@
+:: OpportunitySetup_attractive_slaver [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'attractive_slaver', /* key */
+"Attractive Slaver", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+1, /* expiration weeks */
+'Opportunity_attractive_slaver',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_attractive_slaver_0',
+    outcome_passage: 'Opportunity_attractive_slaver_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Slave('slave', "asked to be enslaved out of a naive infatuation with one of your slavers", undefined),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_attractive_slaver_1',
+    outcome_passage: 'Opportunity_attractive_slaver_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Slaver('slave', "asked to be enslaved out of a naive infatuation with one of your slavers, but got recruited into the company instead", undefined),
+      setup.qc.Friendship('slaver', 'slave', 500),
+      setup.qc.TraitReplace('slave', setup.trait.per_loyal),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_attractive_slaver_2',
+    outcome_passage: 'Opportunity_attractive_slaver_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.BoonizeRandom('slaver', 15),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'you': [
+  ],
+  'slaver': [
+  ],
+  'slave': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_attractive_slaver [nobr]
+<<set _u = setup.getAnySlaver([$g.slaver])>>
+
+<p>
+<<Yourrep _u>> alerts you that a hopeful has arrived at your fort, asking to meet with <<yourrep $g.slaver>>. You almost berates <<rep _u>> for wasting your time with such unimportant information, that is until <<rep _u>> <<uadv _u>> points out that the <<girl $g.slave>>, whose name is <<rep $g.slave>>, is willing to be enslaved for some reason. Sensing a potential, you invites both the <<girl $g.slave>> and <<rep $g.slaver>> into your office.
+</p>
+
+<p>
+The <<girl $g.slave>> who is admitted to your office quails a bit at the sight of <<rep $g.slaver>>, and you believe you can detect a bit of infatuation there, too. You wordlessly query <<rep _u>>, and <<they _u>> shakes <<their _u>> head, trying to come up with a possible explanation. Meanwhile, you start interviewing the potential slave. It appears that <<they $g.slave>> left home, in a settlement near the fort, just very recently. <<They $g.slave>>'s no innocent, and not destitute, and you're surprised <<they $g.slave>>'s done something this foolish.
+</p>
+
+<p>
+After a short while, <<yourrep _u>> whispers to you,
+"<<name $unit.player>>, I think I've seen the <<girl $g.slave>> around your fort for a couple of times now, and I remember spotting <<them $g.slave>> staring at <<yourrep $g.slaver>> with limpid eyes."
+Rather than confronting <<them $g.slave>> directly, you probe the subject, and after some evasion <<they $g.slave>> finally admits that yes, <<they $g.slave>> did come here out of infatuation with <<rep $g.slaver>>.
+Given how gorgeous <<therace $g.slaver>> slaver|is,
+<<if $g.slaver.isHasTrait('muscle_verystrong')>>
+as well as <<their $g.slaver>> bulging muscles,
+<<elseif $g.slaver.isHasTrait('muscle_strong')>>
+as well as <<their $g.slaver>> toned body,
+<<elseif $g.slaver.isHasTrait('muscle_verythin')>>
+as well as <<their $g.slaver>> very attractive waist,
+<<elseif $g.slaver.isHasTrait('muscle_thin')>>
+as well as <<their $g.slaver>> attractive waist,
+<<elseif $g.slaver.isHasTrait('breast_large')>>
+as well as <<their $g.slaver>> bountiful bosoms,
+<<elseif $g.slaver.isHasTrait('dick_large')>>
+as well as <<their $g.slaver>> eye-catching bulge,
+<</if>>
+it's not a surprise that <<rep $g.slaver>> slaver|attract an admirer or two, but not to the point of enslaving <<themself $g.slave>> just to get near with <<their $g.slave>> love.
+"Pretty fuckin' stupid," <<they $g.slave>> admits. "But I've come too far now. I just really want to live here with. With <<rep $g.slaver>>, I guess. If that means being a slave, that's okay. Can I be your servant, maybe?"
+</p>
+
+
+
+
+:: Opportunity_attractive_slaver_0 [nobr]
+Enslave <<them $g.slave>>
+
+
+:: Opportunity_attractive_slaver_0_flavor [nobr]
+<p>
+You ask <<rep $g.slaver>> to personally escort <<them $g.slave>> into the <<rep setup.buildingtemplate.slavepens>> to begin <<their $g.slave>> new life.
+<<They $g.slave>> looks doubtful, obviously wondering whether <<they $g.slave>> slave|have made a huge mistake. <<They $g.slave>>'s legally your property, now; you can fulfill <<their $g.slave>> wishes for a gentler duty in your fort, or not. <<Their $g.slave>> suspicion that <<they $g.slave>> slave|have blundered into something terrible no longer matters.
+</p>
+
+
+
+
+:: Opportunity_attractive_slaver_1 [nobr]
+Recruit <<them $g.slave>> and try to make <<rep $g.slaver>> reciprocate back
+
+
+:: Opportunity_attractive_slaver_1_flavor [nobr]
+<p>
+You decided that this is <<reps $g.slave>> lucky day, and instead offers the hopeful <<urace $g.slave>> a position in your company as a slaver. When <<they $g.slave>> just sits there in disbelief, you repeat your offer.
+"Thank you, thank you, I will never forget this," <<they $g.slave>> almost tearfully says, "I promise to be loyal and be dedicated to your cause.".
+</p>
+
+<p>
+In the coming days, <<rep $g.slave>> would "accidentally" be assigned to the same tasks with <<rep $g.slaver>>. The two of them might not become instant lovers, but their relationship progresses significantly.
+</p>
+
+
+
+
+:: Opportunity_attractive_slaver_2 [nobr]
+Send <<them $g.slave>> away
+
+
+:: Opportunity_attractive_slaver_2_flavor [nobr]
+<p>
+You're not that cruel to enslave someone who does not deserve to be enslaved, and while the <<girl $g.slave>> may not appreciate your actions now, <<they $g.slave>> will understand how lucky <<they $g.slave>> slave|was once <<they $g.slave>> sees how used and abused the life of a slave is. <<Rep $g.slaver>> approves of your deed.
+</p>

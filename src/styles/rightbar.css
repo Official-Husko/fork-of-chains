@@ -1,0 +1,117 @@
+/*
+Originally from:
+http://twinery.org/forum/discussion/comment/17617/
+*/
+
+/* Styling and Colors of the Right UI Bar. */
+#right-ui-bar {
+  --bg-color: #222;
+	background-color: #222;
+	border-right: 1px solid #444;
+}
+
+#right-ui-bar-toggle {
+	font-size: 1.2em;
+	line-height: inherit;
+	color: #eee;
+	background-color: transparent;
+	border: 1px solid #444;
+}
+
+#right-ui-bar-toggle:before {
+	font-family: tme-fa-icons;
+	font-style: normal;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	speak: none;
+}
+
+/* Layout and Positioning of the Right UI Bar. */
+#right-ui-bar {
+	position: fixed;
+	z-index: 15;
+	top: 0;
+	right: 0;
+	width: 17.5em;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	-webkit-transition: right .2s ease-in;
+	-o-transition: right .2s ease-in;
+	transition: right .2s ease-in;
+}
+
+#right-ui-bar-tray {
+	position: absolute;
+	top: .2em;
+	left: 0;
+	right: 0;
+}
+
+#right-ui-bar-toggle {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-left: none;
+	padding: .3em .45em .25em;
+	-webkit-user-select: none;
+}
+
+#right-ui-bar-toggle:before {
+	content: "\e81e";
+}
+
+#right-ui-bar-body {
+	height: 90%;
+	height: calc(100% - 2.5em);
+	margin: 2.5em 0;
+	padding: 0 1em;
+}
+
+#right-ui-bar-body {
+	line-height: 1.5;
+	overflow: auto;
+}
+
+@media screen and (min-width: 769px) {
+	#story {
+		margin-right: 19em;
+	}
+}
+
+/* Stowing of the Right UI Bar. */
+#right-ui-bar.stowed {
+	right: -15.5em;
+	background-color: transparent;
+}
+
+#right-ui-bar.stowed #right-ui-bar-toggle {
+	padding: .3em .55em .25em .35em;
+}
+
+#right-ui-bar.stowed #right-ui-bar-toggle:before {
+	content: "\e81d";
+}
+
+#right-ui-bar.stowed #right-ui-bar-body {
+	visibility: hidden;
+	-webkit-transition: visibility .2s step-end;
+	-o-transition: visibility .2s step-end;
+	transition: visibility .2s step-end;
+}
+
+#right-ui-bar.stowed~#story {
+	margin-right: 2em;
+}
+
+#ui-bar.stowed~#story {
+	margin-left: 2em !important;
+}
+
+#ui-bar.stowed {
+	background-color: transparent;
+	border-right: none;
+}

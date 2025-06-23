@@ -1,0 +1,421 @@
+:: QuestSetup_enlightenment_of_the_mind [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_enlightenment_1_graduate_0", /* key */
+"Enlightenment 1 Graduate", /* name */
+"Enlightenment Graduate - Level 1", /* description */
+"a|have graduated level 1 — Enlightenment of the Mind — training from the Women\'s Academy of Light", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.Title(
+"quest_enlightenment_2_graduate_1", /* key */
+"Enlightenment 2 Graduate", /* name */
+"Enlightenment Graduate - Level 2", /* description */
+"a|have completed level 2 graduate training from the Women\'s Academy of Light", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.UnitGroup(
+'quest_enlightenment_of_the_mind1',
+"Master",
+[
+[setup.unitpool.subrace_humankingdom_male, 0.1],
+[setup.unitpool.subrace_humanvale_male, 0.1],
+[setup.unitpool.subrace_humandesert_male, 0.1],
+[setup.unitpool.subrace_humansea_male, 0.1],
+[setup.unitpool.subrace_drow_male, 0.1],
+[setup.unitpool.subrace_elf_male, 0.1],
+[setup.unitpool.subrace_neko_male, 0.1],
+[setup.unitpool.subrace_werewolf_male, 0.1],
+[setup.unitpool.subrace_orc_male, 0.1],
+[setup.unitpool.subrace_lizardkin_male, 0.1],
+[setup.unitpool.subrace_demon_male, 0.1], ],
+1, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_apprentice),
+setup.qc.TraitsReplace('unit', [setup.trait.gender_male, setup.trait.per_smart, setup.trait.magic_light_master, setup.trait.face_attractive, setup.trait.skill_alchemy]), ],
+)>>
+
+<<set _criteriapupil = new setup.UnitCriteria(
+null, /* key */
+'Pupil', /* name */
+[
+setup.trait.bg_mythical,
+setup.trait.bg_wiseman,
+setup.trait.bg_mystic,
+setup.trait.bg_priest,
+setup.trait.bg_apprentice,
+setup.trait.bg_healer,
+setup.trait.per_smart,
+setup.trait.per_chaste,
+setup.trait.per_studious,
+setup.trait.per_calm,
+setup.trait.per_attentive,
+setup.trait.per_logical,
+setup.trait.per_curious,
+setup.trait.per_cautious,
+setup.trait.per_humble,
+setup.trait.per_loner,
+],
+[
+setup.trait.bg_mist,
+setup.trait.bg_raider,
+setup.trait.bg_pirate,
+setup.trait.bg_thug,
+setup.trait.bg_thief,
+setup.trait.bg_whore,
+setup.trait.bg_unemployed,
+setup.trait.per_dreamy,
+setup.trait.per_slow,
+setup.trait.per_gregarious,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_aggressive,
+setup.trait.per_proud,
+setup.trait.per_cruel,
+setup.trait.per_evil,
+setup.trait.per_aggressive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.Trait(setup.trait.gender_female),
+setup.qres.TraitExact(setup.trait.magic_light),
+setup.qres.NotYou(),
+],
+{
+arcane: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'enlightenment_of_the_mind', /* key */
+"Enlightenment of the Mind", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[ 'breeding',
+'city',
+'veteran',
+'trait',
+'prep',
+'rare',
+], /* tags */
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'pupil': [_criteriapupil, 3],
+},
+{ /* actors */
+'master': 'quest_enlightenment_of_the_mind1', },
+[ /* costs */
+setup.qc.Money(-15000),
+],
+'Quest_enlightenment_of_the_mind',
+setup.qdiff.normal44, /* difficulty */
+[ /* outcomes */
+[
+'Quest_enlightenment_of_the_mindCrit',
+[
+setup.qc.AddTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.TraitRemove('pupil', setup.trait.per_slow),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_smart, setup.trait.per_curious, setup.trait.per_studious], 1, false), ],
+], [
+'Quest_enlightenment_of_the_mindCrit',
+[
+setup.qc.AddTitle('pupil', 'quest_enlightenment_1_graduate_0'),
+setup.qc.TraitRemove('pupil', setup.trait.per_slow), ],
+], [
+'Quest_enlightenment_of_the_mindCrit',
+[
+setup.qc.EmptyUnitGroup('quest_enlightenment_of_the_mind1'),
+setup.qc.TraumatizeRandom('pupil', 6),
+setup.qc.TraitRemove('pupil', setup.trait.per_slow), ],
+], [
+'Quest_enlightenment_of_the_mindCrit',
+[
+setup.qc.EmptyUnitGroup('quest_enlightenment_of_the_mind1'),
+setup.qc.TraumatizeRandom('pupil', 12),
+setup.qc.TraumatizeRandom('pupil', 12),
+setup.qc.TraitRemove('pupil', setup.trait.per_slow), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.uncommon],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoQuest('infiltration_of_the_mind'),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.NoUnitWithTitle('quest_enlightenment_1_graduate_0'),
+setup.qres.NoUnitWithTitle('quest_enlightenment_2_graduate_1'),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.TraitExact(setup.trait.magic_light),
+  setup.qres.TraitExact(setup.trait.gender_female),
+]),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_enlightenment_of_the_mind [nobr]
+
+<<set _trap = ($gQuest.getTemplate().key == 'infiltration_of_the_mind')>>
+
+<<set _Mystic = $dutylist.getUnitIfAvailable('mystic')>>
+<p>
+Magi who study <<lore magic_light>> bright light to the world, reduce
+suffering, and smooth over its rough patches. They can sanitize infections,
+close wounds, and soothe pain. They can also heal unsightly whip welts and
+the results of sexual torture, which are such a fizzle at auction time.
+Initiates in this art are fairly uncommon. Masters are depressingly rare.
+</p>
+<p>
+<<if _Mystic>> Your staff mystic, <<rep _Mystic>>, has now learned
+<<else>> You have received a mysterious letter from <</if>>
+a Women's Academy of Light in Lucgate, which promises to bring a journeyman
+light mage through the stages of enlightenment to Mastery of the Art. This
+particular academy is for female students only, and no males are allowed on
+the premises, except the instructors.
+</p>
+
+<<if _trap>>
+<p>
+As your potential student is actually a male, as before they would just have
+to gulp down many bottles of Potion of Illusion, to mask their true gender as a male
+and appear female to anyone else.
+The guise will hold for as long as they can hold off their arousal.
+This would also offset you <<money 10000>>.
+</p>
+<<else>>
+<p>
+(Of course, there are others in this world who can bodyswap men and women,
+but the Academy knows nothing of that.)
+</p>
+<</if>>
+
+<p>
+The course is in three phases, and the first focuses on the mental abilities
+of the initiate. They succeed best who have wisdom and self-restraint.
+Tuition is costly and places are limited. If you mean to act, act now!
+</p>
+
+
+:: Quest_enlightenment_of_the_mindCommon [nobr]
+
+<<if $g.pupil.isMale()>>
+  <p>
+    <<Rep $g.pupil>> spent the first week preparing for the long journey, masquerading as a female.
+    While the Potion of Illusion will mask all their physical features,
+    it does nothing for their personality, and
+    <<they $g.pupil>> must learn what it is to feel like a female.
+    The week was spent embarrasingly as the slaver learnt many intricacies of being a woman.
+  </p>
+
+  <p>
+    By the end of the week, with the right disguise and clothing, and the help of the Potion of Illusion,
+    <<rep $g.pupil>> would pass as a gorgeous young woman to anyone else but themself.
+    <<They $g.pupil>>'ll just have to bear with having to crossdress all the time while attending
+    the classes...
+  </p>
+<</if>>
+
+:: Quest_enlightenment_of_the_mindCrit_regenerateMaster [nobr]
+
+<<run setup.qc.RemoveFromUnitGroup('master').apply($gQuest)>>
+
+<<set $g.master = setup.unitgroup.quest_enlightenment_of_the_mind1.getUnit({
+  retries: 100,
+  trait_key: $g.pupil.getRace().key,
+})>>
+
+:: Quest_enlightenment_of_the_mindCrit [nobr]
+<<include 'Quest_enlightenment_of_the_mindCrit_regenerateMaster'>>
+
+<<include 'Quest_enlightenment_of_the_mindCommon'>>
+
+<p>
+<<if $g.pupil.isMale()>>
+With the preparation complete,
+<</if>>
+<<rep $g.pupil>> reports to the address in Lucgate, an unimposing stone
+building in a quiet part of town. Inside, <<they $g.pupil>> is greeted by
+Pupilmaster <<rep $g.master>>, the only male in the place<<if $g.pupil.isMale()>> (to their knowledge, at least)<</if>>, who gratefully
+accepts <<their $g.pupil>> tuition and introduces <<them $g.pupil>> to a
+small body of fellow students. The students wear only the academic robes
+provided by the academy. They eat and drink together and sleep
+on the premises, which they are not to leave during instruction.
+<<if $g.pupil.isMale()>>
+(Fortunately, the Potion of Illusion also hides all trace of erection the slaver
+felt from being surrounded by the many innocent women in the academy.)
+<</if>>
+The rest of their time is to be taken up with study and contemplation.
+</p>
+
+<<if $gOutcome == 'success' or $gOutcome == 'crit'>>
+
+<p>
+After a sober but convivial meal on the first evening, <<reps $g.pupil>>
+studies begin. Pupilmaster <<rep $g.master>> master|is a kindly but proper
+tutor, and while a certain warmth grows between them, he makes no effort to
+press things beyond their proper bounds.
+</p>
+
+<<if $g.pupil.isFemale() && $g.pupil.isHasTrait('per_lustful') >>
+<p>
+<<rep $g.pupil>>, lustful lass
+that <<they $g.pupil>> is, drops a hint or two towards <<their $g.pupil>>
+handsome teacher, but if he notices, he pretends not to.
+<i>Why stick with female students, then?</i> <<they $g.pupil>> wonders.
+<i>Unless it's because that's what he doesn't like.</i>. <<They $g.pupil>>
+simply has to console <<themself $g.pupil>> in <<their $g.pupil>> room after
+studies—at least until <<they $g.pupil>> makes it home to <<rep
+$company.player>>, where sins of the flesh are a way of life
+and an article of commerce.
+</p>
+<</if>>
+
+<p>
+About half of the training is specific to healing and to the nature of <<lore
+magic_light>>; the rest is training for the intellect, with puzzles and
+memory games to ensure that the student can “refract the power in the proper
+spectrum” and “snatch the motes as <<they $g.pupil>> sees them.”
+</p>
+
+<p>
+And it must be said the training is effective. At the end of the two weeks,
+<<rep $g.pupil>> feels sharper and clearer of mind, and is sure that no
+mental slowcoach is graduating this phase. <<They $g.pupil>> has learned many
+new facts concerning the anatomy and illnesses of the various races <<their
+$g.pupil>> world knows, and the ways in which <<lore magic_light>> may be
+used to heal and soothe them. But, as <<rep $g.master>> explains, there
+is more to mastery of <<lore magic_light>> than knowledge of the
+Power of Light and the incantations that bring it forth. One must be subtly
+transformed in heart and in soul, and that will be the subject of future
+courses.
+</p>
+
+<<if $g.pupil.isFemale() && $g.pupil.isHasTrait('per_lustful') >> <p> <<Rep $g.pupil>> hopes that
+doesn't mean forgetting how to take a simple hint and get down to some fun,
+but <<they $g.pupil>> reflects on the less advanced lightmages <<they
+$g.pupil>> has known, including <<themself $g.pupil>>, and doesn't think
+<i>that</i> could be it. </p> <</if>>
+
+<<if $g.pupil.isMale()>>
+<p>
+  The illusion spell fizzles out just as your slaver steps outside of the academy, and
+  none inside are any wiser of <<therace $g.pupil>>'s true gender. You just hope this won't
+  come back to bite you in the ass later...
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+The first evening, after bathing and changing, the three young
+<<if $g.pupil.isMale()>>
+"ladies"
+<<else>>
+ladies
+<</if>>
+join
+Pupilmaster <<rep $g.master>> for their first evening meal together,
+a simple repast of bread, wine, and spiced meats. <<Rep
+$g.pupil>> opened the talk with some of the wounds <<they $g.pupil>> has
+healed in the past and the Parable of the Primal Sunbeam, but the others
+do not seem able to contribute much.
+</p>
+
+<p>
+Indeed, the other pupils do not seem educated at all, and
+<<rep $g.master>> turns the subject to alchemy, which he seems to understand
+better than <<lore magic_light>>. <<Rep $g.pupil>> finds this curious, but it
+hardly seems to matter. It's late—isn't it?—and <<they $g.pupil>> is feeling
+<i>so</i> tired . . . .
+</p>
+<p>
+. . .
+</p>
+<p>
+. . .
+</p>
+<p>
+. . .
+</p>
+
+<p>
+. . . <<they $g.pupil>> awakens some days later, sore and disarrayed, and
+quite alone. <<Their $g.pupil>> head is swimming and there's a
+throbbing pain behind <<their $g.pupil>> eyes. The room is dark but for a
+little sunlight streaming through a shuttered window, but <<they $g.pupil>>
+lifts <<their $g.pupil>> <<uhands $g.pupil>> and summons a small sphere of
+magic light, so <<they $g.pupil>> can take stock of <<their $g.pupil>>
+situation.
+</p>
+
+<<if $g.pupil.isMale()>>
+
+<p>
+It seems the academy somehow knew about <<their $g.pupil>> use of the Potion
+of Illusion. But instead of refusing the pupil outrights, the pupilmaster decided
+to accept the tuition first, before "expelling" the student away.
+</p>
+
+<p>
+There is nothing else to do but go home with all the money gone. <<Yourrep $g.pupil>>
+also feels a strange soreness in their private parts, mostly <<their $g.pupil>> anus,
+telling a story what <<they $g.pupil>> might have been used for in <<their $g.pupil>>
+drugged state...
+</p>
+
+<<else>>
+<p>
+<<They $g.pupil>>'s been lying on a lumpy straw mattress on the floor of the
+now-abandoned and –unfurnished building. <<They $g.pupil>> is
+quite naked, and the tattered remains of <<their $g.pupil>> “academic robe”
+were serving as <<their $g.pupil>> only blanket.
+The soreness in <<their $g.pupil>> intimate parts,
+the musty smell, and the white stains on the
+mattress, the robe, and <<their $g.pupil>> body, tell <<their $g.pupil>> all
+too well how <<they $g.pupil>> has been used in <<their $g.pupil>> drugged
+state.
+</p>
+
+<p>
+Revulsion overcomes <<them $g.pupil>>.
+<<if $g.pupil.isHasTrait('per_lustful') >> Emotionally, <<they $g.pupil>> is torn between anger and regret—if they'd just known how to <i>ask</i> a <<girl $g.pupil>>, <<they $g.pupil>> might have some memories to go with the experience. As it is <<they $g.pupil>>'d like to get them into the slave dungeons of <<rep $company.player>> and teach them a thing or two.
+<<elseif $g.pupil.isHasTrait('per_chaste')>> <<Their $g.pupil>> usual disgust at being part of any sex act is simply tripled by this violation. If <<they $g.pupil>> could get hold of those scum, <<they $g.pupil>>'d tear their fucking hearts out, or better still give them a special place in the slave dungeons of <<rep $company.player>>. Yes, <<they $g.pupil>> could volunteer for their obedience training <i>personally</i>, and if they seemed a little slow to learn, you would understand the need for a little extra “correction.”
+<<else>> In time, horror gives way to resignation—there is going to be no way to track down these scum and give them what they deserve, namely a preferred place in the slave dungeons of <<rep $company.player>>, where they can learn how these things <i>should</i> be done.<</if>>
+</p>
+<p>
+When <<they $g.pupil>> gets control of <<themself $g.pupil>>, <<they $g.pupil>> pulls on what's left of the robe and gives the room a more careful search. And there is one thing peeking out from the edge of the mattress: a letter on the stationery of the Academy of Light, addressed to <<themself $g.pupil>>.
+</p>
+<div class='lettercard'>
+  <p>
+  “My Dear <<name $g.pupil>>,
+  </p>
+  <p>
+  “As you have probably guessed, the actual Academy of Light moved out of this building some weeks ago. 'twas an inspired wheeze of ours to rent it ourselves, and see if we could lure in a delicious young light mage for some profitable 'fun.' Your charming <<ubreasts $g.pupil>>, your secret <<uanus $g.pupil>>, your tasty <<umouth $g.pupil>>, and above all your luscious <<uvagina $g.pupil>>—we and our customers enjoyed them all.
+  </p>
+  <p>
+  “'tis a shame you are unlikely to recall how 'inspired' you were while you were in our power. That particular combination of hypnotic drugs, knockout drops, and aphrodisiacs is stronger than we knew.
+  </p>
+  <p>
+  “Of course, we are keeping your tuition, as well as the profits we earned, but let it not be said we've cheated anyone. We promised you Enlightenment of the Mind, and if you consider the lessons you've just learned, you will see you have not been cheated.
+  </p>
+  <p>
+  “Don't you see? You're smarter already!”
+  </p>
+</div>
+<</if>>
+
+<</if>>

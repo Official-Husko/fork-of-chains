@@ -1,0 +1,69 @@
+:: ActivitySetup_cleaning_closet_clean_shoes [nobr activity]
+
+<<run new setup.ActivityTemplate({
+key: 'cleaning_closet_clean_shoes',
+name: "Cleaning Closet Clean Shoes", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.RememberUnit(),
+  ],
+  'b': [
+    setup.qres.OnDuty('maidslave'),
+  ],
+},
+critical_traits: [
+  setup.trait.per_dominant,
+  setup.trait.per_cruel,
+  setup.trait.bg_maid,
+],
+disaster_traits: [
+  setup.trait.per_kind,
+  setup.trait.per_submissive,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "Help me clean my clothes, slave.",
+      "Come help me wash my clothes, slave.",
+    ],
+    bold: [
+      "Clean my shoes, slave! With your tongue if necessary.",
+      "Don\'t dawdle, my shoes won\'t clean itself!",
+    ],
+    cool: [
+      "Clean my clothes, slave.",
+      "Wash my shoes, slave.",
+    ],
+    witty: [
+      "Yes, that\'s right slave! Lick every inch of my boots. Good slave!",
+      "Aww, who\'s a good slave? Now come closer and lick my shoes clean!",
+    ],
+    debauched: [
+      "Lick my shoes clean, slave! Use your tongue!",
+      "You worthless slave, all you\'re good for is for cleaning my shoes with your mouth!",
+    ],
+  },
+}, /* End of Dialogue #1 */
+{ /* Dialogue #2: */
+  actor: "b",
+  texts: [
+    "<<uyesmaster $g.b $g.a>>",
+  ],
+}, /* End of Dialogue #2 */
+],
+room_templates: [
+  setup.roomtemplate.cleaning,
+],
+})>>

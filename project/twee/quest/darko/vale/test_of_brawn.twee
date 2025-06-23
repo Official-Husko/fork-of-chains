@@ -1,0 +1,238 @@
+:: QuestSetup_test_of_brawn [nobr quest]
+
+
+<<run new setup.Title(
+"quest_master_of_brawn_0", /* key */
+"Master of Brawn", /* name */
+"A true master of brawn", /* description */
+"a|have proven a|themself to be a master of brawn by completing a challenge in the vales", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+brawn: 4,},
+)
+>>
+
+
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Strongman/woman', /* name */
+[
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_slow,
+  setup.trait.per_active,
+  setup.trait.per_stubborn,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.body_werewolf,
+  setup.trait.body_neko,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.tough_nimble,
+  setup.trait.per_smart,
+  setup.trait.per_studious,
+  setup.trait.per_curious,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.brawn, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_brawn_0')
+]), 'Have not yet mastered the art of brawn'),
+],
+{
+  brawn: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_brawn', /* key */
+"Test of Brawn", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'prep',
+  'item',
+  'vale',
+  'danger',
+  'legendary',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_test_of_brawn',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_brawnCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_brawn_0'),
+      setup.qc.EquipmentDirect('brawn_weapon_master'),
+      setup.qc.VarSet('quest_test_of_brawn_crit', '1', -1),
+    ],
+  ],
+  [
+    'Quest_test_of_brawnCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_brawnCrit',
+    [
+      setup.qc.Injury('a', 10),
+      setup.qc.Trauma('a', setup.trait.boon_brawn, 20),
+      setup.qc.Blessing('a', 1, 'curse_weakness8', undefined),
+    ],
+  ],
+  [
+    'Quest_test_of_brawnCrit',
+    [
+      setup.qc.Blessing('a', 6, 'curse_weakness8', undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_brawn_0'),
+setup.qres.SkillAtLeast(setup.skill.brawn, 100)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_brawn [nobr]
+<p>
+Many tales both fable and myth are abound in the <<lore region_vale>>. Among these many tales, a particularly interesting one involves the legend about an axe so heavy and unwieldy that was wielded by giants in the past, and put to rest on a stony tomb deep within the mountains of the vale.
+It is said that the axe rests still to this very day, as nobody has the strength and capabilities to lift and retrieve the artifact.
+</p>
+
+<p>
+Within your company, however, you have a particularly strong slaver, whose brawling prowess is known far and wide. If you believe the legend to be true, it might be worth a shot to try and send the slaver away on a mission to reclaim the artifact for your company. But like all wild and unclaimed artifact, it will surely also be guarded for magic, so best prepare that something might go horribly wrong during the attempt...
+</p>
+
+<<if $varstore.get('quest_test_of_brawn_crit')>>
+<p>
+You have already acquired the axe in the past, but apparently there are multiple copies of such axe hidden within the vales, and you might be able to get your <<uhands $unit.player>> on more of them...
+</p>
+<</if>>
+
+
+
+
+:: Quest_test_of_brawnCrit [nobr]
+<p>
+<<Yourrep $g.a>> braved the cold front of the <<lore region_vale>>,
+<<if $g.a.getHomeland() == setup.Text.Race.REGIONS.vale>>
+a place <<they $g.a>> once called home,
+<</if>>
+up onto the mountains and into the valley beyond.
+It was incredibly cold,
+<<if $g.a.isHasTrait('magic_fire')>>
+made worse by <<their $g.a>> affinity to fire,
+<</if>>
+<<if $g.a.isHasTrait('magic_water')>>
+although <<they $g.a>> a|is used to it thanks to <<their $g.a>> affinity to water.
+<<elseif $g.a.isFurryBody()>>
+although <<their $g.a>> thick fur helps wards off the cold.
+<<else>>
+but <<they $g.a>> bore through it.
+<</if>>
+</p>
+
+<p>
+The long and grueling journey was not for naught, and <<rep $g.a>> managed to find the axe standing proudly on a spire of rocks.
+Even covered with snow, the hilt still gleamed obsidian, while the head stood unmovingly below.
+It is obviously masterfully crafted, and the only reason it remained in its resting place to this day must be because no thief is strong enough to even reach the top of the rocky spire where the axe stood still.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+But <<yourrep $g.a>> a|is no ordinary <<urace $g.a>>.
+<<if $g.a.isHasTrait('muscle_extremelystrong')>>
+One look at <<therace $g.a>> and <<their $g.a>> insanely thick muscles and people would easily imagine if there is someone out there capable of lifting the axe, it would be <<rep $g.a>>.
+<</if>>
+<<if $g.a.isHasTrait('tough_tough')>>
+<<Their $g.a>> tough body would be able to climb easily into the spire.
+<</if>>
+<<if $g.a.isHasTrait('per_slow')>>
+<<They $g.a>> a|is big and dumb, perfect for lugging heavy stuffs like the axe.
+<</if>>
+<<if $g.a.isHasTrait('per_active')>>
+<<They $g.a>> a|spend a lot of time maintaining <<their $g.a>> shape too, and it will be put to test here.
+<</if>>
+<<if $g.a.isHasTrait('per_stubborn')>>
+<<They $g.a>> a|is stubborn enough to try harder than most at lifting the axe.
+<</if>>
+The attempt was made, and it took <<rep $g.a>> several grueling hours, but with a booming crack the axe was lifted from its resting place for the first time in centuries. The axe was incredibly heavy, and it took even <<rep $g.a>> everything <<they $g.a>> got to wield and raise it, but <<they $g.a>> still have successfully done the deed. The axe has found a new master in <<rep $g.a>>, and after recovering <<their $g.a>> strength, <<rep $g.a>> bought the legendary axe into its new home.
+</p>
+
+<<else>>
+
+<p>
+With
+<<if $g.a.getSpeech() == setup.speech.friendly>>
+an enthusiastic smile,
+<<elseif $g.a.getSpeech() == setup.speech.bold>>
+a look of confidence,
+<<elseif $g.a.getSpeech() == setup.speech.cool>>
+a steady gaze,
+<<elseif $g.a.getSpeech() == setup.speech.witty>>
+a grin,
+<<elseif $g.a.getSpeech() == setup.speech.debauched>>
+a devilish grin,
+<</if>>
+<<rep $g.a>> approached the axe by climbing up the spire.
+Once in front of the axe, <<they $g.a>> attempted to unhinge it from its resting place, but <<they $g.a>> soon found out that <<their $g.a>> strength a|was not at all sufficient.
+<<if $g.a.isHasTrait('muscle_verythin')>>
+Perhaps it is <<their $g.a>> extremely thin waist, which makes it much harder for <<them $g.a>> to try and lift the axe.
+<</if>>
+<<if $g.a.isHasTrait('tough_nimble')>>
+Perhaps it is <<their $g.a>> wimpy body, which lacks the endurance to struggle through the hours required to lift the axe.
+<</if>>
+<<if $g.a.isHasTrait('per_smart')>>
+Perhaps it is <<their $g.a>> overly critical mind, who constantly overthinks the situation.
+<</if>>
+<<if $g.a.isHasTrait('per_studious')>>
+Perhaps it is <<their $g.a>> overly studious nature, who is more interested in studying the axe than lifting it.
+<</if>>
+<<if $g.a.isHasTrait('per_curious')>>
+Perhaps it is <<their $g.a>> overly curious nature, who keeps distracting <<them $g.a>> from lifting the axe away.
+<</if>>
+But after hours and hours of struggle, <<rep $g.a>> gave up.
+</p>
+
+<p>
+Unfortunately for <<them $g.a>>, the spire turns out to be enchanted, cursing whoever unlucky soul foolish enough to try to lift the axe and fail.
+<<if $gOutcome == 'disaster'>>
+The enchantment senses the mockery of an attempt by <<rep $g.a>>, and lavished even more curses than usual to the poor <<urace $g.a>>.
+<</if>>
+In the end, <<rep $g.a>> went home with nothing but new curses to show for it.
+<<if $gOutcome != 'disaster'>>
+Still, <<they $g.a>> looked encouraged having seen the axe for <<themself $g.a>>, and a|is rather eager to give it another try.
+<</if>>
+</p>
+
+<</if>>

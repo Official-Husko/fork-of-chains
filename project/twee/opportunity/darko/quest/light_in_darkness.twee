@@ -1,0 +1,89 @@
+:: OpportunitySetup_light_in_darkness [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_light_in_the_darkness__recruit1',
+"Light",
+'subrace_humansea', /* pools */
+0,
+[
+setup.qc.TraitReplace('unit', setup.trait.magic_light), ],
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'light_in_darkness', /* key */
+"Light in Darkness", /* Title */
+"darko", /* Author */
+[ 'city', 'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_light_in_darkness',
+setup.qdiff.hard35, /* difficulty */
+[ /* options */
+[
+'Opportunity_light_in_darkness_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('light_in_the_darkness__enslave', {'light': 'light'}), ],
+], [
+'Opportunity_light_in_darkness_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('light_in_the_darkness__recruit', {'light': 'light'}), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions to generate */
+setup.qres.OpportunityUnique(),
+setup.qres.NoQuest('light_in_the_darkness__recruit'),
+setup.qres.NoQuest('light_in_the_darkness__enslave'), ],
+{ /* actors */
+  'light': 'quest_light_in_the_darkness__recruit1',
+},
+)>>
+
+:: Opportunity_light_in_darkness [nobr]
+
+<<if $g.light.isMale()>>
+  <<questimage 'light_in_darkness_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+You have received news that an upcoming slave auction in the undercity of
+Lucgate will feature a very special slave: an exotic specimen from the
+<<lore region_sea>> gifted in the domain of <<lore magic_light>>.
+The price will be astronomical and there is no way that buying the slave would be
+anywhere profitable for your company. But
+there is an option for you to send your slavers over to
+kidnap the goods.
+This will surely be dangerous, and who knows what
+might happen to your slavers if they were caught...
+</p>
+
+<p>
+You also need to decide what to do with the goods once and if you manage to smuggle them out.
+You can certainly make use of such a highly prized slave, but there is also
+an option of convincing them to join as a slaver.
+</p>
+
+
+:: Opportunity_light_in_darkness_0 [nobr]
+Enslave
+
+
+:: Opportunity_light_in_darkness_1 [nobr]
+Recruit
+
+

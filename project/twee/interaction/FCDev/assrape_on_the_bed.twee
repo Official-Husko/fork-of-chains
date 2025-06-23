@@ -1,0 +1,93 @@
+:: InteractionSetup_assrape_on_the_bed [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'assrape_on_the_bed', /* key */
+"Assrape on the bed", /* Title */
+"FCdev", /* Author */
+[ ], /* tags */
+'Interaction_assrape_on_the_bed',
+[ /* costs */
+],
+[ /* prerequisites */
+setup.qres.HasItem('sexmanual_bodypart_anus'),
+],
+[ /* unit requirements */
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_advanced),
+setup.qres.SlaveUsableByYou(),
+setup.qres.SlaveOwnedByYou(), ],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_assrape_on_the_bed [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _blind = _u.isHasTrait(setup.trait.eq_blind)>>
+
+<<set _utorsoequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.torso)>>
+<<set _ulegsequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.legs)>>
+
+<<set _unaked = setup.Text.Unit.Equipment.isNaked(_u)>>
+<<set _verymaso = (_u.isHasTrait(setup.trait.training_masochist_advanced) && _maintraining.getTags().includes('trmasochist'))>>
+<<set _maso = (_u.isHasTrait(setup.trait.training_masochist_basic) && _maintraining.getTags().includes('trmasochist'))>>
+
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+
+<<loadinteractioncommon _u>>
+
+Entering your $i.room, illuminated by the $i.lighting is your slave
+<<rep _u>> waiting obediently with $i.his <<ubody _u>> laid across the $i.bed.
+When $i.he sees
+<<if !_hasdick>>the big strap-on you're wearing<<else>>the kind of sex you're
+in the mood for<</if>>,
+$i.he turns over and pushes $i.his <<uface _u>> down into the sheets.
+<<ustriplegs _u>>
+<<ustripanus _u>>
+$i.He pulls $i.his knees under $i.himself and reaches back to pull $i.his
+buttocks apart, relaxing and then clenching $i.his <<uanus _u>>
+invitingly.
+$i.He starts
+<<if !_u.isCanTalk()>>
+to point an inviting finger at $i.his backdoor,
+<<else>>to beg "Please assrape me, M-" into the sheets,<</if>>
+but you interrupt $i.him by shoving $i.him forward so that $i.he's all the way facedown on the $i.bed.
+$i.He knows how you like it and starts to wriggle, struggle,
+and whine as you roughly sodomize $i.him, <<if !_hasdick>>the strap-on<<else>>your cock<</if>>
+ramming straight up $i.his ass despite the uncomfortable angle.
+$i.He continues to wrestle with you, sometimes even managing to dislodge
+<<if !_hasdick>>the strap-on<<else>>your <<udick _u>><</if>>,
+allowing you the <<if !_hasdick>>cruel delight<<else>>delicious sensation<</if>>
+of pushing it back up $i.his butt each time.
+Despite the pretense $i.his enjoyment is obvious;
+<<if _chastity>>despite $i.his chastity caged cock,
+$i.he's grinding against you as eagerly as a <<uman _u>> making love with $i.his
+<<if _u.isHasDick()>>dick<<else>>pussy<</if>>.<<elseif _u.isHasDick()>>$i.he
+can't stop $i.himself from humping $i.his rock-hard cock against
+the sheets below $i.him.<<else>>$i.he can't
+stop $i.himself from humping $i.his erect clit against the sheets below $i.him.
+<</if>>
+<<if _u.isCanOrgasm()>>
+$i.He finally orgasms, sobbing with overstimulation when you
+<<else>>
+You
+<</if>>
+pound $i.him for a while longer before
+<<if !_hasdick>>
+finding your own climax<<else>>
+shooting rope after rope of cum into $i.him<</if>>.
+$i.He quickly cleans you with $i.his <<umouth _u>> and heads to clean $i.himself.
+

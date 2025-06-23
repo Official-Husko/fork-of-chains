@@ -1,0 +1,78 @@
+:: QuestSetup_light_in_the_darkness__recruit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'light_in_the_darkness__recruit', /* key */
+"Light in Darkness: Recruit", /* Title */
+"darko", /* Author */
+[ 'city', 'unit', 'ire',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'infiltrator1': setup.qu.infiltrator,
+'infiltrator2': setup.qu.infiltrator,
+'recruiter': setup.qu.recruiter, },
+{ /* actors */
+  'light': 'quest_light_in_the_darkness__recruit1',
+},
+[ /* costs */
+],
+'Quest_light_in_the_darkness__recruit',
+setup.qdiff.hard35, /* difficulty */
+[ /* outcomes */
+[
+  'Quest_light_in_the_darkness__recruitCrit',
+  [
+    setup.qc.Slaver('light', "a|was a captured traveler from the south who is gifted in healing", false),
+  ],
+],
+[
+  'Quest_light_in_the_darkness__recruitCrit',
+  [
+    setup.qc.Ire('outlaws', 5),
+    setup.qc.Outcomes('crit'),
+  ],
+],
+[
+  'Quest_light_in_the_darkness__recruitFailure',
+  [
+  ],
+],
+[
+  'Quest_light_in_the_darkness__recruitDisaster',
+  [
+    setup.qc.MissingUnitRebuy('infiltrator1', 1),
+    setup.qc.MissingUnitRebuy('infiltrator2', 1),
+  ],
+],
+],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_light_in_the_darkness__recruit [nobr]
+
+<<include 'Opportunity_light_in_darkness'>>
+
+<p>
+You have decided to recruit <<them $g.light>>.
+</p>
+
+
+:: Quest_light_in_the_darkness__recruitCrit [nobr]
+
+<<include 'Quest_light_in_the_darkness__enslaveCrit'>>
+
+
+:: Quest_light_in_the_darkness__recruitFailure [nobr]
+
+<<include 'Quest_light_in_the_darkness__enslaveFailure'>>
+
+
+:: Quest_light_in_the_darkness__recruitDisaster [nobr]
+
+<<include 'Quest_light_in_the_darkness__enslaveDisaster'>>

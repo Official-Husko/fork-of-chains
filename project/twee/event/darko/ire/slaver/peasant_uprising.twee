@@ -1,0 +1,50 @@
+:: EventSetup_peasant_uprising [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'peasant_uprising', /* key */
+"Peasant Uprising", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_peasant_uprising',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NotYou(),
+],
+
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('humanvale', -20),
+setup.qc.MissingUnit('victim'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humanvale', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_peasant_uprising [nobr]
+<p>
+Today, you are greeted by <<yourrep $g.slaver>>, who brings bad news. Last
+night, when <<they $g.slaver>> slaver|was out drinking in a nearby tavern with
+<<rep $g.victim>>, an angry mob of peasants came storming into the tavern.
+They demanded your head for all the atrocities your company had done against
+the <<rep $company.humanvale>>. Seeing you were not there drinking with them,
+they settled with kidnapping <<rep $g.victim>> to send you a strong message
+not to mess with them.
+</p>
+
+<p>
+As much as you want to chastise <<rep $g.slaver>> for being stupid enough to
+patron such a tavern, you now have more urgent work to do if you ever want
+to see <<rep $g.victim>> again.
+<<uneedrescue $g.victim>>, before <<they $g.victim>> suffer in the hand of the mobs...
+</p>

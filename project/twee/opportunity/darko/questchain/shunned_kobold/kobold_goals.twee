@@ -1,0 +1,93 @@
+:: OpportunitySetup_kobold_goals [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'kobold_goals', /* key */
+"Kobold Goals", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_kobold_goals',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_kobold_goals_0',
+    outcome_passage: 'Opportunity_kobold_goals_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_playful),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_kobold_goals_1',
+    outcome_passage: 'Opportunity_kobold_goals_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_serious),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'kobold': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_kobold_goals [nobr]
+<p>
+    Apparently, the kobold has been thinking a lot. A lot. Like, whether <<their $g.kobold>> life is destined for something great, and whether <<they $g.kobold>> should strive to do something for it...
+</p>
+
+
+:: Opportunity_kobold_goals_0 [nobr]
+Just enjoy your life
+
+
+:: Opportunity_kobold_goals_0_flavor [nobr]
+<p>
+    Since you only got one life, you should relax and enjoy it!
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> has patroned more than one taverns last week, and perhaps sampled some of their wenches as well...
+</p>
+
+
+:: Opportunity_kobold_goals_1 [nobr]
+Your life has a purpose
+
+
+:: Opportunity_kobold_goals_1_flavor [nobr]
+<p>
+    Everyone is born with a purpose, including <<rep $g.kobold>>.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> appears more serious overall, rarely engaging in playful activities.
+</p>
+

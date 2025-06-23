@@ -1,0 +1,164 @@
+:: QuestSetup_owner_magnifique [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'owner_magnifique', /* key */
+"Owner Magnifique", /* Title */
+"darko", /* Author */
+[
+  'special', 'unit', 'city',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'infiltrator1': setup.qu.infiltrator,
+  'infiltrator2': setup.qu.infiltrator,
+  'thief': setup.qu.thief,
+},
+{ /* actors */
+  'slave': [
+    setup.qres.HasTag('escaped_slave'),
+  ],
+  'victim': 'all',
+  'owner': 'subrace_humankingdom',
+},
+[ /* costs */
+],
+'Quest_owner_magnifique',
+setup.qdiff.harder57, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_owner_magnifiqueCrit',
+    [
+      setup.qc.Slave('victim', "a|was a freshly captured slave of the legendary Magnifique", undefined),
+    ],
+  ],
+  [
+    'Quest_owner_magnifiqueCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_owner_magnifiqueFailure',
+    [
+      setup.qc.QuestDirect('owner_magnifique', {
+        slave: 'slave',
+      }),
+      setup.qc.Injury('infiltrator1', 9),
+      setup.qc.Injury('infiltrator2', 9),
+      setup.qc.Injury('thief', 9),
+    ],
+  ],
+  [
+    'Quest_owner_magnifiqueDisaster',
+    [
+      setup.qc.QuestDirect('owner_magnifique', {
+        slave: 'slave',
+      }),
+      setup.qc.QuestDirect('owner_magnifique', {
+        slave: 'infiltrator1',
+      }),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+  [setup.questpool.escapehard, setup.rarity.common],
+],
+[ /* restrictions to generate */
+  setup.qres.ExistUnit([
+    setup.qres.Job(setup.job.slave),
+    setup.qres.HasTag('escaped_slave'),
+    setup.qres.AnyTrait([
+      setup.trait.training_mindbreak,
+      setup.trait.training_obedience_advanced,
+      setup.trait.training_obedience_master,
+    ], true),
+  ]),
+],
+[ /* expiration outcomes */
+  setup.qc.MissingUnitForever('slave'),
+],
+)>>
+
+:: Quest_owner_magnifique [nobr]
+
+<p>
+<<Yourrep $g.slave>> has went missing from your fort, and a reliable rumor
+has it that <<they $g.slave>> slave|is now serving as the "servant" of the magnificent Magnifique --
+a magician living in the city.
+<<if $g.slave.isSlave()>>
+  <<if $g.slave.isMindbroken()>>
+    Given that <<rep $g.slave>> has been mindbroken, <<they $g.slave>> would probably has no
+    opinions at all about <<their $g.slave>> new owner.
+  <<else>>
+    Given the amount of training <<rep $g.slave>> had undergone, the slave no doubt relished
+    every moment of <<their $g.slave>> new service.
+  <</if>>
+<<else>>
+  It's unclear how a slaver of yours ended up in such a predicament, but here we are.
+<</if>>
+The Magnifique is a stubborn old fool, however,
+and you would not be able to negotiate with <<them $g.owner>> for <<reps $g.slave>> safe return.
+Your only option is to send a group of slavers to infiltrate <<their $g.owner>> mansion
+and recapture your lost
+<<if $g.slave.isSlave()>>property<<else>>slaver<</if>>.
+</p>
+
+<p>
+However, the mansion is infamously heavily guarded, and this will be an extremely
+dangerous mission no doubt...
+</p>
+
+<p>
+<<dangertext 'Warning'>>: If you let this quest expire or if you remove the
+quest, <<rep $g.slave>> will be gone forever...
+</p>
+
+
+:: Quest_owner_magnifiqueCrit [nobr]
+
+<p>
+Fortunately for you, the Magnifique's defenses were no match for your slavers
+prowess in, well, subtle infiltration.
+The party tricks that were thrown around in the mansion to serve as traps were
+quickly dismantled by <<rep $g.thief>> while <<rep $g.infiltrator1>> and <<rep $g.infiltrator2>>
+scoured the manse for any sign of <<rep $g.slave>>.
+</p>
+
+<p>
+Eventually, they managed to find <<rep $g.slave>> stuck inside an overly small
+cage hanging from the ceiling.
+Without any time for subtletly, <<rep $g.infiltrator1>> grabbed the <<= $g.slave.getJob().getName()>>
+together with <<their $g.slave>> cage and smuggled <<them $g.slave>> out of the mansion successfully.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+On the way out, <<rep $g.thief>> spotted another, seemingly completely unbroken slave
+in yet another bondage situation.
+<<They $g.thief>> deftly unlatched the rope from the ceiling and your slavers returned home with
+two bodies in tow.
+</p>
+<</if>>
+
+:: Quest_owner_magnifiqueFailure [nobr]
+
+<p>
+The mansion's defenses were a joke, literally, and a dangerous one too.
+One false step and a party pooper pops from above, distracting your slavers while
+a trap door opens underneath your slavers.
+Fortunately your slavers were able to climb back up and escape, but not without
+sustaining heavy injuries.
+</p>
+
+:: Quest_owner_magnifiqueDisaster [nobr]
+
+<p>
+The mansion's defenses were a joke, literally, and a dangerous one too.
+One false step and a party pooper pops from above, distracting your slavers while
+a trap door opens underneath <<rep $g.infiltrator1>>, transporting <<therace $g.infiltrator1>>
+somewhere unknown.
+With their presence known, your remaining slavers had no choice but to retreat, leaving 
+<<rep $g.infiltrator1>> to <<their $g.infiltrator1>> fate...
+</p>

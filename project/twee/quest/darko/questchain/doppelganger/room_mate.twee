@@ -1,0 +1,233 @@
+:: QuestSetup_room_mate [nobr quest]
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+  setup.trait.bg_assassin,
+  setup.trait.bg_informer,
+  setup.trait.bg_thief,
+  setup.trait.tough_nimble,
+  setup.trait.per_sly,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.You(),
+],
+{
+  combat: 0.3,
+  brawn: 0.3,
+  survival: 0.3,
+  intrigue: 0.3,
+  slaving: 0.3,
+  knowledge: 0.3,
+  social: 0.3,
+  aid: 0.3,
+  arcane: 0.3,
+  sex: 0.3,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'room_mate', /* key */
+"Room Mate", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'you': [ _criteriayou, 1],
+  'snooper1': [ setup.qu.infiltrator, 1],
+  'snooper2': [ setup.qu.infiltrator, 1],
+},
+{ /* actors */
+  'dop': [
+  ],
+  'slaver': [
+  ],
+},
+[ /* costs */
+],
+'Quest_room_mate',
+setup.qdiff.normal53, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_room_mateCrit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_doppelganger),
+      setup.qc.BodyswapOneDirection('dop', 'slaver'),
+      setup.qc.Opportunity('room_mate', {
+dop: "dop",
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Quest_room_mateCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.TraumatizeRandom('slaver', 12),
+    ],
+  ],
+  [
+    'Quest_room_mateFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_room_mateFailure',
+    [
+      setup.qc.TraumatizeRandom('slaver', 12),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_room_mate [nobr]
+<p>
+Despite your hopes, <<rep $g.slaver>> slaver|continue to act suspiciously at your fort. The usually <<uadjgood $g.slaver>> that you can usually spot doing nothing but <<uhobbyverb $g.slaver>> now do that with much less frequency. Occasionally, the <<urace $g.slaver>> would avoid contact even with <<their $g.slaver>> closest slaver friends, <<if $g.slaver.isHasTrait('per_gregarious')>>
+completely out of character for the gregarious slaver.
+<<elseif $g.slaver.isHasTrait('per_loner')>>
+and while the loner slaver is never known for loving the company of others, <<they $g.slaver>> don't usually outright run away from your other slavers.
+<<else>>
+a strange behavior for the slaver.
+<</if>>
+And finally, the strange noises that you have been hearing late at night has also been tracked to somewhere within <<their $g.slaver>> room's vicinity.
+</p>
+
+<p>
+The evidence is mounting that there is something wrong with <<rep $g.slaver>>, and since asking <<therace $g.slaver>> did not result in anything, you may just have to investigate this yourself. You should also ask two of your other sneaky slavers to help, and try to figure out just what is wrong with <<therace $g.slaver>> these days.
+</p>
+
+
+
+
+
+:: Quest_room_mateCrit [nobr]
+<p>
+You spent the better part of the last month tailing <<rep $g.slaver>> whenever <<they $g.slaver>> go.
+<<if $g.you.isHasTrait('bg_thief')>>
+You're used to staying in the shadows from your days as a thief.
+<</if>>
+<<if $g.you.isHasTrait('bg_assassin')>>
+You're used to staying in the shadows from your days as an assassin.
+<</if>>
+<<if $g.you.isHasTrait('bg_informer')>>
+Tailing people and gathering information was something you did in the past, and the familiarity helps with the task.
+<</if>>
+<<if $g.you.isHasTrait('tough_nimble')>>
+You are nimble enough to tail the slaver even when <<they $g.slaver>> go to relatively difficult-to-tail places.
+<</if>>
+<<if $g.you.isHasTrait('per_sly')>>
+Your natural slyness helps divert <<their $g.slaver>> attention from you who just "happened" to be around.
+<</if>>
+When you are tired for the day, <<yourrep $g.snooper1>> would take your place, and then <<rep $g.snooper2>> would, before cycling back to you.
+</p>
+
+<p>
+At first, <<rep $g.slaver>> slaver|is mostly... <<themself $g.slaver>>. They would go out of <<their $g.slaver>> room,
+go <<uhobbyverb $g.slaver>>, and other more mundane things. But every now and then, <<therace $g.slaver>> would completely shift in personality. They would skulk around, trying not to divert attention to <<themself $g.slaver>> as <<they $g.slaver>> went out of <<their $g.slaver>> room to shower and eat, before going back to <<their $g.slaver>> room. Moments later, <<they $g.slaver>> would exit <<their $g.slaver>> room again, completely back to normal.
+It was clear that the key to this mystery lies inside the room, so you did what you had to do, and sneaked to just outside the room at night and peeped from the window.
+</p>
+
+<p>
+Inside you are surprised to find not one, but two <<rep $g.slaver>>s. You pinched yourself to make sure you're not just daydreaming this, but indeed, two of <<therace $g.slaver>> is inside the room.
+<<if $g.slaver.isHasAnyTraitExact(['per_lustful', 'per_lunatic', 'per_curious', 'per_sexaddict', 'per_playful'])>>
+In fact, the two of them are engaged in a rather raunchy sex right now — it seemed the
+<<if $g.slaver.isHasTrait('per_lunatic')>>
+lunatic could not resist the rare opportunity of having a self-cest.
+<<elseif $g.slaver.isHasTrait('per_lustful')>>
+lusty <<urace $g.slaver>> was entirely engrossed in the thought of having sex with who is basically <<themself $g.slaver>>.
+<<elseif $g.slaver.isHasTrait('per_playful')>>
+playful <<urace $g.slaver>> could not resist the fun opportunity for a little rare self-cest action.
+<<elseif $g.slaver.isHasTrait('per_curious')>>
+slaver was too curious to know what it must feel like having sex with <<their $g.slaver>> own body copy.
+<</if>>
+
+<<if $g.slaver.isHasDick()>>
+The sex reached the conclusion as they pressed their dicks together, feeling
+<<if $g.slaver.isHasTrait('dick_werewolf')>>
+their knots rubbing against each other before
+<<elseif $g.slaver.isHasTrait('dick_dragonkin')>>
+the ridges on their dicks rubbing against each other before
+<<elseif $g.slaver.isHasTrait('dick_demon')>>
+the sensitive barbs on their dicks rubbing against each other before
+<<else>>
+the sensitive skin of their dicks rubbing againg each other before
+<</if>>
+climaxing simultaneously.
+<<else>>
+
+The sex reached the conclusion as they pressed their boobs together,
+feeling the flesh touching against each other before shuddering in climax simultaneously.
+
+<</if>>
+<</if>>
+</p>
+
+<p>
+Once they basked in the aftermath, <<rep $g.slaver>> finally noticed your presence, and a growing red shade of a mixture between shame, lust, and confusion grew on <<their $g.slaver>> face. You opened the window and stare at their copy, and asked <<rep $g.slaver>> to explain <<themself $g.slaver>>. Having been caught red-handed, <<they $g.slaver>> had no choice but to explain — it seemed that some time ago, during a quest <<they $g.slaver>> went into the desert alone, <<they $g.slaver>> met a strange <<man $g.slaver>> on the brink of death in the <<lore region_desert>>.
+<<They $g.slaver>> nursed <<them $g.slaver>> back
+<<if $g.slaver.isHasTrait('per_kind')>>
+out of the kindness of <<their $g.slaver>> heart
+<<else>>
+with the intention of selling <<them $g.slaver>> later
+<</if>>
+but then the <<man $g.slaver>> suddenly transformed into much their liking. It seemed they encountered the rare doppelganger. Having no place to go, the doppelganger asked to come with <<them $g.slaver>>, and,
+<<if $g.slaver.isHasTrait('per_lunatic')>>
+being the lunatic slaver that <<they $g.slaver>> slaver|was,
+<<they $g.slaver>> brought <<them $g.slaver>> home, no doubt already
+planning to have raunchy self-sex later.
+<<elseif $g.slaver.isHasTrait('per_lustful')>>
+being the lustful slaver that <<they $g.slaver>> slaver|was,
+<<they $g.slaver>> brought <<them $g.slaver>> home, no doubt already
+planning to have raunchy self-sex later.
+<<elseif $g.slaver.isHasTrait('per_playful')>>
+being the playful slaver that <<they $g.slaver>> slaver|was,
+<<they $g.slaver>> brought <<them $g.slaver>> home, no doubt already
+planning to have some rather exciting fun in the form of self-sex later.
+<<elseif $g.slaver.isHasTrait('per_curious')>>
+being the curious slaver that <<they $g.slaver>> slaver|was,
+<<they $g.slaver>> brought <<them $g.slaver>> home, unable to pass the rare opportunity of being able to have sex with <<themself $g.slaver>> later.
+<</if>>
+After some more questioning, it turned out that the doppelganger is a wanted <<man $g.slaver>> there, and hence
+<<they $g.slaver>> did not tell you, since knowing how much you like money, you would just hand over the doppelganger over to claim <<their $g.slaver>> bounty.
+</p>
+
+<p>
+What should you do now?
+</p>
+
+<<if $gOutcome == 'success'>>
+<p>
+Having been so thoroughly watched during one of <<their $g.slaver>> more raunchy sex adventures traumatizes the slaver for some time.
+</p>
+<</if>>
+
+
+
+:: Quest_room_mateFailure [nobr]
+<p>
+Unfortunately, your attempts to sneak and tail <<rep $g.slaver>> was not as stealthy as you would have hoped it to be. <<Rep $g.slaver>> noticed all too quickly, and asked you to stop.
+<<if $gOutcome == 'failure'>>
+Fortunately, it was a rather amiable request, and there was no love lost in the process, but you'd have to call the mission a failure for the time being.
+<<else>>
+<<They $g.slaver>> slaver|was rather traumatized that you of all people would tail <<them $g.slaver>> in such a way too, and you had to stop the mission and call it a failure before the trauma worsens.
+<</if>>
+</p>

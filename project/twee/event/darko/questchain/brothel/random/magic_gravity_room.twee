@@ -1,0 +1,171 @@
+:: EventSetup_magic_gravity_room [nobr event]
+
+<<run new setup.Event(
+'magic_gravity_room', /* key */
+"Magic Gravity Room", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_magic_gravity_room',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 300),
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+  setup.qres.VarEqual('quest_brothel_attraction', 'gravity'),
+],
+53, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_magic_gravity_room [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+<<attach _describe>> is
+<<if _class >= 2>>
+a high-class establishment, drawing even nobles inside.
+<<elseif _class <= -2>>
+a debauched little brothel, drawing even the richest of criminals to the establishment.
+<<else>>
+a renowned brothel in the area, known for its skilled <<= _gender>> courtesans.
+<</if>>
+It is located in a large
+<<if _class >= 2>>
+palace-like
+<<elseif _class <= -2>>
+demonic palace-like
+<<else>>
+exotic palace-like
+<</if>>
+complex.
+The centerpiece of the complex is without doubt the Magic Gravity Room, located within its innermost chamber.
+The room is decorated with crystals, which when activated by the resident magic-adept head courtesan <<name $g.slave>>, will send a steady stream of wind upwards, emulating zero gravity to anyone inside. This could be used to great effect during sex, and many customers paid for the experience.
+</p>
+
+<p>
+As the proprietor of the place, you can use the room too to fuck the head courtesan <<name $g.slave>>. Of course, you don't need to pay any fee.
+</p>
+
+<<choose>>
+
+<<opt 'Have "sitting" sex'>>
+
+<p>
+<<if !$unit.player.isHasDick()>>
+Donning a strap-on, you
+<<else>>
+You
+<</if>>
+<<ustripequipmentand $unit.player>> step into the chamber.
+<<name $g.slave>> then worked <<their $g.slave>> magic (literally) and the crystals flared alive, wind blowing upwards from them.
+With the anti-gravity activated, you effortlessly lift <<them $g.slave>> in a bridal carry, your <<uarms $unit.player>> behind <<their $g.slave>> shoulders and the backs of <<their $g.slave>> knees.
+You then sit on the air, while letting <<their $g.slave>>
+<<if $g.slave.isHasTrait('muscle_strong')>>muscular<<elseif $g.slave.isHasTrait('muscle_thin')>>trim<<else>>healthy<</if>>
+bottom sink down into your lap.
+</p>
+
+<p>
+<<They $g.slave>> shimmies <<themself $g.slave>> atop your <<if !$unit.player.isHasDick()>>phallus<<else>><<udick $unit.player>><</if>>, gently seating it between <<their $g.slave>> buttocks, and cranes <<their $g.slave>> neck back to kiss the bottom of your chin.
+<<They $g.slave>> gradually comes out of <<their $g.slave>> heat stupor, riding <<themself $g.slave>> back and forth more and more until the
+<<if $g.slave.isHasTrait('anus_gape')>>slit of <<their $g.slave>> asspussy<<elseif $g.slave.isHasTrait('anus_loose')>>opening of <<their $g.slave>> anus<<else>>pucker of <<their $g.slave>> butt<</if>> rests against your <<if !$unit.player.isHasDick()>>strap-on<<else>>cock<</if>>.
+You take <<their $g.slave>> hips and firmly thrust into <<their $g.slave>> rectum, eliciting a little whimper, but <<they $g.slave>> begins to bounce gently in the anti-gravity room, sodomizing <<themself $g.slave>>,
+<<if $g.slave.isHasBreasts()>>
+<<their $g.slave>> <<ubreasts $g.slave>> moving up and down, exaggerated by the low gravity.
+<<else>>
+<<their $g.slave>> <<ubreasts $g.slave>> heaving in and out as <<their $g.slave>> breath quickens.
+<</if>>
+<<Their $g.slave>> first orgasm takes <<them $g.slave>> by surprise,
+<<if $g.slave.isHasDick()>>
+<<their $g.slave>> cum floating into the air<<if $g.slave.isCanSee()>>; <<they $g.slave>> points at it
+<<else>>; <<they $g.slave>> feels it brush <<their $g.slave>> skin<</if>>
+and
+<<if $g.slave.isFemale()>>giggles<<else>>smirks<</if>>
+before getting<<else>>
+making <<them $g.slave>> twitch and shudder with aftershocks as <<they $g.slave>> gets<</if>>
+<<their $g.slave>> feet up on a nearby pillar to ride you harder.
+</p>
+
+<p>
+When you're done, you let <<them $g.slave>> float in the air, but curiosity about how <<their $g.slave>> fucked butt feels in the low gravity leads you to reach a <<uhand $unit.player>> between <<their $g.slave>> <<ulegs $g.slave>> and grope <<their $g.slave>> anus.
+<<Their $g.slave>> warm, relaxed <<if $g.slave.isHasTrait('anus_gape')>>asspussy<<elseif $g.slave.isHasTrait('anus_loose')>>backdoor<<else>>tightness<</if>> is so enticing you push <<them $g.slave>> to <<their $g.slave>> feet and take <<them $g.slave>> a second time, before again floating into the air. By the time you're done <<they $g.slave>>'s so sexually exhausted that you carry <<them $g.slave>> to the brothel showers.
+</p>
+
+<<opt 'Have "standing" sex'>>
+
+<p>
+Per your direction, <<name $g.slave>> activates the magical crystals in the room, and wind started to gush upwards, letting the both of you float around.
+<<They $g.slave>> then hugs you impulsively, intentionally giving you a
+<<if $g.slave.isHasTrait('breast_huge')>>
+huge faceful of boob.
+<<else>>
+pressing <<their $g.slave>>
+<<if $g.slave.isHasBreasts()>>
+soft
+<<elseif $g.slave.isHasTrait('muscle_strong')>>
+hard
+<</if>>
+<<ubreasts $g.slave>> against your face.
+<</if>>
+You pull <<them $g.slave>> down and then <<ustrippantsand $unit.player>>
+
+<<if ($unit.player.isHasVagina())>>
+
+spread <<their $g.slave>> knees so you can scissor your pussy against <<them $g.slave>> in the near-zero gravity, the tangle of limbs
+<<if $g.slave.isHasBreasts()>>
+and breasts swaying
+<<elseif $g.slave.isHasTrait('muscle_strong')>>
+and muscle flexing
+<</if>>
+as you grind.
+
+<<else>>
+
+insert yourself into the <<if $g.slave.isHasTrait('anus_gape')>>loose slit of <<their $g.slave>> asspussy<<elseif $g.slave.isHasTrait('anus_loose')>>welcoming pucker of <<their $g.slave>> anus<<else>>tight pucker of <<their $g.slave>> butt<</if>>.
+
+<<They $g.slave>> exaggerates <<their $g.slave>> discomfort, wriggling against <<their $g.slave>> feet and squealing as you <<uadv $unit.player>> sodomize <<them $g.slave>> in the zero-gravity chamber.
+<<if $g.slave.isHasBreasts()>>
+<<Their $g.slave>> <<ubreasts $g.slave>> quiver in near-zero gravity with each thrust, until you notice the delicious motion and take one in each <<uhand $unit.player>>.
+
+<<else>>
+
+<<Their $g.slave>> <<ubreasts $g.slave>> quiver in near-zero gravity with each thrust, until you notice the hardening nipples and pinch them with your <<uhands $unit.player>>.
+<</if>>
+You eventually came, inside the courtesan, and
+<<if $unit.player.isHasTrait('balls_huge')>>
+a large amount of cum from your <<uballs $unit.player>>
+<<else>>
+trace of cum
+<</if>>
+could be seen floating as you pull your shaft away. You turned the courtesan around and made them suck all the floating cum with <<their $g.slave>> <<umouth $g.slave>>.
+<</if>>
+</p>
+
+<</choose>>

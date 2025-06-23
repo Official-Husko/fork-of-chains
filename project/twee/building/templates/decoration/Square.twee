@@ -1,0 +1,77 @@
+:: InitBuildingSquare [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'fountain',
+  tags: ['hidename', 'hideskill', ],
+  description_passage: 'RoomFountain',
+  name: 'Fountain',
+  width: 1,
+  height: 1,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "social",
+      bonus_amount: setup.ROOM_DECORATION_BONUS,
+    },
+    {
+      type: 'always',
+      skill_key: "survival",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'square',
+  tags: [],
+  width: 2,
+  height: 2,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "social",
+      bonus_amount: setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+    {
+      type: 'always',
+      skill_key: "survival",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'square',
+  name: 'Square',
+  tags: ['decoration'],
+  description_passage: 'BuildingSquare',
+  costs: setup.BuildingTemplate.getDecorationCosts(),
+  restrictions: setup.BuildingTemplate.getDecorationRestrictions(),
+  main_room_template_key: 'square',
+  sub_room_template_key: 'fountain',
+})>>
+
+
+:: BuildingSquare [nobr]
+
+<p>
+A small empty spot on the courtyards of your fort where people can gather and converse.
+When placed at your fort, will increase
+<<rep setup.skill.social>> in exchange for <<rep setup.skill.survival>>.
+</p>
+
+:: RoomFountain [nobr]
+
+<p>
+A pedestal of stone everflowing with water.
+</p>

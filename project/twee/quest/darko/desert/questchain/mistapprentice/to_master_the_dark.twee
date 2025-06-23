@@ -1,0 +1,224 @@
+:: QuestSetup_to_master_the_dark [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.You(),
+],
+{
+  slaving: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'to_master_the_dark', /* key */
+"To Master the Dark", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'danger',
+  'prep',
+  'desert',
+  'trait',
+  'unknown',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'you': [ _criteriayou, 3],
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [],
+},
+[ /* costs */
+],
+'Quest_to_master_the_dark',
+setup.qdiff.hell1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_to_master_the_darkCrit',
+    [
+      setup.qc.AllUnitSatisfyDo(
+        [setup.qres.HasTag('mist_apprentice_victim')],
+        [setup.qc.Injury('unit', 3), setup.qc.TraumatizeRandom('unit', 12), setup.qc.Return('unit')],
+      ),
+      setup.qc.RemoveTagGlobal('mist_apprentice_victim'),
+      setup.qc.RemoveTitleGlobal('quest_mist_apprentice_0'),
+      setup.qc.Corrupt('you', null, 2),
+      setup.qc.SetCooldownQuest('mist_apprenticeship', 20),
+      setup.qc.TraitReplace('slaver', 'magic_dark_master'),
+      setup.qc.Corrupt('slaver', null, 5),
+      setup.qc.Return('slaver'),
+    ],
+  ],
+  [
+    'Quest_to_master_the_darkCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_to_master_the_darkCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_to_master_the_darkCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('return_shipping', 0, {master: 'master', slaver: 'slaver', }),
+],
+)>>
+
+:: Quest_to_master_the_dark [nobr]
+<<set _onleave = $company.player.getUnits({tag: 'mist_apprentice_victim'})>>
+
+<p>
+It has been several weeks since <<yourrep $g.slaver>> started to learn how
+to master <<their $g.slaver>> dark magic. The final demand from <<their
+$g.slaver>> current <<master $g.master>> has finally been made. For the final
+price, the demon asks for you. Yes, you and you alone, leader of <<rep
+$company.player>>.
+</p>
+
+<p>
+A slave can only satisfy the demon as much as a slave is worth. But you
+have been deemed a much more interesting plaything. It will not be permanent — the
+demon promises only to borrow you for a couple of weeks — but would you be
+willing to pay the final price, all for <<yourrep $g.slaver>> to master <<rep
+setup.trait.magic_dark_master>>?
+</p>
+
+
+:: Quest_to_master_the_darkCrit [nobr]
+
+<p>
+Sighing, you steeled yourself as you head alone to the destined oasis.
+<<if $g.you.isHasTrait('race_demon')>>
+As you got closer to the oasis, your demon blood boiled, longing to return to where you once came from.
+<</if>>
+<<if $g.you.isHasTrait('per_dominant')>>
+You went with your head held up, mind focused on staying dominant throughout.
+<</if>>
+<<if $g.you.isHasTrait('per_submissive')>>
+Secretly, your submissive mind was enjoying the degrading things the demon would no doubt force you to do.
+<</if>>
+<<if $g.you.isHasTrait('per_brave')>>
+Venturing into <<lore concept_mist>> would be a humbling task for any normal being, but you had been known to be brave, and you head on with renewed conviction.
+<</if>>
+<<if $g.you.isHasTrait('per_cautious')>>
+Your heartbeat quickened, and you could not help but feel a little scared inside.
+<</if>>
+<<if $g.you.isHasTrait('per_chaste')>>
+Your chaste mind was completely unaware of what depravity was possible in the land beyond...
+<</if>>
+<<if $g.you.isHasTrait('per_lustful')>>
+You lustfully licked your lips, knowing depravity awaited you beyond.
+<</if>>
+A portal awaited you at the oasis,
+<<if $g.you.isHasTrait('magic_dark')>>
+saving you the effort of using your own mastery over dark magic to open the gate.
+<<else>>
+inviting you to come closer and closer, slightly corrupting you in the process.
+<<run setup.qc.Corrupt('you').apply($gQuest)>>
+<</if>>
+</p>
+
+<<set _onleave = $company.player.getUnits({tag: 'mist_apprentice_victim'})>>
+
+<p>
+The demon lied in the land beyond the portal, sitting comfortably on <<their $g.master>>
+throne. Surveying the room, you saw your slavers
+caged inside tiny cages across the room:
+<<if _onleave.length>>
+<<rep _onleave[0]>> and <<rep _onleave[1]>>
+<</if>>
+lied motionlessly inside them, seemingly having just been used thoroughly by
+the demon. In contrast, you could see fire burning within <<yourrep $g.slaver>>
+<<ueyes $g.slaver>>, hatred overflowing from the slaver, no doubt at the
+things the demon had done to both <<themself $g.slaver>> and <<their
+$g.slaver>> slavermates.
+</p>
+
+<p>
+Ignoring the glare, the demon casually walked towards you, touching your face
+with <<their $g.master>> sharp nails before forcing a deep kiss into your
+<<umouth $unit.player>>, thrusting <<their $g.master>> unnaturally long tongue down your
+throat. You struggled to breathe from the surprise tongue deep-throating, but
+you were given no chance to react as <<their $g.master>> <<uhands $g.master>> started to
+wander
+<<set _pants = $g.you.getEquipmentAt('legs')>>
+<<if _pants>>
+into your <<rep _pants>>,
+<</if>>
+roughly fondling your <<ugenital $g.you>>, playing with it just like another
+toy at <<their $g.master>> disposal.
+<<if $g.you.isSubmissive()>>
+You struggled to suppress the urge to moan and give in to your submissive
+tendencies, which would not bode well in front of your watching slavers.
+<<elseif $g.you.isDominant()>>
+You struggled to repress your anger at being used in this manner, bearing through the humiliation for 
+<<reps $g.slaver>> sake.
+<</if>>
+</p>
+
+<p>
+All the while, the hatred and anger seethed even more in <<rep $g.slaver>>.
+"That's right, feel the anger, hatred building inside of you!" — the demon's
+past taunts kept haunting <<therace $g.slaver>>, but only then it was starting to
+make sense to <<them $g.slaver>>. After having been violated, and then seeing <<their $g.slaver>>
+teammates violated, and finally seeing you yourself being violated in front
+of <<their $g.slaver>> <<ueyes $g.slaver>>, only then did <<reps $g.slaver>>
+hatred finally reach breaking point, and <<their $g.slaver>> true power was
+unleashed. "That's right, feel the anger, hatred building inside of you!" For
+hatred, anger, and all the negative energies are the key cornerstones of dark
+magic. A dark aura started to build from around <<rep $g.slaver>>,
+surrounding and threatening to break the cage from sheer pressure.
+</p>
+
+<p>
+The demon continued <<their $g.master>> violation upon your body as if
+nothing happened, and as you writhed, moaned, and cried in <<if
+$g.you.isSubmissive() or $g.you.isMasochistic()>>a mixture of both pleasure
+and pain<<else>>agony<</if>>, even you could feel the dark energy coming out
+from your slaver until it finally broke open the cage.
+</p>
+
+<p>
+Freed from <<their $g.slaver>> cage, <<yourrep $g.slaver>> walked slowly,
+approaching you and the demon who had finally broken their kiss with you to face
+<<therace $g.slaver>>. With an approving nod, the demon deemed <<therace
+$g.slaver>>'s magic satisfactory — a mark that their training had been
+completed. But <<yourrep $g.slaver>> slaver|was too blinded by rage to see
+reason, and attacked futilely. You could see the demon's expression changed for
+just a moment — from that of an eternally bored expression to that of a stern teacher,
+before knocking out your slaver.
+</p>
+
+<p>
+With the threat gone, the demon gazed back at you, surprisingly not doing
+anything else and asking you to pick up your slavers (or pets as the demon
+called them) both from the floor and from the other cages.
+As the demon left you and your slavers alone in the room, you pondered what just happened...
+</p>
+
+<p>
+In the end, you got lucky after all, and stumbled across a demon truly
+capable and willing to impart the darkest of knowledge to your slavers...
+</p>

@@ -1,0 +1,166 @@
+:: QuestSetupWhoreOfMinistration [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'whore_of_ministration', /* key */
+  'Whore of Ministration', /* Title */
+  'darko',   /* author */
+  ['city', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'healer1': setup.qu.healer,
+    'healer2': setup.qu.healer,
+    'guard': setup.qu.guard,
+  },
+  { /* actors */
+    'healslut': 'quest_humankingdom_all_healslut',
+  },
+  [ /* costs */
+  ],
+  'QuestWhoreOfMinistration', /* passage description */
+  setup.qdiff.harder34, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestWhoreOfMinistrationCrit',
+      [
+        setup.qc.Slave(
+          'healslut',
+          'a|was a healer in a city clinic who enjoyed the art of healing a little too much and got carried away, literally'),
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestWhoreOfMinistrationCrit',
+      [
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestWhoreOfMinistrationFailure',
+      [
+      ],
+    ],
+    [
+      'QuestWhoreOfMinistrationDisaster',
+      [
+        setup.qc.MoneyNormal(-1),
+        setup.qc.Injury('guard', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestWhoreOfMinistration [nobr]
+
+<p>
+There are various clinics spreadout throughout the <<lore region_city>>.
+These clinics are effectively the primary healthcare services
+in the city.
+There, healers work tirelessly to aid the citizens of the city with whatever
+that ails them.
+occasionally, during some outbreaks these clinics are overflowing with patients,
+and some donators would generously pay outsiders to help with these clinics.
+</p>
+
+<p>
+Your slavers just heard that there is an opportunity for your slavers to help with
+the clinic in one part of the city.
+While normally healing is the opposite of your field of work, the pay is decent
+and you have heard rumors that this particular clinic occasionally employs
+unorthodox healing method to soothe their patients.
+It might be worth to send your slavers on this mission.
+</p>
+
+
+:: QuestWhoreOfMinistrationCrit [nobr]
+
+<<if $g.healslut.isFemale()>>
+  <<questimage 'whore_of_ministration_female.jpg'>>
+<</if>>
+
+<p>
+Your slavers have arrived at the clinic. At a first glance, it appeared to be
+an ordinary clinic like any other, if not somewhat overcrowded by patients.
+But once inside, they discovered several private "restoration rooms" reserved
+for the biggest donators for the clinic.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Your slavers competence meant that they were able to attend to their duties
+relatively easily, and had a lot of spare time.
+In their spare time, they made it their mission to
+observe what happened behind these rooms.
+Until one day, the opportunity presented itself, as during one night they heard strange
+noises coming from the main clinic building.
+Through the window, they observed
+one of the more recognizable healer in the clinic busily
+impaling <<themself $g.healslut>> on one of <<their $g.healslut>> patients.
+They recognized <<rep $g.healslut>> as apparently one of the more senior
+and respected healers around the clinic, who was famous for the positive feedbacks
+<<their $g.healslut>> patients always gave after each treatment.
+</p>
+
+<p>
+Armed with this information, your slavers attempted
+<<uadv $g.guard>>
+to blackmail the heal slut
+with this information, only for <<them $g.healslut>> to actually visible came from
+the experience.
+In fact, it was ultimately at <<their $g.healslut>> request that your slavers ended up
+putting a slave collar around the healer's neck, a truly natural submissive
+healslut who will do anything to make <<their $g.healslut>> patients feel better.
+</p>
+
+<<else>>
+
+<p>
+But there were just too many patients, and your slavers got their <<uhands $g.guard>> full
+with their duties.
+They had no choice but to keep ignoring the strange
+moaning and sloshing sounds they kept hearing every night.
+It's probably nothing but animal noises, but they were unable to confirm the truth.
+</p>
+
+<p>
+At the end of the week, your slavers were completely exhausted.
+
+<<set _kind = setup.selectUnit([$g.healer1, $g.healer2], {trait: 'per_kind'})>>
+<<if _kind>>
+  However, <<yourrep _kind>> <<if _kind.isYou()>>are<<else>>is<</if>> kind, and having spent a week doing nothing
+  but healing brought much joy to <<theslaver $g.healer1>>.
+  <<run setup.qc.BoonizeRandom('healer1', 2).apply(setup.costUnitHelper(_kind))>>
+<</if>>
+
+Your slavers <<uadv $g.guard>> took the payment and went home.
+</p>
+
+<</if>>
+
+
+:: QuestWhoreOfMinistrationFailure [nobr]
+
+<p>
+Unfortunately, <<yourrep $g.healer1>> and <<utheirrel $g.healer1 $g.healer2>> <<rep $g.healer2>> were so
+incompetent at their jobs that the head healer was
+furious with their incompetence and kicked them out of the clinic.
+No money were paid to your slavers.
+</p>
+
+
+:: QuestWhoreOfMinistrationDisaster [nobr]
+
+<p>
+Unfortunately, one of your slavers accidentally injured an important client
+during a healing procedure, which apparently enraged their closest relative.
+<<Yourrep $g.guard>> had to defend your slavers from hired thugs, and meanwhile
+your slavers were charged some money for the damage.
+</p>

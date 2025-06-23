@@ -1,0 +1,43 @@
+:: InitBuildingTreatmentRoomResetLevel [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'treatmentroomresetlevel',
+  tags: [],
+  width: 4,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'treatmentroomresetlevel',
+  name: 'Pharmacy',
+  tags: ['heal'],
+  description_passage: 'BuildingTreatmentRoomResetLevel',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('treatmentroom'),
+      setup.qres.Building('veteranhall'),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_light]),
+    ],
+  ],
+  main_room_template_key: 'treatmentroomresetlevel',
+})>>
+
+
+:: BuildingTreatmentRoomResetLevel [nobr]
+
+<p>
+Unlocks a treatment option that can reset the level of a unit to level 1.
+Note that their skills will also be reset to those of a level 1 unit.
+Each treatment will consume a <<rep setup.item.reset_potion>>.
+
+</p>

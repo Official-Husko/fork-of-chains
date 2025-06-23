@@ -1,0 +1,96 @@
+:: QuestSetupScoutDesert [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'scout_desert',  /* id */
+  'Scout: Eastern Desert',  /* Title */
+  'darko',   /* author */
+  ['desert', 'quest'],  /* tags */
+  2, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_desert,
+    'scout2': setup.qu.scout_desert,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestScoutDesert',  /* description */
+  setup.qdiff.hard35,
+  [
+    [
+      'QuestScoutDesertCrit',
+      [
+        setup.qc.QuestDelay(setup.questpool.desert, 9),
+        
+      ]
+    ],
+    [
+      'QuestScoutDesertSuccess',
+      [
+        setup.qc.QuestDelay(setup.questpool.desert, 6),
+        
+      ],
+    ],
+    [
+      'QuestScoutDesertFailure',
+      [
+        setup.qc.Injury('scout1', 1),
+        setup.qc.Injury('scout2', 1),
+        setup.qc.Injury('guard', 1),
+      ],
+    ],
+    [
+      'QuestScoutDesertDisaster',
+      [
+        setup.qc.Injury('scout1', 2),
+        setup.qc.Injury('scout2', 2),
+        setup.qc.Injury('guard', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.scoutdesert, setup.rarity.common],],
+  [setup.qres.QuestAvailableUnique()],
+)>>
+
+:: QuestScoutDesert [nobr]
+
+<p>
+Your contacts in the <<lore region_desert>> have sent you several potential
+leads for jobs your company can take up there.
+Your slavers would need two weeks to follow up on these leads, should you wish to pursue them.
+Be warned that venturing to the <<lore region_desert>> is considerably more dangerous
+than the rest of the areas!
+</p>
+
+:: QuestScoutDesertCrit [nobr]
+
+<p>
+The scouting mission was a complete success, with your team returning with more
+quest options than expected.
+</p>
+
+:: QuestScoutDesertSuccess [nobr]
+
+<p>
+The scouting mission went about as well as expected, and your team returned with
+several quest options.
+</p>
+
+:: QuestScoutDesertFailure [nobr]
+
+<p>
+Your slavers were ambushed by another slaving company during their journey east.
+They managed to escape, but not without severe injuries.
+</p>
+
+:: QuestScoutDesertDisaster [nobr]
+
+<p>
+Either through bad luck or bad planning, your slavers were ambushed by a group of
+orc marauders. <<Yourrep $g.guard>> barely fended off the attack,
+but not without sustaining life-threatening injuries. <<They $g.guard>> will be
+out of commission for a good while.
+</p>

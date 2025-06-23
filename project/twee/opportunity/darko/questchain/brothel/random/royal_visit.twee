@@ -1,0 +1,107 @@
+:: OpportunitySetup_royal_visit [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'royal_visit', /* key */
+"Royal Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'unit',
+  'ire',
+],
+1, /* expiration weeks */
+'Opportunity_royal_visit',
+setup.qdiff.hardest69, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_royal_visit_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.VarSet('quest_brothel_royal_visit', '1', -1),
+      setup.qc.Slaver('target', "a|was a royal impressed by your brothel and decided to join your company out of curiosity", undefined),
+    ],
+  ],
+  [
+    'Opportunity_royal_visit_1',
+    'Opportunity_royal_visit_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.VarSet('quest_brothel_royal_visit', '1', -1),
+      setup.qc.RemoveTitleGlobal('quest_brothel_owner_0'),
+      setup.qc.Slave('target', "a|was a royal who took patron your brothel, only to be remade as a slave", undefined),
+      setup.qc.Ire('neko', 20),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+  'target': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_royal_visit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The neko royal who had patroned your brothel has arrived at your fort, to personally meet with you, the proprietor of the place. <<They $g.target>> target|is greatly impressed by the brothel, and especially the head courtesan <<name $g.slave>>, who managed to satisfy the royal's secretly submissive tendencies with a masterful show of dominance.
+</p>
+
+<p>
+With that, the royal surprisingly asks if your company would allow <<them $g.target>> to join your ranks. <<They $g.target>> would consider this venture as a sort of vacation from <<their $g.target>> daily job, a welcome change from the endless paperwork that <<they $g.target>> would normally do. Having such a prestigious slaver would no doubt be useful for your company.
+</p>
+
+<p>
+There is a sinister alternative, however. With the royal all alone and vulnerable here within your fort, you could in theory try to capture the <<man $g.target>> and make <<them $g.target>> your slave. This could be an extremely rare opportunity to get your <<uhands $unit.player>> on a royalty of <<lore location_npc>>. However, there is no doubt that the brothel will be held responsible for the disappearance, and the brothel will almost guaranteed to close afterwards. Not to mention the anger you will no doubt receive from the neko...
+</p>
+
+<<unitcard $g.target 1>>
+
+
+:: Opportunity_royal_visit_0 [nobr]
+Recruit
+
+
+
+:: Opportunity_royal_visit_1 [nobr]
+Enslave
+
+
+:: Opportunity_royal_visit_1_flavor [nobr]
+<p>
+The news of your new slave's disappearance will no doubt spready very quickly. Your brothel is effectively exchanged for a slave. But seeing your new slave quivering in anger, being fully bound right in your office makes all of these worth it.
+</p>

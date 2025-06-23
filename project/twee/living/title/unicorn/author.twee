@@ -1,0 +1,43 @@
+:: LIVINGSETUP_author [nobr living]
+
+<<run new setup.Living({
+  key: 'author',
+  name: 'Author',
+  tags: ['unicorn', ],
+  unit_restrictions: [
+    setup.qres.HasTitle('quest_author_of_the_teachings_of_obedience_0'),
+  ],
+  default_preference: setup.LIVING_UNICORN_PREFERENCE,
+  trait_preferences: {
+  },
+  business: [
+    'writing new passages',
+    'reading books for inspirations',
+    'signing one of a|their books',
+  ],
+  location: 'library',
+})>>
+
+:: LIVING_author [nobr]
+
+<p>
+<<Yourrep $g.a>> decided to put down the whip and take up the pen as a permanent job.
+Thanks to <<their $g.a>> runaway success with <<their $g.a>> prior book, The
+Teachings of Obedience, <<they $g.a>> quickly find new readers with <<their $g.a>>
+subsequent books.
+Their fourth book,
+<<if $g.a.isHasTrait('per_lustful')>>
+The Slaver's Many Lovers,
+<<elseif $g.a.isHasTrait('per_chaste')>>
+A Chaste Slaver
+<<elseif $g.a.isHasTrait('per_brave')>>
+The Dragon and the Slave
+<<elseif $g.a.isHasTrait('per_cruel')>>
+The Whipping Slave
+<<elseif $g.a.isHasTrait('per_kind')>>
+Touch of Sympathy
+<<else>>
+The Slaver's Guide to Everything
+<</if>>
+became a best-seller in <<lore geo_mestia>>.
+</p>

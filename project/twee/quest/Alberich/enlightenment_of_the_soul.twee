@@ -1,0 +1,270 @@
+:: QuestSetup_enlightenment_of_the_soul [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriapupil = new setup.UnitCriteria(
+null, /* key */
+'Pupil', /* name */
+[
+setup.trait.bg_mythical, 
+setup.trait.bg_wiseman, 
+setup.trait.bg_mystic, 
+setup.trait.bg_monk, 
+setup.trait.bg_priest, 
+setup.trait.bg_healer, 
+setup.trait.bg_apprentice, 
+setup.trait.bg_scholar, 
+setup.trait.per_chaste, 
+setup.trait.per_lavish, 
+setup.trait.per_humble, 
+setup.trait.per_kind, 
+setup.trait.per_loyal, 
+setup.trait.per_direct, 
+setup.trait.per_empath, 
+setup.trait.per_honorable, 
+setup.trait.per_calm, 
+],
+[
+setup.trait.bg_mist, 
+setup.trait.bg_assassin, 
+setup.trait.bg_informer, 
+setup.trait.bg_slaver, 
+setup.trait.bg_raider, 
+setup.trait.bg_pirate, 
+setup.trait.bg_thug, 
+setup.trait.bg_thief, 
+setup.trait.bg_mercenary, 
+setup.trait.bg_whore, 
+setup.trait.bg_unemployed, 
+setup.trait.per_lustful, 
+setup.trait.per_sexaddict, 
+setup.trait.per_proud, 
+setup.trait.per_cruel, 
+setup.trait.per_lunatic, 
+setup.trait.per_masochistic, 
+setup.trait.per_sly, 
+setup.trait.per_evil, 
+setup.trait.per_aggressive, 
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.Trait(setup.trait.gender_female), 
+setup.qres.HasTitle('quest_enlightenment_2_graduate_1'), 
+setup.qres.Trait(setup.trait.magic_light), 
+],
+{ 
+arcane: 3, 
+}
+)>> 
+
+<<run new setup.QuestTemplate(
+'enlightenment_of_the_soul', /* key */
+"Enlightenment of the Soul", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[ 'veteran', 'special', 'trait', 'prep', 'city',
+], /* tags */
+40, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+  'pupil': [_criteriapupil, 3],
+},
+{ /* actors */
+'child': null,
+'master': 'quest_enlightenment_of_the_mind1', },
+[ /* costs */
+setup.qc.Money(-10000), ],
+'Quest_enlightenment_of_the_soul',
+setup.qdiff.normal50, /* difficulty */
+[ /* outcomes */
+[
+'Quest_enlightenment_of_the_soulCrit',
+[
+setup.qc.Event('coming_of_age', 938, {child: 'child',}),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 2, true), 
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_2_graduate_1'), 
+setup.qc.TraitReplace('pupil', setup.trait.magic_light_master), 
+setup.qc.levelUp('pupil'), 
+setup.qc.AddHistory('pupil', "completed all three phases of Enlightenment at the Women's Academy of Light."), ],
+], [
+'Quest_enlightenment_of_the_soulCrit',
+[
+setup.qc.Event('coming_of_age', 938, {child: 'child',}),
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 1, true), 
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_2_graduate_1'), 
+setup.qc.TraitReplace('pupil', setup.trait.magic_light_master), 
+setup.qc.AddHistory('pupil', "completed all three phases of Enlightenment at the Women's Academy of Light."), ],
+], [
+'Quest_enlightenment_of_the_soulCrit',
+[
+setup.qc.SetCooldownQuest('enlightenment_of_the_mind', 100),
+setup.qc.MissingUnit('pupil'),
+setup.qc.RemoveTitle('pupil', 'quest_enlightenment_2_graduate_1'), 
+setup.qc.AddTraitsRandom('pupil', [setup.trait.per_lavish, setup.trait.per_humble, setup.trait.per_kind, setup.trait.per_loyal, setup.trait.per_direct, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 1, false), 
+setup.qc.TraitReplace('pupil', setup.trait.magic_light_master), 
+setup.qc.Ire('humankingdom', 1), 
+setup.qc.AddHistory('pupil', "completed all three levels of Enlightenment at the Women's Academy of Light."), 
+setup.qc.AddHistory('pupil', ", under the influence of Enlightenment, quit the slaving life and married a|their Pupilmaster and raised a|their child, until and unless nameless disaster tears a|their from them."), ],
+], [
+'Quest_enlightenment_of_the_soulCrit',
+[
+setup.qc.SetCooldownQuest('enlightenment_of_the_mind', 100),
+setup.qc.MissingUnitForever('pupil'), 
+setup.qc.Ire('humankingdom', 5), 
+setup.qc.MoneyCustom(-5000), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(), 
+setup.qres.Building(setup.buildingtemplate.veteranhall), 
+setup.qres.HasUnitWithTitle('quest_enlightenment_2_graduate_1', {
+  job_key: "slaver",
+}),
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTitleGlobal('quest_enlightenment_2_graduate_1'),
+],
+)>>
+
+:: Quest_enlightenment_of_the_soul [nobr]
+<<set _u = setup.getUnit({title: "quest_enlightenment_2_graduate_1"})>>
+
+<<if _u>>
+<p>You've answered the letter and made your decision. <<Yourrep _u>> is to spent forty weeks at the Women's Academy of Light, give birth to a child, and achieve Enlightenment of the Soul. Armed with the mastery of <<lore magic_light>> this brings, she is then to return to <<rep $company.player>> and support your foul dealings in the flesh trade. What could possibly go wrong? </p> 
+
+<p>
+<<dangertext 'Warning'>>: Ignoring this quest will cause all of <<reps _u>> prior trainings to be reverted!
+</p>
+<<else>>
+<<dangertext 'This quest is no longer able to be completed'>> due to you missing a critical unit
+important for this quest.
+<</if>>
+
+
+:: Quest_enlightenment_of_the_soulCrit [nobr]
+<<set _p = $g.pupil>>
+<<set _m = $g.master>>
+<<set _father = $family.getUnitRelation($g.child, 'father')>>
+
+<p> For the third and final time, <<rep _p>> makes her way to the Women's Academy of Light, with the right paperwork to show she is entitled to receive the third stage of instruction and enlightenment. As part of this process, she must give birth, but the answer to that is well in hand.</p>
+
+<<if _father && _father.isSlaver()>>
+  <p> An examination by a fellow student confirms what <<rep _p>> 's paperwork declares: she has arrived with child and is ready to proceed with her final enlightenment and training. If <<rep _m>> is disappointed, he does not show it. </p>
+<<else>>
+  <p> As on her previous sojourns, she begins with a bath, a change into a white academic robe, and a light meal with her Pupilmaster, <<rep _m>>, and the few other students who are attending for other degrees of enlightenment. Her paperwork reveals what she need not say aloud: that the Pupilmaster himself is to put her into the Happy State she needs to complete the course. The first night, she is to rest from her travels. The second night, as another staff member explains to her, is set aside for the Event. The second night comes. </p>
+  <<if _p.isHasTrait('race_lizardkin')>>
+    <p> <<rep _p>> steps into the central courtyard, where <<rep _m>> awaits her. He is fully unclothed already, and she casts her own robes aside confidently. They are <<urace _p>>, they are alone, and ancient instincts guide them in ways no outsider knows. </p>
+    <p>They approach each other slowly, their flexible necks swiveling as they look each other over. Both pairs of wings snap out to full span as they circle each other in silence. Their tails lash and their wings beat occasionally, and the circle becomes smaller as they draw ever closer. </p>
+    <p> When they're within two armspans, the female, <<rep _p>>, tosses her head up in a gesture that says, <i>You may approach.</i> <<rep _m>> takes two confident strides forward and takes her hands in his. Their dragonfaces dart inquisitively towards each other, snuffling and inhaling the strange pheromones of their kind. A change in scent signals them to the a higher level of desire, as they pull each other closer and begin to touch each other's bodies in ways any lovers might understand. Their tails snake around and begin to touch as well, teasing and stroking but not yet intertwining. Sometimes one tail will begin to curl and pump against the other, miming wild copulation. Their wings remain outstretched. They beat only occasionally. </p>
+    <p> The lovers' dragonsnouts are close and their tongues flick out, tantalizing each other. As <<rep _p>>'s arousal grows, she bends her head to one side, and <<rep _m>> takes it as a signal to coil his own head alongside of hers, and begin rubbing the sides and top of her head with his cheeks and chin. In so doing he stimulates contact points known only to their kind, and inspires a slowly rising, powerful, chemical thrum of excitement that electrifies her whole body and makes her most intimate parts fairly gush with lubrication. </p>
+    <p> When the excitement reaches its highest pitch, her tail twines itself around his, signaling that she is at last ready to be penetrated. He draws her close, and they entwine their necks, fingers, and legs as well as tails, as if they hoped to become one in body as well as in purpose, and he slowly pushes his well-formed member into her well-moistened gateway, which parts easily for him in her state of native excitement. Their wings beat in unison now—too slowly for flight—and the pace of their coupling begins slow and stately. Over two hours they remain joined. Throughout that time their movements grow slowly faster, as do the strokes of their wings, and at the end their pace is frantic as the wingbeats kick up a storm of dust and the flexible hips of the couple sinuate furiously into each other. Both climax in a hissing gasp, and his fertilizing seed pours into her for a full five minutes as they stand fixed and motionless, still wholly intertwined. </p>
+    <p>In time, he withdraws, they dress, and she makes her way back to her chamber. No words need be spoken; both are filled with drakish pride at their deed, and no reassurances are required.</p>
+  <<elseif _p.isHasTrait('race_catkin')>>
+    <p> The courtyard of the Academy has been reserved for the two neko this evening, and is lit only by starlight. In anticipation of their lovenight, the garden has been planted with shrubs and herbs from the <<lore region_forest>> that call to the innermost desires of the lithe, predatory, cat-like beings. When <<rep _p>> arrives, <<rep _m>> has already shed his garments, and she does not hesitate to shrug out of her academic robe. School's out for tonight. </p>
+    <p> The two naked neko circle each other at a distance, admiring each other's forms with their glowing night-eyes. <<Rep _p>> sometimes twirls, letting <<rep _m>> get a good look at her whole form, and her sharp, panther-like ears pick up his growl of appreciation. Playfully he rushes at her, she dodges, and they take up some time with these little play-chases. Soon enough, though, she remains with her back to him, her tail uplifted in excitement, and she turns her head back with a shy smile that says <i>come to me</i>. </p>
+    <p> As he draws hear, she turns to face him more fully, and they nuzzle each other's noses and begin to touch. Neko, like humans, are freed from the tyranny of the estrus cycle, but the right scents and touches can induce a state like it. <<Rep _m>> exudes those scents and knows those touches. In time <<rep _p>> is gripped with an overpowering instinct, and she drops to paws and knees, rests her cheek on the backs of her paws, curls her tail over her back, and presents herself to be mated. </p>
+    <p> <<rep _m>> takes the back of her neck in his jaws, and with a perfect instinct penetrates her well-wetted gateway. Their first copulation lasts only a few moments—but it is only the first. Each time they couple furiously for a short time, and when the instinct tells <<rep _p>> to stop, she snarls, curls her head back, and begins to bite at him until he pulls away, and they slink away to rest. But soon enough she is presenting herself again and soon enough they are coupling again. Between rests they couple at least thirty times that evening, and both revel in several climaxes. After the last they lie panting with satisfaction, sure that they have achieved their purpose. </p> 
+    <p> The two neko sleep near each other in the garden, and return to their chambers only close to dawn. </p>
+  <<elseif _p.isHasTrait('race_wolfkin')>>
+    <p>After nightfall, <<rep _p>> proceeds to the courtyard of the Academy, where she and <<rep _m>> are to be undisturbed for the night. The two werewolves face each other proudly, and throw aside their academic robes to face each other's nakedness. </p>
+  <p> The night is dark but for starlight, but they hardly need sight when they have scent and touch. They come close and touch and nuzzle each others long wolf-faces, and in time <<rep _p>>'s body exudes a scent that <<rep _m>> cannot ignore. When the time seems right, she turns to face away, crouches, and lifts her tail. </p>
+  <p> With an appreciative growl, <<rep _m>> grips her hips and slides his way into her, emitting a lubricant of his own to mingle with hers. Gently at first, then faster, they begin to mate, and as his excitement grows, his wolfcock swells until it is well locked inside her, and there is nothing that will part them until the deed is done. Yet he is gifted with the flexibility of all of his race, which allows the pair to change positions while mating without even a moment's withdrawal. When she feels like it, she cocks a leg, swivels her hips, and he's on top of her face to face, doing it “like the humans do,” but with her legs curled up as she pants with pleasure. </p>
+  <p>Later as they mate, they to turn tail to tail and buttock to buttock, with his flexible wolfcock still locked inside her and still knowing pleasure. <i>In extremis</i>, if a werewolf camp is attacked by raiders or slavers, a mating pair can assume this position, seize up their weapons, and defend themselves while continuing to mate. Werewolf legend says a child born to such a coupling will be a great warrior and a wolf of fortune, but only the most foolish or mad werewolves ever try to bring this about on purpose.</p>
+  <p>The two stay locked together for an hour, and <<rep _m>> orgasms twice, once halfway through and once near the end. Only then does his member begin to soften, and they are able to draw apart, both of them panting and grinning, and full of animal pride at the deed they've just done. Afterwards, they curl up on the ground and sleep in each other's scents, padding back contentedly to their separate beds only at daybreak. If their naked pride offends the modesty of any pupil or staff member, that pupil or staff member is keeping it to herself. </p> 
+  <<elseif _p.isHasTrait('race_greenskin')>>
+    <p> <<rep _p>> awaits <<rep _m>> in her chamber, and she does not have to wait very long. On her previous sojourns he has been her gentle, patient, but firm mentor, and guide in the ways of magic. Tonight he is a proud orc male, with a female to breed, and tonight she is ready to receive. He strides into her simple room confidently as if he'd just led a successful raid on her village. He puts a hand behind her head and strokes her coarse hair possessively. Tonight she is <i>his</i> and she knows it. Forcefully he tears open their robes and throws them aside 'til they are naked as a pair of beasts. </p>
+  <p>The tusked faces of orcs are not made for kissing, and their tough hides are not made for delicate touches, though they can learn these things from lovers (or in the training chambers of <<rep $company.player>>). But both sexes can take brute, raw sex for hours on end, and their bodies and minds can recover from a ravishing as if it were no more than a hard sprint. And what <<rep _m>> is dishing out tonight is not really rape anyway. It would just look like that to an untutored observer. </p>
+  <p> <<rep _m>> pumps and grunts away for an hour, hard enough to bring <<rep _p>> to two orcish climaxes, and to strain the sturdy construction of her bed. At the end he unleashes a massive load of semen, the musty smell recalling the Orcish Festivals of their youth. Their mouths both curl into grins of satisfaction as they know they've accomplished their purpose. In time, they dress and return to their rooms. They need no pillow talk. </p> 
+  <<elseif _p.isHasTrait('race_demon')>>
+    <p> The two enlightened demons meet in the Academy's courtyard after midnight, to spawn their child on the dewy grass. They both know what they have come for, but to begin with they do not speak. A female demon like <<rep _p>> is made to seduce mortals and carry them beyond the mists, where a male demon like <<rep _m>> is made to ravish them until they scream, then ravish them some more. They do not carry instincts for creating life, but when they wish, they can. Tonight they do. </p>
+
+  <p> <<rep _p>> walks past <<rep _m>> as if he were a stranger, but turning her head with a look that says, <i>You may have a chance. Try me if you dare.</i> <<rep _m>> boldly reaches out and touches her shoulder. She draws back, but not far, and does not flinch. He approaches again and takes another touch. Again she pulls away, but her eyes do not say she minded. The dance of seduction continues in silence—with a human victim, there would be words; with two of their kind, there is no need. </p>
+
+  <p> At one point her face mimes imperious disgust, and she points to a flower high on a wall, with a sweeping gesture that says, <i>Run over there and pick it for me.</i> He shakes his head and steps closer again. She repeats the gesture with more insistence. He grins wickedly, seizes her hips, throws her over his shoulder, and carries her to the wall. He lifts her in a way that says, <i>Pick it yourself.</i> Trembling with desire, she does. When he sets her down, he has shed his robe. She presents him with the flower and demurely drops her own garment. He flings the flower aside and steps forward to take possession of her pink blossom. </p>
+
+  <p>Their demonic wings snap out as they seize each other savagely, then the wings wave softly as their touches become more subtle. Their pointed tongues emerge and begin a subtle dance of their own, sliding and touching. Still kissing, they kneel, facing each other, and explore each other's bodies with fingers and tongues. In time, with a beat of his wings, <<rep _m>> launches himself backwards and lands on his muscular buttocks, his legs widespread and his demonic member jutting forward like a pike. Seeing no need to wait, <<rep _p>> settles herself between his legs, facing him still, supports herself with both hands, and moves forward to meet him. Soon they are joined. Raising her nether cheeks from the ground, she rocks and grinds, and both pairs of wings rattle as she brings them both to climax. </p> 
+
+  <p> Their grins of pride would frighten small children. Happily, none are nearby, though one will soon be growing inside <<rep _p>>. They detach, disentangle, and get to their feet. Romantic gestures, such as lying in each other's arms, are not needed. They appreciate each other's forms as they re-dress and make their separate ways to bed. </p> 
+  <<elseif _p.isHasTrait('race_elf')>>
+    <p> Loosening her academic robe, <<rep _p>> moves silkily to the courtyard, where <<rep _m>> awaits her, dressed also lightly. A small table holds glasses and a beaker of sweet nectar, whose subtle odors are well known to the elven initiate. </p>
+  <p>Among themselves, the fair folk of the forest favor long courtships, as if they had long lives to spend and few distractions within them. The nectar is designed to short-cut the process, and its ingredients include a small hint of the essence of the infamous Fruit of Sluttiness. A full draught of that essence would make a lifelong sex fiend of <<rep _p>>. <<if _p.isHasTrait('per_lustful')>> (Or at least it would if she wasn't one already . . .) <</if>> But a tiny hint in a well-crafted nectar, imbibed on a sweet night like tonight, will convert <<rep _m>> from a well-liked, handsome pupilmaster to a successful suitor, on the night they are to consummate their desire.</p>
+  <p>They sit together and sip in silence, enjoying a fresh night breeze—the site of the academy is well chosen, and tonight no foul winds blow from within the city itself. And they talk of simple things, and of mystical things, and of their times together so far, for it is not the way of their kind to show urgency on such nights as these. In time the talk turns to kissing, and the kissing is long and lingering with slow and delicate touches, as though they had a lifetime, and a long lifetime at that, to spend. </p> 
+  <p>In time <<rep _m>> leads <<rep _p>> to a comfortable cot, and they make love through the night, as unhurried as a true elfin courtship, and his touches bring her long, trembling climaxes several times that night. Only in hours before daybreak does he take a seat on the cot, as she rests herself on his thighs, and with a friendly guiding hand lets him ease himself inside her. Their hips move gently as their lips meet tenderly, and both slowly mount the heights of passion one last time. As she feels his release she knows their purpose has succeeded, and she will be the mother of his child, as seems more right than anything else she has ever been. </p> 
+  <p>The two lie in each other's arms until the sun is halfway to its zenith, talking of little things and great ones, and sometimes touching and kissing and thinking of their child. The academy staff understand and do not disturb them. At last they return to their chambers for some much-needed rest. The next day they return to their duties. </p> 
+  <<else>> 
+    <p> <<rep _m>> and <<rep _p>> meet in the courtyard that evening. It has been cleared for them, and a table is set up with a pitcher of delicious 
+    <<if _p.isHasTrait('subrace_humandesert')>> date-palm wine
+    <<elseif _p.isHasTrait('subrace_humansea')>> coconut liquor
+    <<else>> wine
+    <</if>>
+    from their native land. Behind a screen, a harpist and a flautist play a soothing air to set the mood as they sit, drink, and talk. They do have so much to talk about, their times together so far, their recent lives (<<rep _p>> is circumspect about her slaving career), their memories of the old country. The subtext of what tonight is for remains below the surface—at least at first. 
+    </p>
+    <p>
+    <<if _p.isHasTrait('per_dominant')>>
+      Then <<rep _p>> 's decisive nature takes over. She takes <<rep _m>> by the hand and says simply, “Let's.” She leads him to her chamber where the deed is to be done. 
+    <<elseif _p.isHasTrait('per_aggressive')>>
+      Then <<rep _p>> aggressively decides to make the first move. She takes <<rep _m>> by the arm and says she has better ideas for the night than small talk. She leads him swiftly to her chamber. 
+    <<else>>
+      In time, the conversation turns to children, and the right way to raise them, and from there, as naturally as you'd please, to the child they mean to have together. As it continues, <<rep _m>> looks a question at <<rep _p>>, whose eyes look back a <i>yes</i>, so he takes her by the hand and leads her to her chamber.
+    <</if>>
+    </p>
+    <p> Once behind her door, the pair lock each other in a tight embrace and an amorous kiss, which goes on quite some while. <<Rep _m>> leads <<rep _p>> to her bed, where the touches and kisses continue. 
+    <<if _p.isHasTrait('per_dominant')>>
+      This is not the night to play mistress-and-slave, but <<rep _p>> feels most comfortable taking the lead role, and <<rep _m>> is willing to accommodate. She forces him back on the bed and straddles him. Between hard kisses she gets them both undressed, and firmly guides his hands to the spots that arouse her most. 
+    <<elseif _p.isHasTrait('per_submissive')>>
+      This is not the night to play master-and-slave, but <<rep _p>> likes a man who takes charge, and her body language tells him as much. With sure, confident hands, he strips them both to the skin. Then he presses her back onto the bed and under him, and they continue their lovemaking. 
+    <<elseif _p.isHasTrait('per_lustful')>>
+      Desire seizes control of <<rep _p>>, and she practically tears the clothes off both of them in her eagerness to know him fully. 
+    <<elseif _p.isHasTrait('per_lunatic')>>
+      <<rep _p>> 's eyes light up with blue fire and she goes mad with desire, practically tearing the clothes off both of them in her eagerness to get close. <<Rep _m>> is startled by the suddenness of the change, but doesn't take long to get used to it. 
+    <<else>>
+      The two are soon nude, and touching each other tenderly.
+    <</if>>
+    <<if _p.isHasTrait('per_playful') || _p.isHasTrait('per_active')>> Playfully and energetically, she puts him on his back and gives attention with her mouth and hands to his body. At one point she gives him oral pleasure, making eye contact to let him know how much she's enjoying it, but she doesn't bring him all the way over. She has other needs for his vital juices tonight. 
+    <<elseif _p.isHasTrait('per_calm') >> Filled with calm and tranquility, she naturally puts him at his ease, and they make unhurried love, leaving no doubt that their evening will come to a happy conclusion. 
+    <<elseif _p.isHasTrait('per_empath') || _p.isHasTrait('per_attentive')>>
+      <<rep _p>> has a natural gift for knowing what a lover wants, and tonight it is her pleasure to give it to him. 
+    <<else>>
+    An hour of sweet touches passes between them.
+    <</if>> </p>
+
+    <p>
+    <<if _p.isHasTrait('per_cruel')>>
+      On a sudden impulse, <<rep _p>> grins fiercely into <<rep _m>> 's face. Stretching out on her back, she draws <<rep _m>> into her and encourages him to take her fast and hard. Giving in to her sadistic tendencies, she rakes his back with her nails, leaving scars that will endure for a week unless he heals them. 
+    <<elseif _p.isHasTrait('per_lustful')>>
+      <<rep _p>>'s lusty body thrills with increasing excitement until she can take no more waiting. With hungry eyes she pulls him on top of her and draws him inside, grinding her hips below his and encouraging him at his work. 
+    <<elseif _p.isHasTrait('per_dominant')>>
+      When she decides she wants him inside her, <<rep _p>> sees no reason to wait or hesitate. She rolls him onto his back, rubs her warm wetness against his shaft, and slides him inside. She begins to ride him at the pace she likes best, and quite simply to have her way with her loyal mentor, who for now is acting at <i>her</i> direction. 
+    <<else>> In time, they find themselves back to front, as he caresses her <<ubreasts _p>>, nibbles at her shoulder, and warms her body with his. Then they curl their legs and he penetrates her from behind, slowly pushing his full length into her and beginning to thrust with gentle motions.
+    <</if>>
+    Together <<rep _m>> and <<rep _p>> climb the heights of passion, and in the explosion of his pleasure she knows they have achieved their aim. They snuggle for a while in her bed. Then he leaves her to return to his own while she falls asleep contentedly. </p>
+  <</if>>
+<</if>>
+
+<p> After that, the weeks and months proceed swiftly, for they are the busiest of <<rep _p>>'s life. Sometimes she must study and perform optical experiments with magic light. Sometimes she must medidate, and summon the Pure Light to infuse her. Often she must go into the city to assist with healing missions, or receive afflicted citizens in the Academy's infirmary. The practical experience melds with her book-studies of anatomy and disease, and raises her skill as a healer. The long hours give her little time to think of the life she is to return to, but she finds that long hours of service are fulfilling in ways most slavers never dream. </p> 
+<p>And all the while she lives this round of study and work and contemplation and magical practice, <<if _p.isHasTrait('race_lizardkin')>> the egg containing her child <<else>> her child <</if>> grows within her, increasing her happiness and contentment. Her new skills include spells and techniques for easing sickness and pain, so that the worst of the nausea and backaches other mothers suffer are spared her. But this does not make her life easy; it simply frees her up for more duties. While her mind and hands are kept busy, <<rep _m>> and the Academy staff are solicitous of her needs, and ensure that she is well nourished and has the rest she needs. When she is not engaged with study or healing she does not have to do a thing for herself, and this is an exceeding pleasing if profoundly simple life. </p>
+<p>
+Towards the end of the course, the day comes, and <<rep _p>> gives birth to an exceptionally beautiful child. <<if _p.isHasTrait('race_lizardkin')>> Her body reabsorbs the remains of the ruptured egg that held it all this time. <</if>> As before, she is well attended by Academy healers and students well versed in childbirth, and her own magecraft ensures that the pain is not overwhelming as she passes her beautiful burden into the world. As she holds her child, her body is suffused for a moment with the Pure Light, and she knows she has mastered the Art she came to master. </p>
+<p>
+<<if $gOutcome == 'failure'>>
+Looking down at her child, she realizes a new truth about herself: she cannot possibly go back to slaving. You receive a “Dear <<name $unit.player>>” letter, explaining that you will never see her again, but that she means to marry her loving pupilmaster, <<rep _m>>, raise her new child, and renounce slavery forever. Whether that resolve <i>really</i> sticks, you suspect, will depend on whether she meets with some future disaster, as so often happens to wayward slavers who try to make amends. 
+<<elseif $gOutcome == 'disaster'>>
+Looking down at her child, she is overcome with emotion and realizes a new truth about herself: she cannot possibly go back to slaving, in any capacity whatsoever. She must instead dedicate her life to the extirpation of slavery and all those who practice it, or at least giving the support of her knowledge and magecraft to those who do. After her course ends, she not only refuses to return to <<rep $company.player>>, but tells the authorities many uncomfortable details about your secret routes to carry out slaving missions and the corruptible guards and officials you have subverted.
+<<set _cityscout = $dutylist.getUnitIfAvailable('scoutcity')>>
+<<if _cityscout>>
+Your City Scout, <<rep _cityscout>>, has <<their _cityscout>> work cut out for <<them _cityscout>> over the next few weeks, and has to work overtime and pay heavy bribes (all coming out of <i>your</i> treasury) to restore things to something like normal, and even so you have lost some well-earned reputation with the men of Tor. So much for enlightenment! 
+<<else>>
+You and your staff have your work cut out for you over the next few weeks, and have to work overtime and pay heavy bribes to restore things to something like normal, and even so you have lost some well-earned reputation with the men of Tor. So much for enlightenment! 
+<</if>>
+<<else>> (More details concerning this child, including important decisions she must make concerning its future, will appear as an encounter after this quest.) 
+<</if>>
+</p>
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>> <p> The remaining brief time is sweet and restful; <<rep _p>> is given no duty she cannot handle, though the duties themselves are as sweet as the newborn she keeps so near. 
+</p>
+<p> 
+Only with sadness does she realize the time has come to return to <<rep $company.player>>, and that the plans she has made for the little one do not permit her to bring it to a slaving fort. But she knows that those plans are for the best. For her the time has come to put her new knowledge, gained through an all-pervading Enlightenment, back to the uses you have planned: to heal slaves and slavers, to combat corruption and insanity so as to raise the value of their flesh, and to fatten your coffers with ill-gotten gold. </p>
+<p> There's nothing wrong with <i>that</i>, is there? </p> 
+<</if>>

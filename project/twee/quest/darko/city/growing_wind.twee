@@ -1,0 +1,183 @@
+:: QuestSetup_growing_wind [nobr quest]
+
+<<set _criteriacenter = new setup.UnitCriteria(
+null, /* key */
+'Center', /* name */
+[
+  setup.trait.bg_mystic,
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_stubborn,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+],
+[
+  setup.trait.tough_nimble,
+  setup.trait.per_cautious,
+  setup.trait.per_curious,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+  setup.qres.AllTraits([setup.trait.magic_wind], true),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<set _criteriab1 = new setup.UnitCriteria(
+null, /* key */
+'Battery', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.IsCanBeSold(),
+  setup.qres.AnyTrait([setup.trait.magic_wind, setup.trait.magic_wind_master], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'growing_wind', /* key */
+"Growing Wind", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'trait',
+  'city',
+  'danger',
+  'rare',
+],
+10, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'center': [ _criteriacenter, 3],
+  'b1': _criteriab1,
+  'b2': _criteriab1,
+  'b3': _criteriab1,
+  'b4': _criteriab1,
+  'b5': _criteriab1,
+  'b6': _criteriab1,
+  'b7': _criteriab1,
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-10000),
+],
+'Quest_growing_wind',
+setup.qdiff.normal44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_growing_windCrit',
+    [
+      setup.qc.OneRandomSeed([
+        setup.qc.Trait('center', setup.trait.per_lunatic),
+        setup.qc.Trait('center', setup.trait.per_masochistic)
+      ]),
+      setup.qc.TraitsReplace('center', [setup.trait.magic_wind_master]),
+      setup.qc.TraitRemove('b1', setup.trait.magic_wind),
+      setup.qc.TraitRemove('b1', setup.trait.magic_wind_master),
+      setup.qc.TraitRemove('b2', setup.trait.magic_wind),
+      setup.qc.TraitRemove('b2', setup.trait.magic_wind_master),
+      setup.qc.TraitRemove('b3', setup.trait.magic_wind),
+      setup.qc.TraitRemove('b3', setup.trait.magic_wind_master),
+      setup.qc.TraitRemove('b4', setup.trait.magic_wind),
+      setup.qc.TraitRemove('b4', setup.trait.magic_wind_master),
+      setup.qc.TraitRemove('b5', setup.trait.magic_wind),
+      setup.qc.TraitRemove('b5', setup.trait.magic_wind_master),
+      setup.qc.TraitRemove('b6', setup.trait.magic_wind),
+      setup.qc.TraitRemove('b6', setup.trait.magic_wind_master),
+      setup.qc.TraitRemove('b7', setup.trait.magic_wind),
+      setup.qc.TraitRemove('b7', setup.trait.magic_wind_master),
+      setup.qc.SetCooldownQuest(null, 200),
+      setup.qc.Injury('center', 5),
+    ],
+  ],
+  [
+    'Quest_growing_windCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Injury('center', 5),
+    ],
+  ],
+  [
+    'Quest_growing_windCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Injury('center', 20),
+    ],
+  ],
+  [
+    'Quest_growing_windCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Injury('center', 40),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+setup.qres.AllTraits([setup.trait.magic_wind], true)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_growing_wind [nobr]
+<p>
+Wind magic is perhaps the most common magic to be found within the <<rep $company.humankingdom>>, for the sole reason that the humans living there are attuned to the element. Wind magic is very versatile — basic enchantment can simply be used to make one move faster, or to rapidly clean a building or two. Advanced wind magic, on the other hand, is something else entirely.
+</p>
+
+<p>
+Master of wind magic are akin to living magical batteries, storing so much power within them that they can let them out as electric sparks. This can be used to various effects, be it as an effective combat spell, or more creatively as a tool for breaking <<men $unit.player>>. But these masters are very far and in between, and people gifted with this magic remains extra-ordinarily sought after.
+</p>
+
+<p>
+While some people are born naturally with the talent, it is possible to bestow this power upon another, upgrading their mastery to mastery, but at a very steep cost. Seven other practitioner of <<rep setup.trait.magic_wind>> must sacrifice their magic in order to pool their magical reserve together and gift them to the prospective master. There are already very few of these practitioners, and understandably there are even fewer of them that are willing to part with their mastery to impart upon another.
+</p>
+
+<p>
+A slaver under your employ has been known as a practitioner of <<rep setup.trait.magic_wind>> for some time now. As the leader of a slaving company, you are in a unique position where you can more easily find the required "volunteers" to donate the magic to your slaver. If you have seven slaves gifted with <<rep setup.trait.magic_wind>>, you could try to attempt the ritual, although rumors said that the ritual often <<dangertext "comes with side effects...">>
+</p>
+
+
+
+
+
+:: Quest_growing_windCrit [nobr]
+<p>
+One by one, the magical essence were transferred from the struggling and unwilling slaves over to <<yourrep $g.center>>. Little by little, the pool of energy started to build within <<therace $g.center>>. But of course, it was without side effects. The first transfer went harmlessly, but the second was incredibly difficult and took almost a week to do. The third was incredibly painful, and your slaver refused to talk about the fourth one.
+The fifth one accidentally rewired the slaver's brain,
+<<if $gQuest.getSeed() % 2 == 0>>
+affecting their sanity permanently.
+<<elseif $gQuest.getSeed() % 2 == 1>>
+rewiring pain to pleasure, and the slaver was transformed into a masochistic <<man $g.center>>.
+<</if>>
+The sixth
+<<if $gOutcome == 'crit'>>
+slightly injured
+<<elseif $gOutcome == 'success'>>
+injured
+<<elseif $gOutcome == 'failure'>>
+heavily injured
+<<elseif $gOutcome == 'disaster'>>
+gravely injured
+<</if>>
+the slaver.
+It took ten entire weeks to finish all the transfers, and while <<yourrep $g.center>> now have a newfound mastery of <<rep setup.trait.magic_wind_master>>, was it worth the many drained slaves <<they $g.center>> had left behind?
+</p>

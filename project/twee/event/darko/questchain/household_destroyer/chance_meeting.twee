@@ -1,0 +1,39 @@
+:: EventSetup_chance_meeting [nobr event]
+
+<<run new setup.Event(
+'chance_meeting', /* key */
+"Chance Meeting", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+'Event_chance_meeting',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+  ],
+  'drow': setup.contacttemplate.quest_household_destroyer_host,
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_household_destroyer', '110', -1),
+  setup.qc.SetCooldownQuest('subby_conversion', 5),
+  setup.qc.Opportunity('chance_meeting', {
+you: "you",
+drow: "drow",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_household_destroyer', '105'),
+],
+0, /* Cooldown */
+setup.rarity.epic, /* Rarity */
+)>>
+
+:: Event_chance_meeting [nobr]
+<<include "Opportunity_chance_meeting">>

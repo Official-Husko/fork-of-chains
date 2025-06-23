@@ -1,0 +1,258 @@
+:: QuestSetup_oh_what_a_show [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"oh_what_a_show0",
+'"Tiger"',
+'subrace_neko', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Trait('unit', setup.trait.muscle_verystrong),
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+
+<<set _criteriaanitrai = new setup.UnitCriteria(
+null, /* key */
+'Animal Handler', /* name */
+[
+  setup.trait.per_aggressive,
+  setup.trait.per_brave,
+  setup.trait.skill_animal,
+  setup.trait.muscle_strong,
+  setup.trait.per_smart,
+  setup.trait.tough_nimble,
+  setup.trait.bg_slaver,
+],
+[
+  setup.trait.per_evil,
+  setup.trait.per_lunatic,
+  setup.trait.muscle_thin,
+  setup.trait.per_slow,
+  setup.trait.per_cruel,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1,
+  slaving: 2,
+}
+)>>
+
+<<set _criteriafp1 = new setup.UnitCriteria(
+null, /* key */
+'Fake Peasants', /* name */
+[
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_attentive,
+  setup.trait.subrace_humanvale,
+  setup.trait.bg_farmer,
+  setup.trait.skill_connected,
+  setup.trait.per_curious,
+],
+[
+  setup.trait.per_aggressive,
+  setup.trait.per_lunatic,
+  setup.trait.per_empath,
+  setup.trait.per_direct,
+  setup.trait.race_greenskin,
+  setup.trait.race_lizardkin,
+  setup.trait.race_demon,
+  setup.trait.per_dreamy,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  social: 2,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'oh_what_a_show', /* key */
+"Oh What A Show", /* Title */
+{  /* Author */
+  name: "Da_Shem",
+  url: 'https://discord.com/channels/774271990571335710/780362824047394827/804777235285409832',
+},
+[ /* tags */
+  'vale',
+  'unit',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'anitrai': [ _criteriaanitrai, 1],
+  'fp1': [ _criteriafp1, 1],
+  'fp2': [ _criteriafp1, 1],
+},
+{ /* actors */
+  'tiger': 'oh_what_a_show0',
+},
+[ /* costs */
+],
+'Quest_oh_what_a_show',
+setup.qdiff.normal20, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_oh_what_a_showCrit',
+    [
+      setup.qc.Favor('humanvale', 100),
+      setup.qc.Slave('tiger', "a|was playing the part of a tiger in a circus show", undefined),
+    ],
+  ],
+  [
+    'Quest_oh_what_a_showCrit',
+    [
+      setup.qc.Outcomes('crit'),
+      setup.qc.Injury('anitrai', 4),
+    ],
+  ],
+  [
+    'Quest_oh_what_a_showCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_oh_what_a_showCrit',
+    [
+      setup.qc.Ire('humanvale', 5),
+      setup.qc.Injury('anitrai', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_oh_what_a_show [nobr]
+
+<p>
+<<if $statistics.isHasSuccess('oh_what_a_show')>>
+The travelling circus has once again reached the <<rep $company.humanvale>> and the rumors are flying high and wide.
+<<else>>
+A travelling circus company has reached the <<rep $company.humanvale>> and the rumors are flying high and wide.
+<</if>>
+They'll bring not only acrobats and entertainers but also foreign creatures not often seen in these parts. Fire breathing dragonkin, mysterious tigerkin and also a demon and angel couple, once ancient enemies, now passionate lovers!
+</p>
+
+<p>
+Or so the flyers say at least. You are personally highly skeptical to these claims (for a good reason!) but some of your slavers have pointed out that if even one of them are true you could stand to gain some very valuable pieces of merchandise.
+You could send the slavers to the show.
+You just hope that they are motivated by something else other than just a desire to watch and enjoy the show.
+</p>
+
+
+:: Quest_oh_what_a_showCrit [nobr]
+
+<p>
+<<Rep $g.fp1>> and <<rep $g.fp2>> mingled with the crowd outside the giant
+tent, chatting amiably and keeping their eyes open. The air was thick with
+excitement and once the crew started letting people into the tent, <<rep
+$g.fp1>> and <<rep $g.fp2>> had to use a liberal amount of elbowing to make
+their way to the front. The shows were varied throughout the day and they had
+just shown up in time for the
+
+<<if $gQuest.getSeed() % 2 == 0>>
+
+"Passionate Meeting Between Heaven and Hell!".
+The lights dimmed and two spotlights, one red and one blue lit up entrances into the tent. Out of these strode two figures, one hulking and red skinned, the other lithe and with feathery wings. They fell on one another with a great show of force, before transforming the scene into one of passion.
+The demon lifting the angel up and slamming it to the wall while the angel wrapped their legs around it's companions waist kissing them fiercely.
+<<if $g.fp1.isHasTrait('per_attentive') and $g.fp2.isHasTrait('per_attentive')>>
+It was obvious to both your slavers that this was a pure act of flim-flam.
+The "demons" red skin had already started flaking off
+and the angels" wings were fake and unmoving, still
+<<elseif $g.fp1.isHasTrait('per_attentive')>>
+It was obvious to <<rep $g.fp1>> that this was a pure act of flim-flam. The "demons" red skin had already started flaking off and the angels" wings were fake and unmoving, still
+<<elseif $g.fp2.isHasTrait('per_attentive')>>
+It was obvious to <<rep $g.fp2>> that this was a pure act of flim-flam. The "demons" red skin had already started flaking off and the angels" wings were fake and unmoving, still
+<<else>>
+It was a magical act of having a demon and an angel be together like this -- or so your slavers though -- but you have no doubt that whatever "angel" or "demons" were on show must be a pure act of flim-flam.
+Your slavers couldn't spot the trick, but despite that
+<</if>>
+the performance itself was very good.
+
+<<elseif $gQuest.getSeed() % 2 == 1>>
+
+flaming conqueror of the south. All the lights dimmed as a slow drumbeat was started. Out of the darkness <<rep $g.fp2>> could barely make out a silhouette moving into the tent before a sudden burst of fire lit up a scaled figure standing in the middle.
+He held the chains leading to two collared naked elven <<women $g.tiger>> kneeling before him,
+and the fire seemed to be coming from his maw.
+He roared at the public as his two captives reached up to caress him as if in supplication, the heat and sharp shadows adding to the intense showing.
+
+<<if $g.fp1.isHasTrait('per_attentive') and $g.fp2.isHasTrait('per_attentive')>>
+It was obvious to both your slavers that this was a pure act of flim-flam. The dragon was a far more common lizardkin and one of the elven women seemed to be casting a spell to control the fire, still
+<<elseif $g.fp1.isHasTrait('per_attentive')>>
+It was obvious to <<rep $g.fp2>> that this was a pure act of flim-flam. The dragon was a far more common lizardkin and one of the elven women seemed to be casting a spell to control the fire, still
+<<elseif $g.fp2.isHasTrait('per_attentive')>>
+It was obvious to <<rep $g.fp1>> that this was a pure act of flim-flam. The dragon was a far more common lizardkin one of the elven women seemed to be casting a spell to control the fire, still
+<<else>>
+There was no way a circus troupe could convince a dragonkin to perform in such a show.
+But whatever trick was hidden in the show, your slavers couldn't spot it. Either way,
+<</if>>
+the performance itself was very good.
+
+<</if>>
+</p>
+
+<p>
+<<if $g.fp1.getSpeech() == setup.speech.friendly>>
+<<rep $g.fp1>> enjoyed being out in the crowd and joined the crowed in their awws and ahhs
+<<elseif $g.fp1.getSpeech() == setup.speech.bold>>
+<<rep $g.fp1>> shouted suggestions into the ring
+<<elseif $g.fp1.getSpeech() == setup.speech.cool>>
+<<rep $g.fp1>> looked on with an unimpressed scowl
+<<elseif $g.fp1.getSpeech() == setup.speech.witty>>
+<<rep $g.fp1>> started heckling shamelessly hoping to get a rise out of the circus people
+<<elseif $g.fp1.getSpeech() == setup.speech.debauched>>
+<<rep $g.fp1>> got inspired from the show and started feeling up <<their $g.fp1>> neighbor
+<</if>>
+when suddenly a commotion was heard.
+</p>
+
+<p>
+While the show had been going on <<rep $g.anitrai>> had used the distraction to make <<their $g.anitrai>> way into the backstage area, looking around for any of the exotic specimens. They found what seemed to be the tigerkin sleeping chained to a wall. Quietly and confidently <<they $g.anitrai>> unlocked the simple chain and kicked the cat awake, hoping that a strong first impression would put the big cat in it's place...
+</p>
+
+<p>
+<<Rep $g.anitrai>> anitrai|was wrong about <<their $g.anitrai>> judgement.
+The commotion <<rep $g.fp1>> had heard turned out to be <<rep $g.anitrai>> running for 
+<<their $g.anitrai>> life, with a furious giant neko at <<their $g.anitrai>> heels.
+<<Rep $g.anitrai>> bowled over the performers in <<their $g.anitrai>> wake and tried desperately to climb the tent pole to get away. Some of the circus people tried to use the chain attached to the neko collar to drag <<them $g.tiger>> back but that just made them skid after the cat in the arena's sand.
+</p>
+
+<p>
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+It took more than an hour to get <<therace $g.tiger>> under control, much to the amusement of the crowd who enjoyed this show much more then the earlier ones.
+<<if $gOutcome == 'success'>>
+The neko even managed to take a bite out of <<reps $g.anitrai>> rear once he was dangling from the tent pole.
+<</if>>
+<<Rep $g.anitrai>> theatrically played up what a liability such a vicious creature is and how they were going to inform the guard and managed to divert any questions on how the tiger got loose in the first place. The circus quite promptly decided that whatever <<rep $g.tiger>> brought to the show wasn't worth the risk. And who would happened to be there but <<rep $g.fp1>> and <<rep $g.fp2>>? Two innocent members of the audience who just happened to be able to take the neko out of their hands.
+<<if $gOutcome == 'crit'>>
+Happily, your slavers made of with both <<rep $g.tiger>> and the well wishes of <<rep $company.humanvale>> for their bravado.
+<</if>>
+
+<<elseif $gOutcome == 'failure'>>
+
+<<rep $g.anitrai>> managed to make <<their $g.anitrai>> way into the audience and the circus crew managed to get the neko under control just before <<they $g.tiger>> would have reached the crowd. With the disaster narrowly averted, you slavers decided not to stay for the second act just in case someone had any questions on how the beast had gotten lose in the first place.
+
+<<elseif $gOutcome == 'disaster'>>
+
+<<rep $g.anitrai>> managed to make <<their $g.anitrai>> way into the audience, The neko followed suit, and panic ensued. The packed tent was a mess of screams and panicking bodies, and it's quite frankly a miracle that nobody died.
+<<Rep $g.fp1>> and <<rep $g.fp2>> managed to drag out a heavily injured <<rep $g.anitrai>> but in doing so outed themselves as <<their $g.anitrai>> companions and it didn't take long for the news of the disaster to spread, tainting the reputation of <<rep $company.player>> among the <<rep $company.humanvale>>.
+
+<</if>>
+</p>
+

@@ -1,0 +1,201 @@
+:: OpportunitySetup_subtle_retaliation [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'subtle_retaliation', /* key */
+"Subtle Retaliation", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+  'special',
+],
+1, /* expiration weeks */
+'Opportunity_subtle_retaliation',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_subtle_retaliation_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('direct_sabotage', {
+        slaver: "slaver",
+        boss: "boss",
+      }),
+    ],
+  ],
+  [
+    'Opportunity_subtle_retaliation_1',
+    'Opportunity_subtle_retaliation_1_flavor',
+    [ /* costs */
+      setup.qc.Favor('humankingdom', -250),
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Event('sabotage_success', 4, {
+        slaver: "slaver",
+        boss: "boss",
+      }),
+    ],
+  ],
+  [
+    'Opportunity_subtle_retaliation_2',
+    'Opportunity_subtle_retaliation_2_flavor',
+    [ /* costs */
+      setup.qc.Favor('humanvale', -250),
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Event('sabotage_success', 4, {
+        slaver: "slaver",
+        boss: "boss",
+      }),
+    ],
+  ],
+  [
+    'Opportunity_subtle_retaliation_3',
+    'Opportunity_subtle_retaliation_3_flavor',
+    [ /* costs */
+      setup.qc.Favor('werewolf', -250),
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Event('sabotage_success', 4, {
+        slaver: "slaver",
+        boss: "boss",
+      }),
+    ],
+  ],
+  [
+    'Opportunity_subtle_retaliation_4',
+    'Opportunity_subtle_retaliation_4_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarRemove('rival_blackmail_active'),
+      setup.qc.VarSet('rival_blackmail_cancel', '1', -1),
+      setup.qc.SetCooldownEvent('blackmailed', 400),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+  'boss': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_subtle_retaliation [nobr]
+<<set _u = setup.getAnySlaver()>>
+<<set _progress = $varstore.get('rival_blackmail_progress') || 0>>
+
+<p>
+You've been blackmailed for a couple of weeks by now by that unscrupulous
+<<name $g.boss>>, leader of another slaving company who had taken hold of
+<<yourrep $g.slaver>>.
+<<if _progress >= 2>>
+You've heard that recently, some of <<their $g.boss>> <<women $g.boss>> had gone either
+missing or deserted, no doubt partially thanks to your earlier actions. This
+conflict might soon come to a conclusion, and you only need to deal the
+final blow to end this once and for all.
+<<elseif _progress >= 1>>
+You have heard that your rival's coffers have starting to grow thin, since
+<<they $g.boss>> boss|is starting to find it strangely difficult to find contract works
+or buyers for <<their $g.boss>> slaves...
+<<else>>
+If you don't want to keep being humiliated like this, <<yourrep _u>> suggests
+that you act fast, but subtle, as to not draw attention lest bad things could
+happen to <<rep $g.slaver>>.
+<</if>>
+</p>
+
+<p>
+To advance this agenda,
+you can either send a team of slaver with some money to sabotage <<their
+$g.boss>> company, or you could leverage your existing favors with the other
+factions to make life difficult for your rival...
+</p>
+
+
+:: Opportunity_subtle_retaliation_0 [nobr]
+Dedicate time and money sabotaging your rival
+
+
+:: Opportunity_subtle_retaliation_1 [nobr]
+Ask your contacts in the City of Lucgate for assistance
+
+
+:: Opportunity_subtle_retaliation_1_flavor [nobr]
+<p>
+Despite having outlawed slavery, the <<lore region_city>> still provides
+numerous opportunities for slaving companies, if one knows where to look. But
+in the recent weeks, <<rep $g.boss>> finds <<their $g.boss>> dealings with
+these people becoming strangely difficult...
+</p>
+
+
+:: Opportunity_subtle_retaliation_2 [nobr]
+Ask your valefolk contacts for assistance
+
+
+:: Opportunity_subtle_retaliation_2_flavor [nobr]
+
+<p>
+Situated on the <<lore region_vale>>, your rival's slaving company depends
+greatly on the surrounding populace for many necessities. But in the recent
+weeks, even finding basic necessities prove difficult and challenging
+for <<name $g.boss>>, no doubt thanks to your contacts in the vale...
+</p>
+
+
+:: Opportunity_subtle_retaliation_3 [nobr]
+Ask your werewolf contacts for assistance
+
+
+:: Opportunity_subtle_retaliation_3_flavor [nobr]
+
+<p>
+In the coming days, you have heard reports that a slaver or two employed to
+<<name $g.boss>> had gone missing. While these things happen all the time for
+slaving companies, the timing almost matches exactly with when your werewolf
+contacts agreed to work something out, and you have no doubt that this was not
+mere coincidence...
+</p>
+
+
+:: Opportunity_subtle_retaliation_4 [nobr]
+Give up on <<if $g.slaver>><<rep $g.slaver>><</if>> and refuse all future blackmails
+
+
+:: Opportunity_subtle_retaliation_4_flavor [nobr]
+
+<p>
+Having grown tired with the blackmails, you've chosen to forsake <<rep $g.slaver>>,
+and refuse to heed all future blackmail attempts. You never hear from your
+former slaver ever again, and you force yourself to take solace in the fact
+that your treasury remains mostly intact for now...
+</p>
+
+<<run setup.qc.TraumatizeRandom('unit', 5).apply(setup.costUnitHelper($unit.player))>>

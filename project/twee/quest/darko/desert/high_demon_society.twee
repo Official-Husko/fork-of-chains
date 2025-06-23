@@ -1,0 +1,390 @@
+:: QuestSetup_high_demon_society [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criterianavigator = new setup.UnitCriteria(
+null, /* key */
+'Mist Navigator', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.corruptedfull,
+  setup.trait.per_attentive,
+  setup.trait.per_stubborn,
+  setup.trait.per_lunatic,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.bg_mythical,
+  setup.trait.bg_priest,
+  setup.trait.bg_slave,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.magic_light_master,
+  setup.trait.magic_water_master,
+  setup.trait.join_junior,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.bg_mist, setup.trait.race_demon, setup.trait.magic_dark_master, setup.trait.corruptedfull, setup.trait.magic_fire_master], true),
+],
+{
+  knowledge: 1,
+  arcane: 2,
+}
+)>>
+
+<<set _criteriamember = new setup.UnitCriteria(
+null, /* key */
+'High Society Member', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.face_beautiful,
+  setup.trait.corruptedfull,
+  setup.trait.per_attentive,
+  setup.trait.per_frugal,
+  setup.trait.per_lustful,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_dark_master,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_mythical,
+  setup.trait.bg_priest,
+  setup.trait.face_hideous,
+  setup.trait.per_slow,
+  setup.trait.per_dreamy,
+  setup.trait.per_lavish,
+  setup.trait.per_kind,
+  setup.trait.per_sexaddict,
+  setup.trait.per_chaste,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 2,
+  arcane: 1,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'slave', /* name */
+[
+  setup.trait.corruptedfull,
+  setup.trait.bg_mythical,
+  setup.trait.bg_royal,
+  setup.trait.value_high5,
+  setup.trait.value_high6,
+  setup.trait.value_high7,
+  setup.trait.training_mindbreak,
+],
+[
+  setup.trait.training_none,
+  setup.trait.value_low,
+  setup.trait.dick_tiny,
+  setup.trait.breast_tiny,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.Trait(setup.trait.corrupted),
+  setup.qres.NoTrait(setup.trait.race_demon),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'high_demon_society', /* key */
+"High Demon Society", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'veteran',
+  'prep',
+  'order',
+  'rare',
+],
+4, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'wizard': [ setup.qu.arcanedarkveteran, 1],
+  'navigator': [ _criterianavigator, 1],
+  'member': [ _criteriamember, 1],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'm1': 'subrace_demon',
+  'm2': 'subrace_demon',
+},
+[ /* costs */
+],
+'Quest_high_demon_society',
+setup.qdiff.hard46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_high_demon_societyCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_high_demon_societyCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 25),
+      setup.qc.VarRemove('high_demon_society_fulfilled'),
+    ],
+  ],
+  [
+    'Quest_high_demon_societyCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.SlaveOrderHighDemonCommunity('punishment'),
+    ],
+  ],
+  [
+    'Quest_high_demon_societyCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.SlaverMarker('m1'),
+      setup.qc.SlaverMarker('m2'),
+      setup.qc.SlaveOrderHighDemonCommunity('punishment'),
+      setup.qc.SlaveOrderHighDemonCommunity('punishment'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_high_demon_society [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+Many curiosity lies in the land beyond <<lore concept_mist>>. While most of it consists of
+tools related to rough and abusive sex, some demons "prefer" a more nuanced approach to sex.
+</p>
+
+<p>
+...or so <<yourrep _u>> has so <<uadv _u>> explained, while you stare at the
+letter that has arrived at your fort, inviting you to participate in a gathering held by the
+High Demon Society. According to the letter, your exploits have reached the
+demon society, and they would be very much glad indeed if you can send a team
+of slavers to attend, for the society has need of a slaving company. You have
+never heard of this society before, but the letter's handwriting was
+impeccable, as if written by the utmost gentle<<man $g.m1>>.
+</p>
+
+<p>
+While the society has given you their address, it is a rather obscure place
+within <<lore concept_mist>>. It will be incredibly difficult to actually
+navigate there without getting lost in the corruption. First of all, a wizard
+proficient in <<lore magic_dark>> is absolutely necessary for the task. On
+top of that, a slaver familiar with navigating within <<lore concept_mist>>
+is also necessary. There is no doubt mind games will be played once your
+slavers arrive at their destination, and a skilled negotiator is required for
+the task. A sufficiently corrupted slave is also needed to demonstrate
+that your slavers are up for whatever task the demon might require.
+</p>
+
+<p>
+Who knows what rewards you could possibly get from a slave order as rare as this one?
+</p>
+
+
+:: Quest_high_demon_societyCrit [nobr]
+
+<<if $g.slave.isMale()>>
+  <<questimage 'high_demon_society_male.jpg'>>
+<<else>>
+  <<questimage 'high_demon_society_female.jpg'>>
+<</if>>
+
+<p>
+With a harrumph, <<yourrep $g.wizard>> <<uadv $g.wizard>> opened the gate for
+<<rep $g.navigator>> and <<utheirrel $g.navigator $g.member>> <<rep
+$g.member>> to enter together with the slave <<rep $g.slave>>. But this was
+merely the start of your slavers journey inside <<lore concept_mist>>, and
+<<rep $g.wizard>> must hold the fort all the while <<their $g.wizard>>
+teammates ventured inside the portal...
+</p>
+
+<p>
+The land beyond <<lore concept_mist>> was a confusing place, with debauchery
+widespread in every step your slavers took.
+<<if $g.navigator.isHasTrait('race_demon')>>
+But it was a familiar settings for <<therace $g.navigator>>, and
+<<rep $g.navigator>> guided <<utheirrel $g.navigator $g.member>> <<rep $g.member>> throughout the
+confusing place, occasionally stealing a glance or two on the
+<<maiden $g.m2>> being used cruelly by the demons on the sidewalks.
+<<elseif $g.navigator.isHasTrait('bg_mist')>>
+But it was a familiar settings for <<yourrep $g.navigator>>, whose past
+occupation were to travel in and out of <<lore concept_mist>>.
+<<elseif $g.navigator.isHasTrait('corruptedfull')>>
+But <<reps $g.navigator>> fully corrupted body was attuned to the corrupted
+place, giving <<them $g.navigator>> the guidance <<they $g.navigator>>
+required to navigate through the accursed place.
+<<elseif $g.navigator.isHasTrait('magic_fire_master')>>
+Thankfully, <<reps $g.navigator>> mastery over <<rep
+setup.trait.magic_fire_master>> was enough to ward off the corruption and
+illuminate the path that your slavers needed to take to reach their destination.
+<<elseif $g.navigator.isHasTrait('magic_dark_master')>>
+But <<rep $g.navigator>> navigator|is no stranger to corruption, and using
+<<their $g.navigator>> mastery over <<rep setup.trait.magic_dark_master>>,
+navigator|was able to effectively guide them into their destination.
+<</if>>
+After a few days of journey, they arrived at the address.
+</p>
+
+<p>
+In the address stood an almost pristine mansion, contrasting the backdrop of
+debauchery and corruption. After gazing in awe for a few moment, <<rep
+$g.member>> regained <<their $g.member>> composure before <<uadv $g.member>>
+knocking on the door.
+A well-dressed demon <<lady $g.m1>> opened the door for your slavers, and
+with a well practiced bow greeted your slavers before escorting them into the
+ball.
+</p>
+
+<p>
+On a first glance, the ball looked like a regular masked party, with masked
+people walking all around chatting with each other. Well, except for the
+occassional tail, wings, and tentacles that were abound, as well as several
+slaves on leashes held by their owners. Keeping the slave <<rep $g.slave>>
+on a short leash, <<yourrep $g.member>> prepared <<themself $g.member>> as <<they
+$g.member>> entered the ball...
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<<set _rewards = [
+"money",
+"favor",
+"equipment",
+"slaver",
+"potion",
+]>>
+
+<<if !$inventory.isHasItem(setup.item.sexmanual_facesit)>>
+<<run _rewards.push('sexmanual')>>
+<</if>>
+
+<<run setup.rng.shuffleArray(_rewards)>>
+<<set _received = [_rewards[0], _rewards[1]]>>
+<<if $gOutcome == 'crit'>>
+<<run _received.push(_rewards[2])>>
+<</if>>
+
+<p>
+<<Yourrep $g.member>> <<uadv $g.member>> navigated through the various
+conversations taking place in the ball, and while each appeared innocuous on
+the surface, <<rep $g.member>> member|was fully aware that every single word
+carried a bigger meaning than they conveyed. It would just take a single wrong
+word to come out from <<them $g.member>> for everything to fall apart. But
+<<rep $g.member>> member|was sufficiently capable for the job, and member|was able to
+navigate through the endless deception.
+</p>
+
+<<for _rew range _received>>
+<p>
+<<if _rew == 'money'>>
+During one of <<their $g.member>> conversations, <<rep $g.member>> secured a
+very strong deal for exchanging one of your more corrupted slaves with a
+great sum of money. <<Rep $g.member>> had to basically hold their breath
+throughout the exchange with the intimidating masked <<lady $g.member>>,
+holding a leash to a humanlike puppy so muscular it could not have been
+natural.
+<<elseif _rew == 'favor'>>
+<<rep $g.member>> managed to secure some time with a young demon noble — or
+at least a demon noble that appeared young. The noble agreed to exchange a
+particularly corrupted slave from your compound in exchange for <<their
+$g.m2>> endorsement of your company. While this sounded like a scam, <<rep
+$g.member>> managed to convince you that the noble was the real deal.
+<<elseif _rew == 'equipment'>>
+<<rep $g.member>> member|was approached by a muscle-bound demon, who asked for
+a sufficiently corrupted slave to replace <<their $g.m2>> broken ones. In
+exchange, the demon blacksmith, as it turned out,
+offered some of <<their $g.member>> creations
+to your slavers — rare equipments from beyond <<lore concept_mist>>.
+<<elseif _rew == 'slaver'>>
+<<rep $g.member>> member|was approached by something that was best described as
+a creature. The creature was shrouded in darkness, and <<yourrep $g.member>> member|was not able to
+discern nor hear the creature, but somehow at the end of the "conversation",
+<<they $g.member>> had a slave order in <<uhand $g.member>>, with no memory how the
+order was negotiated or formed...
+<<elseif _rew == 'potion'>>
+<<rep $g.member>> caught the attention of a certain sadistic <<succubus
+$g.m1>>, who delights in nothing more but breaking a slave again and again.
+Looking to expand <<their $g.m1>> slave repertoire, <<they $g.m1>> offered
+your slaver to purchase a slave from your company, in exchange for
+<<if $inventory.isHasItem(setup.item.technology_blank)>>
+the rare and elusive <<rep setup.item.technology_blank>>.
+<<else>>
+a large amount of <<rep setup.item.blank_potion>>.
+<</if>>
+Truly a deal your slaver could not refuse...
+<<else>>
+The host — a strange half-demon half-<<if
+$settings.bannedtags.furry>>human<<else>>werewolf<</if>> <<man $g.m2>> —
+personally greeted your slaver. As a thank you for coming, <<they $g.m2>>
+kindly offered to purchase a slave from your company, in exchange for an
+elusive tome, the <<rep setup.item.sexmanual_facesit>>. As the host busily
+attended to the other participants, your slaver pondered on the order at hand...
+<</if>>
+</p>
+
+<<run setup.qc.SlaveOrderHighDemonCommunity(_rew).apply($gQuest)>>
+<</for>>
+
+<p>
+After a few long hours, the ball drew to a close. With several slave orders
+at hand, <<yourrep $g.member>> returned to where <<rep $g.navigator>> had
+<<uadv $g.navigator>> waited for <<their $g.member>> return, before traveling
+back through the corruption and into the portal. They eventually arrived back
+at your fort, somehow suffering no corruptions despite their long stay in
+<<lore concept_mist>>. Perhaps this too was thanks to the High Demon Society?
+</p>
+
+<<else>>
+<p>
+After a long while, <<rep $g.member>> returned from the ball to the waiting
+<<rep $g.navigator>>, seemingly happy with their work, with
+<<if $gOutcome == 'failure'>>
+a slave order
+<<else>>
+two slave orders
+<</if>>
+to their name.
+Your slavers eventually returned back home, and only then they realize that
+they had been duped by demons.
+The slave orders they had secured was nothing but scams, with fine-prints all abound the
+slave order. After calculating, it seems you will make a profit of a mere
+<<money 15>> from the order. To make matters worse, were you to disregard the
+slave order all along, you will no doubt greatly raise the ire of the demons,
+which is never a wise thing to do...
+</p>
+
+<p>
+<<Rep $g.member>> never realized <<they $g.member>> had been duped
+until much, much later. The High Demon Society was truly a
+frightening place, where they could convince even your
+<<uadjgood $g.member>> slaver that such a terrible deal was beneficial for the
+company. There is nothing you can do now except to bear through the deal, and
+hope that next time you will get a better one.
+</p>
+<</if>>

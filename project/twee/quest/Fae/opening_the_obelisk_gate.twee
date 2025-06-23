@@ -1,0 +1,298 @@
+:: QuestSetup_opening_the_obelisk_gate [nobr quest]
+
+
+<<set _criteriaabyssalnegotiator = new setup.UnitCriteria(
+null, /* key */
+'Abyssal Negotiator', /* name */
+[
+  setup.trait.bg_mist,
+  setup.trait.per_calm,
+  setup.trait.per_stubborn,
+  setup.trait.per_cruel,
+  setup.trait.per_logical,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_direct,
+  setup.trait.per_lavish,
+  setup.trait.per_curious,
+  setup.trait.per_kind,
+  setup.trait.per_lustful,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 1,
+  arcane: 1,
+  sex: 1,
+}
+)>>
+
+<<set _criteriaportalofferingslave = new setup.UnitCriteria(
+null, /* key */
+'Demon Portal Offering Slave', /* name */
+[
+  setup.trait.bg_courtesan,
+  setup.trait.bg_artist,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_gregarious,
+  setup.trait.per_loyal,
+  setup.trait.per_dreamy,
+  setup.trait.per_playful,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.eq_slutty,
+  setup.trait.eq_veryslutty,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+  setup.trait.value_high4,
+  setup.trait.value_high5,
+  setup.trait.value_high6,
+  setup.trait.value_high7,
+],
+[
+  setup.trait.bg_knight,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_slow,
+  setup.trait.per_loner,
+  setup.trait.per_chaste,
+  setup.trait.per_lunatic,
+  setup.trait.value_low,
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllTraits([setup.trait.training_obedience_advanced], true),
+  setup.qres.AnyTrait([setup.trait.face_beautiful, setup.trait.per_sexaddict, setup.trait.bg_priest, setup.trait.bg_healer], true),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'opening_the_obelisk_gate', /* key */
+"Opening the Obelisk Gate", /* Title */
+{ /* Author */
+  name: "Fae",
+  url: "",
+},
+[ /* tags */
+  'transformation',
+  'danger',
+  'order',
+  'upgrade',
+  'unknown',
+  'rare',
+  'desert',
+],
+4, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'abyssalnegotiator': [ _criteriaabyssalnegotiator, 3],
+  'portalofferingslave': _criteriaportalofferingslave,
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_opening_the_obelisk_gate',
+setup.qdiff.hard45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_opening_the_obelisk_gateCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Equipment(setup.equipmentpool.sextoy_good),
+    ],
+  ],
+  [
+    'Quest_opening_the_obelisk_gateSuccess',
+    [
+      setup.qc.Leave('abyssalnegotiator', "a|is being held hostage by a demon in the mist", undefined),
+      setup.qc.AddTag('abyssalnegotiator', 'fae_opening_the_obelisk_gate'),
+      setup.qc.MissingUnitForever('portalofferingslave'),
+      setup.qc.SlaveOrderFlex(
+'A Worthy Offering ', /* name */
+'independent', /* company */
+40, /* expires in */
+1000, /* base price */
+0, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+  setup.qres.Job(setup.job.slave),
+  setup.qres.NoTraits([setup.trait.training_dominance_basic, setup.trait.training_dominance_advanced, setup.trait.training_dominance_master], true),
+  setup.qres.XTraits([
+    setup.trait.training_obedience_advanced,
+    setup.trait.training_endurance_advanced,
+    setup.trait.training_masochist_advanced,
+    setup.trait.training_domestic_advanced,
+    setup.trait.training_roleplay_advanced,
+  ], 3),
+  setup.qres.AnyTrait([
+    setup.trait.training_oral_master,
+    setup.trait.training_vagina_master,
+    setup.trait.training_anal_master,
+    setup.trait.training_pony_master,
+    setup.trait.training_pet_master,
+    setup.trait.training_sissy_master,
+    setup.trait.training_toilet_master,
+  ], true),
+  setup.qres.XTraits([setup.trait.bg_priest, setup.trait.bg_healer, setup.trait.face_attractive, setup.trait.face_beautiful, setup.trait.per_lustful, setup.trait.per_sexaddict], 2),
+  setup.qres.AnyTrait([setup.trait.value_high3, setup.trait.value_high4, setup.trait.value_high5, setup.trait.value_high6, setup.trait.value_high7], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.AllUnitSatisfyDo([
+  setup.qres.HasTag('fae_opening_the_obelisk_gate'),
+],[
+  setup.qc.Return('unit'),
+],),
+setup.qc.Opportunity('an_offering_accepted2', null),
+],
+[ /* unfulfilled outcomes */
+setup.qc.HideAll([
+setup.qc.AllUnitSatisfyDo([
+  setup.qres.HasTag('fae_opening_the_obelisk_gate'),
+],[
+  setup.qc.Return('unit'),
+  setup.qc.MissingUnit('unit'),
+  setup.qc.TraumatizeRandom('unit', 50),
+  setup.qc.Corrupt('unit', null, 4),
+],),
+],
+"Who knows what might happen to your slaver, who is being held hostage?",
+),
+],
+),
+    ],
+  ],
+  [
+    'Quest_opening_the_obelisk_gateFailure',
+    [
+      setup.qc.Corrupt('abyssalnegotiator', null, 3),
+      setup.qc.TraumatizeRandom('abyssalnegotiator', 10),
+      setup.qc.MissingUnitForever('portalofferingslave'),
+    ],
+  ],
+  [
+    'Quest_opening_the_obelisk_gateDisaster',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.TraitIncreaseExisting('abyssalnegotiator', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('abyssalnegotiator', setup.trait.anus_gape),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_opening_the_obelisk_gate [nobr]
+
+<p>
+    The instructions your group of slavers obtained from the obelisk described a rather specific kind of slave, which must be offered as tribute through a "sexual ritual" in front of the obelisk. Additionally the note explains the other participant in the ritual will be the only one to be able to safely enter the portal. This means the slaver you chose to send will be negotiating directly with the entity on the other side. Unfortunately this is the mist you are dealing with, so there is a real chance whoever you send wont come back the same as they went in, if they come out at all.
+</p>
+
+<<if !$inventory.isHasItem('technology_hornymaster')>>
+<p>
+    Still, the note did allude to some kind of lucrative reward,
+    some kind of secret technology you could not possibly miss out...
+</p>
+<</if>>
+
+:: Quest_opening_the_obelisk_gateCrit [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    After two weeks passed up you anxiously awaited to learn if you had sent <<yourrep $g.abyssalnegotiator>> to get enslaved, or worse, at that stupid black monument. As the sun set you began slowly feeling a growing sense of dread, only to have <<yourrep _u>> burst in and drop a small wooden box on your desk. Curiously, and with <<rep _u>> watching on in curiosity, you opened the box to reveal a note as well as a clearly "well used" piece of sex equipment. The note reads:
+
+    <div class='lettercard'>
+        <p>
+            Dear <<name $unit.player>>,
+        </p>
+        <p>
+            It has come to my attention that you and your company have so graciously decided to fulfill my request! You see I've recently grown bored of the toy I have currently but they are oh so unique that finding a replacement has been difficult for me. That's why I set up this little series of interviews, and your employee <<rep $g.abyssalnegotiator>> really did a great job selling me on how wonderfully well equipped your company is to help me, so in the box you'll find a list of instructions on everything I'm looking for! We can discuss payment after you deliver what I want, your slaver here had <<their $g.abyssalnegotiator>> eye on some insider information about training that I have, but I'm always open to negotiations. And I'm sorry to do this to you but since I know you wouldn't trust me to pay you back, I'm going to be hanging onto <<yourrep $g.abyssalnegotiator>> until you complete my order. Hell I'm starting to take a liking to <<them $g.abyssalnegotiator>> so maybe if you don't give me a new toy I'll just keep them.
+        </p>
+
+        <p>
+            P.S.
+            I left a little something in the box, it still has the taste of <<rep $g.abyssalnegotiator>> on it if you start missing them.
+        </p>
+        <p>
+            Kisses,
+        </p>
+        <p>
+            Your most eager customer!
+        </p>
+    </div>
+</p>
+
+<p>
+    After reading the note you feel your blood pressure rising, but as a well adapted leader you understand that its at times like these you need to remain calm. Your <<uadjgood _u>> slaver <<rep _u>> try's to comfort you, and after you've calmed down you turn your mind to planning how to fulfill the request. It seems your slaver is alright for now, but who knows what might happen if you don't fulfill this outrageous request.
+</p>
+
+
+:: Quest_opening_the_obelisk_gateSuccess [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    After two weeks passed up you anxiously awaited to learn if you had sent <<yourrep $g.abyssalnegotiator>> to die, or worse, at that stupid black rock. As the sun set you began slowly feeling a growing sense of dread, only to have <<yourrep _u>> burst in and drop a small wooden box on your desk. Curiously, and with <<rep _u>> watching on in curiosity, you opened the box to reveal a note as well as a clearly "well used" piece of sex equipment. The note reads:
+    <div class='lettercard'>
+
+        <p>
+            Dear <<name $unit.player>>,
+        </p>
+        <p>
+            It has come to my attention that you and your company have so graciously decided to fulfill my request! You see I've recently grown bored of the toy I have currently but they are oh so unique that finding a replacement has been difficult for me. That's why I set up this little series of interviews, and your employee <<rep $g.abyssalnegotiator>> really did a great job selling me on how wonderfully well equipped your company is to help me, so in the box you'll find a list of instructions on everything I'm looking for! We can discuss payment after you deliver what I want, your slaver here had <<their $g.abyssalnegotiator>> eye on some insider information about training that I have, but I'm always open to negotiations. And I'm sorry to do this to you but since I know you wouldn't trust me to pay you back, I'm going to be hanging onto <<yourrep $g.abyssalnegotiator>> until you complete my order. Hell I'm starting to take a liking to <<them $g.abyssalnegotiator>> so maybe if you don't give me a new toy I'll just keep them.
+        </p>
+        <p>
+            Kisses,
+        </p>
+        <p>
+            Your most eager customer!
+        </p>
+    </div>
+</p>
+
+<p>
+    After reading the note you feel your blood pressure rising, but as a well adapted leader you understand that its at times like these you need to remain calm. Your <<uadjgood _u>> slaver <<rep _u>> try's to comfort you, and after you've calmed down you turn your mind to planning how to fulfill the request. It seems your slaver is alright for now, but who knows what might happen if you don't fulfill this outrageous request.
+</p>
+
+
+
+:: Quest_opening_the_obelisk_gateFailure [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    After two weeks passed up you anxiously awaited to learn if you had sent <<yourrep $g.abyssalnegotiator>> to die, or worse, at that stupid black rock. As the sun set you began slowly feeling a growing sense of dread, only to have <<<<yourrep _u>> burst in and let you know that <<rep $g.abyssalnegotiator>> had returned, but it hadn't gone well. Apparently after the ritual <<they $g.abyssalnegotiator>> was allowed into a vast mansion in the mist to meet with the demon behind everything. According to <<them $g.abyssalnegotiator>> his memory of the encounter was fuzzy at best from then to when <<they $g.abyssalnegotiator>> found himself wandering the desert looking different, but their body clearly showed the aftermath of the time they spent in the mist. Whoever this demon was, they were no newcomer to corruption. Perhaps it was for the best <<yourrep $g.abyssalnegotiator>> got out with as unscathed as <<they $g.abyssalnegotiator>> is.
+</p>
+
+
+
+:: Quest_opening_the_obelisk_gateDisaster [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    After two weeks passed up you anxiously awaited to learn if you had sent <<yourrep $g.abyssalnegotiator>> to die, or worse, at that stupid black rock. As the sun set you began slowly feeling a growing sense of dread, only to have <<<<yourrep _u>> burst in and let you know that <<rep $g.abyssalnegotiator>> had returned, but it hadn't gone well. Apparently after the ritual <<they $g.abyssalnegotiator>> was allowed into a vast mansion in the mist to meet with the demon behind everything. According to <<them $g.abyssalnegotiator>> his memory of the encounter was fuzzy at best from then to when <<they $g.abyssalnegotiator>> found himself wandering the desert looking different, but their body clearly showed the aftermath of the time they spent in the mist, both in the form of corruption and their clearly well used orifices. Whoever this demon was, they were no newcomer to sex or corruption. Perhaps it was for the best <<yourrep $g.abyssalnegotiator>> got out with as unscathed as <<they $g.abyssalnegotiator>> are.
+</p>

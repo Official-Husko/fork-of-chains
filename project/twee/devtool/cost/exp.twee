@@ -1,0 +1,27 @@
+:: CostExpCommon [nobr]
+
+<p>Adds exp. Use 0 or POSITIVE to add exp, and NEGATIVE to substract exp.
+If this is a quest cost, use a NEGATIVE number. If this is a reward, use either POSITIVE
+or 0. 0 will default to automatically adjust the reward based on the quest length.</p>
+
+Multiplier: <<numberbox '_expmulti' 0>>
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<ExpDone>>
+<</link>>
+
+:: CostExpNormal [nobr]
+
+<<focwidget 'ExpDone'>>
+  <<set $qcost = setup.qc.ExpNormal(_expmulti)>>
+<</focwidget>>
+<<include 'CostExpCommon'>>
+
+
+:: CostExpCrit [nobr]
+
+<<focwidget 'ExpDone'>>
+  <<set $qcost = setup.qc.ExpCrit(_expmulti)>>
+<</focwidget>>
+<<include 'CostExpCommon'>>
+

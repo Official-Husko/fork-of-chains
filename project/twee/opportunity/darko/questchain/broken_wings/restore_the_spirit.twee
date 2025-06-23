@@ -1,0 +1,110 @@
+:: OpportunitySetup_restore_the_spirit [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'restore_the_spirit', /* key */
+"Restore the Spirit", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_restore_the_spirit',
+setup.qdiff.hard41, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_restore_the_spirit_0',
+    'Opportunity_restore_the_spirit_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.AddTitle('slave', 'quest_spirit_restored_5'),
+      setup.qc.TraitReplace('slave', setup.trait.per_studious),
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+    ],
+  ],
+  [
+    'Opportunity_restore_the_spirit_1',
+    'Opportunity_restore_the_spirit_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_dark]),
+    ],
+    [ /* outcomes */
+      setup.qc.AddTitle('slave', 'quest_spirit_restored_5'),
+      setup.qc.TraitReplace('slave', setup.trait.per_active),
+      setup.qc.VarAdd('broken_wings_dark', 1, -1),
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slave': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_restore_the_spirit [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Having obtained the essence of spirit, it is time to return it to your
+broken slave <<rep $g.slave>>. But perhaps there is something you'd like to
+do first?
+</p>
+
+
+:: Opportunity_restore_the_spirit_0 [nobr]
+Bless with diligence
+
+
+:: Opportunity_restore_the_spirit_0_flavor [nobr]
+<p>
+The stone begins to emit a faint blue glow as you press it into <<reps $g.slave>>
+<<ubreasts $g.slave>> — the essence flowing from within into <<their
+$g.slave>> limbs. Eventually the stone is reduced to nothingness, and while
+there does not seem to be anything that have changed about <<yourrep $g.slave>>, you
+can see <<their $g.slave>> limbs colors changing into a livelier shade of color. Surely
+this is the correct path to restoring <<their $g.slave>> spirit?
+</p>
+
+
+:: Opportunity_restore_the_spirit_1 [nobr]
+Corrupt the essence
+
+
+:: Opportunity_restore_the_spirit_1_flavor [nobr]
+<<set _u = $company.player.getUnits({job: setup.job.slaver}).filter(u => u.isHasTrait('magic_dark'))[0]>>
+<<if _u>>
+<p>
+Without any specific reason,
+<<if _u.isYou()>>
+using your
+mastery over <<rep setup.trait.magic_dark>>,
+you begin to chant corruption magic, pushing it all into the stone.
+<<else>>
+you ask <<yourrep _u>> to use <<their _u>>
+mastery over <<rep setup.trait.magic_dark>> to corrupt the stone.
+<</if>>
+Within moments, the once clear-blue stone begins to darken, and purple swirls
+can be seen from inside. Satisfied, you then press the stone into <<rep
+$g.slave>>, whose body visibly absorbs the corrupted essence. It's unclear
+what effect this have, but once the essence is entirely absorbed, the change
+in <<their $g.slave>> physique is apparent. <<Their $g.slave>> limbs are
+healthier now, although you can see traces of evil emanating from <<therace
+$g.slave>>...
+</p>
+<</if>>

@@ -1,0 +1,166 @@
+:: QuestSetup_factory__open_position [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _so = setup.qc.SlaveOrderFlex(
+'Factory Order Slave', /* name */
+'independent', /* company */
+8, /* expires in */
+1000, /* base price */
+1000, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+setup.trait.training_mindbreak,
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.NoTraits([setup.trait.breast_tiny, setup.trait.balls_tiny, setup.trait.dick_tiny], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'factoryopen_position', /* key */
+"Factory: Open Position", /* Title */
+"darko", /* Author */
+[ 'city', 'order'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'negotiator': setup.qu.negotiator,
+'trainer': setup.qu.slavetrainer,
+'informer': setup.qu.informer, },
+{ /* actors */
+'host': 'city_all', },
+[ /* costs */
+],
+'Quest_factory__open_position',
+setup.qdiff.normal29, /* difficulty */
+[ /* outcomes */
+[
+'Quest_factory__open_positionCrit',
+[
+  _so,
+  _so,
+  _so,
+  _so,
+  _so,
+  _so,
+  _so,
+  _so,
+],
+], [
+'Quest_factory__open_positionCrit',
+[
+  _so,
+  _so,
+  _so,
+  _so,
+],
+], [
+'Quest_factory__open_positionCrit',
+[
+  _so,
+],
+], [
+'Quest_factory__open_positionDisaster',
+[
+setup.qc.MissingUnit('informer'),
+setup.qc.TraitIncreaseExisting('negotiator', setup.trait.dick_large),
+setup.qc.TraitIncreaseExisting('negotiator', setup.trait.balls_large),
+setup.qc.TraitIncreaseExisting('negotiator', setup.trait.breast_large),
+setup.qc.TraitIncreaseExisting('negotiator', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('negotiator', setup.trait.anus_gape), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_factory__open_position [nobr]
+
+<<include 'OpportunityMilkFactory'>>
+
+<p>
+You have chosen to sell your sla-, err, "employees", to the factory.
+</p>
+
+
+:: Quest_factory__open_positionCrit [nobr]
+
+<p>
+After several days working <<their $g.informer>> way up the hierarchy of
+criminals, <<yourrep $g.informer>> finally managed to arrange a meeting with one of the
+factory's supervisors. The supervisor was a thin, practical <<woman $g.host>>,
+who gets immediately down... to business.
+</p>
+
+<p>
+After quite a tense but productive exchange of information,
+<<rep $g.negotiator>> <<uadv $g.negotiator>> stroke
+<<if $gOutcome == 'crit'>>
+an amazing deal. The factory agreed to contract your company to add up to
+eight new sla-, <<they $g.host>> meant employees, to the factory. For some
+reason, though, the supervisor emphasized that the slaves
+<<elseif $gOutcome == 'success'>>
+a great deal. The factory agreed to give your company a contract where you
+can supply them with at most four new sla, <<they $g.host>> meant employees,
+yes, to the factory.
+For some reason, though, the supervisor emphasized that
+the slaves
+<<else>>
+a pathetic deal, with the supervisor only trusting your company enough to
+arrange for one potential sla, <<they $g.host>> meant employee. For some
+reason, though, the supervisor emphasized that the slave
+<</if>>
+must have an... "asset"... that is... not too small, so that they could
+contribute productively to the factory.
+<<Rep $g.trainer>> <<uadv $g.trainer>> swore the supervisor threw
+<<if $g.trainer.isHasTrait('face_attractive')>>
+<<their $g.trainer>> <<uface $g.trainer>>
+<<elseif $g.trainer.isHasTrait('breast_large')>>
+<<their $g.trainer>> <<ubreasts $g.trainer>>
+<<elseif $g.trainer.isHasTrait('dick_large')>>
+<<their $g.trainer>> considerable bulge
+<<elseif $g.trainer.isHasTrait('muscle_strong')>>
+<<their $g.trainer>> <<ubody $g.trainer>>
+<<else>>
+<<them $g.trainer>>
+<</if>>
+some sideway glances along the discussion.
+</p>
+
+<p>
+Once your slavers were back home with the contract, upon closer inspection of
+the order, you found another odd criteria — the factory is willing to pay more for a
+<<rep setup.trait.training_mindbreak>> slave. Very odd, but this might just be
+the best possible option to offload your <<rep
+setup.trait.training_mindbreak>> slaves, if you have any.
+</p>
+
+
+:: Quest_factory__open_positionDisaster [nobr]
+<p>
+The last time your slavers heard from <<yourrep $g.informer>>,
+<<they $g.informer>> informer|was busy trying to work <<their $g.informer>> way up in
+the hierarchy of the factory criminals. Your
+slavers never heard back from <<therace $g.informer>>. The only thing that
+came out from the factory was the constant chugging sound of machineries.
+</p>
+
+<p>
+<<uneedrescue $g.informer>>, although you suspect you may not be able to
+recognize <<them $g.informer>> again...
+</p>

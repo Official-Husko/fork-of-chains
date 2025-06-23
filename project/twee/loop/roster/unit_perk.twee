@@ -1,0 +1,46 @@
+:: UnitPerkLearn [nobr]
+
+<<set $gMenuVisible = false>>
+
+/* Assumes $gUnit_key is set */
+<<set _unit = State.variables.unit[$gUnit_key]>>
+
+<p>
+  Select which perk that <<rep _unit>> should learn.
+  <<message '(?)'>>
+    <div class='helpcard'>
+      <p>
+      A unit can learn a perk first when they reach level
+      <<= setup.PERK_GAIN_AT_LEVEL[0]>>, then once again when
+      they reach level
+      <<= setup.PERK_GAIN_AT_LEVEL[1]>>.
+      A perk grants the unit some gameplay bonuses.
+      </p>
+    </div>
+  <</message>>
+
+  <<if _unit.getPerkChoices().filter(perk => perk.isSpecial() && !_unit.isHasTrait(perk)).length>>
+    There are also some <<successtextlite 'special perks'>> that
+    <<rep _unit>> can learn.
+    <<message '(?)'>>
+      <div class='helpcard'>
+        <p>
+          In addition to standard perks, units may get access to special perks as their
+          career progress.
+          A unit can learn at most
+          <<= setup.TRAIT_MAX_HAVE.perkstandard >>
+          standard perks and
+          <<= setup.TRAIT_MAX_HAVE.perkspecial >>
+          special perks, for a total of maximum
+          <<= setup.TRAIT_MAX_HAVE.perkstandard + setup.TRAIT_MAX_HAVE.perkspecial >>
+          perks.
+        </p>
+      </div>
+    <</message>>
+  <</if>>
+
+  <<focreturn '(cancel)'>>
+</p>
+
+<<set _dom = setup.DOM.Menu.perklearn(_unit)>>
+<<attach _dom>>

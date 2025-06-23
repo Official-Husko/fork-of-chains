@@ -1,0 +1,159 @@
+:: QuestSetupWerewolfWaylay [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _waylayer = new setup.UnitCriteria(
+  'waylayer', /* key */
+  'Waylayer', /* title */
+  [setup.trait.race_wolfkin, setup.trait.dick_large, setup.trait.breast_large, setup.trait.face_attractive,setup.trait.face_beautiful, setup.trait.per_sly, ], /* critical traits */
+  [setup.trait.face_scary, setup.trait.face_hideous, setup.trait.per_direct, setup.trait.per_kind, setup.trait.per_chaste, setup.trait.per_honorable], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    social: 2,
+    sex: 1,
+  }
+)>>
+
+<<run new setup.QuestTemplate(
+  'werewolf_waylay', /* key */
+  'Werewolf Waylay', /* Title */
+  'darko',   /* author */
+  ['furry', 'vale', 'unit', 'ire', 'rare', ],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'waylayer': _waylayer,
+    'kidnap1': setup.qu.infiltrator,
+    'kidnap2': setup.qu.infiltrator,
+  },
+  { /* actors */
+    'target': 'subrace_werewolf',
+  },
+  [ /* costs */
+  ],
+  'QuestWerewolfWaylay', /* passage description */
+  setup.qdiff.hardest20, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestWerewolfWaylayCrit',
+      [
+        setup.qc.Slave(
+          'target',
+          'a|was a curious member of the werewolf tribe that gave the wrong person a|their patronage'),
+        setup.qc.Ire('werewolf', 2),
+      ],
+    ],
+    [
+      'QuestWerewolfWaylayCrit',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Ire('werewolf', 1),
+      ],
+    ],
+    [
+      'QuestWerewolfWaylayFailure',
+      [
+        setup.qc.Ire('werewolf', 4),
+      ],
+    ],
+    [
+      'QuestWerewolfWaylayDisaster',
+      [
+        setup.qc.Injury('kidnap1', 4),
+        setup.qc.Injury('kidnap2', 4),
+        setup.qc.Ire('werewolf', 7),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.epic],], /* quest pool and rarity */
+  [
+    setup.qres.QuestUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestWerewolfWaylay [nobr]
+
+<p>
+While the northerners have to be the most numerous race in the <<lore region_vale>>,
+the white snowy fields are also home to the werewolf race: a race of humanoid wolves.
+These furry people are known for their fierceness, but with proper training,
+are also valued highly as exotic pets, if you know where to look for buyers.
+occasionally, you would get orders or two for such exotic species, and hence
+having one in stock might prove to be a lucrative endeavor.
+It will not be easy, however, and requires careful planning.
+You need one slaver to lure one of the more curious member of the tribes
+into the unknown, only to be ambushed by two of your other slavers waiting in place.
+This will also for sure raise the ire of the tribe against your company, and best
+prepare for retaliation should you go through with this idea...
+</p>
+
+
+:: QuestWerewolfWaylayCrit [nobr]
+
+<p>
+<<if $g.waylayer.isHasTrait('race_wolfkin')>>
+  Since <<rep $g.waylayer>> waylayer|is a werewolf <<themself $g.waylayer>>,
+  the poor victim never grew suspicious of <<reps $g.waylayer>> suggestion to go out and have
+  some adventure together.
+<<else>>
+  <<rep $g.waylayer>> had to work hard to earn the victim's trust, since werewolves are not
+  trusting by nature.
+<</if>>
+
+<<if $g.waylayer.isHasTrait('per_sly')>>
+<<Reps $g.waylayer>> slyness certainly helped made the convincing easier.
+<<elseif $g.waylayer.isHasTrait('face_attractive')>>
+<<Reps $g.waylayer>> attractive face certainly helped made the convincing easier.
+<<elseif $g.waylayer.isHasTrait('dick_large')>>
+<<Rep $g.waylayer>> noticed the werewolf kept stealing glances on <<their $g.waylayer>> bulge,
+which probably made the convincing easier.
+<<elseif $g.waylayer.isHasTrait('breast_large')>>
+<<Rep $g.waylayer>> noticed the werewolf kept stealing glances on <<their $g.waylayer>>
+<<ubreasts $g.waylayer>>, which probably made the convincing easier.
+<</if>>
+
+Ultimately, <<rep $g.waylayer>> waylayer|was skillful at <<their $g.waylayer>> job, and soon
+enough the victim was ready to go out on an adventure.
+</p>
+
+<p>
+Little did <<they $g.target>> know that it would be an adventure of <<their $g.target>> lifetime.
+As <<rep $g.waylayer>> reached into the clearing,
+<<rep $g.kidnap1>> and <<rep $g.kidnap2>> were ready with the ambush.
+<<if $gOutcome == 'crit'>>
+When <<rep $g.waylayer>> distracted the young werewolf, <<rep $g.kidnap1>> struck from behind,
+knocking the werewolf unconscious.
+Securely tied up, the wolf was packaged securely and brought back home for
+the surely intense training to become a proper pet.
+<<else>>
+When <<rep $g.waylayer>> distracted the young werewolf, <<rep $g.kidnap1>> struck from behind.
+But the werewolf race is tough, and the were, while dazed, remained standing.
+Using <<their $g.target>> superior familiarity with the surroundings, the werewolf made
+<<their $g.target>> escape, and your slavers were unable to catch up. Still,
+<<their $g.target>> belongings are yours now, and
+your slavers pawned most of the werewolf's belongings before going back.
+<</if>>
+</p>
+
+
+
+:: QuestWerewolfWaylayFailure [nobr]
+
+<p>
+<<Rep $g.waylayer>> chose a wrong target for the quest -- <<rep $g.target>>
+grew too suspicious of the situation that <<they $g.target>> left <<rep $g.waylayer>>
+midway to the ambush site.
+Still, the werewolf tribes eventually know of your planned treachery, and they grow
+suspicious of your company.
+</p>
+
+
+:: QuestWerewolfWaylayDisaster [nobr]
+
+<p>
+<<Rep $g.waylayer>> managed to bring the target to the ambush site without a problem,
+but the werewolf chosen proved too strong for your slavers to capture,
+injuring them severely in the process before reporting your company's degeneracy to
+<<their $g.target>> packmates.
+</p>

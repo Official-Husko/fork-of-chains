@@ -1,0 +1,121 @@
+:: EventSetup_fetters_with_pulleys [nobr event]
+
+<<run new setup.Event(
+'fetters_with_pulleys', /* key */
+"Fetters with Pulleys", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_fetters_with_pulleys',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.join_senior, setup.trait.bg_engineer], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.f_punishment_good_slaver),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.Trait(setup.trait.bg_engineer)),
+    setup.qc.DoAll([
+      setup.qc.Item(setup.item.f_punishment_good_slaver),
+      setup.qc.Item(setup.item.f_punishment_good_slaver),
+      setup.qc.Item(setup.item.f_punishment_good_slaver),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+  setup.qc.BoonizeRandom('slaver', 5),
+  setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AllTraits([setup.trait.per_frugal], true)),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(-4000)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('slaver', setup.qres.AllTraits([setup.trait.per_lavish], true)),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(-500)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(-2000)
+], undefined))
+], undefined)),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.forge),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_fetters_with_pulleys [nobr]
+<p>
+<<Yourrep $g.slaver>> is quite the crafty <<urace $g.slaver>>. Ever since <<they $g.slaver>> joined your company years ago, <<they $g.slaver>> slaver|have been using <<their $g.slaver>> experience as an ex-inventor to craft various bondage devices.
+<<if $g.slaver.isHasTrait('per_kind')>>
+Being the kind slaver that <<they $g.slaver>> contradictory slaver|is, <<they $g.slaver>> slaver|do not use them <<themself $g.slaver>>, but mostly to fulfill a request or two from <<their $g.slaver>> friends.
+<<elseif $g.slaver.isHasTrait('per_cruel')>>
+<<They $g.slaver>> particularly delights in crafting the most painful-looking devices, and hearing the slaves scream in pain is fun for the cruel slaver.
+<<else>>
+<<They $g.slaver>> crafts most of the bondage tools <<they $g.slaver>> needs to use on the slaves, sometimes with a personal flair to spice up slave trainings.
+<</if>>
+<<if $g.slaver.isHasTrait('skill_creative')>>
+<<Their $g.slaver>> creativity also means that these devices tend to be inventive, with a few nudges here and there that looks innocuous, but would often pleasurize the slave in inopportune times.
+<</if>>
+</p>
+
+<<if $g.you.isHasTrait('bg_engineer')>>
+
+<p>
+Engineering is a shared interest for you too. After all, you consider yourself an engineer as well.
+In fact, you've been helping <<theslaver $g.slaver>> with some unknown project in the recent days,
+something <<they $g.slaver>> kept a secret even from you.
+There are some chains involved, some wood here and there, but it was quite unclear what exactly
+<<they $g.slaver>> slaver|was making.
+And after a few weeks, only when the devices are ready that you understand what it is:
+a set of pulleys and rope to be attached to a ceiling, and to be used on a slave for some fun bondage times.
+And thanks to your help, <<they $g.slaver>> produced quite a number of them too.
+<<They $g.slaver>> slaver|is giving all of them to you... not for free though.
+</p>
+
+<<else>>
+
+<p>
+Recently, <<theslaver $g.slaver>> slaver|have been spending quite a lot of time in the fort's <<rep setup.buildingtemplate.forge>>, together with the resident blacksmith. And you finally know why today — the slaver comes to your office bringing a unique contraption: a set of pulleys and sturdy rope ending with a pair of fetters.
+The contraption could be installed in some bedchamber, and can be used to hang a slave or two from the ceiling for some fun bondage nights. Alternative, you can always find a buyer that is willing to purchase such a unique contraption for their perverted uses.
+</p>
+
+<</if>>
+
+<p>
+<<if $g.slaver.isHasTrait('per_lavish')>>
+Surprisingly, the slaver only asks for a pittance pay in return, just <<money 500>> to barely cover the costs — fitting, considering how generous the slaver is. You're not going to complain either way!
+<<elseif $g.slaver.isHasTrait('per_frugal')>>
+But of course, there is a matter of costs involved in making the contraption, and according to your slaver, it amounts to a whopping <<money 4000>>. You have your doubts, especially considering how greedy the slaver is, but decide that it's worth the price for such a unique piece of furniture.
+<<else>>
+All your slaver asks for is some money to cover the materials — a reasonable sum of <<money 2000>>, which you <<uadv $unit.player>> pay.
+<</if>>
+</p>
+
+<p>
+Now that you have your <<uhands $unit.player>> on the <<rep setup.item.f_punishment_good_slaver>>,
+<<if $inventory.isHasItem('sexmanual_upsidedown')>>
+you might want to reconsult your <<rep setup.item.sexmanual_upsidedown>> to see if there's any interesting use you can get out of this furniture...
+<<else>>
+you can't help but wonder if there's something kinky you could do with it...
+<</if>>
+</p>

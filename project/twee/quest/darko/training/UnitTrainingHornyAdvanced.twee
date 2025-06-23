@@ -1,0 +1,100 @@
+:: QuestSetupUnitTrainingHornyAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_horny_advanced',  /* id */
+  'Horny Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingHornyAdvanced',  /* description */
+  setup.qdiff.harder38,
+  [
+    [
+      'QuestUnitTrainingHornyAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_horny_advanced),
+      ]
+    ],
+    [
+      'QuestUnitTrainingHornyAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_horny_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingHornyAdvancedFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingHornyAdvancedDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_horny_master.getTraitGroup()),
+        setup.qc.Trait('trainee', setup.trait.per_chaste),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingHornyAdvanced [nobr]
+<p>
+Once a slave is able to arouse themself on demand, the next step is
+to make them able to maintain the arousal for the pleasure of its
+owner.
+This is a mixture between endurance training and increasing their
+sex addiction, which can be achieved via a careful mixture
+of training, punishment, and reward.
+</p>
+
+:: QuestUnitTrainingHornyAdvancedCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<if $g.trainee.isHasTrait('subrace_tigerkin')>>
+    <<questimage 'unit_training_horny_advanced_male_tigerkin.jpg'>>
+  <<else>>
+    <<questimage 'unit_training_horny_advanced_male_demon.jpg'>>
+  <</if>>
+<<else>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Rep $g.trainee>> turned out to be a natural sex monster.
+</p>
+
+<<else>>
+
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to acquire all the necessary skils to graduate from this
+training.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingHornyAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccessful, and the lessons were
+lost in <<reps $g.trainee>> thick skull.
+</p>
+
+:: QuestUnitTrainingHornyAdvancedDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+It is clear that <<reps $g.trainee>> prior training must be
+repeated before another attempt at this training.
+</p>

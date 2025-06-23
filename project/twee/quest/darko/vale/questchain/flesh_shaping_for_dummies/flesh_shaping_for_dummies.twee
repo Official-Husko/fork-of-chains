@@ -1,0 +1,183 @@
+:: QuestSetup_flesh_shaping_for_dummies [nobr quest]
+
+<<set _criteriastudent = new setup.UnitCriteria(
+null, /* key */
+'Student', /* name */
+[
+  setup.trait.dick_medium,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_medium,
+  setup.trait.balls_large,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_medium,
+  setup.trait.breast_large,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.vagina_tight,
+  setup.trait.anus_tight,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.dick_small,
+  setup.trait.balls_tiny,
+  setup.trait.balls_small,
+  setup.trait.breast_tiny,
+  setup.trait.breast_small,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.magic_water], true),
+  setup.qres.NotYou(),
+],
+{
+  arcane: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'flesh_shaping_for_dummies', /* key */
+"Flesh-Shaping for Dummies", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'trait',
+  'veteran',
+  'rare',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'negotiator1': [ setup.qu.negotiator, 1],
+  'negotiator2': [ setup.qu.negotiator, 1],
+  'student': [ _criteriastudent, 1],
+},
+{ /* actors */
+  'teacher': 'vale_all',
+},
+[ /* costs */
+  setup.qc.Money(-10000),
+],
+'Quest_flesh_shaping_for_dummies',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_flesh_shaping_for_dummiesCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Money(5000),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummiesCrit',
+    [
+      setup.qc.QuestDirect('flesh_shaping_for_dummies_orifices', null),
+      setup.qc.AddTitle('student', 'quest_flesh_shaping_dummy_0'),
+      setup.qc.SetCooldownQuest(null, 200),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummiesCrit',
+    [
+      setup.qc.Money(-5000),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummiesDisaster',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.Building('veteranhall'),
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('flesh_shaping_for_dummies_bodyparts'),
+  setup.qres.NoQuest('flesh_shaping_for_dummies_muscles'),
+  setup.qres.NoQuest('flesh_shaping_for_dummies_orifices'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+setup.qres.AllTraits([setup.trait.magic_water], true)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_flesh_shaping_for_dummies [nobr]
+<p>
+At a basic level, the domain of <<lore magic_water>> gives its bearer the ability to control and summon water. This is already incredibly useful, being able to water crops during draughts as well as helping tremendously during navigations in the rivers and the sea. However, when mastered, water magic would allow its bearers to shape flesh. After all, flesh consists mostly of water, and masters of water magic knows this for a fact.
+</p>
+
+<p>
+You have a slaver gifted with <<rep setup.trait.magic_water>> under your employ for some time now. Normally, there would be no way for them to fully master the magic, but you have heard that a certain vendor in the <<lore region_vale>> is planning to sell the rare and elusive tome, the "Flesh-Shaping for Dummies". It is said that this tome would allow anyone, even the dumbest of <<urace $unit.player>>, to master water magic. Clearly a very valuable tome, and it is being sold for a mere <<money 10000>> too!
+</p>
+
+<p>
+Should you wish to pursue this lead, you best send the prospective student yonder into the vale. Two negotiators should accompany them too, since the vendor is known to be a rather unscrupulous person...
+</p>
+
+
+
+:: Quest_flesh_shaping_for_dummiesCrit [nobr]
+<p>
+<<Yourrep $g.negotiator1>> and <<utheirrel $g.negotiator1 $g.negotiator2>> <<rep $g.negotiator2>> negotiated
+<<if $gOutcome == 'crit'>>
+a very good deal
+<<elseif $gOutcome == 'success'>>
+a good deal
+<<else>>
+a bad deal
+<</if>>
+for the tome, which now stands innocently on your desk. Giving it a few glance, you get the feeling that you've been completely swindled, as the book is very vague on its instructions, and looks like complete scam. Just as you were wondering whether to refund the book, <<yourrep $g.student>> student|enter your office.
+<<if $g.student.isHasTrait('per_studious')>>
+The studious slaver looks very eager to start the study immediately.
+<<elseif $g.student.isHasTrait('per_evil')>>
+The ambitious slaver looks very eager to finally have the chance to master <<their $g.student>> latent magic.
+<<elseif $g.student.isHasTrait('per_proud')>>
+The proud slaver looks very eager to finally have the chance to master a magic <<they $g.student>> always knew as <<their $g.student>> latent talent.
+<<else>>
+The <<uadjgood $g.student>> looks quite eager to start learning whatever it is the book promises to teach.
+<</if>>
+Seeing <<their $g.student>> almost puppy-like eyes, how could you say no and refund the book?
+</p>
+
+<p>
+<<They $g.student>> shall begin <<their $g.student>> studies immediately, although it will no doubt be challenging...
+</p>
+
+
+
+
+
+:: Quest_flesh_shaping_for_dummiesDisaster [nobr]
+<p>
+<<Yourrep $g.negotiator1>> and <<utheirrel $g.negotiator1 $g.negotiator2>> <<rep $g.negotiator2>> negotiated
+a good deal
+for the tome, which now stands innocently on your desk.
+However, after skimming through some of the pages, you get a very strong feeling that your slavers have been duped.
+The book consists of nothing but gibberish — for example, the chapter that details the use of water magic to gape orifice simply works by shoving a large water balloon into the prospect's hole for a few days. Another chapter that details muscle flesh-shaping instead details a strict workout regime followed by nutritious meal.
+</p>
+
+<p>
+Sighing to yourself, there is nothing you can do but accept that you've been swindled, and move on with your day.
+</p>

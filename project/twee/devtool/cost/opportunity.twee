@@ -1,0 +1,71 @@
+:: CostOpportunity [nobr]
+
+Gain the following chosen opportunity.
+<br/>
+
+<<devchooseopportunity 'CostOpportunityDo'>>
+
+
+:: CostOpportunityDo [nobr]
+
+
+<<set $qcost = setup.qc.Opportunity(_opportunitychosen)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostSetCooldownOpportunity [nobr]
+
+<p>
+The following opportunity cannot be generated in the next
+<<numberbox "_cooldown" 200>> weeks:
+</p>
+
+<<devchooseopportunity 'CostSetCooldownOpportunityDo'>>
+
+
+:: CostSetCooldownOpportunityDo [nobr]
+
+<<set $qcost = setup.qc.SetCooldownOpportunity(_opportunitychosen, _cooldown)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostSetCooldownOpportunitySelf [nobr]
+
+This opportunity cannot be generated in the next <<numberbox '_cooldown' 200>> weeks.
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.SetCooldownOpportunity(null, _cooldown)>>
+<</link>>
+
+
+:: CostOpportunityRoles [nobr]
+
+<div>
+First, choose the opportunity:
+</div>
+
+<<devchooseopportunity 'CostOpportunityRolesDo'>>
+
+
+:: CostOpportunityRolesDo [nobr]
+
+<<set $qopportunitychosen = _opportunitychosen>>
+<<gotowipehistory 'CostOpportunityRolesImplement'>>
+
+:: CostOpportunityRolesImplement [nobr]
+
+
+<p>
+Select the roles in <<rep $qopportunitychosen>> that you want to assign with roles
+in the current thing you are making:
+</p>
+
+<p>
+<<devquestroles $qopportunitychosen>>
+</p>
+
+<<link '(Done)' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Opportunity($qopportunitychosen, setup.deepCopy($qdevquestroles))>>
+  <<unset $qdevquestroles>>
+<</link>>
+

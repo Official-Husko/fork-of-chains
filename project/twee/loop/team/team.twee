@@ -1,0 +1,66 @@
+:: TeamManagement [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.missioncontrol)>>
+<<set _teams = $company.player.getTeams()>>
+<<if _room>>
+  <<set _lockers = _room.getLevel() - 1>>
+<<else>>
+  <<set _lockers = 0>>
+<</if>>
+<<set _rescuer = $dutylist.getDuty('rescuer')>>
+<<set _insurer = $dutylist.getDuty('insurer')>>
+
+<h2><<= _room.getTitleRep()>></h2>
+  You enter the mission control room, where you can view your teams that are currently going on quests.
+  <<if _rescuer>>
+    <<set _unit = _rescuer.getAssignedUnit()>>
+    <<if _unit && _unit.isAvailable()>>
+      You noticed your <<rep _rescuer>> <<rep _unit>> sitting on
+      <<their _unit>> desk busy looking for your lost slavers,
+      <<= setup.Text.Duty.competence(_rescuer)>>.
+    <<elseif _unit>>
+      <<Yourrep _unit>> usually works here, but <<they _unit>>
+      is currently unavailable to attend to <<their _unit>> duties.
+    <<else>>
+      A room has been set aside for your <<rep _rescuer>> to work,
+      but it's empty now.
+    <</if>>
+  <</if>>
+  <<if _insurer>>
+    <<set _unit = _insurer.getAssignedUnit()>>
+    <<if _unit && _unit.isAvailable()>>
+      You can see numerous contingency plans
+      scribbled all over your
+      <<rep _insurer>> <<rep _unit>>'s desk.
+      The <<man _unit>> <<themself _unit>> is nowhere to be seen however,
+      probably busy trying to secure all the necessary precautions,
+      <<= setup.Text.Duty.competence(_insurer)>>.
+    <<elseif _unit>>
+      <<Yourrep _unit>> usually works here, but <<they _unit>>
+      is currently unavailable to attend to <<their _unit>> duties.
+    <<else>>
+      The workstation for your <<rep _insurer>> is currently unoccupied.
+    <</if>>
+  <</if>>
+  <<if _lockers>>
+    The mission control room has been upgraded <<= _lockers>> times.
+  <</if>>
+  Currently,
+  <<= _teams.length>> teams are away on a mission.
+  You can have at most
+  <<successtext $company.player.getMaxActiveTeams()>> different teams on a mission at the same time.
+  If you want to increase this limit, you can upgrade your <<rep _room>>.
+  You proceed to sit at a desk to view your teams.
+<br/>
+
+<<set _teamlist = State.variables.company.player.getTeams()>>
+
+<<filterall 'team' _teamlist>>
+  <<if $menufilter.get('team', 'display') == 'compact'>>
+    <<teamcardcompact _displayobj>>
+  <<else>>
+    <<teamcard _displayobj>>
+  <</if>>
+<</filterall>>

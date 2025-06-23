@@ -1,0 +1,73 @@
+:: QuestSetupSurgeryAnusLoosen [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_anus_loosen',  /* id */
+  'Surgery: Loosen Anus',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SurgeryAnusLoosen',  /* description */
+  setup.qdiff.hardest60,
+  [
+    [
+      'SurgeryAnusLoosenCrit',
+      [
+        setup.qc.TraitIncreaseExisting('trainee', setup.trait.anus_gape),
+        setup.qc.TraitIncreaseExisting('trainee', setup.trait.anus_gape),
+      ]
+    ],
+    [
+      'SurgeryAnusLoosenSuccess',
+      [
+        setup.qc.TraitIncreaseExisting('trainee', setup.trait.anus_gape),
+      ],
+    ],
+    [
+      'SurgeryAnusLoosenFailure',
+      [],
+    ],
+    [
+      'SurgeryAnusLoosenDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryAnusLoosen [nobr]
+<p>
+Loosen the slaver's anus.
+</p>
+
+:: SurgeryAnusLoosenCrit [nobr]
+<p>
+The surgery went off without a hitch.
+</p>
+
+:: SurgeryAnusLoosenSuccess [nobr]
+<p>
+The surgery was successful.
+</p>
+
+:: SurgeryAnusLoosenFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SurgeryAnusLoosenDisaster [nobr]
+<p>
+The surgery failed catastrophically, badly injuring <<rep $g.trainee>>.
+</p>

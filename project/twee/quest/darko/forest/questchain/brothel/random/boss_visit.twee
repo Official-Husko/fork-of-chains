@@ -1,0 +1,178 @@
+:: QuestSetup_boss_visit [nobr quest]
+
+<<run new setup.UnitGroup(
+"boss_visit0",
+"Forest Boss",
+'forest_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_boss),
+  setup.qc.TraitRemove('unit', setup.trait.per_submissive),
+  setup.qc.TraitRemove('unit', setup.trait.per_dominant),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.skill_connected, setup.trait.skill_intimidating, setup.trait.face_hideous, setup.trait.skill_hypnotic], 2, true, false),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'boss_visit', /* key */
+"Boss Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+],
+4, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'entertainer': [ setup.qu.performer, 1],
+  'whore': [ setup.qu.whore, 1],
+  'guard': [ setup.qu.bodyguard, 1],
+},
+{ /* actors */
+  'head': [
+    setup.qres.Home(),
+  ],
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+  'target': 'boss_visit0',
+},
+[ /* costs */
+],
+'Quest_boss_visit',
+setup.qdiff.hardest69, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_boss_visitCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slaver('target', "a|was a criminal boss in the Neko Port City who took interest in your brothel and decided to join your company for a while", undefined),
+      setup.qc.VarSet('quest_brothel_royal_visit', '1', -1),
+    ],
+  ],
+  [
+    'Quest_boss_visitCrit',
+    [
+      setup.qc.MoneyCustom(6000),
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+    ],
+  ],
+  [
+    'Quest_boss_visitFailure',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.MissingUnit('whore'),
+    ],
+  ],
+  [
+    'Quest_boss_visitFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.MissingUnit('guard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+
+],
+)>>
+
+:: Quest_boss_visit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+Your fine establishment, <<attach _describe>>, caters to a wide range of fetish.
+<<if _sub == 'sub'>>
+While most of the courtesans are submissive sluts, the establishment prides
+itself in being able to cater to subs as well, although not very effective at
+it.
+<<elseif _sub == 'dom'>>
+Customers can engage in a consensual dom-to-dom sex, or even fulfill their fantasies of being dominated by your masterful courtesans.
+<<else>>
+The many courtesans under your employ are comfortable in both topping and bottoming.
+<</if>>
+While it has attracted people with certain fetish, it also attracts people with relatively vanilla tastes.
+</p>
+
+<p>
+One such people is apparently the leader of a criminal gang in the <<lore
+location_npc>>.
+The manager of your brothel, <<yourrep $g.owner>>, owner|have
+informed you that
+the leader of the criminal gang has decided to plan a visit into your brothel <<themself $g.target>>,
+after hearing so much about your brothel's degeneracy. For such an
+important client, it might be good to go the extra effort, and supply your
+own experienced men for the occassion. The crime boss would no doubt expect
+the three basic necessities of any brothel worth its salt: the security, the
+entertainment, and most importantly the <<girl $g.head>>.
+</p>
+
+
+
+
+
+:: Quest_boss_visitCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+Your three slavers performed their job admirably satisfying the important client. <<Yourrep $g.guard>> stood guard over the place, making sure that no miscreant would dare to cause problems in the venue.
+Meanwhile <<yourrep $g.entertainer>>
+<<if $g.entertainer.isHasTrait('skill_entertain')>>
+entertainer|is a masterful entertainer, and had no trouble whatsoever making sure the boss was always entertained.
+<<else>>
+entertainer|is a solid entertainer, and managed to make sure that the boss remained entertained at all times.
+<</if>>
+<<Yourrep $g.whore>> together with the head courtesan <<name $g.slave>> are assigned to a particular private suite that have been reserved by the boss, and they engaged in many lovemaking throughout the stay.
+</p>
+
+
+<p>
+The boss was satisfied by the services rendered — not an easy task at all considering the quality <<they $g.target>> had expected — and paid generously for it.
+<<if $gOutcome == 'success'>>
+<<They $g.target>> promised to visit again sometime in the future, if your brothel is still operational by then.
+<<else>>
+In fact, <<they $g.target>> target|was so impressed that <<they $g.target>> got inspired to take a little break from the stressful duty of managing a criminal enterprise, and offered to join your company as a slaver as a sort of vacation. You can certainly make use of such a skilled slaver, but ultimately the decision is yours.
+<</if>>
+</p>
+
+
+
+
+:: Quest_boss_visitFailure [nobr]
+<p>
+Unfortunately, your venue did not give a great impression on the boss. The boss felt <<their $g.target>> time was wasted, and demanded pay for the lost time. In the end,
+<<if $gOutcome == 'disaster'>>
+<<yourrep $g.guard>> and <<rep $g.whore>> were taken as "payments".
+Better get your Rescuer to work if you want to see them ever again...
+<<else>>
+<<yourrep $g.whore>> whore|was taken as payment.
+<<uneedrescue $g.whore>>.
+<</if>>
+</p>

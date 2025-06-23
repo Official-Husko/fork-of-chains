@@ -1,0 +1,239 @@
+:: QuestSetup_revenge_of_the_kobold2 [nobr quest]
+
+
+<<run new setup.Title(
+"quest_the_shunned_kobold_0", /* key */
+"The Shunned Kobold", /* name */
+"A kobold who were shunned by others due to being born with wings", /* description */
+"a|was born as a winged kobold, and a|was shunned greatly by a|their fellow kobolds before running away to the surface and into your company", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+ survival: 3,},
+{
+ is_negative: false,
+},
+)
+>>
+<<run new setup.Title(
+"quest_the_ex_kobold_1", /* key */
+"The Ex-Kobold", /* name */
+"A (probably) dragonkin who lived most of their current live as a kobold", /* description */
+"a|lived most of a|their live as a kobold, despite (maybe) actually a dragonkin", /* unit text */
+5000, /* slave value */
+{ /* skill additives */
+ combat: 1, survival: 3, arcane: 1,},
+{
+ is_negative: false,
+},
+)
+>>
+
+
+
+<<set _criteriakobold = new setup.UnitCriteria(
+null, /* key */
+'kobold', /* name */
+[
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+  setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+],
+{
+  combat: 1,
+  survival: 1,
+  slaving: 1,
+}
+)>>
+
+<<set _criteriaspider = new setup.UnitCriteria(
+null, /* key */
+'Spider Wrangler', /* name */
+[
+  setup.trait.per_sly,
+  setup.trait.skill_creative,
+  setup.trait.skill_animal,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.height_dwarf,
+  setup.trait.per_direct,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 2,
+  knowledge: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'revenge_of_the_kobold2', /* key */
+"Revenge of the Kobold", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'deep',
+  'unit',
+  'trait',
+],
+3, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'kobold': [ _criteriakobold, 1],
+  'spider': [ _criteriaspider, 1],
+  'capturer': [ setup.qu.slavecapturer, 1],
+},
+{ /* actors */
+  'slave1': 'subrace_kobold',
+  'slave2': 'subrace_kobold',
+  'slave3': 'subrace_kobold',
+  'slave4': 'subrace_kobold',
+},
+[ /* costs */
+],
+'Quest_revenge_of_the_kobold2',
+setup.qdiff.hard45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_revenge_of_the_kobold2Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('slave3', "a|was a kobold villager in the Deeprealm who officially \"fell victim to a spider invasion\"", undefined),
+      setup.qc.Slave('slave4', "a|was a kobold villager in the Deeprealm who officially \"fell victim to a spider invasion\"", undefined),
+    ],
+  ],
+  [
+    'Quest_revenge_of_the_kobold2Crit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Slave('slave1', "a|was a kobold villager in the Deeprealm who officially \"fell victim to a spider invasion\"", undefined),
+      setup.qc.Slave('slave2', "a|was a kobold villager in the Deeprealm who officially \"fell victim to a spider invasion\"", undefined),
+    ],
+  ],
+  [
+    'Quest_revenge_of_the_kobold2Crit',
+    [
+      setup.qc.VarRemove('quest_shunned_kobold_progress'),
+      setup.qc.PerkChoice('kobold', 'perk_kobold_heritage', undefined),
+      setup.qc.BoonizeRandom('kobold', 100),
+      setup.qc.TraitReplace('kobold', setup.trait.subrace_dragonkin),
+      setup.qc.OneRandomSeed([
+setup.qc.TraitReplace('kobold', setup.trait.per_cruel),
+setup.qc.TraitReplace('kobold', setup.trait.per_evil)
+]),
+      setup.qc.RemoveTitle('kobold', 'quest_the_shunned_kobold_0'),
+      setup.qc.AddTitle('kobold', 'quest_the_ex_kobold_1'),
+    ],
+  ],
+  [
+    'Quest_revenge_of_the_kobold2Crit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Injury('kobold', 8),
+      setup.qc.Injury('spider', 6),
+      setup.qc.Injury('capturer', 7),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_revenge_of_the_kobold2 [nobr]
+<<set _u = setup.getUnit({
+job: 'slaver',
+title: 'quest_the_shunned_kobold_0',
+})>>
+
+<<if _u>>
+
+    <p>
+        Stories would tell tales of those who repay evil with kindness. Unfortunately, that is not the way of the world. Past regression cannot be forgiven, or so you have decided, and you shall demonstrate this to <<reps _u>> home village.
+    </p>
+
+    <p>
+        As you recall, you receive a plead of help from the very same village whose kobolds have oh so very bullied <<rep _u>> into becoming your slaver. A group of giant spiders were soon to descend on the village, vastly outnumbering the poor kobolds. Instead of helping, however, you plant to use the commotion to get yourself a few kobold slaves. <<Rep _u>> could even pick some of their former bullies, if <<they _u>> so desires.
+    </p>
+
+    <p>
+        Who knows what <<rep _u>> might think about this, however...
+    </p>
+
+<<else>>
+
+    <<missingunitquest>>
+
+<</if>>
+
+
+
+
+:: Quest_revenge_of_the_kobold2Crit [nobr]
+<p>
+    After a long homecoming, <<rep $g.kobold>> finally came back to <<their $g.kobold>> home village. But <<they $g.kobold>> never expected to come back this way — as the harbinger of their destruction. The <<urace $g.kobold>> kobold|was understandably quiet throughout the entire journey, no doubt sorting the many thoughts that reside within <<their $g.kobold>> <<uhead $g.kobold>>.
+</p>
+
+<p>
+    Without your slaver's interference, the spiders overwhelmed the village's defenses. Many of the villagers were cocooned, and the spiders moved with order, transporting the living cocoons back into wherever their nest might be located.
+    <<if $g.kobold.isHasTrait('magic_fire')>>
+        <<Rep $g.kobold>> used <<their $g.kobold>> newly learned fire magic to ensure the spiders were not coming anywhere near the team.
+    <<elseif $g.kobold.isHasTrait('magic_light')>>
+        <<Rep $g.kobold>> used <<their $g.kobold>> newly learned light magic to ensure the spiders were not coming anywhere near the team.
+    <<else>>
+    <</if>>
+    <<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+        Meanwhile, <<rep $g.kobold>> and the rest of the team managed to pick up
+        <<if $gOutcome == 'crit'>>
+            four
+        <<else>>
+            two
+        <</if>>
+        kobolds who tried to run away — <<reps $g.kobold>> face being the last thing they saw before their vision go dark as they were blindfolded, haunting their thoughts for the long trip home.
+    <<elseif $gOutcome == 'failure'>>
+        Unfortunately, the spiders was unnaturally thorough, and no kobolds were able to escape into your slaver's ambush.
+    <<else>>
+        Your slavers attempted to get some of the cocoons to bring back home, but the spiders fiercely defended every single one of them, resulting in only in injuries.
+    <</if>>
+</p>
+
+<p>
+    After waiting a bit longer, the spiders finally retreated, having kidnapped most of the kobolds from their small settlement. With the spiders gone <<rep $g.kobold>> took a moment to descend into the village, and made a beeline towards <<their $g.kobold>> old and ruined homestead. <<They $g.kobold>> kobold|was searching for something — a memento that <<they $g.kobold>> kept from the moment of <<their $g.kobold>> birth — a piece of <<their $g.kobold>> egg shell.
+    After weaving through the thick spiderweb, the shell was found, inside a lockbox that must have remained unopened ever since <<they $g.kobold>> left the village.
+</p>
+
+<p>
+    The egg was reddish in color, and far thicker than the average kobold egg.
+    It is not a clear cut answer, but the egg shell is yet another evidence that <<rep $g.kobold>> may not be a kobold after all.
+    After a long pause, <<rep $g.kobold>> turned back to face the rest of the team, resolution visible in <<their $g.kobold>> eyes.
+</p>
+
+<<dialogue $g.kobold>>
+    I am... a DRAGONKIN!
+<</dialogue>>
+
+<p>
+    Living most of <<their $g.kobold>> life as a kobold left a permanent heritage on the ex-kobold.
+</p>
+
+
+
+
+

@@ -1,0 +1,181 @@
+:: InteractionTogetherAnalSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_together_anal',
+  'Anally DP a slave',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionTogetherAnal',
+  [],  /* Cost */
+  [
+    setup.qres.HasItem('sexmanual_bodypart_anus'),
+    setup.qres.HasSlave(),
+    setup.qres.Building(setup.buildingtemplate.trainingbedroom),
+  ],  /* Requirements */
+  [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTrait(setup.trait.per_submissive),
+    setup.qres.NoTrait(setup.trait.per_chaste),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionTogetherAnal [nobr]
+
+<<set _slavelist = $company.player.getUnits({job: setup.job.slave, not_injured: true, home: true}).filter(unit => unit.isHasTrait(setup.trait.training_anal_basic))>>
+<<set _slavelist = _slavelist.filter(unit => unit.isUsableBy($unit.player) || unit.isUsableBy($g.target))>>
+
+<<if _slavelist.length>>
+  Which slave would you suggest to <<rep $g.target>> to double penetrate together?
+
+  <div id='divholder'>
+    <<for _islave, _slave range _slavelist>>
+      <<capture _slave>>
+        <<rep _slave>>
+        <<link '(use)'>>
+          <<replace '#divholder'>>
+            <<set _victim = _slave>>
+            <<include 'InteractionTogetherAnalDo'>>
+          <</replace>>
+        <</link>>
+        <br/>
+      <</capture>>
+    <</for>>
+  </div>
+<<else>>
+  There are no available anally-trained slave for you to double-penetrate with a slaver.
+<</if>>
+
+:: InteractionTogetherAnalDo [nobr]
+
+<<set $i1 = {}>>
+<<set $i2 = {}>>
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i1 _u>>
+<<pronounload $i2 _victim>>
+
+<<set _chastity = _victim.isHasTrait(setup.trait.eq_chastity)>>
+<<set _umouthequip = setup.Text.Unit.Equipment.getEquipmentAt(_victim, setup.equipmentslot.mouth)>>
+<<set _gagged = _victim.isHasTrait(setup.trait.eq_gagged)>>
+
+<<loadinteractioncommon _victim>>
+
+<<if $unit.player.getLover() == _u>>
+  You came over to where your lover <<rep _u>> is.
+  <<lovertextshort $unit.player>>
+  You then invited
+<<else>>
+  You invited
+<</if>>
+<<yourrep _u>> for some fun with an obedient slave over by the $i.locgeneral.
+<<include 'InteractionTogetherPunishRelation'>>
+You go first and call your <<titlefull _victim>> <<= _victim.getName()>>
+over.
+<<ustripanus _victim>>
+You tell $i2.him $i2.he's got a nice asspussy,
+and grope $i2.him thoroughly,
+cupping $i2.his buttocks with one <<uhand _u>> and squeezing
+a <<ubreast _victim>> with the other.
+$i2.He looks
+ready and willing,
+and angles $i2.himself just right, and you administer a light slap to
+$i2.his <<uass _victim>>.
+You
+<<if !_hasdick>> dons a strap-on and<</if>>
+clambers up onto the $i.location.
+Since saliva is plenty of lube for <<= _victim.getName()>>'s experienced ass,
+you 
+<<if _gagged>>
+  unbuckled <<their _victim>> <<rep _umouthequip>> and
+<</if>>
+points a meaningful finger at <<if !_hasdick>>the phallus<<else>>your cock<</if>>,
+and <<= _victim.getName()>> begins to suck it enthusiastically, trying to get it as
+wet as possible for the sake of $i2.his butt.
+
+<br/>
+<br/>
+
+$i2.He whimpers into your
+<<if !_hasdick>>dildo<<else>>dick<</if>> in $i2.his mouth as $i2.he feels $i2.his
+<<if _chastity>>
+chastity cage
+<<elseif _victim.isHasDick()>>
+hard cock
+<<else>>
+mons
+<</if>>
+graze the $i.bed, and then stiffens as you continue.
+You guides your
+<<if !_hasdick>>
+strap-on<<else>>cock<</if>>
+inside the compliant
+slave, who begins to ride it,
+enjoying both the
+<<if _victim.isHasDick()>>
+prostate<<else>>anal<</if>>
+stimulation and the feeling of $i2.his
+<<if _victim.isHasDick()>>
+  <<if _chastity>>
+    erection trapped between $i2.him and
+  <<else>>
+    dick trapped between $i2.him and
+  <</if>>
+<<else>>pussy pressed against<</if>>
+your <<ubody $unit.player>>.
+You macks the humping
+$i2.man's butt
+to get $i2.him to stop,
+and slides an index finger up $i2.his ass
+alongside your <<if !_hasdick>>phallus<<else>>cock<</if>>.
+<<= _victim.getName()>> shudders, and then begins to whine as $i2.he
+pulls $i2.his sphincter wider.
+<br><br>
+
+You tell $i2.him that $i2.his ass is so nice you feel like sharing it.
+$i2.He's not quite sure how to respond,
+and before $i2.he can figure it out, <<yourrep _u>> finally finished $i1.his business and entered the $i.room.
+<<if $unit.player.getLover() == _u>>
+  <<They _u>> sneaks you a quick peck before taking
+<<else>>
+<<= _u.getName()>> takes
+<</if>>
+in the situation at a glance and seeing the depravity,
+<<if _u.isHasDick()>>
+  immediately gets an erection
+<<else>>
+  flushed with arousal<</if>>.
+
+The slave begs incoherently as <<= _u.getName()>><<if !_u.isHasDick()>>, donning a strap-on,<</if>>
+press their <<if _u.isHasDick()>><<udick _u>><<else>>phallus<</if>>
+against your finger.
+Its not clear whether <<= _victim.getName()>> is begging
+<<= _u.getName()>> to dual penetrate $i2.his <<uanus _victim>>,
+or begging you not to,
+but whichever it is,
+you withdraws your finger to give space for
+<<= _u.getName()>> to shove $i1.himself inside.
+<<= _victim.getName()>> jerks
+with discomfort and gasps repeatedly
+as the two of you begin to double penetrate $i2.him.
+Both you and <<= _u.getName()>> pound <<= _victim.getName()>> quite hard.
+When you've both had your fun, extracted yourselves,
+and let the exhausted, gaped bitch collapse onto the floor.
+<<if $unit.player.getLover() == _u>>
+  <<= _u.getName()>> turns over to you and blew a kiss towards you.
+<<else>>
+<<= _u.getName()>> gives you a naughty slap on your shoulders.
+<</if>>
+"That was fun", $i1.he says.
+"Shall we flip $i2.him over and go again?", followed by a
+quiet wail from the floor.
+
+<<unset $i1>>
+<<unset $i2>>
+

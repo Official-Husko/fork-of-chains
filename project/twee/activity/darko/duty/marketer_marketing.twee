@@ -1,0 +1,54 @@
+:: ActivitySetup_marketer_marketing [nobr activity]
+
+<<run new setup.ActivityTemplate({
+key: 'marketer_marketing',
+name: "Marketer Marketing", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.OnDuty('marketer'),
+  ],
+},
+critical_traits: [
+],
+disaster_traits: [
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.common,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "<<ubusyshort $g.a>> trying to get a new slaver order for you.",
+      "The people in the city are always looking for \"servants\". Might be one of the few occupations that are relatively comfy for the slave.",
+    ],
+    bold: [
+      "<<ubusyshort $g.a>> getting some new slave orders to make us some nice hard cash.",
+      "I heard some orcish camps on the east prefer to buy virgin tight slaves...",
+    ],
+    cool: [
+      "<<ubusyshort $g.a>>. Have orders to sort through.",
+      "Hmm, the mines always need new workers...",
+    ],
+    witty: [
+      "If someone wants to learn how to get a person they could just come here and buy our slaves.",
+      "Maybe we could get better offers if we sell our slaves a different way. Buy one get a free blowjob?",
+    ],
+    debauched: [
+      "<<ubusyshort $g.a>>. Got a potential lead for orders from a particular client on the seas who delights in nothing but breaking in the toughest of slaves...",
+      "I wonder if I could just buy some of our own slaves for my personal use...",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.marketeroffice,
+],
+})>>

@@ -1,0 +1,101 @@
+:: QuestSetup_just_like_trained [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'just_like_trained', /* key */
+"Just Like Trained", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'special', 'unit', 'vale',
+],
+1, /* weeks */
+1, /* quest expiration weeks */
+{ /* roles */
+'trainer1': setup.qu.slavetrainer,
+'trainer2': setup.qu.slavetrainer,
+'guard': setup.qu.guard, },
+{ /* actors */
+'slave': [
+setup.qres.HasTag('escaped_slave'),
+], },
+[ /* costs */
+],
+'Quest_just_like_trained',
+setup.qdiff.easy30, /* difficulty */
+[ /* outcomes */
+[
+'Quest_just_like_trainedCrit',
+[
+],
+], [
+'Quest_just_like_trainedCrit',
+[
+],
+], [
+'Quest_just_like_trainedCrit',
+[
+setup.qc.Injury('slave', 1), ],
+], [
+'Quest_just_like_trainedDisaster',
+[
+setup.qc.Injury('slave', 4), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.escapeeasy, setup.rarity.common],
+[setup.questpool.escapemedium, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.ExistUnit([
+setup.qres.HasTag('escaped_slave'),
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_advanced)
+]), ],
+[ /* expiration outcomes */
+setup.qc.Injury('slave', 4), ],
+)>>
+
+:: Quest_just_like_trained [nobr]
+<p>
+<<Rep $g.slave>> slave|have escaped! Normally any respectable slaver would be
+worried that one of their slaves has escaped, but in this case you have full
+convidence that <<yourrep $g.slave>>
+slave|have been trained well enough that the slave will actually return back
+to your fort and beg to be re-enslaved.
+You can ignore this quest and the slave will back for sure, but it's
+dangerous out there and your slave might sustain injuries when coming back.
+Hence, if you want to, you can try and send a group of slavers to ensure the safe
+unharmed return of <<therace $g.slave>>.
+</p>
+
+
+:: Quest_just_like_trainedCrit [nobr]
+
+<p>
+It did not take your slavers long at all to locate the obedient slave <<rep
+$g.slave>>. The slave happily offered <<their $g.slave>> neck to the slavers
+to be re-collared and brought back home to the dungeons — their home.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+Your slavers noticed some minor injuries on the slave, but nothing a week of
+rest can't fix.
+</p>
+<</if>>
+
+
+
+:: Quest_just_like_trainedDisaster [nobr]
+<p>
+Your slavers were terrible at their job and when they were still outside,
+<<rep $g.slave>> came knocking into your fort asking to be re-enslaved. <<Rep
+$g.trainer1>> went back home reporting their failure only to be greeted by
+the sight of <<yourrep $g.slave>>
+<<if $unit.player.isHasDick()>>
+sucking on your dick
+<<else>>
+performing cunnilingus for you
+<</if>>
+back at your fort.
+</p>

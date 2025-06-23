@@ -1,0 +1,223 @@
+:: QuestSetup_essence_of_joy [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.HasTitle('quest_broken_descent_0'),
+],
+{
+}
+)>>
+
+<<set _criteriadowser = new setup.UnitCriteria(
+null, /* key */
+'Essence Dowser', /* name */
+[
+  setup.trait.race_wolfkin,
+  setup.trait.bg_wildman,
+  setup.trait.bg_hunter,
+  setup.trait.bg_woodsman,
+  setup.trait.bg_nomad,
+  setup.trait.dick_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.per_active,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_chaste,
+],
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_boss,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.bg_knight,
+  setup.trait.bg_metalworker,
+  setup.trait.bg_engineer,
+  setup.trait.bg_scholar,
+  setup.trait.bg_noble,
+  setup.trait.bg_courtesan,
+  setup.trait.bg_informer,
+  setup.trait.bg_slaver,
+  setup.trait.bg_artisan,
+  setup.trait.bg_laborer,
+  setup.trait.bg_thug,
+  setup.trait.bg_thief,
+  setup.trait.bg_raider,
+  setup.trait.bg_clerk,
+  setup.trait.bg_maid,
+  setup.trait.bg_merchant,
+  setup.trait.bg_foodworker,
+  setup.trait.bg_whore,
+  setup.trait.bg_unemployed,
+  setup.trait.bg_slave,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_dreamy,
+  setup.trait.per_empath,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  aid: 1,
+  arcane: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'essence_of_joy', /* key */
+"Essence of Joy", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'vale',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'dowser': [ _criteriadowser, 1],
+  'alchemist': [ setup.qu.alchemist, 1],
+  'herbalist': [ setup.qu.herbalist, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_essence_of_joy',
+setup.qdiff.normal26, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_essence_of_joyCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Item(setup.item.potion_boon),
+    ],
+  ],
+  [
+    'Quest_essence_of_joyCrit',
+    [
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.Opportunity('restore_the_joy', {
+slave: "slave",
+}),
+      setup.qc.Item(setup.item.healing_potion_greater),
+      setup.qc.Item(setup.item.level_up_potion_basic),
+    ],
+  ],
+  [
+    'Quest_essence_of_joyFailure',
+    [
+      setup.qc.BoonizeRandom('herbalist', 2),
+      setup.qc.BoonizeRandom('dowser', 2),
+      setup.qc.BoonizeRandom('alchemist', 2),
+    ],
+  ],
+  [
+    'Quest_essence_of_joyFailure',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoOpportunity('restore_the_joy'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('quest_broken_descent_0'),
+setup.qres.NoTitle('quest_joy_restored_2')
+]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_essence_of_joy [nobr]
+<<set _u = setup.getUnit({title: 'quest_broken_descent_0'})>>
+
+<<set _v = setup.getAnySlaver()>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<p>
+There are witches living on the <<lore region_vale>>, and many scary tales are told about what they would do to those unlucky enough to be captured by them. However, you've recently heard about rumors of a certain witch whose kindness shines, and often visit villages to give her aid to the needy. A strange anomaly, you think to yourself.
+</p>
+
+<p>
+<<Yourrep _v>> suggested that there might be more to this tale — perhaps she is under the influence of an essence of <<rep _u>>? If you trust <<reps _v>> hunch, you could try to send a group of slavers under the guise of helping out the witch with her philanthropy work. With luck, they might recover whatever it is that's causing her odd reversal of personality...
+</p>
+
+<</if>>
+
+
+
+:: Quest_essence_of_joyCrit [nobr]
+<p>
+The witch's abode was unlike anything your slavers have expected. Instead of a decrepit hut, they were greeted with a proper, newly built house, seemingly built by a grateful nearby village. Seeing your slavers, she greeted them with open arms, greatly unnerving your slavers.
+</p>
+
+<p>
+Getting to work, <<rep $g.alchemist>> <<uadv $g.alchemist>> offered to lend her aid in whatever she was doing, which she gratefully accepted. In the coming weeks, your slavers helped her concoct various medicines and remedies for the maladies ravaging the nearby villagers, all for free.
+<<if $g.alchemist.isHasTrait('per_cruel')>>
+<<Their $g.alchemist>> cruel heart despised the idiocy of doing this for free,
+but deep down
+<<else>>
+But despite the nice and warm feeling inside of <<them $g.alchemist>>,
+<</if>>
+<<their $g.alchemist>> instincts told them something is off about it all.
+</p>
+
+<p>
+During one of the nights, <<rep $g.alchemist>> pretended to be sleeping before waking up in the middle of the night and scoured the entire hut.
+Finding nothing on the ground floor, <<they $g.alchemist>> accidentally hit a hard bump in the floor, revealing a hatch to a cellar. There, a strange reddish stone sat nicely on a shelf, and <<rep $g.alchemist>> could feel strange, warm energy glowing from within. Intrigued, <<rep $g.alchemist>> pocketed the stone away, to be brought back home once <<they $g.alchemist>> finish the job.
+</p>
+
+<p>
+Eventually, your slavers bid farewell to the witch. She offered some gifts for your slavers — potions for various maladies. All the while <<rep $g.alchemist>> suppressed the urge to do more good thing, trying <<their $g.alchemist>> best to think with their <<ugenital $g.alchemist>> instead of <<their $g.alchemist>> heart.
+<<if $g.alchemist.isHasTrait('per_cruel')>>
+A complete change of heart from the cruel slaver.
+<</if>>
+</p>
+
+<p>
+Few days later, you've heard rumors that the witch, the very same witch whom your slavers had kindly helped with, had renewed her reign of terror in the nearby settlements...
+If there was any doubt, they are gone now — The shift of personality is due to this strange stone your slaver brought back home.
+</p>
+
+
+:: Quest_essence_of_joyFailure [nobr]
+<p>
+Your slavers were unable to locate the hut, even with <<rep $g.dowser>> using the toy <<rep $g.slave>> as a guide. They would just have to settle with a pleasant journey in the vale, enjoying the fresh air.
+<<if $gOutcome == 'failure'>>
+At least your slavers seemed happy with the unexpected leisurely walk?
+<</if>>
+</p>

@@ -1,0 +1,105 @@
+:: QuestSetupUnitTrainingDominanceAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_dominance_advanced',  /* id */
+  'Dominance Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+    'slave': setup.qu.training_slave,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingDominanceAdvanced',  /* description */
+  setup.qdiff.harder44,
+  [
+    [
+      'QuestUnitTrainingDominanceAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_dominance_advanced),
+      ]
+    ],
+    [
+      'QuestUnitTrainingDominanceAdvancedSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_dominance_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingDominanceAdvancedFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingDominanceAdvancedDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+        setup.qc.Injury('slave', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingDominanceAdvanced [nobr]
+<p>
+A more advanced dominance training involves instilling into the slave's
+mind that not all slaves are equal. Some slaves are made to rule other slaves,
+and they must take pride in their work and be completely grateful to their
+owners for the opportunity to do so.
+</p>
+
+<p>
+<<successtextlite 'Please note'>>: Unlike most other slave trainings,
+the dominance requires an additional slave to be used during the training.
+The slave used this way will not receive the dominance training trait.
+</p>
+
+:: QuestUnitTrainingDominanceAdvancedCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<if $g.trainee.isHasTrait('race_demon')>>
+    <<questimage 'unit_training_dominance_advanced_male_demon.jpg'>>
+  <<else>>
+    <<questimage 'unit_training_dominance_advanced_male.jpg'>>
+  <</if>>
+<</if>>
+
+<p>
+The training was a complete success. <<Rep $g.trainee>> successfully showed <<their $g.trainee>> newly found
+understanding on <<rep $g.slave>>.
+</p>
+
+:: QuestUnitTrainingDominanceAdvancedSuccess [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_dominance_advanced_male.jpg'>>
+<</if>>
+
+<p>
+It was difficult, but by the end of the week, <<rep $g.trainee>> trainee|have finally
+understand what it means to be a dominant slave.
+</p>
+
+:: QuestUnitTrainingDominanceAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccessful, and the lessons were
+lost in <<reps $g.trainee>> thick skull.
+</p>
+
+:: QuestUnitTrainingDominanceAdvancedDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, both <<rep $g.trainee>> and <<rep $g.slave>> managed to get injured
+and the training had to be stopped early.
+Not only that, it turns out that <<rep $g.trainee>> trainee|was a natural submissive, and this
+will complicate further training.
+</p>

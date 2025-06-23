@@ -1,0 +1,80 @@
+:: FavorDebug [nobr]
+
+<h2>Adjust your favor with other companies</h2>
+
+<<focmove 'Done' 'SettingsMenu'>>
+
+<<for _icompany, _company range $company>>
+  <<if _company != $company.player>>
+    <br/>
+    You have <<favor $favor.getFavor(_company)>> favor with <<rep _company>>.
+    <<capture _company>>
+      <<link '(+1)'>>
+        <<run $favor.adjustFavor(_company, 10)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(+5)'>>
+        <<run $favor.adjustFavor(_company, 50)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(+20)'>>
+        <<run $favor.adjustFavor(_company, 200)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(-1)'>>
+        <<run $favor.adjustFavor(_company, -10)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(-5)'>>
+        <<run $favor.adjustFavor(_company, -50)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(-20)'>>
+        <<run $favor.adjustFavor(_company, -200)>>
+        <<focgoto>>
+      <</link>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+
+:: IreDebug [nobr]
+
+<h2>Adjust your ire with other companies</h2>
+
+<<focmove 'Done' 'SettingsMenu'>>
+
+<<for _icompany, _company range $company>>
+  <<if _company != $company.player>>
+    <br/>
+    You have <<dangertextlite $ire.getIre(_company)>> ire with <<rep _company>>.
+    <<capture _company>>
+      <<link '(+1)'>>
+        <<run $ire.adjustIre(_company, 1)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(+5)'>>
+        <<run $ire.adjustIre(_company, 5)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(+20)'>>
+        <<run $ire.adjustIre(_company, 20)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(-1)'>>
+        <<run $ire.adjustIre(_company, -1)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(-5)'>>
+        <<run $ire.adjustIre(_company, -5)>>
+        <<focgoto>>
+      <</link>>
+      <<link '(-20)'>>
+        <<run $ire.adjustIre(_company, -20)>>
+        <<focgoto>>
+      <</link>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+

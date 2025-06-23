@@ -1,0 +1,29 @@
+:: LivingDebugDo [nobr]
+
+<<focreturn '(cancel)'>>
+
+<<set _living = setup.living[$gDebugLiving_key]>>
+<<set _unit = $unit[$gUnit_key]>>
+
+<p>
+  Testing: <<= _living.getName()>>
+</p>
+
+<<set _dom = setup.DOM.Card.livingdescription(_unit, _living)>>
+<<attach _dom>>
+
+<hr/>
+
+
+:: LivingDebugDoAll [nobr]
+
+<<set _units = $company.player.getUnits({job: setup.job.slaver})>>
+<<for _living range setup.living>>
+  <<set _unit = setup.rng.choice(_units)>>
+  <p>
+    Testing: <<= _living.getName()>>
+  </p>
+  <<set _dom = setup.DOM.Card.livingdescription(_unit, _living)>>
+  <<attach _dom>>
+  <hr/>
+<</for>>

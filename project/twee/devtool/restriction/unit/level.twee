@@ -1,0 +1,54 @@
+:: RestrictionLevelAtMost [nobr]
+
+<<set _default = setup.LEVEL_PLATEAU - 1>>
+Unit's level is at most <<numberbox '_level' _default>>.
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.LevelAtMost(_level)>>
+<</link>>
+
+
+:: RestrictionLevelAtLeast [nobr]
+
+<<set _default = setup.LEVEL_PLATEAU>>
+Unit's level is at least <<numberbox '_level' _default>>.
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.LevelAtLeast(_level)>>
+<</link>>
+
+
+:: RestrictionSkillAtLeast [nobr]
+
+<div>
+Unit's has at least <<numberbox '_amount' 100>>:
+</div>
+
+<<for _skill range setup.skill>>
+<div>
+  <<capture _skill>>
+    <<foclink _skill.rep() 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.SkillAtLeast(_skill, _amount)>>
+    <</foclink>>
+  <</capture>>
+</div>
+<</for>>
+
+
+:: RestrictionSkillModifierAtLeast [nobr]
+
+<div>
+Unit's modifier on the following skill is at least +<<numberbox '_multi' 0.4>>x:
+</div>
+
+<<for _skill range setup.skill>>
+<div>
+  <<capture _skill>>
+    <<foclink _skill.rep() 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.SkillModifierAtLeast(_skill, _multi)>>
+    <</foclink>>
+  <</capture>>
+</div>
+<</for>>

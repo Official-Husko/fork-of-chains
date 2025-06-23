@@ -1,0 +1,233 @@
+:: QuestSetup_gorgon_cave__recruit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_gorgon_cave__recruit1',
+'Tentacle Leader',
+'forest_all',  /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_mystic),
+setup.qc.TraitReplace('unit', setup.trait.magic_earth_master),
+setup.qc.TraitReplace('unit', setup.trait.per_independent), ],
+)>>
+<<run new setup.UnitGroup(
+'quest_gorgon_cave__recruit3',
+"Tentacle Leader's Student",
+'forest_all',  /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_apprentice),
+setup.qc.TraitReplace('unit', setup.trait.magic_earth),
+setup.qc.TraitReplace('unit', setup.trait.per_submissive), ],
+)>>
+<<run new setup.UnitGroup(
+'quest_gorgon_cave__recruit4',
+'Tentacle Slave',
+'forest_all',  /* pools */
+0,
+[
+setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape),
+setup.qc.TraitReplace('unit', setup.trait.per_lunatic), ],
+)>>
+
+<<set _criteriafighter1 = new setup.UnitCriteria(
+null, /* key */
+'Anti-Tentacle Fighter', /* name */
+[
+setup.trait.race_elf,
+setup.trait.race_catkin,
+setup.trait.muscle_thin,
+setup.trait.per_logical,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.trait.muscle_strong,
+setup.trait.dick_huge,
+setup.trait.balls_huge,
+setup.trait.breast_huge,
+setup.trait.height_giant,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_sexaddict,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 2,
+arcane: 1,
+}
+)>>
+
+<<set _criteriafighter2 = new setup.UnitCriteria(
+null, /* key */
+'Anti-Tentacle Fighter', /* name */
+[
+setup.trait.race_elf,
+setup.trait.race_catkin,
+setup.trait.muscle_thin,
+setup.trait.per_logical,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.trait.muscle_strong,
+setup.trait.dick_huge,
+setup.trait.balls_huge,
+setup.trait.breast_huge,
+setup.trait.height_giant,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_sexaddict,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 2,
+arcane: 1,
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'gorgon_cave__recruit', /* key */
+'Hydra Cave: Recruit', /* Title */
+'darko', /* Author */
+[ 'forest', 'unit'
+], /* tags */
+2, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+'fighter1': _criteriafighter1,
+'fighter2': _criteriafighter2,
+'recruiter': setup.qu.recruiter, },
+{ /* actors */
+'leader': 'quest_gorgon_cave__recruit1',
+'student': 'quest_gorgon_cave__recruit3',
+'slave': 'quest_gorgon_cave__recruit4', },
+[ /* costs */
+],
+'Quest_gorgon_cave__recruit',
+setup.qdiff.harder36, /* difficulty */
+[ /* outcomes */
+[
+'Quest_gorgon_cave__recruitCrit',
+[
+setup.qc.Slaver('leader', "a|was the leader of a secluded cave full of guardian tentacles", false),
+setup.qc.Slave('slave', 'a|was a decoration slave in a cave full of tentacles whose orifices was permanently gaped by continuous rape', undefined), ],
+], [
+'Quest_gorgon_cave__recruitCrit',
+[
+setup.qc.Slaver('student', 'a|was the "student" of the leader of a secluded cave full of guardian tentacles', false),
+setup.qc.Slave('slave', 'a|was a decoration slave in a cave full of tentacles whose orifices was permanently gaped by continuous rape', undefined), ],
+], [
+'Quest_gorgon_cave__recruitFailure',
+[
+setup.qc.Injury('fighter1', 2),
+setup.qc.Injury('fighter2', 2),
+setup.qc.Injury('recruiter', 2), ],
+], [
+'Quest_gorgon_cave__recruitFailure',
+[
+setup.qc.Injury('recruiter', 4),
+setup.qc.Injury('fighter1', 4),
+setup.qc.TraitIncreaseExisting('fighter1', setup.trait.vagina_gape),
+setup.qc.Injury('fighter2', 4),
+setup.qc.TraitIncreaseExisting('fighter1', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('fighter2', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('fighter2', setup.trait.anus_gape), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_gorgon_cave__recruit [nobr]
+
+<<include 'Opportunity_gorgon_cave'>>
+
+<p>
+You have chosen to try and recruit the leader of this caverns.
+</p>
+
+
+:: Quest_gorgon_cave__recruitCrit [nobr]
+
+<<set $g.support = $g.recruiter>>
+
+<<include 'GorgonCaveCommon3'>>
+
+<p>
+Ignoring all these sights as well as the numerous caged slaves ripe for kidnapping, your slavers
+pressed forwards until they finally arrived at the innermost sanctum.
+There, they found the wizard who was in the middle of a sex ritual,
+which apparently included a slave being spitroasted by what appeared to be large ethereal
+tentacles anchored from the altar.
+<<They $g.leader>> greeted your slavers, seemingly aware of their presence,
+before completing the ritual, leaving the unfortunate slave a
+slubbering mess in <<their $g.slave>> own fluids after the tentacles withdrew their cruel appendages.
+Seeing the ritual over, <<yourrep $g.recruiter>> launched <<their $g.recruiter>>
+carefully prepared arguments in an attempt to recruit the wizard into your company.
+<<if $g.recruiter.isHasTrait('per_studious')>>
+  The studious <<urace $g.recruiter>> had prepared quite a lengthy opening arguments for this.
+<<elseif $g.recruiter.isHasTrait('per_gregarious')>>
+  <<Their $g.recruiter>> eloquence added weight to the arguments.
+<<elseif $g.recruiter.isHasTrait('magic_earth')>>
+  As a fellow practitioner of earth magic, <<their $g.recruiter>> words carried more weight
+  than normal.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+After a long winded argument, <<rep $g.leader>> finally saw the benefits of joining
+your slavers temporarily, and happily agreed to the deal. <<They $g.leader>>
+left the management of <<their $g.leader>> caverns in <<their $g.leader>> absence
+to <<their $g.leader>> student, who <<they $g.leader>> had no doubt will one day be worthy
+of <<their $g.leader>> title.
+As a piece of goodwill, <<rep $g.leader>> also brought the well-gaped slave
+from the ritual back home to be used for whatever you see fit.
+</p>
+
+<<else>>
+
+<p>
+<<Rep $g.recruiter>> really tried to give <<their $g.recruiter>> best arguments to recruit
+the wizard, but <<they $g.leader>> was not impressed. Still, the arguments and
+efforts that your slavers had managed to muster seemed to have an effect, and
+instead <<they $g.leader>> agreed to send one of <<their $g.leader>> students over to
+your company to advance the student's trainings. As a piece
+of goodwill, <<they $g.leader>> also offered your slaver the well-gaped slave
+from the ritual to be brought back home as a present.
+</p>
+
+<p>
+From the unnaturaly meekness exuded by the student-turned-slaver, your slavers couldn't shake the
+feeling that <<they $g.student>> being a "student" must had been a mere facade...
+</p>
+
+<</if>>
+
+:: Quest_gorgon_cave__recruitFailure [nobr]
+
+<<set $g.support = $g.recruiter>>
+
+<<include 'Quest_gorgon_cave__raidFailure'>>

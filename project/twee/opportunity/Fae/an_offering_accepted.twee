@@ -1,0 +1,221 @@
+:: OpportunitySetup_an_offering_accepted2 [nobr opportunity]
+
+
+<<run new setup.UnitGroup(
+"an_offering_accepted0",
+"DemontoyMistwalker",
+[ /* pools */
+  [setup.unitpool.subrace_demonkin_male, 0.10],
+  [setup.unitpool.subrace_demonkin_female, 0.10],
+  [setup.unitpool.subrace_dragonkin_male, 0.01],
+  [setup.unitpool.subrace_dragonkin_female, 0.01],
+  [setup.unitpool.subrace_humandesert_male, 0.24],
+  [setup.unitpool.subrace_humandesert_female, 0.24],
+  [setup.unitpool.subrace_orc_male, 0.15],
+  [setup.unitpool.subrace_orc_female, 0.15],
+],
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Trait('unit', setup.trait.bg_mist),
+  setup.qc.Corrupt('unit', null, 10),
+  setup.qc.PermanentlyCorrupt('unit'),
+  setup.qc.PermanentlyCorrupt('unit'),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_empath, setup.trait.per_playful, setup.trait.per_kind, setup.trait.per_submissive, setup.trait.per_masochistic, setup.trait.per_lunatic, setup.trait.per_gregarious, setup.trait.per_loyal, setup.trait.per_dreamy, setup.trait.per_slow], 2, false, false),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_gape),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_gape),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_huge),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_earth, setup.trait.magic_wind, setup.trait.magic_fire, setup.trait.skill_entertain, setup.trait.skill_hypnotic, setup.trait.muscle_verythin], 1, true, false),
+  setup.qc.DoAll([
+setup.qc.AddTraitsRandom('unit', [setup.trait.magic_earth_master, setup.trait.magic_wind_master, setup.trait.magic_fire_master], 1, false, false)
+], 0.30),
+  setup.qc.DoAll([
+setup.qc.Mindbreak('unit')
+], 0.5),
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'an_offering_accepted2', /* key */
+"An Offering Accepted", /* Title */
+{ /* Author */
+  name: "Fae",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'veteran',
+  'upgrade',
+  'unit',
+  'rare',
+],
+1, /* expiration weeks */
+'Opportunity_an_offering_accepted2',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_an_offering_accepted2_1',
+    outcome_passage: 'Opportunity_an_offering_accepted2_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.NoItem(setup.item.technology_hornymaster),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.ItemIfNew(setup.item.technology_hornymaster, 1),
+      setup.qc.VarSet('fae_DemonBuisnessRelationship', '1', -1),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_an_offering_accepted2_2',
+    outcome_passage: 'Opportunity_an_offering_accepted2_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Slave('demonslave', "a|was the former property of a particularly haughty demon", undefined),
+      setup.qc.VarSet('fae_DemonBuisnessRelationship', '1', -1),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_an_offering_accepted2_0',
+    outcome_passage: 'Opportunity_an_offering_accepted2_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.NoUnitWithTitle('quest_demon_raider_0', {
+        job_key: "slave",
+      }),
+    ],
+    outcomes: [ /* outcomes */
+      /* setup.qc.QuestDirect('capturing_a_sex_demon', null), */
+      setup.qc.VarRemove('fae_DemonBuisnessRelationship')
+    ],
+    visibility_restrictions: [
+      setup.qres.Never(),
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'demonkinnegotiator': 'an_offering_accepted0',
+  'demonslave': 'an_offering_accepted0',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_an_offering_accepted2 [nobr]
+<p>
+    It would at least appear that the demon whom you have been dealing with has accepted your offering, or at least that's what you assume as later in the day, after handing the slave to the required transporter, a demonkin arrived at <<rep $company.player>> to speak with you. <<rep $g.demonkinnegotiator>> introduces <<themselves $g.demonkinnegotiator>> as an individual under the employ of your demon acquaintance, and the two of you sit in your office for a brief discussion.
+</p>
+
+<p>
+    <<Rep $g.demonkinnegotiator>> informs you that <<their $g.demonkinnegotiator>> demon overlord specializes in corruption, and while that in itself covers a very wide range of possibilities,
+    the demon is willing to grant you a rare tome detailing how to turn even the most chaste individuals into drooling sex addict, the <<rep setup.item.technology_hornymaster>>.
+    <<if $inventory.isHasItem(setup.item.technology_hornymaster)>>
+      As you recall, you already have it though, so the demonkin moves on.
+    <</if>>
+</p>
+
+<p>
+    Alternatively <<rep $g.demonkinnegotiator>> informs you that the demon is willing to part with their previous toy, in essence a slave for slave trade. The slave they are offering you is at the very least a mistwalker, and people with that skillset may be hard to find anywhere else. That being said the slave in question was the toy of a demon who seems to take great pleasure in corruption, so you really have no idea what state they will be in when they arrive. <<Rep $g.demonkinnegotiator>>, however, assures you that they would be a valuable slave to add to your collection nonetheless.
+</p>
+
+/*
+
+<p>
+    Of course there is always the option to tell the demonkin to piss off, and make it clear you have no interest in further business with the demon and just want to move on with your life. Of course this would all be a lie, as they took one of your slavers hostage and you cant let something like that stand. Your slavers have been whispering and scheming for weeks and you believe they are equipped with the knowledge on how to return to the demons hideout. Making the demon think you have no interest is a great way to set up a surprise raid, and even if it was borderline suicidal your group would have the best possible opportunity to lay the demon at your <<ulegs $unit.player>> in chains for daring to challenge <<rep $company.player>>.
+</p>
+
+*/
+
+
+:: Opportunity_an_offering_accepted2_0 [nobr]
+Raid
+
+
+:: Opportunity_an_offering_accepted2_0_flavor [nobr]
+<p>
+    After patiently hearing out the demonkin's offer, you stand and extend your hand for a handshake. As the demonkin clasps your hand you yank <<them $g.demonkinnegotiator>> over your desk, grabbing <<their $g.demonkinnegotiator>> <<uneck $g.demonkinnegotiator>> with your other hand. As <<rep $g.demonkinnegotiator>> is trying to figure out what happened to cause this, you drag <<their $g.demonkinnegotiator>> squirming body all through the halls before throwing them out your front gate. Loudly you tell the demonkin that you have no interest in further business dealings with them and order them off your property.
+</p>
+
+
+:: Opportunity_an_offering_accepted2_1 [nobr]
+Demonic Knowledge
+
+
+:: Opportunity_an_offering_accepted2_1_flavor [nobr]
+<p>
+    You choose to accept the trade of knowledge from the demonkin, hoping to improve your company from this whole ordeal. <<rep $g.demonkinnegotiator>> thanks you and leaves your fort promising that your new tome would arrive "soon".
+</p>
+
+<p>
+    With that out of the way, you finish the rest of your day with more mundane
+    discussions. As you are finishing up your office work for the day,
+    you accidentally knock over a book on top of your desk.
+    Leaning down to pick it up, you realize its a leather bound tomb. Quickly thumbing through the pages, you realize that
+    you have never seen the book before.
+    Inside the book are the most debauched and degenerate instructions to instill sex addiction to any slave --
+    this must have been the prize you have been promised.
+    You smile to yourself before tucking the book away for now,
+    thinking about all the ways you want to use the information within the book to train your slaves.
+</p>
+
+:: Opportunity_an_offering_accepted2_2 [nobr]
+Trade
+
+
+:: Opportunity_an_offering_accepted2_2_flavor [nobr]
+<p>
+    You choose to accept the trade and be done with this whole mess, hoping to at the very least be able to make some of your money back. <<rep $g.demonkinnegotiator>> thanks you and leaves your fort promising that the slave would arrive soon.
+</p>
+<p>
+    As you finish up your office work for the day, you retreat to your bedchambers your shocked to find a <<urace $g.demonslave>> bound tightly in rope, a thick piece of cloth in their mouth seemingly as a makeshift gag, and seemingly unconscious. In front of them lies a note that reads
+    <div class='lettercard'>
+        <p>
+            Dear <<name $unit.player>>,
+        </p>
+        <p>
+            Enjoy the gift! I look forward to working with you again.
+        </p>
+        <p>
+            More Kisses,
+        </p>
+        <p>
+            Your demon business partner!
+        </p>
+    </div>
+</p>
+
+<p>
+    You feel the pull of mild annoyance again as you crumple the note, slapping the slave lightly a few times to wake <<them $g.demonslave>>.
+</p>
+
+<<if $g.demonslave.isHasTrait('training_mindbreak')>>
+    <p>
+        As <<rep $g.demonslave>> wakes, your eyes meet and you feel your annoyance build into borderline rage, as the slave has a look you've become familiar with over your time as a slaver. That <<uadjbad $g.demonkinnegotiator>> demon whore gave you a slave whos mind clearly was shattered, destroying their value and only serving to add to the pile of funds you've sunk into this endeavor already.
+    </p>
+    <p>
+        Well at the very least, you have a mindbroken slave in your bedroom to take your frustration out on
+    </p>
+
+
+<<else>>
+    <p>
+        As <<rep $g.demonslave>> awakens, <<their $g.demonslave>> <<ueyes $g.demonslave>> begin darting around the room before locking with yours, as <<they $g.demonslave>> exclaims <<ugaggeddiscomfort $g.demonslave>>. Not the most philosophical thing you've ever heard, but at the very least it lets you know that <<they $g.demonslave>> is still all their mentally. You gently run your hand over the still yelling slaves cheek before giving <<them $g.demonslave>> a light pat and stating coyly
+        <<dialogue $unit.player>>
+            Dont worry <<unicknamebad $g.demonslave>>, you belong to me now.
+        <</dialogue>>
+    </p>
+<</if>>

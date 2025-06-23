@@ -1,0 +1,405 @@
+:: InitUsableItem [nobr]
+
+/* ========================
+  GOOD EFFECT POTIONS
+======================== */
+
+<<run new setup.ItemUnitUsable({
+  key: 'healing_potion',
+  name: 'Potion of Healing',
+  description: 'Reduces the injury of a unit by one week',
+  value: Math.round(1.5 * setup.MONEY_PER_SLAVER_WEEK),   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.IsInjured(),
+  ],
+  effects: [ /* effects */
+    setup.qc.Heal('unit', 1),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'healing_potion_greater',
+  name: 'Potion of Greater Healing',
+  description: 'Reduces the injury of a unit by two weeks',
+  value: Math.round(2.5 * setup.MONEY_PER_SLAVER_WEEK),   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.IsInjured(),
+  ],
+  effects: [ /* effects */
+    setup.qc.Heal('unit', 2),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_trauma_reduce',
+  name: 'Potion of Trauma Cure',
+  description: "Reduces a unit's trauma duration by 2 weeks",
+  value: 1500,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.AnyTrait(setup.TraitHelper.TRAUMA),
+  ],
+  effects: [ /* effects */
+    setup.qc.TraumaHeal('unit', 2),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_boon',
+  name: 'Potion of Virtue',
+  description: 'Grant a unit a boon for 10 weeks',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.BoonizeRandom('unit', 10),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'level_up_potion_basic',
+  name: 'Potion of Level Up',
+  description: 'Increases the level of a unit by 1. Usable only on units with level lower than ' + setup.LEVEL_PLATEAU,
+  value: Math.round(2 * setup.MONEY_PER_SLAVER_WEEK),   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.LevelAtMost(setup.LEVEL_PLATEAU - 1),
+  ],
+  effects: [ /* effects */
+    setup.qc.levelUp('unit'),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_level_up_advanced',
+  name: 'Potion of Greater Level Up',
+  description: 'Level up the unit to level ' + setup.LEVEL_PLATEAU + '.',
+  value: Math.round(6000),   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.LevelAtMost(setup.LEVEL_PLATEAU - 1),
+  ],
+  effects: [ /* effects */
+    setup.qc.LevelUpTo('unit', setup.LEVEL_PLATEAU),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_perk',
+  name: 'Potion of Past-Erasure',
+  description: "Resets a unit's perks, allowing them to learn other ones",
+  value: 10000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Through(
+      setup.qres.AnyTrait(setup.TraitHelper.getAllTraitsOfTags(['perk'])),
+      "Knows any perk",
+    ),
+    setup.qres.Building('warroom'),
+  ],
+  effects: [ /* outcomes */
+    setup.qc.RemoveTraitsWithTag('unit', 'perk'),
+  ],
+  tags: [],
+})>>
+
+
+
+/* ========================
+  TRAIT GIVING POTIONS
+======================== */
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_lust',
+  name: 'Potion of Lust',
+  description: 'Give a unit <<rep setup.trait.per_lustful>>, but having their sexuality altered this way will surely dazzle them for a very long time. Ineffective on particularly chaste individuals',
+  value: 16000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.per_lustful),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    setup.qres.NoTrait(setup.trait.per_chaste),
+    setup.qres.Available(),
+  ],
+  effects: [ /* effects */
+    setup.qc.Trait('unit', setup.trait.per_lustful),
+    setup.qc.Trauma('unit', setup.trait.trauma_sex, 100),
+  ],
+  tags: [],
+})>>
+
+<<run setup.ItemUnitUsable.make_perk_potions()>>
+
+/* ========================
+  BLESSING POTIONS
+======================== */
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_protection',
+  name: 'Potion of Protection',
+  description: 'Grant a unit one stack of Blessing of Protection, which can prevent injuries',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.blessing_protection8),
+  ],
+  effects: [ /* effects */
+    setup.qc.Blessing('unit', 1, setup.trait.blessing_protection8),
+  ],
+  tags: [],
+})>>
+
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_sanity',
+  name: 'Potion of Sanity',
+  description: 'Grant a unit one stack of Blessing of Sanity, which can prevent trauma',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.blessing_sanity8),
+  ],
+  effects: [ /* effects */
+    setup.qc.Blessing('unit', 1, setup.trait.blessing_sanity8),
+  ],
+  tags: [],
+})>>
+
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_purity',
+  name: 'Potion of Purity',
+  description: 'Grant a unit one stack of Blessing of Purity, which can prevent corruption',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.blessing_purity8),
+  ],
+  effects: [ /* effects */
+    setup.qc.Blessing('unit', 1, setup.trait.blessing_purity8),
+  ],
+  tags: [],
+})>>
+
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_life',
+  name: 'Potion of Life',
+  description: 'Grant a unit one stack of Blessing of Life, which can prevent unit from going missing',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.blessing_life8),
+  ],
+  effects: [ /* effects */
+    setup.qc.Blessing('unit', 1, setup.trait.blessing_life8),
+  ],
+  tags: [],
+})>>
+
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_luck',
+  name: 'Potion of Luck',
+  description: 'Grant a unit one stack of Blessing of Luck, which can prevent a disastrous quest outcome',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.blessing_luck8),
+  ],
+  effects: [ /* effects */
+    setup.qc.Blessing('unit', 1, setup.trait.blessing_luck8),
+  ],
+  tags: [],
+})>>
+
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_virginity',
+  name: 'Potion of Virginity',
+  description: 'Grant a unit one stack of Blessing of Virginity, which can prevent anus or vagina from being loosened',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.blessing_virginity8),
+  ],
+  effects: [ /* effects */
+    setup.qc.Blessing('unit', 1, setup.trait.blessing_virginity8),
+  ],
+  tags: [],
+})>>
+
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_wolf',
+  name: 'Potion of Wolf',
+  description: 'Grant a unit one stack of Blessing of Wolf, which can prevent unit from becoming submissive',
+  value: 5000,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.NoTrait(setup.trait.blessing_wolf8),
+  ],
+  effects: [ /* effects */
+    setup.qc.Blessing('unit', 1, setup.trait.blessing_wolf8),
+  ],
+  tags: [],
+})>>
+
+
+/* ========================
+  SKILL BOOST POTIONS
+======================== */
+
+<<set _desc_base = 'Grant a permanent <span data-tooltip="<<include ' + "'SkillBoostHelpTextContent'" + '>>"><<successtextlite "skill boost">> (?)</span> to '>>
+<<set _pot_price = 25000>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_combat_boost',
+  name: 'Potion of Boost Combat',
+  description: _desc_base + '<<rep setup.skill.combat>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.combat),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_brawn_boost',
+  name: 'Potion of Boost Brawn',
+  description: _desc_base + '<<rep setup.skill.brawn>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.brawn),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_survival_boost',
+  name: 'Potion of Boost Survival',
+  description: _desc_base + '<<rep setup.skill.survival>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.survival),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_intrigue_boost',
+  name: 'Potion of Boost Intrigue',
+  description: _desc_base + '<<rep setup.skill.intrigue>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.intrigue),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_slaving_boost',
+  name: 'Potion of Boost Slaving',
+  description: _desc_base + '<<rep setup.skill.slaving>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.slaving),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_knowledge_boost',
+  name: 'Potion of Boost Knowledge',
+  description: _desc_base + '<<rep setup.skill.knowledge>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.knowledge),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_social_boost',
+  name: 'Potion of Boost Social',
+  description: _desc_base + '<<rep setup.skill.social>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.social),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_aid_boost',
+  name: 'Potion of Boost Aid',
+  description: _desc_base + '<<rep setup.skill.aid>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.aid),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_arcane_boost',
+  name: 'Potion of Boost Arcane',
+  description: _desc_base + '<<rep setup.skill.arcane>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.arcane),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_sex_boost',
+  name: 'Potion of Boost Sex',
+  description: _desc_base + '<<rep setup.skill.sex>>',
+  value: _pot_price,   /* value */
+  unit_restrictions: [ /* restrictions */
+    setup.qres.Job(setup.job.slaver),
+  ],
+  effects: [ /* effects */
+    setup.qc.SkillBoost('unit', setup.skill.sex),
+  ],
+  tags: [],
+})>>
+
+<<run new setup.ItemUnitUsable({
+  key: 'potion_pain',
+  name: 'Potion of Pain',
+  description: 'Inflict four weeks of injuries',
+  value: 2000,   /* value */
+  unit_restrictions: [ /* restrictions */
+  ],
+  effects: [ /* effects */
+    setup.qc.Injury('unit', 4),
+  ],
+  tags: [],
+})>>

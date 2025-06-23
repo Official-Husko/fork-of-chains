@@ -1,0 +1,160 @@
+:: QuestSetupFreshAuction [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'fresh_auction', /* key */
+  'Fresh Market', /* Title */
+  'darko',   /* author */
+  [  /* tags */
+    'special', 'unit', 'city',
+  ],
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'bidder1': setup.qu.bidder,
+    'bidder2': setup.qu.bidder,
+    'escort': setup.qu.escort,
+  },
+  { /* actors */
+    'target': [
+    setup.qres.HasTag('captured_slaver'),
+    ],
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-1),
+  ],
+  'QuestFreshAuction', /* passage description */
+  setup.qdiff.normal25, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestFreshAuctionCrit',
+      [
+      ],
+    ],
+    [
+      'QuestFreshAuctionCrit',
+      [
+        setup.qc.TraumatizeRandom('target', 4),
+      ],
+    ],
+    [
+      'QuestFreshAuctionCrit',
+      [
+        setup.qc.TraumatizeRandom('target', 4),
+        setup.qc.MoneyNormal(-1),
+      ],
+    ],
+    [
+      'QuestFreshAuctionCrit',
+      [
+        setup.qc.MissingUnit('target'),
+      ],
+    ],
+  ],
+  [ /* quest pool and rarity */
+    [setup.questpool.capturedeasy, setup.rarity.common],
+  ],
+  [ /* prerequisites to generate */
+    setup.qres.ExistUnit([
+      setup.qres.Job(setup.job.slaver),
+      setup.qres.HasTag('captured_slaver'),
+    ]),
+  ],
+  [ /* expiration outcomes */
+    setup.qc.MissingUnitForever('target'),
+  ],
+)>>
+
+
+:: QuestFreshAuction [nobr]
+
+<p>
+<<Rep $g.target>> target|have very recently went missing during one of your quests.
+Fortunately, your slavers were able to track <<them $g.target>> down to an
+underground slave auction in the <<lore region_city>>.
+While it is certainly possible to try and break <<theslaver $g.target>> out by sneaking
+and stealing the auction merchandise,
+it is far too risky, and perhaps an easier way would be to
+send a group of slavers to attend the auction properly as prospective purchasers.
+</p>
+
+<p>
+To have a good chance of saving <<rep $g.target>>,
+you should send the slavers skilled in bidding.
+An escort is good to have too, to make sure other bidders are made aware
+of the (pretended) wealth of your slavers.
+</p>
+
+<<set _bf = $friendship.getBestFriend($g.target)>>
+<<if _bf && _bf.isSlaver()>>
+<p>
+  You make sure to pass the great news to <<reps $g.target>>
+  <<ufriend $g.target _bf>> <<rep _bf>>.
+</p>
+<</if>>
+
+<p>
+  <<dangertext 'Warning'>>: Ignoring this quest will ensure that you will
+  never see <<rep $g.target>> ever again...
+</p>
+
+
+:: QuestFreshAuctionCrit [nobr]
+
+<p>
+Accompanied by <<rep $g.escort>>, your slavers
+<<rep $g.bidder1>> and <<utheirrel $g.bidder1 $g.bidder2>> <<rep $g.bidder2>>
+arrived and entered the auction site without problem.
+Your slavers waited patiently as they watched a variety of merchandises,
+including a particularly
+<<if $g.target.isMale()>>
+  muscular lizardkin
+<<else>>
+  busty lizardkin
+<</if>>
+being auctioned one by one.
+Their patience was rewarded when <<rep $g.target>> target|was finally brought in chains
+to the auction block.
+</p>
+
+<p>
+Your slavers' eyes lit up as they began bidding in the earnest.
+<<Rep $g.bidder1>> <<uadv $g.bidder1>> calculated the best strategy
+for bidding while <<rep $g.bidder2>> did the actual bidding.
+After a few rounds of bidding, only your slavers and another elderly
+gentleman were left --
+<<if $gOutcome == 'crit' || $gOutcome == 'success' || $gOutcome == 'failure'>>
+a tense series of bids ensued until finally your slavers managed to clutch the bid out.
+<<if $gOutcome == 'failure'>>
+  Unfortunately, they had to go over budget to save <<rep $g.target>>, which
+  was reflected by the extra expense in their report.
+<</if>>
+<<else>>
+the gentleman proved too stubborn to let <<yourrep $g.target>> go. Your slavers were
+forced to give up the bid as the gentleman raised the bid to exorbitant amount.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success' || $gOutcome == 'failure'>>
+<p>
+  <<Reps $g.target>> defiant eyes turned to joy as <<they $g.target>> finally met
+  <<their $g.target>> new "owners". <<Their $g.target>> collar finally unbuckled,
+  your slavers celebrated with each other on the successful rescue.
+  <<if $gOutcome == 'crit'>>
+    It seems <<reps $g.target>> mental fortitude holds during <<their $g.target>>
+    short period of slavery, and <<theslaver $g.target>> target|is ready and willing
+    for more action back at the fort.
+  <<else>>
+    It seems the short period of slavery weighted heavily on the <<uadjgood $g.target>>
+    slaver.
+  <</if>>
+</p>
+<<else>>
+<p>
+  Your slavers could do nothing but watch as <<rep $g.target>> got acquainted very well
+  with <<their $g.target>> new owner. It is unclear what fate awaited <<rep $g.target>>,
+  but probably nothing good...
+  <<uneedrescue $g.target>>.
+</p>
+<</if>>

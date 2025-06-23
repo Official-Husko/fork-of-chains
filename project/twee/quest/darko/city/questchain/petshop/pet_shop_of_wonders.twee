@@ -1,0 +1,128 @@
+:: QuestSetup_pet_shop_of_wonders [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'pet_shop_of_wonders', /* key */
+"Pet Shopping: Dream Purchase", /* Title */
+"darko", /* Author */
+[ 'city',
+'veteran',
+'unit', 
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'appraiser': setup.qu.slaveappraiser,
+'buyer1': setup.qu.negotiator,
+'buyer2': setup.qu.negotiator, },
+{ /* actors */
+'pet': [],
+},
+[ /* costs */
+setup.qc.Money(-10000), ],
+'Quest_pet_shop_of_wonders',
+setup.qdiff.hardest43, /* difficulty */
+[ /* outcomes */
+[
+'Quest_pet_shop_of_wondersCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.Equipment(setup.equipmentpool.pet_good), ],
+], [
+'Quest_pet_shop_of_wondersCrit',
+[
+  setup.qc.SetCooldownOpportunity('pet_shopping', 100),
+setup.qc.Slave('pet', 'a|was bought pre-trained and customized from a famous "pet shop" in the city', undefined), ],
+], [
+'Quest_pet_shop_of_wondersCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MissingUnitRecapture('buyer1', 'capturedmedium'),
+],
+], [
+'Quest_pet_shop_of_wondersCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MissingUnit('buyer1'), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+
+:: Quest_pet_shop_of_wonders [nobr]
+
+<<include 'Opportunity_pet_shopping'>>
+
+<p>
+You have decided to order a
+<<if $g.pet.isMale()>>
+male
+<<else>>
+female
+<</if>>
+pet.
+</p>
+
+
+:: Quest_pet_shop_of_wondersCrit [nobr]
+
+<p>
+The pet shop was disguised as an ordinary pet shop — the front counter
+showcased dogs, cats, and other ordinary and cute pets for sale. Having an
+appointment, your slavers were escorted to the main atrium of their
+warehouse...
+</p>
+
+<p>
+While the warehouse looked unimpressive from the outside, the interior was
+nothing but high class. The floors were scrubbed sparking clean and the interior was
+fully decorated. Your slavers were escorted to one of the rooms containing a
+single draped cage.
+</p>
+
+<p>
+Inside the cage, you found a slave who immediately stood to attention and
+presented <<their $g.pet>> best begging posture to your slavers, proof that
+<<they $g.pet>> was already fully trained.
+<<if $g.appraiser.isHasTrait('per_dreamy')>>
+<<Yourrep $g.appraiser>> lazily did a quick pass
+<<else>>
+<<Yourrep $g.appraiser>> did a complete check
+<</if>>
+on the slave's personalities,
+body shape, and genitals
+<<if $g.appraiser.isHasTrait('per_dreamy')>>
+just giving a small sanity check that
+<<else>>
+making sure
+<</if>>
+<<they $g.pet>> was exactly what you ordered.
+Satisfied, your slavers concluded the deal before going home with a new and eager
+pet in tow.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The shop even threw in a complimentary bonus to your slavers: a golden pet gear
+suitable for such highly trained slave.
+</p>
+<<elseif $gOutcome == 'failure'>>
+<p>
+Unknown to the other slavers, <<rep $g.buyer1>> out of curiosity ventured
+into the other parts of the warehouse.
+It was the last time your slavers ever saw <<them $g.buyer1>> during the
+quest.
+<<urescuenow $g.buyer1>>.
+</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>
+It was unclear how it happened but <<yourrep $g.buyer1>> never came back from the
+trip into the warehouse. Perhaps you will see <<them $g.buyer1>> again, or
+perhaps <<they $g.buyer1>> will live a happy live as a loyal pet to some
+other owner...
+</p>
+<</if>>

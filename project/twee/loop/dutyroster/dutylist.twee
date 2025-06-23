@@ -1,0 +1,83 @@
+:: DutyList [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.dutyroom)>>
+<<set _trainer = $dutylist.getDuty('trainer')>>
+
+<h2><<= _room.getTitleRep() >></h2>
+
+<p>
+This simple but functional room has a large board
+at the back of the room, containing duty assignments for the week.
+<<if !_trainer>>
+Once you unlock the Drill Sergeant duty from the
+<<rep setup.buildingtemplate.traininggrounds>>, then
+slavers on duties will gain experience each week.
+<<else>>
+  <<set _unit = _trainer.getAssignedUnit()>>
+  <<if _unit && _unit.isAvailable()>>
+    From the window you can see
+    your <<rep _trainer>> <<rep _unit>> instilling discipline
+    to your on-duty slavers,
+    <<= setup.Text.Duty.competence(_trainer)>>.
+    This will give all on-duty slavers some experience
+    each week.
+  <<elseif _unit>>
+    Normally, your <<rep _trainer>> <<rep _unit>> is busy instilling discipline
+    to the rest of your slavers. But <<they _unit>> is unavailable right now.
+  <<else>>
+    You can see your <<rep setup.buildingtemplate.traininggrounds>> from the windows of this room,
+    but it is empty right now. You should assign a <<rep _trainer>> so that your home slavers
+    can get experience.
+  <</if>>
+<</if>>
+<<set _tmproom = $fort.player.isHasBuilding('specialistoffice')>>
+<<if _tmproom>>
+  A separate building has been designated as the <<rep setup.buildingtemplate.specialistoffice>>, where
+  contractual specialists can work in lieu of your on-duty slavers when they are busy,
+  although these specialists command a hefty pay.
+  <<set _replaced = $dutylist.getDuties().filter(duty => duty.isSpecialistActive())>>
+  <<if _replaced.length>>
+    Currently, there
+    <<if _replaced.length > 1>>
+      are <<= _replaced.length>> duties that are
+    <<else>>
+      is one duty that is
+    <</if>>
+    currently being staffed by these specialists, costing you
+    <<set _money = _replaced.length * setup.DUTY_SPECIALIST_WEEKLY_UPKEEP>>
+    <<money _money>>
+    each week.
+  <</if>>
+
+<<else>>
+  Slavers on duty can only perform their duties when they are available,
+  although you may have another option once you build the <<rep setup.buildingtemplate.specialistoffice>>.
+<</if>>
+Would you like to make changes to the unit duty assignments?
+</p>
+
+<<set _dutylist = $dutylist.getDuties().sort(setup.DutyInstance.Cmp)>>
+
+<<filterall 'duty' _dutylist>>
+  <<if $menufilter.get('duty', 'display') == 'compact'>>
+    <<dutycardcompact _displayobj>>
+  <<else>>
+    <<dutycard _displayobj>>
+  <</if>>
+<</filterall>>
+
+
+:: DutyListAssign [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _duty = $duty[$gDuty_key] >>
+
+Select unit to be assigned to <<rep _duty>>.
+
+<<focreturn '(Cancel)'>>
+
+<<set _dom = setup.DOM.Roster.dutyassign(_duty)>>
+<<attach _dom>>

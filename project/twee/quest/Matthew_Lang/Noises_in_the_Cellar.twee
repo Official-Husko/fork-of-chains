@@ -1,0 +1,448 @@
+:: QuestSetup_noises_in_the_cellar [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"noises_in_the_cellar0",
+"Residents of the City of Lucgate: All gender",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+    setup.qc.BgTraitReset('unit', setup.trait.bg_merchant),
+],
+)>>
+
+
+
+<<set _criteriaexterminator2 = new setup.UnitCriteria(
+null, /* key */
+'Tank', /* name */
+[
+  setup.trait.height_giant,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_brave,
+  setup.trait.per_loyal,
+  setup.trait.per_stubborn,
+  setup.trait.skill_flight,
+],
+[
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  brawn: 2,
+}
+)>>
+
+<<set _criteriawizard = new setup.UnitCriteria(
+null, /* key */
+'Ritualist', /* name */
+[
+  setup.trait.per_smart,
+  setup.trait.per_brave,
+  setup.trait.per_calm,
+  setup.trait.per_studious,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+  setup.trait.eq_blind,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 2,
+  arcane: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'noises_in_the_cellar', /* key */
+"Noises in the Cellar", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'money',
+  'city',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'exterminator1': [ setup.qu.fighter_city, 1],
+  'exterminator2': [ _criteriaexterminator2, 1],
+  'wizard': [ _criteriawizard, 1],
+},
+{ /* actors */
+  'owner': 'noises_in_the_cellar0',
+},
+[ /* costs */
+],
+'Quest_noises_in_the_cellar',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_noises_in_the_cellarCrit',
+    [
+      setup.qc.MoneyCustom(700),
+    ],
+  ],
+  [
+    'Quest_noises_in_the_cellarCrit',
+    [
+      setup.qc.MoneyCustom(500),
+    ],
+  ],
+  [
+    'Quest_noises_in_the_cellarFailure',
+    [
+      setup.qc.OneRandom([
+setup.qc.Injury('exterminator1', 1),
+setup.qc.Injury('exterminator2', 1),
+setup.qc.Injury('wizard', 1)
+]),
+    ],
+  ],
+  [
+    'Quest_noises_in_the_cellarFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.OneRandom([
+setup.qc.TraumatizeRandom('exterminator1', 5),
+setup.qc.TraumatizeRandom('exterminator2', 5),
+setup.qc.TraumatizeRandom('wizard', 5)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.Not(setup.qres.QuestDone(null)),
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_noises_in_the_cellar [nobr]
+<<set _newbie = setup.getUnit({
+job: 'slaver',
+notyou: true,
+available: true,
+anytraits: ['join_junior', ],
+})>>
+
+<<set _u = setup.getAnySlaver()>>
+<p>
+    While <<name _u>> was walking through town they came across a job posting on a noticeboard. It didn't seem like the most lucrative of jobs, but if it was a slow day, maybe you'd look into it.
+    <<if _newbie>>
+        If nothing else, it might be worth sending some of the newbies on it, maybe <<rep _newbie>>. How dangerous could it possibly be?
+    <<else>>
+        If you had any green hires, this might be worth sending them on. Everyone has to start somewhere, after all.
+    <</if>>
+</p>
+<div class='lettercard'>
+    <p>
+        There are strange noises in my basement and I don't know what's going on down there. Reward offered to any brave souls willing to venture down, deal with the issue and restore my piece of mind.
+    </p>
+    <p>
+        Please seek out <<name $g.owner>> at the
+        <<if $gQuest.getSeed() % 6 == 0>>
+            sign of grapes near Via Franci
+        <<elseif $gQuest.getSeed() % 6 == 1>>
+            at the bakery off Via del Leccio
+        <<elseif $gQuest.getSeed() % 6 == 2>>
+            in the market at Piazza Nenni
+        <<elseif $gQuest.getSeed() % 6 == 3>>
+            at the cobblers on Via Belgica
+        <<elseif $gQuest.getSeed() % 6 == 4>>
+            near the chandlers on Via del Cale
+        <<elseif $gQuest.getSeed() % 6 == 5>>
+            at the apothecary on Via Drusa Pitino
+        <</if>>
+        for further information, please, please hurry.
+    </p>
+</div>
+
+
+
+
+
+
+
+:: Quest_noises_in_the_cellarCrit [nobr]
+<<if $g.exterminator1.isYou() or $g.exterminator2.isYou() or $g.wizard.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.exterminator1.isYou()>>
+        <<run _notyou.push($g.exterminator1)>>
+    <</if>>
+    <<if !$g.exterminator2.isYou()>>
+        <<run _notyou.push($g.exterminator2)>>
+    <</if>>
+    <<if !$g.wizard.isYou()>>
+        <<run _notyou.push($g.wizard)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    It's an easy walk through town to reach
+
+    <<if $gQuest.getSeed() % 6 == 0>>
+        the tavern with a wooden sign of grapes along Via Franci. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 1>>
+        a busy bakery off Via del Leccio, the smell of fresh baked bread filling the air as you approach. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 2>>
+        Piazza Nenni, which is bustling with the smells and sounds of fresh produce being bought and sold. Asking around,
+    <<elseif $gQuest.getSeed() % 6 == 3>>
+        a cobbler's shop, selling sturdy shoes and boots for working people. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 4>>
+        an upmarket chandler's store selling expensive dipped beeswax candles,
+    <<elseif $gQuest.getSeed() % 6 == 5>>
+        an old apothecary in the outskirts of the old quarter, full of creaky shelves, bundles of dry herbs and strange things in bottles. Asking inside,
+    <</if>>
+
+    you are soon directed to a worried looking <<urace $g.owner>> <<woman $g.owner>>.
+    <<dialogue $g.owner>>
+        You're here about the job? Oh thank you, thank you! I'm just two doors this way, and those sounds are so unnerving I haven't dared go down in weeks. If you can deal with that, I have some money put away for you.
+    <</dialogue>>
+    <<They $g.owner>> brings you into a fairly humble abode, and hand you a key.<br>
+    "It's down there" <<they $g.owner>> says, glancing nervously at the completely ordinary door down the bottom of a set of wooden stairs.
+
+    <p>
+        Opening the door, you stare into the darkness.<br>
+        "Light a lantern, <<name _o1>>," you say.<br>
+        You hear the strike of a match against stone as various scratching sounds come from the room. As light spills in over the threshold, you see a junkroom, with boxes of old, cracked crockery, some casks of what could be ale, and other things that mound up or gleam in the light. Then you see the eyes of three, four...several giant rats. Ah. That would explain the scratching noises, the chew marks on much of the room's contents, and the big pellet like things that cover a lot of the surfaces here.<br>
+        "Rats," <<name _o2>> says despondently. "What is this, an adventure story? Seriously, does it get more cliched than this?
+    </p>
+
+    The rats were no match for your slavers, and they dispatched them all with ease. Returning to the top of the tower, you are met with a visibly shaken <<name $g.owner>>.
+    <<if $unit.player.isHasTrait('per_honorable')>>
+        <<They $g.owner>> look relieved as you describe the rats and how you've dealt with them. As a reward, <<they $g.owner>> gives you... a whole 20 gold.
+        <<dialogue $g.owner>>
+            It's so nice to know there are young adventurers out there willing to help out us normal people. Thank you so much, and do try not to spend that all in one place!
+        <</dialogue>>
+        A day later a number of gems appear on your desk, and you see <<name _o1>> disappearing around the corner from your office. They'd never tell you if they found something valuable in the basement, and if they did, they probably kept some for themselves. Still, that's money in your coffers.
+        <<run setup.qc.Money(-200).apply($gQuest)>>
+
+    <<elseif $unit.player.isHasTrait('per_sly')>>
+        <<They $g.owner>> gasps in increased horror as you describe the swarm of gigantic, slavering rats darting from their tunnels to harry you at every turn and the valiant, nay, heroic efforts of you and you boon companions in defence of this, <<name $g.owner>>'s basement and the valued treasures within. When you finish, <<they $g.owner>> fumble for <<their $g.owner>> belt pouch and hand you 100 gold. You thank <<them $g.owner>> gracefully and leave the house with the corroded silver candlesticks and the antique
+        <<if $gQuest.getSeed() % 2 == 0>>
+            lizardkin
+        <<elseif $gQuest.getSeed() % 2 == 1>>
+            tigerkin
+        <</if>>
+        fertility sculpture tucked into your backpack. It's not as much as you'd have got on other jobs, but they'll sell for a decent amount.
+        <<run setup.qc.Money(+80).apply($gQuest)>>
+
+    <<else>>
+        <<They $g.owner>> look relieved as you describe the rats and how you've dealt with them. As a reward, <<they $g.owner>> gives you... a whole 20 gold.
+        <<dialogue $g.owner>>
+            It's so nice to know there are young adventurers out there willing to help out us normal people. Thank you so much, and do try not to spend that all in one place!
+        <</dialogue>>
+        You thank <<them $g.owner>> and leave the house with the corroded silver candlesticks and the antique
+        <<if $gQuest.getSeed() % 2 == 0>>
+            lizardkin
+        <<elseif $gQuest.getSeed() % 2 == 1>>
+            tigerkin
+        <</if>>
+        fertility sculpture tucked into your backpack. It's not as much as you'd have got on other jobs, but they'll sell for a decent amount.
+    <</if>>
+
+<<else>>
+    It was an easy walk through town to reach
+
+    <<if $gQuest.getSeed() % 6 == 0>>
+        the tavern with a wooden sign of grapes along Via Franci. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 1>>
+        a busy bakery off Via del Leccio, the smell of fresh baked bread filling the air as your slavers approach. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 2>>
+        Piazza Nenni, which is bustling with the smells and sounds of fresh produce being bought and sold. Asking around,
+    <<elseif $gQuest.getSeed() % 6 == 3>>
+        a cobbler's shop, selling sturdy shoes and boots for working people. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 4>>
+        an upmarket chandler's store selling expensive dipped beeswax candles,
+    <<elseif $gQuest.getSeed() % 6 == 5>>
+        an old apothecary in the outskirts of the old quarter, full of creaky shelves, bundles of dry herbs and strange things in bottles. Asking inside,
+    <</if>>
+
+    <<name $g.wizard>> is soon directed to a worried looking <<urace $g.owner>> <<woman $g.owner>>.
+    <<dialogue $g.owner>>
+        You're here about the job? Oh thank you, thank you! I'm just two doors this way, and those sounds are so unnerving I haven't dared go down in weeks. If you can deal with that, I have some money put away for you.
+    <</dialogue>>
+    <<They $g.owner>> leads your slavers to a fairly humble abode, and hand you a key.<br>
+    "It's down there" <<they $g.owner>> says, glancing nervously at the completely ordinary door down the bottom of a set of wooden stairs.
+
+    <p>
+        Opening the door, <<name $g.exterminator2>> squinted into the darkness before <<name $g.wizard>> reached for a lantern. The scratch of the match strike rings loud in your slaver's ears as they become aware of various scratching sounds coming from the room. As light spills in over the threshold, they start picking out details of what is essentially a junkroom, with boxes of old, cracked crockery, some casks of what could be ale, and other things that mound up or gleam in the light. Then they saw the eyes of three, four...several giant rats. Well, that explained the scratching noises, the chew marks on much of the room's contents, and the big pellet like things that covered a lot of the surfaces.<br>
+        "Rats," <<name $g.exterminator1>> says despondently. "What is this, an adventure story? Seriously, does it get more cliched than this?
+    </p>
+
+    The rats were no match for your slavers, and they dispatched them all with ease. Returning to the top of the tower, they are met with a visibly shaken <<name $g.owner>>.
+    <<set _unit = setup.selectUnit([$g.exterminator1, $g.exterminator2, $g.wizard], {trait: 'per_honorable'})>>
+    <<if _unit>>
+        <<They $g.owner>> look relieved as <<name _unit>> describes the rats and how they dealt with them. As a reward, <<they $g.owner>> gives them... a whole 20 gold.
+        <<dialogue $g.owner>>
+            It's so nice to know there are young adventurers out there willing to help out us normal people. Thank you so much, and do try not to spend that all in one place!
+        <</dialogue>>
+        Your slavers return with 20 gold and a number of gemstones one of them—they aren't saying who—nicked from somewhere in the cluttered basement. It's likely that some of the gems made it into their pockets, but it's still some money in your coffers.
+        <<run setup.qc.Money(-200).apply($gQuest)>>
+    <<else>>
+        <<set _unit = setup.selectUnit([$g.exterminator1, $g.exterminator2, $g.wizard], {trait: 'per_sly'})>>
+        <<if _unit>>
+            <<They $g.owner>> gasped in increased horror as <<name _unit>> describes the swarm of gigantic, slavering rats darting from their tunnels to harry them at every turn and the valiant, nay, heroic efforts of the boon companions in defence of this, <<name $g.owner>>'s basement and the valued treasures within. When <<they _unit>> finishes, <<they $g.owner>> fumble for <<their $g.owner>> belt pouch and hand over 100 gold. <<name _unit>> thanked <<them $g.owner>> gracefully and your slavers the house with the gold, and two corroded silver candlesticks and an antique
+            <<if $gQuest.getSeed() % 2 == 0>>
+                lizardkin
+            <<elseif $gQuest.getSeed() % 2 == 1>>
+                tigerkin
+            <</if>>
+            fertility sculpture <<name _unit>> filched from the junkroom. They'll sell for a decent amount, even if it's much less than you'd normally receive for the contracts you take on.
+            <<run setup.qc.Money(+50).apply($gQuest)>>
+        <<else>>
+            <<set _unit = $g.exterminator1>>
+            <<They $g.owner>> look relieved as <<name _unit>> describes the rats and how they dealt with them. As a reward, <<they $g.owner>> gives them... a whole 20 gold.
+            <<dialogue $g.owner>>
+                It's so nice to know there are young adventurers out there willing to help out us normal people. Thank you so much, and do try not to spend that all in one place!
+            <</dialogue>>
+            <<name $g.exterminator2>> thanked <<them $g.owner>> and your slavers the house with the gold, and two corroded silver candlesticks and an antique
+            <<if $gQuest.getSeed() % 2 == 0>>
+                lizardkin
+            <<elseif $gQuest.getSeed() % 2 == 1>>
+                tigerkin
+            <</if>>
+            fertility sculpture <<name _unit>> filched from the junkroom. They'll sell for a decent amount, even if it's much less than you'd normally receive for the contracts you take on.
+
+        <</if>>
+    <</if>>
+<</if>>
+
+
+
+
+
+
+
+
+
+:: Quest_noises_in_the_cellarFailure [nobr]
+<<if $g.exterminator1.isYou() or $g.exterminator2.isYou() or $g.wizard.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.exterminator1.isYou()>>
+        <<run _notyou.push($g.exterminator1)>>
+    <</if>>
+    <<if !$g.exterminator2.isYou()>>
+        <<run _notyou.push($g.exterminator2)>>
+    <</if>>
+    <<if !$g.wizard.isYou()>>
+        <<run _notyou.push($g.wizard)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    It's an easy walk through town to reach
+
+    <<if $gQuest.getSeed() % 6 == 0>>
+        the tavern with a wooden sign of grapes along Via Franci. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 1>>
+        a busy bakery off Via del Leccio, the smell of fresh baked bread filling the air as you approach. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 2>>
+        Piazza Nenni, which is bustling with the smells and sounds of fresh produce being bought and sold. Asking around,
+    <<elseif $gQuest.getSeed() % 6 == 3>>
+        a cobbler's shop, selling sturdy shoes and boots for working people. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 4>>
+        an upmarket chandler's store selling expensive dipped beeswax candles,
+    <<elseif $gQuest.getSeed() % 6 == 5>>
+        an old apothecary in the outskirts of the old quarter, full of creaky shelves, bundles of dry herbs and strange things in bottles. Asking inside,
+    <</if>>
+
+    you are soon directed to a worried looking <<urace $g.owner>> <<woman $g.owner>>.
+    <<dialogue $g.owner>>
+        You're here about the job? Oh thank you, thank you! I'm just two doors this way, and those sounds are so unnerving I haven't dared go down in weeks. If you can deal with that, I have some money put away for you.
+    <</dialogue>>
+    <<They $g.owner>> brings you into a fairly humble abode, and hand you a key.<br>
+    "It's down there" <<they $g.owner>> says, glancing nervously at the completely ordinary door down the bottom of a set of wooden stairs.
+
+    <p>
+        Opening the door, you stare into the darkness.<br>
+        "Light a lantern, <<name _o1>>," you say.<br>
+        You hear the strike of a match against stone as various scratching sounds come from the room. As light spills in over the threshold, you see a junkroom, with boxes of old, cracked crockery, some casks of what could be ale, and other things that mound up or gleam in the light. Then you see the eyes of three, four...several giant rats. Ah. That would explain the scratching noises, the chew marks on much of the room's contents, and the big pellet like things that cover a lot of the surfaces here.<br>
+        "Rats," <<name _o2>> says despondently. "What is this, an adventure story? Seriously, does it get more cliched than this?
+    </p>
+    <p>
+        A few minutes later, you are all outside the basement door, leaning against it to keep the devils in.<br>
+        "Well?" a nervous looking <<name $g.owner>> asks, peering down the stairs.<br>
+        "Call an exterminator," you say firmly. "Maybe a professional rat catcher if there's one who specialises in giant rats."
+        "How giant?"<br>
+        "Small pony," you say grimly as you lead your slavers out of the house. "Good luck."
+    </p>
+
+<<else>>
+    It was an easy walk through town to reach
+
+    <<if $gQuest.getSeed() % 6 == 0>>
+        the tavern with a wooden sign of grapes along Via Franci. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 1>>
+        a busy bakery off Via del Leccio, the smell of fresh baked bread filling the air as your slavers approach. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 2>>
+        Piazza Nenni, which is bustling with the smells and sounds of fresh produce being bought and sold. Asking around,
+    <<elseif $gQuest.getSeed() % 6 == 3>>
+        a cobbler's shop, selling sturdy shoes and boots for working people. Asking inside,
+    <<elseif $gQuest.getSeed() % 6 == 4>>
+        an upmarket chandler's store selling expensive dipped beeswax candles,
+    <<elseif $gQuest.getSeed() % 6 == 5>>
+        an old apothecary in the outskirts of the old quarter, full of creaky shelves, bundles of dry herbs and strange things in bottles. Asking inside,
+    <</if>>
+
+    <<name $g.wizard>> is soon directed to a worried looking <<urace $g.owner>> <<woman $g.owner>>.
+    <<dialogue $g.owner>>
+        You're here about the job? Oh thank you, thank you! I'm just two doors this way, and those sounds are so unnerving I haven't dared go down in weeks. If you can deal with that, I have some money put away for you.
+    <</dialogue>>
+    <<They $g.owner>> leads your slavers to a fairly humble abode, and hand you a key.<br>
+    "It's down there" <<they $g.owner>> says, glancing nervously at the completely ordinary door down the bottom of a set of wooden stairs.
+
+    <p>
+        Opening the door, <<name $g.exterminator2>> squinted into the darkness before <<name $g.wizard>> reached for a lantern. The scratch of the match strike rings loud in your slaver's ears as they become aware of various scratching sounds coming from the room. As light spills in over the threshold, they start picking out details of what is essentially a junkroom, with boxes of old, cracked crockery, some casks of what could be ale, and other things that mound up or gleam in the light. Then they saw the eyes of three, four...several giant rats. Well, that explained the scratching noises, the chew marks on much of the room's contents, and the big pellet like things that covered a lot of the surfaces.<br>
+        "Rats," <<name $g.exterminator1>> says despondently. "What is this, an adventure story? Seriously, does it get more cliched than this?
+    </p>
+    <p>
+        "Well?" you ask when the three have returned to the fort and are standing in your office. "How much did <<they $g.owner>> pay you?"<br>
+        The three slavers shift uncomfortably, none of them willing to meet your gaze.<br>
+        "You lost?" you ask. "To rats?"<br>
+        There is an awkward silence.<br>
+        "Uh...yes, <<unickname $g.exterminator1>>," <<name $g.exterminator1>> says eventually.<br>
+        "Right," you say. "Get out of here. We'll talk about this later.<br>
+        You idly wonder if they're cut out for the job. Maybe you should fire them.<br>
+        <i>Or reload a previous save</i><br>
+        You shake your head to clear the intrusive and non-sensical thoughts that filled your head momentarily. What in the hells was that anyway?
+    </p>
+
+
+<</if>>

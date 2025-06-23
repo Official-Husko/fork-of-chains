@@ -1,0 +1,42 @@
+:: InitBuildingTheatre [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'theatre',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'theatre',
+  name: 'Theatre',
+  tags: ['recreation', ],
+  description_passage: 'BuildingTheatre',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUMLOW_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('recreationwingservice')],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('theatreslave')
+    ],
+  ],
+  main_room_template_key: 'theatre',
+})>>
+
+:: BuildingTheatre [nobr]
+
+<p>
+Unlocks the Stripper slave duty, which increases the income
+made by your Service Pimp
+based on the roleplay skill of the slave.
+</p>

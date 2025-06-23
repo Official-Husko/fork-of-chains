@@ -1,0 +1,260 @@
+:: QuestSetupAcademyOfWind [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _prankster = new setup.UnitCriteria(
+  null, /* key */
+  'Prankster', /* title */
+  [
+    setup.trait.per_sly,
+    setup.trait.per_gregarious,
+    setup.trait.per_cruel,
+    setup.trait.per_playful,
+    setup.trait.per_lunatic,
+    setup.trait.per_evil,
+    setup.trait.skill_entertain,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+  ], /* critical traits */
+  [
+    setup.trait.per_direct,
+    setup.trait.per_loner,
+    setup.trait.per_kind,
+    setup.trait.per_serious,
+    setup.trait.per_honorable,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* disaster traits */
+  [
+    setup.qres.Job(setup.job.slaver)
+  ], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    arcane: 2.0,
+    intrigue: 1.0,
+  }
+)>>
+
+<<set _desc1 = 'a|was a dropout from the Academy of Wind whom you convinced to join your company as a slaver'>>
+<<set _desc2 = 'a|was a student in the Academy of Wind whom you enslaved as part of an elaborate prank'>>
+
+<<run new setup.QuestTemplate(
+  'academy_of_wind', /* key */
+  'Academy of Wind', /* Title */
+  'darko',   /* author */
+  ['city', 'unit'],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'recruiter': setup.qu.recruiter,
+    'prankster1': _prankster,
+    'prankster2': _prankster,
+  },
+  { /* actors */
+    'dropout': 'quest_humankingdom_all_windstudent',
+    'victim': 'quest_humankingdom_all_windstudent',
+  },
+  [ /* costs */
+  ],
+  'QuestAcademyOfWind', /* passage description */
+  setup.qdiff.hard32, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestAcademyOfWindCrit',
+      [
+        setup.qc.Slave('victim', _desc2),
+        setup.qc.Slaver('dropout', _desc1),
+        setup.qc.MoneyCrit(0.5),
+      ],
+    ],
+    [
+      'QuestAcademyOfWindCrit',
+      [
+        setup.qc.Slaver('dropout', _desc1),
+        setup.qc.MoneyNormal(0.5),
+      ],
+    ],
+    [
+      'QuestAcademyOfWindFailure',
+      [
+      ],
+    ],
+    [
+      'QuestAcademyOfWindDisaster',
+      [
+        setup.qc.OneRandom([
+          setup.qc.Trait('prankster1', setup.trait.per_submissive),
+          setup.qc.Trait('prankster2', setup.trait.per_submissive),
+        ]),
+        setup.qc.Ire('humankingdom', 1),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.uncommon],], /* quest pool and rarity */
+  [
+    setup.qres.Building(setup.buildingtemplate.prospectshall)
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestAcademyOfWind [nobr]
+
+<p>
+The Academy of Wind is one the most well known magic institutes spread throughout <<lore geo_mestia>>.
+The academy accepts students of any background, so long they display aptitude for <<lore magic_wind>>.
+The vast majority of them are the citizens of the wind-attuned <<rep $company.humankingdom>>, however.
+Graduates of the academy are highly sought after, and many important positions in the kingdom
+are filled by them.
+</p>
+
+<p>
+You have just learned that one of the academy's students has just been expelled.
+According to the rumors, <<their $g.dropout>> natural aptitude for <<lore magic_wind>> was
+the subject of much jealousy from <<their $g.dropout>> peers, which ultimately resulted in other
+students bribing the academy's higher ups to drop the student out.
+Having an ex-member of the academy of wind as your slaver is perhaps too tempting of an idea,
+and therefore it might just be worth it to try and seek this dropout out.
+You can offer <<them $g.dropout>> revenge in exchange for joining your company.
+</p>
+
+
+:: QuestAcademyOfWindCrit [nobr]
+
+<p>
+With some difficulty, <<rep $g.recruiter>> managed to <<uadv $g.recruiter>>
+find the dropout apparently already
+planning <<their $g.dropout>> own somewhat shoddy revenge plan against
+<<their $g.dropout>> former classmates.
+As an experienced slavers, your slavers were able to improve the plan.
+
+<<set _cre = setup.selectUnit([$g.recruiter, $g.prankster1, $g.prankster2], {trait: 'skill_creative'})>>
+<<if _cre>>
+In particular, <<reps _cre>> mind was particularly inventive.
+<</if>>
+
+<<set _evil = setup.selectUnit([$g.recruiter, $g.prankster1, $g.prankster2], {trait: 'per_evil'})>>
+<<if _evil>>
+<<Reps _evil>> true degenerate personality helped ascend the plan into something even more degenerate.
+<</if>>
+
+With the plan complete, the dropout, who introduced <<themself $g.dropout>> as <<rep $g.dropout>>, agreed
+to join your company should your slavers helped <<them $g.dropout>> enact the plan.
+</p>
+
+<<if $g.victim.isMale()>>
+  <<questimage 'academy_of_wind_male.jpg'>>
+<<else>>
+  <<questimage 'academy_of_wind_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The next day, your slavers went into the academy and
+sneaked into <<reps $g.victim>> room, who will be the victim of the park,
+and dropped the surprise package in front of <<their $g.victim>> door.
+The surprise package was in fact one of the spellbooks that the dropout had written.
+Upon returning to <<their $g.victim>> room, <<rep $g.victim>> found the book and,
+hungry for power as <<they $g.victim>> victim|was, excitedly went to <<their
+$g.victim>> room to study the book.
+But the book had been tampered with -- as <<rep $g.victim>> became engrossed
+with the book, <<they $g.victim>> failed to realize that the book had been modified into a
+long incantation of the spell of self-binding. Within moments from finishing
+the book, otherwordly tendrils were summoned out of nowhere,
+coiling around <<their $g.victim>> unsuspecting body,
+securing <<their $g.victim>> limbs behind their body in a hog-tied position.
+The coils also wrapped tightly and painfully around
+<<their $g.victim>> <<ubreasts $g.victim>> and <<ubelly $g.victim>>,
+forcing <<them $g.victim>> to lay helplessly on the floor.
+Another set of coil wrapped harshly around
+<<if $g.victim.isHasDick()>>
+the base of <<their $g.victim>>
+dick, forcing the shaft to be erect but preventing <<them $g.victim>> from actually climaxing.
+<<else>>
+and into <<their $g.victim>> vagina, giving continuous pain while preventing
+<<them $g.victim>> from actually receiving pleasure.
+<</if>>
+As a final touch, <<their $g.victim>> <<umouth $g.victim>> was fitted with a knot-gag,
+rendering everything <<they $g.victim>> say into guttural moans.
+</p>
+
+<p>
+Later that night, your slavers returned to <<reps $g.victim>> room together with
+the dropout <<rep $g.dropout>>. <<Rep $g.victim>> victim|was at first almost
+relieved to see someone entering
+<<their $g.victim>> room, only to recognize the dropout <<rep $g.dropout>> in horror.
+Having <<their $g.dropout>> revenge in spades,
+<<rep $g.dropout>> happily went to your fort together with your slavers
+and in tow and a new magical slave to break. All in all, it was a good day of work.
+</p>
+
+<<else>>
+
+<p>
+The plan was simple -- to humiliate the student <<rep $g.victim>> in front of as many people as they could.
+The centerpoint of the Academy of Wind is the statue of their founder, posed
+with one arm pointing to the sky triumphantly.
+In the fateful day, as <<rep $g.victim>> victim|was just passing through the courtyard,
+the dropout <<rep $g.dropout>> and your slavers unleashed the prepared wind spell.
+Within seconds, a large gust of wind were summoned in the academy, and <<rep $g.victim>>
+victim|was caught in the middle of it.
+<<Rep $g.victim>> could do nothing but watch and struggle in horror as <<they $g.victim>>
+victim|was lifted up into the air and gently placed right above the statue upwards-pointing arm.
+As <<rep $g.dropout>> explained to <<them $g.victim>> what was about to happen, the wind spell
+fizzled, impaling <<reps $g.victim>> ass straight into the statue's sizable arm.
+<<Rep $g.dropout>> and your slavers quickly make their exit to watch from afar as the
+student screamed in agony of the statuesque assrape.
+</p>
+
+<p>
+With <<their $g.dropout>> revenge served in spades, <<rep $g.dropout>>
+happily joined your slaving company.
+<<They $g.dropout>> with <<their $g.dropout>> mastery over <<rep setup.trait.magic_wind>>
+will surely make a fine slaver.
+</p>
+
+<</if>>
+
+:: QuestAcademyOfWindFailure [nobr]
+
+<p>
+Unfortunately, your slaver was not able to locate the dropout within the vast
+<<lore region_city>>.
+Checking the local tavern, inn, or even asking around the academy did not yield any result.
+</p>
+
+
+:: QuestAcademyOfWindDisaster [nobr]
+
+<p>
+With some difficulty, <<rep $g.recruiter>> managed to <<uadv $g.recruiter>>
+find the dropout apparently already
+planning <<their $g.dropout>> own somewhat shoddy revenge plan against
+<<their $g.dropout>> former classmates.
+The plan was already complete by the time your slavers arrived, but <<rep $g.dropout>> agreed
+to join your company should your slavers helped <<them $g.dropout>> enact the plan.
+</p>
+
+<p>
+The next day, your slavers sneaked into the prospective victim <<reps $g.victim>> room in the academy, and
+dropped the surprise package in front of <<their $g.victim>> door.
+The surprise package was in fact, one of the spellbooks that the dropout had written.
+<<Reps $g.prankster1>> curiosity, however,
+got the better of <<them $g.prankster1>> and
+<<they $g.prankster1>> felt there would be no harm to read a part of the book.
+But it turned out to be a big mistake.
+Within moments, otherwordly tentacles appeared out of nowhere and
+coiled around both <<yourrep $g.prankster1>> and <<rep $g.prankster2>> unsuspecting bodies,
+securing their limbs behind their bodies
+in hog-tied positions and immobilizing them completely.
+Apparently, <<rep $g.dropout>> also made the spell pay very special attention to the victim's "special parts",
+which were bound by even tighter coil to make them constantly stimulated but unable to reach climax.
+As a final touch, their mouths were also rendered useless by being fitted with large knot-gags.
+</p>
+
+<p>
+Your slavers had to endure hours of being tied in such uncomfortable positions before eventually being found
+by the academy staffs in the morning.
+While uninjured, this experience has deeply changed your slavers, awakening some kind of
+submissive behaviors in them, as well as earning the academy's wrath for trespassing upon
+their domain.
+</p>

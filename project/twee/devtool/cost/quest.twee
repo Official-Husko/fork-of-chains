@@ -1,0 +1,13 @@
+:: CostQuest [nobr]
+
+Gain <<numberbox '_quantity' 1>> quests from a questpool:
+
+<<for _iquestpool, _questpool range setup.questpool>>
+  <<capture _questpool>>
+    <br/>
+    <<rep _questpool>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.QuestDelay(_questpool, _quantity)>>
+    <</link>>
+  <</capture>>
+<</for>>

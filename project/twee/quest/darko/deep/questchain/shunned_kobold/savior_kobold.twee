@@ -1,0 +1,268 @@
+:: QuestSetup_savior_kobold [nobr quest]
+
+
+<<run new setup.Title(
+"quest_savior_kobold_0", /* key */
+"Savior Kobold", /* name */
+"A kobold who selflessly saved a village that once shunned them", /* description */
+"saved a|their homevillage from a grave danger, even though it was the very same village that has inflicted upon a|themself much pain in the past", /* unit text */
+5000, /* slave value */
+{ /* skill additives */
+ survival: 3, knowledge: 1, aid: 1,},
+{
+ is_negative: false,
+},
+)
+>>
+
+
+
+<<set _criteriafighter1 = new setup.UnitCriteria(
+null, /* key */
+'Spider Fighter', /* name */
+[
+  setup.trait.height_giant,
+  setup.trait.per_brave,
+  setup.trait.per_stubborn,
+  setup.trait.skill_animal,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.height_dwarf,
+  setup.trait.per_cautious,
+  setup.trait.per_curious,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  survival: 1,
+}
+)>>
+
+<<set _criteriafighter2 = new setup.UnitCriteria(
+null, /* key */
+'Spider Fighter', /* name */
+[
+  setup.trait.height_giant,
+  setup.trait.per_brave,
+  setup.trait.per_stubborn,
+  setup.trait.skill_animal,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.height_dwarf,
+  setup.trait.per_cautious,
+  setup.trait.per_curious,
+  setup.trait.per_masochistic,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  survival: 1,
+}
+)>>
+
+<<set _criteriakobold = new setup.UnitCriteria(
+null, /* key */
+'Savior Kobold', /* name */
+[
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+  setup.qres.AnyTrait([setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_light, setup.trait.magic_light_master], true),
+  setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+],
+{
+  combat: 1,
+  social: 1,
+  arcane: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'savior_kobold', /* key */
+"Savior Kobold", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'deep',
+  'trait',
+  'favor',
+],
+3, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'fighter1': [ _criteriafighter1, 1],
+  'fighter2': [ _criteriafighter2, 1],
+  'kobold': [ _criteriakobold, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_savior_kobold',
+setup.qdiff.hard45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_savior_koboldCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Favor('kobold', 400),
+    ],
+  ],
+  [
+    'Quest_savior_koboldCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Favor('kobold', 200),
+    ],
+  ],
+  [
+    'Quest_savior_koboldCrit',
+    [
+      setup.qc.VarRemove('quest_shunned_kobold_progress'),
+      setup.qc.BoonizeRandom('kobold', 100),
+      setup.qc.OneRandomSeed([
+setup.qc.TraitReplace('kobold', setup.trait.per_kind),
+setup.qc.TraitReplace('kobold', setup.trait.per_honorable)
+]),
+      setup.qc.RemoveTitle('kobold', 'quest_the_shunned_kobold_0'),
+      setup.qc.PerkChoice('kobold', 'perk_savior_kobold', undefined),
+      setup.qc.AddTitle('kobold', 'quest_savior_kobold_0'),
+    ],
+  ],
+  [
+    'Quest_savior_koboldCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Injury('kobold', 8),
+      setup.qc.Injury('fighter1', 8),
+      setup.qc.Injury('fighter2', 7),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_savior_kobold [nobr]
+<<set _u = setup.getUnit({
+job: 'slaver',
+title: 'quest_the_shunned_kobold_0',
+})>>
+
+<<if _u>>
+
+    <p>
+        You set to prove that the world need not to be so cruel. Sure, you may be the evil leader of a slaving company, but you're dead set on actually helping the very same kobolds that have so utterly spurned <<rep _u>>.
+    </p>
+
+    <p>
+        As you recall, you receive a plead of help from the very same village whose kobolds have oh so very bullied <<rep _u>> into becoming your slaver. A group of giant spiders were soon to descend on the village, vastly outnumbering the poor kobolds. You should send a group of slavers specializing in defeating giant spiders... well, you do what you have to do. <<Rep _u>> has also asked to join, no doubt trying to find the answer to the many thoughts that has been plaguing <<them _u>> all these times...
+    </p>
+
+<<else>>
+
+    <<missingunitquest>>
+
+<</if>>
+
+
+:: Quest_savior_koboldCrit [nobr]
+<p>
+    After a long homecoming, <<rep $g.kobold>> finally came back to <<their $g.kobold>> home village. But <<they $g.kobold>> never expected to come back this way — as their savior. The <<urace $g.kobold>> kobold|was understandably quiet throughout the entire journey, no doubt sorting the many thoughts that reside within <<their $g.kobold>> <<uhead $g.kobold>>.
+</p>
+
+<p>
+    <<Rep $g.kobold>> maintained a stoic face throughout as <<rep $g.fighter1>> prepared the villagers as best as <<they $g.fighter1>> can for the incoming horde.
+    The clueless villagers were taught to fashion a torch, for fire is one of the few weaknesses known to spiders. Surprisingly, it seems the villagers almost didn't recognize <<rep $g.kobold>> — the time in the surface has indeed changed <<rep $g.kobold>> quite a bit, from a short stubby kobold into what would certainly pass as a diminutive dragonkin.
+</p>
+
+<p>
+    After a few days, the spiders finally descended into the village.
+    The villagers fought as brave as they could, wielding makeshift weapons to ward off the horde of intruders.
+    Meanwhile,
+    <<if $g.fighter1.isHasTrait('magic_fire')>>
+        <<rep $g.fighter1>> had <<their $g.fighter1>> own way of creating fire: via magic.
+    <<elseif $g.fighter1.isHasTrait('magic_light')>>
+        <<rep $g.fighter1>> used <<their $g.fighter1>> mastery over light magic to blind the incoming spiders.
+    <<else>>
+        <<rep $g.fighter1>> slayed many of the oversized critters with a few swings of <<their $g.fighter1>> <<uweapon $g.fighter1>>.
+    <</if>>
+    But there was simply too many spiders.
+</p>
+
+<p>
+    But then, <<rep $g.kobold>> soared into the sky, drawing attention from all the kobolds, as well as your slavers.
+    <<if $g.kobold.isHasTrait('magic_fire')>>
+        <<They $g.kobold>> breathed magical fire into <<their $g.kobold>> <<uweapon $g.kobold>>, imbuing it with destructive magic.
+    <<else>>
+        <<They $g.kobold>> casted a spell of strength upon <<themself $g.kobold>>, imbuing <<them $g.kobold>> with the power of the light.
+    <</if>>
+    After a few more flaps of the wings, <<rep $g.kobold>> cut straight through into the heart of the enemy — the spider queen herself.
+    <<Their $g.kobold>> <<uweapon $g.kobold>> hit true — the spider queen were torn asunder, dead.
+    With the queen dead, the spiders scattered in both error and confusion.
+    The sound of critter were overwhelming, and suddenly, all gone.
+    <<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+        The village was saved.
+    <<else>>
+        The village was saved, but at what cost?
+    <</if>>
+</p>
+
+<<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+    <p>
+        Unfortunately, your slavers' strategy to arm the kobolds with torches has backfired. An accidental slip meant that fire spread throughout the village, burning most of the place to ash.
+        <<if $gOutcome == 'disaster'>>
+            It even injured your slavers.
+        <</if>>
+        Still, the kobolds are alive, and although they may not have shown their gratitude back then, they will surely figure out just how lucky they were to be alive.
+    </p>
+<</if>>
+
+<p>
+    Meanwhile, an image had been burned into the memories of the kobolds: <<Rep $g.kobold>> soaring through the sky, wielding powerful magic, and defeating the leader of the enemy with one fell swoop. The kobolds could not see <<rep $g.kobold>> as anything but a dragonkin anymore — one that had saved their village.
+    The first of the kobolds would then kneel, as if worshipping <<rep $g.kobold>>.
+    More and more kobolds followed suit, until the entire village was bowing down in front of <<rep $g.kobold>>.
+    It was this that finally allowed <<rep $g.kobold>> to forgive — the kobolds are generally weak, after all, and perhaps it was jealousy that inspired them to bully <<them $g.kobold>> in the past.
+    With a surprisingly serene tone, <<rep $g.kobold>> ordered them all to rise.
+</p>
+
+<p>
+    The next few days were spent with your slavers being catered by the kobolds. The village has grown to adore <<rep $g.kobold>> now, something <<they $g.kobold>> would remember for the rest of <<their $g.kobold>> life.
+</p>
+
+
+
+

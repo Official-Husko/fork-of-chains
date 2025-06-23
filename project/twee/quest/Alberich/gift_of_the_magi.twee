@@ -1,0 +1,585 @@
+:: QuestSetup_gift_of_the_magi [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_gift_of_the_magi1',
+"Hermit",
+[
+[setup.unitpool.subrace_humanvale_male, 0.5],
+[setup.unitpool.subrace_humankingdom_male, 0.5], ],
+0, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_wiseman),
+setup.qc.TraitsReplace('unit', [setup.trait.bg_wildman, setup.trait.bg_unemployed, setup.trait.magic_dark_master, setup.trait.per_loner]), ],
+)>>
+<<set _criteriafiremagus = new setup.UnitCriteria(
+null, /* key */
+'Fire Magus', /* name */
+[
+setup.trait.bg_wiseman,
+setup.trait.per_smart,
+setup.trait.per_lavish,
+setup.trait.per_humble,
+setup.trait.per_cautious,
+setup.trait.per_kind,
+setup.trait.per_loyal,
+setup.trait.per_direct,
+setup.trait.per_empath,
+setup.trait.per_honorable,
+setup.trait.per_calm,
+setup.trait.magic_fire_master,
+],
+[
+setup.trait.bg_unemployed,
+setup.trait.per_slow,
+setup.trait.per_frugal,
+setup.trait.per_aggressive,
+setup.trait.per_proud,
+setup.trait.per_cruel,
+setup.trait.per_lunatic,
+setup.trait.per_masochistic,
+setup.trait.per_sly,
+setup.trait.per_evil,
+setup.trait.per_aggressive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+setup.qres.Trait(setup.trait.magic_fire),
+],
+{
+survival: 1,
+arcane: 2,
+}
+)>>
+
+<<set _criteriawindmagus = new setup.UnitCriteria(
+null, /* key */
+'Wind Magus', /* name */
+[
+setup.trait.bg_wiseman,
+setup.trait.per_smart,
+setup.trait.per_lavish,
+setup.trait.per_humble,
+setup.trait.per_cautious,
+setup.trait.per_kind,
+setup.trait.per_loyal,
+setup.trait.per_direct,
+setup.trait.per_empath,
+setup.trait.per_honorable,
+setup.trait.per_calm,
+setup.trait.magic_wind_master,
+],
+[
+setup.trait.bg_unemployed,
+setup.trait.per_slow,
+setup.trait.per_frugal,
+setup.trait.per_aggressive,
+setup.trait.per_proud,
+setup.trait.per_cruel,
+setup.trait.per_lunatic,
+setup.trait.per_masochistic,
+setup.trait.per_sly,
+setup.trait.per_evil,
+setup.trait.per_aggressive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+setup.qres.Trait(setup.trait.magic_wind),
+],
+{
+survival: 1,
+arcane: 2,
+}
+)>>
+
+<<set _criteriawatermagus = new setup.UnitCriteria(
+null, /* key */
+'Water Magus', /* name */
+[
+setup.trait.bg_wiseman,
+setup.trait.per_smart,
+setup.trait.per_lavish,
+setup.trait.per_humble,
+setup.trait.per_cautious,
+setup.trait.per_kind,
+setup.trait.per_loyal,
+setup.trait.per_direct,
+setup.trait.per_empath,
+setup.trait.per_honorable,
+setup.trait.per_calm,
+setup.trait.magic_water_master,
+],
+[
+setup.trait.bg_unemployed,
+setup.trait.per_slow,
+setup.trait.per_frugal,
+setup.trait.per_proud,
+setup.trait.per_cruel,
+setup.trait.per_lunatic,
+setup.trait.per_masochistic,
+setup.trait.per_sly,
+setup.trait.per_evil,
+setup.trait.per_aggressive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+setup.qres.Trait(setup.trait.magic_water),
+],
+{
+survival: 1,
+arcane: 2,
+}
+)>>
+
+<<set _criterialoveslave = new setup.UnitCriteria(
+null, /* key */
+'Love-Slave', /* name */
+[
+setup.trait.bg_whore,
+setup.trait.bg_maid,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.training_vagina_advanced,
+setup.trait.training_anal_advanced,
+setup.trait.training_oral_advanced,
+setup.trait.training_horny_advanced,
+setup.trait.per_studious,
+setup.trait.per_submissive,
+setup.trait.per_cautious,
+setup.trait.bg_slave,
+],
+[
+setup.trait.bg_royal,
+setup.trait.bg_unemployed,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.per_chaste,
+setup.trait.per_lunatic,
+setup.trait.per_dominant,
+],
+[
+setup.qres.IsCanBeSold(),
+setup.qres.Job(setup.job.slave),
+setup.qres.SlaveValueAtLeast(30000),
+setup.qres.TraitExact(setup.trait.gender_female),
+setup.qres.AnyTrait([setup.trait.race_human, setup.trait.race_elf], true),
+setup.qres.NoTraits([setup.trait.face_hideous, setup.trait.face_scary, setup.trait.corrupted, setup.trait.corruptedfull], true),
+setup.qres.Trait(setup.trait.training_domestic_master),
+],
+{
+sex: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'gift_of_the_magi', /* key */
+"Gift of the Magi", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/jxmjhl/v110_is_here_submit_all_your_content_bug_report/gdhw5lw/',
+},
+[ 'desert',
+'veteran',
+'order',
+'rare',
+], /* tags */
+6, /* weeks */
+12, /* quest expiration weeks */
+{ /* roles */
+'firemagus': _criteriafiremagus,
+'windmagus': _criteriawindmagus,
+'watermagus': _criteriawatermagus,
+'loveslave': _criterialoveslave, },
+{ /* actors */
+'hermit': 'quest_gift_of_the_magi1',
+},
+[ /* costs */
+setup.qc.Money(-20000), ],
+'Quest_gift_of_the_magi',
+setup.qdiff.hardest54, /* difficulty */
+[ /* outcomes */
+[
+'Quest_gift_of_the_magiCrit',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_kurdwisec),
+setup.qc.Item(setup.item.f_foodtray_normal_hermit),
+setup.qc.MissingUnitForever('loveslave'),
+setup.qc.Equipment(setup.equipmentpool.sex_good),
+setup.qc.Equipment(setup.equipmentpool.sex_good),
+setup.qc.Equipment(setup.equipmentpool.sex_good),
+setup.qc.Friendship('firemagus', 'windmagus', 750),
+setup.qc.Friendship('windmagus', 'watermagus', 750),
+setup.qc.Friendship('firemagus', 'watermagus', 750),
+setup.qc.MoneyUnitValue("loveslave", 1, 50000),
+setup.qc.MoneyCustom(20000), ],
+], [
+'Quest_gift_of_the_magiCrit',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_kurdwisec),
+setup.qc.MoneyCustom(35000),
+setup.qc.MissingUnitForever('loveslave'),
+setup.qc.Equipment(setup.equipmentpool.sex_good),
+setup.qc.Equipment(setup.equipmentpool.sex_good),
+setup.qc.Friendship('firemagus', 'windmagus', 500),
+setup.qc.Friendship('windmagus', 'watermagus', 500),
+setup.qc.Friendship('firemagus', 'watermagus', 500), ],
+], [
+'Quest_gift_of_the_magiFailure',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_kurdwisec),
+setup.qc.TraumatizeRandom('firemagus', 5),
+setup.qc.TraumatizeRandom('windmagus', 5),
+setup.qc.TraumatizeRandom('watermagus', 5),
+setup.qc.Equipment(setup.equipmentpool.sex_good),
+setup.qc.OneRandom([
+  setup.qc.AddTraitsRandom('firemagus',
+    [setup.trait.per_attentive, setup.trait.per_cautious, setup.trait.per_calm], 1, false),
+  setup.qc.AddTraitsRandom('windmagus',
+    [setup.trait.per_attentive, setup.trait.per_cautious, setup.trait.per_calm], 1, false),
+  setup.qc.AddTraitsRandom('watermagus',
+    [setup.trait.per_attentive, setup.trait.per_cautious, setup.trait.per_calm], 1, false),
+]),
+],
+], [
+'Quest_gift_of_the_magiFailure',
+[
+setup.qc.ItemIfNew(setup.item.lorebook_kurdwisec),
+setup.qc.TraumatizeRandom('firemagus', 7),
+setup.qc.TraumatizeRandom('windmagus', 7),
+setup.qc.TraumatizeRandom('watermagus', 7),
+setup.qc.MissingUnit('loveslave'),
+setup.qc.OneRandom([
+  setup.qc.AddTraitsRandom('watermagus',
+    [setup.trait.per_attentive, setup.trait.per_humble, setup.trait.per_cautious, setup.trait.per_calm], 1, false),
+  setup.qc.AddTraitsRandom('firemagus',
+    [setup.trait.per_attentive, setup.trait.per_humble, setup.trait.per_cautious, setup.trait.per_calm], 1, false),
+  setup.qc.AddTraitsRandom('windmagus',
+    [setup.trait.per_attentive, setup.trait.per_humble, setup.trait.per_cautious, setup.trait.per_calm], 1, false), 
+]),
+],
+],
+],
+[ /* quest pool and rarity */
+  [setup.questpool.desert, setup.rarity.epic],
+],
+[ /* restrictions to generate */
+setup.qres.Cooldown(52),
+setup.qres.QuestUnique(),
+setup.qres.HasSlaveWithTraits([setup.trait.gender_female]),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_gift_of_the_magi [nobr]
+<<set _ScoutDesert = $dutylist.getUnitIfAvailable('scoutdesert')>>
+<<set _Marketer = $dutylist.getUnitIfAvailable('marketer')>>
+<<set _Mystic = $dutylist.getUnitIfAvailable('mystic')>>
+<<set _listener = setup.getUnit({job: setup.job.slaver, random: true})>>
+<<if !_listener>><<set _listener = 'someone'>><<else>><<set _listener = _listener.rep()>><</if>>
+<<set _randommage = _listener>>
+<<for _iunit, _unit range State.variables.company.player.getUnits({job: setup.job.slaver})>>
+  <<if _unit.getTraitWithTag('magic')>>
+    <<set _randommage = _unit.rep()>>
+  <</if>>
+<</for>>
+
+<p>Beyond the Eastern Wasteland dwells <<lore person_kurdwisec>>, an eccentric monarch who is rarely a good customer for slave-dealers. His coin is as good as anyone's and he has plenty of it, but his tastes are too outlandish. He tends to place orders for races that don't exist, skin tones not found in nature, and sexual accomplishments that are physically impossible. As far as <i>you</i> know. And he always wants them at strange, portentous times set by his court astrologers, so that there's never time to even try to fill his freakish requests.
+</p>
+<p>
+Now, for once, you have received advance warning of what he is after, and you may even have a way to get your hands on it. Your slavers always have their ears open, and
+<<if _ScoutDesert>> your sharp-eyed Eastern Wastelands Scout, <<rep _ScoutDesert>>, who's always on the lookout for opportunities,
+<<elseif _Marketer>> your sharp-eared marketer, <<rep _Marketer>>, who's always seeking special deals for you,
+<<else>> <<= _listener>> somehow <</if>>
+has learned of Kurdwisec's latest whim.
+</p>
+<p>
+In a season's time there will come a great festival of gift-giving and generosity, and Kurdwisec wants to celebrate by acquiring a special new concubine. She must be lovely beyond words. She must meet his requirements as to race—humans or elves only (and for him, that is unusually flexible). She must meet his exacting standards of domestic and sexual skill, such as would make her among the most valuable of slaves anywhere in the world. This will make her expensive to train, but the payoff will be worth it: Kurdwisec will pay five times her market value. Such is the Spirit of Generosity that will fill his heart at this festival.
+</p>
+<p>
+Oh, there is one other thing. Her skin and organs must be nearly transparent, so that the marrow of her bones is visible when she's nude.
+</p>
+<p>
+Resisting the urge to tear up the report and give
+<<if _ScoutDesert>> <<rep _ScoutDesert>>
+<<elseif _Marketer>> <<rep _Marketer>>
+<<else>> <<= _listener>> <</if>>
+a good flogging, and perhaps a free session of Masochist Training: Basic, you ask
+<<if _Mystic>> your staff mystic, <<rep _Mystic>>,
+<<else>> <<= _randommage>>, one of the mages in your company, <</if>>
+to perform some magical research, and learn if there's any way to create one of these transparent creatures. To your surprise, there is! With the Tiara of Moonlight and a circle of magi learned in water, wind, and fire, a woman may be transformed into just what King Kurdwisec is seeking.
+</p>
+<p>
+So where, you ask, do I find a Tiara of Moonlight? It seems there actually is one in the Eastern Wasteland. It is in the hands of one of your rival slavers, one who often takes part in the Gift Exchanges in the <<lore region_city>>. All your slaver-magi have to do is find out what your rival wants most in the world, bring it to him as a gift, receive the tiara in return, transform the slave, bring her to the East, and return with enormous profits.
+</p>
+<p>
+The wisest and most free-handed of your magi will make the best messengers and gift-givers. Meanness and recklessness are for other seasons. Of course, wise and generous magi are not that common in slaving companies, so you may just have to use what you have . . . </p>
+
+<p>
+<<dangertext 'Warning'>>: The slave will most likely be gone forever!
+</p>
+
+
+:: Quest_gift_of_the_magiCrit [nobr]
+<<set _ScoutDesert = $dutylist.getUnitIfAvailable('scoutdesert')>>
+<<set _Marketer = $dutylist.getUnitIfAvailable('marketer')>>
+<p> You entrust your three magi with your carefully-trained and pearl-precious love-slave, and a large expense account. They are to find out what your rival wants most, acquire it by means fair or foul, trade it for the Tiara of Moonlight, transform <<rep $g.loveslave>> into the translucent jewel King Kurdwisec is after, take her to the east, sell her for five times what she's worth, then return to you with the profits. And no stealing! (. . . <i>more than usual</i>, you think cynically to yourself.)
+</p>
+<p>
+The first stage of the quest proves easy. Thanks to some diligent
+<<if _ScoutDesert>> detective work by your Eastern Wastelands Scout, <<rep _ScoutDesert>>,
+<<elseif _Marketer>> market research by your Marketer, <<rep _Marketer>>,
+<<else>> investigation by your three magi, <</if>>
+your agents learn what your rival slaver has been seeking for months without success: the sensuous garments of a succubus! The specific garments he wants are stitched with mystic symbols in the lace, from which a circle of magi may invoke surprising effects if they know the right rituals.
+</p>
+<p>
+Filled with a Spirit of Adventure, your magi travel to the <<lore region_vale>> to visit a famous seer (whom you may have visited before, in a quest for Future Sight). After taking a large slice of your magi's operating funds, the seer goes into a night-long trance, with much writhing and crying out, as happens when one seeks hidden knowledge of the ways of demons.
+<<if $g.watermagus.isHasTrait('per_attentive')>> Your sharp-eyed water mage, <<rep $g.watermagus>>, notices that the seer also achieves a raging boner, as happens when one seeks hidden knowledge of the ways of succubi.
+<<elseif $g.firemagus.isHasTrait('per_attentive')>> Your sharp-eyed fire mage, <<rep $g.firemagus>>, notices that the seer also achieves a raging boner, as happens when one seeks hidden knowledge of the ways of succubi.
+<<elseif $g.windmagus.isHasTrait('per_attentive')>> Your sharp-eyed wind mage, <<rep $g.windmagus>>, notices that the seer also achieves a raging boner, as happens when one seeks hidden knowledge of the ways of succubi.<</if>>
+</p>
+<p>
+At dawn, the seer awakens and gives you the answer: Your magi must go to the Eastern Wastelands, and seek <<rep $g.hermit>>, the Hermit of the Crags. He and he alone can provide you what you need.
+</p>
+<p>
+As they begin their journey, your magi ask each other pertinent questions. What on earth can we offer a hermit, who cuts himself off from the fleshly life we know best? And what's a dirty old hermit doing with sexy women's underclothes from Beyond the Mist?
+</p>
+<p>
+The second question brings up disturbing images, so your magi concentrate on the first, and purchase such items and charms as might win the strange man's favor. They travel to the desolate mountain country where <<rep $g.hermit>> makes his abode. His wild dwelling is accessible only by sailing up a dangerous river, where strong currents, whirlpools, and shoals discourage all but the hardiest visitors.
+</p>
+<p>
+This your magi can handle. A Spirit of Determination animates them. They purchase a sturdy sailing boat. <<Rep $g.watermagus>> crouches in front, <<uadv $g.watermagus>> commanding the waters to still and the whirlpools to cease, to grant them safe passage. <<Rep $g.windmagus>> stands behind the mast, arms outspread, <<uadv $g.windmagus>> commanding a stiff breeze to fill the sail and overcome the currents. <<Rep $g.firemagus>> sits in the rear, manning the tiller and eyeballing <<rep $g.watermagus>> and <<reps $g.windmagus>> cute asses.
+</p>
+<p>
+After a long and treacherous river journey, the three magi moor their craft, only to find their way blocked by a thorny hedge that a squad of foresters could not clear in a month. And now it is <<reps $g.firemagus>> turn to step forward and <<uadv $g.firemagus>> burn their way through it, while the other magi walk behind and use their gifts to prevent the fire from spreading. And check out <i> <<their $g.firemagus>> </i> cute ass.
+</p>
+<p>
+The hermit's refuge is as rustic and its location as desolate as the magi might have guessed. <<Rep $g.hermit>> himself is a shaggy-bearded personage of indeterminate age—he is wild and wears rough-spun clothes, but his hair has not gone gray. He is surprisingly businesslike in asking the three travelers why they have sought him; they find it best to be equally straightforward in telling him they seek the mystic lingerie of a succubus. It was never going to be an easy subject to introduce into the conversation; it is just as well to have it out at once.
+</p>
+<p>
+It soon becomes clear that <<rep $g.hermit>> hermit|is a man of simple needs, and the material gifts the magi have brought are of no interest to him. In a Spirit of Compromise, they try offering applications of their sorcerous gifts, using the charms they have also purchased.
+</p>
+<p>
+“I,” says <<rep $g.watermagus>> <<uadv $g.watermagus>>, “could divine the location of water, and make you a magic well that never runs dry. You'd never have to catch rainwater or go down to the river for water again!”
+</p>
+<p>
+“I kinder like goin' down to the river,” says the Hermit. “Gets me out in the open air, and I get to see the sunlight dancin' on the waves. No thankye, Tess.”
+</p>
+<p>
+“I,” says <<rep $g.firemagus>> <<uadv $g.firemagus>>, “could conjure you an eternal flame, to cook your meals and keep you warm in the winter. You'd never have to cut firewood again!”
+</p>
+<p>
+“I kinder like cuttin' firewood,” replies the hermit. “Gets the blood flowin' in my arms, and that cool mountain air just opens up m'pipes and reminds me how good it is to be alive! No dice, Jo.”
+</p>
+<p>
+“Well,” says <<rep $g.windmagus>> <<uadv $g.windmagus>>, “at the Academy of Wind, we know a binding spell that can be set as a trap. Students use it as a prank on the instructors if they get too full of themselves. I could create a magic trap that would bring you food easily for the rest of your days.”
+</p>
+<p>
+“I kinder like fishin' and trappin' my own food,” says the hermit. “Keeps me closer to nature and all, and helps me remember where we all come from once and are a-goin' again before 'tis all done. It's spiritual, y'know? But I tell ye, Maria, there <i>is</i> somethin' sweet you could blow me, that would sweeten me up just fine along the lines of what you're lookin' for.”
+</p>
+<p>
+“And what is that?”
+</p>
+<p>
+“Well, what I want is that love-slave you've got chained up down in your boat!”
+</p>
+<p>
+Your magi are filled with consternation. If they aren't careful, they could lose the whole point of the mission; but if they <i>are</i> too careful, they won't gain that point either. And the seer was clear on this: this hermit is the only way to the prize. They try reasoned argument.
+</p>
+<p>
+“Now, ah, what would you be wanting with someone like her?”
+</p>
+<p>
+“Ah, heh heh heh heh,” laughs the hermit, “just you think about it a minute, an' I think you'll catch on. It gets lonesome up here, know what I mean?”
+</p>
+<p>
+“Well, if you get, ah, lonesome, and you want company, why don't you move back into town? We've got money—we could set you up in a house, next door to a brothel if you like, and fix it so you'd never be without company. Or we could even send you a new mistress every year, so you'd never get bored!”
+</p>
+<p>
+“Nothin' doin', strangers,” says <<rep $g.hermit>>. “Y'see, when you're one o' them masters of <<lore magic_dark>>, like I am, they don't like you too much in town. Any kid gets sick, any sheep dies, anybody's roof falls in, they all commence to thinkin' you put a curse on 'em, and where does that get ye? They all <i>talk</i> and look at you funny. Now, sure, I can call me up a succubus when the urge is on me. That's how I got them funny smallclothes you're so hot to get your hands on. But they ain't much for conversatin', their pillow talk is all about torturin' folks, they're always naggin' you to barter your soul for somethin', and on top o' that your dick comes out smellin' like sulfur. You get tired of it. I want me a proper girl, and that one you got looks perfect.”
+</p>
+<p>
+“But <<rep $g.loveslave>>,” your slavers protest, “she's been trained for a <i>different</i> life . . . for the life of a perfumed emperor's palace! She's been taught to attend His Imperial Majesty's table, prepare his meals, make his beds, and perform all the domestic tasks a palace of thousands might require!”
+</p>
+<p>
+“Perfect!” cries the hermit delightedly. “She can dish up m'vittles and sweep up m'floor! Can she do anal? How 'bout edgin'?”
+</p>
+<p>
+The rustic dweller proves as stubborn as twenty mules, and it's clear he won't back down from his one unwavering demand. A Spirit of Wisdom settles upon your magi, and they realize they must give in. Any question of taking the treasure by stealth or force runs up against his knowledge of <<lore magic_dark>>—they might be facing more demons than they could handle, especially if the stranger gets reckless in his summonings. (He might get more than <i>he</i> can handle, too, but how would that help them?) With the succubus garments, they can acquire the tiara, and the girl could always be replaced—if not immediately, then in time for next year's festival. Surely, they say among themselves, <<name $unit.player>> will understand.
+</p>
+
+<p>
+When <<rep $g.hermit>> sees they've acquiesced to his demands, he grins magnanimously.
+'Just to show ye there's no hard feelin's,' he says, 'I'll throw this in for free!'"
+and then he throws them his used wooden food bowl. Your magi thank him bemusedly, sensing strange
+magic coming out of the decrepit-looking bowl.
+</p>
+
+<p>
+And so the deal is made, your magi leave <<rep $g.loveslave>> with her exuberant new owner, they receive a carefully wrapped set of infernal lacy garments, and using their boat they begin the journey to the arranged meetingplace on the border of Tor. </p>
+
+<<if $gOutcome == 'crit'>>
+<p>On the journey outward, <<rep $g.watermagus>> notices an old tin pan lying by the side of the river, and that gives her an inspiration. A close examination reveals just what <<they $g.watermagus>> watermagus|was hoping for: these waters contain gold dust, and a patient prospector could extract considerable wealth from them with time and patience. Your magi do not have time, but they can spare a day. With a ritual of <<lore magic_water>> and a charm <<they $g.watermagus>>'d brought for the hermit, the water mage is able to extract a considerable sum in gold dust from these waters, to help to defray the cost of the journey. </p>
+<</if>>
+
+<<if $g.windmagus.isFemale() and $g.windmagus.isHasTrait('per_lustful')>> <p> On their third night, they stay in a surprisingly clean inn. After her bath, <<rep $g.windmagus>> finds herself drawn to the package of succubi garments, and as soon as the others are asleep, she steals and opens the package, and quietly pulls them over her naked skin. The feel of the fabric fills her with sensuous longing, and soon she is slowly caressing her <<ubody $g.windmagus>> and <<ubreasts $g.windmagus>>. Her moans grow louder than she intends, her companions are awakened, and the rest of the night is a three-way orgy nobody planned and nobody regrets. </p>
+<<elseif $g.firemagus.isFemale() and $g.firemagus.isHasTrait('per_lustful')>> <p> On their third night, they stay in a surprisingly clean inn. After her bath, <<rep $g.firemagus>> finds herself drawn to the package of succubi garments, and as soon as the others are asleep, she steals and opens the package, and quietly pulls them over her naked skin. The feel of the fabric fills her with sensuous longing, and soon she is slowly caressing her <<ubody $g.firemagus>> and <<ubreasts $g.firemagus>>. Her moans grow louder than she intends, her companions are awakened, and the rest of the night is a three-way orgy nobody planned and nobody regrets. </p>
+<<elseif $g.watermagus.isFemale() and $g.watermagus.isHasTrait('per_lustful')>> <p> On their third night, they stay in a surprisingly clean inn. After her bath, <<rep $g.watermagus>> finds herself drawn to the package of succubi garments, and as soon as the others are asleep, she steals and opens the package, and quietly pulls them over her naked skin. The feel of the fabric fills her with sensuous longing, and soon she is slowly caressing her <<ubody $g.watermagus>> and <<ubreasts $g.watermagus>>. Her moans grow louder than she intends, her companions are awakened, and the rest of the night is a three-way orgy nobody planned and nobody regrets. </p> <</if>>
+<p>Your slavers proceed to the rendezvous with your rival's representatives. No further adventures befall them. And so in time, six magi meet in a well appointed ritual chamber, three from <<rep $company.player>> and three from your sometime rivals, but today gathered in mutual exchange and generosity. Your rival's water mage opens an ebony casket and lifts out the Tiara of Moonlight—which indeed seems to be made of pure moonlight, shining and fragile, only touchable with the enchanted gloves she's wearing. Their fire mage speaks.
+</p>
+<p>
+“Let us have the girl you brought,” says he, “and we six can perform the Ritual of Translucence.”
+</p>
+<p>
+A little shamefaced, your own fire mage, <<rep $g.firemagus>>, admits that you no longer have the girl; you had to sell her to obtain the succubus garments their own master seeks. “But,” <<they $g.firemagus>> says, “we can take the Tiara and perform the ritual ourselves on another girl later.”
+</p>
+<p>
+“I fear you cannot,” replies their wind mage. “The tiara is difficult to transport. It will dissolve into nothing if you take it too far from here. It really is made of moonlight, you see. Also, the ritual can only be done when the stars are right, as they are tonight; and they are unlikely to align again for another year or more.”
+</p>
+<p>
+Your slaver-magi suppress disappointed scowls. “That leaves the question,” says one, “of what to do with these succubi garments.”
+</p>
+<p>
+<<if $g.firemagus.isHasTrait('per_lavish') || $g.firemagus.isHasTrait('per_honorable')>> <<rep $g.firemagus>> speaks up. “A promise is a promise,” says <<they $g.firemagus>>. “These exchanges were always meant as mutual gifts, not as a sale contract. We promised these items to your master, and he ought to have them, with no questions about what he wants them for.” Slaver or no, there always was a spark of something good, or at least honorable, in <<rep $g.firemagus>>. The others agree.
+<<elseif $g.watermagus.isHasTrait('per_lavish') || $g.watermagus.isHasTrait('per_honorable')>> <<rep $g.watermagus>> speaks up. “A promise is a promise,” says <<they $g.watermagus>>. “These exchanges were always meant as mutual gifts, not as a sale contract. We promised these items to your master, and he ought to have them, with no questions about what he wants them for.” Slaver or no, there always was a spark of something good, or at least honorable, in <<rep $g.watermagus>>. The others agree.
+<<elseif $g.windmagus.isHasTrait('per_lavish') || $g.windmagus.isHasTrait('per_honorable')>> <<rep $g.firemagus>> speaks up. “A promise is a promise,” says <<they $g.windmagus>>. “These exchanges were always meant as mutual gifts, not as a sale contract. We promised these items to your master, and he ought to have them, with no questions about what he wants them for.” Slaver or no, there always was a spark of something good, or at least honorable, in <<rep $g.windmagus>>. The others agree.
+<<else>> Perhaps there is something to these gift-giving festivals, or the Spirit of Giving, for your slavers find themselves agreeing to give the “gifts” they promised, even if the tiara is now useless to them. <</if>>
+</p>
+<p>
+And now it is time for your rivals' magi to look embarrassed. Shuffling his feet, their fire mage explains. “The truth is, our master wanted those garments for a special ritual, to convert an enchanted silver statue into a Golem of Sensuality. But he never told us this until very recently. And he had pawned the Tiara last spring to fund another venture. And so . . .”
+</p>
+<p>
+<<Rep $g.firemagus>> completes the sentence for him. “. . . and so you sold the statute to redeem the tiara, and now these succubi garments are as useless to you as the tiara is to us.”
+</p>
+<p>
+The rival magi all nod. “But at least we brought wine,” says their water mage, and soon all six are sitting around, taking pulls from their varicolored bottles, and commiserating. And if these bottles are spiked with friendship potions, and your magi do not know, where is the harm in that?
+</p>
+<p>
+“Why, <i>why</i>, could our master not trust us?” laments their water mage. “We could've found a solution, if we'd only known the true state of things.”
+</p>
+<p>
+“You think that's bad?” says <<rep $g.watermagus>>. “You should try working for <<name $unit.player>>. No matter how much treasure we bring back from a successful quest, <<name $unit.player>> <i>always</i> swears we stole half of it!”
+</p>
+<p>
+<<if $g.windmagus.isHasTrait('bg_thief') || $g.windmagus.isHasTrait('per_sly') || $g.windmagus.isHasTrait('per_evil')>> “Upon my honor,” says <<rep $g.windmagus>>, “I never stole more than a third, and I'll blow away the one who says otherwise.”
+<<elseif $g.firemagus.isHasTrait('bg_thief') || $g.firemagus.isHasTrait('per_sly') || $g.firemagus.isHasTrait('per_evil')>> “Upon my honor,” says <<rep $g.firemagus>>, “I never stole more than a third, and I'll ignite the one who says otherwise.”
+<<elseif $g.watermagus.isHasTrait('bg_thief') || $g.watermagus.isHasTrait('per_sly') || $g.watermagus.isHasTrait('per_evil')>> After a pause and some significant looks from <<their $g.watermagus>> colleagues, <<they $g.watermagus>> continues, “Why, upon my honor, I never stole more than a third, and I'll drown the one who says otherwise.” <</if>>
+</p>
+<p>
+Nodding in sympathy, the six magi trade tales of their clueless bosses and foolish colleagues, as skilled professionals have always done and always will do. A Spirit of Amity descends upon them all, and they agree to divide the succubus garments between them. At daybreak, they bid each other a friendly farewell, and all kiss a gold ring held up by your rival's wind mage. Ancient lore says it may bring them better fortune.
+</p>
+<p>
+And it seems to have worked, for on the way home, your slaving magi are attacked by a band of orcs, whom they defeat easily. <<Rep $g.windmagus>> blows a storm of dust in their faces while the others guard <<their $g.windmagus>> flanks, and the orcs who fail to flee are quickly bound by <<their $g.windmagus>> binding spell—the one that is so effective when used on annoying professors at the Academy of Wind. The survivors are easily chained up and sold to a passing caravan.
+<<if $gOutcome == 'crit'>>
+In a stroke of good fortune, <<rep $g.firemagus>> locates the orcs' buried loot as well. Between this, the sale of the orcs, and the river-gold they found before, your slavers are able to defray the costs of this mission. Not that you have to forgive them for failing to carry it out.
+<<else>>
+The sale of the orcs helps to defray the cost of the expedition, though with the loss of <<rep $g.loveslave>> the enterprise is still a monetary loss. <</if>>
+</p>
+<p>
+But whatever this adventure has meant in terms of money, the magi have gained a measure of friendship and regard for each other, and what treasure is greater than that?</p>
+
+
+
+
+:: Quest_gift_of_the_magiFailure [nobr]
+<<set _ScoutDesert = $dutylist.getUnitIfAvailable('scoutdesert')>>
+<<set _Marketer = $dutylist.getUnitIfAvailable('marketer')>>
+<p> You entrust your three magi with your carefully-trained and pearl-precious love-slave, and a large expense account. They are to find out what your rival wants most, acquire it by means fair or foul, trade it for the Tiara of Moonlight, transform <<rep $g.loveslave>> into the translucent jewel King Kurdwisec is after, take her to the east, sell her for five times what she's worth, then return to you with the profits. And no stealing! (. . . <i>more than usual</i>, you think cynically to yourself.)
+</p>
+<p>
+The first stage of the quest proves easy. Thanks to some diligent
+<<if _ScoutDesert>> detective work by your Eastern Wastelands Scout, <<rep _ScoutDesert>>,
+<<elseif _Marketer>> market research by your Marketer, <<rep _Marketer>>,
+<<else>> investigation by your three magi, <</if>>
+your agents learn what your rival slaver has been seeking for months without success: the sensuous garments of a succubus! The specific garments he wants are stitched with mystic symbols in the lace, from which a circle of magi may invoke surprising effects if they know the right rituals.
+</p>
+<p>
+Filled with a Spirit of Adventure, your magi travel to the <<lore region_vale>> to visit a famous seer (whom you may have visited before, in a quest for Future Sight). After taking a large slice of your magi's operating funds, the seer goes into a night-long trance, with much writhing and crying out, as happens when one seeks hidden knowledge of the ways of demons.
+<<if $g.watermagus.isHasTrait('per_attentive')>> Your sharp-eyed water mage, <<rep $g.watermagus>>, notices that the seer also achieves a raging boner, as happens when one seeks hidden knowledge of the ways of succubi.
+<<elseif $g.firemagus.isHasTrait('per_attentive')>> Your sharp-eyed fire mage, <<rep $g.firemagus>>, notices that the seer also achieves a raging boner, as happens when one seeks hidden knowledge of the ways of succubi.
+<<elseif $g.windmagus.isHasTrait('per_attentive')>> Your sharp-eyed wind mage, <<rep $g.windmagus>>, notices that the seer also achieves a raging boner, as happens when one seeks hidden knowledge of the ways of succubi.<</if>>
+</p>
+<p>
+At dawn, the seer awakens and gives you the answer: Your magi must go to the Eastern Wastelands, and seek <<rep $g.hermit>>, the Hermit of the Crags. He and he alone can provide you what you need.
+</p>
+<p>
+As they begin their journey, your magi ask each other pertinent questions. What on earth can we offer a hermit, who cuts himself off from the fleshly life we know best? And what's a dirty old hermit doing with sexy women's underclothes from Beyond the Mist?
+</p>
+<p>
+The second question brings up disturbing images, so your magi concentrate on the first, and purchase such items and charms as might win the strange man's favor. They travel to the desolate mountain country where <<rep $g.hermit>> makes his abode. His wild dwelling is accessible only by sailing up a dangerous river, where strong currents, whirlpools, and shoals discourage all but the hardiest visitors.
+</p>
+<p>
+This your magi can handle. A Spirit of Determination animates them. They purchase a sturdy sailing boat. <<Rep $g.watermagus>> crouches in front, <<uadv $g.watermagus>> commanding the waters to still and the whirlpools to cease, to grant them safe passage. <<Rep $g.windmagus>> stands behind the mast, arms outspread, <<uadv $g.windmagus>> commanding a stiff breeze to fill the sail and overcome the currents. <<Rep $g.firemagus>> sits in the rear, manning the tiller and eyeballing <<rep $g.watermagus>> and <<reps $g.windmagus>> cute asses.
+</p>
+<p>
+After a long and treacherous river journey, the three magi moor their craft, only to find their way blocked by a thorny hedge that a squad of foresters could not clear in a month. And now it is <<reps $g.firemagus>> turn to step forward and <<uadv $g.firemagus>> burn their way through it, while the other magi walk behind and use their gifts to prevent the fire from spreading. And check out <i> <<their $g.firemagus>> </i> cute ass.
+</p>
+<p>
+The hermit's refuge is as rustic and its location as desolate as the magi might have guessed. <<Rep $g.hermit>> himself is a shaggy-bearded personage of indeterminate age—he is wild and wears rough-spun clothes, but his hair has not gone gray. He is surprisingly businesslike in asking the three travelers why they have sought him; they find it best to be equally straightforward in telling him they seek the mystic lingerie of a succubus. It was never going to be an easy subject to introduce into the conversation; it is just as well to have it out at once.
+</p>
+<p>
+It soon becomes clear that <<rep $g.hermit>> hermit|is a man of simple needs, and the material gifts the magi have brought are of no interest to him. In a Spirit of Compromise, they try offering applications of their sorcerous gifts, using the charms they have also purchased.
+</p>
+<p>
+“I,” says <<rep $g.watermagus>> <<uadv $g.watermagus>>, “could divine the location of water, and make you a magic well that never runs dry. You'd never have to catch rainwater or go down to the river for water again!”
+</p>
+<p>
+“I kinder like goin' down to the river,” says the Hermit. “Gets me out in the open air, and I get to see the sunlight dancin' on the waves. No thankye, Tess.”
+</p>
+<p>
+“I,” says <<rep $g.firemagus>> <<uadv $g.firemagus>>, “could conjure you an eternal flame, to cook your meals and keep you warm in the winter. You'd never have to cut firewood again!”
+</p>
+<p>
+“I kinder like cuttin' firewood,” replies the hermit. “Gets the blood flowin' in my arms, and that cool mountain air just opens up m'pipes and reminds me how good it is to be alive! No dice, Jo.”
+</p>
+<p>
+“Well,” says <<rep $g.windmagus>> <<uadv $g.windmagus>>, “at the Academy of Wind, we know a binding spell that can be set as a trap. Students use it as a prank on the instructors if they get too full of themselves. I could create a magic trap that would bring you food easily for the rest of your days.”
+</p>
+<p>
+“I kinder like fishin' and trappin' my own food,” says the hermit. “Keeps me closer to nature and all, and helps me remember where we all come from once and are a-goin' again before 'tis all done. It's spiritual, y'know? But I tell ye, Maria, there <i>is</i> somethin' sweet you could blow me, that would sweeten me up just fine along the lines of what you're lookin' for.”
+</p>
+<p>
+“And what is that?”
+</p>
+<p>
+“Well, what I want is that love-slave you've got chained up down in your boat!”
+</p>
+<p>Your magi are filled with consternation. If they aren't careful, they could lose the whole point of the mission; but if they <i>are</i> too careful, they won't gain that point either. And the seer was clear on this: this hermit is the only way to the prize. </p>
+
+<p>
+<<if $g.watermagus.isHasTrait('per_frugal')>> <<rep $g.watermagus>> sees no reason to even consider giving up such a valuable property for something they can take by force. And <<they $g.watermagus>> didn't like being called “Tess,” anyway.
+<<elseif $g.firemagus.isHasTrait('per_frugal')>> <<rep $g.firemagus>> sees no reason to even consider giving up such a valuable property for something they can take by force. And <<they $g.firemagus>> didn't like being called “Jo,” anyway.
+<<elseif $g.windmagus.isHasTrait('per_frugal')>> <<rep $g.windmagus>> sees no reason to even consider giving up such a valuable property for something they can take by force. And <<they $g.windmagus>> didn't like being called “Maria,” anyway. <</if>>
+<<if $g.firemagus.isHasTrait('per_proud') || $g.firemagus.isHasTrait('per_aggressive')>> <<rep $g.firemagus>>, finds <<their $g.firemagus>> heart full of fire. <<They $g.firemagus>> firemagus|have had quite enough with this foolish prattle. Why, in the name of the inferno, should they be negotiating with this irritating fool, when they are mighty wizards and ruthless slavers who can <i>take</i> what they please? <<Their $g.firemagus>> hands blaze with magic as <<they $g.firemagus>> prepared to intimidate, or incinerate, the foolish hermit.
+<<elseif $g.windmagus.isHasTrait('per_proud') || $g.windmagus.isHasTrait('per_aggressive')>> <<rep $g.windmagus>> windmagus|have had enough of this windy fool. <<They $g.windmagus>> raises <<their $g.windmagus>> left hand and summons the beginnings of a magic blast. “I've got something I can blow you,” says <<they $g.windmagus>>, “and I don't mean <<reps $g.loveslave>> lips. So give us what we're after.”
+<<elseif $g.watermagus.isHasTrait('per_proud') || $g.watermagus.isHasTrait('per_aggressive')>> <<rep $g.watermagus>> watermagus|is flooded with rage and frustration at this unwashed fool, who thinks he's in a position to make demands. He's lonely? He can cry them a river. They're slavers, not charity workers. <<Rep $g.watermagus>> raises <<their $g.watermagus>> hands, forming mystic spheres of water. “I think you need a bath,” says <<they $g.watermagus>>. “Give us what we want <i>now</i>, and maybe we'll leave you a shack to dry off in.”
+<<else>> Afterwards, you never find out just who said the word that started the fight. But obviously, your magi think it best to forget negotiating with this strange unknown nobody, to summon the arcane forces at their disposal, to forget the Spirit of Giving, and to do some Taking instead. <</if>>
+</p>
+<p>
+That is when your magi learn the perils of challenging a stranger. <<Reps $g.hermit>> eyes light up strangely and he speaks a Word of Summoning that springs a long-baited trap. <i><<lore magic_dark>>?</i>, they don't have time to think, <i>The seer never said anything about <<lore magic_dark>>!</i>
+</p>
+<p>
+Three huge demons—demons of wind, rain, and fire—spring up from the earth and tower over the magi. Knowing what's coming, the hermit-mage holds his breath and claps his hands over his ears while grinning wryly. Not knowing, your slavers learn, as the wind demon whirls around, bends at the waist, and unleashes a deafening, cataclysmic carbon disulfide fart. Your choking, gagging agents can't manage a spell as the water demon grabs his thorny, inhuman cock and does something truly unspeakable, and expressly against the Law of Arms.
+</p>
+<p>
+Eventually, your slavers do make their escape.
+<<if $gOutcome == 'failure'>> One of them gets away through the hermit's hovel, and manages to snag a single piece of the succubus' sexy garments—not enough for the ritual, but good for a souvenir. (Once it's laundered, anyway.) <</if>>
+Later on, between them, they take a solemn oath that no one, not even you, is going to hear the rest of what they went through. Fortunate indeed they are to have gotten out of it alive—though perhaps <<rep $g.hermit>> hermit|was not really interested in killing them anyway. Any stories they spread will only discourage further visitors, and that is just how he likes it.
+</p>
+
+<<if $gOutcome == 'disaster'>> <p>As they stagger wearily to the river for a boat-borne escape, your slavers suffer an additional woe. <<Rep $g.loveslave>> loveslave|have escaped. Later they wonder if she found her way up to the hermit's refuge—it would be her best chance of survival in this desolate wilderness—and whether the two found happiness there. She would've had extreme luxury but no freedom; now she has extreme freedom with no luxury. Which is best, maybe someday she'll say.</p> <</if>>
+
+
+
+<p>
+Once they're at a safe distance, <<rep $g.firemagus>> consents to burn their clothes, and <<rep $g.watermagus>> gives them all a thorough bath. Glistening and nude, they sail on a ways, not speaking and barely thinking, using a wind raised by <<rep $g.windmagus>>.
+<<if $gOutcome == 'failure'>> <<rep $g.loveslave>> keeps her eyes lowered, and keeps any irreverent thoughts to herself. In this, perhaps, she shows more wisdom than any of her masters have shown this voyage.<</if>>
+</p>
+<p>
+Eventually the party makes it back to town, gets a change of clothes, and prepares to return to <<rep $company.player>>. Facing you will not be easy, as their mission must be counted a failure. And yet the future is not hopeless. There will be other years, other festivals, maybe other hermits. And your magi still have their lives and have gained a measure of wisdom. And is that not the greatest treasure of all? </p>

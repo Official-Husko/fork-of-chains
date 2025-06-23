@@ -1,0 +1,281 @@
+:: QuestSetup_protection_abduction [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"protection_abduction0",
+"Dark Priest",
+'subrace_humansea', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_priest),
+  setup.qc.TraitReplace('unit', setup.trait.per_evil),
+  setup.qc.Trait('unit', setup.trait.magic_dark_master),
+  setup.qc.Trait('unit', setup.trait.face_attractive),
+],
+)>>
+
+
+
+<<set _criteriadevout1 = new setup.UnitCriteria(
+null, /* key */
+'"Devout\"', /* name */
+[
+  setup.trait.tough_nimble,
+  setup.trait.per_calm,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.tough_tough,
+  setup.trait.per_aggressive,
+  setup.trait.per_kind,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  slaving: 1,
+  aid: 1,
+}
+)>>
+
+<<set _criteriadevout2 = new setup.UnitCriteria(
+null, /* key */
+'"Devout\"', /* name */
+[
+  setup.trait.tough_nimble,
+  setup.trait.per_calm,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.tough_tough,
+  setup.trait.per_aggressive,
+  setup.trait.per_kind,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  slaving: 1,
+  aid: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'protection_abduction', /* key */
+"Protection Abduction", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'unit',
+  'danger',
+],
+6, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'priest': [ setup.qu.priest, 1],
+  'devout1': [ _criteriadevout1, 1],
+  'devout2': [ _criteriadevout2, 1],
+},
+{ /* actors */
+  'head': 'prayer_of_protection0',
+  'dark': 'protection_abduction0',
+},
+[ /* costs */
+],
+'Quest_protection_abduction',
+setup.qdiff.hardest49, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_protection_abductionCrit',
+    [
+      setup.qc.Item(setup.item.potion_protection),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_protection_abductionCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.Slave('head', "a|was a priest bestowing the Blessing of Protection from a secluded monastery in the Southern Seas", undefined),
+setup.qc.Slave('dark', "a|was a dark priest pretending to bestow Blessing of Protection unto others, but secretly used the pilgrims to fuel a|their own rituals", undefined)
+]),
+      setup.qc.Injury('devout1', 1),
+      setup.qc.Injury('devout2', 1),
+      setup.qc.SetCooldownOpportunity('blessing_of_protection', 50),
+    ],
+  ],
+  [
+    'Quest_protection_abductionCrit',
+    [
+      setup.qc.MissingUnit('priest'),
+      setup.qc.Injury('devout1', 5),
+      setup.qc.Injury('devout2', 5),
+    ],
+  ],
+  [
+    'Quest_protection_abductionCrit',
+    [
+      setup.qc.MissingUnit('devout1'),
+      setup.qc.MissingUnit('devout2'),
+      setup.qc.Injury('priest', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_protection_abduction [nobr]
+
+
+<<include 'Opportunity_blessing_of_protection'>>
+
+<p>
+You have decided to try and kidnap one of the priests.
+</p>
+
+
+
+:: Quest_protection_abductionCrit [nobr]
+<<if $gQuest.getSeed() % 2 == 1>>
+<<set $g.head = $g.dark>>
+<</if>>
+
+<p>
+You've sent three people for this mission.
+<<Yourrep $g.priest>> will be the leader of the group, and will pose as the lead pilgrim.
+<<if $g.priest.isHasTrait('per_evil')>>
+<<They $g.priest>> will have to try <<their $g.priest>> hardest hiding <<their $g.priest>> evil tendencies for the mission.
+<<elseif $g.priest.isHasTrait('per_honorable')>>
+<<They $g.priest>> is a natural do-gooder, making it much easier for <<them $g.priest>> to perform on the role.
+<</if>>
+Meanwhile, <<rep $g.devout1>> and <<utheirrel $g.devout1 $g.devout2>> <<rep $g.devout2>> will pretend to be the devouts, also similarly looking for blessings, but they will be responsible for securing the priest once they find an opening...
+</p>
+
+<p>
+Once inside, the head priest, a surprisingly young <<lady $g.head>>, greeted them and became their guide throughout the place.
+Looking at the head priest's
+<<if $g.head.isFemale()>>
+divine beauty,
+<<else>>
+radiant handsomeness,
+<</if>>
+your slavers felt they made the right decision to kidnap the priest instead of patroning them.
+</p>
+
+<p>
+To obtain the Blessing of Protection, your slavers had to undergo many hours of meditation alone with the head priest. Despite the many guards around the place, your slavers judged that meditation hour is probably their best opportunity to kidnap and secure the head priest.
+Still, they had to feign meditation first to not draw undue attention for the time being.
+<<set _agg = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_aggressive'})>>
+
+<<if _agg>>
+<<Yourrep _agg>> had it harder than the others to conceal <<their _agg>> true intention, given how uncalm <<their _agg>> aggressive mind is.
+<</if>>
+
+<<set _calm = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_calm'})>>
+
+<<if _calm>>
+<<Reps _calm>> calm and calculative mind show no hint on what <<their _calm>> true goal was.
+<</if>>
+
+<<set _cor = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'corrupted'})>>
+
+<<if _cor>>
+<<Reps _cor>> corruption greatly interferes with the meditation, filling <<therace _cor>> with many thoughts of desecrating the priest <<themself _cor>>, and <<their _cor>> face occasionally grew lewd.
+<</if>>
+
+<<set _hon = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_honorable'})>>
+
+<<if _hon>>
+Being an honorable <<urace _hon>>, <<rep _hon>> finds the idea of kidnapping the priest quite dishonorable, but <<they _hon>> ultimately resigned <<themself _hon>> to <<their _hon>> job.
+<</if>>
+
+<<set _evil = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_evil'})>>
+
+<<if _evil>>
+<<Rep _evil>> couldn't fully conceal <<their _evil>> giddiness at getting to kidnap the priest very soon.
+<</if>>
+
+<<set _sub = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_submissive'})>>
+
+<<if _sub>>
+Having no intention to dominate the priest <<themself _sub>>, <<rep _sub>> had it easier than others to conceal <<their _sub>> intentions.
+<</if>>
+
+<<set _dom = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_dominant'})>>
+
+<<if _dom>>
+Meanwhile <<rep _dom>> can't stop thinking about how well the head priest would serve as a slave, and how <<they _dom>> would dominate <<them $g.head>>. <<Their _dom>> face sometimes showed a strange, odd expression.
+<</if>>
+</p>
+
+
+<<if $gOutcome == 'failure' or $gOutcome == 'disaster'>>
+<p>
+Unfortunately, the priest somehow caught to your slaver's devious plans, and things went very wrong. Your slavers found themselves fighting against the monastery guards — while normally they would be no match against your slavers, these guards are blessed with the Blessing of Protection, rendering them rather immune to injuries.
+Eventually,
+<<if $gOutcome == 'disaster'>>
+Only <<rep $g.priest>> priest|was
+<<else>>
+Only <<rep $g.devout1>> and <<rep $g.devout2>> were
+<</if>>
+able to make it back to the ship, albeit suffering injuries.
+<<if $gOutcome == 'disaster'>>
+<<They $g.priest>> never knew what happened to their teammates, but it's probably nothing good and you should work fast to rescue them...
+<<else>>
+They never knew what happened to <<rep $g.priest>>, but it's probably nothing good and you should work fast to rescue <<them $g.priest>>...
+<</if>>
+</p>
+<<else>>
+<p>
+The farce continued for several weeks. Your slavers were not found out, and after a while they were designated to meditate on a different part of the island, away from the monastery. A perfect opportunity to launch their plan.
+</p>
+
+<p>
+Once alone and secluded, the head priest was no match for your slavers' sheer number advantage, and before long one bound and gagged <<urace $g.head>> head|was at their mercy.
+They made <<their $g.head>> way back to the small harbor, and they had to fight a small number of guards keeping the harbor safe. The guards fought surprisingly fierce, and to your slavers' dismay, they were blessed with the Blessing of Protection, rendering them impervious to injuries.
+Your slavers suffered minor injuries, but they were able to retreat back to their ship and sailed away from the monastery.
+</p>
+
+<p>
+Once inside the ship, they reviewed their loot.
+<<if $gQuest.getSeed() % 2 == 0>>
+A perfectly well-to-do priest fully bound and ready to serve.
+<<else>>
+But something was not right about their captive. Instead of finding a pristine and innocent priest, the priest they kidnapped turned out to be a dark priest, who had other plans for your slaver was <<they $g.head>> not ended up as your slave.
+<</if>>
+<<if $gOutcome == 'crit'>>
+They also found <<rep setup.item.potion_protection>> inside the priest's pockets.
+<</if>>
+</p>
+
+<</if>>
+
+

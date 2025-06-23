@@ -1,0 +1,116 @@
+:: EventSetup_bondage_cage [nobr event]
+
+<<run new setup.Event(
+'bondage_cage', /* key */
+"Bondage Cage", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_bondage_cage',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.join_senior, setup.trait.bg_metalworker], true),
+  ],
+  'tenant': setup.contacttemplate.blacksmithpeddler,
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.f_slavebed_good_slaver),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.Trait(setup.trait.bg_assassin)),
+    setup.qc.DoAll([
+      setup.qc.Item(setup.item.f_slavebed_good_slaver),
+      setup.qc.Item(setup.item.f_slavebed_good_slaver),
+      setup.qc.Item(setup.item.f_slavebed_good_slaver),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+  setup.qc.BoonizeRandom('slaver', 5),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.workshop),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_bondage_cage [nobr]
+<p>
+Among the many shops that now reside within your fort complex is the <<rep
+setup.buildingtemplate.workshop>> is the blacksmith shop, currently being run by a <<urace
+$g.tenant>> named <<rep $g.tenant>>. The <<man $g.tenant>> is a burly
+grizzled <<urace $g.tenant>>, and <<their $g.tenant>> arms are covered by
+bulky muscles from <<their $g.tenant>> daily work.
+</p>
+
+<p>
+<<Yourrep $g.slaver>> can often be seen in the fort too — sometimes just chatting with the owner, and some other times actually helping out with <<them $g.tenant>>. As you recall, <<rep $g.slaver>> used to be a blacksmith <<themself $g.slaver>>, when they often made
+<<if $g.slaver.getHomeland() == setup.Text.Race.REGIONS.city>>
+craftmen's tools for the various people living in the <<lore region_city>>.
+<<elseif $g.slaver.getHomeland() == setup.Text.Race.REGIONS.vale>>
+slave cages for the various taverns in the <<lore region_vale>>.
+<<elseif $g.slaver.getHomeland() == setup.Text.Race.REGIONS.forest>>
+iron bows for the hunters of the <<lore region_forest>>.
+<<elseif $g.slaver.getHomeland() == setup.Text.Race.REGIONS.desert>>
+weapons for the raiders of the <<lore region_desert>>.
+<<elseif $g.slaver.getHomeland() == setup.Text.Race.REGIONS.deep>>
+weapon and armor to fight the dangers of the <<lore region_deep>>.
+<<elseif $g.slaver.getHomeland() == setup.Text.Race.REGIONS.sea>>
+various devices from the many needs in the land beyond the <<lore region_sea>>.
+<<elseif $g.slaver.getHomeland() == setup.Text.Race.REGIONS.mist>>
+demonic bondage tools in the land beyond <<lore concept_mist>>.
+<<else>>
+many weapons in the land far beyond <<lore geo_mestia>>.
+<</if>>
+The resident blacksmith enjoys the company of your slaver, and occasional help too.
+</p>
+
+<<if $g.you.isHasTrait('bg_metalworker')>>
+<p>
+You were a former blacksmith too, once. And it did not escape your keen eyes
+that <<yourrep $g.slaver>>, together with the resident blacksmith were making something in the smith.
+You decided to roll up your sleeves and headed into the forge, to help out whenever you have free time.
+They remained secretive of what they are making, however, but you still helped out whenever you can,
+be it cooling some non descript iron bars, or hammering away some sturdy nails.
+</p>
+<</if>>
+
+<p>
+When you enter your office today, you found a
+<<if $g.you.isHasTrait('bg_metalworker')>>
+gigantic
+<<else>>
+big
+<</if>>
+box
+covered with a clothes, together with a small card on top of it. It's a gift from <<yourrep $g.slaver>>, for
+<<if $g.you.isHasTrait('bg_metalworker')>>
+your help with the smithing, but more important for
+<</if>>
+the long time you've been having <<therace $g.slaver>> in your company. Opening the covering, you find
+<<if $g.you.isHasTrait('bg_metalworker')>>
+  several <<rep setup.item.f_slavebed_good_slaver>>s
+<<else>>
+  a <<rep setup.item.f_slavebed_good_slaver>>
+<</if>>
+inside — unlike normal slave cages, there are holes for all four limbs to be secured in, for more kinky plays or for punishment when they get too naughty. A unique present, that must surely be hand-crafted by your slaver and the resident blacksmith of your fort.
+</p>
+
+<p>
+It doesn't happen often, but sometimes being the leader of a slaving company brings warmth to your heart, knowing that your slavers, despite how lazy, greedy, and incompetent they usually appear to be, still appreciate your leadership.
+</p>

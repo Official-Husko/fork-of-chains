@@ -1,0 +1,85 @@
+:: QuestSetupTreatmentBlank [nobr quest]
+
+<<set _removeall = []>>
+<<for _itrait, _trait range setup.TraitHelper.TRAINING_ALL>>
+  <<run _removeall.push(setup.qc.TraitRemove('trainee', _trait))>>
+<</for>>
+
+<<run new setup.QuestTemplate(
+  'treatment_blank',  /* id */
+  'Treatment: Mind Blank',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait', ],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.heal_head_master,
+    'assistant1': setup.qu.heal_assistant,
+    'assistant2': setup.qu.heal_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.blank_potion),
+  ],  /* costs */
+  'TreatmentBlank',  /* description */
+  setup.qdiff.hard43,
+  [
+    [
+      'TreatmentBlankCrit',
+      [
+      ].concat(_removeall),
+    ],
+    [
+      'TreatmentBlankSuccess',
+      [
+        setup.qc.Injury('trainee', 2),
+      ].concat(_removeall),
+    ],
+    [
+      'TreatmentBlankFailure',
+      [
+        setup.qc.Injury('trainee', 5),
+      ].concat(_removeall),
+    ],
+    [
+      'TreatmentBlankDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ].concat(_removeall),
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentBlank [nobr]
+<p>
+Removes all existing slave trainings on a slave.
+While this procedure always succeeds, it usually cause injuries to the patient.
+</p>
+
+:: TreatmentBlankCrit [nobr]
+<p>
+<<Rep $g.head>> directed the procedure with such skill that <<rep $g.trainee>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+
+:: TreatmentBlankSuccess [nobr]
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>> will need some time to recover from the procedure.
+</p>
+
+:: TreatmentBlankFailure [nobr]
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was severely injured during the procedure.
+</p>
+
+:: TreatmentBlankDisaster [nobr]
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was heavily injured during the procedure.
+</p>

@@ -1,0 +1,206 @@
+:: OpportunitySetup_choose_your_own_adventure__the_showdown___approach [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__the_showdown___approach2', /* key */
+"Choose Your Own Adventure: The Showdown - Approach", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown', ], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__the_showdown___approach',
+setup.qdiff.hardest39, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__the_showdown___approach2_0',
+'Opportunity_choose_your_own_adventure__the_showdown___approach_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_caution', 'caution', -1),
+setup.qc.VarAdd('choose_your_own_adventure_changes', 1, -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '7', -1), ],
+], [
+'Opportunity_choose_your_own_adventure__the_showdown___approach2_1',
+'Opportunity_choose_your_own_adventure__the_showdown___approach_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_caution', 'courage', -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '7', -1),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__the_showdown___approach', /* key */
+"Choose Your Own Adventure: The Showdown - Approach", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown', ], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__the_showdown___approach',
+setup.qdiff.hardest39, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__the_showdown___approach_0',
+'Opportunity_choose_your_own_adventure__the_showdown___approach_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_caution', 'caution', -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '7', -1), ],
+], [
+'Opportunity_choose_your_own_adventure__the_showdown___approach_1',
+'Opportunity_choose_your_own_adventure__the_showdown___approach_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_caution', 'courage', -1),
+setup.qc.VarSet('choose_your_own_adventure_progress', '7', -1),
+setup.qc.VarAdd('choose_your_own_adventure_changes', 1, -1), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_choose_your_own_adventure__the_showdown___approach [nobr]
+
+<<include 'Opportunity_choose_your_own_adventure__the_showdownCommon1'>>
+
+<p>
+As the sun rises, the <<= $varstore.get('choose_your_own_adventure_lovers')>>
+are prepared to finish their duties. They head to the site with...
+</p>
+
+
+
+:: Opportunity_choose_your_own_adventure__the_showdownCommon1 [nobr]
+
+<<include 'Opportunity_choose_your_own_adventure__the_interlude___bondCommon'>>
+
+<p>
+Fully equipped
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+head to toe with armor,
+<<else>>
+with magical robes and artifacts,
+<</if>>
+the pair of siblings go to the desert with the help of the same mercenary
+company they have been patroning thus far. They travel for days, each day becoming
+closer and closer to their destination.
+And finally, the destination is just one more day of travel.</p>
+
+<<set _oldg = $g>>
+<<set $g = {
+  hero1: setup.unitgroup.quest_choose_your_own_adventure_hero1.getOnlyUnit(),
+  hero2: setup.unitgroup.quest_choose_your_own_adventure_hero2.getOnlyUnit(),
+}>>
+
+<p>
+In this final decisive day, the party decides to camp in
+<<if $varstore.get('choose_your_own_adventure_oasis') == 'oasis'>>
+an oasis teeming with life.
+<<else>>
+a secluded cavern shielding them from harsh desert winds.
+<</if>>
+As the mercenaries rest, the two
+<<= $varstore.get('choose_your_own_adventure_lovers')>> are restless, nervous for the upcoming fight.
+They then seek each other's company for the night,
+<<if $varstore.get('choose_your_own_adventure_lovers') == 'lovers'>>
+enjoying one last moment in each other's embrace.
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+Stripped of their armor,
+<<else>>
+Stripped of their robes,
+<</if>>
+<<name $g.hero1>> touches <<their $g.hero1>>
+<<ugenital $g.hero1>> against <<name $g.hero2>>'s <<ugenital $g.hero2>>,
+enjoying the sensation of rubbing against each other.
+As the night continues, they explore each other's body further and further,
+putting their tongue in places where it should have never gone to.
+Lust and desire overcome them, and the nervousness was soon a thing of the
+past as they fall asleep
+<<if $g.hero1.isHasVagina()>>
+with their breasts pushing against each other.
+<<else>>
+with <<name $g.hero1>>'s <<udick $g.hero1>> inside
+<<name $g.hero2>>.
+<</if>>
+<<elseif $varstore.get('choose_your_own_adventure_lovers') == 'rivals'>>
+dropping their rivalry for one fateful and calm night. They share good
+memories and drink away the bad, and in time they forget about the
+nervousness and fall asleep next to each other.
+<<else>>
+enjoying the company of their most trusted friend. They share good memories
+and drink away the bad, and in time they forget about the nervousness and
+fall asleep next to each other.
+<</if>>
+<<if $varstore.get('choose_your_own_adventure_oasis') == 'oasis'>>
+They sleep peacefully next to the calm oasis of the desert.
+<<else>>
+They sleep peacefully protected from the harsh desert winds by the cavern walls.
+<</if>>
+</p>
+
+<<set $g = _oldg>>
+
+:: Opportunity_choose_your_own_adventure__the_showdownCommon2 [nobr]
+
+<<include 'Opportunity_choose_your_own_adventure__the_showdownCommon1'>>
+
+<p>
+As the sun rises, the <<= $varstore.get('choose_your_own_adventure_lovers')>>
+are prepared to finish their duties.
+They head to the site with
+<<= $varstore.get('choose_your_own_adventure_caution')>> until they
+eventually arrive at the site:
+a foreboding crater with dark clouds looming eternally over it...
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__the_showdown___approach_0_flavor [nobr]
+<<include 'Opportunity_choose_your_own_adventure__the_showdownCommon2'>>
+
+<p>
+The book suddenly vanishes right as you finish reading the chapter, leaving
+no hint on what's to come.
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__the_showdown___approach_0 [nobr]
+Caution (Default)
+
+:: Opportunity_choose_your_own_adventure__the_showdown___approach2_0 [nobr]
+Caution
+
+
+:: Opportunity_choose_your_own_adventure__the_showdown___approach_1 [nobr]
+Courage
+
+:: Opportunity_choose_your_own_adventure__the_showdown___approach2_1 [nobr]
+Courage (Default)

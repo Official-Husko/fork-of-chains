@@ -1,0 +1,53 @@
+:: InitBuildingWarRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'warroom',
+  tags: [],
+  width: 2,
+  height: 5,
+  door_column: 0,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "combat",
+      room_keys: [
+        'questoffice',
+        'traininggrounds',
+        'library',
+        'armory',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'warroom',
+  name: 'War room',
+  tags: ['critical', 'misc', ],
+  description_passage: 'BuildingWarRoom',
+  costs: [
+    [setup.qc.Money(-3500)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('greathall'),
+    ],
+  ],
+  on_build: [
+    [],
+  ],
+  main_room_template_key: 'warroom',
+})>>
+
+:: BuildingWarRoom [nobr]
+
+<p>
+Where you can plan specializations for your slavers.
+Unlocks assigning perk traits to your slavers.
+You can access this via the Slaver menu.
+</p>

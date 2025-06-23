@@ -1,0 +1,84 @@
+:: QuestSetupScoutForest [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'scout_forest',  /* id */
+  'Scout: Western Forest',  /* Title */
+  'darko',   /* author */
+  ['forest', 'quest'],  /* tags */
+  1, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_forest,
+    'scout2': setup.qu.scout_forest,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestScoutForest',  /* description */
+  setup.qdiff.normal15,
+  [
+    [
+      'QuestScoutForestCrit',
+      [
+        setup.qc.QuestDelay(setup.questpool.forest, 7),
+        
+      ]
+    ],
+    [
+      'QuestScoutForestSuccess',
+      [
+        setup.qc.QuestDelay(setup.questpool.forest, 5),
+        
+      ],
+    ],
+    [
+      'QuestScoutForestFailure',
+      [
+        setup.qc.QuestDelay(setup.questpool.forest, 1),
+      ],
+    ],
+    [
+      'QuestScoutForestDisaster',
+      [
+      ],
+    ],
+  ],
+  [[setup.questpool.scoutforest, setup.rarity.common],],
+  [setup.qres.QuestAvailableUnique()],
+)>>
+
+:: QuestScoutForest [nobr]
+
+<p>
+Your contact has send you several promising leads in the <<lore region_forest>>.
+You can send a group of slavers to follow up on those leads team for a full week into the
+city.
+</p>
+
+:: QuestScoutForestCrit [nobr]
+
+<p>
+The scouting mission was a complete success, with your team returning with more
+quest options than expected.
+</p>
+
+:: QuestScoutForestSuccess [nobr]
+<p>
+The scouting mission went about as well as expected, and your team returned with
+several quest options.
+</p>
+
+:: QuestScoutForestFailure [nobr]
+<p>
+Unfortunately, the leads given by your contacts turned out to be dead leads.
+Your slavers return home with nothing.
+</p>
+
+:: QuestScoutForestDisaster [nobr]
+<p>
+Unfortunately, the team were attacked by wild feral animals during their venture into the forest,
+and was forced to retreat earlier than expected.
+</p>

@@ -1,0 +1,41 @@
+:: EventSetup_withering_plant [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'withering_plant', /* key */
+"Withering Plant", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_withering_plant',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+  ],
+},
+[ /* outcomes */
+  setup.qc.Return('slaver'),
+  setup.qc.TraumatizeRandom('slaver', 5),
+  setup.qc.SetCooldownQuest('the_plant_of_lewdity', 25),
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_withering_plant [nobr]
+<p>
+Unfortunately, without the required ingredients and rituals, the plant that
+<<rep $g.slaver>> slaver|have been nurturing withered away, leaving nothing
+behind. All the efforts you've spent on the plant is completely wasted, and
+<<rep $g.slaver>> slaver|look more dejected than usual. But at least <<they
+$g.slaver>> slaver|is fine and uninjured, and you can always try again in the
+future, should another chance present itself to you...
+</p>

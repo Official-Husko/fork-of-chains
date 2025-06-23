@@ -1,0 +1,149 @@
+:: OpportunitySetup_choose_your_own_adventure__true_end [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<set _rewardcommon = [
+setup.qc.VarRemove('choose_your_own_adventure_progress'),
+setup.qc.VarRemove('choose_your_own_adventure_caution'),
+setup.qc.VarRemove('choose_your_own_adventure_oasis'),
+setup.qc.VarRemove('choose_your_own_adventure_lovers'),
+setup.qc.VarRemove('choose_your_own_adventure_strength'),
+setup.qc.VarRemove('choose_your_own_adventure_revenge'),
+setup.qc.VarRemove('choose_your_own_adventure_siblings'),
+setup.qc.VarRemove('choose_your_own_adventure_changes'),
+setup.qc.SetCooldownQuest('choose_your_own_adventure_', 300),
+]>>
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__true_end', /* key */
+"Choose Your Own Adventure: True End", /* Title */
+"darko", /* Author */
+[ 'special', 'fort', 'unknown',], /* tags */
+setup.INFINITY, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__true_end',
+setup.qdiff.easiest1, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__true_end_0',
+'Opportunity_choose_your_own_adventure__true_end_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.IfThenElse(
+    setup.qres.VarEqual('choose_your_own_adventure_lovers', 'lovers'),
+    setup.qc.Hookup('hero1', 'hero2'),
+  ),
+  setup.qc.Slaver('hero1', "a|was an ordinary villagefolk-turned-hero whose journey was prophesied in a mysterious book", undefined),
+  setup.qc.Slaver('hero2', "a|was an ordinary villagefolk-turned-hero whose journey was prophesied in a mysterious book", undefined),
+  setup.qc.RemoveFromUnitGroup('hero1'),
+  setup.qc.RemoveFromUnitGroup('hero2'),
+].concat(_rewardcommon),
+],
+[
+'Opportunity_choose_your_own_adventure__true_end_1',
+'Opportunity_choose_your_own_adventure__true_end_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+_rewardcommon.concat([ /* outcomes */
+  setup.qc.Slave('demon', "a|was a demon lord who toyed with mortals using a modified necronomicon", undefined),
+  setup.qc.RemoveFromUnitGroup('hero1'),
+  setup.qc.RemoveFromUnitGroup('hero2'),
+]),
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+  demon: [],
+  hero1: [],
+  hero2: [],
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_choose_your_own_adventure__true_end [nobr]
+
+<<include 'Opportunity_choose_your_own_adventure__final_chapterCommon'>>
+
+<p>
+To find out the truth.
+</p>
+
+<p>
+The
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+tear out their pendant, a supposed "gift" from the sage that literally
+watches over them.
+They
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+angrily
+<<else>>
+resolvedly
+<</if>>
+go to the forest in search of the "sage". Upon seeing them,
+the sage morphs into their true form: a pureblood demon who delights
+in nothing but seeing mortals squirm.
+</p>
+
+<p>
+With the help of the trusty mercenary company, the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+defeat the evil demon.
+The mastermind behind this book's adventure has been defeated, and is now at their mercy.
+But the mercenary company implores them to spare the demon, for reasons unknown.
+Having been greatly indebted to them, the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+defers the final judgment to the mercenary company leader, but with a twist.
+They offer you, the leader of the slaving company above, a choice.
+Should you slay the demon, they shall agree to join your company.
+But should you choose to spare the demon, they shall depart the land,
+never again to be seen...
+</p>
+
+<p>
+How will you remember this story to end?
+Will you slay the demon and recruit the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>, or will you keep the demon and let the
+<<= $varstore.get('choose_your_own_adventure_lovers')>> go?
+</p>
+
+<<unitcard $g.hero1 1>>
+<<unitcard $g.hero2 1>>
+
+:: Opportunity_choose_your_own_adventure__true_end_0 [nobr]
+Slay the demon
+
+
+:: Opportunity_choose_your_own_adventure__true_end_0_flavor [nobr]
+<p>
+The deed is done. The demon lays dead as their remains vanishes into thin air.
+</p>
+
+<p>
+Their journey finally at an end, and they are eager to begin their new life
+— as your slavers if you deem them fit for the job.
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__true_end_1 [nobr]
+Take "pity" on the demon
+
+
+:: Opportunity_choose_your_own_adventure__true_end_1_flavor [nobr]
+<p>
+As you inform them of your decisions, they take it with great difficulty, but do not complain.
+</p>
+
+<p>
+Some time later, you receive a farewell letter from them as they voyage
+southwards into the <<lore region_sea>>, to never be seen again by your company.
+You read the letter with nostalgia as you pet your new demonic slave, who
+will surely fetch a large sum in the market should you wish to sell <<them $g.demon>>.
+</p>

@@ -1,0 +1,153 @@
+:: QuestSetup_milking_season [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'milking_season', /* key */
+'Harvesting Season', /* Title */
+'darko', /* Author */
+[ 'desert', 'money', 'item'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'milker1': setup.qu.milker,
+'milker2': setup.qu.milker,
+'negotiator': setup.qu.negotiator, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_milking_season',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+[
+'Quest_milking_seasonCrit',
+[
+setup.qc.MoneyNormal(),
+setup.qc.Equipment(setup.equipmentpool.survival_good), ],
+], [
+'Quest_milking_seasonCrit',
+[
+
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_milking_seasonCrit',
+[
+],
+], [
+'Quest_milking_seasonCrit',
+[
+setup.qc.MissingUnitRecapture('negotiator', 'capturedmedium'),
+setup.qc.MoneyNormal(), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.uncommon],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_milking_season [nobr]
+
+<p>
+Among the various clothing materials available in <<lore geo_mestia>>, the soft yet
+durable silk is one of the rarest and most sought-after materials. Clothings made from silk is
+especially suitable for ranger-related duties. It is said that these silk are produced
+at many farms in the <<lore region_desert>>, through secret techniques passed from
+generation to generation. There are very few people who are privy to how these silks were actually produced.
+</p>
+
+<p>
+Every now and then, during harvesting seasons, these farms may open up
+opportunities for part-timers to help them harvest the silks. For such a
+standard work, the pay is unusually high, and there is potential bonus of
+getting one of the silk-weaved clothes. You can try to send a group of
+slavers to help with this menial but potentially very rewarding task.
+But there must be a reason why such a seemingly easy job pays so well...
+</p>
+
+
+:: Quest_milking_seasonCrit [nobr]
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+Unfortunately, by the time your slavers arrived at the farm, the harvesting
+season was already over. Your slavers had no choice but to go back to the
+fort, but they swore there was something completely wrong about these silks.
+</p>
+
+<<else>>
+
+<p>
+Your slavers arrived at the farm, whose outwards appearance betrayed no hint
+of what lied beyond. An old-looking barn just like any other farm, but one
+thing stood out — located in the middle of a desert, there was simply no place
+to plant crops.
+<<set _curious = setup.selectUnit([$g.milker1, $g.milker2, $g.negotiator], {trait: 'per_curious'})>>
+<<if _curious>>
+  <<Rep _curious>>, being curious, looked even more around and yet only found more questions
+  as to how the farm functions.
+<</if>>
+</p>
+
+<p>
+The farm operators explained to your slavers what had to be done. There were
+silk cocoons that they needed to harvest at the back of the farm. These cocoons are only
+harvested once per year, and so during harvesting seasons such as this the
+amount work became high enough to warrant the extra labor.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+
+<p>
+By the time your slavers had finished the work and came back, <<rep
+$g.negotiator>> negotiator|was nowhere to be found. Somehow, <<rep
+$g.milker1>> and <<rep $g.milker2>> did not feel any need at all to
+investigate, and meekly accepted their pay and moved on.
+</p>
+
+<p>
+While you have no idea what fate could possible await <<rep $g.negotiator>>,
+given the mystery of the farm's growing set of cocoons and their "tap", there
+was little left to imagination what could possibly happened to <<rep $g.negotiator>>...
+</p>
+
+<<else>>
+
+<p>
+Hence your slavers went to the back barn, and began their work. They managed
+to harvest <<if $gOutcome == 'crit'>>
+high quality silk, which earned your company an extra reward.
+<<else>>
+the silk without any problem.
+<</if>>
+Your
+slavers then went back to fort, succeeding in their tasks.
+</p>
+
+<p>
+Having read such an undetailed report, you later asked your slavers for more
+information.
+<<if $gOutcome == 'crit'>>
+Your slavers
+were being extremely vague about what exactly the harvesting procedure is,
+but apparently you managed to gather that in the back of the barn, there were numerous
+cocoons all hanging from the ceilings wrapped in what appears to be silk.
+Each cocoon had a tap that your slavers had to harvest from, but the quality
+apparently differed based on how experienced your slavers were. They
+<<uadv $g.negotiator>>
+refused to say more about the subject, including the details of these
+cocoons. Having seen no benefit in pursuing further, given the quality of
+their job you dropped the subject and moved on to your other work.
+<<else>>
+Your slavers <<uadv $g.negotiator>>
+refused to talk more, but you get the feeling that something in the barn had
+completely unnerved even your slavers. You decided not to push the issue and move on with your day.
+<</if>>
+</p>
+
+<</if>>
+
+<</if>>

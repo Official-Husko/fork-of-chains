@@ -1,0 +1,190 @@
+:: QuestSetupBountyHuntKraken [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _mercenary = new setup.UnitCriteria(
+  null, /* key */
+  'Mercenary', /* title */
+  [
+    setup.trait.race_lizardkin,
+    setup.trait.per_brave,
+    setup.trait.per_aggressive,
+    setup.trait.per_loyal,
+    setup.trait.per_attentive,
+    setup.trait.per_dominant,
+    setup.trait.per_lunatic,
+    setup.trait.skill_flight,
+    setup.trait.magic_light,
+    setup.trait.magic_light_master,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+  ], /* critical traits */
+  [
+    setup.trait.race_elf,
+    setup.trait.per_cautious,
+    setup.trait.per_calm,
+    setup.trait.per_independent,
+    setup.trait.per_dreamy,
+    setup.trait.per_sexaddict,
+    setup.trait.per_submissive,
+    setup.trait.per_masochistic,
+    setup.trait.magic_fire,
+    setup.trait.magic_fire_master,
+    setup.trait.magic_water,
+    setup.trait.magic_water_master,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    combat: 1.0,
+    brawn: 1.0,
+    knowledge: 1.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'bounty_hunt_kraken', /* key */
+  'Bounty Hunt: Kraken', /* Title */
+  'darko',   /* author */
+  ['sea', 'money'],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'merc1': _mercenary,
+    'merc2': _mercenary,
+    'merc3': _mercenary,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestBountyHuntKraken', /* passage description */
+  setup.qdiff.harder46, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestBountyHuntKrakenCrit',
+      [
+        setup.qc.Equipment(setup.equipmentpool.all_nonsex_good),
+        setup.qc.MoneyNormal(),
+      ],
+    ],
+    [
+      'QuestBountyHuntKrakenCrit',
+      [
+        setup.qc.MoneyNormal(),
+      ],
+    ],
+    [
+      'QuestBountyHuntKrakenFailure',
+      [
+        setup.qc.Injury('merc1', 2),
+        setup.qc.Injury('merc2', 2),
+        setup.qc.Injury('merc3', 2),
+      ],
+    ],
+    [
+      'QuestBountyHuntKrakenDisaster',
+      [
+        setup.qc.Injury('merc1', 2),
+        setup.qc.Injury('merc3', 2),
+        setup.qc.MissingUnit('merc2'),
+        setup.qc.TraitReplaceExisting('merc2', 'anus_gape'),
+        setup.qc.TraitReplaceExisting('merc2', 'vagina_gape'),
+      ],
+    ],
+  ],
+  [[setup.questpool.sea, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestBountyHuntKraken [nobr]
+
+<<questimage 'bounty_hunt_kraken.jpg'>>
+
+<p>
+The <<lore region_sea>> are dangerous both for what lies ahead, and for what lies within.
+Among the dangers posed by the journey is the mighty kraken beast, who are known
+to sunk ships with its huge tentacles.
+Even worse is what it will do to the ship's passengers, those giant tentacles going
+into places no tentacle should ever go, let alone penetrate.
+If one could slay such a beast, it will surely make the world a little safer, earning
+much coins from nearby settlements.
+</p>
+
+
+:: QuestBountyHuntKrakenCrit [nobr]
+
+<<if $g.merc1.isMale() || $g.merc2.isMale() || $g.merc3.isMale()>>
+  <<questimage 'bounty_hunt_kraken_result_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+As planned, your slavers managed to bait the kraken into attacking the actually prepared
+ship. Your slavers fought
+<<uadv $g.merc1>>
+against the kraken's numerous tentacles,
+
+<<set _earth = setup.selectUnit([$g.merc1, $g.merc2, $g.merc3], {trait: 'magic_earth_master'})>>
+<<if _earth>>
+  <<Rep _earth>> summoned <<their _earth>> own tentacle aberrations to fought away the kraken's
+  numerous appendages.
+<</if>>
+
+<<set _sub = setup.selectUnit([$g.merc1, $g.merc2, $g.merc3], {trait: 'per_submissive'})>>
+<<if _sub>>
+  <<Reps _sub>> submissive tendencies came out and seeing those big strong tentacles made
+  <<therace _sub>> quiver in slight excitement, but quickly gained <<their _sub>> focus back
+  after seeing how devastatingly strong the oversized octopus was.
+<</if>>
+
+<<set _gape = setup.selectUnit([$g.merc1, $g.merc2, $g.merc3], {trait: 'anus_gape'})>>
+<<if _gape>>
+  <<Rep _gape>> could suddenly feel <<their _gape>> gaping anus twitched -- the big tentacles
+  reminded <<them _gape>> of how <<their _gape>> hole was gaped a long time ago.
+<</if>>
+
+<<set _lustful = setup.selectUnit([$g.merc1, $g.merc2, $g.merc3], {trait: 'per_lustful'})>>
+<<if _lustful>>
+  <<Rep _lustful>> fought <<uadv _lustful>>, but <<they _lustful>> could not fully hide
+  <<their _lustful>> perverted thoughts at seeing those big, meaty tentacles around.
+<</if>>
+
+In the end, they somehow
+they managed to survive the ordeal and slay the kraken.
+<<if $gOutcome == 'crit'>>
+Furthermore, from inside the kraken's defeated body
+they found a lot of valuables, which they proceeded to sell before returning victoriously
+to the fort.
+<<else>>
+Some of your slavers contemplated on using the kraken's tentacles for some depraved slave
+training back at the fort, but ultimately went against the idea lest since the tentacles
+seemed to have a mind of their own.
+<</if>>
+</p>
+
+
+:: QuestBountyHuntKrakenFailure [nobr]
+
+<p>
+Unfortunately, despite your slaver's best efforts to bait the kraken, the beast was nowhere
+to be found.
+</p>
+
+
+:: QuestBountyHuntKrakenDisaster [nobr]
+
+<p>
+As planned, your slavers managed to bait the kraken into attacking the actually prepared
+ship. Your slavers fought mightily against the kraken's numerous tentacles,
+but in the panic of the fight <<rep $g.merc2>> merc2|was grabbed by one of the tentacles and
+dragged offboat somewhere.
+The kraken retreated immediately, and the rest of your slavers had to return home to recover.
+<<uneedrescue $g.merc2>>, although by that time <<they $g.merc2>> would probably be already too used to
+feeling tentacles around <<their $g.merc2>> body...
+</p>

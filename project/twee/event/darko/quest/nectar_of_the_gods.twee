@@ -1,0 +1,71 @@
+:: EventSetup_nectar_of_the_gods [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'nectar_of_the_gods', /* key */
+"Nectar of the Gods", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'sea',
+  'item',
+],
+'Event_nectar_of_the_gods',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_bewitchment_alternative', '1', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_bewitchment_alternative'),
+  setup.qres.VarGte('quest_bewitchment_progress', 2),
+  setup.qres.QuestDone('finding_fairy'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_nectar_of_the_gods [nobr]
+<<set _t = $company.player.getUnits().filter(unit => unit.isHasTitle('quest_bewitched_1'))>>
+
+<<if _t.length>>
+<p>
+The recent disappearance of <<yourrep _t[0]>> in the <<lore region_forest>>
+is not the first time this has happened. As you recall, a mischievous fairy
+was responsible for when it happened last time, and you've no doubt this is
+done by yet another mischivious fairy.
+</p>
+<</if>>
+
+<p>
+You're not the only one who has connected the dots. As you ponder on the
+idea, <<yourrep $g.slaver>> slaver|come to your office, bringing good news.
+Apparently, <<they $g.slaver>> slaver|have found a potential lead on how to
+possibly get back on that fairy — it all begins with finding a rare and
+exotic <<rep setup.item.quest_bewitchment_nectar>> somewhere in the <<lore
+region_sea>>. It is said that fairies cannot resist the allure of this rare
+nectar, and you might just be able to use this to your advantage.
+</p>
+
+<p>
+Getting a nectar is probably sufficient to get back at the fairy in some way.
+However, if your vindictiveness goes beyond normal, it might also be possible
+to combine the nectar with a specifically-designed trap from a famous
+rat-catcher in the <<lore region_city>>. After all, fairies are pretty much
+flying rats, so this should work well. There is no doubt getting the trap
+will be difficult however, considering that the rat-catcher is an infamous
+lunatic, and will demand absurd things in exchange for the services
+rendered...
+</p>
+
+<p>
+Then again, it might just be as wise to simply rescue your lost slavers, if
+you so choose...
+</p>

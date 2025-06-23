@@ -1,0 +1,237 @@
+:: QuestSetup_test_of_intrigue [nobr quest]
+
+
+<<run new setup.Title(
+"quest_master_of_intrigue_0", /* key */
+"Master of Intrigue", /* name */
+"A true master of intrigue", /* description */
+"a|have proven a|themself to be a master thief by completing a challenge in the City of Lucgate", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+intrigue: 5,},
+)
+>>
+
+
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Thief', /* name */
+[
+  setup.trait.bg_assassin,
+  setup.trait.bg_thief,
+  setup.trait.height_dwarf,
+  setup.trait.height_short,
+  setup.trait.tough_nimble,
+  setup.trait.per_cautious,
+  setup.trait.per_attentive,
+  setup.trait.skill_flight,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.intrigue, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_intrigue_0')
+]), 'Have not yet mastered the art of intrigue'),
+],
+{
+  intrigue: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_intrigue', /* key */
+"Test of Intrigue", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'veteran',
+  'prep',
+  'item',
+  'legendary',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_test_of_intrigue',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_intrigueCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_intrigue_0'),
+      setup.qc.EquipmentDirect('intrigue_eyes_master'),
+    ],
+  ],
+  [
+    'Quest_test_of_intrigueCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_intrigueCrit',
+    [
+      setup.qc.Injury('a', 10),
+      setup.qc.Trauma('a', setup.trait.boon_intrigue, 20),
+    ],
+  ],
+  [
+    'Quest_test_of_intrigueDisaster',
+    [
+      setup.qc.MissingUnitRecapture('a', 'capturedhard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_intrigue_0'),
+setup.qres.SkillAtLeast(setup.skill.intrigue, 100)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_intrigue [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Your slavers came from many background and specialities, and by now it is known that one of your slavers is a particularly sneaky one. A master thief if you will. But one could not claim such as a gaudy title without achieving a feat befitting for such a master, which <<yourrep _u>> might just have the right suggestion for.
+</p>
+
+<p>
+A particular mansion in the <<lore region_city>> is famous for being the host to a wide veritable of artefacts, ranging from mundane ones such as the waterproof teabag to actually useful ones like self-cleaning broom and the staff of head-bashing.
+</p>
+
+<p>
+<<Yourrep _u>> suggests that infiltrating such a dangerou manse and getting away with one of the artefacts stored might just be enough for your slaver to gain the coveted title of Master of Intrigue. The mansion is extremely well guarded, however, as well as littered with traps, and you must make it absolutely sure that whoever you send on this mission is up for the task.
+</p>
+
+
+
+:: Quest_test_of_intrigueCrit [nobr]
+<p>
+Once <<they $g.a>> sneaked past the city guards and arrived at the entrance of the manse, <<yourrep $g.a>> briefly stood <<uadv $g.a>> there, before deciding to waste no more time and infiltrate in.
+<<if $g.a.isHasTrait('skill_flight')>>
+<<They $g.a>> found an empty spot to unleash <<their $g.a>> <<uwings $g.a>> and swoop into one of the second floor windows.
+<<elseif $g.a.isHasTrait('magic_dark')>>
+<<They $g.a>> used <<their $g.a>> mastery over the dark domain to shroud <<themself $g.a>> in darkness, hiding <<their $g.a>> presence from the ever present guards.
+<<elseif $g.a.isHasTrait('height_dwarf')>>
+<<They $g.a>> a|is extremely short, short enough to fit inside the gutters and infiltrate the manse from the water pipes.
+<<elseif $g.a.isHasTrait('height_short')>>
+<<They $g.a>> a|is very short, and could crawl inside the gutters and infiltrate the manse from the water pipes.
+<<else>>
+<<They $g.a>> waited until night fell, before using <<their $g.a>> trusty grappling hook to latch into one of the second floor windows and sneaked in.
+<</if>>
+</p>
+
+<p>
+The manse is littered with both guards and traps alike.
+<<They $g.a>> could see some of the traps were already sprung, likely to the surprise of some poor unprepared thief or perhaps by some of the dim-witted guards.
+But <<rep $g.a>> a|is different — a master of <<their $g.a>> craft (or so <<they $g.a>> like to think), and began infiltrating deeper into the manse in search of the hidden vaults.
+<<if $g.a.isHasTrait('tough_nimble')>>
+<<They $g.a>> a|is rather nimble, easily dodging and making <<their $g.a>> way through the complex trap layout.
+<</if>>
+<<if $g.a.isHasTrait('per_cautious')>>
+<<Their $g.a>> rather cautious look of everything must have surely saved <<their $g.a>> <<uskin $g.a>> or two in the mansion.
+<</if>>
+<<if $g.a.isHasTrait('per_brave')>>
+<<They $g.a>> accidentally triggered a trap when rushing bravely into a seemingly empty passageway, but luckily it was a silent trap and only suffered minor injuries as a result.
+<<run setup.qc.Injury('a', 1).apply($gQuest)>>
+<</if>>
+<<if $g.a.isHasTrait('per_attentive')>>
+<<They $g.a>> a|is attentive enough to notice some of the more obvious traps and avoid them like a plague.
+<</if>>
+<<if $g.a.isHasTrait('per_dreamy')>>
+<<They $g.a>> lacked the attentiveness required to notice even the most obvious traps, and had to be extra careful to avoid them.
+<</if>>
+<<if $g.a.isHasTrait('height_tall')>>
+<<Their $g.a>> <<ubody $g.a>> is a bit too large for such delicate infiltration mission, hindering the overall progress.
+<</if>>
+<<if $g.a.isHasTrait('magic_light')>>
+<<Their $g.a>> affinity towards light magic meant <<they $g.a>> had a harder time concealing <<their $g.a>> presence compared to others.
+<</if>>
+<<if $g.a.isHasTrait('bg_assassin')>>
+As a former assassin, <<they $g.a>> is intimately familiar with the various emergency hiding spots a mansion could provide.
+<</if>>
+<<if $g.a.isHasTrait('bg_thief')>>
+<<Rep $g.a>> a|is an experienced thief with plenty of years-worth experience, and knows where would be the likeliest places for the vault to be hidden at.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+It took a few days of going inside and outside of the mansion, with the vaults seemingly nowhere to be found. <<They $g.a>> turned every painting, displace every rug, and touched every wall, and yet nothing. But after a few weeks, <<rep $g.a>> had a breakthrough and decided to infiltrate the mansion library instead.
+There, <<they $g.a>> found a layout plan for the mansion, and it turned out that the vault was not located inside the mansion, but rather, inside a small crypt-like building at the gardens of the mansion complex.
+With that knowledge, <<rep $g.a>> sneaked into the also well-guarded crypt, before
+<<if $g.a.isHasTrait('muscle_strong')>>
+using <<their $g.a>> strong and powerful arms to knock the guards out
+<<elseif $g.a.isHasTrait('magic_dark')>>
+using <<their $g.a>> dark magic to knock the guards out
+<<elseif $g.a.isHasTrait('magic_wind_master')>>
+zapping both guards out with <<their $g.a>> electric magic
+<<else>>
+knocking both guards out
+<</if>>
+and finally entered the vault. A single item stood there, an extremely rare <<rep setup.equipment.intrigue_eyes_master>>. A fitting item to crown <<rep $g.a>> as the Master Thief <<they $g.a>> had proven <<themself $g.a>> to be.
+</p>
+<<else>>
+<p>
+The mansion was far too big for <<rep $g.a>> to infiltrate in one night, and <<therace $g.a>> had to sneakily went in and out of the manse in the days to come. But at one fateful night, <<they $g.a>> accidentally
+<<if $gQuest.getSeed() % 3 == 0>>
+alerted a guard
+<<elseif $gQuest.getSeed() % 3 == 1>>
+tripped on a trap
+<<elseif $gQuest.getSeed() % 3 == 2>>
+made a grave mistake
+<</if>>
+and ousted <<themself $g.a>>. All the guards on the manse was alerted to <<their $g.a>> presence, and although <<rep $g.a>> managed to made it out alive, <<their $g.a>> presence was known. The mansion security was tightened in the coming days, and any hope of <<rep $g.a>> infiltrating the mansion that day was lost.
+</p>
+
+<p>
+Despite suffering some injuries, <<rep $g.a>> looked rather encouraged by the prospect of rewards, and is rather eager to try again.
+<<if $gOutcome == 'success'>>
+Perhaps as immediately as when <<they $g.a>> a|recover from <<their $g.a>> new injuries.
+<</if>>
+</p>
+<</if>>
+
+
+
+
+
+:: Quest_test_of_intrigueDisaster [nobr]
+<p>
+Unfortunately, <<rep $g.a>> a|was too sloppy and managed to get captured by the guards defending the mansion.
+<<urescuenow $g.a>>, and while it won't be easy, you best resuce <<them $g.a>> as soon as possible lest <<rep $g.a>> will never be the same again...
+</p>
+

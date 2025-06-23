@@ -1,0 +1,50 @@
+:: LIVINGSETUP_day_laborer [nobr living]
+
+<<run new setup.Living({
+  key: 'day_laborer',
+  name: 'Day Laborer',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_laborer: setup.LIVING_COMMON_PREFERENCE,
+    per_slow: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_smart: -setup.LIVING_UNCOMMON_PREFERENCE,
+    per_direct: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_sly: -setup.LIVING_UNCOMMON_PREFERENCE,
+    muscle_strong: setup.LIVING_MORECOMMON_PREFERENCE,
+    muscle_verystrong: setup.LIVING_MORECOMMON_PREFERENCE,
+    muscle_extremelystrong: setup.LIVING_MORECOMMON_PREFERENCE,
+  },
+  business: [
+    'taking a nap',
+    'helping out with heavy labor around',
+    'lugging cargos out of a ship',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_day_laborer [nobr]
+
+<p>
+With enough money to retire comfortably, <<rep $g.a>> did just that, and bought
+a home in one of the nearby villages around your fort.
+a|They does not just spend a|their entire time snoozing around and using
+a|their own slaves, however, and a|they would occasionally
+<<if $g.a.isHasTrait('muscle_verystrong')>>
+show off a|their massive musculature
+<<elseif $g.a.isHasTrait('muscle_strong')>>
+show off a|their considerable musculature
+<<elseif $g.a.isHasTrait('per_direct')>>
+do honest work
+<<elseif $g.a.isHasTrait('per_slow')>>
+be goaded into doing honest work
+<<else>>
+ward off boredom
+<</if>>
+by doing random day labor available in the village.
+When a trading ship arrive, they would offer a|their help to lug off the many
+crates off the ship.
+When it is draught season, they would travel far to carry buckets and buckets of water into the village.
+While most people do it for the money, a|they just do it for fun now.
+</p>

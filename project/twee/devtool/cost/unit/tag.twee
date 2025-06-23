@@ -1,0 +1,52 @@
+:: CostTagHelp [nobr]
+
+<<message '(?)'>>
+Tag acts as a flag that you can set on units.
+This can later be checked --- e.g., you can require that a quest
+only be generated when you have a unit with a certain flag.
+Use this only when you need, and remove the tag when you are done.
+Also, consider using titles instead. The difference between titles and tags
+is that: title is visible to the user and can have gameplay effects (e.g., increasing skills),
+while tags are hidden and has no gameplay effect.
+<</message>>
+
+
+:: CostAddTag [nobr]
+
+
+
+Give <<devactordefault>> the tag: <<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddTag($qgDefaultActorName, _tag)>>
+<</link>>
+
+
+:: CostRemoveTag [nobr]
+
+
+
+From <<devactordefault>>, remove their tag (if any): <<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.RemoveTag($qgDefaultActorName, _tag)>>
+<</link>>
+
+
+:: CostRemoveTagGlobal [nobr]
+
+From ALL units, remove tag (if any): <<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.RemoveTagGlobal(_tag)>>
+<</link>>
+
+
+
+

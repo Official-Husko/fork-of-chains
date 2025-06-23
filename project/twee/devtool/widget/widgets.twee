@@ -1,0 +1,647 @@
+:: DevToolWidgets [nobr widget]
+
+<<focwidget 'gotowipehistory'>>
+  <<run State.history.splice(State.activeIndex, 1)>>
+  <<goto $args[0]>>
+<</focwidget>>
+
+<<focwidget 'devgotoreturn'>>
+  <<if $gDtSavePassageReturnPassage>>
+    <<goto $gDtSavePassageReturnPassage>>
+  <<else>>
+    <<if $devtooltype == 'quest'>>
+      <<goto 'QuestGen'>>
+    <<elseif $devtooltype == 'event'>>
+      <<goto 'EventGen'>>
+    <<elseif $devtooltype == 'opportunity'>>
+      <<goto 'OpportunityGen'>>
+    <<elseif $devtooltype == 'interaction'>>
+      <<goto 'InteractionGen'>>
+    <<elseif $devtooltype == 'activity'>>
+      <<goto 'ActivityGen'>>
+    <</if>>
+  <</if>>
+<</focwidget>>
+
+<<focwidget 'devquestroles'>>
+  <<if !$qdevquestroles>>
+    <<set $qdevquestroles to {}>>
+  <</if>>
+
+  <div>
+  <b>Quest roles:</b>
+  <<message '(Add new)'>>
+    <div class='card livingcard'>
+      <div>
+      <<set _newroles = $args[0].getAllActorNames()>>
+      <<devactorall '_newquestactor' _newroles>>
+      of <<rep $args[0]>> will be set to
+      <<devactor '_oldquestactor'>>
+      of the new quest/event/mail you are making now.
+      </div>
+      <div>
+      <<link '(ADD THIS!)'>>
+        <<set $qdevquestroles[_newquestactor] = _oldquestactor>>
+        <<set _thispassage = passage()>>
+        <<goto _thispassage>>
+      <</link>>
+      </div>
+    </div>
+  <</message>>
+  </div>
+
+  <<for _actornew, _actorpast range $qdevquestroles>>
+    <div>
+    <<successtext _actornew>> of <<rep $args[0]>> will be set to <<successtext _actorpast>> in this quest.
+    <<capture _actornew>>
+      <<link '(Delete)'>>
+        <<run delete $qdevquestroles[_actornew]>>
+        <<set _thispassage = passage()>>
+        <<goto _thispassage>>
+      <</link>>
+    <</capture>>
+    </div>
+  <</for>>
+<</focwidget>>
+
+
+/* Usage: <<devactorall '_varname' actornamelist>> */
+/* Use <<devactor>> for most cases, but this can be useful for very few reasons */
+/* Unlike <<devactor>>, this ignores $qgDefaultActorName, and list of actors must be supplied */
+<<focwidget 'devactorall'>>
+  <<if !$args[1].length>>
+    <<if passage() != 'DevActorError'>>
+      <<set $gPrevious = previous()>>
+      <<goto 'DevActorError'>>
+    <</if>>
+  <<else>>
+    Actor
+    <<cycle $args[0] autoselect>>
+      <<optionsfrom $args[1]>>
+    <</cycle>>
+    (Click to change)
+  <</if>>
+<</focwidget>>
+
+/* Usage: <<devactor '_varname'>> */
+/* Gives an actor cycling through the list of actors */
+<<focwidget 'devactor'>>
+  <<set _actorlist = $dtquest.getAllActorNames()>>
+  <<devactorall $args[0] _actorlist>>
+<</focwidget>>
+
+
+<<focwidget 'devactordefault'>>
+  <<if !$qgDefaultActorName>>
+    <<devactor '$qgDefaultActorName'>>
+  <<else>>
+    <<= $qgDefaultActorName>>
+  <</if>>
+<</focwidget>>
+
+
+:: LoadDevWidgets [nobr]
+
+<<focwidget 'devchoosequest'>>
+
+<p>
+  Search:
+  <<onevent 'input'>>
+    <<textbox '_choosequestfilterunused' ''>>
+  <<onevent-callback>>
+    <<set _choosequestfilter = _value>>
+    <<set _choosequestshowall = 0>>
+    <<refreshable-refresh "#devchoosequestlist0">>
+  <</onevent>>
+
+  <div>
+    <<refreshable id="devchoosequestlist0">>
+      <<devchoosequestlist $args[0]>>
+    <</refreshable>>
+  </div>
+</p>
+
+<</focwidget>>
+
+<!-- (internal, do not use directly) -->
+<<focwidget 'devchoosequestlist'>>
+
+<<if _choosequestfilter>>
+
+  <p>Matching quests:</p>
+  
+  <<set _cand = []>>
+  <<set _filter = _choosequestfilter.toLowerCase()>>
+  <<for _iquest, _quest range setup.questtemplate>>
+    <<if _quest.getName().toLowerCase().includes(_filter)>>
+      <<run _cand.push(_quest)>>
+    <</if>>
+  <</for>>
+  <<run _cand.sort((q1, q2) => q1.getDifficulty().getLevel() - q2.getDifficulty().getLevel())>>
+  <<set _subset = _choosequestshowall ? _cand : _cand.slice(0, 20)>>
+  <<for _iquest, _quest range _subset>>
+    <<capture _quest>>
+      <<= _quest.getDifficulty().rep()>>:
+      <<rep _quest>>
+      <<link '(select this)'>>
+        <<set _questchosen = _quest>>
+        <<include $args[0]>>
+      <</link>>
+      <br/>
+    <</capture>>
+  <</for>>
+
+  <<if _subset.length < _cand.length>> <!-- prevent showing too many matches at once -->
+    <p class="indented">
+      And <<= _cand.length - _subset.length >> more
+      &nbsp;
+      <<link '(see all results)'>>
+        <<set _choosequestshowall = 1>>
+        <<refreshable-refresh "#devchoosequestlist0">>
+      <</link>>
+    </p>
+  <<elseif !_cand.length>>
+    <p class="indented">
+      (No matches)
+    </p>
+  <</if>>
+
+<<else>>
+
+  <p>
+  Where is the quest located?
+  <<message '(?)'>>
+    If it does not have a quest location, it will be at the bottom option "Other Quests".
+  <</message>>
+  </p>
+
+  <<set _passage = $args[0]>>
+  <<set _found = {}>>
+  <<for _iquestpool, _questpool range setup.questpool>>
+    <<set _qkeys = Object.keys(_questpool.quest_template_rarity_map)>>
+    <<for _z, _iqkey range _qkeys>>
+      <<set _found[_iqkey] = true>>
+    <</for>>
+    <<if _qkeys.length > 0>>
+      <<capture _questpool>>
+        <<set _text = `Quests in ${_questpool.getName()}`>>
+        <<message _text>>
+          <<set _qkeys = Object.keys(_questpool.quest_template_rarity_map)>>
+          <<run _qkeys.sort((q1, q2) => setup.questtemplate[q1].getDifficulty().getLevel() - setup.questtemplate[q2].getDifficulty().getLevel())>>
+          <<for _z, _iqkey range _qkeys>>
+            <<set _questtemplate = setup.questtemplate[_iqkey]>>
+            <<capture _questtemplate>>
+              <<= _questtemplate.getDifficulty().rep()>>:
+              <<rep _questtemplate>>
+              <<link '(select this)'>>
+                <<set _questchosen = _questtemplate>>
+                <<include _passage>>
+              <</link>>
+              <br/>
+            <</capture>>
+          <</for>>
+        <</message>>
+        <br/>
+      <</capture>>
+    <</if>>
+  <</for>>
+
+  <<message 'Fort Quests (trainings, treatments, etc.)'>>
+    <<set _cand = []>>
+    <<for _iquest, _quest range setup.questtemplate>>
+      <<if !_found[_quest.key] && _quest.tags.includes('fort')>>
+        <<run _cand.push(_quest)>>
+      <</if>>
+    <</for>>
+    <<run _cand.sort((q1, q2) => q1.getDifficulty().getLevel() - q2.getDifficulty().getLevel())>>
+    <<for _iquest, _quest range _cand>>
+      <<capture _quest>>
+        <<= _quest.getDifficulty().rep()>>:
+        <<rep _quest>>
+        <<link '(select this)'>>
+          <<set _questchosen = _quest>>
+          <<include _passage>>
+        <</link>>
+        <br/>
+      <</capture>>
+    <</for>>
+  <</message>>
+  <br/>
+
+  <<message 'Other Quests'>>
+    <<set _cand = []>>
+    <<for _iquest, _quest range setup.questtemplate>>
+      <<if !_found[_quest.key] && !_quest.tags.includes('fort')>>
+        <<run _cand.push(_quest)>>
+      <</if>>
+    <</for>>
+    <<run _cand.sort((q1, q2) => q1.getDifficulty().getLevel() - q2.getDifficulty().getLevel())>>
+    <<for _iquest, _quest range _cand>>
+      <<capture _quest>>
+        <<= _quest.getDifficulty().rep()>>:
+        <<rep _quest>>
+        <<link '(select this)'>>
+          <<set _questchosen = _quest>>
+          <<include _passage>>
+        <</link>>
+        <br/>
+      <</capture>>
+    <</for>>
+  <</message>>
+
+<</if>>
+
+<</focwidget>>
+
+
+<<focwidget 'devchoosedifficulty'>>
+
+Choose a difficulty:
+<<message '(?)'>>
+A difficulty consists of two parts: a "modifier" in easy, medium, or hard, and the level.
+In general, "easy" quests have higher success rate than "hard" quest.
+The modifier should reflect how dangerous the risks are --- easy or medium quests means that
+even on disaster it won't be too bad, while "hardest" or "abyss" quest will have terrible consequences
+on disaster.
+The level of a difficulty is the recommended level for slavers to tackle this difficulty --- 
+e.g., a Lv 50 quest is designed to be tackled by a set of lv 50 slavers.
+<</message>>
+
+<br/>
+
+<<set _passage = $args[0]>>
+
+<<set _keywords = []>>
+<<for _iqdiff, _qdiff range setup.qdiff>>
+  <<if !_keywords.includes(_qdiff.diffname)>>
+    <<run _keywords.push(_qdiff.diffname)>>
+  <</if>>
+<</for>>
+
+<<for _ikeyword, _keyword range _keywords>>
+  <<capture _keyword>>
+    <<message _keyword>>
+      <<for _iqdiff, _qdiff range setup.qdiff>>
+        <<if _qdiff.diffname == _keyword>>
+          <<rep _qdiff>>
+          <<capture _qdiff>>
+            <<link '(select this)'>>
+              <<set _diffchosen = _qdiff>>
+              <<include _passage>>
+            <</link>>
+          <</capture>>
+          <br/>
+        <</if>>
+      <</for>>
+    <</message>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+<</focwidget>>
+
+
+<<focwidget 'devchooseopportunity'>>
+
+<p>
+  Search:
+  <<onevent 'input'>>
+    <<textbox '_chooseoppfilterunused' ''>>
+  <<onevent-callback>>
+    <<set _chooseoppfilter = _value>>
+    <<set _chooseoppshowall = 0>>
+    <<refreshable-refresh "#devchooseopplist0">>
+  <</onevent>>
+
+  <div>
+    <<refreshable id="devchooseopplist0">>
+      <<devchooseopportunitylist $args[0]>>
+    <</refreshable>>
+  </div>
+</p>
+
+<</focwidget>>
+
+<!-- (internal, do not use directly) -->
+<<focwidget 'devchooseopportunitylist'>>
+
+<<if _chooseoppfilter>>
+
+  <p>Matching opportunities:</p>
+  
+  <<set _cand = []>>
+  <<set _filter = _chooseoppfilter.toLowerCase()>>
+  <<for _iopp, _opp range setup.opportunitytemplate>>
+    <<if _opp.getName().toLowerCase().includes(_filter)>>
+      <<run _cand.push(_opp)>>
+    <</if>>
+  <</for>>
+  <<run _cand.sort((q1, q2) => q1.getDifficulty().getLevel() - q2.getDifficulty().getLevel())>>
+  <<set _subset = _chooseoppshowall ? _cand : _cand.slice(0, 20)>>
+  <<for _iopp, _opp range _subset>>
+    <<capture _opp>>
+      <<= _opp.getDifficulty().rep()>>:
+      <<rep _opp>>
+      <<link '(select this)'>>
+        <<set _opportunitychosen = _opp>>
+        <<include $args[0]>>
+      <</link>>
+      <br/>
+    <</capture>>
+  <</for>>
+
+  <<if _subset.length < _cand.length>> <!-- prevent showing too many matches at once -->
+    <p class="indented">
+      And <<= _cand.length - _subset.length >> more
+      &nbsp;
+      <<link '(see all results)'>>
+        <<set _chooseoppshowall = 1>>
+        <<refreshable-refresh "#devchooseopplist0">>
+      <</link>>
+    </p>
+  <<elseif !_cand.length>>
+    <p class="indented">
+      (No matches)
+    </p>
+  <</if>>
+
+<<else>>
+
+  <p>
+  Where is the opportunity located?
+  <<message '(?)'>>
+    If it does not have an opportunity location, it will be at the bottom option "Other Quests".
+  <</message>>
+  </p>
+
+  <<set _passage = $args[0]>>
+  <<set _found = {}>>
+  <<for _iopportunitypool, _opportunitypool range setup.questpool>>
+    <<set _qkeys = Object.keys(_opportunitypool.opportunity_template_rarity_map)>>
+    <<for _z, _iqkey range _qkeys>>
+      <<set _found[_iqkey] = true>>
+    <</for>>
+    <<capture _opportunitypool>>
+      <<set _text = `Opportunities in ${_opportunitypool.getName()}`>>
+      <<message _text>>
+        <<set _qkeys = Object.keys(_opportunitypool.opportunity_template_rarity_map)>>
+        <<run _qkeys.sort((q1, q2) => setup.opportunitytemplate[q1].getDifficulty().getLevel() - setup.opportunitytemplate[q2].getDifficulty().getLevel())>>
+        <<for _z, _iqkey range _qkeys>>
+          <<set _opportunitytemplate = setup.opportunitytemplate[_iqkey]>>
+          <<capture _opportunitytemplate>>
+            <<= _opportunitytemplate.getDifficulty().rep()>>:
+            <<rep _opportunitytemplate>>
+            <<link '(select this)'>>
+              <<set _opportunitychosen = _opportunitytemplate>>
+              <<include _passage>>
+            <</link>>
+            <br/>
+          <</capture>>
+        <</for>>
+      <</message>>
+      <br/>
+    <</capture>>
+  <</for>>
+
+  <<message 'Other Quests'>>
+    <<set _cand = []>>
+    <<for _iopportunity, _opportunity range setup.opportunitytemplate>>
+      <<if !_found[_opportunity.key]>>
+        <<run _cand.push(_opportunity)>>
+      <</if>>
+    <</for>>
+    <<run _cand.sort((q1, q2) => q1.getDifficulty().getLevel() - q2.getDifficulty().getLevel())>>
+    <<for _iopportunity, _opportunity range _cand>>
+      <<capture _opportunity>>
+        <<= _opportunity.getDifficulty().rep()>>:
+        <<rep _opportunity>>
+        <<link '(select this)'>>
+          <<set _opportunitychosen = _opportunity>>
+          <<include _passage>>
+        <</link>>
+        <br/>
+      <</capture>>
+    <</for>>
+  <</message>>
+
+<</if>>
+
+<</focwidget>>
+
+
+<<focwidget 'devchooseactivity'>>
+
+<p>
+Choose an activity:
+</p>
+
+<<for _activity range setup.activitytemplate>>
+  <<capture _activity>>
+    <div>
+      <<rep _activity>>
+      <<button 'Select'>>
+        <<set _activitychosen = _activity>>
+        <<include $args[0]>>
+      <</button>>
+    </div>
+  <</capture>>
+<</for>>
+
+<</focwidget>>
+
+
+<!-- Care: must be reentrant (temporary variables may get overwritten by recursion) -->
+<<focwidget 'devlistentry'>>
+  <<set _entrypath = $args[0]>>
+  <<set _addpassage = $args[1]>>
+  <<set _passage = $args[2]>>
+  <<set _ientry = $args[3]>> <!-- _ientry === null: a fixed single entry (e.g. 'if' condition) instead of a list -->
+  <<set _entry = $args[4]>>
+  <<set _listpath = $args[5]>>
+  <<set _sameline = $args[6]>> <!-- if true, don't add br -->
+
+  <<if !_entry>> <!-- handle undefined/null gracefully -->
+    <div @style="_sameline ? 'display: inline-block' : ''">
+      Invalid
+      <<capture _listpath, _ientry>>
+        <<link '(delete)' _passage>>
+          <<run setup.evalJsPath(_listpath).splice(_ientry, 1)>>
+        <</link>>
+      <</capture>>
+    </div>
+  <<elseif _entry.getLayout>> <!-- recursive entry (do all block, if/then/else, etc) -->
+    <<set _layout = _entry.getLayout()>>
+    <div @class="_layout.css_class || ''">
+      <div style="float: right">
+        <<if $args[3] === null>> <!-- _ientry === null -->
+          <!-- replace block button -->
+          <<capture _passage, _entrypath>>
+            <<link '(replace)' $args[1]>>
+              <<set $qPassageName = _passage>>
+              <<set $qJsPath = _entrypath>>
+              <<set $qListIndex = null>>
+              <<run setup.DevToolHelper.saveScrollPos()>>
+            <</link>>
+          <</capture>>
+        <<else>> <!-- _ientry !== null -->
+          <!-- delete recursive block button -->
+          <<set _listpath = $args[5]>>
+          <<capture _ientry, _listpath>>
+            <<link '(delete block)' $args[2]>>
+              <<run setup.evalJsPath(_listpath).splice(_ientry, 1)>>
+              <<run setup.DevToolHelper.saveScrollPos()>>
+            <</link>>
+
+            &nbsp;
+
+            <<if _ientry > 0>>
+              <<link '<<icon up-dir "Move up">>' _passage>>
+                <<run setup.swapValues(setup.evalJsPath(_listpath), _ientry, _ientry - 1)>>
+                <<run setup.DevToolHelper.saveScrollPos()>>
+              <</link>>
+            <</if>>
+            <<if _ientry < setup.evalJsPath(_listpath).length - 1>>
+              <<link '<<icon down-dir "Move down">>' _passage>>
+                <<run setup.swapValues(setup.evalJsPath(_listpath), _ientry, _ientry + 1)>>
+                <<run setup.DevToolHelper.saveScrollPos()>>
+              <</link>>
+            <</if>>
+          <</capture>>
+        <</if>>
+      </div>
+      
+      <<for _iblock, _block range _layout.blocks>>
+        <div>
+          <<if _block.passage>>
+            <!-- allow passages to access args (e.g. actor name) via '_entry' -->
+            <<set _entry = $args[4]>>
+            <<include _block.passage>>
+          <</if>>
+          <<set _childaddpassage = _block.addpassage || $args[1]>>
+          <<if _block.listpath>>
+            <<set _childpath = $args[0] + _block.listpath>>
+            <<devlist _childpath '(add)' _childaddpassage $args[2]>>
+          <<elseif _block.entrypath>>
+            <<set _childpath = $args[0] + _block.entrypath>>
+            <<set _childentry = setup.evalJsPath(_childpath)>>
+            <<devlistentry _childpath _childaddpassage $args[2] null _childentry null _block.sameline>>
+          <</if>>
+        </div>
+      <</for>>
+    </div>
+  <<else>> <!-- regular entry -->
+    <div @style="_sameline ? 'display: inline-block' : ''">
+      <<= _entry.explain()>>
+      <<capture _ientry, _entry, _entrypath, _listpath, _passage, _addpassage>>
+        <!-- edit entry button -->
+        <!--<<set _editpassage = (_entry.passage && _entry.passage()) || _entry.PASSAGE>>
+        <<run _editpassage || console.log("[DevTool] PASSAGE not defined for class of entry ", _entry.text(), _entry)>>
+        <<if _editpassage && tags(_editpassage).includes('editable')>>
+          <<capture _editpassage>>
+            <<link '(edit)' _editpassage>>
+              <<set $qPassageName = _passage>>
+              <<set $qJsPath = _listpath>>
+              <<set $qListIndex = _ientry>>
+              <<if _addpassage.includes("Restriction")>>
+                <<set $qrestriction = _entry>>
+              <<else>>
+                <<set $qcost = _entry>>
+              <</if>>
+              <<run setup.DevToolHelper.saveScrollPos()>>
+            <</link>>
+          <</capture>>
+        <</if>>-->
+        
+        <<if _ientry === null>>
+          <!-- replace entry button -->
+          <<link '(replace)' _addpassage>>
+            <<set $qPassageName = _passage>>
+            <<set $qJsPath = _entrypath>>
+            <<set $qListIndex = null>>
+            <<run setup.DevToolHelper.saveScrollPos()>>
+          <</link>>
+        <<else>>
+          <!-- move entry buttons -->
+          <<if _ientry > 0>>
+            &nbsp;
+            <<link '<<icon up-dir "Move up">>' _passage>>
+              <<run setup.swapValues(setup.evalJsPath(_listpath), _ientry, _ientry - 1)>>
+              <<run setup.DevToolHelper.saveScrollPos()>>
+            <</link>>
+          <</if>>
+          <<if _ientry < setup.evalJsPath(_listpath).length - 1>>
+            <<if _ientry === 0>>&nbsp;<</if>>
+            <<link '<<icon down-dir "Move down">>' _passage>>
+              <<run setup.swapValues(setup.evalJsPath(_listpath), _ientry, _ientry + 1)>>
+              <<run setup.DevToolHelper.saveScrollPos()>>
+            <</link>>
+          <</if>>
+          &nbsp;
+          <!-- delete entry button -->
+          <<link '<<icon cancel "Delete">>' _passage>>
+            <<run setup.evalJsPath(_listpath).splice(_ientry, 1)>>
+            <<run setup.DevToolHelper.saveScrollPos()>>
+          <</link>>
+        <</if>>
+      <</capture>>
+    </div>
+  <</if>>
+<</focwidget>>
+
+
+<!-- Care: must be reentrant (temporary variables may get overwritten by recursion) -->
+<<focwidget 'devlist'>>
+  <<set _listpath = $args[0]>>
+  <<set _addtext = $args[1]>>
+  <<set _addpassage = $args[2]>>  <!-- passage called to add/replace an entry (e.g. QGAddCostUnit) -->
+  <<set _passage = $args[3]>> <!-- passage to return to after adding/editing -->
+
+  <!-- Add entry to recursive block button -->
+  <<capture _listpath, _passage>>
+    <<link _addtext _addpassage>>
+      <<set $qPassageName = _passage>>
+      <<set $qJsPath = _listpath>>
+      <<set $qListIndex = -1>>
+      <<run setup.DevToolHelper.saveScrollPos()>>
+    <</link>>
+  <</capture>>
+
+  <<if !(setup.evalJsPath($args[0]) || []).length>>
+    <div class="graytext">(empty)</div>
+  <</if>>
+  <<for _ientry, _entry range (setup.evalJsPath($args[0]) || [])>>
+    <!-- use $args instead of temporary variables, cause recursion breaks them... -->
+    <<set _entrypath = $args[0] + '[' + _ientry + ']'>>
+    <<devlistentry _entrypath $args[2] $args[3] _ientry _entry $args[0]>>
+  <</for>>
+<</focwidget>>
+
+
+
+:: DevAddEntry
+<!-- Called by QGCostDone and QGRestrictionDone, with the result at '_entry' -->
+
+<!-- [DEBUG]: Uncomment line below to report all changes (add/edit/replace) -->
+<!--<<run console.log("DevAddEntry", $qJsPath, $qListIndex, _entry)>>-->
+
+<<if $qListIndex === null>>
+  <!-- null: not a list but a single root cost/restriction, so replace it -->
+  <<run setup.evalJsPathAssign($qJsPath, undefined, _entry)>>
+<<else>>
+  <<set _list = setup.evalJsPath($qJsPath)>>
+  <<if $qListIndex === -1>>
+    <!-- -1: push at the end of the list -->
+    <<run _list.push(_entry)>>
+  <<else>>
+    <!-- >= 0: replace the i-th entry -->
+    <<run _list[$qListIndex] = _entry>>
+  <</if>>
+<</if>>
+
+<<unset $qJsPath>>
+<<unset $qListIndex>>
+<<unset $qgDefaultActorName>>
+
+<<gotowipehistory $qPassageName>>
+

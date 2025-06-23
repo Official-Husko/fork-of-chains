@@ -1,0 +1,251 @@
+:: QuestSetup_essence_of_empathy [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.HasTitle('quest_broken_descent_0'),
+],
+{
+}
+)>>
+
+<<set _criteriadowser = new setup.UnitCriteria(
+null, /* key */
+'Essence Dowser', /* name */
+[
+  setup.trait.race_wolfkin,
+  setup.trait.bg_wildman,
+  setup.trait.bg_hunter,
+  setup.trait.bg_woodsman,
+  setup.trait.bg_nomad,
+  setup.trait.dick_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.per_active,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_chaste,
+],
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_boss,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.bg_knight,
+  setup.trait.bg_metalworker,
+  setup.trait.bg_engineer,
+  setup.trait.bg_scholar,
+  setup.trait.bg_noble,
+  setup.trait.bg_courtesan,
+  setup.trait.bg_informer,
+  setup.trait.bg_slaver,
+  setup.trait.bg_artisan,
+  setup.trait.bg_laborer,
+  setup.trait.bg_thug,
+  setup.trait.bg_thief,
+  setup.trait.bg_raider,
+  setup.trait.bg_clerk,
+  setup.trait.bg_maid,
+  setup.trait.bg_merchant,
+  setup.trait.bg_foodworker,
+  setup.trait.bg_whore,
+  setup.trait.bg_unemployed,
+  setup.trait.bg_slave,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_dreamy,
+  setup.trait.per_empath,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  aid: 1,
+  arcane: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'essence_of_empathy', /* key */
+"Essence of Empathy", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'desert',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'dowser': [ _criteriadowser, 1],
+  'distractor': [ setup.qu.seducer, 1],
+  'thief': [ setup.qu.thief, 1],
+},
+{ /* actors */
+  'orc': 'subrace_orc',
+},
+[ /* costs */
+],
+'Quest_essence_of_empathy',
+setup.qdiff.hard36, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_essence_of_empathyCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.EquipmentDirect('brawn_rear'),
+    ],
+  ],
+  [
+    'Quest_essence_of_empathyCrit',
+    [
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.Opportunity('restore_the_empathy', {
+slave: "slave",
+}),
+      setup.qc.Favor('humandesert', 100),
+    ],
+  ],
+  [
+    'Quest_essence_of_empathyCrit',
+    [
+      setup.qc.TraumatizeRandom('distractor', 30),
+    ],
+  ],
+  [
+    'Quest_essence_of_empathyCrit',
+    [
+      setup.qc.TraumatizeRandom('dowser', 30),
+      setup.qc.TraumatizeRandom('distractor', 30),
+      setup.qc.TraumatizeRandom('thief', 30),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoOpportunity('restore_the_empathy'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('quest_broken_descent_0'),
+setup.qres.NoTitle('quest_empathy_restored_4')
+]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_essence_of_empathy [nobr]
+<<set _u = setup.getUnit({title: 'quest_broken_descent_0'})>>
+
+<<set _v = setup.getAnySlaver()>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<p>
+An unusual request for assistance has come from the <<lore region_desert>>. A
+settlement has asked for your help in their plight against one of the orc tribes.
+Normally, you'd expect this to be a combat mission, but the request is a
+little different this time.
+</p>
+
+<p>
+Apparently, one of the brutish orc chieftains in the desert has a recent
+sudden change of heart. The orc would come to various villages to bring "joy"
+and "happiness" to the villagers, embracing every one of them and smooching
+them dead. The effects are horrifying — those unlucky enough to be
+deep-kissed would often fall into comas and traumatized for the rest of their
+lives.
+</p>
+
+<p>
+<<Yourrep _v>> suggested that this might be the work of a certain essence — a
+part of <<rep _u>> that went missing. Perhaps this could be an ideal mission
+to take: both obtaining the gratitude of the people of the deserts as well as
+advancing one more step in restoring <<rep _u>> back to usable slave state.
+All you need is to send one slaver to distract the orc while another try to
+steal whatever personal belonging is responsible for the orc's bizarre change
+of heart.
+</p>
+<</if>>
+
+
+
+:: Quest_essence_of_empathyCrit [nobr]
+
+<p>
+As luck would have it, your slavers arrived at the settlement just as the
+infamous orc chieftain is giving them a surprise visit. Using <<rep
+$g.slave>> as a dowsing rod, <<rep $g.dowser>> confirmed your slavers'
+suspicion: an essence of <<rep $g.slave>> was the culprit and it was
+somewhere among the belongings of the orc. With the confirmation, <<rep
+$g.distractor>> let out a huge long sigh as <<they $g.distractor>>
+began to work.</p>
+
+<<if $gOutcome == 'success' || $gOutcome == 'crit'>>
+
+<p>
+
+<<Yourrep $g.distractor>> threaded a very careful line
+distracting the orc, while making sure to avoid the smooch.
+Meanwhile, <<rep $g.thief>> sneaked from behind the orc.
+Searching the pockets and bag yielded nothing, and there was only really one
+possible place left...
+<<Rep $g.distractor>> had to work even harder to distract the orc
+as <<rep $g.thief>> disgustedly shoved <<their $g.thief>> <<uhands $g.thief>>
+inside the orc's unwashed pants and into <<their $g.orc>> underwear — the secret stash
+location of the orcs.
+<<if $gOutcome == 'crit'>>
+In one fell swoop, <<rep $g.thief>> yanked <<their $g.thief>> <<uarms $g.thief>> back,
+somehow taking both the underwear and the yellow-ish stone inside.
+<<else>>
+Sure enough, a small yellow-ish stone was found, which <<rep $g.thief>> proceeded to yanked out.
+<</if>>
+With the stone gone, the orc demeanor visibly reverted back to <<their
+$g.orc>> brutish self, and your slavers made the right decision to flee as
+fast as they can before the orc regained <<their $g.orc>> senses.
+</p>
+<<else>>
+<p>
+Unfortunately, <<reps $g.distractor>> seduction attempts proved too successful.
+Without warning, the orc roughly grabbed <<yourrep $g.distractor>> before forcing a
+deep kiss with <<theslaver $g.distractor>>. <<Rep $g.thief>> and <<utheirrel $g.thief
+$g.dowser>> <<rep $g.dowser>> watched in horror as <<rep $g.distractor>>
+struggled during the unwanted smooch — face starting to go pale from both
+disgust and lack of oxygen. Eventually, the smooch mercifully ended, and <<rep
+$g.distractor>> dropped to the floor, traumatized by the entire smooch...
+</p>
+<<if $gOutcome == 'disaster'>>
+<p>
+The orc mistook your other's slavers concerned eyes for jealousy, and at the
+end of the day, none of your slavers were spared from the wrathful kiss.
+</p>
+<</if>>
+<</if>>

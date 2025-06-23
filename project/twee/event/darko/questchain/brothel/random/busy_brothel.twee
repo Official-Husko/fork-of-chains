@@ -1,0 +1,113 @@
+:: EventSetup_busy_brothel [nobr event]
+
+<<run new setup.Event(
+'busy_brothel', /* key */
+"Busy Brothel", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_busy_brothel',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 300),
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+],
+53, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_busy_brothel [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+Given the sexual nature of the neko living in the <<lore location_npc>>, brothels there occupy an important part of the culture. Citizens visit the brothel often to select from the available merchandise, relieve their sexual needs, and leave. Some brothels even simulate affection, companionship, or emotional guidance.
+</p>
+
+<p>
+Your brothel, <<attach _describe>> is one of the best establishment of its kind in the <<lore location_npc>>.
+Citizens who patronize it can expect themselves to be very satisfied by the skilled courtesans.
+<<if _dom == 'sub'>>
+The courtesans have been extensively trained to specialize in the act of being submissive sluts, and your place is often voted best brothel for doms in the region.
+<<elseif _dom == 'dom'>>
+The proud and dominant courtesans are quite famous in the city, and many citizens harbor a secret desire to be dominated by the tough bitches.
+<<else>>
+The brothel has it all — be it to dominate others, to be dominated, or somewhere in between.
+<</if>>
+<<if _promotion == 'favor'>>
+The customer relations officer <<name $g.head>> makes extra sure that the customers always leave the compound with a smile on their faces (not to mention the lighter feeling in their pockets).
+<</if>>
+</p>
+
+<p>
+The brothel really reflects well on you and your company, and perhaps you could so something with it.
+</p>
+
+<<choose>>
+
+<<opt "Surprise the hardworking courtesans with a week of rest">>
+
+<p>
+The problem with assembly-line sex is that it has a tendency to destroy any sense of intimacy or fun. So, you make some simple preparations and close the brothel for a week. Several freelancers were hired to staff the brothel, and the brothel is then made available exclusively to all your brothel's workers, including the grateful courtesans. They are free to do anything they want, and many spend the days playing games, enjoying light amusements, and perusing the brothel's many services as a customer.
+The <<girl $g.slave>>s are surprised by your generosity, but they have fun. When the brothel reopens, your customer give glowing reviews for the courtesans newfound enthusiasm, which increases the brothel's fame.
+</p>
+
+<<run setup.qc.VarAdd('quest_brothel_high_income', 2, -1).apply($gQuest)>>
+
+<<opt "Eliminate prices for one day to promote the brothel">>
+
+<p>
+The news that
+<<if _class > 0>>
+entertainment
+<<else>>
+sex
+<</if>>
+will be free at the brothel travels like wildfire.
+You had to pay to hire extra security measures to control the throng that spends the entire day entering and leaving the brothel, though as the day goes on the crowds thin. By noon,
+<<if _dom == 'dom'>>
+<<if $g.head.isHasDick()>>
+all the pricks on offer are so sore that only those who fetishize cum-less orgasms stick around.
+<<else>>
+all the doms are already so tired that only those who fetishize reverse power play stick around.
+<</if>>
+<<elseif _dom == 'sub'>>
+all the holes on offer are so fucked out that only those who fetishize that sort of thing stick around.
+<<else>>
+all the holes on offer <<if $g.head.isHasDick()>> as well as the pricks<</if>> are so sore that only those who fetishize that sort of thing stick around.
+<</if>>
+The brothel is a real seminal sewer by afternoon,
+and it smells like it. Nevertheless, free sex is a short route to public approval, although you do miss out on the fees.
+</p>
+
+<<run setup.qc.Money(-2000).apply($gQuest)>>
+<<run setup.qc.Favor('neko', 100).apply($gQuest)>>
+
+<</choose>>

@@ -1,0 +1,47 @@
+:: CostEquipment [nobr]
+
+Adds a free random equipment from an equipment pool:
+
+<<for _ieqpool, _eqpool range setup.equipmentpool>>
+  <<capture _eqpool>>
+    <br/>
+    <<rep _eqpool>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.Equipment(_eqpool)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+
+:: CostEquipmentDirect [nobr]
+
+Gain a free equipment:
+
+<<for _ieq, _eq range setup.equipment>>
+  <<capture _eq>>
+    <br/>
+    <<rep _eq>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.EquipmentDirect(_eq)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+
+:: CostLoseEquipment [nobr]
+
+Lose an equipment:
+
+<<for _ieq, _eq range setup.equipment>>
+  <<capture _eq>>
+    <br/>
+    <<rep _eq>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.EquipmentLose(_eq)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+
+
+

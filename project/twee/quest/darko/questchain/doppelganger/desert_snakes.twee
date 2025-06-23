@@ -1,0 +1,248 @@
+:: QuestSetup_desert_snakes [nobr quest]
+
+<<run new setup.Title(
+"quest_ex_leaders_of_a_desert_raiders_company_0", /* key */
+"Ex-Leader of a Desert Raiders Company", /* name */
+"Used to lead a desert raiders company", /* description */
+"used to lead a desert raiders company until a|they met a|their match", /* unit text */
+5000, /* slave value */
+{ /* skill additives */
+combat: 3,brawn: 3,sex: 3,},
+)
+>>
+<<run new setup.UnitGroup(
+"just_an_ordinary_desert_raider0",
+"Desert Raider (Female)",
+'subrace_humandesert_female', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+  setup.qc.TraitReplace('unit', setup.trait.anus_gape),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_dominant, setup.trait.per_cruel, setup.trait.per_sexaddict, setup.trait.per_evil], 2, true, false),
+],
+)>> <<run new setup.UnitGroup(
+"just_an_ordinary_desert_raider1",
+"Desert Raider (Male)",
+'subrace_humandesert_male', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+  setup.qc.TraitReplace('unit', setup.trait.anus_gape),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_dominant, setup.trait.per_cruel, setup.trait.per_sexaddict, setup.trait.per_evil], 2, true, false),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'desert_snakes', /* key */
+"Desert Snakes", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'unit',
+  'danger',
+  'ire',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'infil1': [ setup.qu.infiltrator, 1],
+  'infil2': [ setup.qu.infiltrator, 1],
+  'con': [ setup.qu.conartist, 1],
+},
+{ /* actors */
+  'raiderf': 'just_an_ordinary_desert_raider0',
+  'raiderm': 'just_an_ordinary_desert_raider1',
+  'dop': setup.contacttemplate.quest_doppelganger,
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_doppelganged'),
+    setup.qres.Available(),
+  ],
+},
+[ /* costs */
+],
+'Quest_desert_snakes',
+setup.qdiff.hardest63, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_desert_snakesCrit',
+    [
+      setup.qc.IfThenElse(
+setup.qres.Actor('dop', setup.qres.AllTraits([setup.trait.gender_male], true)),
+setup.qc.DoAll([
+setup.qc.Slave('raiderm', "a|was the leader of a raiding company in the eastern deserts who was unlucky to toy with the wrong doppelganger", undefined)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('raiderf', "a|was the leader of a raiding company in the eastern deserts who was unlucky to toy with the wrong doppelganger", undefined)
+], undefined)),
+      setup.qc.SetCooldownEvent('doppelganger_epilogue', 5),
+      setup.qc.VarSet('quest_doppelganger_progress', '6', -1),
+      setup.qc.AddTitle('raiderf', 'quest_ex_leaders_of_a_desert_raiders_company_0'),
+      setup.qc.AddTitle('raiderm', 'quest_ex_leaders_of_a_desert_raiders_company_0'),
+      setup.qc.Ire('outlaws', 2),
+    ],
+  ],
+  [
+    'Quest_desert_snakesCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Injury('infil1', 6),
+      setup.qc.Injury('infil2', 6),
+      setup.qc.Injury('con', 8),
+    ],
+  ],
+  [
+    'Quest_desert_snakesFailure',
+    [
+      setup.qc.MissingUnit('con'),
+      setup.qc.TraitIncreaseExisting('con', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('con', setup.trait.anus_gape),
+    ],
+  ],
+  [
+    'Quest_desert_snakesFailure',
+    [
+      setup.qc.MissingUnitRecapture('con', 'capturedhard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_doppelganger_progress', '5'),
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_desert_snakes [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+<<Yourrep _u>> informs you that your scouts have finally tracked the stronghold of the desert raiders — the so called "Desert Snakes" — the very same one that hired you and led you to meet with <<rep $g.dop>>. Looking a <<their $g.dop>> bounty poster, <<they $g.dop>> indeed look strikingly similar with the other appearance of the doppelganger residing within your fort. Your slavers may actually be on to something here for once.
+</p>
+
+<p>
+Should this interest you, you can send a group of slavers to try and infiltrate the compound. Given that you've solved on of their problems in the past, they would unlikely refuse a friendly visit or two from one of your slavers, who would then need to open the gates at night to let another two to sneak in. Once all three are inside at the dead of the night, they must then kidnap the leader of the encampment and smuggle <<them $g.dop>> out...
+</p>
+
+
+
+
+
+:: Quest_desert_snakesCrit [nobr]
+<p>
+Thanks to
+<<reps $g.con>> <<upraisenoun $g.con>>, <<they $g.con>> con|was able to made it past into the encampment as a guest, with the rest of the desert raiders oblivious to <<Their $g.con>> true purpose. Once the night fell, the plan was put into motion. Under the cover of the glittering moon, <<rep $g.con>> <<uadv $g.con>> sneaked into the entrance of the encampment, and opened the gate just a little for the waiting <<rep $g.infil1>> and <<rep $g.infil2>> to go in.
+</p>
+
+<p>
+Infiltrating the compound won't be the easy part, however, and the hard part starts now.
+The trio of slavers found the main tent, and sneaked inside. The leader of the encampment, as well as <<their $g.dop>> harem of slaves were all fast asleep, but the tangled bodies of flesh means that taking the leader away will likely awaken <<their $g.dop>> sex toys, alerting the entire compound of your slavers' presence. There were simply too many bodies there to gag one by one, your slavers decided to go for the dash. Yanking and gagging the leader fast, they quickly made for the exit before one of the awakened sex toys went naked outside and alerted the rest of the encampment.
+</p>
+
+<p>
+Escaping from the encampment was difficult, and your slavers did their best to do so.
+<<set _unit = setup.selectUnit([$g.infil1, $g.infil2, $g.con], {trait: 'eyes_neko'})>>
+<<if _unit>>
+<<Reps _unit>> cat-like eyes were able to see in the dark, helping their escape.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.infil1, $g.infil2, $g.con], {trait: 'magic_dark'})>>
+<<if _unit>>
+Using <<their _unit>> mastery over dark magic, <<rep _unit>> shrouded the team in a cloak of darkness, aiding the escape.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.infil1, $g.infil2, $g.con], {trait: 'tough_nimble'})>>
+<<if _unit>>
+<<Rep _unit>> is naturally lithe, making escape easier.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.infil1, $g.infil2, $g.con], {trait: 'magic_light'})>>
+<<if _unit>>
+<<Reps _unit>> affinity to light magic unfortunately backfired as it light your slavers here and there, acting as a guiding beacon for the raiders to pursue.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.infil1, $g.infil2, $g.con], {trait: 'height_short'})>>
+<<if _unit>>
+<<Reps _unit>> short stature made it easier for <<therace _unit>> to blend into the shadows.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.infil1, $g.infil2, $g.con], {trait: 'height_tall'})>>
+<<if _unit>>
+<<Reps _unit>> <<ubody _unit>> made spotting <<therace _unit>> rather trivial, even in the darkness.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.infil1, $g.infil2, $g.con], {trait: 'tough_tough'})>>
+<<if _unit>>
+Flexibility isn't one of <<reps _unit>> strong suit, hampering the escape.
+
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Miraculously, your slavers were able to made it into the exit without anyone injured.
+</p>
+<<else>>
+<p>
+A stray arrow or two hit your slavers, but they toughed it up and managed to escape to safety before dawn.
+</p>
+<</if>>
+
+<hr/>
+
+<p>
+A few weeks later, your slavers arrived at your fort with the former-desert-raider turned slave. The new slave is seen glaring daggers at you, no doubt planning to do terrible things to you should <<they $g.dop>> escape — and while <<they $g.dop>> must be thinking about resisting your slave training, you have other plans for now. You ask the new slave to be brought over into your office, with you, as well as <<rep $g.dop>> waiting.
+</p>
+
+<p>
+Finally face-to-face with the desert bandit, you could see <<reps $g.dop>> figure starting to shift and morphed, until it finally settled into an exact copy of the bandit. And apparently healing a doppelganger's trauma is very simple — <<they $g.dop>> just need to inflict the same pain that <<they $g.dop>> must have suffered in the past.
+<<They $g.dop>>
+<<if !$g.dop.isHasDick()>>
+wore an overly large strap-on and
+<</if>>
+positioned <<their $g.dop>> <<udickorstrap $g.dop>> just right before the slave's probably-virgin ass. In one fell swoop <<They $g.dop>> inserted themselves all the way. The pain must have been excruciating, and were the bandit not gagged, <<their $g.dop>> screams must have permeated your entire compound. The fucking was rough and hard — it is a hatred fucking after all — and eventually <<rep $g.dop>>
+<<if $g.dop.isHasDick()>>
+cum hard,
+<<else>>
+shuddered, marking <<their $g.dop>> climax and
+<</if>>
+completing <<their $g.dop>> revenge.
+</p>
+
+<p>
+With the bandit collapsed from the sheer anal pain, <<rep $g.dop>> looked upwards, <<their $g.dop>> body again shifting and morphing. This time, however, they reverted into an almost blank slate, before settling back into <<their $g.dop>> usual form of copying one of your slavers. Like all doppelgangers, once transformed, <<they $g.dop>> retained no memory of the things <<they $g.dop>> did when <<they $g.dop>> dop|was in a different form, but seeing the collapsed bandit<<if $g.dop.isHasDick()>> as well as the cum leaking out of <<their $g.dop>> abused hole<</if>>, <<they $g.dop>> understood what had happened. It seemed that all that remains is to test the hypothesis out, and see if <<they $g.dop>> would still transform at night...
+</p>
+
+
+
+
+
+:: Quest_desert_snakesFailure [nobr]
+<p>
+<<Rep $g.con>> con|was able to make it into the compound without raising anyone's suspicion, or so <<they $g.con>> thought. Later that night, <<rep $g.infil1>> and <<rep $g.infil2>> never made it in, for the gates were never opened by <<rep $g.con>>.
+In fact, the other two slavers never heard back from <<rep $g.con>>. The encampment probably somehow heard of your plans, and decided to play innocent to lure an easy <<urace $g.con>> slave in...
+</p>
+
+<p>
+<<if $gOutcome == 'failure'>>
+<<uneedrescue $g.con>>, preferably before the desert raiders violate <<them $g.con>> too much...
+<<else>>
+<<urescuenow $g.con>>, although it will be incredibly hard rescuing <<them $g.con>> from a well-prepared compound.
+<</if>>
+</p>

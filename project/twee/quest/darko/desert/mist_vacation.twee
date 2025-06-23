@@ -1,0 +1,218 @@
+:: QuestSetup_mist_vacation [nobr quest]
+
+<<run new setup.UnitGroup(
+"mist_vacation0",
+"Mist Slave",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Corrupt('unit', null, 3),
+  setup.qc.TraitReplace('unit', setup.trait.training_obedience_basic),
+  setup.qc.TraitReplace('unit', setup.trait.training_pet_basic),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_lunatic, setup.trait.per_evil, setup.trait.per_sexaddict, setup.trait.per_submissive, setup.trait.per_masochistic], 1, true, true),
+],
+)>>
+
+<<set _criteriaguide = new setup.UnitCriteria(
+null, /* key */
+'Mist Guide', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_sly,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.bg_priest,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_direct,
+  setup.trait.per_kind,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.bg_mist),
+  setup.qres.HasTag('mist_guide_slaver'),
+],
+{
+  intrigue: 1.5,
+  arcane: 1.5,
+}
+)>>
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.bg_mist,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+],
+[
+],
+{
+  combat: 0.5,
+  intrigue: 0.5,
+  knowledge: 0.5,
+  social: 0.5,
+  aid: 0.5,
+  arcane: 0.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'mist_vacation', /* key */
+"Mist Vacation", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'special',
+  'prep',
+  'item',
+  'desert',
+],
+4, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'guide': [ _criteriaguide, 3],
+  'you': _criteriayou,
+},
+{ /* actors */
+  'demon': 'subrace_demonkin',
+  'slave': 'mist_vacation0',
+},
+[ /* costs */
+],
+'Quest_mist_vacation',
+setup.qdiff.hard41, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_mist_vacationCrit',
+    [
+      setup.qc.Slave('slave', "a|was a souvenir you and your slaver bought in the land beyond the Mist during a vacation there", undefined),
+      setup.qc.MoneyCustom(-1000),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_mist_vacationCrit',
+    [
+      setup.qc.RemoveTagGlobal('mist_guide_slaver'),
+      setup.qc.Item(setup.item.f_drinktray_good_slaver),
+    ],
+  ],
+  [
+    'Quest_mist_vacationCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Corrupt('you', null, 2),
+    ],
+  ],
+  [
+    'Quest_mist_vacationCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Corrupt('you', null, 3),
+      setup.qc.Corrupt('guide', null, 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('mist_guide_slaver'),
+
+],
+)>>
+
+:: Quest_mist_vacation [nobr]
+<<set _u = setup.getUnit({tag: 'mist_guide_slaver'})>>
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+
+<<set $g.slaver = _u>>
+
+<<include 'Event_mist_vacation'>>
+
+<</if>>
+
+
+
+
+
+:: Quest_mist_vacationCrit [nobr]
+<p>
+<<Yourrep $g.guide>> showed that <<they $g.guide>> still got <<their $g.guide>> skills as a mistwalker. <<They $g.guide>> expertly chose the most suitable location within the sea of mist in the desert, and,
+<<if $g.guide.isHasTrait('magic_dark')>>
+use <<their $g.guide>> mastery over dark magic
+<<else>>
+use a scroll <<they $g.guide>> had purchased earlier (with your company's money, of course)
+<<run setup.qc.Money(-500).apply($gQuest)>>
+<</if>>
+to open a gateway.
+<<if $g.guide.isHasTrait('per_brave')>>
+Without hesitation,
+<<elseif $g.guide.isHasTrait('per_cautious')>>
+After double-checking its safety,
+<<else>>
+Afterwards,
+<</if>>
+<<they $g.guide>> went into the portal, and you follow suit.
+</p>
+
+<p>
+The land beyond <<lore concept_mist>> is not a location one would usually pick as a vacation place. Once inside, various debauched scenes unfold, and the screams of slaves could be heard from all across the realm. While normally these would unnerve any and all people, <<rep $g.guide>> guide|is quite used to it.
+<<if $g.guide.isHasTrait('per_cruel')>>
+The cruel slaver would let out a sadistic smile whenever the two of you pass through a well-abused slave.
+<<elseif $g.guide.isHasTrait('corruptedfull')>>
+The corruption permeating the slaver's entire body might have played a role too.
+<<elseif $g.guide.isHasTrait('corrupted')>>
+The corruption within the slaver's entire body might have played a role too.
+<</if>>
+The two of you walk around the area, and with <<rep $g.guide>> by your side, it was indeed almost like a proper vacation.
+</p>
+
+<p>
+After strolling through the many well-abused slaves of various races, <<rep $g.guide>> brought you to meet one of <<their $g.guide>> old acquintance — a demonkin merchant living within the mist.
+Thinking this might be a good place to buy you a souvenir, <<they $g.guide>>
+<<if $g.guide.isHasTrait('per_frugal')>>
+haggled with <<their $g.guide>> friend before browsing
+<<else>>
+browsed
+<</if>>
+through the wares, and picked up the <<rep setup.item.f_drinktray_good_slaver>>. It's a demon-made drink tray, usually used for the many guard dogs living inside the mist. You can see some of them too, apparently being kept by the merchant, including a particularly burly <<urace $g.slave>> down on all fours lapping on <<their $g.slave>> dinner from a similar tray.
+<<if $gOutcome == 'crit'>>
+Apparently the guard dog is also for sale, and at a steep discount too, and the two of you decided to buy <<them $g.slave>> also to bring back home.
+<</if>>
+</p>
+
+<p>
+Time passed as you strolled around the mist more, mystified by the entire experience, and before you know it, four weeks have passed. As much as you'd like to forget about your work, your bunch of motley slavers probably would benefit from your guidance, and it was time to go back home. You went back into the portal, before travelling back home.
+<<if $gOutcome == 'failure'>>
+Unfortunately, the way back was not as smooth as before, and you got slightly corrupted in the limbo between the mortal world and the demonic world.
+<<elseif $gOutcome == 'disaster'>>
+Unfortunately, the way back was not as smooth as before, and both you and <<rep $g.guide>> got slightly corrupted in the limbo between the mortal world and the demonic world. This is an unfortunately way too common occurrence, and the mistwalker did not even wince at the transformation on <<their $g.guide>> body — a testament that <<they $g.guide>> is well-used already to this happening.
+<</if>>
+</p>

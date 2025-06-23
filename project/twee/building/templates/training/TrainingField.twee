@@ -1,0 +1,50 @@
+:: InitBuildingTrainingField [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'trainingfield',
+  tags: [],
+  width: 3,
+  height: 5,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "brawn",
+      room_keys: [
+        'endurancetrainingroom',
+        'pettrainingroom',
+        'ponytrainingroom',
+        'kennel',
+        'courtyard',
+        'stables',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'trainingfield',
+  name: 'Training Field',
+  tags: ['training', 'unlocker', ],
+  description_passage: 'BuildingTrainingField',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('trainingchamber')],
+  ],
+  main_room_template_key: 'trainingfield',
+})>>
+
+
+:: BuildingTrainingField [nobr]
+
+<p>
+A small field within your fort for exercising slaves.
+Unlocks basic and advanced endurance, pet, and pony training for slaves.
+
+</p>

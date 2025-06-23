@@ -1,0 +1,44 @@
+:: EventSetup_heisted_by_ninjas [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'heisted_by_ninjas', /* key */
+"Heisted by Ninjas", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_heisted_by_ninjas',
+{ /* roles */
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.MoneyCustom(-10000),
+setup.qc.Ire('humansea', -20), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humansea', 20), ],
+0,
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_heisted_by_ninjas [nobr]
+
+<p>
+You were woken up by one of your slavers, <<rep $g.slaver>>, in the middle of
+the night. Normally you would give the <<uadjgood $g.slaver>> a good stern
+talking-to after such a rude awakening, but apparently <<they $g.slaver>>
+slaver|have a very good reason this time. According to
+the slaver, your coffers have been robbed a group of ninjas, who came in the
+dead of the night, infiltrated the compound, and left with much of your money
+without nobody noticing anything.
+</p>
+
+<p>
+As much as you wanted to blame luck for such a misfortune, this is most
+certainly the work of the residents of the <<lore region_sea>>, whom your company
+have irked in the recent past.
+</p>

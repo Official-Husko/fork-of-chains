@@ -1,0 +1,379 @@
+:: QuestSetup_harvest_season [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"harvest_season0",
+"Desert Traveler",
+'desert_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_whore),
+  setup.qc.TraitRemove('unit', setup.trait.bg_whore),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.bg_mercenary, setup.trait.bg_adventurer, setup.trait.bg_knight, setup.trait.bg_hunter, setup.trait.bg_soldier, setup.trait.bg_nomad, setup.trait.bg_raider, setup.trait.bg_merchant, setup.trait.bg_unemployed, setup.trait.bg_laborer], 1, true, false),
+],
+)>>
+
+
+<<set _criteriatamer = new setup.UnitCriteria(
+null, /* key */
+'Tentacle Tamer', /* name */
+[
+  setup.trait.per_attentive,
+  setup.trait.skill_flight,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.magic_earth_master, setup.trait.skill_animal], true),
+],
+{
+  survival: 2,
+  knowledge: 1,
+}
+)>>
+
+<<set _criteriamage = new setup.UnitCriteria(
+null, /* key */
+'Tentacle Manipulator', /* name */
+[
+  setup.trait.per_cautious,
+  setup.trait.per_calm,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_brave,
+  setup.trait.per_aggressive,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.magic_water_master], true),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<set _criteriamaster = new setup.UnitCriteria(
+null, /* key */
+'Tentacle Master', /* name */
+[
+  setup.trait.per_cruel,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+  setup.trait.skill_animal,
+  setup.trait.magic_water_master,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_tentacle_attuned_0'),
+],
+{
+  survival: 1,
+  slaving: 1,
+  arcane: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'harvest_season', /* key */
+"Harvest Season", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'prep',
+  'unit',
+],
+3, /* weeks */
+3, /* expiration weeks */
+{ /* roles */
+  'tamer': [ _criteriatamer, 1],
+  'mage': [ _criteriamage, 1],
+  'master': [ _criteriamaster, 1],
+},
+{ /* actors */
+  'slave': 'harvest_season0',
+},
+[ /* costs */
+],
+'Quest_harvest_season',
+setup.qdiff.harder48, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_harvest_seasonCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(4500),
+    ],
+  ],
+  [
+    'Quest_harvest_seasonCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.OneRandomSeed([
+setup.qc.IfThenElse(
+setup.qres.Actor('slave', setup.qres.AllTraits([setup.trait.gender_male], true)),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_object_good_livingstatuemale, 1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_object_good_livingstatuefemale, 1)
+], undefined)),
+setup.qc.DoAll([
+setup.qc.Slave('slave', "a|was a victim of the desert tentacle monster who had spent too much time inside and rendered disfunctional", undefined),
+setup.qc.Mindbreak('slave'),
+setup.qc.TraitReplaceExisting('slave', setup.trait.vagina_gape),
+setup.qc.TraitReplaceExisting('slave', setup.trait.anus_gape)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('slave', "a|was a victim of the desert tentacle monster who had spent a long time inside the beast and gave up any hope of being rescued", undefined),
+setup.qc.TraitReplaceExisting('slave', setup.trait.vagina_gape),
+setup.qc.TraitReplaceExisting('slave', setup.trait.anus_gape),
+setup.qc.TraitsReplace('slave', [setup.trait.training_obedience_advanced, setup.trait.training_oral_advanced, setup.trait.training_anal_advanced])
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('slave', "a|was a victim of the desert tentacle monster who had spent considerable time inside and had a|their holes gaped beyond normal", undefined),
+setup.qc.TraitReplaceExisting('slave', setup.trait.vagina_gape),
+setup.qc.TraitReplaceExisting('slave', setup.trait.anus_gape)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('slave', "a|was a victim of the desert tentacle monster who had spent a long time inside the beast and... seemed to like it", undefined),
+setup.qc.TraitReplaceExisting('slave', setup.trait.vagina_gape),
+setup.qc.TraitReplaceExisting('slave', setup.trait.anus_gape),
+setup.qc.TraitsReplace('slave', [setup.trait.per_sexaddict]),
+setup.qc.AddTraitsRandom('slave', [setup.trait.per_submissive, setup.trait.per_masochistic, setup.trait.per_lunatic], 1, true, false)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Slave('slave', "a|was a victim of the desert tentacle monster who had just been freshly captured and was relatively intact when your slavers found a|them", undefined)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_harvest_seasonFailure',
+    [
+      setup.qc.SetCooldownQuest(null, 10),
+    ],
+  ],
+  [
+    'Quest_harvest_seasonDisaster',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.RemoveTitle('master', 'quest_tentacle_attuned_0'),
+      setup.qc.MissingUnit('master'),
+      setup.qc.TraitReplaceExisting('master', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('master', setup.trait.anus_gape),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.HasUnitWithTitle('quest_tentacle_attuned_0', {
+job_key: "slaver",
+}),
+],
+[ /* expiration outcomes */
+  setup.qc.Outcomes("failure"),
+
+],
+)>>
+
+:: Quest_harvest_season [nobr]
+<<set _u = setup.getUnit({
+/* Delete entries that you do not need: */
+
+/* only pick units of this job. Leaving this empty allow picking NPCs. Possible options: 'slaver', 'slave' */
+job: 'slaver',
+
+/* unit must have the title with this title key */
+title: 'quest_tentacle_attuned_0',
+})>>
+
+<<if _u>>
+    <p>
+        <<Yourrep _u>> had sensed that the tentacle monster with which <<they _u>> is attuned to is ripe for harvesting. If you act quickly, you can try to grab whatever victim the tentacle monster has gobbled up this time for your own perusal. <<Rep _u>> would need to go, of course, as well as another slaver to help locate the beast, and a flesh shaper to help enter the beast's body.
+        Just what kind of slave are you going to get this time?
+    </p>
+<<else>>
+    <<missingunitquest>>
+<</if>>
+
+
+
+:: Quest_harvest_seasonCrit [nobr]
+<p>
+    <<Yourrep $g.tamer>> tamer|was responsible for locating the tentacle beast in the vast deserts.
+    <<if $g.tamer.isHasTrait('per_attentive')>>
+        <<They $g.tamer>> tamer|was attentive, making it easier to spot the beast.
+    <</if>>
+    <<if $g.tamer.isHasTrait('per_dreamy')>>
+        <<They $g.tamer>> tamer|was not the most perceptive slaver, and <<they $g.tamer>> may have missed a spot or two during the search.
+    <</if>>
+    <<if $g.tamer.isHasTrait('magic_earth_master')>>
+        <<Their $g.tamer>> mastery over tentacles extend to tentacle monsters, and <<they $g.tamer>> used the connection to help locate the beast.
+    <<elseif $g.tamer.isHasTrait('skill_animal')>>
+        <<Their $g.tamer>> affinity with animals extend to tentacle monsters, and <<they $g.tamer>> used the connection to help locate the beast.
+    <</if>>
+    <<if $g.tamer.isHasTrait('skill_flight')>>
+        <<They $g.tamer>> tamer|was able to fly, and locating the monster from the sky made the job easier.
+    <</if>>
+    It was somewhat easier this time, thanks to <<rep $g.master>> being able to generally sense the location of the beast <<they $g.master>> had been bonded to.
+</p>
+
+<p>
+    After a few days, your slavers were able to locate the beast. The beast amiably responded to <<reps $g.master>> <<uadj $g.master>> touch, and <<rep $g.mage>> easily flesh-shaped the beast to allow your slavers to access its body. Your slavers <<uadv $g.master>> walked inside a freshly shaped tunnel inside the beast's fleshy body.
+    <<set _unit = setup.selectUnit([$g.tamer, $g.mage, $g.master], {trait: 'magic_light'})>>
+    <<set _unit2 = setup.selectUnit([$g.tamer, $g.mage, $g.master], {trait: 'magic_fire'})>>
+    <<if _unit>>
+        <<Rep _unit>> used <<their _unit>> light magic to light the way in the dark tunnels.
+    <<elseif _unit2>>
+        <<Rep _unit2>> used <<their _unit2>> fire magic to light the way in the dark tunnels.
+    <<else>>
+        <<Yourrep $g.master>> had to bought a torch for a small sum to light the dark tunnels.
+        <<run setup.qc.Money(-500).apply($gQuest)>>
+    <</if>>
+</p>
+
+<<if $g.slave.isMale()>>
+    <<questimage "harvest_season_male.jpg">>
+<<else>>
+    <<questimage "harvest_season_female.jpg">>
+<</if>>
+
+<p>
+    The innermost chamber is surprisingly well lit, and a number of slavers were trapped inside the beast. Few are lodged deep within the creature, with no way for your slavers to pull them out and take them home.
+    However, one remained fairly in the open, ripe for harvesting.
+    Judging from
+    <<if $g.slave.isHasTrait('bg_knight')>>
+        the knightly armor scattered around
+    <<elseif $g.slave.isHasTrait('bg_adventurer')>>
+        the various potions, backpack, cape, and weapons around
+    <<elseif $g.slave.isHasTrait('bg_mercenary')>>
+        the well-used armor and weapons around
+    <<elseif $g.slave.isHasTrait('bg_hunter')>>
+        the partially dissolved bow and quivers around
+    <<elseif $g.slave.isHasTrait('bg_soldier')>>
+        the standard-issue soldier uniform found next to
+    <<elseif $g.slave.isHasTrait('bg_laborer')>>
+        the pickaxe found next to
+    <<elseif $g.slave.isHasTrait('bg_nomad')>>
+        the desert cape and headgear around
+    <<elseif $g.slave.isHasTrait('bg_raider')>>
+        the axe with dried blood abandoned next to
+    <<elseif $g.slave.isHasTrait('bg_merchant')>>
+        a wealth of partially dissolved trade products around
+    <<elseif $g.slave.isHasTrait('bg_unemployed')>>
+        the lack of personal belongings around
+    <<else>>
+        the belongings around
+    <</if>>
+    <<their $g.slave>> naked <<utorso $g.slave>>,
+    the <<urace $g.slave>> must had once been
+    <<if $g.slave.isHasTrait('bg_knight')>>
+        a knight, possibly on some quest on the deserts but met an unfortunate end in the belly of a hungry beast.
+    <<elseif $g.slave.isHasTrait('bg_adventurer')>>
+        an adventurer, ending <<their $g.slave>> career rather abruptly when patroning the wrong oasis.
+    <<elseif $g.slave.isHasTrait('bg_mercenary')>>
+        a blade-for-hire, perhaps even hired specifically to slay this very creature.
+    <<elseif $g.slave.isHasTrait('bg_hunter')>>
+        a hunter, who had just become the hunted.
+    <<elseif $g.slave.isHasTrait('bg_soldier')>>
+        an ordinary soldier, down on <<their $g.slave>> luck.
+    <<elseif $g.slave.isHasTrait('bg_laborer')>>
+        a miner oblivious to the dangers of the deserts.
+    <<elseif $g.slave.isHasTrait('bg_nomad')>>
+        a nomad, perhaps one rather unfamiliar with the deserts.
+    <<elseif $g.slave.isHasTrait('bg_raider')>>
+        a raider. The beast was doing <<lore geo_mestia>> a favor by ridding the world of one less scum.
+    <<elseif $g.slave.isHasTrait('bg_merchant')>>
+        a traveling merchant. No amount of money could save <<them $g.slave>> from their fate now.
+    <<elseif $g.slave.isHasTrait('bg_unemployed')>>
+        a refugee. At least <<they $g.slave>> got fed this way.
+    <<else>>
+        an unknown traveler.
+    <</if>>
+</p>
+
+<p>
+    Inspecting the soon-to-be-your-slave, it was apparent that
+    <<if $gQuest.getSeed() % 6 == 0>>
+        the slave had been here for a very, very, long time.
+        Its mind had been long gone, and its body had been accustomed so much to living inside the beast that it became rather stiff and unmovable.
+        Such a slave is fit only as a statue, and you can either sell it to the highest bidder, or perhaps keep it in your room for an "acquired taste" decoration.
+    <<elseif $gQuest.getSeed() % 6 == 1>>
+        the slave had been here for a very long time.
+        The eyes were completely devoid of intelligence, <<their $g.slave>> mind had broke living in such a way.
+        Still, perhaps the slave would still be worth something, and could still be sold as a living sex toy or a pet.
+    <<elseif $gQuest.getSeed() % 6 == 2>>
+        the slave had been here for quite a long time.
+        <<They $g.slave>> had lost all the willpower to resist and escape, and seemingly had accepted <<their $g.slave>> lot in life. It would be extremely easy to transform such a <<urace $g.slave>> into a proper slave.
+    <<elseif $gQuest.getSeed() % 6 == 3>>
+        the slave had been here for quite some time.
+        <<Their $g.slave>> holes had been gaped much wider than normal, no doubt to accomodate the massive tentacles that were invading them all day long. Still, <<their $g.slave>> mind seemed to still be quite functional, and <<their $g.slave>> eyes beg your slavers for some mercy, no doubt thinking they were there to save <<them $g.slave>>. Your slavers had different plans, however.
+    <<elseif $gQuest.getSeed() % 6 == 4>>
+        the slave had been here for quite a long time.
+        But looking at the slave, <<they $g.slave>> seemed to have enjoyed their "stay" too much. <<Their $g.slave>> eyes went up <<their $g.slave>> socket in pleasure, and
+        <<if $g.slave.isHasDick()>>
+            their dick was rock-hard and leaking cum.
+        <<else>>
+            their nipples were hard as yet another tentacles decided to fuck <<them $g.slave>> senseless.
+        <</if>>
+        A natural-born slut, if your slavers had ever met one.
+
+    <<elseif $gQuest.getSeed() % 6 == 5>>
+
+        the slave had just been freshly captured, perhaps a few hours long.
+        <<Their $g.slave>> holes would recover fairly quickly from the abuse, and your slavers just had to get to work fast. The <<urace $g.slave>> would no doubt think your slavers were trying to save <<them $g.slave>>, but little did <<they $g.slave>> know <<yourrep $g.master>> had other plans...
+    <</if>>
+</p>
+
+<p>
+    Without wasting much more time, your slavers cut the few tentacles that were keeping the slave in place. The <<urace $g.slave>> dropped with a thump into the ground, and your slavers hurriedly carried the unconscious <<urace $g.slave>> outside of the beast for the long journey home.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers also took the slave's former belongings and sold them for a decent sum.
+</p>
+<</if>>
+
+
+:: Quest_harvest_seasonFailure [nobr]
+<p>
+    Unfortunately, despite days and days of searching, <<yourrep $g.tamer>> tamer|was unable to locate the beast. By the time <<they $g.tamer>> managed to catch its trail, the harvesting period was over, and your slavers had to come back home empty-handed.
+</p>
+
+
+
+:: Quest_harvest_seasonDisaster [nobr]
+<p>
+    <<Yourrep $g.tamer>> located the beast fast enough. However, <<reps $g.master>> attempt to soothe and communicate with the beast did not seem to work anymore. The beast returned to its wild, mindless state, and unexpectedly swallowed <<rep $g.master>> whole. Your other slavers were unable to do anything but watch as the beast decided to migrate to another unknown part of the desert, and disappeared...
+</p>
+
+<p>
+    <<uneedrescue $g.master>>, preferably before <<they $g.master>> master|is gaped beyond repair...
+</p>

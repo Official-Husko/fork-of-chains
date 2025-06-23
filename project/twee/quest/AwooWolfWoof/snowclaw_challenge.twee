@@ -1,0 +1,273 @@
+:: QuestSetup_snowclaw_challenge [nobr quest]
+
+<<run new setup.QuestTemplate(
+'snowclaw_challenge', /* key */
+"Snowclaw Challenge", /* Title */
+{ /* Author */
+  name: "AwooWolfWoof",
+  url: "",
+},
+[ /* tags */
+  'furry',
+  'vale',
+  'unit',
+  'money',
+  'favor',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'fighter': [ setup.qu.fighter_vale, 1],
+  'guardsupport': [ setup.qu.guardsupport, 1],
+  'defender': [ setup.qu.defender, 1],
+},
+{ /* actors */
+  'valehuman': 'subrace_humanvale',
+  'head': 'subrace_werewolf',
+},
+[ /* costs */
+],
+'Quest_snowclaw_challenge',
+setup.qdiff.hard16, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_snowclaw_challengeCrit',
+    [
+      setup.qc.Slave('valehuman', "a|was your prize in winning the Snowclaw Challenge", undefined),
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_snowclaw_challengeCrit',
+    [
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Favor('werewolf', 30),
+    ],
+  ],
+  [
+    'Quest_snowclaw_challengeFailure',
+    [
+      setup.qc.SlaveOrderFlex(
+'Snowclaw Order', /* name */
+'werewolf', /* company */
+12, /* expires in */
+0, /* base price */
+0, /* trait multi */
+0.3, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.IsCanBeSold(),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+  setup.qc.Ire('werewolf', 20),
+],
+),
+      setup.qc.Ire('werewolf', 2),
+    ],
+  ],
+  [
+    'Quest_snowclaw_challengeDisaster',
+    [
+      setup.qc.SlaveOrderFlex(
+'Snowclaw Order', /* name */
+'werewolf', /* company */
+12, /* expires in */
+0, /* base price */
+0, /* trait multi */
+0.1, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.IsCanBeSold(),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+  setup.qc.Ire('werewolf', 20),
+],
+),
+      setup.qc.Injury('fighter', 2),
+      setup.qc.Injury('guardsupport', 2),
+      setup.qc.Injury('defender', 2),
+      setup.qc.Ire('werewolf', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building('marketeroffice'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_snowclaw_challenge [nobr]
+<p>
+The exploits of <<rep $company.player>> have reached far and wide across the
+<<lore region_vale>>. One werewolf pack in particular known as the Snowclaws
+is impressed by your warriors' combat prowess and has sent a messenger to
+your fort.
+</p>
+
+<p>
+Once every few months, the Snowclaws and the other packs that live nearby partake in a competition they have taken into calling the trial of champions. Three representatives from each tribe would compete for honor and resources and if the winning group impresses the chieftain of the Snowclaws enough, they would not only be given gold and prestige, but allowed to take home a slave. The catch is that the losing teams would have to give up a slave of their own, not to mention any injuries they may incur.</p>
+
+<p>
+This offer is of course not mandatory but it got you thinking; what better way to prove your mettle to the werewolves but in their own playing field? The slave and the money of course is a nice bonus but you have to take the danger involved into account. A balanced team of fighters would probably be best if you do chose to send someone to participate.
+</p>
+
+
+
+
+:: Quest_snowclaw_challengeCrit [nobr]
+
+<p>
+The afternoon of the <<lore region_vale>> was filled with load roars and
+cheers as the final battle was about to begin. A match between your group of
+fighters against the Snowclaws own fighters composed entirely of werewolves.
+The signal was rang and the battle commenced.
+Your slavers' cordination with each other were tested in the ensuing battle.
+
+<<set _dom = setup.selectUnit([$g.fighter, $g.guardsupport, $g.defender], {trait: 'per_dominant'})>>
+<<if _dom>>
+  <<rep _dom>> took lead of the fight, <<their _dom>> dominant nature making
+  them the perfect leader for the occassion.
+<</if>>
+
+<<set _sub = setup.selectUnit([$g.fighter, $g.guardsupport, $g.defender], {trait: 'per_submissive'})>>
+<<if _sub>>
+  Meanwhile, <<rep _sub>> <<if _sub.isYou()>>were<<else>>was<</if>> a little intimidated by the opposing team.
+<</if>>
+
+<<set _loner = setup.selectUnit([$g.fighter, $g.guardsupport, $g.defender], {trait: 'per_loner'})>>
+<<if _loner>>
+  <<Reps _loner>> loner nature became a hurdle for the team, <<therace
+  _loner>> occasionally
+  hesistated to aid <<their _loner>> allies for the fight.
+<</if>>
+
+<<set _greg = setup.selectUnit([$g.fighter, $g.guardsupport, $g.defender], {trait: 'per_gregarious'})>>
+<<if _greg>>
+  Among the team members, <<rep _greg>> had the easiest time working with othes people,
+  and it showed as <<therace _greg>> blocked yet another attack aimed at the
+  back of <<their _greg>> teammate.
+<</if>>
+</p>
+
+<p>
+The enemy fighters were well
+coordinated, considering that they live in a single pack, but your fighters
+who had been brother and sister-in-arms across many life and death
+situations eventually prevailed.
+Eventually,
+the teamwork showcased by
+<<rep $g.fighter>>, <<rep $g.guardsupport>>, <<rep $g.defender>>
+<<if $gOutcome == 'crit'>>
+resulted in
+a victory while subduing the enemy team with no fatal injury to them.
+<<else>>
+while overall great,
+still had some small flaws in which resulted in the three nearly hitting each
+other in the middle of the battle.
+<</if>>
+</p>
+
+
+<<if $gOutcome == 'crit'>>
+<p>
+The Snowclaw chieftain was suitably impressed, congratulating your group on a such a
+fine performance, talking non stop on how your group fought like a kind of
+pack. <<They $g.head>> upheld <<their $g.head>> terms at the end of the trial and your group takes home
+a new slave <<rep $g.valehuman>> along with the prize money and of course
+the prestige earned for winning the trial.
+</p>
+<<else>>
+
+<p>
+The Snowclaw chieftain congratulated your group on their performance but also
+pointed out the glaring flaws of your group's teamwork along with saying that if your
+group had less experience, <<their $g.head>> fighters would have won. A deal is a deal
+though, and your group brings home the prize money and some prestige but did
+not manage to get the slave prize.
+</p>
+<</if>>
+
+
+:: Quest_snowclaw_challengeFailure [nobr]
+
+<p>
+The afternoon of the <<lore region_vale>> was filled with load roars and
+cheers as the final battle was about to begin.
+A match against your group of
+fighters between the Snowclaws own fighters composed entirely of werewolves.
+The signal was rang and the battle commenced. The enemy fighters were well
+coordinated considering that they live in a single pack,
+and though your
+fighters were fine warriors themselves, they lacked the teamwork needed to
+win.
+<<Rep $g.fighter>> fighter|was the first to fall, followed by <<rep
+$g.guardsupport>>, and then finally <<rep $g.defender>>.
+Through sheer dumb luck,
+your team managed to avoid any injury aside from their bruised pride.
+</p>
+
+<p>
+The Snowclaw chieftain shook <<their $g.head>> head in disappointment as <<their $g.head>> pack's
+representatives raised their <<uhands $g.head>> in victory. "Your group fought well, but
+not good enough." <<They $g.head>> then reminded your group of the slave you must now give <<their $g.head>> clan
+for losing before leaving.
+</p>
+
+<p>
+Your fighters come home to the fort with their heads hung low in disappointment.
+</p>
+
+
+
+
+:: Quest_snowclaw_challengeDisaster [nobr]
+
+<p>
+The afternoon of the <<lore region_vale>> was filled with load roars and
+cheers as the final battle was about to begin. A match between your group of
+fighters against the Snowclaws own fighters composed entirely of werewolves.
+The signal was rang and the battle commenced. The enemy fighters were well
+coordinated considering, that they live in a single pack, and though your
+fighters were fine warriors themselves, the difference in both skill and
+coordination were clearly visible. <<Yourrep $g.fighter>> fighter|was the first to fall, taken
+out by a blow <<they $g.fighter>> should had been able to avoid if <<they $g.fighter>> had not been
+butting heads with <<rep $g.guardsupport>> throughout the fight. <<Rep
+$g.guardsupport>> soon followed after, being double teamed by two of the
+Snowclaw fighters. Only <<rep $g.defender>> defender|was left, and despite
+putting up a valiant fight by knocking out one of the enemies, the
+remaining two managed to overwhelm <<them $g.defender>> with a flanking maneuver.
+</p>
+
+<p>
+The Snowclaw chieftain shook <<their $g.head>> head in disappointment <<their $g.head>> pack's
+representatives raise their <<uhands $g.head>> in victory. "How you lot managed to survive
+this long and made a name for yourselves, I'll never know." <<They $g.head>> then reminded
+your group of the slave they must now give <<their $g.head>> clan for losing before leaving your
+group to lick their wounds.
+</p>
+
+<p>
+Your fighters come home to the fort dragging their injured bodies in disappointment.
+</p>

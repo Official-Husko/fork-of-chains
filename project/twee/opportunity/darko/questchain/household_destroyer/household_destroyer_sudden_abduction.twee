@@ -1,0 +1,110 @@
+:: OpportunitySetup_household_destroyer_sudden_abduction [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'household_destroyer_sudden_abduction', /* key */
+"Household Destroyer: Sudden Abduction", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'special',
+],
+1, /* expiration weeks */
+'Opportunity_household_destroyer_sudden_abduction',
+setup.qdiff.harder45, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_household_destroyer_sudden_abduction_0',
+    outcome_passage: 'Opportunity_household_destroyer_sudden_abduction_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_household_destroyer'),
+      setup.qc.SetCooldownQuest('household_destruction', 1000),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_host),
+      setup.qc.ContactLose(setup.contacttemplate.quest_household_destroyer_nearby),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_household_destroyer_sudden_abduction_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('household_destroyer_rescue', {
+dom: "dom",
+}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'dom': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_household_destroyer_sudden_abduction [nobr]
+<<set _isaway = ($varstore.get('quest_household_destroyer') >= 200)>>
+
+<<if _isaway>>
+    <p>
+        <<Yourrep $g.dom>> has gained quite a notorious reputation ever since <<they $g.dom>> settled in one of the nearby villages. Indeed, many villagers would mysteriously disappear in the village — some would return in a few days a submissive <<woman $g.dom>>, while others would disappear completely and would end up as a slave for some lucky owners. And their disappearance were somehow tied to <<rep $g.dom>>.
+    </p>
+<<else>>
+    <p>
+        <<Yourrep $g.dom>> has gained quite a notorious reputation ever since <<they $g.dom>> spent time in your fort. Despite your best attempts to hide the information, rumors has spread far and wide of a certain extremely dominant (and <<handsome $g.dom>> to boot!) drow that left many completely submissive in <<their $g.dom>> wake.
+    </p>
+<</if>>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    Such a dangerous power unfortunately seems to finally attract the wrong kind of crowd — people who sees opportunity in the usefulness of such a talent to make money off enslaving others. <<Yourrep _u>> reported to you that <<rep $g.dom>> <<themself $g.dom>> had been missing from
+    <<if _isaway>>
+        <<their $g.dom>> abode inside the village
+    <<else>>
+        your fort
+    <</if>>
+    for almost a week. After digging through your contacts and scrounging up rumors, you've learned that a notorious bandit camp has decided to "hire" the drow permanently, whether <<they $g.dom>> liked it or not.
+</p>
+
+<p>
+    This might be the opportunity you have been waiting for should you wish to get rid of your responsibilities of taking care of the drow. You'll simply blame it on the bandits, and for a proper reason too for once. Alternatively, if you've grown attached to the drow, you might as well spend resources trying to rescue <<them $g.dom>>...
+</p>
+
+
+
+
+:: Opportunity_household_destroyer_sudden_abduction_0 [nobr]
+Give up on <<them $g.dom>>
+
+
+:: Opportunity_household_destroyer_sudden_abduction_0_flavor [nobr]
+<p>
+    This affair has gone for far too long. You'd better off spending your time engaging in more profitable affairs.
+</p>
+
+
+
+
+:: Opportunity_household_destroyer_sudden_abduction_1 [nobr]
+Mount a rescue mission
+
+

@@ -1,0 +1,39 @@
+:: EventSetup_fort_restoration_awards_preliminaries [nobr event]
+
+<<run new setup.Event(
+'fort_restoration_awards_preliminaries', /* key */
+"Fort Restoration Awards: Theme", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "darko",
+},
+[ /* tags */
+  'fort',
+],
+'Event_fort_restoration_awards_preliminaries',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.Opportunity('fort_restoration_awards_preliminaries', {
+  }),
+  setup.qc.SetCooldownEvent(null, 50),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_fort_restoration_progress'),
+  setup.qres.Building('veteranhall'),
+  setup.qres.Money(50000),
+],
+10, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_fort_restoration_awards_preliminaries [nobr]
+<<run setup.qc.VarSet(
+'quest_fort_restoration_skill',
+setup.rng.choice(setup.skill).keyword,
+-1,
+).apply($gQuest)>>
+
+<<include "Opportunity_fort_restoration_awards_preliminaries">>

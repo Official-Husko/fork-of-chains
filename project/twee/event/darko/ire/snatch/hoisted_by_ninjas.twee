@@ -1,0 +1,45 @@
+:: EventSetup_hoisted_by_ninjas [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'hoisted_by_ninjas', /* key */
+"Hoisted by Ninjas", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_hoisted_by_ninjas',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('humansea', -20),
+setup.qc.MissingUnitRecapture('victim', 'capturedhard'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humansea', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_hoisted_by_ninjas [nobr]
+
+<p>
+Your sleep today is disrupted by the sound of smoke and explosion coming
+from the <<rep setup.buildingtemplate.lodgings>>. When you arrive, you see
+several ninjas standing on the roof of your fort with <<yourrep $g.victim>>
+bound and gagged within their clutches. In a flash, the ninjas disappear from
+your fort together with your slaver.
+</p>
+
+<p>
+Fortunately, you have been somewhat prepared for this as you have expected
+retaliation from the <<rep $company.humansea>> for the horrible deeds you
+have committed against them. You're able to track down <<rep $g.victim>> to a
+distant location, but rescuing <<them $g.victim>> will surely be a challenge.
+<<urescuenow $g.victim>>.
+</p>

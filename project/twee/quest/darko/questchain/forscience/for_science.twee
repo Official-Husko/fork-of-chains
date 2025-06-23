@@ -1,0 +1,164 @@
+:: QuestSetup_for_science [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_for_science1',
+"Fuckmachine Inventor",
+'city_all',  /* pools */
+1, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_scholar),
+setup.qc.Trait('unit', setup.trait.per_lunatic), ],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'for_science', /* key */
+"For Science", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'city', 'money'
+], /* tags */
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'scientist': setup.qu.scientist,
+'merc': setup.qu.mercenary,
+'convincer': setup.qu.convincer, },
+{ /* actors */
+'inventor': 'quest_for_science1',
+'assistant': 'city_all', },
+[ /* costs */
+],
+'Quest_for_science',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+[
+'Quest_for_scienceCrit',
+[
+setup.qc.Item(setup.item.quest_for_science_list),
+setup.qc.MoneyCrit(), ],
+], [
+'Quest_for_scienceCrit',
+[
+setup.qc.Item(setup.item.quest_for_science_list),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_for_scienceCrit',
+[
+],
+], [
+'Quest_for_scienceCrit',
+[
+setup.qc.Injury('scientist', 2),
+setup.qc.Injury('merc', 3),
+setup.qc.Injury('convincer', 2), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.NoItem(setup.item.quest_for_science_list),
+setup.qres.QuestUnique(),
+setup.qres.Building(setup.buildingtemplate.veteranhall), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_for_science [nobr]
+<p>
+A famous scientist in the <<lore region_city>>, Dr. <<Rep $g.inventor>>,
+inventor|is looking for brave adventurers to help <<their $g.inventor>>
+experiment. <<They $g.inventor>> promises a large sum of money, which is
+definitely good, but what caught your attention is that the professor is also
+willing to give out one of <<their $g.inventor>> inventions as a bonus to
+the adventurers. This might be your chance to get your <<uadjper $unit.player>>
+<<uhands $unit.player>> on some
+very rare item, although you get the feeling that there the item might not be
+what you might have expected...
+</p>
+
+<p>
+Your attempt to dig more information only result in vague information such as
+something "long", "hard", and "thick"...
+</p>
+
+
+:: Quest_for_scienceCrit [nobr]
+
+<p>
+Your band of slavers arrived at the professor's laboratory.
+It was filled to the brim with strange mechanical objects your slavers had
+never seen before, and <<yourrep $g.scientist>> scientist|was in awe. They then
+met with the professor who was surrounded by <<their $g.inventor>> assistants.
+"You're late", <<they $g.inventor>> said without even looking at your
+slavers. Instead, an assistant of <<them $g.inventor>> — a young springly
+<<girl $g.assistant>> -- introduced <<themself $g.assistant>> before getting
+straight into business of checking whether your mercenary company was up for
+the job.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<p>
+Fortunately, <<reps $g.scientist>> intellect, <<reps $g.merc>> brawn, and
+<<rep $g.convincer>> wit were more than enough to convince the assistant
+<<girl $g.assistant>> that your company was the real deal. Impressed, <<they
+$g.assistant>> handed over a bag of money ("down payment", as she put it) to
+your slavers, as well as the
+<<rep setup.item.quest_for_science_list >>:
+a list of items your slavers need to retrieve for the professor.
+</p>
+
+<p>
+The first item looks easy enough — a thick and sturdy box strong enough to withstand
+tear and wear. There should be plenty of crafters in the northern settlements
+selling these boxes, although for a completely different purpose.
+</p>
+
+<p>
+Second on the list is a rare fruit growing somewhere in the <<lore region_forest>>
+called "Sine Pregnol". None of your slavers had any idea what it means, not
+even <<rep $g.scientist>>. Still, they could probably found out about it later
+by asking the settlements in the <<lore region_forest>>.
+</p>
+
+<p>
+Finally, the last item on the list is a strong and long pole of a material
+known as the conducting iron. Conducting iron can usually be found in the
+<<lore region_desert>>, although
+they are usually brittle and short in length. Finding a long and strong one
+would indeed be a challenge.
+</p>
+
+<p>
+Having explained to your slavers what needs to be done, your slavers were
+escorted outside of the laboratory by the nice assistant <<girl
+$g.assistant>>.
+"Happy hunting!", <<they $g.assistant>> said cheerfully as your slavers parted
+ways.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+Unfortunately, the assistant <<girl $g.assistant>> was not at all impressed
+by your slavers. <<Yourrep $g.scientist>> scientist|was unable to answer the
+difficult question posed by <<them $g.assistant>>, nor <<rep $g.convincer>>
+convincer|was able to outmaneuver <<their $g.assistant>> wit. Your slavers
+were not able to secure the deal, and had to return back home without the
+contract.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, your slavers were not the only mercenary company that day.
+Another, more capable one was also there attending the interview, and they
+demonstrated their very capable skills directly on your slavers. At the end
+of the interview, your slavers were thoroughly defeated and suffered some
+minor injuries without getting the contract.
+</p>
+
+<</if>>

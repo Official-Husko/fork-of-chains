@@ -1,0 +1,127 @@
+:: OpportunitySetup_living_god [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'living_god', /* key */
+"Living God", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'money',
+  'favor',
+],
+1, /* expiration weeks */
+'Opportunity_living_god',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_living_god_0',
+    'Opportunity_living_god_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Actor('god', setup.qres.NoTraits([setup.trait.per_honorable], true)),
+    ],
+    [ /* outcomes */
+      setup.qc.VarRemove('quest_living_god_isfavor'),
+      setup.qc.Duty('questlivinggod'),
+    ],
+  ],
+  [
+    'Opportunity_living_god_1',
+    'Opportunity_living_god_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Actor('god', setup.qres.NoTraits([setup.trait.per_evil], true)),
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_living_god_isfavor', '1', -1),
+      setup.qc.Duty('questlivinggod'),
+    ],
+  ],
+  [
+    'Opportunity_living_god_2',
+    'Opportunity_living_god_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTitle('god', 'quest_living_god'),
+      setup.qc.VarRemove('quest_living_god_active'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'god': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_living_god [nobr]
+<p>
+With the shrine completed, you could try to ask <<yourrep $g.god>> to direct <<their $g.god>> worship in a particular way...
+</p>
+
+<p>
+You can ask <<them $g.god>> to base <<their $g.god>> worship towards money — asking the followers to donate a generous amount of tithe. <<Rep $g.god>> will take most of it, of course, but as the proprietor of the fort the naturally you would get a small cut of the tithe.
+<<if $g.god.isHasTrait('per_honorable')>>
+Unfortunately, <<reps $g.god>> honorable nature means <<therace $g.god>> immediately scoffs at the suggestion, and refuses to follow through with this.
+<</if>>
+</p>
+
+<p>
+Alternatively, you can ask <<them $g.god>> to simply hold honest-to-goodness sermons, no strings attached, except maybe the inclusion of some good words about your company.
+<<if $g.god.isHasTrait('per_evil')>>
+The evil slaver however likes the idea of getting a "generous amount of tithe", and refuses to go through with this option...
+<</if>>
+</p>
+
+
+:: Opportunity_living_god_0 [nobr]
+Generous tithe
+
+
+:: Opportunity_living_god_0_flavor [nobr]
+<p>
+You directed <<yourrep $g.god>> to focus <<their $g.god>> worshippers towards "donating" a generous amount of tithe. While <<they $g.god>> will pocket most of them for the "greater good", your company will take a small cut for lending the shrine for the worship.
+</p>
+
+
+
+
+:: Opportunity_living_god_1 [nobr]
+Sermons
+
+
+:: Opportunity_living_god_1_flavor [nobr]
+<p>
+You directed <<yourrep $g.god>> to just hold honest sermons.
+</p>
+
+<p>
+In the coming days, you notice that <<their $g.god>> many followers would often talk well about your company.
+</p>
+
+
+
+
+:: Opportunity_living_god_2 [nobr]
+Forget this stupid idea
+
+
+:: Opportunity_living_god_2_flavor [nobr]
+<p>
+<<Rep $g.god>> is a slaver, not some deity to worship!
+</p>

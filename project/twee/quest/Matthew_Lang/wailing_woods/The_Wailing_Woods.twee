@@ -1,0 +1,423 @@
+:: QuestSetup_the_wailing_woods [nobr quest]
+
+<<set _criteriatracker = new setup.UnitCriteria(
+null, /* key */
+'Scout (Forest)', /* name */
+[
+  setup.trait.race_catkin,
+  setup.trait.bg_hunter,
+  setup.trait.bg_woodsman,
+  setup.trait.per_cautious,
+  setup.trait.per_loner,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.race_elf,
+  setup.trait.subrace_humankingdom,
+  setup.trait.per_brave,
+  setup.trait.per_gregarious,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 3,
+}
+)>>
+
+<<set _criteriasage = new setup.UnitCriteria(
+null, /* key */
+'Arcane (Light)', /* name */
+[
+  setup.trait.subrace_angel,
+  setup.trait.subrace_fairy,
+  setup.trait.bg_priest,
+  setup.trait.per_loyal,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.race_elf,
+  setup.trait.per_aggressive,
+  setup.trait.per_loner,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  aid: 1,
+  arcane: 2,
+}
+)>>
+
+<<set _criteriaguardian = new setup.UnitCriteria(
+null, /* key */
+'Light Warrior', /* name */
+[
+  setup.trait.subrace_angel,
+  setup.trait.bg_mythical,
+  setup.trait.bg_knight,
+  setup.trait.bg_monk,
+  setup.trait.per_humble,
+  setup.trait.per_loyal,
+  setup.trait.per_kind,
+  setup.trait.per_serious,
+  setup.trait.per_empath,
+  setup.trait.per_dominant,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.race_elf,
+  setup.trait.per_proud,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.skill_intimidating,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  aid: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_wailing_woods', /* key */
+"The Wailing Woods", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'danger',
+  'money',
+  'item',
+  'forest',
+],
+2, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'tracker': [ _criteriatracker, 1],
+  'sage': [ _criteriasage, 1],
+  'guardian': [ _criteriaguardian, 1],
+},
+{ /* actors */
+  'elfslave': 'subrace_elf',
+  'banshee': 'subrace_elf_female',
+},
+[ /* costs */
+],
+'Quest_the_wailing_woods',
+setup.qdiff.harder41, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_wailing_woodsCrit',
+    [
+      setup.qc.SlaveMarker('elfslave'),
+      setup.qc.MoneyCustom(1200),
+      setup.qc.Equipment(setup.equipmentpool.all_combat),
+      setup.qc.Equipment(setup.equipmentpool.all_combat),
+      setup.qc.Equipment(setup.equipmentpool.all_combat),
+    ],
+  ],
+  [
+    'Quest_the_wailing_woodsCrit',
+    [
+      setup.qc.MoneyCustom(600),
+      setup.qc.Equipment(setup.equipmentpool.all_combat),
+      setup.qc.Equipment(setup.equipmentpool.all_combat),
+      setup.qc.Equipment(setup.equipmentpool.all_combat),
+    ],
+  ],
+  [
+    'Quest_the_wailing_woodsFailure',
+    [
+      setup.qc.Injury('sage', 2),
+      setup.qc.TraumatizeRandom('sage', 7),
+      setup.qc.Injury('guardian', 3),
+      setup.qc.DoAll([
+setup.qc.Injury('tracker', 1)
+], 0.5),
+    ],
+  ],
+  [
+    'Quest_the_wailing_woodsFailure',
+    [
+      setup.qc.Blessing('sage', 1, null, true),
+      setup.qc.Injury('sage', 2),
+      setup.qc.IfThenElse(
+setup.qres.Actor('tracker', setup.qres.NotYou()),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('tracker', setup.qres.AllTraits([setup.trait.race_elf], true)),
+setup.qc.DoAll([
+setup.qc.Injury('tracker', 2),
+setup.qc.Blessing('tracker', 1, null, true),
+setup.qc.DoAll([
+setup.qc.MissingUnitForever('tracker')
+], 0.1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Injury('tracker', 2),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('tracker', 5)
+], 0.5)
+], undefined))
+], undefined),
+setup.qc.DoAll([
+setup.qc.Injury('tracker', 2),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('tracker', 5)
+], 0.3)
+], undefined)),
+      setup.qc.IfThenElse(
+setup.qres.Actor('guardian', setup.qres.NotYou()),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('guardian', setup.qres.AllTraits([setup.trait.race_elf], true)),
+setup.qc.DoAll([
+setup.qc.Injury('guardian', 3),
+setup.qc.TraumatizeRandom('guardian', 8),
+setup.qc.DoAll([
+setup.qc.MissingUnitForever('guardian')
+], 0.1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('guardian', 8),
+setup.qc.Injury('guardian', 3)
+], undefined))
+], undefined),
+setup.qc.DoAll([
+setup.qc.Injury('guardian', 3),
+setup.qc.TraumatizeRandom('guardian', 8)
+], undefined)),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.QuestDone('raid_elven_village'),
+  setup.qres.HasSlaverWithTraits([setup.trait.subrace_elf]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_wailing_woods [nobr]
+<<set _Elf = setup.getUnit({
+job: 'slaver',
+notyou: true,
+available: true,
+anytraits: ['subrace_elf', ],
+})>>
+
+<<if !_Elf>>
+  <<set _Elf = setup.getAnySlaver()>>
+<</if>>
+
+<<set _Hunter = setup.getAnySlaver([_Elf])>>
+
+<p>
+In their more recent trips through the <<lore region_forest>>, your slavers have reported the sounds of wailing and crying in an otherwise uninhabited area of the woods. They've never seen anyone in the area where the wailing is coming from.<br>
+"There wasn't even any game there, either," <<name _Hunter>> says, glancing around the table nervously, <<their _Hunter>> tankard shaking slightly in <<their _Hunter>> grip. "Honestly, I think it's haunted."<br>
+A general chorus of derision follows <<name _Hunter>>'s statement, but there's an element of uncertainty to it. After all, demons exist, magic exists, horny river spirits exist, why not ghosts?<br>
+"What do you think, <<name _Elf>>?" you ask, glancing down the table to one of the only slavers to have said nothing at all.<br>
+"It's probably a banshee," they say shortly. "And no, I really don't want to go and find out."
+</p>
+<p>
+<<if $unit.player.isHasTrait('per_cruel')>>
+It took some persuading, but eventually <<name _Elf>> told you what they knew.
+<<else>>
+It took a while to coax the information out of <<name _Elf>> but <<they _Elf>> eventually told you what <<they _Elf>> knew.
+<</if>>
+<br>In some stories, Banshees are the spirits of elves those who died under tragic circumstances, and their screams are those of grief and loss. In others, they were vain and foolish women who were cursed by the gods for being cruel and selfish.
+<<if $unit.player.isHasTrait('race_elf')>>
+<<if $unit.player.isHasDick()>>
+Actually you knew all of that. You just also hope the stories are true in that only women can become banshees.
+<<else>>
+Actually, you knew all of that. And you're really hoping they aren't true. It's not like running a slaving company puts you the good books of most religious types.
+<</if>>
+<<else>>
+
+<</if>>
+The tales all agree that the cry of a banshee heralds the death of those who hear it, and to look upon her face is to wither, age, and turn to dust. The tales also agree that banshees hoard precious treasures—remnants that remind them of their past life, and those things that remain of those unfortunate souls who cross her path.
+</p>
+<p>The tales exaggerate of course. But are they exaggerating about the instant death part or the treasure part? There is, of course, always the option to not find out at all. That's definitely a thing.</p>
+
+
+
+
+:: Quest_the_wailing_woodsCrit [nobr]
+
+<<set _Hunter = setup.getAnySlaver()>>
+
+<p>With <<name $g.tracker>> guiding them, your slavers were easily able to make it to the overgrown forest track with the wailing trees. Or wailing something. The woods were indeed empty. <<name $g.tracker>> found no recent tracks of elves, neko or any creatures larger than the average rodent.</p>
+
+<<if $g.tracker.isYou() or $g.sage.isYou() or $g.guardian.isYou()>>
+<p>It was night before the crying started.</p>
+<p>Screaming never lasts because your throat gives out before you do. But she didn't have a throat. She didn't really have a body either. Just some light and shadows that <i>flickered</i>, leaving still afterimages burning in your eyes of a slender woman, eyes mad with grief, skin taught over the skull and emaciated to where she shouldn't be able to move.</p>
+<p>But she did.</p>
+<p>The moment she saw you, her cries of grief became shrieks of rage and she lunged towards you, spectral arms outstretched.<br>
+
+<<run setup.qc.Nickname('banshee', 'Banshee').apply($gQuest)>>
+
+<<dialogue $g.banshee 'the_wailing_woods.jpg'>>
+"You...took...my...<<girl $g.elfslave>>!"
+<</dialogue>>
+
+Her voice was cold, not in tone, but hearing it was like being thrown bodily into one of the frozen lakes of the north, broken shards of ice stabbing into your veins. No, those were her fingernails.
+</p>
+<p>The fight was quick, they usually are,
+<<if $unit.player.isHasTrait('per_cruel')>>
+but in the end, you won, and your wounds will heal. And with the bitch really dead this time, maybe people will move back into the village. Really, it's a pity she only had one child.
+<<elseif $unit.player.isHasTrait('per_evil')>>
+but in the end, you won, and your wounds will heal. And with the bitch really dead this time, maybe people will move back into the village. Really, it's a pity she only had one child.
+<<elseif $unit.player.isHasTrait('per_lunatic')>>
+but that's okay. You can still hear her screaming if you close your eyes and think real hard. It's so beautiful.
+<<elseif $unit.player.isHasTrait('per_empath')>>
+but it's over. That said, even after a hot bath you still feel cold. And you every time you close you can see her face...and hear the screaming...
+<<elseif $unit.player.isHasTrait('per_kind')>>
+but it's over. You sit for a while longer, cupping your hands around a bowl of stew, and wondering you're ever going to be warm again.
+<<else>>
+but it's over. You member an elf you sold recently. Long hair,
+<<if $g.elfslave.isHasTrait('gender_male')>>
+nice butt.
+<<else>>
+nice tits.
+<</if>>
+Could've brought you in more money though. Should have given all of this crap you had to go through.
+<</if>>
+</p>
+
+<<else>>
+<p>It was night time before they heard the cries.</p>
+<p>
+"...it's like it was...cold," <<name $g.sage>> tells you when they return. "Like jumping into an ice lake at midnight and having the shards pierce your skin all at once. It made my entire body seize up."<br>
+"So it was a banshee?"<br>
+<<name $g.sage>> shakes their head. "I don't think so. We found a village."<br>
+"You said there weren't any people there."<br>
+<<if $g.sage.isHasTrait('per_evil')>>
+<<name $g.sage>> "There weren't. Just dead folk we'd already killed last time we went through. Pretty sure that's where we picked up that pouty mouth slaved you sold last month. Bitch must have been <<their $g.elfslave>> mum or some shit."<br>
+Giving you an easy grin, <<they $g.sage>> down the rest of their drink and stand up. "Life. Great while you have it, yeah?"
+<<elseif $g.sage.isHasTrait('per_cruel')>>
+<<name $g.sage>> "There weren't. Just dead folk we'd already killed last time we went through. Pretty sure that's where we picked up that pouty mouth slaved you sold last month. Bitch must have been <<their $g.elfslave>> mum or some shit."<br>
+Giving you an easy grin, <<they $g.sage>> down the rest of their drink and stand up. "Life. Great while you have it, yeah?"
+<<elseif $g.sage.isHasTrait('per_lunatic')>>
+<<name $g.sage>> looks at you and giggles. "We did. Twice. Maybe we can go back if new elves move back in. Get more slaves. Or if not, talk to the dead. People can do that you know.
+<<if $g.elfslave.isHasTrait('gender_male')>>
+"I miss her son's tight little ass and enthusiastic tongue."<br>
+Leaving their drink untouched on the table, <<name $g.sage>> wanders off into the fort. Sometimes you worry about <<them $g.sage>>.
+<<else>>
+"I miss her daughters hair. It was so soft and pretty. Just like her hips. Squish. Squish. Squish."<br>
+Leaving their drink untouched on the table, <<name $g.sage>> wanders off into the fort. Sometimes you worry about <<them $g.sage>>.
+<</if>>
+<<else>>
+<<name $g.sage>> is quiet for a while. "You remember that slave we sold a few months ago? Youngish, well, young for an elf. Long hair, pouty lips. Cried a lot?"<br>
+You nod. "Yeah, spent a week crying for <<their $g.elfslave>> mother."<br>
+"That's the one. I think I remember <<name _Hunter>>putting a sword through her chest to take <<them $g.elfslave>>. Guess we know ghosts are real now."<br>
+You wait while <<name $g.sage>> finishes <<their $g.sage>> drink and slams the tankard back onto the table.<br>
+"Look, boss, it's fine. I knew what this job was when I signed up. Just don't usually get your face rubbed in it this way."<br>
+<</if>>
+</p>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+<p>While your slavers thought they'd already taken anything of value from the village the last time, <<name $g.guardian>> found a hidden cache of gemstones under a loose floorboard, warped now with the damp and rain. There were also some decent sets of clothing and armor from those who had fallen afoul of the spirit, as well as the contents of their pockets. Maybe you should start keeping track of places you raid.</p>
+<<elseif $gOutcome == 'success'>>
+<p>Your slavers had already taken anything of value from the village the last time. So this time they stole the furniture, selling most of it for less than you'd want but more than you might have got otherwise. There were also some decent sets of clothing and armor from those who had fallen afoul of the spirit, as well as the contents of their pockets. Maybe you should start keeping track of places you raid.</p>
+<</if>>
+
+
+
+
+
+
+:: Quest_the_wailing_woodsFailure [nobr]
+<<set _Hunter = setup.getAnySlaver()>>
+
+<p>With <<name $g.tracker>> guiding them, your slavers were easily able to make it to the overgrown forest track with the wailing trees. Or wailing something. The woods were indeed empty. <<name $g.tracker>> found no recent tracks of elves, neko or any creatures larger than the average rodent.</p>
+<<if $g.tracker.isYou() or $g.sage.isYou() or $g.guardian.isYou()>>
+<p>It was night before the crying started.</p>
+<p>Screaming never lasts because your throat gives out before you do. But she didn't have a throat. She didn't really have a body either. Just some light and shadows that <i>flickered</i>, leaving still afterimages burning in your eyes of a slender woman, eyes mad with grief, skin taught over the skull and emaciated to where she shouldn't be able to move.</p>
+<p>But she did.</p>
+<p>The moment she saw you, her cries of grief became shrieks of rage and she lunged towards you, spectral arms outstretched.<br>
+
+<<run setup.qc.Nickname('banshee', 'Banshee').apply($gQuest)>>
+
+<<dialogue $g.banshee 'the_wailing_woods.jpg'>>
+"You...took...my...<<girl $g.elfslave>>!"
+<</dialogue>>
+
+Her voice was cold, not in tone, but hearing it was like being thrown bodily into one of the frozen lakes of the north, broken shards of ice stabbing into your veins. No, those were her fingernails.
+</p>
+<p>
+You don't remember running, but you must have. Because you ended up back on the road on the outskirts of the forest.</p>
+<p>And the very thought of trying to find the dilapidated village again filled you with a terror that stopped you in your tracks, as though your feet had been frozen to the ground. In the end you spent the night huddled in a ball under the stars, unable to sleep, until the morning sun allowed you to find your way back to the fortress.</p>
+<<if $unit.player.isHasTrait('race_elf')>>
+<p>You're still not sure if the tale of the banshee is real. But you're not sure you want to go back and find out.</p>
+<<else>>
+<p>You're still not sure about the whole banshee thing, but hey, at least you aren't dead.</p>
+<</if>>
+
+<<else>>
+<p>It was night time before they heard the cries.</p>
+<p>"...it's like it was...cold," <<name $g.sage>> tells you when they return, far earlier than you'd expected. "Like jumping into an ice lake at midnight and having the shards pierce your skin all at once. It made my entire body seize up."<br>
+"So it was a banshee?"<br>
+<<name $g.sage>> shudders and clutches at their tankard. "I don't know.
+<<if $g.sage.isHasTrait('per_brave')>>
+You know I'm not scared of much, but those screams... she recognised us, boss. Said we'd taken her <<girl $g.elfslave>>."<br>
+<<else>>
+I remember her shrieking about us taking her <<girl $g.elfslave>>."<br>
+<</if>>
+"Did we?"<br>
+<<if $g.sage.isHasTrait('per_evil')>>
+<<name $g.sage>> shrugs "Does it matter? We're slavers. It's what we do. Usually the parents just have the decency to stay dead after to knife them."<br>
+<<elseif $g.sage.isHasTrait('per_cruel')>>
+<<name $g.sage>> shrugs "Does it matter? We're slavers. It's what we do. Usually the parents just have the decency to stay dead after to knife them."<br>
+<<elseif $g.sage.isHasTrait('per_lunatic')>>
+"Yes. I think so you. You sold <<them $g.elfslave>> some weeks back.
+<<if $g.elfslave.isHasTrait('gender_male')>>
+I miss her son's tight little ass and enthusiastic tongue."<br>
+Still clutching <<their $g.sage>> cup, <<name $g.sage>> wanders off into the fort. Sometimes you worry about <<them $g.sage>>.
+<<else>>
+"I miss her daughters hair. It was so soft and pretty. Just like her hips. Squish. Squish. Squish."<br>
+Still clutching <<their $g.sage>> cup, <<name $g.sage>> wanders off into the fort. Sometimes you worry about <<them $g.sage>>.
+<</if>>
+<<else>>
+<<name $g.sage>> is quiet for a while. "You remember that slave we sold a few months ago? Youngish, well, young for an elf. Long hair, pouty lips. Cried a lot?"<br>
+You nod. "Yeah, spent a week crying for <<their $g.elfslave>> mother."<br>
+"That's the one. I think I remember <<name _Hunter>>putting a sword through her chest to take <<them $g.elfslave>>. Guess we know ghosts are real now."<br>
+You wait while <<name $g.sage>> finishes <<their $g.sage>> drink and slams the tankard back onto the table. "Now if you'll excuse me, I'm going to get very...very...drunk."
+<</if>>
+</p>
+<</if>>
+
+<<if $gOutcome == 'failure'>>
+<p>Both <<theslaver $g.tracker>> and <<name $g.guardian>> limp into the fortress sometime later. They're injured, but hopefully will make a full recovery in time.</p>
+
+<<elseif $gOutcome == 'disaster'>>
+<p>When neither <<theslaver $g.tracker>> nor <<name $g.guardian>> arrive at the fort overnight, you send out a search party, and find them unconscious, injured and bleeding at the edge of the forest. You bring them into the hospital as quickly as you can, but you aren't sure they're going to make it to the end of the week.</p>
+<p>You just have to hope the curse of the banshee is just another elven myth</p>
+<</if>>

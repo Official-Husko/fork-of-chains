@@ -1,0 +1,26 @@
+
+:: InteractionPerform [nobr]
+
+<<set _dom = setup.renderDescription($gInteractionInstance, $gInteractionInstance.getInteraction().getPassage())>>
+<<attach _dom>>
+
+<<run $gInteractionInstance.applyRewards()>>
+
+<br/>
+<<questauthorcard $gInteractionInstance.getInteraction()>>
+
+<<set $gPassage = $gInteractionReturnPassage>>
+
+<<set $gMenuVisible = false>>
+
+<div>
+  <<focmove 'Continue' $gInteractionReturnPassage>>
+</div>
+
+<<run setup.DOM.Nav.topLeftNavigation(
+  setup.DOM.Nav.link(
+    'Continue [space]',
+    () => {},
+    $gInteractionReturnPassage,
+  )
+)>>

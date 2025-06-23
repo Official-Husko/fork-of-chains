@@ -1,0 +1,31 @@
+:: InitCompanyHumanSea [nobr company]
+
+<<set _heal = setup.qc.Function(() => {
+  State.variables.hospital.healRandom();
+})>>
+
+<<run new setup.CompanyTemplate(
+  'humansea',
+  'Humans of the Southern Lands',
+  'CompanyTemplateHumanSea',
+  [ /* favor effects */
+    [
+      _heal,
+    ],
+    [
+      _heal,
+      _heal,
+    ],
+    [
+      _heal,
+      _heal,
+      _heal,
+    ],
+  ],
+)>>
+
+:: CompanyTemplateHumanSea [nobr]
+
+Mysterious people hailing from beyond the <<lore region_sea>>.
+Many are gifted in <<rep setup.trait.magic_light>>, and when befriended
+can share their secrets to heal your injured slavers faster.

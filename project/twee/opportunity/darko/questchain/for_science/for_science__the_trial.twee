@@ -1,0 +1,197 @@
+:: OpportunitySetup_for_science__the_trial [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'for_science__the_trial', /* key */
+"For Science: The Trial", /* Title */
+"darko", /* Author */
+[ 'veteran', 'desert', 'item', 'special',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_for_science__the_trial',
+setup.qdiff.harder49, /* difficulty */
+[ /* options */
+[
+'Opportunity_for_science__the_trial_0',
+'Opportunity_for_science__the_trial_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Injury('tank', 12),
+setup.qc.Injury('healer', 10),
+setup.qc.Injury('dps', 12),
+setup.qc.Item(setup.item.quest_for_science_stick), ],
+], [
+'Opportunity_for_science__the_trial_1',
+'Opportunity_for_science__the_trial_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Injury('dps', 7),
+setup.qc.Injury('tank', 6),
+setup.qc.Injury('healer', 7),
+setup.qc.Item(setup.item.quest_for_science_stick),
+setup.qc.TraumatizeRandom('dps', 20),
+setup.qc.TraumatizeRandom('tank', 19),
+setup.qc.TraumatizeRandom('healer', 21), ],
+], [
+'Opportunity_for_science__the_trial_2',
+'Opportunity_for_science__the_trial_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Item(setup.item.quest_for_science_stick),
+setup.qc.TraumatizeRandom('dps', 32),
+setup.qc.TraumatizeRandom('tank', 34),
+setup.qc.TraumatizeRandom('healer', 33), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'dps': [
+],
+'tank': [
+],
+'healer': [
+], },
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_for_science__the_trial [nobr]
+
+<p>
+The orcs are simple folks — according to their legends, only those foolish
+or brave enough are worthy to claim the pole of heavens (which to your
+slavers' understanding is just a <<rep setup.item.quest_for_science_stick>>).
+Your slavers are given a choice on how to prove their worth.
+</p>
+
+<p>
+The first option is to go through the Trial of Combat. They must survive the
+onslaught of orcish gladiators coming their way until all of the village are
+defeated. Given their skills, this is completely within your slaver's
+prowess, but they will no doubt sustain great injuries afterwards.
+</p>
+
+<p>
+The second option is to undergo the Trial by Fire. Here, your slavers must
+withstand fiery abuse inflicted by the orcs upon their bodies for an hour straight. Which is
+simple enough, but will surely inflict some injury as well as some trauma to
+your slavers.
+</p>
+
+<p>
+Finally, there is the Trial of Darkness, where your slavers must venture
+alone to the caverns north of the village in search of the pole of heavens
+(which they will awkwardly hide somewhere there). While this sounds easy
+enough, legends say that the caverns are cursed, and whoever enter will be
+greatly traumatized by the experience...
+</p>
+
+
+:: Opportunity_for_science__the_trial_0 [nobr]
+Trial by combat
+
+
+:: Opportunity_for_science__the_trial_0_flavor [nobr]
+<p>
+Choosing the Trial of Combat, <<yourrep $g.tank>> prepared <<their $g.tank>>
+<<ubodyall $g.tank>> for the no-doubt abusive fight.
+<<Rep $g.healer>> stood at the ready to undo the damage as much as possible,
+while <<rep $g.dps>> <<uadv $g.dps>> sharpened <<their $g.dps>> <<uweapon
+$g.dps>> for the upcoming onslaught.
+</p>
+
+<p>
+When the horn was blown, the first wave of orcish warriors came descending down on
+slavers. Still full of energy, <<rep $g.tank>> managed to fend off the bulk of
+the forces while <<rep $g.dps>> <<uadv $g.dps>> dispatched them one by one,
+until all of the first wave is defeated. But your slavers knew that there are many
+waves to come, and this was only the beginning.
+</p>
+
+<p>
+Eventually, your slavers lost count on the number of waves they had
+defeated. Wounded (but not dead) bodies were scattered throughout the battlefield, and
+your slavers had been badly injured by stray hits by the time they reach the final wave.
+The final fight was against the chieftain themself, who charged at your
+slavers with the <<rep setup.item.quest_for_science_stick>>, pointing it
+menacingly at <<rep $g.tank>>. With the last of <<their $g.tank>> energy,
+supported by <<rep
+$g.healer>> depleted magic reserve, <<rep $g.tank>> fended off one final attack
+before collapsing to the ground. But it was not in vain, as <<yourrep $g.dps>>
+managed to use the opening to launch a sneak attack on the chieftain, who was
+knocked out in one blow.
+With the battle won, <<rep $g.dps>> collapsed to the ground from exhaustion,
+leaving only the healer <<rep $g.healer>> to bask in the victory. <<They
+$g.healer>> grabbed the <<rep setup.item.quest_for_science_stick>> off the
+chieftain's arms, and heaved both slavers back to recover before heading home
+to the fort.
+</p>
+
+
+:: Opportunity_for_science__the_trial_1 [nobr]
+Trial by fire
+
+
+:: Opportunity_for_science__the_trial_1_flavor [nobr]
+<p>
+The Trial of Fire began by having all three of your slavers tied to a pole
+in the middle of the encampment. As the chieftain raised a blazing torch on
+your slavers,
+<<rep $g.tank>>
+<<if $g.tank.isMasochistic()>>
+almost couldn't contain <<their $g.tank>> masochistic excitement at the upcoming pain.
+<<elseif $g.tank.isHasTrait('per_brave')>>
+bravely steeled <<themself $g.tank>> for the incoming pain.
+<<elseif $g.tank.isHasTrait('per_cautious')>>
+looked skywards trying not to imagine the excruciating pain about to be
+inflicted on <<their $g.tank>> cowardly self.
+<<else>>
+<<uadv $g.tank>> steeled <<themself $g.tank>> for the upcoming pain.
+<</if>>
+The orcs seared your slavers, not enough to cause permanent damage, but enough
+to injure and inflict as much pain as possible to your slavers. The hour felt
+like an eternity as your slavers were seared again and again, in the attempt to
+prove their worth. After the grueling hour, the orcs untied your slavers, whom all
+collapsed to the ground with heavy injuries and trauma. Still, seeing the braveries
+(and mostl foolishness) exhibited by
+your slavers, the chieftain kept the promise and handed over the "pole of
+heavens" to your slavers' well deserved <<uhands $g.tank>>.
+</p>
+
+
+:: Opportunity_for_science__the_trial_2 [nobr]
+Trial by darkness
+
+
+:: Opportunity_for_science__the_trial_2_flavor [nobr]
+
+<p>
+After your slavers chose the Trial of darkness, they could
+see an orc servant scuttled outside of the encampment,
+no doubt to hide the <<rep setup.item.quest_for_science_stick>> somewhere inside the caverns.
+The next day, your slavers departed for the caverns, led
+<<uadv $g.tank>> by <<rep $g.tank>>.
+</p>
+
+<p>
+It was unclear what transpired inside the caverns, but when your slavers
+returned with the <<rep setup.item.quest_for_science_stick>> in <<uhand $g.tank>>,
+their eyes were
+blank and lifeless. They remained motionless for an hour, until an escort
+from the orc encampment found them just standing there and brought them back to the
+encampment. Your slavers eventually recovered enough of their wits to return
+back to the fort, but the experience had greatly traumatized them.
+</p>

@@ -1,0 +1,189 @@
+:: QuestSetup_bargain_with_the_devil [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Defiant Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.Trait(setup.trait.will_defiant),
+  setup.qres.HasTag('in_training_defiant_slave'),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'bargain_with_the_devil', /* key */
+"Bargain with the Devil", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'desert',
+],
+4, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'guard2': [ setup.qu.guard, 1],
+  'guard1': [ setup.qu.guard, 1],
+  'negotiator': [ setup.qu.abyssal_negotiator, 1],
+},
+{ /* actors */
+  'demon': 'subrace_demon',
+},
+[ /* costs */
+  setup.qc.Favor('demon', -800),
+],
+'Quest_bargain_with_the_devil',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_bargain_with_the_devilCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.SlaverMarker('demon'),
+    ],
+  ],
+  [
+    'Quest_bargain_with_the_devilCrit',
+    [
+      setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+      setup.qc.TraitRemove('slave', setup.trait.will_defiant),
+      setup.qc.AddHistory('slave', "a|was broken by demons from beyond <<lore concept_mist>> using unspeakable methods"),
+      setup.qc.Injury('slave', 25),
+      setup.qc.TraumatizeRandom('slave', 9999999),
+    ],
+  ],
+  [
+    'Quest_bargain_with_the_devilCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_bargain_with_the_devilCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+
+],
+)>>
+
+:: Quest_bargain_with_the_devil [nobr]
+<<set _u = setup.getUnit({tag: 'in_training_defiant_slave'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+
+
+<p>
+After scouring through history books on how slaves were broken in the past,
+there was one common thing that seems to guarantee success: bargain with the
+demons of <<lore concept_mist>>. If one knows where to look in the history books, there
+are numerous records of heroic warriors who were sent into <<lore concept_mist>> and came
+out as a slut, having been trained extensively by the demon's numerous cruel
+devices.
+</p>
+
+<p>
+If you have some contacts in the land beyond <<lore concept_mist>>, you could perhaps ask
+them to take in <<yourrep _u>> for a few weeks. Granted, the demons will
+likely take this request in exchange for the favor they owed you, but
+having an opportunity to break the defiant mind of <<rep _u>> is not
+something you can just easily pass. Still, you have heard rumors about the
+unspeakable torture the demons would inflict upon those unlucky mortal, and
+you can only imagine what kind of trauma <<rep _u>> will end up <<dangertext 'permanently'>>
+with should you go through with this idea...
+</p>
+
+<p>
+Alternatively, you can always ignore this quest, and try to break the slave via other means.
+</p>
+
+<</if>>
+
+
+:: Quest_bargain_with_the_devilCrit [nobr]
+
+<<if $g.demon.isMale() && $g.slave.isMale()>>
+  <<questimage "bargain_with_the_devil_male.jpg">>
+<<elseif $g.slave.isMale()>>
+  <<questimage "bargain_with_the_devil_female.jpg">>
+<</if>>
+
+<p>
+Having secured a bargain with your demonic contact, your team arrived at the
+predetermined location — an ancient ruins in the middle of nowhere in the
+<<lore region_desert>>. Once there, <<rep $g.negotiator>> could suddenly feel the air shifted
+as a demonic portal formed before your slavers' eyes. From within, a demon
+<<lady $g.demon>> clad in full latex gear came out, with
+<<their $g.demon>> pet mortal, an
+<<if $g.slave.isMale()>>
+utterly handsome and well built male dressed in nothing but a collar and a leash,
+<<else>>
+utterly beautiful and well-toned female dressed in nothing but a collar and a leash,
+<</if>>
+surely part of <<their $g.demon>> training for breaking <<yourrep $g.slave>>.
+Seeing the cruel grin in the demonic lady's face, <<rep $g.guard1>> swore that
+<<they $g.guard1>> saw fear starting to form in the defiant slave's eyes, but
+before long both the demon and <<yourrep $g.slave>> vanished out of thin air.
+</p>
+
+<p>
+Your slavers spent the next few weeks in the nearest city, getting themselves
+as drunk as possible while having the tavern wenches serve their every needs,
+trying their best not to imagine what fate they had sent <<rep $g.slave>> to.
+Once a few weeks had passed, your slavers returned to the same ruins they
+went to before. The demon <<lady $g.demon>> casually awaited them there, before
+tossing the badly damaged body of <<rep $g.slave>>. Fearing the worst,
+<<yourrep $g.negotiator>> approached the body, but to <<their $g.negotiator>>
+relief, the slave was still breathing and well. But the change in <<their
+$g.slave>> <<ueyes $g.slave>> was apparent:
+<<if $g.slave.isHasTrait('per_stubborn')>>
+there was almost no trace of the stubbornly defiant eyes the slave used to glare at your slavers with.
+<<elseif $g.slave.isHasTrait('per_dominant')>>
+the slave almost feels submissive, a strong contrast with <<their $g.slave>> dominant former slave.
+<<elseif $g.slave.isHasTrait('per_brave')>>
+there were traces of fear lining in <<their $g.slave>> eyes now, a strong
+contrast from <<their $g.slave>> once brave self.
+<<else>>
+there were no trace of the fire of defiancy that once burned so brightly in <<their
+$g.slave>> before.
+<</if>>
+The demon was good at <<their $g.demon>> job: the slave was left broken, damaged, but otherwise
+not fully mindbroken.
+As <<rep $g.guard1>> picked up the barely functional body of <<rep $g.slave>>
+for the trip home, the demon
+<<if $g.demon.isFemale()>>
+blew your slavers a kiss
+<<else>>
+let out a menacing growl
+<</if>>
+before asking your slavers to send a message to you that the bargain had been completed, and then vanishing
+into thin air.
+</p>
+
+<p>
+Once back at the fort, your slave will definitely need a long rest after
+these trials. But something else seems to have also broke inside the slave —
+and a life-lasting trauma is going to haunt <<them $g.slave>> for the rest of
+<<their $g.slave>> life... Ah well, it's not like a trauma or two is going to
+affect a slave's purpose: to serve you and whoever you decide to be <<their
+$g.slave>> <<master $unit.player>>.
+</p>

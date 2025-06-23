@@ -1,0 +1,113 @@
+:: QuestSetup_angry_peasants [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'angry_peasants', /* key */
+"Angry Peasants", /* Title */
+"darko", /* Author */
+[
+  'special', 'vale',
+], /* tags */
+2, /* weeks */
+1, /* quest expiration weeks */
+{ /* roles */
+'tank2': [setup.qu.tank, 0.3],
+'tank1': [setup.qu.tank, 0.3],
+'dps1': [setup.qu.fighter, 0.3],
+'dps2': [setup.qu.fighter, 0.3],
+'dps3': [setup.qu.dps, 0.3],
+'dps4': [setup.qu.dps, 0.3],
+'dps5': [setup.qu.dps, 0.3],
+'healer1': [setup.qu.healer, 0.3],
+'healer2': [setup.qu.healer, 0.3],
+'healer3': [setup.qu.healer, 0.3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_angry_peasants',
+setup.qdiff.harder46, /* difficulty */
+[ /* outcomes */
+[
+'Quest_angry_peasantsCrit',
+[
+setup.qc.BoonizeRandom('tank1', 2),
+setup.qc.BoonizeRandom('tank2', 2),
+setup.qc.BoonizeRandom('dps1', 2),
+setup.qc.BoonizeRandom('dps2', 2),
+setup.qc.BoonizeRandom('dps3', 2),
+setup.qc.BoonizeRandom('dps4', 2),
+setup.qc.BoonizeRandom('dps5', 2),
+setup.qc.BoonizeRandom('healer1', 2),
+setup.qc.BoonizeRandom('healer2', 2),
+setup.qc.BoonizeRandom('healer3', 2),
+],
+], [
+'Quest_angry_peasantsCrit',
+[
+],
+], [
+'Quest_angry_peasantsCrit',
+[
+setup.qc.Injury('tank1', 1),
+setup.qc.Injury('tank2', 2),
+setup.qc.Injury('dps1', 2),
+setup.qc.Injury('dps2', 2),
+setup.qc.Injury('dps3', 1),
+setup.qc.Injury('dps4', 1),
+setup.qc.Injury('dps5', 1),
+setup.qc.Injury('healer1', 2),
+setup.qc.Injury('healer2', 1),
+setup.qc.Injury('healer3', 2),
+],
+], [
+'Quest_angry_peasantsDisaster',
+[
+setup.qc.MoneyCustom(-1000),
+setup.qc.QuestDirect('angry_peasants'),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+setup.qc.MoneyCustom(-1000),
+setup.qc.QuestDirect('angry_peasants'),
+],
+)>>
+
+:: Quest_angry_peasants [nobr]
+<p>
+Thanks to your recent actions, you have fully irked the
+<<rep $company.humanvale>>.
+As a result, a group of angry peasants are now making camp just outside of your fort,
+harrassing your slavers whenever they go out.
+You have no choice but to let a lot of your slavers join forces and repel this threat. And by a lot, it actually means a lot...
+</p>
+
+<p>
+<<dangertext 'Warning'>>: this quest will remain until you clear it! Each week this quest remain, some money will be deducted from your coffers to cover the repairs for the damages sustained by your fort.
+</p>
+
+
+
+:: Quest_angry_peasantsCrit [nobr]
+<p>
+Led by <<rep $g.tank1>> and <<utheirrel $g.tank1 $g.tank2>> <<rep $g.tank2>>, your slavers finally repelled the peasant uprising and send the attackers back home.
+<<if $gOutcome == 'crit'>>
+Your slavers were so fierce during the fight that the enemy fled much earlier than expected, inspiring your slavers with confidence.
+<<elseif $gOutcome == 'failure'>>
+Your slavers sustained minor injuries during the fight.
+<</if>>
+</p>
+
+
+:: Quest_angry_peasantsDisaster [nobr]
+<p>
+Somehow, your slavers were handily beaten by the peasants.
+They continue their assault on your fort, and you have to try and send another team to repel them.
+More competent ones, this time!
+</p>

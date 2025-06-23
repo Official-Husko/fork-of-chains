@@ -1,0 +1,158 @@
+:: QuestSetup_dwarven_alchemy [nobr quest]
+
+
+
+
+
+
+
+<<run new setup.QuestTemplate(
+'dwarven_alchemy', /* key */
+"Dwarven Alchemy", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'deep',
+  'item',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'alchemist': [ setup.qu.alchemist, 1],
+  'fighter': [ setup.qu.fighter_deep, 1],
+  'support': [ setup.qu.support, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_dwarven_alchemy',
+setup.qdiff.hard50, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_dwarven_alchemyCrit',
+    [
+      setup.qc.Item(setup.item.potion_perk_null_physical, 1),
+    ],
+  ],
+  [
+    'Quest_dwarven_alchemyCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.PerkChoice('alchemist', 'perk_null_physical', undefined),
+setup.qc.PerkChoice('fighter', 'perk_null_physical', undefined),
+setup.qc.PerkChoice('support', 'perk_null_physical', undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_dwarven_alchemyCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_dwarven_alchemyCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.OneRandomSeed([
+setup.qc.Injury('alchemist', 4),
+setup.qc.Injury('fighter', 4),
+setup.qc.Injury('support', 4)
+]),
+setup.qc.OneRandomSeed([
+setup.qc.Trait('alchemist', setup.trait.per_lustful),
+setup.qc.Trait('fighter', setup.trait.per_lustful),
+setup.qc.Trait('support', setup.trait.per_lustful)
+])
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_dwarven_alchemy [nobr]
+<p>
+    The ancient dwarves are rumored to be many things. Great engineers, fierce fighters, and also scholarly student. Many ancient dwarven ruins litter the <<lore region_deep>>, holding secrets for the brave and the foolish.
+</p>
+
+<p>
+    One of your contacts has informed you that an ancient dwarven laboratory has just been unearthed. It is too far within the infested region of the <<lore region_deep>>, however, which is making it hard to loot. If you act fast, you could perhaps obtain some of the rare treasure within all for yourself. Rumors say that the dwarves also dabbles in alchemy, and who knows what kind of strange concotions you might be able to find there. And who knows if they are still in a good, drinkable condition...
+</p>
+
+
+
+
+:: Quest_dwarven_alchemyCrit [nobr]
+<p>
+    <<Rep $g.fighter>> <<uadv $g.fighter>> fought off all the monsters as <<they $g.fighter>> led the team deeper and deeper, until they reach the supposed ancient laboratory. It has been completely ruined, and most of the glass apparatus has been shattered beyond repair. There is one room, however, that seems to have remained locked away for centuries. Your slavers forced the door open before entering...
+</p>
+
+<<if $gOutcome == 'failure'>>
+    <p>
+        Unfortunately, the room was just an ordinary office. There was nothing of value in there, and most certainly no ancient potion to loot. Your slavers gave up, and returned home empty handed.
+    </p>
+<<elseif $gOutcome == 'crit'>>
+    <p>
+        The room was an ancient storage for various dwarven potions. Judging from the black-ish colors of most, the potions seem to have all gone stale... except for one. A single, blue-ish potion remained almost pristine, withstanding the test of time. <<Rep $g.alchemist>> identified it as the <<rep setup.item.potion_perk_null_physical>>, one of the many tools the ancient dwarves used to ensure their height would not cause problems for their endeavors. An extremely rare find!
+    </p>
+<<else>>
+    <p>
+        The room was an ancient storage for various dwarven potions. Judging from the black-ish colors of most, the potions seem to have all gone stale... except for one. A single, blue-ish potion remained almost pristine, withstanding the test of time. Unfortunately, the bottle is cracked, and <<rep $g.alchemist>> judged that it would not be possible to bring its contents home. But instead of leaving home empty-handed,
+        <<if $gQuest.getSeed() % 3 == 0>>
+            <<set $g.o = $g.alchemist>>
+        <<elseif $gQuest.getSeed() % 3 == 1>>
+            <<set $g.o = $g.fighter>>
+        <<elseif $gQuest.getSeed() % 3 == 2>>
+            <<set $g.o = $g.support>>
+        <</if>>
+        <<Rep $g.o>> volunteered to gulp down the unknown concoction, and hoped it's something beneficial...
+    </p>
+
+    <<if $gOutcome == 'success'>>
+        <p>
+            And indeed it was! The vial turned out to contain the <<rep setup.item.potion_perk_null_physical>>, that the ancient dwarves use to make up for their height. A feat that now <<rep $g.o>> o|have learnt as well.
+        </p>
+    <<else>>
+        <p>
+
+            <<if $gQuest.getSeed() % 2 == 0>>
+                The potion unfortunately turned out to be the
+                <<rep setup.item.potion_pain>>.
+                <<Rep $g.o>> dropped down almost immediately after gulping it down, artificial injuries suddenly appearing all through <<their $g.o>> body. Your remaining slavers had to carry the injured <<urace $g.o>> back home, amidst the sea of monsters in the realm.
+            <<elseif $gQuest.getSeed() % 2 == 1>>
+                The potion turned out to be the rare <<rep setup.item.potion_lust>>. It seems even the ancient dwarves has learned how to concoct the infamous sex-addicting potion.
+                <<if $g.o.isHasTrait('per_lustful')>>
+                    Thankfully, <<rep $g.o>> o|was already quite lusty, meaning the potion has no effect.
+                <<else>>
+                    <<Rep $g.o>> became noticably addled soon after dazzling the potion,
+                    <<if $g.o.isHasDick()>>
+                        their dick suddenly rock hard.
+                    <<else>>
+                        their face immediately flush with arousal...
+                    <</if>>
+                    <<Rep $g.o>> had become more lusty, and whether or not this is a good thing remain to be seen...
+                <</if>>
+
+            <</if>>
+
+        </p>
+    <</if>>
+
+<</if>>
+
+
+
+
+

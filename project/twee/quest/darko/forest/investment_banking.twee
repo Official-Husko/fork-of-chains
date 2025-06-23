@@ -1,0 +1,234 @@
+:: QuestSetup_investment_banking [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _slaveorder = setup.qc.SlaveOrderFlex(
+'Tiger Bank Slave Order', /* name */
+'bank', /* company */
+8, /* expires in */
+1500, /* base price */
+0, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.NoTrait(setup.trait.training_mindbreak),
+setup.qres.AnyTrait([setup.trait.race_elf, setup.trait.race_catkin], true),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.bg_clerk,
+setup.trait.bg_informer,
+setup.trait.bg_scholar,
+setup.trait.per_smart,
+setup.trait.face_attractive,
+setup.trait.per_gregarious,
+setup.trait.per_frugal,
+setup.trait.per_sly,
+setup.trait.per_logical,
+setup.trait.per_evil,
+setup.trait.per_serious,
+setup.trait.skill_connected
+], 5, 0, 0),
+],
+[ /* fulfilled outcomes */
+setup.qc.UnitValueToFavor('bank', 1.0 / 40.0, 75.0)
+],
+[ /* unfulfilled outcomes */
+setup.qc.Ire('bank', 3),
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'investment_banking', /* key */
+"Investment Banking", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'favor',
+  'order',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'banker1': [ setup.qu.bureaucrat, 1],
+  'banker2': [ setup.qu.bureaucrat, 1],
+  'briber': [ setup.qu.briber, 1],
+},
+{ /* actors */
+  'agent': 'quest_event_loan_tiger1',
+  'slave': 'subrace_elf',
+  'neko': 'subrace_neko',
+},
+[ /* costs */
+],
+'Quest_investment_banking',
+setup.qdiff.normal27, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_investment_bankingCrit',
+    [
+      setup.qc.Favor('bank', 75),
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_investment_bankingCrit',
+    [
+      _slaveorder,
+    ],
+  ],
+  [
+    'Quest_investment_bankingCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.Ire('bank', 4),
+    ],
+  ],
+  [
+    'Quest_investment_bankingCrit',
+    [
+      setup.qc.OneRandom([
+setup.qc.Ire('bank', 8),
+setup.qc.Ire('bank', 9),
+setup.qc.Ire('bank', 10)
+]),
+      setup.qc.SlaverMarker('neko'),
+      setup.qc.SlaveMarker('slave'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Cooldown(12),
+  setup.qres.Building(setup.buildingtemplate.greathall),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_investment_banking [nobr]
+
+<p>
+The <<rep $company.bank>> is headquartered in the <<lore location_npc>>.
+As the largest banking institution in <<lore geo_mestia>>,
+they are one of the most powerful institutions in <<lore geo_mestia>>, weilding
+considerable influence over many aspects of life that often go quite unnoticed by everyday people.
+It is always wise to have them as allies, even for a slaving company such as yourself.
+</p>
+
+<p>
+Your "friend" from the banking institution, <<rep $g.agent>>, has again came
+to your fort with a proposal.
+</p>
+
+<<dialogue $g.agent>>
+An investment for both our benefits, <<name
+$g.agent>> likes to think!
+<</dialogue>>
+
+<p>
+The bank is apparently looking for new "employees" to fill out their ranks, and isn't shy
+from asking your company to headhunt them a suitable candidate. Literally so if need be.
+</p>
+
+<p>
+If your company is interested, <<rep $g.agent>> has invited you to send a 'recuitment' team to visit their
+headquarters to further discuss the specific qualities the bank is looking for in ther perfect new 'employee'.
+</p>
+
+<p>
+You just need a group of slavers clever enough to navigate through the labyrinth of red
+tape that the <<rep $company.bank>>, is known for...
+</p>
+
+
+
+:: Quest_investment_bankingCrit [nobr]
+
+<p>
+Your slavers arrived at the <<lore location_npc>> fairly quickly. Once there,
+they made a beeline for the headquarters, and were greeted by an elven attendant, wearing very skimpy
+clothes that barely covers <<their $g.slave>>
+<<if $g.slave.isFemale()>>
+massive, almost unnatural tits.
+<<else>>
+massive, almost unnatural dick.
+<</if>>
+As your slavers were escorted by the attendant,
+<<if $g.briber.isHasTrait('per_chaste')>>
+the chaste slaver <<rep $g.briber>> tried <<their $g.briber>> best not to look towards
+<<elseif $g.briber.isHasTrait('per_lustful')>>
+<<rep $g.banker1>> almost had to restrain the lustful <<urace $g.briber>>
+<<rep $g.briber>> from going after
+<<else>>
+<<rep $g.briber>> looked wide-eyedly at the
+<</if>>
+<<if $g.slave.isFemale()>>
+tits, as it jiggled during <<their $g.slave>> every step.
+<<else>>
+dick, as it swung with <<their $g.slave>> every step.
+<</if>>
+Fortunately the distraction was quickly forgotten as they met with the neko
+supervisor, a <<man $g.neko>> probably in <<their $g.neko>> thirties, wearing
+the sharpest suit your slavers ever laid their eyes on.
+</p>
+
+<p>
+The negotiation then ensued, with <<rep $g.banker1>>
+<<if $g.banker1.isHasTrait('per_chaste')>>
+shyly averting <<their $g.banker1>> gaze from the
+<<elseif $g.banker1.isHasTrait('per_lustful')>>
+openly sneaking a glance or two towards the
+<<else>>
+occasionally distracted by the 
+<</if>>
+ever present 
+<<if $g.slave.isFemale()>>
+voluptuous 
+<<else>>
+hunky 
+<</if>>
+elf.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success' || $gOutcome == 'failure'>>
+
+<p>
+Fortunately, the negotiation went well. Your slavers managed to
+secure an "employee requisition" order to fill a vacant position. The negotiations were
+very intense, and your slavers almost didn't notice the slurping 
+sounds. <<Rep $g.banker2>> peeked under the table, and saw the elven
+attendant servicing the neko's <<ugenital $g.neko>> from underneath the table.
+...Perhaps this is why the slave order you have just received specifically
+mentioned an elven slave?
+</p>
+
+<p>
+<<if $gOutcome == 'failure'>>
+While the negotiation was successful, it seemed that <<rep $g.banker1>> had
+made a cultural faux pas, insulting their neko hosts.
+<<elseif $gOutcome == 'crit'>>
+<<Yourrep $g.banker1>> <<uadv $g.banker1>> negotiated a lucrative contract that was still 
+favourable for the neko, impressing their hosts and the <<rep $company.bank>> as a whole.
+<<else>>
+<</if>>
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+<p>
+Unfortunately, the negotiations fell apart before they really began.
+The neko were angered when
+<<upunishreason $g.banker2>>.
+Your slavers were kicked out of the building some time later, and your company has 
+earned the wrath of the <<rep $company.bank>>.
+</p>
+<</if>>

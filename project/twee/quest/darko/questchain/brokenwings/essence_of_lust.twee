@@ -1,0 +1,239 @@
+:: QuestSetup_essence_of_lust [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"essence_of_lust0",
+"Neko Whore",
+'subrace_neko', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_whore),
+  setup.qc.TraitReplace('unit', setup.trait.per_lustful),
+],
+)>>
+
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.HasTitle('quest_broken_descent_0'),
+],
+{
+}
+)>>
+
+<<set _criteriadowser = new setup.UnitCriteria(
+null, /* key */
+'Essence Dowser', /* name */
+[
+  setup.trait.race_wolfkin,
+  setup.trait.bg_wildman,
+  setup.trait.bg_hunter,
+  setup.trait.bg_woodsman,
+  setup.trait.bg_nomad,
+  setup.trait.dick_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.per_active,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_chaste,
+],
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_boss,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.bg_knight,
+  setup.trait.bg_metalworker,
+  setup.trait.bg_engineer,
+  setup.trait.bg_scholar,
+  setup.trait.bg_noble,
+  setup.trait.bg_courtesan,
+  setup.trait.bg_informer,
+  setup.trait.bg_slaver,
+  setup.trait.bg_artisan,
+  setup.trait.bg_laborer,
+  setup.trait.bg_thug,
+  setup.trait.bg_thief,
+  setup.trait.bg_raider,
+  setup.trait.bg_clerk,
+  setup.trait.bg_maid,
+  setup.trait.bg_merchant,
+  setup.trait.bg_foodworker,
+  setup.trait.bg_whore,
+  setup.trait.bg_unemployed,
+  setup.trait.bg_slave,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_dreamy,
+  setup.trait.per_empath,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  aid: 1,
+  arcane: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'essence_of_lust', /* key */
+"Essence of Lust", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'forest',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'dowser': [ _criteriadowser, 1],
+  'convincer2': [ setup.qu.convincer, 1],
+  'convincer1': [ setup.qu.convincer, 1],
+},
+{ /* actors */
+  'neko': 'essence_of_lust0',
+},
+[ /* costs */
+],
+'Quest_essence_of_lust',
+setup.qdiff.hard31, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_essence_of_lustCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('neko', "a|was a former whore who \"retired\" from a|their job and \"recruited\" into your company", undefined),
+    ],
+  ],
+  [
+    'Quest_essence_of_lustCrit',
+    [
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.Opportunity('restore_the_lust', {
+slave: "slave",
+}),
+    ],
+  ],
+  [
+    'Quest_essence_of_lustFailure',
+    [
+      setup.qc.MoneyCustom(-3000),
+    ],
+  ],
+  [
+    'Quest_essence_of_lustFailure',
+    [
+      setup.qc.MoneyCustom(-6000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoOpportunity('restore_the_lust'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('quest_broken_descent_0'),
+setup.qres.NoTitle('quest_lust_restore_3')
+]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_essence_of_lust [nobr]
+<<set _u = setup.getUnit({title: 'quest_broken_descent_0'})>>
+
+<<set _v = setup.getAnySlaver()>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<p>
+Your scouts tracked one of the missing essences of <<rep _u>> into the
+<<lore location_npc>>. Specifically, they tracked the source to one of the
+nameless whorehouses in the city. Apparently, one of its most "productive"
+neko employees had recently just retired, after <<they $g.neko>> had a
+suddenly found disgust for the profession. This may just be the lead you are
+looking for...
+</p>
+<</if>>
+
+
+:: Quest_essence_of_lustCrit [nobr]
+
+<p>
+Using <<reps $g.slave>> <<if $g.slave.isHasDick()>>dick<<else>>clit<</if>> as
+a living dowsing rod, <<rep $g.dowser>> pinpointed the source of the anomaly to one of
+the small houses in the city. After knocking on the door, your slavers were
+greeted with a neko seemingly downtrodden on <<their $g.neko>> luck, who was
+looking for a job. As <<they $g.neko>> explained, <<they $g.neko>> retired
+from <<their $g.neko>> previous occupation because whoring feels wrong — that
+a <<man $g.neko>> should only dedicate <<themself $g.neko>> to just one
+person. A strange thing to say for a neko and <<their $g.neko>> clearly very
+sexual culture.
+</p>
+
+<p>
+Your slavers came up on the spot with a strategy: <<rep $g.convincer1>> will
+try <<their $g.convincer1>> best recruiter impression while <<rep
+$g.convincer2>> would scour the place for the source of this sudden change in
+personality. After a while, <<rep $g.convincer2>> found a green-ish stone
+stuck on the chimney of the house. It took <<them $g.convincer2>> an hour to
+pull it out, before returning back to the entrance. With the stone very close
+to all parties involved, all your slavers could feel the power emanating from
+the stone: the power of chastity suggestion. Your slavers' minds became very
+clear, and all thoughts of sex were removed almost entirely to their sides.
+This must be the essence you were looking for.
+</p>
+
+<p>
+With their goal achieved, <<yourrep $g.convincer1>> <<uadv
+$g.convincer1>> excused <<themself $g.convincer1>>, before going back to your
+fort with the stone in tow.
+<<if $gOutcome == 'crit'>>
+However, it turned out that <<reps $g.convincer1>> recruiter impression was
+so strong that the neko later showed up at your fort, apparently trying to
+"apply" for the position offered. Well, there is always a space in your
+dungeons for a willing slave!
+<</if>>
+</p>
+
+
+:: Quest_essence_of_lustFailure [nobr]
+<p>
+Instead of successfully finding the source, your slavers got entirely lost in
+the complex layout of the city. By the time they decided to give up and
+return, they noticed their pockets were way lighter than what they had when they entered the city.
+It appeared that your slavers had fallen victim to the rampant pickpocketry in the
+city, and you'll have to compensate them from the company's coffers...
+</p>

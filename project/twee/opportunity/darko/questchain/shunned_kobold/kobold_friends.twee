@@ -1,0 +1,94 @@
+:: OpportunitySetup_kobold_friends [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'kobold_friends', /* key */
+"Kobold Friends", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_kobold_friends',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_kobold_friends_0',
+    outcome_passage: 'Opportunity_kobold_friends_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_gregarious),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_kobold_friends_1',
+    outcome_passage: 'Opportunity_kobold_friends_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_loner),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'kobold': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_kobold_friends [nobr]
+<p>
+    The kobold is unsure how to feel about making surface friends.
+    Maybe it's better to just rely on your own strength?
+</p>
+
+
+:: Opportunity_kobold_friends_0 [nobr]
+Friends are good
+
+
+:: Opportunity_kobold_friends_0_flavor [nobr]
+<p>
+    Friends are always a good thing to have.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> has opened up to more of your other slavers, and becoming a better talker as a result.
+</p>
+
+
+:: Opportunity_kobold_friends_1 [nobr]
+Rely on yourself
+
+
+:: Opportunity_kobold_friends_1_flavor [nobr]
+<p>
+    Everyone is out for nobody but themself.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> has become a bit more distant, and would prefer their own company the most.
+</p>
+

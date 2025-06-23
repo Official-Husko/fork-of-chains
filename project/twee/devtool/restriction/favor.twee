@@ -1,0 +1,63 @@
+:: RestrictionFavorAtLeast [nobr]
+
+At <<dangertext 'LEAST'>> <<numberbox '_favor' 300>> favor with:
+<<message '(?)'>>
+  Insert this as 10 times the amount displayed in game.
+  For example, to add 20.5 favor, put 205.
+  Maximum favor is <<= setup.FAVOR_MAX >>.
+  5.0 favor is worth <<money 1000>>.
+<</message>>
+
+<<for _icompany, _company range $company>>
+  <<capture _company>>
+    <<if _company != $company.player>>
+      <br/>
+      <<rep _company>>
+      <<link '(select this)' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qres.FavorAtLeast(_company, _favor)>>
+      <</link>>
+    <</if>>
+  <</capture>>
+<</for>>
+
+
+:: RestrictionIreAtLeast [nobr]
+
+At <<dangertext 'LEAST'>> <<numberbox '_ire' 20>> ire with:
+<<message '(?)'>>
+  1 ire is worth <<money 500>>. When ire reaches 20,
+  something bad will happen to the company.
+<</message>>
+
+<<for _icompany, _company range $company>>
+  <<capture _company>>
+    <<if _company != $company.player>>
+      <br/>
+      <<rep _company>>
+      <<link '(select this)' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qres.IreAtLeast(_company, _ire)>>
+      <</link>>
+    <</if>>
+  <</capture>>
+<</for>>
+
+
+:: RestrictionHaveMetCompany [nobr]
+
+Have met with the following company:
+<<message '(?)'>>
+  You are considered to have met a company when you ever gain favor / ire from them.
+<</message>>
+
+<<for _icompany, _company range $company>>
+  <<capture _company>>
+    <<if _company != $company.player>>
+      <br/>
+      <<rep _company>>
+      <<link '(select this)' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qres.HaveMetCompany(_company)>>
+      <</link>>
+    <</if>>
+  <</capture>>
+<</for>>
+

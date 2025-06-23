@@ -1,0 +1,82 @@
+:: QuestSetupTreatmentHealAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'treatment_heal_advanced',  /* id */
+  'Treatment: Heal (Advanced)',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait',],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.heal_head,
+    'assistant1': setup.qu.heal_assistant,
+    'assistant2': setup.qu.heal_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.healing_potion_greater),
+  ],  /* costs */
+  'TreatmentHealAdvanced',  /* description */
+  setup.qdiff.normal40,
+  [
+    [
+      'TreatmentHealAdvancedCrit',
+      [
+        setup.qc.Heal('trainee', 12),
+      ]
+    ],
+    [
+      'TreatmentHealAdvancedSuccess',
+      [
+        setup.qc.Heal('trainee', 8),
+      ],
+    ],
+    [
+      'TreatmentHealAdvancedFailure',
+      [
+        setup.qc.Heal('trainee', 4),
+      ],
+    ],
+    [
+      'TreatmentHealAdvancedDisaster',
+      [
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentHealAdvanced [nobr]
+<p>
+Heal a unit using intensive potion treatment, which removes about 7 weeks worth of injuries.
+</p>
+
+:: TreatmentHealAdvancedCrit [nobr]
+<p>
+<<Rep $g.head>> directed the healing procedure, effectively using the
+<<rep setup.item.healing_potion_greater>> to heal an extraordinarily large amount of injuries
+from <<rep $g.trainee>>.
+</p>
+
+:: TreatmentHealAdvancedSuccess [nobr]
+<p>
+The healing procedure went about as well as expected,
+with the
+<<rep setup.item.healing_potion_greater>> being used with standard efficiency to sufficiently heal
+<<rep $g.trainee>>.
+</p>
+
+:: TreatmentHealAdvancedFailure [nobr]
+<p>
+<<Rep $g.head>> head|was wasteful in <<their $g.head>> use of the
+<<rep setup.item.healing_potion_greater>> and only able to heal <<rep $g.trainee>> by a small amount.
+</p>
+
+:: TreatmentHealAdvancedDisaster [nobr]
+<p>
+Your slavers mismanaged the healing operation resulting in the <<rep setup.item.healing_potion_greater>> being
+completely wasted without any noticable effect on <<rep $g.trainee>>.
+</p>

@@ -1,0 +1,223 @@
+:: QuestSetup_the_virgin_raider [nobr quest]
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Virgin Raider Capturer', /* name */
+[
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_nomad,
+  setup.trait.per_loner,
+  setup.trait.per_attentive,
+  setup.trait.per_lunatic,
+  setup.trait.skill_flight,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.subrace_humanvale,
+  setup.trait.subrace_werewolf,
+  setup.trait.per_gregarious,
+  setup.trait.per_dreamy,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+],
+{
+  combat: 1,
+  survival: 1,
+  slaving: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_virgin_raider', /* key */
+"The Virgin Raider", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'money',
+  'veteran',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'slave': 'all',
+},
+[ /* costs */
+],
+'Quest_the_virgin_raider',
+setup.qdiff.hardest46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_virgin_raiderCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(2000),
+    ],
+  ],
+  [
+    'Quest_the_virgin_raiderCrit',
+    [
+      setup.qc.IfThenElse(
+setup.qres.HasUnitWithTagAndJob('quest_doppelganged', setup.job.slaver),
+setup.qc.DoAll([
+setup.qc.SetCooldownQuest(null, 200),
+setup.qc.VarSet('quest_doppelganger_progress', '1', -1),
+setup.qc.SetCooldownEvent('out_of_character', 5)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Favor('outlaws', 50),
+setup.qc.MoneyCustom(1500)
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_the_virgin_raiderFailure',
+    [
+      setup.qc.MissingUnit('a'),
+    ],
+  ],
+  [
+    'Quest_the_virgin_raiderFailure',
+    [
+      setup.qc.MissingUnit('a'),
+      setup.qc.Trait('a', setup.trait.bg_slave),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.NoUnitWithTitle('quest_doppelganger', {
+}),
+  setup.qres.NoUnitWithTitle('quest_doppelganged', {
+}),
+  setup.qres.NoUnitWithTag('quest_doppelganged'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_virgin_raider [nobr]
+<p>
+Your company receives quests of many kinds, be it from the many settlements in the region, the banking institution, and occasionally the outlaws. This time, its from the latter, as apparently a raiding company in the <<lore region_desert>> has been hearing disturbing rumors of a solo raider known as the Virgin Raider. Normally, they would not bother with an independent raider such as this one, but the Virgin Raider has apparently been targeting the desert virgins at night and gaping their once virginal tight holes, reducing the potential slave values of the company's captives.
+</p>
+
+<p>
+Due to the nature of the quest, however, the company requests that you only send a single slaver for this mission. With more slavers, they suspect that the Virgin Raider would caught wind of it, making it harder for your slavers to try to capture the raider. They promise quite a large amount of bounty for the raider, should your slaver succeed. Still, you can't help but feel that there is something incredibly off about all of this...
+</p>
+
+
+
+
+
+:: Quest_the_virgin_raiderCrit [nobr]
+<<if $g.a.isHasAnyTraitExact([
+'per_playful',
+'per_lustful',
+'per_sexaddict',
+'per_curious',
+'per_lunatic',
+])>>
+
+<<run setup.qc.AddTag('a', 'quest_doppelganged').apply($gQuest)>>
+<p>
+<<Yourrep $g.a>> a|was not able to find anything of the sort, even after four weeks of waiting and scouring through the vast <<lore region_desert>>. Understandably, the raiders did not pay your slaver, and <<they $g.a>> came back home empty-handed.
+</p>
+
+<p>
+Oddly enough, the Virgin Raider seems to have ceased their operations a few days after your slaver went back home.
+<<if $gOutcome == 'crit'>>
+The grateful villagers even attributed it to your slaver somehow, and you receive some money in return.
+<</if>>
+Strange, considering what your slaver had reported, but perhaps it is just a good coincidence.
+</p>
+
+<<else>>
+
+<p>
+<<Yourrep $g.a>> went alone into the vast <<lore region_desert>> and scoured the vast deserts for information.
+<<if $g.a.isHasTrait('bg_nomad')>>
+<<Rep $g.a>> a|is used to traveling thanks to <<their $g.a>> background as a nomad.
+<</if>>
+<<if $g.a.isHasTrait('race_greenskin') or $g.a.isHasTrait('subrace_humandesert')>>
+The vast deserts are <<their $g.a>> home, and <<rep $g.a>> felt natural venturing across the featureless sands.
+<</if>>
+<<if $g.a.isHasTrait('per_loner')>>
+<<They $g.a>> is a natural loner, and traveling alone was comforting for <<them $g.a>>.
+<</if>>
+<<if $g.a.isHasTrait('per_gregarious')>>
+Traveling alone took a toll on the gregarious slaver.
+<</if>>
+<<if $g.a.isHasTrait('magic_fire')>>
+<<Their $g.a>> fire magic helped <<them $g.a>> ward off the heat of the deserts.
+<</if>>
+<<if $g.a.isHasTrait('magic_water')>>
+<<Their $g.a>> affinity to water magic and the cold weather meant the harsh sunlight of the deserts were burning extra bright for <<them $g.a>>.
+<</if>>
+<<if $g.a.isHasTrait('subrace_humanvale') or $g.a.isHasTrait('subrace_werewolf')>>
+<<Rep $g.a>> hailed from the cold plains of the north, and the searing heat of the deserts is not something <<they $g.a>> appreciate.
+<</if>>
+</p>
+
+<p>
+After a few weeks, <<they $g.a>> finally got a lead, as the raider was rumored to hit the village <<they $g.a>> just so happened to be in within a few days. <<They $g.a>> waited
+<<if $g.a.isHasTrait('per_calm')>>
+patiently
+<<else>>
+impatiently
+<</if>>
+for the raider to give the village a visit, and soon enough a small muffled scream could be heard during a night.
+<<if $g.a.isHasTrait('per_attentive')>>
+While other, less attentive <<man $g.a>> would not take note, <<rep $g.a>> a|is a rare breed of an attentive <<urace $g.a>>, and <<they $g.a>> tracked the source of the moans into a dark alley in the village.
+<<else>>
+Despite not being particularly attentive, <<rep $g.a>> a|was simply lucky to stumble across the alley where the moans were coming from.
+<</if>>
+</p>
+
+<p>
+<<Rep $g.a>> caught the virgin raider off guard, <<their $g.a>>
+<<if $g.a.isHasDick()>>dick<<else>>strap-on<</if>> lodged deep inside a struggling villager, and <<rep $g.a>> had no trouble at all subduing the raider. With the raider captured, the grateful villagers threw <<them $g.a>> a small feast, as well as a sum of money out of <<their $g.a>> gratitude. Combined with the money that the outlaws also rewarded, <<rep $g.a>> came back home with a
+<<if $gOutcome == 'crit'>>
+rather sizable bag of coins.
+<<else>>
+large bag of coins.
+<</if>>
+</p>
+
+<p>
+Strangely enough, you have a hunch that there might be something more to this quest.
+If you trust your hunch,
+next time you should send a different slaver on this mission,
+preferably someone who
+<<if $gQuest.getSeed() % 4 == 0>>
+is a bit not right in their head...
+<<elseif $gQuest.getSeed() % 4 == 1>>
+enjoys playing a little bit too much...
+<<elseif $gQuest.getSeed() % 4 == 2>>
+enjoys sex more than usual...
+<<else>>
+is curious about most things...
+<</if>>
+</p>
+
+<</if>>
+
+
+
+:: Quest_the_virgin_raiderFailure [nobr]
+<p>
+Venturing into the <<lore region_desert>> alone, <<yourrep $g.a>> never came back home. It is unclear what had happened, but you had a strange feeling that this was all just a simple ruse by the desert outlaws to get their hands on a rather valuable piece of slave...
+</p>

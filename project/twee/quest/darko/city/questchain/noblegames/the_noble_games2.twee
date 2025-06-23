@@ -1,0 +1,321 @@
+:: QuestSetup_the_noble_games2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_the_noble_games21',
+"Opponent Knight",
+'city_all',  /* pools */
+0, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_adventurer), ],
+)>>
+
+<<set _criteriaknight = new setup.UnitCriteria(
+null, /* key */
+'Knight', /* name */
+[
+setup.trait.bg_knight,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.per_serious,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_honorable,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+],
+[
+setup.trait.muscle_thin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_extremelythin,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_loner,
+setup.trait.per_cruel,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.per_evil,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+combat: 3,
+}
+)>>
+
+<<set _criteriascout = new setup.UnitCriteria(
+null, /* key */
+'Scout', /* name */
+[
+setup.trait.eyes_neko,
+setup.trait.eyes_dragonkin,
+setup.trait.per_aggressive,
+setup.trait.per_attentive,
+setup.trait.skill_flight,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+],
+[
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_calm,
+setup.trait.per_dreamy,
+setup.trait.per_sexaddict,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+survival: 3,
+}
+)>>
+
+<<set _criteriasparrer = new setup.UnitCriteria(
+null, /* key */
+'Sparrer', /* name */
+[
+setup.trait.height_giant,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.tough_tough,
+setup.trait.per_stubborn,
+],
+[
+setup.trait.height_dwarf,
+setup.trait.muscle_verythin,
+setup.trait.muscle_extremelythin,
+setup.trait.tough_nimble,
+setup.trait.per_curious,
+setup.trait.per_masochistic,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+brawn: 3,
+}
+)>>
+
+<<set _criteriapony = new setup.UnitCriteria(
+null, /* key */
+'Pony', /* name */
+[
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.tough_tough,
+setup.trait.per_active,
+setup.trait.training_pony_basic,
+setup.trait.training_pony_advanced,
+setup.trait.training_pony_master,
+setup.trait.eq_valuable,
+setup.trait.eq_veryvaluable,
+setup.trait.eq_pony,
+],
+[
+setup.trait.muscle_verythin,
+setup.trait.muscle_extremelythin,
+setup.trait.tough_nimble,
+setup.trait.per_studious,
+setup.trait.per_chaste,
+setup.trait.training_mindbreak,
+setup.trait.training_none,
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('the_noble_games'),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_noble_games2', /* key */
+"The Noble Games: Martial", /* Title */
+"darko", /* Author */
+[ 'city', 'prep', 'special', 
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'knight': _criteriaknight,
+'scout': _criteriascout,
+'sparrer': _criteriasparrer,
+'pony': _criteriapony, },
+{ /* actors */
+'enemy': 'quest_the_noble_games21', },
+[ /* costs */
+],
+'Quest_the_noble_games2',
+setup.qdiff.hard37, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_noble_games2Crit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_the_noble_games2Crit',
+[
+setup.qc.VarSet('the_noble_games_progress', '2', -1),
+setup.qc.Slave('enemy', "a|was a participant in the Noble Games who lost to your slavers in the second bout of the games", undefined), ],
+], [
+'Quest_the_noble_games2Crit',
+[
+setup.qc.VarRemove('the_noble_games_progress'),
+setup.qc.RemoveTitleGlobal('the_noble_games'),
+setup.qc.Injury('knight', 12), ],
+], [
+'Quest_the_noble_games2Crit',
+[
+setup.qc.VarRemove('the_noble_games_progress'),
+setup.qc.RemoveTitleGlobal('the_noble_games'),
+setup.qc.MissingUnitRecapture('knight', 'capturedmedium'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarEqual('the_noble_games_progress', '1'), ],
+[ /* expiration outcomes */
+setup.qc.VarRemove('the_noble_games_progress'),
+setup.qc.RemoveTitleGlobal('the_noble_games'), ],
+)>>
+
+:: Quest_the_noble_games2 [nobr]
+
+<p>
+You, or rather your slavers receive an invitation to the second bout of the
+Noble Games. This time, it is going to be held in a secret mansion just outside of
+the <<lore region_city>>. The participants are
+expected to show their martial prowess this time, culminating in a one-on-one
+fight atop a horseback.
+</p>
+
+<p>
+You will need to select one of your slavers to champion the team — but only
+among those slavers and slave who were participating the previous games
+can partake in this phase of the game.
+The other slavers should also be there to support the champion, by
+scouting the enemy and helping the champion train.
+</p>
+
+<p>
+<<dangertextlite 'Warning'>>: Failure to complete this mission will forfeit
+your slavers from the Noble Games, and it has to be reattempted from the
+beginning.
+</p>
+
+
+:: Quest_the_noble_games2Crit [nobr]
+
+<<set _pony = $g.pony.isHasTrait('training_pony_basic') && $g.pony.isHasTrait('eq_pony')>>
+
+<p>
+<<Rep $g.knight>> <<uadv $g.knight>> trained with <<rep $g.sparrer>> in
+preparation for the upcoming fight, while <<yourrep $g.scout>> headed over to
+the enemy team to scout the opponent. The opponent seemed like a <<uadj
+$g.enemy>> <<man $g.enemy>>, with a well-trained <<ubody $g.enemy>>. The
+fight wouldn't be easy, especially since it would be done on a horseback —
+<<if $g.knight.isHasTrait('bg_knight')>>given <<rep $g.knight>> past,
+however, it did not become an issue.
+<<else>>
+which <<rep $g.knight>> knight|was not at all accustomed to.
+<</if>>
+<<if _pony>>
+However, looking at the geared-up <<rep $g.pony>> your slavers had another
+idea...
+<<else>>
+The lack of horse also presented a problem, and your slavers had to pay <<money
+1000>> to rent a suitable one.
+<<run $company.player.substractMoney(1000)>>
+<</if>>
+</p>
+
+
+<p>
+The day has come for the fight. The opponent <<rep $g.enemy>> came in riding
+on a white horse, seemingly ready for the fight. Meanwhile,
+<<if _pony>>
+<<rep $g.knight>> strode into the battlefield atop <<their $g.knight>>
+specially trained pony: <<yourrep $g.pony>>. The slave struggled under the weight
+of the armor, but <<their $g.pony>> training held and was able to
+carry your slaver into the battlefield.
+<<else>>
+your own slaver <<rep $g.knight>> knight|was no less ready, <<uadv $g.knight>>
+striding into the battlefield atop the borrowed horse.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+<<if _pony>>
+This show earned the glare of the
+enemy knight, who got provoked into charging your slaver without
+waiting for the bout to officially began.
+<<else>>
+As <<rep $g.knight>> prepared for a fight, the enemy immediately charged,
+oblivious to the manners of an honorable fight. It seemed your slavers were in
+luck — the enemy did not come from a noble background and had no clue about
+combat etiquette.
+<</if>>
+Such a dishonorable show raised the ire of the Noble Game's host, who
+immediately disqualified the enemy for the treachery. Stripped from <<their
+$g.enemy>> armor, the host handed <<them $g.enemy>> over to your slavers to
+use as your slavers see fit, as punishment for the unhonorable behavior.
+</p>
+
+<p>
+Having <<their $g.knight>> opponent disqualified, your slavers advanced to
+the final round of the Noble Games.
+Your slavers went back home to the fort with the new slave leashed closely behind them.
+They now await the
+invitation for the last bout of the games with caution, unsure what the last
+game would ask them to do.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers also pawned most of the new slave's previous belonging, earning
+your company some good coin.
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+Unfortunately, after being your slavers for a while, <<rep $g.knight>> had
+completely forgotten about basic combat etiquette. Without warning, your slaver
+charged into the enemy, which immediately raised the ire of the game's host.
+Your slaver was immediately disqualified from the game — worse, as
+punishment, <<yourrep $g.knight>> knight|was stripped out of <<their $g.knight>>
+armor and handed over to the enemy, to use as <<they $g.enemy>> see fit.
+Last your slavers saw, <<rep $g.knight>> knight|was forced to deepthroat
+<<their $g.knight>> former opponent's <<if $g.enemy.isHasDick()>>lengthy dick<<else>>fake dick<</if>>,
+still in full armor (except the pants, of course).
+</p>
+
+<p>
+<<if $gOutcome == 'failure'>>
+Fortunately, the enemy was not a slaver, and after a while <<they
+$g.enemy>> gracefully returned the used and abused <<rep $g.knight>> back to
+your slavers. <<Rep $g.knight>> will need some time to recover from this
+shame.
+<<else>>
+<<Rep $g.knight>> knight|was never returned back to your slavers.
+<<urescuenow $g.knight>>.
+<</if>>
+</p>
+
+<</if>>

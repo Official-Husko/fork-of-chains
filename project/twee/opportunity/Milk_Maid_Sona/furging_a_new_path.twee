@@ -1,0 +1,267 @@
+:: OpportunitySetup_furging_a_new_path [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'furging_a_new_path', /* key */
+"Furging a New Path", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'furry',
+  'forest',
+  'item',
+  'favor',
+],
+1, /* expiration weeks */
+'Opportunity_furging_a_new_path',
+setup.qdiff.normal46, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_furging_a_new_path_0',
+    'Opportunity_furging_a_new_path_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Actor('slave', setup.qres.IsCanBeSold()),
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_furging_a_new_path_completed', '1', -1),
+      setup.qc.MissingUnitForever('slave'),
+      setup.qc.Favor('neko', 750),
+      setup.qc.IfThenElse(
+        setup.qres.Actor('slave', setup.qres.Trait('subrace_tigerkin')),
+        setup.qc.EquipmentDirect('aid_torso_master'),
+        setup.qc.DoAll([]),
+      ),
+      setup.qc.RemoveTitleGlobal('quest_living_pawst_0'),
+      setup.qc.SetCooldownEvent('paws_from_the_past', 10),
+    ],
+  ],
+  [
+    'Opportunity_furging_a_new_path_1',
+    'Opportunity_furging_a_new_path_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTitleGlobal('quest_living_pawst_0'),
+      setup.qc.SetCooldownEvent('paws_from_the_past', 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.OpportunityUnique(),
+],
+{ /* actors */
+  'you': [],
+  'slaver': [],
+  'slave': [],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_furging_a_new_path [nobr]
+
+<<if !$varstore.get('quest_furging_a_new_path_completed')>>
+
+<p>
+After opening the letter, you see the same handwriting as before, the one that were
+asking you to cure <<yourrep $g.slave>>'s mind. But this time, you can
+notice the enthusiasm of the sender in the text. They were profoundly grateful
+to you for bringing <<rep $g.slave>>'s mind back, and was extremely excited to meet <<them $g.slave>>
+in person so they could talk with <<them $g.slave>>.
+It seemed weird that, considering your
+line of work, someone was willing to rent a slave just to talk with them, but
+the mysterious person had something more shameless in mind: this time, their
+petition was that you would free <<yourrep $g.slave>> so <<they $g.slave>> could
+finally get back to <<their $g.slave>> people.
+Sheer force of will prevented you from tearing apart the letter in
+that instant, and after pressing your fingers against your forehead in an
+attempt to calm yourself, the next lines explained the possible benefits for
+<<rep $company.player>>.
+More people of the woods will appreciate you doing such a good deed,
+and this brings many benefits,
+including the possibility of acquiring high quality
+equipment that would be otherwise impossible to find anywhere else. Angry
+but at the same time intrigued for the audacity of the persona behind such
+requests, maybe there was something in it for you should you decide to follow through with
+this outrageous request...
+</p>
+
+<p>
+On one hand, releasing a slave that you have just found, for whom you had
+spent so many resources for sounds entirely crazy.
+But an opportunity like this could be equally as valuable, just in a
+different way. On the other hand, maybe it was better to forget all of this,
+to quit while you are ahead and maybe even appreciate the benefits of having
+<<rep $g.slave>> between your ranks.
+</p>
+
+<<else>>
+
+<p>
+The old neko got his whiskers back in your
+business and had found out of the success of your treatment for <<rep $g.slave>> and,
+just like before, wanted you to consider the option of freeing <<them $g.slave>> just so
+<<they $g.slave>> could share <<their $g.slave>> knowledge (and questionable abilities) with the
+rest of the world. The rewards for it were the same as before: favor with the
+neko tribes of the region, which includes the ability to obtain a piece of high quality equipment
+that would be almost impossible to find anywhere else. On a second thought, it
+was pretty weird that such a “poor and secluded” village had items so
+valuable in such quantities to give them away in exchange for this kind of
+favors, but maybe it was better to follow the common wisdom of “the curiosity
+killed the neko” and not ask too many questions.
+</p>
+
+<p>
+Of course, if what the old man offered was not up to par with the quality of
+the slave that you were going to lose in the trade, or if you already have a
+particular plan for <<rep $g.slave>>, then you could always write him a letter thanking
+him for his continuous (and creepy) interest in your company, but rejecting
+his offer this time. He may get a little sad, but his mood will surely improve the
+moment he hears you freed another petrified neko and will surely write to you
+again.
+</p>
+
+<</if>>
+
+
+:: Opportunity_furging_a_new_path_0 [nobr]
+Release the slave
+
+
+:: Opportunity_furging_a_new_path_0_flavor [nobr]
+
+<<if !$varstore.get('quest_furging_a_new_path_completed')>>
+
+<p>
+Against your better judgement, you decided to follow the instructions of an
+anonymous letter and found yourself taking <<yourrep $g.slave>> through the forest
+towards the famous village described in the letter.
+You asked for the help of <<yourrep $g.slaver>> to escort you
+while you guide the shackled <<urace $g.slave>> between the swaying trees and brambles.
+A pair of extra eyes and <<uhands $g.slaver>> would help a lot should the slave
+try to escape during the journey or, in the worst case, were you to be ambushed by your hosts.
+If something like that were to happen, your slavers back in the fort have very
+detailed instructions about what to do with the bastards that dared set up a
+trap for you.
+</p>
+
+<p>
+Surprisingly, the trip ended without any problems, and your small group found a
+small and rudimentary village in the depths of the forest. All the inhabitants
+of the place were neko that looked at you with great interest while you walk
+between the huts, asking for the chieftain that had invited you. After
+several whispers and looks of mistrust, a couple of them went and call for the chief.
+When you finally saw eye-to-eye with the mysterious mailer, several things made sense. The chief
+was a very, very old neko, so much that it surprised you he could still move on
+his own, and his features and body were very similar to <<reps $g.slave>>, revealing
+that, among every other inhabitants of the village, he had the strongest
+connection with his tigerkin ancestors. The old man was happy to see you and
+invited your group into his home. There, you both started to talk about the
+deals that were made regarding freeing <<rep $g.slave>>, and you managed to come to
+an agreement that seemed much fairer to you.
+</p>
+
+<p>
+The old man promised to spread good words about your company to all the other
+neko village and towns that he had connections with, spreading word about your generosity and support
+towards his people. This could open up new business opportunities for your company.
+Of course, he understood you may not trust him on his words, and arranged for a way
+to let you keep track of his progress, that could prove that
+he will be fulfilling his part of the deal.
+<<if $g.slave.isHasTrait('subrace_tigerkin')>>
+Even more, given your huge contribution, he presented to you a wooden box, within which
+you found a high-quality robe, the kind of which you had never seen before.
+At first glance the robe looked really expensive, and you were
+sure that it would be very useful to your slavers 
+should they ever need to dress themselves elegantly. But the moment you laid your finger on it,
+you felt a powerful aura exuding from its threads: looked like it was magical too. Maybe all this
+was worth it after all.
+<</if>>
+And since you now know the
+location of this small village filled with defenseless neko, there is always the
+possibility of taking a couple of “honored guests” to your fort, just in case he decided not keep his
+words.
+</p>
+
+<p>
+After releasing <<rep $g.slave>> from <<their $g.slave>> shackles, the townsfolks gave
+new clothes to the <<urace $g.slave>> and invited <<them $g.slave>> to dine with them. The old man
+invited you and <<yourrep $g.slaver>> too, but <<rep $g.slaver>> rejected his offer, given that
+it would be quite awkward to sit at the same table with the former slave after
+everything you made them “eat”
+<<if !$settings.bannedtags.watersport>>
+and "drink"
+<</if>>
+under your care. You bid farewell to the chieftain and
+set out back to the fort, but not before explaining to the old man how a mail
+room works so you can avoid getting more letters sneaked into your office.
+</p>
+
+<<else>>
+
+<p>
+Like last time, you decided to take the deal the old man offered you.
+You handed him <<yourrep $g.slave>> so <<they $g.slave>> can be free,
+to live together with the rest of <<their $g.slave>> people. This
+time, you invited the chieftain to your fort so you can settle in the details
+of the deal and at the same time save up the costs of having to transport the
+former-slave to the confines of the <<lore region_forest>>.
+</p>
+
+<p>
+A couple of days later, the old man showed up, accompanied by a couple of
+young neko, who were all very curious about your employees and their jobs,
+both the slavers and the slaves. After inviting him to
+your office and talking for a bit, you managed to close the deal and <<yourrep $g.slave>> was
+free to go with them. You tried to tempt your guests to use some of your
+“facilities” and maybe get juicy information or even some blackmail material,
+but the old cat was savvier than he looks and turned down your offer. You
+and <<yourrep $g.slaver>> bid farewell to the group before noting down what you just got
+out of the trade:
+</p>
+
+<<if !$g.slave.isHasTrait('subrace_tigerkin')>>
+
+<p>
+...Support from the old man's village to help you improve your reputation
+with the groups of neko living in the forest.
+This will surely help your company in your future endeavors.
+</p>
+
+<<else>>
+
+<p>
+...Improvement of the reputation of <<rep $company.player>> with the
+different tribes and small towns of neko that live in the forest, and even
+better, a magical ancient robe that only the old man and his village have
+access to, for some weird and disturbing reason.
+</p>
+
+<</if>>
+
+<</if>>
+
+
+:: Opportunity_furging_a_new_path_1 [nobr]
+Ignore the letter
+
+
+:: Opportunity_furging_a_new_path_1_flavor [nobr]
+
+<p>
+There is no way you'd turn <<yourrep $g.slave>> over.
+You have grand plans for <<therace $g.slave>> after all, and you began
+by teaching the slave <<their $g.slave>> appropriate place -- between your
+legs and servicing your <<ugenital $unit.player>>.
+</p>

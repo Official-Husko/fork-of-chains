@@ -1,0 +1,220 @@
+:: QuestSetup_seasonal_training [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriahead = new setup.UnitCriteria(
+null, /* key */
+'Head "Maid / Butler"', /* name */
+[
+setup.trait.dick_large,
+setup.trait.breast_large,
+setup.trait.muscle_strong,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_proud,
+setup.trait.per_playful,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.skill_hypnotic,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+setup.trait.eq_slutty,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.muscle_thin,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.per_humble,
+setup.trait.per_serious,
+setup.trait.per_chaste,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('seasonal_cleaning_head_full'),
+],
+{
+slaving: 1,
+sex: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'seasonal_training', /* key */
+"Seasonal Training", /* Title */
+"darko", /* Author */
+[ 'city', 'money', 'item', 'prep'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'head': [_criteriahead, 2.5],
+'maid1': [setup.qu.maid, 0.25],
+'maid2': [setup.qu.maid, 0.25],
+},
+{ /* actors */
+'rich': 'quest_seasonal_cleaning1', },
+[ /* costs */
+],
+'Quest_seasonal_training',
+setup.qdiff.hard44, /* difficulty */
+[ /* outcomes */
+[
+'Quest_seasonal_trainingCrit',
+[
+setup.qc.Equipment(setup.equipmentpool.social_good),
+setup.qc.VarAdd('quest_seasonal_training_success', 1, -1),
+],
+], [
+'Quest_seasonal_trainingSuccess',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_seasonal_trainingSuccess',
+[
+setup.qc.MoneyNormal(),
+setup.qc.VarRemove('quest_seasonal_training_success'),
+setup.qc.Injury('head', 4), ],
+], [
+'Quest_seasonal_trainingDisaster',
+[
+setup.qc.SlaveMarker('rich'),
+setup.qc.VarRemove('quest_seasonal_training_success'),
+setup.qc.AddTitle('head', 'seasonal_cleaning_head'),
+setup.qc.RemoveTitle('head', 'seasonal_cleaning_head_full'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoQuest('a_domestic_matter'),
+setup.qres.NoOpportunity('a_domestic_matter'),
+setup.qres.NoOpportunity('domestic_rewards'),
+setup.qres.HasUnitWithTitle('seasonal_cleaning_head_full', {job_key: 'slaver'}), ],
+)>>
+
+:: Quest_seasonal_training [nobr]
+<<set _headunit = $company.player.getUnits({title: "seasonal_cleaning_head_full"})>>
+<<if !_headunit.length>>
+<<dangertext "Due to your company missing a slaver important for this quest, this job is no longer able to be completed.">>
+<<else>>
+<<set _headunit = _headunit[0]>>
+
+<p>
+Your company receives yet another letter from the city noble <<rep $g.rich>>
+who as far as you understand, has been effectively enslaved by <<yourrep _headunit>>.
+This time, there was no longer any pretense of cleaning service — the slave
+simply begs in the letter for <<their $g.rich>> master to <<uadv _headunit>> punish
+them.
+</p>
+
+<p>
+<<rep _headunit>> will surely be eager to play with <<their _headunit>>
+misbehaving slave, and can certainly extort the slave for even more money and
+perhaps a little souvenir while <<they _headunit>>'s at it. All in all, <<rep
+_headunit>> did a wonderful job in converting the formerly chaste and lonely
+noble into what <<they $g.rich>> rich|is right now.
+</p>
+<</if>>
+
+
+:: Quest_seasonal_trainingCrit [nobr]
+
+<<if $g.rich.isMale()>>
+<<else>>
+  <<questimage 'seasonal_training_female.jpg'>>
+<</if>>
+
+<p>
+When your slavers arrived, the noble immediately prostrated
+<<themself $g.rich>> in front of <<their $g.rich>> <<master $g.head>>.
+<<if $g.head.isHasTrait('per_kind')>>
+Despite being a kind <<urace $g.head>>, <<yourrep $g.head>>
+understood that a job is a job and
+<<else>>
+Grinning <<uadv $g.head>>,
+<<yourrep $g.head>>
+<</if>>
+brought the noble-turned-slave straight away
+into their private dungeon in the mansion while the rest of your slavers
+enjoyed the various amenities in the mansion. Soon enough sounds of whipping
+and moaning filled the dungeons, with <<rep $g.rich>> being in ecstacy from
+receiving so much attention from <<their $g.rich>> <<master $g.head>>.
+</p>
+
+<p>
+By the end of the week, your slavers emphasizes the pecking order within the mansion
+by making their employer serve as the mansion's own
+<<maid $g.rich>>, wiping <<their $g.rich>> own and your slavers' mess with
+both a rag and their tongue. Your slavers made sure to instill further
+obedience to the slave before leaving the mansion with one of
+<<their $g.rich>> clothes as souvenir.
+</p>
+
+
+:: Quest_seasonal_trainingSuccess [nobr]
+
+<p>
+Your slavers arrived with a bang as <<rep $g.head>> immediately commanded
+<<rep $g.rich>> to approach.
+Seeing the obedience training was starting to
+waver,
+<<if $g.head.isHasTrait('per_kind')>>
+<<yourrep $g.head>> suppressed their kind nature, since a job is a job, and
+<<else>>
+<<yourrep $g.head>> spent no time wasted and immediately
+<</if>>
+brought the
+noble-turned-slave into <<their $g.rich>> own dungeon complex to have <<their $g.rich>>
+training reinforced.
+</p>
+
+<<if $gOutcome == 'success'>>
+<p>
+In the coming days, sounds of whipping, moaning, and begging filled the
+dungeons, with <<rep $g.rich>> being in a combined sensation from the pleasure and
+pain administered <<uadv $g.head>> by their <<master $g.head>>. Meanwhile
+your other slavers enjoyed the various amenities of the mansion including the
+bedroom of the slave itself.
+</p>
+
+<p>
+By the end of the week, <<rep $g.head>> head|was confident that the slave's
+obedience training will continue to hold until their next visit. Your slavers proceeded to extort
+large amount of money which the slave obediently agreed to. <<Yourrep $g.head>><<if
+!$g.head.isHasDick()>>, donning a strap-on<</if>> gave the slave one last
+proper throat fuck before leaving the mansion.
+</p>
+
+<<else>>
+
+<p>
+But <<rep $g.head>> accidentally injured <<themself $g.head>> during one of the
+training sessions, but fortunately still managed to complete the reinforcement
+training in time.
+Your other slavers had to carry <<yourrep $g.head>> back home together with the
+money they extorted from the noble.
+</p>
+
+<</if>>
+
+
+:: Quest_seasonal_trainingDisaster [nobr]
+
+<p>
+Unfortunately, <<rep $g.head>> tried to take it too far with the noble.
+When <<rep $g.head>> attempted to make <<them $g.rich>>
+<<if $g.rich.isHasDick()>>choke on their own dick<<else>>
+lick their own pussy<</if>>, something in the noble snapped and immediately
+ordered all your slavers to get out from the vicinity.
+<<Yourrep $g.head>> head|was
+shocked that the noble still have so much fight left within, and was already outside
+the mansion by the time <<they $g.head>> recovered from the shock. Still,
+it was simply impossible for the noble to completely rebound from your slaver's
+masterful trainings so far, and this was most likely just a temporary relapse.
+</p>

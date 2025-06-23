@@ -1,0 +1,161 @@
+:: QuestSetup_heroic_guidance [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'heroic_guidance', /* key */
+"Heroic Guidance", /* Title */
+"darko", /* Author */
+[ 'forest', 'money'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'scout': setup.qu.scout_forest,
+'wizard': setup.qu.arcaneearth,
+'convincer': setup.qu.convincer, },
+{ /* actors */
+'hero1': 'quest_choose_your_own_adventure_hero1',
+'hero2': 'quest_choose_your_own_adventure_hero2',
+'sage': 'forest_all', },
+[ /* costs */
+],
+'Quest_heroic_guidance',
+setup.qdiff.normal19, /* difficulty */
+[ /* outcomes */
+[
+'Quest_heroic_guidanceCrit',
+[
+setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_strength', 'strength'),
+  setup.qc.DoAll([
+    setup.qc.TraitReplace('hero1', setup.trait.muscle_strong),
+    setup.qc.TraitReplace('hero1', setup.trait.face_attractive),
+    setup.qc.TraitReplace('hero2', setup.trait.muscle_strong),
+    setup.qc.TraitReplace('hero2', setup.trait.face_attractive),
+  ]),
+  setup.qc.DoAll([
+    setup.qc.TraitReplace('hero1', setup.trait.per_smart),
+    setup.qc.TraitReplace('hero2', setup.trait.per_smart),
+  ]),
+),
+setup.qc.MoneyCrit(),
+setup.qc.VarSet('choose_your_own_adventure_progress', '4', -1),
+setup.qc.BoonizeRandom('scout', 4),
+setup.qc.BoonizeRandom('wizard', 4),
+setup.qc.BoonizeRandom('convincer', 4),
+setup.qc.SetCooldownEvent('choose_your_own_adventure_chapter_3', 5),
+],
+], [
+'Quest_heroic_guidanceCrit',
+[
+setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_strength', 'strength'),
+  setup.qc.DoAll([
+    setup.qc.TraitReplace('hero1', setup.trait.muscle_strong),
+    setup.qc.TraitReplace('hero1', setup.trait.face_attractive),
+    setup.qc.TraitReplace('hero2', setup.trait.muscle_strong),
+    setup.qc.TraitReplace('hero2', setup.trait.face_attractive),
+  ]),
+  setup.qc.DoAll([
+    setup.qc.TraitReplace('hero1', setup.trait.per_smart),
+    setup.qc.TraitReplace('hero2', setup.trait.per_smart),
+  ]),
+),
+setup.qc.MoneyNormal(),
+setup.qc.VarSet('choose_your_own_adventure_progress', '4', -1),
+setup.qc.BoonizeRandom('scout', 3),
+setup.qc.BoonizeRandom('wizard', 3),
+setup.qc.BoonizeRandom('convincer', 3),
+setup.qc.SetCooldownEvent('choose_your_own_adventure_chapter_3', 5),
+],
+], [
+'Quest_heroic_guidanceFailure',
+[
+  setup.qc.SetCooldownQuest(null, 10),
+],
+], [
+'Quest_heroic_guidanceFailure',
+[
+  setup.qc.SetCooldownQuest(null, 10),
+setup.qc.Injury('scout', 3),
+setup.qc.Injury('wizard', 3),
+setup.qc.Injury('convincer', 3), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarEqual('choose_your_own_adventure_progress', '3'), ],
+[ /* expired outcomes */
+setup.qc.SetCooldownQuest(null, 20),
+],
+)>>
+
+:: Quest_heroic_guidance [nobr]
+<p>
+A pair of
+<<= $varstore.get('choose_your_own_adventure_siblings')>> has approached your
+company to hire your information gathering services. (You offer those too, apparently.)
+In their quest for
+<<= $varstore.get('choose_your_own_adventure_revenge')>>,
+they need the advice of a great sage living somewhere in the <<lore region_forest>>.
+They want to hire your company to find and escort them to the sage, in exchange for the money they have acquired along their travels so far.
+</p>
+
+<p>
+An oddly familiar tale, no?
+</p>
+
+
+:: Quest_heroic_guidanceCrit [nobr]
+
+<p>
+<<Yourrep $g.scout>> scout|was more than capable at <<their $g.scout>> job,
+<<uadv $g.scout>> guiding the team and their guests into a small cottage
+hidden in the forest.
+It was inhabited by a sole sage, who seemed to live off <<their $g.sage>> own crops alone.
+</p>
+
+<p>
+Your guests <<= $g.hero1.getName()>> and <<= $g.hero2.getName()>> and the
+sage spent some time, where the duo
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+passionately explained their quest to exact revenge on whoever was responsible
+for the destruction of their village.
+<<else>>
+explained the plights that they had endured so far, and what they were trying
+to do to make sure it would never happen again.
+<</if>>
+In the end, they implored the sage to bestow
+<<= $varstore.get('choose_your_own_adventure_strength')>> upon them.
+</p>
+
+<p>
+Moved by their plight, the sage agreed to house the willing adventurers and
+train them in the art of
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+sword-fighting. It would be a difficult training,
+<<else>>
+magic. It would be challenging study,
+<</if>>
+but the students seemed to be eager about it.
+Having completed their mission, your slavers were paid handsomely for their services.
+Before they leave, the slavers even received some blessings from the sage for the weeks to come.
+</p>
+
+
+:: Quest_heroic_guidanceFailure [nobr]
+
+<p>
+Unfortunately, <<rep $g.scout>> scout|was never able to locate the sage.
+Disappointed, your slavers apologized to the adventurers before leaving for home
+with no pay in <<uhands $g.scout>>. Perhaps they can try again some day.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+On their way back, they were attacked by feral forest animals and suffered minor injuries.
+</p>
+<</if>>

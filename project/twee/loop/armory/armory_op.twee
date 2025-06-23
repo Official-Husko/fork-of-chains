@@ -1,0 +1,70 @@
+:: ArmoryEquip [nobr]
+
+<<set $gMenuVisible = false>>
+<<set _equipmentset = $equipmentset[$gEquipmentSet_key]>>
+
+<p>
+Choose unit to equip <<= _equipmentset.rep() >> on:
+<<focreturn '(cancel)'>>
+</p>
+
+<<if _equipmentset.getSluttiness() >= setup.EQUIPMENT_SLAVER_SLUTTY_LIMIT_NORMAL>>
+  <p>
+  This equipment sluttiness rating of <<= _equipmentset.getSluttiness()>> is <<dangertext 'too slutty'>>
+  to be worn by normal slavers. Consider reducing it by attaching a non-slutty legs and torso equipment.
+  Note that being naked is considered slutty ---
+  considering attaching <<rep setup.equipment.pants>> and <<rep setup.equipment.shirt>>,
+  which should be freely available.
+  Note that slavers with
+  <<rep setup.trait.per_lustful>><<rep setup.trait.per_sexaddict>> can wear sluttier clothings,
+  while slavers with <<rep setup.trait.per_chaste>> cannot wear even slightly slutty clothings.
+  </p>
+<</if>>
+
+<<set _dom = setup.DOM.Roster.equipmentsetequip(_equipmentset)>>
+<<attach _dom>>
+
+
+:: EquipmentSetChangeName [nobr]
+
+<<set $gMenuVisible = false>>
+
+/* Assumes $gEquipmentSet_key is set */
+<<set _set = $equipmentset[$gEquipmentSet_key]>>
+
+Change <<rep _set>>'s name to
+<<textbox "_set.name" _set.name autofocus>>
+
+<br/>
+
+<<focreturn 'Done'>>
+
+
+
+:: EquipmentSetChange [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _equipmentset = $equipmentset[$gEquipmentSet_key]>>
+
+<<run setup.DOM.Nav.topLeftNavigation(
+  setup.DOM.Nav.link(
+    'Confirm [space]',
+    () => {
+      const res = State.variables.gEquipmentSetChangeReturnPassage;
+      delete State.variables.gEquipmentSetChangeReturnPassage;
+      setup.DOM.Nav.goto(res);
+    },
+  )
+)>>
+
+<div>
+  <<foclink '(Confirm)'>>
+    <<set _res = $gEquipmentSetChangeReturnPassage>>
+    <<unset $gEquipmentSetChangeReturnPassage>>
+    <<focgoto _res>>
+  <</foclink>>
+</div>
+
+<<set _dom = setup.DOM.Menu.equipmentsetedit(_equipmentset)>>
+<<attach _dom>>

@@ -1,0 +1,84 @@
+:: InteractionSetup_make_a_slave_custard [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'make_a_slave_custard', /* key */
+"Make a slave custard", /* Title */
+"FCdev", /* Author */
+[ ], /* tags */
+'Interaction_make_a_slave_custard',
+[ /* costs */
+],
+[ /* prerequisites */
+],
+[ /* unit requirements */
+setup.qres.Job(setup.job.slave), 
+setup.qres.SlaveUsableByYou(), 
+setup.qres.SlaveBedchamberHasFurniture(setup.item.f_drinktray_master), ],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_make_a_slave_custard [nobr]
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _blind = _u.isHasTrait(setup.trait.eq_blind)>>
+
+<<set _utorsoequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.torso)>>
+<<set _ulegsequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.legs)>>
+
+<<set _unaked = setup.Text.Unit.Equipment.isNaked(_u)>>
+<<set _verymaso = (_u.isHasTrait(setup.trait.training_masochist_advanced) && _maintraining.getTags().includes('trmasochist'))>>
+<<set _maso = (_u.isHasTrait(setup.trait.training_masochist_basic) && _maintraining.getTags().includes('trmasochist'))>>
+
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+
+<<loadinteractioncommon _u>>
+
+You enter the $i.locgeneral,
+which
+<<if $i.owner == $unit.player>> you own<<else>>is owned by <<rep $i.owner>><</if>>.
+Within the room lies an artifact of the Kingdom of Tor: the $i.drinktray.
+As if mocking its origin, the $i.drinktray is currently used as the slave's water bowl, where they must lap up the water from within the chalice on all fours.
+
+<br/>
+<br/>
+
+Today, you have the degenerate idea of using the chalice for something else. Grabbing the chalice, you call over the slave <<rep _u>> over, and command <<them _u>> to be on all fours on the $i.floor.
+You then place the $i.drinktray under <<their _u>>
+<<if _u.isHasDick()>><<udick _u>><<else>><<ubreasts _u>><</if>>, before
+beginning to milk <<them _u>> hard and rough.
+As the slave moans from the rough treatment, <<if _u.isHasDick()>>fresh ejaculate
+<<else>>fresh milk<</if>> begin to pour from their <<ugenital _u>> into the chalice. The process was long, but after
+<<if _u.isHasDick()>>the tenth consecutive orgasm<<else>>an hour of milking<</if>>,
+the $i.drinktray is now brimming full with <<if _u.isHasDick()>>cum<<else>>milk<</if>>.
+You left the exhausted <<urace _u>> slave to recover in the room as you go out to the fort kitchens to decorate the chalice with a cherry.
+
+<br/>
+<br/>
+
+<<if $unit.player.isSubmissive()>>
+You have known that you always have a submissive side all this time, and this time it won out. Seeing the completed "slave custard" in the chalice, you can't help but wanting to give it some taste. As you gulp down the decorated
+<<if _u.isHasDick()>>cum<<else>>milk<</if>> desserts you fantasize as if this is the produce of some harsh <<master _u>> that is forcing you to drink their bodily fluids down your throat. By the time you regain your composure, the chalice is already completely empty with you gulping down every single drop of your imaginary <<master _u>>'s <<if _u.isHasDick()>>cum<<else>>milk<</if>>.
+<<else>>
+Coming back to the bedchamber, you see <<rep _u>> still recovering in their sleeping spot: the $i.slavebed. You declare that you bring refreshments to help them recover, before placing the chalice back at the floor. The slave obediently crawled over to the chalice before lapping up every single drop of <<their _u>> own <<if _u.isHasDick()>>cum<<else>>milk<</if>>, appreciating the cherry you have decidedly put on top of the custard. Seeing such a degenerate scene pushed you over the edge,
+<<if _hasdick>>
+spraying your cum over the slave and <<their _u>> custard.
+<<else>>
+climaxing.
+<</if>>
+You command the slave to clean you up using <<their _u>> tongue afterwards, before moving on with your day.
+<</if>>
+
+

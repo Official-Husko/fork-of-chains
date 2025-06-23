@@ -1,0 +1,184 @@
+:: InteractionFuckLipsSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_fuck_lips',
+  'Fuck mouth',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionFuckLips',
+  [],  /* Cost */
+  [],  /* Requirements */
+  [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionFuckLips [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+
+<<loadinteractioncommon _u>>
+
+You descend into your $i.locgeneral and grabbed
+your <<titlefull _u>>
+<<= _u.getName()>> over so $i.he can
+<<if _hasdick>>
+	blow you with $i.his
+<<else>>
+	please your pussy with $i.his
+<</if>>
+<<umouthall _u>>.
+<<ustripmouth _u>>
+
+<<set _umouthequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.mouth)>>
+
+<<if _u.isMindbroken()>>
+  As $i.he is mindbroken, $i.he does not respond to your command to approach you.
+  <<if _hasdick>>
+    You had no choice but to grab $i.him
+    and push $i.him down to $i.his knees with $i.his <<uhead _u>>
+    against $i.location so you can give $i.him a good hard throat fuck.
+    You cum down $i.his throat but $i.his mental psyche remains unchanged.
+    You put your toy back in $i.his
+    resting place, the $i.slavebed in the $i.room.
+	<<else>>
+    You had no choice but to grab $i.him
+		and throw $i.him onto $i.location face up,
+    and then kneel on $i.him with your <<ulegs $unit.player>> on either side of
+    $i.his crying <<ubody _u>>,
+    so your pussylips are hard against $i.his mouth.
+    $i.He mechanically eats you out, more out of breathing reflex than eagerness.
+    You grind down, taking pleasure from your <<uadjphys _u>> toy.
+  <</if>>
+<<elseif _hasdick && _u.isHasTrait(setup.trait.training_oral_advanced) && _maintraining.getTags().includes('troral')>>
+  $i.He comes over eagerly, with hunger in $i.his <<ueyes _u>>.
+  $i.He gets to $i.his knees,
+  hurriedly takes you into $i.his <<umouth _u>>,
+  and gives the blowjob $i.his all.
+  As a <<titlelow _u>>,
+  $i.he's almost desperate to get your cum into $i.his <<umouth _u>> and
+  <<if _chastity>>
+  (since $i.his cock is off limits)
+  frantically rubs $i.his <<unipples _u>>
+  and asspussy
+  <<else>>
+  jacks $i.himself off
+  <</if>>
+  in anticipation.
+  <<if $unit.player.isHasVagina()>>
+    You have more than one variety of deliciousness for $i.him,
+    and $i.he's careful not to neglect your wet cunt.
+  <</if>>
+  <<if _u.isHasDick() && !_chastity>>
+    When you finish,
+    $i.he sits back with an ecstatic look on $i.his
+    <<uface _u>>
+    and lets your cum rest in $i.his mouth as $i.he climaxes into $i.his
+    <<uarms _u>>.
+    $i.He pours $i.his own cum from $i.his <<uhand _u>>
+    into $i.his mouth so it can mingle with yours.
+  <<else>>
+    When you finish, $i.he sits back with an ecstatic look on $i.his face and lets your cum rest in $i.his mouth as $i.he climaxes.
+  <</if>>
+<<elseif _u.isHasTrait(setup.trait.training_none)>>
+	$i.He tries to back away, so you
+  <<if _hasdick>>
+    <<if _umouthequip && (_umouthequip.getTags().includes('ringgag') || _umouthequip.getTags().includes('dildogag'))>>
+			grab $i.him; $i.his <<umouth _u>> is already held invitingly open by
+      $i.his gag,
+      and $i.he's prevented from biting.
+		<<else>>
+			grab $i.him and force a ring gag into $i.his <<umouth _u>>.
+      Once you have the straps secured behind $i.his head,
+      $i.he's prevented from biting.
+		<</if>>
+    You push $i.him down to $i.his knees with $i.his <<uhead _u>>
+    against $i.location so you can give $i.him a good hard throat fuck.
+    When you cum down $i.his throat $i.he retches through $i.his tears.
+    <<if _hasvagina>>
+      $i.He has a mere moment
+      to get $i.his breath back
+      before you press your pussy against $i.his unwilling mouth.
+    <</if>>
+	<<else>>
+		seize $i.him and throw $i.him onto $i.location face up,
+    and then kneel on $i.him with your <<ulegs $unit.player>> on either side of
+    $i.his crying <<ubody _u>>,
+    so your pussylips are hard against $i.his mouth.
+    $i.He desperately eats you out, trying to get you off as fast as possible so
+    $i.he can get a bit more air,
+    but you grind down without mercy, taking your pleasure.
+	<</if>>
+<<elseif _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+	$i.He comes over reluctantly and begins to
+  <<if _hasdick>>
+		give you a blowjob.
+    Deciding that $i.he isn't showing the necessary enthusiasm,
+    you hold $i.his <<uhead _u>>
+    and fuck $i.his <<uface _u>> instead
+    <<if _hasvagina>>, occasionally jerking your dick free to shove your pussy against $i.his face instead
+    <</if>>.
+    $i.He does $i.his best to follow your motions but
+    still splutters and gags.
+    You pull free to cum across $i.his face.
+	<<else>>
+		eat you out.
+    Deciding that $i.he isn't showing the necessary enthusiasm,
+    you hold $i.his head and grind your pussy against $i.his
+    <<uface _u>> instead.
+    $i.He does $i.his best to follow your motions but still splutters
+    and gasps for air.
+    You climax quickly and haul $i.him to $i.his feet,
+    kissing the bewildered $i.boy full on the mouth.
+    You can taste yourself on $i.his lips.
+	<</if>>
+<<else>>
+	$i.He licks $i.his lips and looks you in the eyes as
+  $i.he gets to $i.his knees. $i.He
+  <<if _hasdick>>
+		gives you a long, deep blowjob.
+    $i.He massages your balls<<if _hasvagina>> and pussy<</if>>
+    with one <<uhand _u>> and
+    $i.his <<ubreast _u>> with the other, giving you a show.
+    $i.He sucks your head until you
+    <<set _cumchoose = random(1, 3)>>
+    <<if _cumchoose == 1>>
+      climax,
+      letting your cock pop free of $i.his <<umouth _u>> to shoot pearly
+      cum all across $i.his <<uface _u>>.
+      You order $i.him to lick clean all your cum off his face and the $i.floor.
+    <<elseif _cumchoose == 2>>
+      climax deep inside $i.his <<umouth _u>>, gushing all the cum directly down
+      $i.his throat and into $i.his stomach.
+    <<else>>
+      climax inside $i.his <<umouth _u>>. $i.He obediently swallows all your cum.
+    <</if>>
+	<<else>>
+		eats you out like $i.he's starving,
+    moaning into your pussy to show off
+    $i.his arousal and add to your pleasure.
+    $i.He massages your perineum with one <<uhand _u>> and
+    $i.his <<ubreast _u>>
+    with the other, giving you a show.
+    $i.He slowly concentrates more and more attention on your
+    clit until you climax convulsively.
+    You pull $i.him to $i.his feet,
+    kissing the compliant $i.boy full on the mouth.
+    You can taste yourself on $i.his lips.
+	<</if>>
+<</if>>
+
+<<unset $i>>

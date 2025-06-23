@@ -1,0 +1,57 @@
+:: QuestSetupPurifyBody [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'purify_body',  /* id */
+  'Purify: Body',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.purify_head_master,
+    'assistant1': setup.qu.purify_assistant,
+    'assistant2': setup.qu.purify_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.MoneyMult(-5),
+  ],  /* costs */
+  'PurifyBody',  /* description */
+  setup.qdiff.hard46,
+  [
+    [
+      'PurifyAllCrit',
+      [
+        setup.qc.Purify('trainee', 'body'),
+        
+      ]
+    ],
+    [
+      'PurifyAllSuccess',
+      [
+        setup.qc.Purify('trainee', 'body'),
+        
+      ],
+    ],
+    [
+      'PurifyAllFailure',
+      [
+      ],
+    ],
+    [
+      'PurifyAllDisaster',
+      [
+        setup.qc.Injury('trainee', 4),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: PurifyBody [nobr]
+<p>
+Purify a unit's body.
+</p>

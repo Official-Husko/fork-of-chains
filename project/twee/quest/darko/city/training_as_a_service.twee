@@ -1,0 +1,139 @@
+:: QuestSetup_training_as_a_service [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'training_as_a_service',  /* key */
+  "To-Be-Trained",   /* name */
+  'A slave lent to your company for training',   /* name */
+  'a|is being lent to your company to be properly trained as a slave',
+  0,   /* slave value */
+  {},
+)>>
+
+
+<<run new setup.QuestTemplate(
+'training_as_a_service', /* key */
+"Training as a Service", /* Title */
+"darko", /* Author */
+[ 'city', 'unit', 'order'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'salesman': setup.qu.salesman,
+'trainer': setup.qu.slavetrainer,
+'informer': setup.qu.informer,
+'slave': setup.qu.slaveobedient, },
+{ /* actors */
+'trainee1': 'all',
+'trainee2': 'all',
+'client': 'all', },
+[ /* costs */
+],
+'Quest_training_as_a_service',
+setup.qdiff.normal33, /* difficulty */
+[ /* outcomes */
+[
+'Quest_training_as_a_serviceCrit',
+[
+setup.qc.SlaveOrderTrainingAsAService(),
+setup.qc.SlaveOrderTrainingAsAService(),
+setup.qc.AddTitle('trainee1', 'training_as_a_service'),
+setup.qc.AddTitle('trainee2', 'training_as_a_service'),
+setup.qc.Slave('trainee1', "a|was a freshly caught slave that your company has taken to train for a client", undefined),
+setup.qc.Slave('trainee2', "a|was a freshly caught slave that your company has taken to train for a client", undefined), ],
+], [
+'Quest_training_as_a_serviceCrit',
+[
+setup.qc.SlaveOrderTrainingAsAService(),
+setup.qc.AddTitle('trainee1', 'training_as_a_service'),
+setup.qc.Slave('trainee1', "a|was a freshly caught slave that your company has taken to train for a client", undefined), ],
+], [
+'Quest_training_as_a_serviceFailure',
+[
+],
+], [
+'Quest_training_as_a_serviceDisaster',
+[
+setup.qc.Injury('salesman', 4),
+setup.qc.Injury('trainer', 4),
+setup.qc.Injury('informer', 4), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoUnitWithTitle('training_as_a_service'), ],
+)>>
+
+:: Quest_training_as_a_service [nobr]
+
+<p>
+Since the abolishment of slavery in the <<rep $company.humankingdom>> over ten years ago,
+the demand for slave training services has understandably declined. This
+leads to many slave training schools to close shop, making it
+difficult for undercity patrons who wish to have their slaves trained.
+</p>
+
+<p>
+As a slaving company, this becomes an opportunity for you. You can try to
+send a group of slavers to find prospective buyers for slave training
+services. Most likely, they will supply your company with a disobedient slave
+that you must break. The more trainings you manage to dish out in time,
+the better the pay, but
+there is likely a strict time limit on how long you can train the slaves for.
+If your company is up for the job, this could be a profitable endeavor.
+</p>
+
+
+:: Quest_training_as_a_serviceCrit [nobr]
+<p>
+<<Yourrep $g.informer>> managed to find your company a client in the undercity of Lucgate,
+<<if $gOutcome == 'crit'>>
+a grizzled <<lady $g.client>> who were just gifted two fresh slaves by
+<<their $g.client>> friend, completely untrained.
+<<else>>
+a young <<lady $g.client>> who had just acquired <<their $g.client>> first ever slave and was
+completely clueless about how to possibly train the disobedient slave.
+<</if>>
+</p>
+
+<p>
+To prove your company's worth,
+<<rep $g.trainer>> <<uadv $g.trainer>> demonstrated
+<<if $g.trainer.isHasTrait('per_kind')>>
+basic
+<<else>>
+masterful
+<</if>>
+slaving
+technique on the slaves, which impressed the <<lady $g.client>>. <<Rep
+$g.salesman>> negotiated a good deal for the training — you are to dish
+whatever training you want on the
+<<if $gOutcome == 'crit'>>
+two slaves,
+who must both
+<<else>>
+slave,
+who must
+<</if>>
+be returned strictly within eight weeks. The client has a preference for certain training,
+which will give greater rewards should they be fulfilled, but these are optional.
+</p>
+
+
+:: Quest_training_as_a_serviceFailure [nobr]
+<p>
+<<Rep $g.informer>> informer|was unable to find potential clients for your
+slavers. After one week of fruitless search, your slavers returned to your
+fort empty-handed.
+</p>
+
+
+:: Quest_training_as_a_serviceDisaster [nobr]
+<p>
+The undercity of Lucgate proved to be a highly dangerous place.
+Your slavers were ambushed by thugs during their search for a client and returned home injured.
+</p>

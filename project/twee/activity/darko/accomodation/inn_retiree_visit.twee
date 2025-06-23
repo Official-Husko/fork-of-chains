@@ -1,0 +1,92 @@
+:: ActivitySetup_retiree_visit [nobr activity]
+
+
+
+<<run new setup.ActivityTemplate({
+key: 'retiree_visit',
+name: "Retiree Visit", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.join_senior),
+  ],
+  'b': [
+    setup.qres.Job(setup.job.retired),
+  ],
+},
+critical_traits: [
+  setup.trait.per_loyal,
+  setup.trait.per_gregarious,
+  setup.trait.per_honorable,
+],
+disaster_traits: [
+  setup.trait.per_evil,
+  setup.trait.per_independent,
+  setup.trait.per_loner,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "b",
+  texts: {
+    friendly: [
+      "Long time no see, <<unickname $g.b $g.a>>! Hope you are doing swell!",
+      "How are you, <<unickname $g.b $g.a>>! I happened to be nearby and thought I\'d give you all a visit.",
+    ],
+    bold: [
+      "Hey <<unickname $g.b $g.a>>! I\'ve decided to drop for a visit, miss me?",
+      "<<name $g.a>>! Hey <<if $g.a.isMale()>> man <<else>> girl <</if>> , long time no see! I almost missed you.",
+    ],
+    cool: [
+      "<<name $g.a>>! Been a while.",
+      "<<name $g.a>>. Glad to see you.",
+    ],
+    witty: [
+      "<<ugreetingshort $g.a>> are you going to tell me how much you missed me? No need to be shy.",
+      "What says the nymphomaniac\'s right leg to her left leg, at the end of spring break? \"Long time no see!\"",
+      "<<name $g.a>>! Bet the company a bit less lively without me around, so I\'ve decided to visit and liven things up!",
+    ],
+    debauched: [
+      "Hey <<unickname $g.b $g.a>>, I\'m back! What are your other two wishes?",
+      "Hey, it\'s <<unickname $g.b $g.a>>! Come inside and lock the door, it\'s been a while *winks*.",
+    ],
+  },
+}, /* End of Dialogue #1 */
+{ /* Dialogue #2: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "<<ugreetingshort $g.a>> I heard <<name $g.b>> came for a visit so I came running!",
+      "Thanks for coming <<name $g.b>>! You made my day.",
+    ],
+    bold: [
+      "Heh, <<name $g.b>>, I see you\'re still as <<uadjgood $g.b>> as ever.",
+      "You never change huh <<name $g.b>>.",
+    ],
+    cool: [
+      "Hey, boss is here too, came to join us for our chat?",
+      "<<ugreetingshort $g.a>> I was just catching up with <<rep $g.b>>.",
+    ],
+    witty: [
+      "Wow, I never thought I\'d miss <<rep $g.b>> but here I am.",
+      "Wow, I can\'t believe it\'s been quite some time since <<rep $g.b>> left.",
+    ],
+    debauched: [
+      "Sure sure, but when are we going to hit the bed?",
+      "Well, the bed won\'t stay warm long soon so maybe we should get going fast...",
+    ],
+  },
+}, /* End of Dialogue #2 */
+],
+room_templates: [
+  setup.roomtemplate.inn,
+],
+})>>

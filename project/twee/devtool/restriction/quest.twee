@@ -1,0 +1,91 @@
+:: RestrictionNoQuest [nobr]
+
+Must NOT currently doing or having the following quest: <br/>
+
+<<devchoosequest 'RestrictionNoQuestDo'>>
+
+
+:: RestrictionNoQuestDo [nobr]
+
+<<set $qrestriction = setup.qres.NoQuest(_questchosen)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionQuestOnCooldown [nobr]
+
+The following quest must be on cooldown: <br/>
+
+<<devchoosequest 'RestrictionQuestOnCooldownDo'>>
+
+
+:: RestrictionQuestOnCooldownDo [nobr]
+
+<<set $qrestriction = setup.qres.QuestOnCooldown(_questchosen)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionQuestUnique [nobr]
+
+<<set $qrestriction = setup.qres.QuestUnique()>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionOpportunityUnique [nobr]
+
+<<set $qrestriction = setup.qres.OpportunityUnique()>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionCooldown [nobr]
+
+Quest/Opportunity can only be generated at most once per <<numberbox '_cooldown' 8>> weeks.
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.Cooldown(_cooldown)>>
+<</link>>
+
+
+:: RestrictionNoOpportunity [nobr]
+
+Do NOT currently have the following opportunity: <br/>
+
+<<devchooseopportunity 'RestrictionNoOpportunityDo'>>
+
+
+:: RestrictionNoOpportunityDo [nobr]
+
+<<set $qrestriction = setup.qres.NoOpportunity(_opportunitychosen)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionQuestDoneSelf [nobr]
+
+<<set $qrestriction = setup.qres.QuestDone(null)>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionQuestDone [nobr]
+
+Must have successfully or critical successfully completed this quest: <br/>
+
+<<devchoosequest 'RestrictionQuestDoneDo'>>
+
+
+:: RestrictionQuestDoneDo [nobr]
+
+<<set $qrestriction = setup.qres.QuestDone(_questchosen)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionOpportunityOnCooldown [nobr]
+
+The following opportunity must be ON COOLDOWN: <br/>
+
+<<devchooseopportunity 'RestrictionOpportunityOnCooldownDo'>>
+
+
+:: RestrictionOpportunityOnCooldownDo [nobr]
+
+<<set $qrestriction = setup.qres.OpportunityOnCooldown(_opportunitychosen)>>
+<<gotowipehistory 'QGRestrictionDone'>>

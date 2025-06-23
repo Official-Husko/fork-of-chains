@@ -1,0 +1,74 @@
+:: InitBuildingDungeons [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'dungeonscell',
+  tags: [],
+  description_passage: 'RoomDungeonsCell',
+  name: 'Dungeons cell',
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'dungeons',
+  tags: [],
+  width: 4,
+  height: 2,
+  door_column: 1,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "slaving",
+      room_keys: [
+        'dungeonscell',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'dungeons',
+  name: 'Dungeons',
+  tags: ['critical', 'unlocker', 'accomodation',],
+  description_passage: 'BuildingDungeons',
+  costs: setup.BuildingTemplate.getLodgingsCost(600),
+  restrictions: setup.BuildingTemplate.getLodgingsRestrictions(),
+  main_room_template_key: 'dungeons',
+  sub_room_template_key: 'dungeonscell',
+})>>
+
+
+:: BuildingDungeons [nobr]
+
+<p>
+A dark complex where you can keep your slaves.
+While initially limited in size, you can build more cells to keep more slaves.
+Each upgrade adds
+<<= setup.FORT_SLAVE_CAPACITY_PER_CELL>>
+extra space for keeping slaves.
+</p>
+
+<p>
+Also unlocks having arbitrary sex with your slavers and slaves, although your options
+will be quite limited at the start of your career...
+</p>
+
+
+:: RoomDungeonsCell [nobr]
+
+<p>
+A cell to host even more of your slaves.
+</p>
+

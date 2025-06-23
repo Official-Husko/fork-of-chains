@@ -1,0 +1,138 @@
+:: OpportunitySetup_aspect_of_wisdom [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"aspect_of_wisdom", /* key */
+"Aspect of Wisdom", /* name */
+"Known to possess great wisdom (at some point in their life)", /* description */
+"a|was known to possess wisdom much beyond their peers at some point in a|their career", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+knowledge: 2,},
+)
+>>
+
+<<run new setup.OpportunityTemplate(
+'aspect_of_wisdom', /* key */
+"Aspect of Wisdom", /* Title */
+"darko", /* Author */
+[ 'veteran', 'forest', 'special', 'item', 'unknown',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_aspect_of_wisdom',
+setup.qdiff.harder52, /* difficulty */
+[ /* options */
+[
+'Opportunity_aspect_of_wisdom_0',
+'Opportunity_aspect_of_wisdom_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Equipment(setup.equipmentpool.knowledge_good),
+setup.qc.Money(2500),
+setup.qc.RemoveTitle('knight', 'aspect_of_wisdom'), ],
+], [
+'Opportunity_aspect_of_wisdom_1',
+'Opportunity_aspect_of_wisdom_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.RemoveTitleGlobal('aspect_of_wisdom'),
+setup.qc.AddTitle('knight', 'aspect_of_wisdom'),
+setup.qc.BoonizeRandom('knight', 10), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'knight': [
+], },
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_aspect_of_wisdom [nobr]
+
+<p>
+Somehow, <<yourrep $g.knight>> knight|turn to be virtuous enough to lead your
+slavers to the long-lost library of A'ssera. Standing in front of the gates to the
+library, your slavers must now decide what to do.
+</p>
+
+<p>
+As the first option, ancient and pristine libraries such as these must surely hold
+artifacts hidden somewhere within. Your slavers could probably grab some of the more
+valuable ones to bring home.
+</p>
+
+<p>
+Alternatively, you could ask your slavers, especially <<rep $g.knight>>, to,
+err, study in the library. After all, is there any greater treasure than
+wisdom? Money can't buy wisdom, after all...
+</p>
+
+<<set _u = setup.getUnit({job: setup.job.slaver, title: 'aspect_of_wisdom'})>>
+<<if _u && _u != $g.knight>>
+<p>
+<<dangertext 'Warning'>>: Choosing the second option will remove <<rep
+setup.title.aspect_of_wisdom>> from <<rep _u>>!
+</p>
+<</if>>
+
+
+
+:: Opportunity_aspect_of_wisdom_0 [nobr]
+Steal
+
+
+:: Opportunity_aspect_of_wisdom_0_flavor [nobr]
+<p>
+With some hesitation, <<yourrep $g.knight>> led your slavers to scour through the
+bookcases of the library, in search of artifacts. After a few scattered
+bookcases, they found an ancient corridor hidden behind one of the book
+cases. At the end of the narrow corridor lied a single treasure chest, containing a valuable and
+rare piece of sage's clothes, together with some random baubles.
+</p>
+
+<p>
+Mysteriously, as your slavers leave the library, the books and bookcases
+that your slavers scattered around the place
+magically sorted themselves back into their proper positions in the bookshelves,
+and the library returned to its pristine state as if nothing had happened before...
+</p>
+
+<<if $g.knight.isHasTitle('aspect_of_wisdom')>>
+<p>
+  Having stolen from a pristine trove of knowledge,
+  <<rep $g.knight>> can no longer call <<themself $g.knight>> as having the
+  <<rep setup.title.aspect_of_wisdom>>.
+</p>
+<</if>>
+
+
+:: Opportunity_aspect_of_wisdom_1 [nobr]
+Study
+
+
+:: Opportunity_aspect_of_wisdom_1_flavor [nobr]
+<p>
+Your slavers spent a week studying in the trove of knowledge.
+While most of them probably did not learn anything interesting,
+<<yourrep $g.knight>> knight|was different.
+The normally <<uadjper $g.knight>> <<urace $g.knight>> knight|is now capable of speaking
+as if <<they $g.knight>> knight|was possessed by a wise sage, spouting advice upon advice.
+Eventually the "wisdom-ish" trance stopped, and <<yourrep $g.knight>> returned
+to their normal <<uadjgood $g.knight>> self.
+</p>
+
+<p>
+Still, <<rep $g.knight>> somehow knight|have gained a reputation for being
+quite wise now. Only time will tell whether or not this will prove useful...
+</p>

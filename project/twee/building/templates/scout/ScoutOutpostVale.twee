@@ -1,0 +1,46 @@
+:: InitBuildingScoutOutpostVale [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'scoutoutpostvale',
+  tags: [],
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'scoutoutpostvale',
+  name: 'Scout Outpost: Vale',
+  tags: ['scout', ],
+  description_passage: 'BuildingScoutOutpostVale',
+  costs: [
+    [setup.qc.Money(-2000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('scouthut'),
+      setup.qres.Building('dutyroom'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('scoutvale')
+    ],
+  ],
+  main_room_template_key: 'scoutoutpostvale',
+})>>
+
+
+:: BuildingScoutOutpostVale [nobr]
+
+<p>
+Unlocks the Vale Scout duty, which grants you free quest leads each week from the <<lore region_vale>>.
+
+</p>
+

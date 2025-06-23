@@ -1,0 +1,217 @@
+:: QuestSetupToBeAKnight [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'quest_knight_in_training',  /* key */
+  'Knight-in-Training',   /* name */
+  'Undergoing training to become a proper knight: chivalrious, upstanding, and just',   /* name */
+  'a|is currently training to be a chivalrious and upstanding knight',  /* unit description */
+  0,   /* slave value */
+  {},
+)>>
+
+<<run new setup.Title(
+  'quest_knight_in_training_squire',  /* key */
+  'Squire',   /* name */
+  'Was in service to a knight at some point in the past',   /* name */
+  'a|was in service to a knight at some point in a|their life',  /* unit description */
+  1000,   /* slave value */
+  {},
+)>>
+
+<<set _knight = new setup.UnitCriteria(
+  null, /* key */
+  'Knight', /* title */
+  [
+    setup.trait.race_human,
+    setup.trait.per_brave,
+    setup.trait.per_loyal,
+    setup.trait.per_serious,
+    setup.trait.per_chaste,
+    setup.trait.per_honorable,
+    setup.trait.skill_ambidextrous,
+    setup.trait.magic_light,
+    setup.trait.magic_light_master,
+  ], /* critical traits */
+  [
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_cautious,
+    setup.trait.per_sly,
+    setup.trait.per_independent,
+    setup.trait.per_curious,
+    setup.trait.per_cruel,
+    setup.trait.per_playful,
+    setup.trait.per_lustful,
+    setup.trait.per_sexaddict,
+    setup.trait.per_lunatic,
+    setup.trait.per_masochistic,
+    setup.trait.per_evil,
+    setup.trait.skill_flight,
+    setup.trait.magic_fire,
+    setup.trait.magic_fire_master,
+    setup.trait.magic_water,
+    setup.trait.magic_water_master,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+  ], /* disaster traits */
+  [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTrait(setup.trait.bg_knight),
+    setup.qres.NoTitle('quest_knight_in_training_complete'),
+  ], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    combat: 2.0,
+    brawn: 1.0,
+  }
+)>>
+
+<<run new setup.QuestTemplate(
+  'to_be_a_knight', /* key */
+  'To Be a Knight', /* Title */
+  'darko',   /* author */
+  ['city', 'unknown', 'rare', ],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'knight': _knight,
+    'squire1': setup.qu.squire,
+    'squire2': setup.qu.squire,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestToBeAKnight', /* passage description */
+  setup.qdiff.hard33, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestToBeAKnightCrit',
+      [
+        setup.qc.AddTitle('knight', 'quest_knight_in_training'),
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('royal', 100),
+      ],
+    ],
+    [
+      'QuestToBeAKnightCrit',
+      [
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestToBeAKnightCrit',
+      [
+        setup.qc.Injury('knight', 2),
+      ],
+    ],
+    [
+      'QuestToBeAKnightCrit',
+      [
+        setup.qc.Injury('knight', 4),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.epic],], /* quest pool and rarity */
+  [
+    setup.qres.QuestUnique(),
+    setup.qres.NoUnitWithTitle('quest_knight_in_training'),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestToBeAKnight [nobr]
+
+<p>
+One of the most respected job in the Kingdom of Tor is to be a knight in service
+to the crown. Unlike most other kingdoms, these knights usually live their own lives
+except on some occasions where their services are called upon.
+While these knights are usually chosen from soldiers with a long service history,
+during times of great need, the kingdom may occasionally call upon the populace to elect
+new knights.
+</p>
+
+<p>
+One such occasion is currently happening, and the city crier repeatedly
+informs everyone that the winner of an upcoming joust would be selected as
+a knight candidate. It could be an amusing joke to have one of your slavers
+be chosen as a knight candidate -- still, it might be worth the attempt.
+You would need to send one of your slavers as the main competitor, with two other
+slavers serving as their "squires".
+</p>
+
+
+:: QuestToBeAKnightCrit [nobr]
+
+<p>
+Your slavers spent a full week training for the competition --
+
+<<if $g.knight.isHasAnyTraitExact(['bg_knight', 'bg_mercenary'])>>
+Fortunately, <<rep $g.knight>> had some experience riding a horse from <<their $g.knight>>
+past days as a
+<<if $g.knight.isHasTrait('bg_knight')>>
+knight.
+<<else>>
+mercenary.
+<</if>>
+<<else>>
+after all, <<rep $g.knight>> knight|was not really used to riding a horse.
+<</if>>
+
+The next week, your slavers were as ready as they could possibly be for the joust.
+Your slavers, being considered outsiders, were given the last seed in the tournament,
+meaning they had the bad luck to face a former champion in their first bout.
+</p>
+
+<p>
+<<Rep $g.knight>> <<uadv $g.knight>>
+readied <<their $g.knight>> horse and the lance lent by the competition,
+while <<their $g.knight>> foe stood on the opposite side of the field.
+Both of them waited for the signal before charging in, and the result went out in a flash of
+blood and scream.
+<<if $gOutcome == 'crit'>>
+<<Rep $g.knight>> knight|was able to knock out the foe in one clean hit, earning
+<<them $g.knight>> the adorations of the viewers, as well as some of the members
+of the <<rep $company.royal>> who has come to visit for entertainment.
+The rest of the competitors proved to be simple pushovers for <<rep $g.knight>>, and
+<<therace $g.knight>> knight|was ultimately crowned champion.
+<<elseif $gOutcome == 'success'>>
+But it turned out that both <<rep $g.knight>> and <<their $g.knight>> foe were
+knocked out, and the match ended in a draw.
+Unfortunately, the tournament ruled that in such case, the higher seed shall be
+declared the winner, which ended <<reps $g.knight>> hopeful knight career abruptly early.
+<<elseif $gOutcome == 'failure'>>
+Once the dust settled, the only one that remained seated on their horse was the opponent.
+<<Yourrep $g.knight>> knight|was knocked out cleanly from <<their $g.knight>> horse.
+This unfortunately ended <<reps $g.knight>> hopeful knight career abruptly early,
+not even reaching the stage where the wenches would come in!
+<<Rep $g.knight>> sustained minor injuries as a result, which would need some time to heal.
+<<else>>
+A loud crack followed by a thump and the unconscious body of <<rep
+$g.knight>> marked <<their $g.knight>> opponent as the clear victor of the round.
+<<Rep $g.squire1>> and <<rep $g.squire2>> hurriedly attended to <<reps $g.knight>>
+side, which managed to save <<their $g.knight>> life. Still, the injury was terrible,
+and <<rep $g.knight>> would need a lot of time to recover.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Yourrep $g.knight>> accepted <<their $g.knight>> prize, which turned out not to be a full knight title,
+but rather, the honor of becoming a knight-in-training.
+Once <<they $g.knight>> knight|manage to prove <<themself $g.knight>>
+shall the full title of a knight be granted.
+</p>
+<<elseif $gOutcome == 'success'>>
+<p>
+At the end of the joust, the honorable foe who ended up winning the competition
+appeared before <<yourrep $g.knight>>, apologized for the dishonorable victory
+and gave <<rep $g.knight>> some money for the trouble.
+</p>
+<</if>>

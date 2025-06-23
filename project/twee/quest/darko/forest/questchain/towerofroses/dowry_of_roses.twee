@@ -1,0 +1,290 @@
+:: QuestSetup_dowry_of_roses [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"dowry_of_roses0",
+"King of Elves",
+'subrace_elf', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_smart, setup.trait.face_beautiful]),
+],
+)>>
+
+<<set _criteriaprince = new setup.UnitCriteria(
+null, /* key */
+'Prince', /* name */
+[
+  setup.trait.per_smart,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_frugal,
+  setup.trait.per_independent,
+  setup.trait.per_evil,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.race_human,
+  setup.trait.race_wolfkin,
+  setup.trait.race_catkin,
+  setup.trait.race_greenskin,
+  setup.trait.race_lizardkin,
+  setup.trait.race_demon,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_slow,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_lavish,
+  setup.trait.per_loyal,
+  setup.trait.per_honorable,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('tower_of_roses_obtained'),
+  setup.qres.LoverExist(),
+],
+{
+  survival: 0.6,
+  intrigue: 0.6,
+  knowledge: 0.6,
+  social: 0.6,
+  aid: 0.6,
+}
+)>>
+
+<<set _criterialover = new setup.UnitCriteria(
+null, /* key */
+'Lover', /* name */
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_noble,
+  setup.trait.race_elf,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_proud,
+  setup.trait.per_empath,
+  setup.trait.skill_entertain,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.race_demon,
+  setup.trait.height_dwarf,
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_humble,
+  setup.trait.per_logical,
+  setup.trait.skill_flight,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.LoverExist(),
+],
+{
+  intrigue: 1,
+  social: 1,
+  sex: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'dowry_of_roses', /* key */
+"Dowry of Roses", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'prep',
+  'money',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'prince': [ _criteriaprince, 1],
+  'lover': [ _criterialover, 1],
+  'bodyguard': [ setup.qu.bodyguard, 1],
+},
+{ /* actors */
+  'king': 'dowry_of_roses0',
+},
+[ /* costs */
+],
+'Quest_dowry_of_roses',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_dowry_of_rosesCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.IfThenElse(
+        setup.qres.And([
+          setup.qres.Actor('prince', setup.qres.RememberUnit()),
+          setup.qres.Actor('lover', setup.qres.BestFriendWithRememberedUnit())
+        ]),
+        setup.qc.DoAll([
+          setup.qc.Equipment(setup.equipmentpool.social_good),
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined)),
+    ],
+  ],
+  [
+    'Quest_dowry_of_rosesCrit',
+    [
+      setup.qc.IfThenElse(
+        setup.qres.And([
+          setup.qres.Actor('prince', setup.qres.RememberUnit()),
+          setup.qres.Actor('lover', setup.qres.BestFriendWithRememberedUnit())
+        ]),
+        setup.qc.DoAll([
+          setup.qc.MoneyNormal(),
+          setup.qc.BoonizeRandom('prince', 9),
+          setup.qc.BoonizeRandom('lover', 9),
+          setup.qc.Friendship('prince', 'lover', 300),
+          setup.qc.SetCooldownQuest(null, 25)
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined)),
+    ],
+  ],
+  [
+    'Quest_dowry_of_rosesFailure',
+    [
+      setup.qc.SetCooldownQuest(null, 10),
+    ],
+  ],
+  [
+    'Quest_dowry_of_rosesDisaster',
+    [
+      setup.qc.MissingUnitRecapture('prince', 'capturedmedium'),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('tower_of_roses_obtained'),
+    setup.qres.LoverExist(),
+  ])
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_dowry_of_roses [nobr]
+<<set _u = setup.getUnit({title: 'tower_of_roses_obtained'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<<if $statistics.isHasSuccess('dowry_of_roses')>>
+<p>
+<<Yourrep _u>> misses <<their _u>> home once again, and is back with another
+request to come back to <<their _u>> home in the forests. As you recall,
+whenever <<they _u>> do so, <<they _u>> comes back with a sizeable bag of
+gold from <<their _u>> kingdom's coffer, so it might be a good idea to give
+<<therace _u>> a little break...
+</p>
+<p>
+Make sure to keep up the disguise, however. <<Rep _u>> must be sent together
+with <<their _u>> lover, as well as a slaver posing as their bodyguard.
+</p>
+<<else>>
+<p>
+<<Yourrep _u>> came to you today with an interesting offer. Apparently, the
+once-noble missed <<their _u>> home back in the forests, and would like to
+give <<their _u>> parents a visit. <<Their _u>> parents would obviously
+object if <<they _u>> reveals that <<they _u>> is now working as a slaver
+under your employ, so the plan is to disguise and appear as if <<they _u>>
+had married with another noble from a faraway land, and came back home as a
+gesture of goodwill.
+</p>
+
+<p>
+Right before you refused such a stupid request, <<rep _u>> added that <<their
+_u>> parents would surely be grateful, and the gratefulness will be weighted
+in gold.
+Now that's what you'd like to hear! For the plan to work, <<rep _u>> must be
+sent together with <<their _u>> lover, and a slaver who will play as their
+bodyguard.
+</p>
+<</if>>
+<</if>>
+
+
+
+:: Quest_dowry_of_rosesCrit [nobr]
+<<if $g.prince.getLover() == $g.lover>>
+
+<p>
+After a few weeks, the pair of lovebirds who were sent to the <<lore
+region_forest>> have returned, bringing a bag of money
+<<if $gOutcome == 'crit'>>as well as a very valuable piece of clothing<</if>> with
+them.
+Apparently, <<their $g.prince>> <<mother $g.king>> was overjoyed seeing
+<<their $g.king>> <<daughter $g.prince>> all grown up and married into such a
+wonderful young <<man $g.lover>>, and lavished the pair with gifts of great
+value.
+</p>
+
+<p>
+Even though the trip was over, you notice that the pair and especially
+<<rep $g.prince>> prince|look particularly happy and cheerful nowadays, with
+a noticable lighter step on their feet.
+Throughout the rest of the weeks, you noticed that <<yourrep $g.bodyguard>>,
+who had watched over the two last few weeks,
+<<if $g.bodyguard.isHasTrait('per_attentive')>>
+keeps avoiding eye contact with the lovers.
+<<elseif $g.bodyguard.isHasTrait('per_dreamy')>>
+sometimes stares longingly at the lovers.
+<<else>>
+often blush whenever <<they $g.bodyguard>> see the lovers.
+<</if>>
+It seemed the pair of lovers were rather raunchy during their seclusion in
+the trip, and with no other option, <<rep $g.bodyguard>> just had to witness
+all the lovemaking...
+</p>
+
+<<else>>
+
+<p>
+Since <<rep $g.lover>> lover|is not <<reps $g.prince>> lover, they did not
+end up going to <<reps $g.lover>> home and <<rep $g.bodyguard>> had to spent
+most of the weeks listening to <<rep $g.lover>> rambling about how careless
+you are. You should have sent <<their $g.prince>> lover instead...
+</p>
+
+<</if>>
+
+
+:: Quest_dowry_of_rosesFailure [nobr]
+<p>
+Unfortunately, your slavers' disguise were broken by one of the castle
+guards. Your slavers had to eventually buy off the guard's silence with most
+of the money they gained from <<reps $g.prince>> <<mother $g.prince>> in the
+castle. Your slavers returned home dejected, having lose most of their money
+and most of their fun being blackmailed by an elven guard...
+</p>
+
+
+:: Quest_dowry_of_rosesDisaster [nobr]
+
+<p>
+In a fit of possessive rage, <<reps $g.prince>> mother: the <<queen $g.king>>
+of the castle, refused to let <<their $g.prince>> <<daughter $g.prince>> go
+back to your fort, and locked <<them $g.prince>> away in a secluded tower.
+<<Yourrep $g.lover>> came back home without <<their $g.lover>> lover, before
+<<uadv $g.lover>> asking you to rescue <<them $g.prince>>.
+<<urescuenow $g.prince>>, before <<they $g.prince>> prince|is locked permanently this time inside yet another tower in the forests...
+</p>

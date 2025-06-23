@@ -1,0 +1,236 @@
+:: QuestSetupMilkFactoryKidnapFemale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _desc = 'a|was a human cow installed in one of the factories in the undercity of Lucgate'>>
+
+<<set _infiltrator = new setup.UnitCriteria(
+  null, /* key */
+  'Infiltrator', /* title */
+  [
+    setup.trait.bg_thief,
+    setup.trait.tough_nimble,
+    setup.trait.per_sly,
+    setup.trait.per_loner,
+    setup.trait.per_lunatic,
+    setup.trait.per_evil,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+  ], /* critical traits */
+  [
+    setup.trait.subrace_humankingdom,
+    setup.trait.bg_slave,
+    setup.trait.per_direct,
+    setup.trait.per_gregarious,
+    setup.trait.per_masochistic,
+    setup.trait.per_honorable,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    intrigue: 2.0,
+    slaving: 1.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'milk_factory_kidnap_female', /* key */
+  'Factory: Kidnap Female Specimen', /* Title */
+  'darko',   /* author */
+  ['city', 'unit', 'femaleonly'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'seducer': setup.qu.seducer,
+    'infil1': _infiltrator,
+    'infil2': _infiltrator,
+  },
+  { /* actors */
+    'cow': 'quest_humankingdom_cow_female',
+    'bigcow': 'quest_humankingdom_cow_female_titanic',
+  },
+  [ /* costs */
+  ],
+  'QuestMilkFactoryKidnapFemale', /* passage description */
+  setup.qdiff.normal29, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestMilkFactoryKidnapFemaleCrit',
+      [
+        setup.qc.Slave('bigcow', _desc),
+        
+      ],
+    ],
+    [
+      'QuestMilkFactoryKidnapFemaleCrit',
+      [
+        setup.qc.Slave('cow', _desc),
+        
+      ],
+    ],
+    [
+      'QuestMilkFactoryKidnapFemaleFailure',
+      [
+      ],
+    ],
+    [
+      'QuestMilkFactoryKidnapFemaleDisaster',
+      [
+        setup.qc.Injury('seducer', 4),
+        setup.qc.TraitReplaceExisting('seducer', setup.trait.anus_gape),
+        setup.qc.TraitReplaceExisting('seducer', setup.trait.vagina_gape),
+      ],
+    ],
+  ],
+  [], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestMilkFactoryKidnapFemale [nobr]
+
+<<include 'OpportunityMilkFactory'>>
+
+<p>
+You have chosen to steal some of the female sla-, err, "employees".
+You can follow-up on this idea by sending a team of slavers there.
+</p>
+
+
+:: QuestMilkFactoryKidnapFemaleCrit [nobr]
+
+<<set _male = ($gQuest.getTemplate().key == 'milk_factory_kidnap_male')>>
+<<set _raid = ($gQuest.getTemplate().key == 'milk_factory_raid')>>
+
+<<if $gOutcome == 'crit'>>
+<<set _u = $g.bigcow>>
+<<else>>
+<<set _u = $g.cow>>
+<</if>>
+
+<<if _u.isMale()>>
+  <<questimage 'milk_factory_male.jpg'>>
+<<else>>
+  <<questimage 'milk_factory_female.jpg'>>
+<</if>>
+
+<p>
+Using <<their $g.seducer>> <<upraisenoun $g.seducer>>,
+<<yourrep $g.seducer>> <<uadv $g.seducer>> distracted the guard.
+Using the opening,
+<<rep $g.infil1>> and <<utheirrel $g.infil1 $g.infil2>> <<rep $g.infil2>> sneaked into the factory, and found
+their way inside.
+Numerous rooms littered the hallways, and your slavers walked slowly across
+the corridor.
+The room they first entered contained samples of the factory's product:
+a sealed bottle labeled simply with "milk".
+It seems that the popular Fresh-Milk branded milk is produced here.
+But the employees were still nowhere to be seen.
+Remembering their goal, they chose the most suspicious-looking corridor to traverse.
+</p>
+
+<p>
+At the end of the corridor,
+they found rows and rows of what seemed to be humans, each seated on
+a chair. Their nipples were all covered by what appeared to be suction pipe,
+while their mouths were entirely filled with a large dildo-shaped pipe extending down
+their throats.
+The dicks of the male slaves were all covered in some kind of suction pump too.
+As your slavers wathced in disbelief at the source of the "milk",
+one of these pumps suddenly activated and they could see
+white liquid being absorbed directly from the slave's pricks and breasts into the pipe.
+</p>
+
+<<if _raid>>
+
+<p>
+As their goal was to raid the place for as much valuable as possible,
+your slavers started looking around for the most expensive item in the place.
+<<if $gOutcome == 'crit'>>
+There, they located a newly installed slave who still somehow maintain <<their $g.cow>> sanity.
+Released from <<their $g.cow>> bondage, the slave coughed and gagged only for your slavers to regag <<them $g.cow>>
+before smuggling <<them $g.cow>> out.
+They sold the slave in the undercity before returning to your fort with a tidy amount of profit.
+<<else>>
+They settled with stealing as many of the industrial equipments as possible, which
+should fetch a decent sum in the black market of the city.
+<</if>>
+</p>
+
+<<else>>
+
+<p>
+Your slavers, remembering their original goal, scoured the hundres of slaves looking for any
+particularly valuable-looking slave among the livestock.
+<<if $gOutcome == 'crit'>>
+
+<<set _u = $g.bigcow>>
+
+<<if _male>>
+They found a slave with dick and balls so gigantic it
+could not be natural.
+<<else>>
+They found a slave with breasts so gigantic it could not be natural.
+<</if>>
+
+<<else>>
+
+<<set _u = $g.cow>>
+
+<<if _male>>
+They found a slave with adequately large junk.
+<<else>>
+They found a slave with adequately large breasts.
+<</if>>
+
+<</if>>
+After experimentally pressing random mechanical buttons,
+they managed to release the slave from the contraption that were holding <<them _u>> there.
+<<Their _u>> dildo were dislodged from <<their _u>> throat
+for the first time in what must have been years, while
+from beneath <<them _u>>
+<<if _u.isHasVagina()>>
+two huge dildos were retracted down, leaving both <<their _u>> anus and vagina
+<<else>>
+a huge dildo the size of a horse's dick was retracted down, leaving <<their _u>> anus
+<</if>>
+gaping
+and uncomfortably empty.
+Your slavers then grabbed the collapsed slave and with some effort managed to smuggle
+<<them _u>> out.
+<<Rep _u>> eventually arrived at your fort,
+remaining mindbroken but ready to be used by <<their _u>> new
+owners.
+</p>
+
+<</if>>
+
+
+:: QuestMilkFactoryKidnapFemaleFailure [nobr]
+
+<p>
+Unfortunately, <<rep $g.seducer>> seducer|was not able to fully distract the guard.
+When <<rep $g.infil1>> and <<rep $g.infil2>> tried to sneak into the factory,
+the guard took notice and your slavers had no choice but to retreat back to where
+they came.
+</p>
+
+
+:: QuestMilkFactoryKidnapFemaleDisaster [nobr]
+
+<p>
+<<Rep $g.seducer>> attempted to distract the guard, while
+<<rep $g.infil1>> and <<rep $g.infil2>> sneaked into the factory.
+But the guard had a different idea -- after inviting <<rep $g.seducer>> inside,
+the guard knocked <<them $g.seducer>> out, and install <<them $g.seducer>> into one
+of the many milking contraptions in the factory.
+Inside, to the complete surprise of both <<rep $g.infil1>> and <<rep $g.infil2>>, they found
+<<yourrep $g.seducer>> installed on one of the machines,
+moaning in pain from the huge dildo assaulting <<their $g.seducer>> ass.
+Your slavers managed to free <<rep $g.seducer>>.
+After considering the danger of continuing, they decided to leave without doing anything else.
+<<Rep $g.seducer>> will need some time to rest from such an ordeal to <<their $g.seducer>> now
+gaped holes.
+</p>

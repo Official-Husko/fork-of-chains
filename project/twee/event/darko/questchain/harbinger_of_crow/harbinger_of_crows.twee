@@ -1,0 +1,85 @@
+:: EventSetup_harbinger_of_crows [nobr event]
+
+
+<<run new setup.Title(
+"quest_harbinger_of_misfortune_0", /* key */
+"Harbinger of Misfortune", /* name */
+"Seems to attract bad luck around", /* description */
+"a|is a beacon for misfortune, drawing bad luck much more than the average person", /* unit text */
+-1000, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.Title(
+"quest_harbinger_of_crows_1", /* key */
+"Harbinger of Crows", /* name */
+"May have a lower than average luck than the average person, but has resolved to offset it with hard work", /* description */
+"a|is cursed with bad luck, but that does not stop a|them from doing a|their hardest in a|their lot in life", /* unit text */
+1000, /* slave value */
+{ /* skill additives */
+combat: 1,brawn: 1,survival: 1,intrigue: 1,slaving: 1,knowledge: 1,social: 1,aid: 1,arcane: 1,sex: 1,},
+)
+>>
+
+
+<<run new setup.Event(
+'harbinger_of_crows', /* key */
+"Harbinger of Crows", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_harbinger_of_crows',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('quest_harbinger_of_luck_done'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_crit'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_progress'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_magic'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_lucky'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_horse'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_clover'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_bath'),
+  setup.qc.VarSet('quest_harbinger_of_crows_radiant', '1', 250),
+  setup.qc.RemoveTitle('a', 'quest_harbinger_of_misfortune_0'),
+  setup.qc.AddTitle('a', 'quest_harbinger_of_crows_1'),
+  setup.qc.PerkChoice('a', 'perk_harbinger_of_crow'),
+],
+[ /* restrictions */
+  setup.qres.VarGte('quest_harbinger_of_luck_done', 3),
+  setup.qres.VarLte('quest_harbinger_of_luck_crit', 1),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_harbinger_of_crows [nobr]
+<p>
+In the past weeks, you and <<yourrep $g.a>> had tried your hardest to remove the curse of misfortunate that has somehow been placed upon <<therace $g.a>>. But despite the various rituals you've conducted both, <<rep $g.a>> remains as unlucky as ever. In fact, just before <<they $g.a>> arrived at your office, an errant slave bumped into <<therace $g.a>>, accidentally scalding the slaver with hot water that the slave was carrying with them.
+</p>
+
+<p>
+However, despite the looming failure, <<rep $g.a>> a|look more resolved than ever. Having a bad luck does not kill <<their $g.a>> future, after all, and <<therace $g.a>> a|is resolved to make up for <<their $g.a>> lot in life with a lot and a lot of hard work.
+<<if $g.a.isHasTrait('per_active')>>
+In fact, <<they $g.a>> has been working out harder and practicing more than normal.
+<<else>>
+In fact, <<they $g.a>> has been devouring books after books in order to hone <<their $g.a>> mind.
+<</if>>
+The results is starting to show too — <<they $g.a>> a|is becoming better in everything.
+</p>
+
+<p>
+<<Rep $g.a>> might not be able to lift the curse entirely, but <<they $g.a>> a|have learnt how to make the curse into their strength — it becomes a constant motivation and reminder that <<they $g.a>> should work diligently in life. You have no doubt that as long as <<they $g.a>> a|continue to do so, no matter what the gods had planned for <<them $g.a>>, a good thing or two will surely come to <<them $g.a>>
+</p>

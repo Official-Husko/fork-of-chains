@@ -1,0 +1,309 @@
+:: QuestSetup_obedience_lessons [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_learning_instructor_0", /* key */
+"Learning Instructor", /* name */
+"Learning the ropes on how to be a proper instructor at the Institute of Higher Learning ", /* description */
+"a|is learning how to be a proper instructor at the Institute of Higher Learning ", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<set _criteriastudent = new setup.UnitCriteria(
+null, /* key */
+'Student', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.per_smart,
+  setup.trait.per_studious,
+  setup.trait.per_stubborn,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.dick_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_slow,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+  setup.trait.per_lunatic,
+  setup.trait.per_honorable,
+
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_learning_instructor_0'),
+],
+{
+  brawn: 1,
+  slaving: 1,
+  knowledge: 1,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Test Subject', /* name */
+[
+  setup.trait.per_submissive,
+],
+[
+  setup.trait.per_dominant,
+  setup.trait.subrace_dragonkin,
+  setup.trait.muscle_extremelystrong,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.TraitExact(setup.trait.training_obedience_advanced),
+  setup.qres.NoTraits([setup.trait.training_obedience_master, setup.trait.training_endurance_master, setup.trait.training_domestic_master, setup.trait.training_oral_master, setup.trait.training_vagina_master, setup.trait.training_anal_master, setup.trait.training_dominance_master, setup.trait.training_masochist_master, setup.trait.training_sissy_master, setup.trait.training_pet_master, setup.trait.training_pony_master, setup.trait.training_toilet_master, setup.trait.training_roleplay_master, setup.trait.training_horny_master, setup.trait.training_mindbreak], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'obedience_lessons', /* key */
+"Obedience Lessons", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'city',
+  'prep',
+  'trait',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'student': [ _criteriastudent, 3],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'teacher': 'subrace_humankingdom',
+},
+[ /* costs */
+],
+'Quest_obedience_lessons',
+setup.qdiff.harder41, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_obedience_lessonsCrit',
+    [
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_obedience_lessonsCrit',
+    [
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_obedience_lessonsCrit',
+    [
+      setup.qc.IfThenElse(
+setup.qres.VarGte('obedience_lesson', 9),
+setup.qc.DoAll([
+setup.qc.SetCooldownQuest('obedience_101', 200),
+setup.qc.SetCooldownEvent('an_educated_opportunity', 12),
+setup.qc.RemoveTitle('student', 'quest_learning_instructor_0'),
+setup.qc.AddTitle('student', 'quest_certified_instructor_0'),
+setup.qc.Trait('slave', setup.trait.training_obedience_master),
+setup.qc.VarRemove('obedience_lesson')
+], undefined),
+setup.qc.DoAll([
+setup.qc.OneRandomSeed([
+setup.qc.Mindbreak('slave'),
+setup.qc.Injury('slave', 50),
+setup.qc.MissingUnit('slave')
+])
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_obedience_lessonsCrit',
+    [
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.HasUnitWithTitle('quest_learning_instructor_0', {
+job_key: "slaver",
+}),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_obedience_lessons [nobr]
+<<set _u = setup.getUnit({title: 'quest_learning_instructor_0'})>>
+
+<<if _u>>
+<p>
+The next class for <<yourrep _u>>'s training in the <<lore
+location_institute_of_higher_learning>> is about the begin. As usual, your
+slaver is expected to bring along a slave trained in <<rep
+setup.trait.training_obedience_advanced>>, and is ready to be stamped out
+entirely of whatever remains of their free will.
+</p>
+<<set _sc = $varstore.get('obedience_lesson')>>
+<p>
+<<if _sc >= 6>>
+<<Yourrep _u>> looks much more confident this time, and you have no doubt
+that the <<uadjgood _u>> slaver will graduate very soon from the course...
+<<elseif _sc >= 3>>
+While <<rep _u>> has obtained some basic knowledge, you can sense that the
+<<uadjgood _u>> slaver still have some way to go before <<they _u>> can
+graduate...
+<<else>>
+<<Yourrep _u>> is still far from graduation. Failure at this stage is inevitable,
+and you should prepare that the worst will happen to whichever slave you decide to bring
+along the quest...
+<</if>>
+</p>
+
+<p>
+  <<dangertext 'Warning'>>: Slaves brought along on this quest may not come back intact and well...
+</p>
+
+<<else>>
+
+<p>
+<<dangertext 'This quest is no longer able to be completed!'>> You are missing a unit important for this quest.
+</p>
+
+<</if>>
+
+
+:: Quest_obedience_lessonsCrit [nobr]
+
+<p>
+<<if Math.random() < 0.33>>
+<<rep $g.student>> continued <<their $g.student>> study under the watchful
+guidance of the instructors.
+Many example slaves were used and left either broken or blindly obedient to
+the instructors.
+<<elseif Math.random() < 0.5>>
+Weeks passed by as <<rep $g.student>> advanced <<their $g.student>> studies in
+the academy, watching <<uadv $g.student>> as <<their $g.student>> instructors
+demonstrated the various applications of pain, pleasure, and despair on the
+available slaves.
+<<else>>
+Theory and practice were combined together in a single coherent course as
+<<rep $g.student>> continued to improve <<their $g.student>> understanding on
+how to properly bend one's will to another.
+<</if>>
+
+<<if $g.student.isHasTrait('per_studious')>>
+  <<Rep $g.student>> student|love to study, and dutifully attended to the lessons.
+<<elseif $g.student.isHasTrait('per_active')>>
+  <<Rep $g.student>> student|hate studying, but forced <<themself $g.student>> to attend the lessons.
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+You did not think it was possible, but <<rep $g.student>> became a model
+student throughout the courses, absorbing much of the knowledge.
+<<set _add = 4>>
+
+<<elseif $gOutcome == 'success'>>
+Throughout the entire course, <<yourrep $g.student>> surprisingly remained
+attentive, absorbing much of the new knowledge.
+<<set _add = 3>>
+
+<<elseif $gOutcome == 'failure'>>
+<<Their $g.student>> understanding of the slaving art clearly improved,
+although not by too much...
+<<set _add = 2>>
+
+<<elseif $gOutcome == 'disaster'>>
+While <<they $g.student>> certainly improved, it could have been so much more
+if <<they $g.student>> would just pay more attention during the class, instead of sleeping
+through them...
+<<set _add = 1>>
+<</if>>
+
+<<if Math.random() < 0.33>>
+And finally, a demonstration was due as your slaver must apply their newfound knowledge
+onto <<rep $g.slave>>...
+<<elseif Math.random() < 0.5>>
+And finally, it was time for <<rep $g.slave>> to be trained by your slaver,
+to demonstrate that <<they $g.student>> had grasped what <<they $g.student>> had
+just learned...
+<<else>>
+But before the class ended, your slaver must demonstrate <<their $g.student>>
+understanding by applying it directly to <<rep $g.slave>>...
+<</if>>
+</p>
+
+<<run setup.qc.VarAdd('obedience_lesson', _add, -1).apply($gQuest)>>
+
+<<set _sc = $varstore.get('obedience_lesson')>>
+
+<<if _sc >= 9>>
+
+<p>
+At long last, <<yourrep $g.student>> seemed to had finally grasped the secret to
+perfectly rooting out free will out of the slaves. A careful ministration
+of pain, pleasure, and despair must be applied, but all must be held in
+perfect balance. Too much pain and the slave's body would succumb — too much pleasure
+and the slave spirit would succumb — too much despair and the slave's mind
+would succumb.
+</p>
+
+<p>
+<<Yourrep $g.slave>> slave|was reduced to blindly obedience, happily
+lapping and licking <<therace $g.student>>'s feel.
+The instructors had no doubt that your slaver had finally ready to graduate, and so <<they $g.student>> did.
+</p>
+
+<p>
+The <<lore location_institute_of_higher_learning>> would clearly welcome
+<<theslaver $g.student>> should <<they $g.student>> one day decided to retire from your company, but for now
+<<therace $g.student>> seemd to enjoy working under your employ. The new techniques and
+knowledge <<they $g.student>> had acquired will surely prove useful in their continued career.
+</p>
+
+<<else>>
+
+<<if $gQuest.getSeed() % 3 == 0>>
+<p>
+Unfortunately, your slaver understanding was still incomplete, and <<they
+$g.student>> accidentally applied too much despair into the slave. <<Reps
+$g.slave>> mind broke, reducing the once somewhat obedient slave into a
+mindless body, usable as nothing but a living sex toy. Your slaver will have
+to attend more classes if <<they $g.student>> still want to master this craft...
+</p>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<p>
+However, <<reps $g.student>> understanding of the application of pain was
+still incomplete. The slave's body ended up too broken and the training had
+to be stopped before the slave became fully broken.
+It seems more classes are still needed before your slaver can graduate...
+</p>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+<p>
+Disappointingly, it seemed <<rep $g.student>> student|was still not ready for
+graduation. <<They $g.student>> gave too much pleasure to the slave,
+restoring the slave's will too much. One night, the slave just disappeared from
+<<their $g.slave>> slave quarters, seemingly having escaped from the academy. This
+was a clear indicator of failure and your slaver will still need to attend
+more lectures before <<they $g.student>> student|is ready to graduate...
+</p>
+<</if>>
+
+<</if>>

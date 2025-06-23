@@ -1,0 +1,112 @@
+:: EventSetup_fallen_knight [nobr event]
+
+<<run new setup.Event(
+'fallen_knight', /* key */
+"Fallen Knight", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_fallen_knight',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+    setup.qres.Available(),
+    setup.qres.AllTraits([setup.trait.bg_knight], true),
+    setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_fallen_knight [nobr]
+<p>
+<<Yourrep $g.slave>> slave|have been quite well-broken to slavery. Looking at <<therace $g.slave>> now, it would be hard to believe that <<they $g.slave>> slave|was once an upstanding knight in service to <<their $g.slave>> liege.
+<<if $g.slave.isHasTrait('muscle_verystrong')>>
+<<Their $g.slave>> well-trained and extremely chiseled body now only serve to pleasure other <<men $unit.player>>.
+<<elseif $g.slave.isHasTrait('muscle_strong')>>
+<<Their $g.slave>> well-honed and muscular body now only exists to pleasure other <<men $unit.player>>.
+<</if>>
+<<if $g.slave.isHasTrait('per_chaste')>>
+<<They $g.slave>> still slave|retain a vestige of <<their $g.slave>> former chastity oath, but would not hesitate the slightest to fulfill any of <<their $g.slave>> owner's depraved desires.
+<</if>>
+<<if $g.slave.isHasTrait('per_honorable')>>
+While you can still sense some honor remaining inside the slave, it takes a back seat to all the slave conditioning <<they $g.slave>> slave|have acquired.
+<</if>>
+<<if $g.slave.isHasTrait('per_brave')>>
+<<They $g.slave>> slave|remain considerably brave by slave's standard, and is able to take a hard assfucking with a stoic face.
+<</if>>
+All in all, you have done quite a marvelous job with the once pure and innocent.
+</p>
+
+<<choose>>
+
+<<opt "Goad <<them $g.slave>> while you use <<them $g.slave>>">>
+
+<p>
+You order <<them $g.slave>> to present <<their $g.slave>> ass for a good hard assfucking.
+<<They $g.slave>> obediently <<ustripanusand $g.slave>> spreads <<their $g.slave>> <<ulegs $g.slave>> wide, hardening <<themself $g.slave>> for the pain of the upcoming assrape.
+You <<ustrippantsand $g.you>> tease your <<udickorstrap $g.you>> along <<their $g.slave>> ass while teasing <<them $g.slave>> if <<they $g.slave>> crave the penetration, despite being so utterly chaste back before.
+<<They $g.slave>> slave|know that there is only one correct answer to this,
+<<if $g.slave.isCanTalk()>>
+but <<their $g.slave>> gag prevents them from saying anything but guttural moans.
+<<else>>
+and they meekly says, "Yes, <<master $g.you>>".
+<</if>>
+Hearing the submissive declaration, you give your phallus a push and it slides deliciously into the <<uanus $g.slave>>, and you keep taunting <<them $g.slave>> as you fuck <<them $g.slave>> <<uadv $g.you>> throughout the rest of the night.
+Looking at the formerly pure and headstrong ex-knight reduced to an exhausted and well-used slut
+<<if $unit.player.isHasDick()>>with cum dripping out of <<their $g.slave>> well-fucked asspussy<</if>> brings
+a smile to your face at how you've utterly broken such a difficult-to-break specimen.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<<opt "Knight <<them $g.slave>> with your <<udickorstrap $g.you>>">>
+
+<p>
+With an evil grin, you order <<therace $g.slave>> to kneel before you. The obedient slave hurriedly obeys, of course, and looks at you curiously. You
+<<if $unit.player.isHasDick()>>
+<<ustrippantsand $g.you>>
+<<else>>
+don a strap-on and
+<</if>>
+position it right above <<reps $g.slave>> head.
+</p>
+
+<p>
+<<Their $g.slave>> confusion at your action slave|was answered as <<they $g.slave>> hear you starting to enact a mock knighting ceremony. "<<name $g.slave>>, do you acknowledge me to be your true and lawful master?". Realizing what you're trying to do, <<their $g.slave>> last remnant of knightly pride was unable to suppress <<their $g.slave>> slave conditioning, and <<they $g.slave>> <<ustripmouthand $g.slave>> answers, "I so swear.".
+You continue, "Do you pledge fealty to me, and swear your <<if $g.slave.isHasDick()>>asspussy<<else>>pussy<</if>> to me, to be forever at my whim and want?".
+"I so swear.", repeats <<therace $g.slave>>.
+"Then repeat after me: I, <<name $g.slave>>, do solemnly swear and pledge my <<if $g.slave.isHasDick()>>asspussy<<else>>pussy<</if>> to <<name $g.you>>, my liege and master, to worship and obey <<them $g.you>> forever, and to understand that my destiny is to be a slave forever."
+Despite taken a little aback by your corruption of the knight oath, <<they $g.slave>> obediently repeated the oath. You lower your <<udickorstrap $g.you>> onto <<their $g.you>> shoulders while saying "Then I dub thee Sir <<name $g.slave>>, and present to you this <<udickorstrap $g.you>> that you now live and die for. You may now suck on it for my pleasure." You finish the ceremony by sliding your <<udickorstrap $g.you>> upwards into <<their $g.slave>> <<umouth $g.slave>> and <<uadv $unit.player>> facefuck <<therace $g.slave>> afterwards,
+<<if $g.slave.isCanOrgasm()>> and <<they $g.slave>> cums multiple time from the dominant treatment
+<<else>>
+while <<they $g.slave>> slave|do <<their $g.slave>> best to not get aroused lest
+<<if $g.slave.isInChastity()>>
+<<their $g.slave>> dick would throb painfully against its tiny cage.
+<<else>>
+<<they $g.slave>> broke <<their $g.slave>> slave rules.
+<</if>>
+<</if>>
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<questauthorcardtext 'parody of Knighting Ceremony in Oaths of Crows'>>
+
+<</choose>>

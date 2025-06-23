@@ -1,0 +1,26 @@
+:: CostCorrupt [nobr]
+
+<p>
+Randomly corrupt <<devactordefault>> 
+<<numberbox '_amount' 1>> times.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Corrupt($qgDefaultActorName, null, _amount)>>
+<</link>>
+
+:: CostPermanentlyCorrupt [nobr]
+
+<p>
+Randomly <<dangertext 'PERMANENTLY'>> corrupt <<devactordefault>>.
+<<message '(?)'>>
+  <div class='helpcard'>
+    Permanent corruption has a much lower chance to misfire, and cannot be purified.
+  </div>
+<</message>>
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.PermanentlyCorrupt($qgDefaultActorName)>>
+<</link>>
+

@@ -1,0 +1,97 @@
+:: QuestSetupUnitTrainingDomesticAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_domestic_advanced',  /* id */
+  'Domestic Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingDomesticAdvanced',  /* description */
+  setup.qdiff.harder38,
+  [
+    [
+      'QuestUnitTrainingDomesticAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_domestic_advanced),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingDomesticAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_domestic_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingDomesticAdvancedFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingDomesticAdvancedDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_domestic_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingDomesticAdvanced [nobr]
+<p>
+Once a slave has basic knowledge in housekeeping, they next must
+learn all the intricacies involved in it. This involves how to
+ensure that the corners of the room are squeaky clean, as well as
+how to please the owners by looking good while doing these job.
+With some luck, the owners may pick up their sorry bodies and
+have some fun.
+</p>
+
+:: QuestUnitTrainingDomesticAdvancedCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_domestic_advanced_male.jpg'>>
+<<else>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Rep $g.trainee>> trainee|is now a proud slave capable of
+doing mundane work in the least mundane way possible. <<Rep $g.head>> and your slavers also gain a lot of experience from the training.
+</p>
+
+<<else>>
+
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to acquire all the necessary skils to graduate from this
+training.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingDomesticAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccesful, and the lessons were
+lost in <<reps $g.trainee>> thick skull.
+</p>
+
+:: QuestUnitTrainingDomesticAdvancedDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+It is clear that <<reps $g.trainee>> prior training must be
+repeated before another attempt at this training.
+</p>

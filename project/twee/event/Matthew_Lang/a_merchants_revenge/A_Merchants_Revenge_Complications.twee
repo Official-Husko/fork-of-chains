@@ -1,0 +1,156 @@
+:: EventSetup_a_merchant_s_revenge_complications [nobr event]
+
+
+
+
+<<run new setup.Event(
+'a_merchant_s_revenge_complications', /* key */
+"A Merchant\'s Revenge: Complications", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+],
+'Event_a_merchant_s_revenge_complications',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+},
+[ /* outcomes */
+  setup.qc.Return('merchant'),
+  setup.qc.VarSet('mlang_merchantrevenge_questrival', '1', -1),
+  setup.qc.IfThenElse(
+setup.qres.VarEqual('mlangmerchantprinceflirt', '1'),
+setup.qc.DoAll([
+setup.qc.SetCooldownOpportunity('a_merchant_s_revenge_payback_is_sweet', 12)
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_a_merchant_s_revenge_complications [nobr]
+<<dialogue $g.merchant>>
+    All right. What's all this about that's so urgent?
+<</dialogue>>
+<<questimage "prince_of_cups.jpg">>
+
+/*Set Player Drink*/
+<<if $unit.player.isHasAnyTraitExact(['bg_farmer','bg_mercenary','bg_pirate','bg_seaman', 'bg_soldier', 'bg_thug', 'bg_unemployed', 'bg_wildman', 'bg_woodsman'])>>
+    <<set _pdrink = 'tankard of mead'>>
+<<elseif $unit.player.isHasAnyTraitExact(['bg_monk', 'bg_priest'])>>
+    <<set _pdrink = 'cup of tea'>>
+<<else>>
+    <<set _pdrink = 'glass of wine'>>
+<</if>>
+<p>
+    The smile on <<name $g.merchant>>'s face fades as you slide the note you'd received across the table.<br>
+    "I didn't send you that," <<they $g.merchant>> says, frowning.<br>
+    You remain silent, enjoying your _pdrink as a server brings over a platter of bread, preserved olives, goat cheese and cured sausages from Cathay, before stepping courteously away.<br>
+    <<if $unit.player.isHasTrait('per_smart')>>
+        "I didn't think you did," you say when you're alone at the table again. "I thought you'd want to know."
+    <<else>>
+        "I wasn't sure, but it didn't feel safe to go in without checking."
+    <</if>>
+    <br>
+    <<name $g.merchant>> sights and slumps back into the padded leather of the booth. "It looks like one of my rivals is attempting to use you against me. I should have expected this."
+</p>
+
+<<choose>>
+<<opt "Try to console them">>
+    <<if $unit.player.getSpeech() == setup.speech.bold>>
+        "Yeah, but so what? Now you know."<br>
+    <<elseif $unit.player.getSpeech() == setup.speech.cool>>
+        "What are you going to do about it then?"<br>
+    <<else>>
+        "Maybe. They could just be sending notes to every mercenary company in the area."<br>
+    <</if>>
+    <<name $g.merchant>> takes a deep breath, fortifies <<themselves $g.merchant>> with a hearty swig of wine and sits up. "You're right. I'm going to keep the note. It might help me figure out exactly which of them is doing this." Popping an olive into <<their $g.merchant>> mouth, <<they $g.merchant>> chews thoughtfully as <<they $g.merchant>> stares at the note thoughtfully.<br>
+    "I'll check this against the ciphered documents you gave me earlier. Thank you for telling me. I'll make sure I send more work your way. And if I do find out who's behind this, you may find yourself with some lucrative merchandise to sell."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "You mean, you'll let me take them as sl—"<br>
+        "New indentured servants," <<name $g.merchant>> says, interrupting you.<br>
+        "Oh. Right."
+    <<else>>
+        "I look forward to meeting my new employees," you say, raising your _pdrink towards <<name $g.merchant>>.
+    <</if>>
+    <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+        <br>
+        "I really want to kiss you right now," <<name $g.merchant>> says with a tight grin, raising <<their $g.merchant>> wine goblet towards you. "Possibly more. Ah well. Until next time."
+    <</if>>
+
+<<opt "Reassure them">>
+    <<if $unit.player.getSpeech() == setup.speech.bold>>
+        "Okay," you say, helping yourself to smokey, fatty sausage. "What next?"<br>
+        <<name $g.merchant>> takes a deep breath, fortifies <<themselves $g.merchant>> with a hearty swig of wine and sits up. "
+    <<elseif $unit.player.getSpeech() == setup.speech.cool>>
+        "Why? You're not the boss of them."<br>
+        <<name $g.merchant>> takes a deep breath, fortifies <<themselves $g.merchant>> with a hearty swig of wine and sits up. "You're right.
+    <<elseif $unit.player.getSpeech() == setup.speech.witty>>
+        "Well, maybe if you find someone who can do time magic, you can sort out. Actually I hear there's a seer in the vales who can see the future. Maybe check with them?"<br>
+        <<name $g.merchant>> stares at you for a long moment, mouth open. Then <<they $g.merchant>> laughs. "Okay, that's fair.
+    <<else>>
+        "Well it didn't work, so what's the problem?"<br>
+        <<name $g.merchant>> stares at you for a long moment, mouth open. Then <<they $g.merchant>> laughs. "Okay, that's fair.
+    <</if>>
+    I'm going to keep the note. It might help me figure out exactly which of them is doing this." Popping an olive into <<their $g.merchant>> mouth, <<they $g.merchant>> chews thoughtfully as <<they $g.merchant>> stares at the note thoughtfully.<br>
+    "I'll check this against the ciphered documents you gave me earlier. Thank you for telling me. I'll make sure I send more work your way. And if I do find out who's behind this, you may find yourself with some lucrative merchandise to sell."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "You mean, you'll let me take them as sl—"<br>
+        "New indentured servants," <<name $g.merchant>> says, interrupting you.<br>
+        "Oh. Right."
+    <<else>>
+        "I look forward to meeting my new employees," you say, raising your _pdrink towards <<name $g.merchant>>.
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            <br>
+            "I really want to kiss you right now," <<name $g.merchant>> says with a tight grin, raising <<their $g.merchant>> wine goblet towards you. "Possibly more. Ah well. Until next time."
+        <</if>>
+    <</if>>
+
+<<optif setup.qres.VarLte("mlangmerchantprinceflirt", "0").isOk($gQuest)>>
+<<opt "Flirt with them. And reassure them, but mostly flirt.">>
+
+    <<if $unit.player.getSpeech() == setup.speech.friendly>>
+        "Sure, but last I checked, they didn't buy me drinks and sit delectably across the table from me with a whole 'look don't touch' thing going on."<br>
+        <<name $g.merchant>> quirks an eyebrow. "And is that all that saved my caravan? The fact that you'd like to...touch?"<br>
+        "Of course not. Mostly it was the fact that you're paying me. And you treat me like a person. The fact that you're hot is just a bonus."<br>
+
+    <<elseif $unit.player.getSpeech() == setup.speech.bold>>
+        "Well, unless they start buying be lunch and showing more skin than you do, they're out of luck."<br>
+        <<name $g.merchant>> quirks an eyebrow. "And is that what saved my caravan? The fact that you like free food and my...physique?"<br>
+        "Of course not. Mostly it was the fact that you're paying me. And you treat me like a person. The fact that you're hot is just a bonus."<br>
+
+    <<elseif $unit.player.getSpeech() == setup.speech.cool>>
+        You shrug. "I like you," you tell <<them $g.merchant>>. "I don't know them at all."<br>
+        <<name $g.merchant>> quirks an eyebrow. "And is that all that saved my caravan? The fact that you 'like' me?"<br>
+        "Sure. You're paying me and you treat me like person. You being sexy as fuck is just a bonus."<br>
+
+    <<elseif $unit.player.getSpeech() == setup.speech.witty>>
+        "And if they were to wine and dine me the way you have, maybe they'd have had more luck."<br>
+        <<name $g.merchant>> quirks an eyebrow. "And is that all that saved my caravan? The free food?"<br>
+        "Of course not. Mostly it was the fact that you're paying me. And you treat me like a person. The fact that you're hot is just a bonus."<br>
+
+    <<elseif $unit.player.getSpeech() == setup.speech.debauched>>
+        "I like to know who I'm dealing with," you say with a shrug. "Although it does help when they're as sexy as you are."<br>
+        <<name $g.merchant>> quirks an eyebrow. "And is that all that saved my caravan? The fact that you like my body?"<br>
+        "Of course not. Mostly it was the fact that you're paying me. And you treat me like a person. The fact that you're hot is just a bonus."<br>
+    <</if>>
+    <<They $g.merchant>> coughs and pours <<themselves $g.merchant>> another goblet of wine. "Well, um. That's actually one of the nicest things anyone's said to me recently. Uh. Thank you. I'll uh, keep this note for now. Maybe it'll help me figure out exactly which of my rivals is doing this. An uh... maybe we can pick up the specifics of this conversation later?"<br>
+    <<They $g.merchant>>'s cute when <<they $g.merchant>>'s flustered. Smiling your acquiescence, you get up from the table and make for the door. Turning back, you catch <<them $g.merchant>> looking at you and give them a wink before you leave. Best to go while you still have <<their $g.merchant>> attention.
+    <<run setup.qc.VarSet('mlangmerchantprinceflirt', '1', -1).apply($gQuest)>>
+
+<<opt "Extort more money for your cooperation">>
+    "Maybe" you say, taking a sip from your _pdrink. "The point is I turned down work to let you know, and I trust that's not going to go unnoticed."<br>
+    A series of emotions flicker across <<their $g.merchant>>'s face faster than you can decipher them, and then <<they $g.merchant>> smiles broadly. "Of course not," <<they $g.merchant>> says, folding up the note and putting it into <<their $g.merchant>> jacket pocket. When <<their $g.merchant>> hand returns to the table, it's clutching a small pouch of coin. "For your services today. And I'll ensure there's plenty more work coming your way in the future."<br>
+    With a smile and a nod, you take the coin pouch and leave <<lore location_princeofcups>>. Free food and drink is all very well and good, but business is business, and you have a company to run.
+    <<run setup.qc.Money(500).apply($gQuest)>>
+    <<run setup.qc.VarSet('mlangmerchantprinceflirt', '0', -1).apply($gQuest)>>
+<</choose>>

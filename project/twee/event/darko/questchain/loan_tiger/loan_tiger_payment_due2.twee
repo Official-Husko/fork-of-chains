@@ -1,0 +1,85 @@
+:: EventSetup_loan_tiger_payment_due2 [nobr event]
+
+
+<<run new setup.UnitGroup(
+"loan_tiger_payment_due0",
+"Neko Swindler",
+'subrace_neko', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_thief),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_evil, setup.trait.per_sly]),
+],
+)>>
+
+<<run new setup.Event(
+'loan_tiger_payment_due2', /* key */
+"Loan Tiger: Payment Due", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_loan_tiger_payment_due2',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'neko': 'loan_tiger_payment_due0',
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.VarGte('tiger_bank_loan', 1),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_loan_tiger_payment_due2 [nobr]
+<p>
+Some time ago, your company has fallen into a debt, and you had to borrow some money from the <<rep $company.bank>>. Today, a representative from the bank has arrived at your fort, demanding advance interest for your loan: a sum of <<money 5000>>.
+<<if $unit.player.isHasTrait('per_attentive')>>
+However, you are perceptive enough to notice that you are not yet at the deadline for your payment. In fact, the representative neko does not dress like a normal <<rep $company.bank>> representative at all — all you could know, <<they $g.neko>> might just be a swindler trying to trick you into paying something you should never pay to begin with.
+<<elseif $unit.player.isHasTrait('per_dreamy')>>
+<<else>>
+You are perceptive enough to note that it is not yet time for the payment deadline, but perhaps this is just part of the bank's standard procedure.
+<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Pay">>
+
+<p>
+You paid the money, and the neko departed immediately.
+</p>
+
+<p>
+A few days later, you receive a missive from the <<rep $company.bank>> that a neko impersonator has been going around, pretending to be an employee of the bank.
+It appears that you have been swindled by this particularly unscrupulous character...
+</p>
+
+<<run setup.qc.Money(-5000).apply($gQuest)>>
+
+<<opt "Enslave the representative">>
+
+<<set _u = setup.getAnySlaver()>>
+<p>
+You decided to instead enslave the representative.
+Pretending to go to your coffers to collect the pay, you instead summoned
+<<yourrep _u>>, and together you knocked the neko unconscious, before storing
+<<them _u>> in the <<rep setup.buildingtemplate.slavepens>>.
+</p>
+
+<p>
+A few days later, you receive a thank you letter from the <<rep $company.bank>> for arresting the neko impersonator. Supposedly, the thief has been masquerading as the bank's employee for some time, tarnishing its reputation. Your goodwill with the bank has increased as a result.
+</p>
+
+<<run setup.qc.Favor('bank', 100).apply($gQuest)>>
+<<run setup.qc.Slave('neko', 'a|was trying to swindle you by pretending to be a representative of the Tiger bank').apply($gQuest)>>
+
+<</choose>>
+
+

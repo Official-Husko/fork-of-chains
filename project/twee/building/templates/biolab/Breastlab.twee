@@ -1,0 +1,39 @@
+:: InitBuildingBreastlab [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'breastlab',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+
+<<run new setup.BuildingTemplate({
+  key: 'breastlab',
+  name: 'Breastlab',
+  tags: ['biolab'],
+  description_passage: 'BuildingBreastlab',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('biolab')],
+  ],
+  main_room_template_key: 'breastlab',
+})>>
+
+
+:: BuildingBreastlab [nobr]
+
+<p>
+Unlocks limited growing and shrinking of slave breasts.
+
+</p>
+

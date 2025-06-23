@@ -1,0 +1,139 @@
+:: QuestSetup_rescue_ranger [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'rescue_ranger', /* key */
+"Rescue Ranger", /* Title */
+"darko", /* Author */
+[
+  'special', 'unit', 'forest',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'spotter1': setup.qu.spotter,
+'spotter2': setup.qu.spotter,
+'negotiator': setup.qu.negotiator, },
+{ /* actors */
+'target': 'missingslaves',
+'ranger': 'forest_all', },
+[ /* costs */
+setup.qc.MoneyCustom(-1000), ],
+'Quest_rescue_ranger',
+setup.qdiff.normal35, /* difficulty */
+[ /* outcomes */
+[
+'Quest_rescue_rangerCrit',
+[
+setup.qc.Slave('target', "", undefined),
+setup.qc.RemoveFromUnitGroup('target'),
+],
+], [
+'Quest_rescue_rangerCrit',
+[
+setup.qc.Injury('target', 5),
+setup.qc.Outcomes('crit'),
+],
+], [
+'Quest_rescue_rangerFailure',
+[
+setup.qc.Slave('target', "", true),
+setup.qc.RemoveFromUnitGroup('target'),
+],
+], [
+'Quest_rescue_rangerFailure',
+[
+setup.qc.Slave('target', "", true),
+setup.qc.RemoveFromUnitGroup('target'),
+setup.qc.MissingUnitRebuy('spotter1', 0.5), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.rescue, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.UnitGroupHasUnit(setup.unitgroup.missingslaves),
+],
+)>>
+
+:: Quest_rescue_ranger [nobr]
+<p>
+The dense <<lore region_forest>> is great place for fugitives and
+other degenerates to hide from justice. With hiding spots everywhere and dense
+vegetation to slow down pursuer, once they reach the border of the forest
+their pursuers often simply give up the chase. But fugitives are not the only
+ones using them as an escape route — occasionally, slaves who somehow managed
+to escape from their owners also try to find their way there and lose
+themselves from their former owners.
+</p>
+
+<p>
+In fact, you have just heard the news that one of your former slaves,
+<<rep $g.target>>, target|was somehow loose in the <<lore region_forest>>.
+<<if $g.target.isMindbroken()>>
+It is unclear how the mindbroken slave could end up in the forests — perhaps
+<<their $g.target>> new owner simply grow bored with the slave and let <<them
+$g.target>> go.
+<<elseif $g.target.isHasTrait('training_obedience_advanced')>>
+Given <<their $g.target>> training history, it was unlikely that <<they
+$g.target>> chose to flee to the forests on <<their $g.target>> volition — most
+likely <<their $g.target>> owner let the slave loose in the forest for fun
+but somehow managed to lose track of the poor obedient slave.
+<<else>>
+Given <<their $g.target>> disobedience, <<they $g.target>> probably managed
+to escape from <<their $g.target>> now former owner, chasing elusive freedom
+in the depths of the forests.
+<</if>>
+</p>
+
+<p>
+This could be your chance to recapture the slave — while it's unlikely your
+slavers would be able to locate the slave in the vast forests, you have heard
+of a ranger living in the forests with a particular reputation for capturing
+stray slaves. You can try to send a group of slavers to contact the ranger and
+locate your long lost slave.
+</p>
+
+
+:: Quest_rescue_rangerCrit [nobr]
+
+<p>
+The ranger together with <<rep $g.spotter1>> and <<rep $g.spotter2>> methodically 
+scoured through the forests, looking for signs of the slave. It was <<yourrep $g.spotter1>> who
+<<uadv $g.spotter1>> spotted smoke coming from a spot in the forest. Lo and
+behold, <<rep $g.target>> target|was resting alone near a makeshift campfire,
+<<if $g.target.isMindbroken()>>
+looking dazed.
+<<elseif $g.target.isHasTrait('training_obedience_advanced')>>
+still waiting for <<their $g.target>> owner to reclaim <<them $g.target>>
+<<else>>
+making plans to complete their escape.
+<</if>>
+<<if $gOutcome == 'crit'>>
+Your slavers easily subdued and secured the slave, to be brought back to your fort.
+<<else>>
+Your slavers easily subdued and secured the slave, to be brought back to your
+fort, but you noted that the slave had suffered many injuries. You are unsure
+if it was from <<their $g.target>> former owner or from the escapade, but either way you
+will need to give <<theslaver $g.target>> some rest before you can use <<them $g.target>> again.
+<</if>>
+</p>
+
+
+:: Quest_rescue_rangerFailure [nobr]
+
+<p>
+The ranger together with <<rep $g.spotter1>> and <<rep $g.spotter2>> scoured
+through the forests, looking for signs of the slave. Eventually though, your
+slavers were not able to catch up with the rangers, who moved through the
+forest with ease and grace while your slavers tumbled through the thick
+vines and brambles.
+<<if $gOutcome == 'failure'>>
+Eventually, the ranger found and captured the missing slave alone, and
+demanded extra pay for <<their $g.ranger>> basically unassisted work.
+<<else>>
+In fact, <<rep $g.spotter1>> got lost in the forest as well, and the
+ranger had to be paid more to rescue both the slave and <<rep $g.spotter1>>.
+<</if>>
+</p>

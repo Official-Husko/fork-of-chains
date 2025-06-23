@@ -1,0 +1,178 @@
+:: OpportunitySetup_branching_timeline__decision [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'branching_timeline__decision', /* key */
+"Branching Timeline: Decision", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'special',
+  'unknown',
+  'fort',
+],
+1, /* expiration weeks */
+'Opportunity_branching_timeline__decision',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_branching_timeline__decision_0',
+    'Opportunity_branching_timeline__decision_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.FriendshipWithYou('parent', 500),
+      setup.qc.Opportunity('branching_timeline', {
+      child: "child",
+      }),
+    ],
+  ],
+  [
+    'Opportunity_branching_timeline__decision_1',
+    'Opportunity_branching_timeline__decision_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Player(setup.qres.LoverExist()),
+    ],
+    [ /* outcomes */
+      setup.qc.Opportunity('branching_timeline', {
+        child: "child",
+      }),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'child': [
+  ],
+  'parent': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_branching_timeline__decision [nobr]
+
+<p>
+You have captured the assailant who once assaulted your lover.
+While the threat is finally over, one last question looms in your head.
+If what the assailant is claiming is true, then if you continue to love
+someone but <<rep $g.parent>>, then <<they $g.child>> will cease to exist.
+</p>
+
+<p>
+Would you choose love or the life of a stranger?
+</p>
+
+<<unitcard $g.child 1>>
+
+:: Opportunity_branching_timeline__decision_0 [nobr]
+Become lovers with <<if $g.parent>><<rep $g.parent>><</if>>
+
+
+:: Opportunity_branching_timeline__decision_0_flavor [nobr]
+<<set _u = $unit.player.getLover()>>
+<<if _u == $g.parent>>
+<p>
+Well.. you are already lovers with <<rep $g.parent>> already. There is
+nothing to do here, and <<rep $g.child>> can continue to exist regardless of
+your choice.
+</p>
+<<elseif _u>>
+<p>
+Taking pity on the poor time traveler, you have decided to hook up with <<rep
+$g.parent>> instead. You said one last goodbye to your now ex-lover <<rep
+_u>>, before tentatively testing the warmth of your new lover's embrace.
+</p>
+<</if>>
+
+<<run setup.qc.HookupWithYou('parent').apply($gQuest)>>
+
+<p>
+Locked in an awkward embrace, you try your best to exhude confidence gazing
+at your new lover's <<ueyes $g.parent>>. Sure, this entire lover thing might
+be a thing of convenience just to ensure that <<rep $g.child>> continue to
+exist, but you have no doubt that given time, you can certainly develop
+affection towards <<rep $g.parent>>.
+</p>
+
+<p>
+You still have to decide what to do with the time-traveler.
+</p>
+
+
+:: Opportunity_branching_timeline__decision_1 [nobr]
+Stay with your lover
+
+
+:: Opportunity_branching_timeline__decision_1_flavor [nobr]
+<<set _u = $unit.player.getLover()>>
+<<if _u == $g.parent>>
+<p>
+Well.. you are already lovers with <<rep $g.parent>> already. There is
+nothing to do here, and <<rep $g.child>> can continue to exist regardless of
+your choice.
+</p>
+<<elseif !_u>>
+<<else>>
+<p>
+Between the choice of love and a stranger, you ultimately choose love. After
+all, what is a stronger force than love? Just thinking about <<yourrep _u>> makes
+your heart feels giddy, and the world would not be the same without <<therace
+_u>> by your side.
+</p>
+
+<p>
+Seeing your decision, <<rep $g.child>> child|resign to <<their $g.child>> fate.
+Soon enough, <<their $g.child>> body begins to glow white — but not
+disappearing! In fact, as you and <<yourrep _u>> continue to be locked in a
+tight embrace, your <<daughter $g.child>> visibly child|transform before you.
+</p>
+
+<<set _father = $unit.player>>
+<<set _mother = _u>>
+
+<<if !_father.isHasDick() && _mother.isHasDick()>>
+<<set _mother = $unit.player>>
+<<set _father = _u>>
+<</if>>
+
+<<set _preference = $settings.getGenderPreference(setup.job.slaver)>>
+
+<<if Math.random() < 0.5>>
+<<set _preference = $settings.getGenderPreference(setup.job.slave)>>
+<</if>>
+
+<<set _w = setup.UnitBirth.generateChild(_father, _mother, _preference)>>
+
+<p>
+<<= setup.Text.Unit.Bodyswap.bodyswap($g.child, _w)>>
+</p>
+
+<<run setup.qcImpl.Bodyswap.doBodySwap($g.child, _w)>>
+<<run $family.unsetRelation($g.child, $g.parent)>>
+<<run $family.setParent(_mother, $g.child)>>
+<<run $family.setParent(_father, $g.child)>>
+
+<<run _w.delete()>>
+
+<p>
+The transformation ended, <<reps $g.child>> appearance has drastically
+changed. <<Therace $g.child>> lost all resemblance to <<rep $g.parent>>, and
+instead much child|resembles you and your lover. It seems that the prophecy was
+incorrect — <<they $g.child>> would not be disappear, but would instead align
+<<themself $g.child>> to fit with the new timeline. <<Rep _u>> tentatively
+touched <<their _u>> <<daughter $g.child>>'s face while you decide what to do
+now...
+</p>
+
+<</if>>

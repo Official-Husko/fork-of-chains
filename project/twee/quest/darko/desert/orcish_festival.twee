@@ -1,0 +1,173 @@
+:: QuestSetup_orcish_festival [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_orcish_festival1',
+'Residents of the Western Forests: All gender',
+'forest_all',  /* pools */
+0,
+[
+setup.qc.TraitReplace('unit', setup.trait.training_obedience_basic),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape), ],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'orcish_festival', /* key */
+'Orcish Festival', /* Title */
+'darko', /* Author */
+[ 'desert', 'favor',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'whore': setup.qu.bimbo,
+'guard': setup.qu.guard,
+'slave': setup.qu.slavegeneric, },
+{ /* actors */
+'gift': 'quest_orcish_festival1',
+'orc': 'subrace_orc',
+},
+[ /* costs */
+],
+'Quest_orcish_festival',
+setup.qdiff.easier39, /* difficulty */
+[ /* outcomes */
+[
+'Quest_orcish_festivalCrit',
+[
+setup.qc.MoneyCrit(),
+setup.qc.Favor('orc', 100), ],
+], [
+'Quest_orcish_festivalCrit',
+[
+setup.qc.MoneyNormal(),
+setup.qc.Favor('orc', 100),
+setup.qc.Injury('slave', 1), ],
+], [
+'Quest_orcish_festivalCrit',
+[
+setup.qc.Favor('orc', 100),
+setup.qc.Injury('slave', 3), ],
+], [
+'Quest_orcish_festivalCrit',
+[
+setup.qc.SlaverMarker('orc'),
+setup.qc.Injury('slave', 5), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.common],
+], /* quest pool and rarity */
+[
+setup.qres.HasSlave(), ], /* restrictions to generate */
+)>>
+
+:: Quest_orcish_festival [nobr]
+<p>
+The orc tribes of the <<lore region_desert>> believe in honoring their ancestors
+through nights of debauchery. During these nights, slaves in the orcish slave dumps
+are made available for all orcs and visitors to use, and debauchery competitions are often
+held. Winners of these competitions receive the personal blessings of the
+leader of the orc encampment themself.
+</p>
+
+<p>
+Outsiders are also welcome to partake in these sacred festivals. If you want
+to participate, you would need to supply a slave, as well as a performer that are proficient in
+debauching themself. You also want to have a guard, just in case, and a slave
+trainer to keep your slave in check. While the monetary reward is mediocre at best,
+earning the orc tribe's favor might be useful someday.
+</p>
+
+
+:: Quest_orcish_festivalCrit [nobr]
+
+  <<if $g.gift.isMale()>>
+  <<else>>
+    <<questimage 'orcish_festival_female.jpg'>>
+  <</if>>
+
+<p>
+The festival was a merry ground with all sort of fucking happening all around,
+be it regular fucking, throat fucking or even tit fucking in some cases.
+All of these penetrations were done in public
+by a large number of participants. While most participants were the orcs living in the vicinity,
+your slavers did notice
+the occasional elf
+<<if !$settings.bannedtags.furry>>
+and even a werewolf
+<</if>>
+among both the fucker and the fuckee.
+Sex dominated the atmosphere, your slavers could not help but get aroused from the smell.
+
+<<set _chaste = setup.selectUnit([$g.trainer, $g.whore, $g.guard], {trait: 'per_chaste'})>>
+<<set _lust = setup.selectUnit([$g.trainer, $g.whore, $g.guard], {trait: 'per_lustful'})>>
+
+<<if _chaste>>
+  Even the usually chaste <<rep _chaste>> couldn't help but get aroused.
+<<elseif _lust>>
+  The sex-addled <<rep _lust>> got even more aroused than usual.
+<</if>>
+
+Still, they remained focused at the task at hand.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Yourrep $g.whore>> <<uadv $g.whore>> held such a performance by using, abusing,
+and at some point even being abused by <<rep $g.slave>> that many orcs in
+the encampment were enraptured.
+The male orcs
+blew their load in the throats of whatever nearby slave available,
+while the female orcs played with themselves using the abundant dildos.
+At the end of the debauched festivities, the leader of orcs <<herself $g.orc>>
+congratulated <<rep $g.trainer>> for the performance, and promised to put
+good words about your company.
+Later, <<yourrep $g.whore>> felt strange, lustful
+glares coming from all around the encampment, and to avoid unnecessary danger your slavers exited
+the encampment that same night, before going back to your fort.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+Under <<reps $g.trainer>> watchful gaze, <<yourrep $g.slave>> and even at some
+point <<rep $g.whore>> <<uadv $g.whore>> debauched themselves sufficiently wild,
+enough to earn many orcs' attentions.
+At the end of the debauched festivities, your slavers to had earned the
+respect of some of the orcs. They even invited your slavers to use some
+of their freshly captured slaves together.
+After few nights of such debauchery, your slavers
+felt they had achieved what they set to do there.
+They collared <<rep $g.slave>> back, and returned home.
+The slave will need to recover from the rough use -- a couple of weeks should do it.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+Under <<reps $g.trainer>> watchful gaze, <<yourrep $g.slave>> tried <<their
+$g.slave>> best to debauch <<themself $g.slave>>. But it was obvious that the slave
+lacked enthusiasm, and soon enough <<rep $g.slave>> got injured from rough use,
+or at least managed to convince your slavers that <<they $g.slave>> slave|was indeed
+injured. Your slavers returned
+much earlier than scheduled, but at least the orcs were still pleased at
+the efforts your company was making to befriend them.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, <<yourrep $g.slave>> slave|was not at all able to withstand
+the heavy abuse of the festival and soon went into a psychotic daze. With the slave
+turning useless, your slavers had no choice but to quit the festival and head home
+much earlier than expected.
+</p>
+
+<</if>>

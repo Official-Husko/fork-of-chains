@@ -1,0 +1,111 @@
+:: QuestSetup_for_science__something_thick [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'for_science__something_thick', /* key */
+"For Science: Something Thick", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'vale'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'smith': setup.qu.blacksmith,
+'crafter': setup.qu.crafter,
+'negotiator': setup.qu.negotiator, },
+{ /* actors */
+'head': 'vale_all', },
+[ /* costs */
+],
+'Quest_for_science__something_thick',
+setup.qdiff.easy43, /* difficulty */
+[ /* outcomes */
+[
+'Quest_for_science__something_thickCrit',
+[
+setup.qc.Opportunity('for_science__box_payment'),
+setup.qc.BoonizeRandom('smith', 9),
+setup.qc.BoonizeRandom('crafter', 9), ],
+], [
+'Quest_for_science__something_thickCrit',
+[
+setup.qc.Opportunity('for_science__box_payment'), ],
+], [
+'Quest_for_science__something_thickFailure',
+[
+],
+], [
+'Quest_for_science__something_thickDisaster',
+[
+setup.qc.SlaverMarker('head'),
+setup.qc.MoneyCustom(-1500), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarNull('for_science_slaveorder'),
+setup.qres.NoQuest('for_science__box_payment__labor'),
+setup.qres.NoOpportunity('for_science__box_payment'),
+setup.qres.HasItem(setup.item.quest_for_science_list),
+setup.qres.NoItem(setup.item.quest_for_science_box), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_for_science__something_thick [nobr]
+
+<p>
+The first item in the <<rep setup.item.quest_for_science_list>>
+is a thick sturdy box. You can probably get one from one of the blacksmiths on the <<lore region_vale>> — in fact, the list actually gave the location of a particularly good blacksmith.
+Compared to the other regions, the <<lore region_vale>> are relatively safe (although it's still plenty dangerous), so this seems like an easy and short mission.
+What could possibly go wrong?
+</p>
+
+
+:: Quest_for_science__something_thickCrit [nobr]
+
+<p>
+After many wayward trekking, your slavers finally located the smith cottage.
+Surrounding the cottage are finished slave boxes and cages of various kinds.
+<<Yourrep $g.smith>> <<uadv $g.smith>> inspected the fine craftmanship while <<rep $g.negotiator>> got to work and knocked on the door.
+</p>
+
+<p>
+The smith, a burly <<man $g.head>>, had somehow learned of your team's arrival.
+Apparently <<they $g.head>> and the inventor had known each other for a while —
+The inventor back then found the smith in the middle of crafting mundane items such as fuckboxes with such high precision, and offered to make better use of <<their $g.head>> craftsmanship by ordering intricate devices for the inventor's experiments.
+In fact, the smith claimed that the inventor already sent to <<them $g.head>> the exact schematics for the box,
+which should make your slavers' job easier.
+</p>
+
+<p>
+But apparently there was a remaining, "slight" problem. This time, the smith had not received the payment for this order, and apparently the burden of paying for it had somehow fallen onto your slaver's hands. Well, it shouldn't be a problem. How much could a box possibly cost, after all?
+</p>
+
+<p>
+...A lot, apparently, as this one is designed to be sturdy enough to withstand a continuous assault of magic. You'll have to pay one way or another, if you want to get that box of yours...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Still, the master smith gave your slavers some hospitality and showed them a trick or two about smithing. This greatly inspired <<yourrep $g.smith>> and <<utheirrel $g.smith $g.crafter>> <<rep $g.crafter>>.
+</p>
+<</if>>
+
+
+
+:: Quest_for_science__something_thickFailure [nobr]
+<p>
+How could a group of experienced slavers failed to locate a blacksmith after being given <<their $g.head>> exact location? You ponder the question for a week after your slavers came back empty handed, apparently lost in the vale.
+</p>
+
+
+:: Quest_for_science__something_thickDisaster [nobr]
+<p>
+What could possibly be worse than being lost in the vale, even after being given the exact location of the smith? Patron a completely different smith, of course! Your slavers asked for a box, got a box, but it turned out to be of too crappy quality to be used for the experiment.
+You sighed heavily when looking at the slavers' expenses.
+</p>

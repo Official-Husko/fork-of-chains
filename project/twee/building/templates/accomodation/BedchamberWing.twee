@@ -1,0 +1,172 @@
+:: InitBuildingBedchamberWing [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'bedchambersuite',
+  tags: [],
+  description_passage: 'RoomBedchamberSuite',
+  name: 'Bedchamber suite',
+  width: 3,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'bedchamberwing',
+  tags: [],
+  width: 5,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "sex",
+      room_keys: [
+        'bedchambersuite',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'bedchamberwing',
+  name: 'Bedchamber wing',
+  tags: ['critical', 'accomodation', ],
+  description_passage: 'BuildingBedchamberWing',
+  costs: [
+    [setup.qc.Money(-3000)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('greathall'),
+      setup.qres.Building('dutyroom'),
+    ],
+    [
+      setup.qres.Building('veteranhall'),
+    ],
+    [],
+    [],
+    [],
+
+    [],
+    [],
+    [],
+    [],
+    [],
+
+    [],
+    [],
+    [],
+    [],
+    [],
+
+    [],
+    [],
+    [],
+    [],
+    [],
+
+    [],
+    [],
+    [],
+    [],
+    [],
+  ],
+  on_build: [
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+    [ setup.qc.Function(() => State.variables.bedchamberlist.newBedchamber()), ],
+  ],
+  main_room_template_key: 'bedchamberwing',
+  sub_room_template_key: 'bedchambersuite',
+})>>
+
+:: BuildingBedchamberWing [nobr]
+
+<p>
+Transforms a small wing of your fort into a luxurious area for you and your
+slavers to revel in your success.
+Unlocks private bedchambers, in which you can give ownership of some slaves to yourself
+or your slavers.
+Very, very slightly increases the slaver's skills, but the main reason this improvement exists
+is to roleplay.
+</p>
+
+<p>
+Each upgrade unlocks one extra bedchamber.
+</p>
+
+<p>
+You can assign slaves to bedchambers via the "Duty" menu.
+</p>
+
+
+:: RoomBedchamberSuite [nobr]
+
+<p>
+A suite for your a lucky slaver to have all for their own.
+</p>

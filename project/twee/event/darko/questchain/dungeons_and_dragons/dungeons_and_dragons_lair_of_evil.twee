@@ -1,0 +1,60 @@
+:: EventSetup_dungeons_and_dragons_lair_of_evil [nobr event]
+
+<<run new setup.Event(
+'dungeons_and_dragons_lair_of_evil', /* key */
+"Dungeons and Dragons: Lair of Evil", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'prep',
+  'unknown',
+],
+'Event_dungeons_and_dragons_lair_of_evil',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_heroic_withdrawal_0'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('dungeons_and_dragons_withdrawal_progress'),
+  setup.qc.Opportunity('dungeons_and_dragons_lair_of_evil_captive', {
+slaver: "slaver",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('dungeons_and_dragons_withdrawal_progress', '4'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_dungeons_and_dragons_lair_of_evil [nobr]
+<p>
+<<Yourrep $g.slaver>> has come to demand the last quest to prove <<their $g.slaver>> heroism once and for all, to your great dismay.
+</p>
+
+<p>
+You still want the adventure-deprived slaver to return to normal, of course, but
+prior experiences have taught you that perhaps there is a merit to this.
+<<yourrep $g.slaver>> slaver|have a knack of finding a quest where there
+shouldn't be, so you might be able to use this to your advantage. A quest to
+save a certain royal from the evil cluthes of... something. You might just
+get yourself an easy royal slave this way!
+</p>
+
+<p>
+Should you think this is a good idea, best grab your pen and start writing.
+Otherwise, you can always refuse the absurd request, although your slaver
+will probably become dejected in the months to come...
+</p>

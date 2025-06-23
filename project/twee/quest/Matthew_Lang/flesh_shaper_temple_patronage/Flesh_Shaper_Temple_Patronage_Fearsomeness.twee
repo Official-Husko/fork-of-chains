@@ -1,0 +1,141 @@
+:: QuestSetup_flesh_shaper_temple_patronage_fearsomeness [nobr quest]
+
+<<set _criteriapatron = new setup.UnitCriteria(
+null, /* key */
+'patron', /* name */
+[
+  setup.trait.bg_merchant,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTraits([setup.trait.face_scary, setup.trait.face_hideous], true),
+],
+{
+  arcane: 1.5,
+  brawn: 1.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'flesh_shaper_temple_patronage_fearsomeness', /* key */
+"Flesh Shaper Temple: Patronage - Fearsomeness", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'transformation',
+  'vale',
+  'prep',
+  'trait',
+  'rare',
+  'veteran',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'offering': setup.qu.quest_offeringslave,
+  'patron': [_criteriapatron, 3],
+},
+{ /* actors */
+  'apprentice': 'quest_humanvale_mystic',
+  'leader': 'quest_humanvale_mysticleader',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-2000),
+],
+'Quest_flesh_shaper_temple_patronage_fearsomeness',
+setup.qdiff.harder43, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_flesh_shaper_temple_patronage_fearsomenessCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_flesh_shaper_temple_patronage_fearsomenessCrit',
+    [
+      setup.qc.MissingUnitForever('offering'),
+      setup.qc.Trait('patron', setup.trait.face_scary),
+      setup.qc.AddTitle('patron', 'fleshshape_face'),
+    ],
+  ],
+  [
+    'Quest_flesh_shaper_temple_patronage_fearsomenessFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_flesh_shaper_temple_patronage_fearsomenessDisaster',
+    [
+      setup.qc.MissingUnitForever('offering'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_flesh_shaper_temple_patronage_fearsomeness [nobr]
+<<questimage "flesh_shaper_temple.jpg">>
+<p>
+    With one of the temples of the Flesh Shapers opening their doors to select clientele, you have the opportunity to send someone in to do some work that cannot be achieved in a <<rep setup.buildingtemplate.biolab>> or <<rep setup.buildingtemplate.surgery>>.
+
+    After some thought, you have decided to increase to ask the Flesh Shapers to increase the fearsomeness of someone in the company. All that remains is to decide who should go, and pick a suitable bribe to convince the Flesh Shapers to move your request to the front of the queue.
+</p>
+
+<p>
+    <<dangertext 'WARNING'>>: upon success, the slave you bring on this quest will
+    most likely be given out to the flesh-shaper cult and be gone forever.
+</p>
+
+<p>
+    <<dangertext 'WARNING'>>: a face altered via flesh-shaping will never match
+    a natural one. Having a face altered this way will surely have a
+    <<dangertextlite 'permanent'>> negative effect on the unit.
+</p>
+
+:: Quest_flesh_shaper_temple_patronage_fearsomenessCrit [nobr]
+<p>
+    <<Rep $g.patron>> arrived at the Flesh Shaper temple after travelling for several days through the wilds of <<lore region_vale>>. Already, a long line of supplicants trailed down the steps from the giant double doors that led into the mountain temple and the secret working rooms of the Flesh Shapers. Having the foresight to bring a slave , however, draws the attention of the cult, and an apprentice brings <<rep $g.patron>> into the temple where <<they $g.apprentice>> seat <<them $g.patron>> at a carved wooden table in front of a more imposing senior cultist.
+</p>
+<<dialogue $g.leader>>
+    Welcome. Thank you for offering. What can we do for you today?"
+<</dialogue>>
+<p>
+    It takes a while for the Flesh Shapers to do their work, but when <<rep $g.patron>> returns to the fort, <<they $g.patron>> have much more fearsome features than they previously did,
+    although there are clearly visible rough edges here and there that makes <<them $g.patron>>
+    looks quite unnatural.
+</p>
+<p>
+    <<Rep $g.offering>> offering|was given to the flesh-shaping temple as a tribute,
+    and <<their $g.offering>> fate is to become an object of worship — or possibly experimentation.
+</p>
+
+
+
+:: Quest_flesh_shaper_temple_patronage_fearsomenessFailure [nobr]
+<p>
+    Unfortunately, <<rep $g.patron>> got lost and was unable to find the Flesh Shaper temple in time. By the time they arrived, the large double doors to the mountain temple were closed once more, and your slavers were politely but firmly turned away.
+</p>
+
+
+
+:: Quest_flesh_shaper_temple_patronage_fearsomenessDisaster [nobr]
+<p>
+    <<Rep $g.patron>> arrived at the Flesh Shaper temple after travelling for several days through the wilds of <<lore region_vale>>. Already, a long line of supplicants trailed down the steps from the giant double doors that led into the mountain temple and the secret working rooms of the Flesh Shapers. Having the foresight to bring a slave , however, draws the attention of the cult, and an apprentice brings <<rep $g.patron>> into the temple where <<they $g.apprentice>> seat <<them $g.patron>> at a carved wooden table in front of a more imposing senior cultist.
+</p>
+<<dialogue $g.leader>>
+    Welcome. Thank you for offering. What can we do for you today?"
+<</dialogue>>
+<p>
+    When <<rep $g.patron>> explain what <<they $g.patron>> wanted, their requests were so specific and outlandish that the priests took their attitude as an affront to their craft and beliefs, and all but ran <<them $g.patron>> out of the temple. Forced to abandon their slave, <<name $g.offering>> behind, <<they $g.patron>> returned to the fort, dejected.
+</p>

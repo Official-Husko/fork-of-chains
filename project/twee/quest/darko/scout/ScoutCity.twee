@@ -1,0 +1,85 @@
+:: QuestSetupScoutCity [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'scout_city',  /* id */
+  'Scout: City of Lucgate',  /* Title */
+  'darko',   /* author */
+  ['city', 'quest'],  /* tags */
+  1, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_city,
+    'scout2': setup.qu.scout_city,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestScoutCity',  /* description */
+  setup.qdiff.normal25,
+  [
+    [
+      'QuestScoutCityCrit',
+      [
+        setup.qc.QuestDelay(setup.questpool.city, 7),
+        
+      ]
+    ],
+    [
+      'QuestScoutCitySuccess',
+      [
+        setup.qc.QuestDelay(setup.questpool.city, 5),
+        
+      ],
+    ],
+    [
+      'QuestScoutCityFailure',
+      [
+      ],
+    ],
+    [
+      'QuestScoutCityDisaster',
+      [
+      ],
+    ],
+  ],
+  [[setup.questpool.scoutcity, setup.rarity.common],],
+  [setup.qres.QuestAvailableUnique()],
+)>>
+
+:: QuestScoutCity [nobr]
+<p>
+Your contact has send you several promising leads in the <<lore region_city>>.
+You can send a group of slavers to follow up on those leads team for a full week into the
+city.
+</p>
+
+:: QuestScoutCityCrit [nobr]
+
+<p>
+The scouting mission was a complete success, with your team returning with more
+quest options than expected.
+</p>
+
+:: QuestScoutCitySuccess [nobr]
+
+<p>
+The scouting mission went about as well as expected, and your team returned with
+several quest options.
+</p>
+
+:: QuestScoutCityFailure [nobr]
+
+<p>
+Unfortunately, the leads given by your contacts turned out to be dead leads.
+Your slavers returned home with nothing but shame.
+</p>
+
+:: QuestScoutCityDisaster [nobr]
+
+<p>
+Unfortunately, the team were ambushed by locals during their stay in the city,
+and was forced to retreat earlier than expected.
+</p>

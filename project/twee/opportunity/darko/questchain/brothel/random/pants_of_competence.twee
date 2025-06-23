@@ -1,0 +1,160 @@
+:: OpportunitySetup_pants_of_competence [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'pants_of_competence', /* key */
+"Pants of Competence", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'item',
+],
+1, /* expiration weeks */
+'Opportunity_pants_of_competence',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_pants_of_competence_0',
+    'Opportunity_pants_of_competence_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+    ],
+  ],
+  [
+    'Opportunity_pants_of_competence_1',
+    'Opportunity_pants_of_competence_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.SetCooldownEvent('pants_of_competence', setup.INFINITY),
+    ],
+  ],
+  [
+    'Opportunity_pants_of_competence_2',
+    'Opportunity_pants_of_competence_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.RemoveTitleGlobal('quest_brothel_owner_0'),
+      setup.qc.EquipmentDirect('sex_legs_master'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_pants_of_competence [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+As the manager of <<attach _describe>>, <<yourrep $g.owner>> owner|have to deal with many problems. There are the occasional fist-fights, a customer who refuses to pay, or a courtesan who fell ill. There are also occasional swindlers who tried to fool <<therace $g.owner>>, but so far <<they $g.owner>> owner|have been doing a good job resolving all these issues.
+</p>
+
+<p>
+In a latest report, <<they $g.owner>> owner|have rejected an offer to "purchase" the brothel in exchange for a legendary piece of clothing, the <<rep setup.equipment.sex_legs_master>>. According to the prospective buyer, these pants are made from magnificent fabric, a magical piece of clothing that would turn invisible to whoever dumb or unfit for their positions.
+<<if $g.owner.isHasTrait('per_smart')>>
+The smart slaver did not trust any of those words, of course, and refused the deal.
+<<elseif $g.owner.isHasTrait('per_logical')>>
+The logical slaver knew better to trust those words, of course, and refused the deal.
+<<elseif $g.owner.isHasTrait('per_proud')>>
+The proud slaver claims to you that <<they $g.owner>> obviously could see the magnificent piece of clothes, (being easily the best slaver in your company bar none, according to <<therace $g.owner>>) but ultimately decided that there is no way a piece of clothes could match the value of your brothel and refused the deal.
+<<else>>
+<<Yourrep $g.owner>> claims to you that <<they $g.owner>> can obviously see the clothes, (being one of the best slavers in your employ and all) but refused the deal simply because it could not match the value of your brothel.
+<</if>>
+</p>
+
+<p>
+Still, this piece of clothings do intrigue you. After all, you are obviously fit for your job,
+and
+<<if $g.owner.isHasTrait('per_proud')>>
+your somewhat excessive pride
+<<else>>
+your pride
+<</if>>
+demands that you should test this fact out.
+You could complete the deal by exchanging your brothel for this magnificent piece of invisible pants. Would you?
+</p>
+
+
+
+
+:: Opportunity_pants_of_competence_0 [nobr]
+Reject the absurd trade
+
+
+:: Opportunity_pants_of_competence_0_flavor [nobr]
+<p>
+Of course you are not going to trade your brothel for such a scam.
+They'll have to think twice before they could swindle you.
+</p>
+
+
+:: Opportunity_pants_of_competence_1 [nobr]
+Reject and reject all future trades
+
+
+:: Opportunity_pants_of_competence_1_flavor [nobr]
+<p>
+Of course you are not going to trade your brothel for such a scam.
+They'll have to think twice before they could swindle you.
+</p>
+
+<p>
+You instruct <<yourrep $g.owner>> to reject all similar offers in the future.
+</p>
+
+
+:: Opportunity_pants_of_competence_2 [nobr]
+Accept
+
+
+:: Opportunity_pants_of_competence_2_flavor [nobr]
+<p>
+Against your and <<yourrep $g.owner>>'s obviously better judgment, you decided to trade your brothel for a pants. Your hard work over these past few months is gone now, but in exchange you have the elusive <<rep setup.equipment.sex_legs_master>>.
+</p>
+
+<p>
+The pants now "lie" on your desk. It's very light, almost air-light, as if there are no pants at all.
+The fabric is so thin that you can't feel anything when touching or wearing the pants, as if the air freely permeates through the pants itself.
+And most importantly, you can definitely see the pant. Yes indeed, if you squeeze your eyes hard enough, there is a faint blurry trace of... something on your desk. Definitely not just your work papers. After all, you are the most competent <<man $unit.player>> for the position of leading your company, and there is no way you are too dumb to not be able to see the pants.
+</p>
+
+<p>
+Truly a magnificent artifact worthy of being traded with your brothel.
+</p>

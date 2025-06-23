@@ -1,0 +1,188 @@
+:: QuestSetup_prayer_of_protection [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"prayer_of_protection0",
+"Priest",
+'subrace_humansea', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_priest),
+  setup.qc.DecreaseTraitsRandom('unit', [setup.trait.per_evil, setup.trait.magic_dark, setup.trait.magic_dark_master], 3, true),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_light_master, setup.trait.per_submissive, setup.trait.per_honorable], 1, false, false),
+  setup.qc.Trait('unit', setup.trait.face_attractive),
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'prayer_of_protection', /* key */
+"Prayer of Protection", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'trait',
+],
+5, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'priest': [ setup.qu.priest, 1],
+  'devout1': [ setup.qu.devout, 1],
+  'devout2': [ setup.qu.devout, 1],
+},
+{ /* actors */
+  'head': 'prayer_of_protection0',
+},
+[ /* costs */
+],
+'Quest_prayer_of_protection',
+setup.qdiff.hard47, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_prayer_of_protectionCrit',
+    [
+      setup.qc.Blessing('priest', 2, 'blessing_protection8'),
+      setup.qc.Blessing('devout1', 1, 'blessing_protection8'),
+      setup.qc.Blessing('devout2', 1, 'blessing_protection8'),
+      setup.qc.Item(setup.item.potion_protection),
+    ],
+  ],
+  [
+    'Quest_prayer_of_protectionCrit',
+    [
+      setup.qc.Blessing('priest', 1, 'blessing_protection8'),
+      setup.qc.Blessing('devout1', 1, 'blessing_protection8'),
+      setup.qc.Blessing('devout2', 1, 'blessing_protection8'),
+    ],
+  ],
+  [
+    'Quest_prayer_of_protectionCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_prayer_of_protectionCrit',
+    [
+      setup.qc.Injury('priest', 5),
+      setup.qc.Injury('devout1', 5),
+      setup.qc.Injury('devout2', 5),
+      setup.qc.MissingUnit('priest'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_prayer_of_protection [nobr]
+
+<<include 'Opportunity_blessing_of_protection'>>
+
+<p>
+You have decided to try and patron the monastery.
+</p>
+
+
+
+:: Quest_prayer_of_protectionCrit [nobr]
+<p>
+You've sent three people for this mission.
+<<Yourrep $g.priest>> will be the leader of the group, and will pose as the lead pilgrim.
+<<if $g.priest.isHasTrait('per_evil')>>
+<<They $g.priest>> will have to try <<their $g.priest>> hardest hiding <<their $g.priest>> evil tendencies for the mission.
+<<elseif $g.priest.isHasTrait('per_honorable')>>
+<<They $g.priest>> is a natural do-gooder, making it much easier for <<them $g.priest>> to perform on the role.
+<</if>>
+Meanwhile, <<rep $g.devout1>> and <<utheirrel $g.devout1 $g.devout2>> <<rep $g.devout2>> will pose as the devouts, also similarly looking for blessings.
+</p>
+
+<p>
+Once inside, the head priest, a surprisingly young <<lady $g.head>>, greeted them and became their guide throughout the place.
+Looking at the head priest's <<if $g.head.isFemale()>>
+divine beauty,
+<<else>>
+radiant handsomeness,
+<</if>>
+your slavers almost had second thoughts about choosing to patron <<them $g.head>> instead, but such thoughts are completely gone by the time they began their patronage.
+</p>
+
+<p>
+Obtaining the blessing of protection turned out not to be as simple as it sounded, and your slavers had to meditate long hours with the head priest. Your slavers took it with various difficulty.
+
+<<set _agg = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_aggressive'})>>
+
+<<if _agg>>
+<<Yourrep _agg>> had it harder than the others, given how uncalm <<their _agg>> aggressive mind is.
+<</if>>
+
+<<set _calm = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_calm'})>>
+
+<<if _calm>>
+Meditation came naturally to <<rep _calm>>, and <<their _calm>> patience and calmness were almost infective to the rest of the slavers.
+<</if>>
+
+<<set _cor = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'corrupted'})>>
+
+<<if _cor>>
+<<Reps _cor>> corruption greatly interferes with the meditation, filling <<therace _cor>> with many thoughts of desecrating the place with sex.
+<</if>>
+
+<<set _hon = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_honorable'})>>
+
+<<if _hon>>
+Being an honorable <<urace _hon>>, <<rep _hon>> finds the meditation to be quite serene, a brief respite from <<their _hon>> usual job as a slaver.
+<</if>>
+
+<<set _evil = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_evil'})>>
+
+<<if _evil>>
+<<Rep _evil>> couldn't fully conceal <<their _evil>> evil thoughts during the meditation, and it distracted <<them _evil>> quite a few times.
+<</if>>
+
+<<set _sub = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_submissive'})>>
+
+<<if _sub>>
+Having to stay still unmovingly in meditation was a natural for <<rep _sub>> — a perfectly submissive pose.
+<</if>>
+
+<<set _dom = setup.selectUnit([$g.head, $g.devout1, $g.devout2], {trait: 'per_dominant'})>>
+
+<<if _dom>>
+Meanwhile <<rep _dom>> can't stop thinking about how well the head priest would serve as a slave, and how <<they _dom>> would dominate <<them $g.head>>.
+<</if>>
+
+The meditations continued for several weeks, until the head priest finally called it over.
+
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+Unfortunately, your slavers were not able to receive the blessings at the end — despite the lengthy meditation, their minds were still clouded by evil thoughts that were perfectly visible to the head priest. In the end, the head priest simply shook <<their $g.head>> head, ushering your slavers to return one day to try again.
+</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>
+Unknown to your slavers, the head priest had a very different idea for what <<they $g.head>> head|was planning to do with your slavers. Pretending the meditation was successful, <<they $g.head>> ushered your slavers into the innermost sanctum of the complex, where <<they $g.head>> began chanting a ritual. By the time your slavers caught into the scheme, they were already too deep into the ritual and they were powerless to do anything as their life essence was visibly absorbed and transported into the priest. It seemed that the priest were using them as offerings to bestow blessings upon <<themself $g.priest>>. In the end, <<rep $g.devout1>> and <<rep $g.devout2>> were discarded from the monastery, while <<rep $g.priest>> priest|was kept personally by the head priest for reasons unknown. <<uneedrescue $g.priest>>, before more essence is drained from the poor <<urace $g.priest>>'s body...
+</p>
+<<else>>
+<p>
+In the end, the meditation was successful, and your slavers mind were focused and ready to receive the blessings. The head priest led them to the inner sanctum, where they began the blessing ritual. Light shone above each of your slavers, and a shield-like symbol were absorbed into their bodies, bestowing a Blessing of Protection unto them. The next time they were supposed to be injured, the blessing will take their place instead — a very useful protection.
+</p>
+
+<p>
+Having completed the ritual, your slavers bid the kind head priest goodbye. The thoughts of enslaving <<them $g.head>> was completely gone from their cleansed thoughts.
+<<if $gOutcome == 'crit'>>
+Before your slavers leave, the head priest kindly gave them a parting gift: the rare <<rep setup.item.potion_protection>>.
+<</if>>
+Your slavers sailed back home, where their cleansed mind will surely get filled back with sex and debauchery in no time at all.
+</p>
+
+<</if>>
+

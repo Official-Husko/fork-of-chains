@@ -1,0 +1,205 @@
+:: InteractionSetup_use_both_bedchamber_slaves [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'use_both_bedchamber_slaves', /* key */
+"Use both bedchamber slaves", /* Title */
+'FCdev',   /* author */
+[ ], /* tags */
+'Interaction_use_both_bedchamber_slaves',
+[ /* costs */
+],
+[ /* prerequisites */
+],
+[ /* unit requirements */
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_advanced),
+setup.qres.SlaveBedchamberFullUsableByYou(),
+],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+
+:: Interaction_use_both_bedchamber_slaves_buttfuck [nobr]
+
+You decide to move closer to slide behind <<name _u>>.
+<<They _u>> anticipates you, and is already sliding
+<<themself _u>> partway out of <<utheirrel _u _v>> <<name _v>>
+and cocking <<their _u>> hips to spread <<their _u>>
+buttocks as wide as <<they _u>> can without letting <<name _v>>'s <<umouth _v>> free.
+Up on the $i.bed <<they _u>>'s at just the right height, and
+<<they _u>> winks <<their _u>>
+<<uanus _u>>
+invitingly.
+<<if !_hasdick>>You pull on a strap-on and push it<<else>>You push yourself<</if>>
+home with some force, your slave's state of arousal leaving <<their _u>> ass very relaxed and welcoming;
+the thrust shoves <<them _u>> forward to hilt <<themself _u>> in <<name _v>>.
+You reach around and
+<<if _u.isHasTrait('breast_large')>>heft <<name _u>>'s heavy boobs
+<<elseif _u.isHasTrait('breast_small')>>
+  tease <<name _u>>'s healthy breasts
+<<else>>
+  fondle <<name _u>>'s <<ubreasts _u>>
+<</if>>,
+nibbling <<their _u>> <<uneck _u>>,
+and generally torturing $i1.him with stimulation.
+<<if _bedchamber.getOption('orgasm') == 'no' || _uchastity>>
+  $i1.He is not allowed to climax, but even so you can see $i1.him shudder to keep $i1.himself from climaxing.
+<<else>>
+  $i1.He eventually climaxes for $i1.his <<master $unit.player>>.
+<</if>>
+When $i1.he does, you extract yourself and pull $i1.him unceremoniously
+off <<name _v>>, and swap $i1.his position with <<name _u>> so that
+<<name _v>> now penetrates <<name _u>>.
+In turn, you slide your
+<<if _hasvagina>>
+  strap-on
+<<else>>
+  dick
+<</if>>
+up <<name _v>>'s butt.
+You swap again and again, while climaxing from time to time
+<<if _bedchamber.getOption('orgasm') == 'no' || _uchastity>>
+  while torturing the slaves with denial
+<<else>>
+  together with the slaves
+<</if>>
+until you eventually run out of energy.
+
+
+:: Interaction_use_both_bedchamber_slaves_oral [nobr]
+
+<<name _v>>'s <<ueyes _v>> widen when you push $i2.him upright
+for a moment and slide in under $i2.him, but $i2.he wraps $i2.his
+lips around your
+<<if !_hasdick>>clit<<else>><<udick $unit.player>><</if>>
+<<if _hasvagina>>
+and starts stroking your pussy
+<</if>>
+eagerly enough, even as
+<<name _u>>
+goes back to sodomizing $i2.him.
+<<name _v>> gets enough of a
+buttfuck from <<utheirrel _v _u>> <<name _u>> that $i2.he whimpers quietly into your
+<<if _hasvagina>>pussy<<else>>dick<</if>>,
+a nice feeling.
+The blowjob is
+<<if _v.isHasTrait('training_oral_master')>>masterful, despite the distraction
+<<elseif _v.isHasTrait('training_oral_advanced')>>serviceable, despite the distraction
+<<elseif _v.isHasTrait('training_oral_basic')>>serviceable, despite the distraction
+<<else>>only mediocre, but serviceable enough
+<</if>>, so you let $i2.him work for a
+while before gently shoving $i2.him off the side of the bed and telling <<them _v>> to get to
+the back of <<name _u>>.
+As <<name _v>> in turn penetrates your slave <<name _u>> <<uanus _u>>, you
+<<if _hasdick>>insert your cock into<<else>>deliver your pussy to<</if>>
+<<name _u>>'s mouth.
+As you repeat the process over and over,
+you climax on occasion, but are enjoying
+yourself so immensely that you let the slaves continue the rotation until you're
+entirely spent, and they're entirely exhausted.
+
+
+
+:: Interaction_use_both_bedchamber_slaves [nobr]
+
+<<set $i1 = {}>>
+<<set $i2 = {}>>
+<<set $i = {}>>
+<<set _bedchamber = $g.target.getBedchamber()>>
+<<set _u = $g.target>>
+<<if _u == _bedchamber.getSlaves()[0]>>
+  <<set _v = _bedchamber.getSlaves()[1]>>
+<<else>>
+  <<set _v = _bedchamber.getSlaves()[0]>>
+<</if>>
+
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+
+<<pronounload $i1 _u>>
+<<pronounload $i2 _v>>
+
+<<set _uchastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _vchastity = _v.isHasTrait(setup.trait.eq_chastity)>>
+<<set _umouthequip = setup.Text.Unit.Equipment.getEquipmentAt(_v, setup.equipmentslot.mouth)>>
+<<set _gagged = _v.isHasTrait(setup.trait.eq_gagged)>>
+
+<<set _uadvanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _vadvanced = _v.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _ubasic = _u.isHasTrait(setup.trait.training_obedience_basic)>>
+<<set _vbasic = _v.isHasTrait(setup.trait.training_obedience_basic)>>
+<<set _udick = _u.isHasDick()>>
+<<set _vdick = _v.isHasDick()>>
+<<set _us = $family.getRelation(_v, _u)>>
+<<set _vs = $family.getRelation(_u, _v)>>
+
+<<set _uf = $friendship.getFriendship($unit.player, _u)>>
+<<set _vf = $friendship.getFriendship($unit.player, _v)>>
+
+<<loadinteractioncommon _u>>
+
+When you enter the $i.room, you are greeted with a scene.
+Your obedient slave <<rep _u>> had to turn to greet you as you entered,
+since $i1.he was facing away from the entry,
+and the reason why is rather obvious.
+Up near the opposite wall,
+<<utheirrel _u _v>> <<rep _v>>
+is on the $i.floor with $i2.his face down and $i2.his ass up.
+
+<<name _v>>'s <<uanus _v>>
+is
+<<if _u.isHasDick() && !_uchastity>>
+filled by <<name _u>>'s <<udick _u>>
+<<else>>
+filled by a
+  <<if _v.isHasTrait('anus_gape')>>
+    huge
+  <<elseif _v.isHasTrait('anus_loose')>>
+    big
+  <<else>>
+    moderate
+  <</if>>
+strap-on worn by <<name _u>>
+<</if>>
+
+<<if _u.isHasTrait('breast_titanic')>>
+  whose tits are so unreasonably large they're resting on
+  <<name _v>>'s <<ubody _v>>.
+<<else>>
+  who is propped up against <<name _v>>'s butt.
+<</if>>
+
+<<if _bedchamber.getOption('orgasm') == 'no'>>
+  They are not allowed to orgasm, so <<name _u>> is careful to slow
+  down the thrusting whenever a climax is coming.
+<</if>>
+
+Seeing you coming, <<name _u>>
+paused $i1.his thrusting to
+<<if _bedchamber.getOption('speech') == 'full'>>
+  greet you cheerfully.
+<<else>>
+  greet you cheerfully (using body language).
+<</if>>
+<<if _uf < -500>>
+  $i1.Their cheerful attitude is obviously forced by obedience rather than devotion.
+<</if>>
+
+<br/>
+<br/>
+
+<<if Math.random() < 0.5>>
+
+<<include 'Interaction_use_both_bedchamber_slaves_buttfuck'>>
+
+<<else>>
+
+<<include 'Interaction_use_both_bedchamber_slaves_oral'>>
+
+<</if>>
+

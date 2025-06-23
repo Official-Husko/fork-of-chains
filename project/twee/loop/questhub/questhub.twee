@@ -1,0 +1,228 @@
+:: QuestHubFlavor [nobr]
+
+<<set _quests = $company.player.getQuests()>>
+
+<p>
+You enter your office, where you assign slaver teams to quests.
+There are currently <<successtext _quests.length >> quests that
+your company can take.
+<<set _vale = $dutylist.getDuty('scoutvale')>>
+<<set _forest = $dutylist.getDuty('scoutforest')>>
+<<set _city = $dutylist.getDuty('scoutcity')>>
+<<set _deep = $dutylist.getDuty('scoutdeep')>>
+<<set _desert = $dutylist.getDuty('scoutdesert')>>
+<<set _sea = $dutylist.getDuty('scoutsea')>>
+<<if _vale || _forest || _city || _deep || _desert || _sea>>
+  <<capture _vale, _forest, _city, _deep, _desert, _sea>>
+    <<message 'You can check on your scouts.'>>
+      <<if _vale>>
+        <<set _unit = _vale.getAssignedUnit()>>
+        <<if _unit && _unit.isAvailable()>>
+          Your <<rep _vale>> <<rep _unit>> is busy venturing across the <<lore region_vale>> looking for opportunities,
+          <<= setup.Text.Duty.competence(_vale)>>.
+        <<elseif _unit>>
+          <<Yourrep _unit>> usually works here, but <<they _unit>>
+          is currently unavailable to attend to <<their _unit>> duties.
+        <<else>>
+          Your outpost for <<rep _vale>> is empty right now.
+        <</if>>
+      <</if>>
+      <<if _forest>>
+        <<set _unit = _forest.getAssignedUnit()>>
+        <<if _unit && _unit.isAvailable()>>
+          As your <<rep _forest>>, <<rep _unit>> is somewhere over by the <<lore region_forest>> looking for quests,
+          <<= setup.Text.Duty.competence(_forest)>>.
+        <<elseif _unit>>
+          <<Yourrep _unit>> usually works here, but <<they _unit>>
+          is currently unavailable to attend to <<their _unit>> duties.
+        <<else>>
+          Your outpost for <<rep _forest>> is empty right now.
+        <</if>>
+      <</if>>
+      <<if _city>>
+        <<set _unit = _city.getAssignedUnit()>>
+        <<if _unit && _unit.isAvailable()>>
+          <<rep _unit>> is busy going back and forth between your fort and the <<lore region_city>>
+          as you <<rep _city>>,
+          <<= setup.Text.Duty.competence(_city)>>.
+        <<elseif _unit>>
+          <<Yourrep _unit>> usually works here, but <<they _unit>>
+          is currently unavailable to attend to <<their _unit>> duties.
+        <<else>>
+          Your outpost for <<rep _city>> is empty right now.
+        <</if>>
+      <</if>>
+      <<if _deep>>
+        <<set _unit = _deep.getAssignedUnit()>>
+        <<if _unit && _unit.isAvailable()>>
+          Your <<rep _deep>> <<rep _unit>>
+          would venture for days into the underground highway right beneath your fort,
+          looking for leads within the vast Deep,
+          <<= setup.Text.Duty.competence(_desert)>>.
+        <<elseif _unit>>
+          <<Yourrep _unit>> usually works here, but <<they _unit>>
+          is currently unavailable to attend to <<their _unit>> duties.
+        <<else>>
+          Your outpost for <<rep _deep>> is empty right now.
+        <</if>>
+      <</if>>
+      <<if _desert>>
+        <<set _unit = _desert.getAssignedUnit()>>
+        <<if _unit && _unit.isAvailable()>>
+          Your <<rep _desert>> <<rep _unit>>
+          often travel for weeks end to the <<lore region_desert>> looking for leads,
+          <<= setup.Text.Duty.competence(_desert)>>.
+        <<elseif _unit>>
+          <<Yourrep _unit>> usually works here, but <<they _unit>>
+          is currently unavailable to attend to <<their _unit>> duties.
+        <<else>>
+          Your outpost for <<rep _desert>> is empty right now.
+        <</if>>
+      <</if>>
+      <<if _sea>>
+        <<set _unit = _sea.getAssignedUnit()>>
+        <<if _unit && _unit.isAvailable()>>
+          You sometimes heard back from
+          your <<rep _sea>> <<rep _unit>> sailing on the <<lore region_sea>>,
+          <<= setup.Text.Duty.competence(_sea)>>.
+        <<elseif _unit>>
+          <<Yourrep _unit>> usually works here, but <<they _unit>>
+          is currently unavailable to attend to <<their _unit>> duties.
+        <<else>>
+          Your outpost for <<rep _sea>> is empty right now.
+        <</if>>
+      <</if>>
+    <</message>>
+  <</capture>>
+<</if>>
+<<set _favor = $favor.getFavor($company.humanvale)>>
+<<set _favor2 = $favor.getFavor($company.humandesert)>>
+<<set _favor3 = $favor.getFavor($company.lizardkin)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0] ||
+     _favor2 >= setup.FAVOR_EFFECT_THRESHOLDS[0] ||
+     _favor3 >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  Thanks to your relationship with them, you receive quest leads from
+  <<message "other companies">>
+    <<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+      You receive many nearby quest leads from the <<rep $company.humanvale>>
+      each week.
+    <<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+      You receive several nearby quest leads from the <<rep $company.humanvale>>
+      each week.
+    <<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+      You receive a few nearby quest leads from the <<rep $company.humanvale>>
+      each week.
+    <</if>>
+    <<if _favor2 >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+      The <<rep $company.humandesert>> people send you several leads for quests in faraway lands each week.
+    <<elseif _favor2 >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+      The <<rep $company.humandesert>> people send you a couple leads for quests in faraway lands each week.
+    <<elseif _favor2 >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+      The <<rep $company.humandesert>> people send you a lead for quest in faraway lands each week.
+    <</if>>
+    <<if _favor3 >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+      Thanks to your excellent relations with the <<rep $company.lizardkin>>,
+      you occasionally receive several rare quest leads from the lizardkin's masterful scouts each week.
+    <<elseif _favor3 >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+      Thanks to your good relations with the <<rep $company.lizardkin>>,
+      you receive a rare quest lead from the lizardkin's masterful scouts each week.
+    <<elseif _favor3 >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+      Thanks to your warm relations with the <<rep $company.lizardkin>>,
+      you occasionally receive a rare quest lead from the lizardkin's masterful scouts each week.
+    <</if>>
+  <</message>>
+  each week.
+<</if>>
+<<if _quests.length>>
+You take a look at the details of these quests...
+<<else>>
+  <<if $fort.player.isHasBuilding(setup.buildingtemplate.scouthut)>>
+    Maybe you should go look for more quests.
+  <<else>>
+    First, you can go to the <<successtext 'Slaver'>> menu on the left to change yours or your
+    slaver's skill focuses, which determines the skills they gain on level up.
+    You should also build a <<rep setup.buildingtemplate.scouthut>> now via the
+    <<successtext 'Fort'>> menu on the left.
+  <</if>>
+<</if>>
+<<include 'QuestAssignHelp'>>
+</p>
+
+
+:: QuestAssignHelp [nobr]
+
+<<message '(?)'>>
+  <div class='helpcard'>
+  In order to complete quests, you assign a team of slavers to the quests.
+  The
+  (<<successtext 'xx'>> / <<successtextlite 'xx'>> / <<dangertextlite 'xx'>> / <<dangertext 'xx'>>)
+  are the <<successtext 'critical success'>> / <<successtextlite 'success'>> /
+  <<dangertextlite 'failure'>> / <<dangertext 'disaster'>> chances when you assign
+  each team to the quest.
+  Each quest consist of several roles, which dictates what kind of slavers are
+  most suited to doing the quest.
+  Each role has several skills that are preferred (e.g.,
+  [
+    <<rep setup.skill.combat>><<rep setup.skill.combat>><<rep setup.skill.survival>>
+  ]), as well as several critical and disaster traits.
+  Having a slaver with a high matching skill will increase the success chances.
+  Having a slaver with matching critical traits will increase the critical chance, while
+  having slavers with matching disaster traits will increase the disaster chance.
+  A <<= setup.trait.tough_nimble.rep() >> <<= setup.trait.muscle_strong.repNegative() >>
+  next to the slaver means that the slaver matches the critical trait <<rep setup.trait.tough_nimble>>,
+  but also matches the disaster trait <<rep setup.trait.muscle_strong>>
+  (notice the red cross on top of the disaster trait).
+  </div>
+<</message>>
+
+
+
+:: QuestHub [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.questoffice)>>
+
+<<if $fort.player.isHasBuilding(setup.buildingtemplate.greathall)>>
+  <div>
+  <<message '(Observe your office)'>>
+    <div class='helpcard'>
+      <h2><<= _room.getTitleRep()>></h2>
+      <<include 'QuestHubFlavor'>>
+    </div>
+  <</message>>
+  </div>
+<<else>>
+  <h2><<= _room.getTitleRep()>></h2>
+  <<include 'QuestHubFlavor'>>
+<</if>>
+
+<<focwidget 'loadquests'>>
+
+  <<set _quests = $company.player.getQuests()>>
+
+  <div>
+    <<run _dom = setup.DOM.Util.filterAll({
+      menu: 'quest',
+      filter_objects: _quests,
+      display_callback: quest => {
+        if ($menufilter.get('quest', 'display') == 'compact') return setup.DOM.Card.questcompact(quest);
+        if ($menufilter.get('quest', 'display') == 'short') return setup.DOM.Card.questcompact(quest);
+        return setup.DOM.Card.quest(quest);
+      },
+    })>>
+    <<attach _dom>>
+  </div>
+
+<</focwidget>>
+
+<<focwidget 'refreshquests'>>
+  <<replace '#questholder'>>
+    <<loadquests>>
+  <</replace>>
+  <<refreshmenu>>
+<</focwidget>>
+
+<div id='questholder'>
+  <<loadquests>>
+</div>

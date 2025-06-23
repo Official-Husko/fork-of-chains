@@ -1,0 +1,168 @@
+:: QuestSetup_a_most_dangerous_animal [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Target Hunt Slave', /* name */
+[
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.tough_nimble,
+setup.trait.tough_tough,
+setup.trait.per_dreamy,
+setup.trait.per_masochistic,
+setup.trait.eq_valuable,
+setup.trait.eq_veryvaluable,
+setup.trait.eq_gagged,
+setup.trait.eq_blind,
+setup.trait.eq_collar,
+setup.trait.eq_restrained,
+setup.trait.eq_chastity,
+setup.trait.eq_plug_anus,
+setup.trait.eq_plug_vagina,
+setup.trait.eq_pony,
+setup.trait.eq_pet,
+],
+[
+setup.trait.per_cautious,
+setup.trait.per_attentive,
+setup.trait.skill_flight,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_none),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'a_most_dangerous_animal', /* key */
+"A Most Dangerous Animal", /* Title */
+"darko", /* Author */
+[ 'vale', 'money'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'spotter': setup.qu.spotter,
+'slave': _criteriaslave,
+'entertainer': setup.qu.performer, },
+{ /* actors */
+'lord': 'subrace_humankingdom', },
+[ /* costs */
+],
+'Quest_a_most_dangerous_animal',
+setup.qdiff.hard14, /* difficulty */
+[ /* outcomes */
+[
+'Quest_a_most_dangerous_animalCrit',
+[
+setup.qc.Opportunity('a_most_dangerous_animal__a_modest_offer', {slave: 'slave'}),
+setup.qc.MoneyCustom(2000), ],
+], [
+'Quest_a_most_dangerous_animalCrit',
+[
+setup.qc.MoneyCustom(2000), ],
+], [
+'Quest_a_most_dangerous_animalCrit',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapeeasy'),
+setup.qc.MoneyCustom(2000), ],
+], [
+'Quest_a_most_dangerous_animalDisaster',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapeeasy'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.Building(setup.buildingtemplate.dungeons), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_a_most_dangerous_animal [nobr]
+<p>
+The nobles of the Kingdom of Tor dabble in many hobbies —- some prefers the higher arts such as music and astronomy, while others revel in debauched acts such as sex and alcohol.
+Some prefer a combination of both -- one of the nobles, <<lord $g.lord>> <<rep $g.lord>> is an accomplished hunter, but not just any ordinary hunter.
+</p>
+
+<p>
+Before the Kingdom of Lucgate banned slavery ten years ago, the <<lord $g.lord>> used to hunt slaves, as they firmly believe that humans are the most dangerous and challenging animal to hunt.
+Now that the kingdom have banned slavery, the <<lord $g.lord>> often discreetly venture into outside territory to partake in <<their $g.lord>> pastime.
+</p>
+
+<p>
+One of the <<lord $g.lord>>'s messengers has come to your fort to ask for your help with an upcoming hunt. They would like you to bring a completely untrained slave and release them into the hunting grounds. The <<lord $g.lord>>, armed with tranquilizer arrows, will later come into the area to hunt the rowdy slaves. The promised pay is very good, especially for a job with very little effort. All in all it seems on the level. You could ignore it, of course, but this is practically money for nothing.
+</p>
+
+
+
+:: Quest_a_most_dangerous_animalCrit [nobr]
+
+<p>
+Without providing any explanation, <<name $g.trainer>> brought the disobedient slave <<name $g.slave>> to the outskirts of the hunting range, and released <<them $g.slave>>.
+<<name $g.slave>> stared at <<name $g.trainer>>, who made a lazy shooing motion at them. At that point <<name $g.slave>> dashed off into the forest, apparently not wanting to tempt fate any further.
+
+<<if $g.trainer.isHasTrait('per_cruel')>>
+  <<name $g.trainer>> smirked as <<they $g.trainer>> watched the slave run, knowing full well that the illusion of freedom here was exactly that - an illusion.
+<</if>>
+With the preparation complete, it was time for the <<lord $g.lord>>'s hunt to begin.
+</p>
+
+<p>
+Riding in on a proud horse, the <<lord $g.lord>> galloped into the open woods, bow in hand and <<their $g.lord>> quiver full of tranquilizing arrows. Spying a slave cowering in the long bracken, <<they $g.lord>> raised their bow and sent an arrow into the muscled thigh of the slave, cutting their scream short as they slumped, unconscious to the ground.
+Your slavers watched as slaves were brought down by the <<lord $g.lord>>'s masterful aim —- <<they $g.lord>> were truly a master of the hunt.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Yourrep $g.slave>> slave|was one of the those shot down by the <<lord $g.lord>>.
+While normally all slaves were returned to their owners at the end of the hunt, the <<lord $g.lord>> took a particular interest in <<them $g.slave>>. Later, the gamemaster arrived at your office with a lucrative purchase offer for <<rep $g.slave>>...
+</p>
+
+<<elseif $gOutcome == 'success'>>
+<p>
+Noting that <<name $g.slave>> slave|was not one of the downed animals,
+<<name $g.spotter>> immediately set out to locate the slave before
+<<they $g.slave>> escape permanently.
+It didn't take long for <<name $g.spotter>> watchful <<ueyes $g.spotter>> to spot <<name $g.slave>>.
+All but running them down, <<name $g.trainer>> re-collared the slave, binding <<their $g.slave>> hands behind them and getting them ready for the walk back to your fort.
+</p>
+
+<<else>>
+
+<p>
+Noting that <<yourrep $g.slave>> slave|was not one of the downed animals, <<name $g.spotter>> immediately got to work to locate <<them $g.slave>> before <<they $g.slave>> escape permanently.
+But whether due to incompetence or just bad luck, <<they $g.spotter>> spotter|was not able to locate <<name $g.slave>>. If you want to recapture <<them $g.slave>>, you'd better act fast...
+</p>
+<</if>>
+
+
+
+
+:: Quest_a_most_dangerous_animalDisaster [nobr]
+<p>
+Without providing any explanation, <<name $g.trainer>> brought the disobedient slave <<name $g.slave>> to the outskirts of the hunting range, and released <<them $g.slave>>.
+However, <<name $g.slave>> immediately ran in the wrong direction, heading away from the hunting grounds. While <<name $g.spotter>> was able to recapture <<them $g.slave>>, they ended up missing the hunt. And the promised pay.
+</p>
+
+

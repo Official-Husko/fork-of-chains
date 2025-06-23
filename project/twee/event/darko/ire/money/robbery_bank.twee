@@ -1,0 +1,46 @@
+:: EventSetup_robbery_bank [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'robbery_bank', /* key */
+"Robbery Bank", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_robbery_bank',
+{ /* roles */
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.MoneyCustom(-10000),
+setup.qc.Ire('bank', -20), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('bank', 20), ],
+0,
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_robbery_bank [nobr]
+
+<p>
+Your slavers wake up today with a light feeling in their pockets. Literally,
+this time, as somehow a huge sum of money has went missing from your coffers.
+While you would normally suspect one of your slavers to spend too much on a
+drunken night (especially that <<uadjbad $g.slaver>> <<urace $g.slaver>>
+slaver of yours <<rep $g.slaver>>), the sum is simply too much to be spent by
+one <<man $g.slaver>> alone.
+</p>
+
+<p>
+A few days later, you receive a thank you letter coming from the <<rep
+$company.bank>> for your investment in the bank. If you had doubts before, it
+is gone now — the bank has stolen from you as recompense for the troubles you
+may have caused them in the past. As much as you wanted revenge, it is better
+to give up the plan, especially against an entity as rich as the <<rep
+$company.bank>>. At least this should even out the goodwill, eh?
+</p>

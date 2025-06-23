@@ -1,0 +1,222 @@
+:: QuestSetup_shepherd_of_men_capture [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_shepherd_of_men_capture1',
+'Shepherd',
+'desert_all',  /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_slaver),
+setup.qc.Injury('unit', 1),
+setup.qc.TraitReplace('unit', setup.trait.per_dominant),
+setup.qc.TraitReplace('unit', setup.trait.per_cruel),
+setup.qc.TraitReplace('unit', setup.trait.skill_intimidating), ],
+)>>
+
+<<set _criteriaraider1 = new setup.UnitCriteria(
+null, /* key */
+'Specialist Raider', /* name */
+[
+setup.trait.bg_slaver,
+setup.trait.per_aggressive,
+setup.trait.per_proud,
+setup.trait.per_independent,
+setup.trait.per_logical,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.skill_ambidextrous,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+setup.trait.eq_veryvaluable,
+],
+[
+setup.trait.bg_slave,
+setup.trait.per_calm,
+setup.trait.per_humble,
+setup.trait.per_loyal,
+setup.trait.per_empath,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+setup.trait.eq_restrained,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 1,
+brawn: 1,
+slaving: 1,
+}
+)>>
+
+<<set _criteriaraider2 = new setup.UnitCriteria(
+null, /* key */
+'Specialist Raider', /* name */
+[
+setup.trait.bg_slaver,
+setup.trait.per_aggressive,
+setup.trait.per_proud,
+setup.trait.per_independent,
+setup.trait.per_logical,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.skill_ambidextrous,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+setup.trait.eq_veryvaluable,
+],
+[
+setup.trait.bg_slave,
+setup.trait.per_calm,
+setup.trait.per_humble,
+setup.trait.per_loyal,
+setup.trait.per_empath,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+setup.trait.eq_restrained,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 1,
+brawn: 1,
+slaving: 1,
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'shepherd_of_men_capture', /* key */
+'Shepherd of Men: Capture', /* Title */
+  'darko',   /* author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'raider1': _criteriaraider1,
+'raider2': _criteriaraider2,
+'support': setup.qu.raidersupport, },
+{ /* actors */
+'shepherd': 'quest_shepherd_of_men_capture1', },
+[ /* costs */
+],
+'Quest_shepherd_of_men_capture',
+setup.qdiff.hell38, /* difficulty */
+[ /* outcomes */
+[
+'Quest_shepherd_of_men_captureCrit',
+[
+setup.qc.Slave('shepherd', 'a|was the leader of a group of people farmers on the eastern deserts'),
+
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_shepherd_of_men_captureCrit',
+[
+
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_shepherd_of_men_captureCrit',
+[
+setup.qc.Injury('raider1', 2),
+setup.qc.Injury('raider2', 2),
+setup.qc.Injury('support', 2), ],
+], [
+'Quest_shepherd_of_men_captureCrit',
+[
+setup.qc.Injury('raider1', 4),
+setup.qc.Injury('raider2', 4),
+setup.qc.MissingUnit('support'), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_shepherd_of_men_capture [nobr]
+
+<<include 'Opportunity_shepherd_of_men'>>
+
+<p>
+You have chosen the most dangerous option by attempting to capture the head shepherd.
+</p>
+
+
+:: Quest_shepherd_of_men_captureCrit [nobr]
+
+<p>
+Your slavers waited until the weekend, where most of the guards happened to be off duty.
+Even then, the cabin housing the leader of these <<men $g.shepherd>>, the head
+shepherd <<themself $g.shepherd>>, was still very heavily guarded.
+Seeing no other option but a head-on assault, your slavers began their assault.
+<<Yourrep $g.raider1>> and <<rep $g.raider2>> <<uadv $g.raider1>>
+fought like
+<<if $g.raider1.isHasTrait('per_evil') or $g.raider2.isHasTrait('per_evil')>>
+villains of legend
+<<elseif $g.raider1.isHasTrait('per_honorable') or $g.raider2.isHasTrait('per_honorable')>>
+heroes of legend
+<<else>>
+mad<<men $g.raider1>>
+<</if>>
+while <<rep $g.support>> kept them healthy
+throughout the fight.
+
+
+
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+After a long struggle, your slavers emerged victorious, and proceeded to
+assault the cabin itself.
+The head slaver was apparently asleep throughout the entire commotion, and
+your slavers packed all the valuables in the cabin as well as the main trophy
+— the shepher <<themself $g.shepherd>>, and headed home victorious.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+The head shepherd were apparently awake throughout the fight. Seeing as
+<<their $g.shepherd>> guards were dispatched one by one,
+<<they $g.shepherd>> made <<their $g.shepherd>> escape.
+By the time your slavers were victorious, the shepherd was already
+gone from the cabin. Still, it was not a complete defeat, as your slavers were
+free to ransack whatever remained in the cabin, including a portion of the profits from the
+farm.
+</p>
+
+<<else>>
+
+<p>
+But then, the head shepherd <<themself $g.shepherd>> decided to join the battle.
+<<They $g.shepherd>> fought like a madman, injuring all your slavers, and ultimately
+chased your slavers away.
+<<if $gOutcome == 'failure'>>
+While the mission ended up in failure, at least all your slavers
+managed to come back home.
+<<else>>
+When hope seemed lost, <<yourrep $g.support>> sacrificed <<themself
+$g.support>> to allow <<rep $g.raider1>> and <<rep $g.raider2>> to retreat.
+<</if>>
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+You can only guess what fate awaits <<yourrep $g.support>>, but given the
+nature of the farm it should not be too hard of a guess.
+</p>
+
+<</if>>
+
+<</if>>

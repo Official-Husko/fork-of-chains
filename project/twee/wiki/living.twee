@@ -1,0 +1,14 @@
+:: WikiLiving [nobr]
+
+<<set _forfilter = Object.values(setup.living)>>
+
+<div>
+  <<run _dom = setup.DOM.Util.filterAll({
+    menu: 'living',
+    filter_objects: _forfilter,
+    display_callback: living => {
+      return setup.DOM.Card.living(living);
+    },
+  })>>
+  <<attach _dom>>
+</div>

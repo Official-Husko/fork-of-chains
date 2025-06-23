@@ -1,0 +1,233 @@
+:: QuestSetup_stolen_flame [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+  setup.trait.per_dominant,
+  setup.trait.per_submissive,
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  combat: 0.3,
+  brawn: 0.3,
+  survival: 0.3,
+  intrigue: 0.3,
+  slaving: 0.3,
+  knowledge: 0.3,
+  social: 0.3,
+  aid: 0.3,
+  arcane: 0.3,
+  sex: 0.3,
+}
+)>>
+
+<<set _criteriaparent = new setup.UnitCriteria(
+null, /* key */
+'parent', /* name */
+[
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_attentive,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_logical,
+  setup.trait.per_dreamy,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTag('future_assassin_parent'),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'stolen_flame', /* key */
+"Stolen Flame", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'special',
+  'veteran',
+  'prep',
+  'unit',
+  'vale',
+],
+4, /* weeks */
+20, /* expiration weeks */
+{ /* roles */
+  'you': [_criteriayou, 1],
+  'parent': [ _criteriaparent, 1],
+  'tracker': [ setup.qu.informer, 1],
+},
+{ /* actors */
+  'lover': [
+  ],
+},
+[ /* costs */
+],
+'Quest_stolen_flame',
+setup.qdiff.hard42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_stolen_flameCrit',
+    [
+      setup.qc.TraumatizeRandom('lover', 8),
+    ],
+  ],
+  [
+    'Quest_stolen_flameCrit',
+    [
+      setup.qc.Injury('lover', 4),
+      setup.qc.TraumatizeRandom('lover', 12),
+    ],
+  ],
+  [
+    'Quest_stolen_flameCrit',
+    [
+      setup.qc.Injury('lover', 8),
+      setup.qc.TraumatizeRandom('lover', 16),
+    ],
+  ],
+  [
+    'Quest_stolen_flameCrit',
+    [
+      setup.qc.Injury('lover', 16),
+      setup.qc.TraumatizeRandom('lover', 16),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Leave('lover', "a|was kidnapped and disappeared from your fort", 200),
+  setup.qc.RemoveTagGlobal('future_assassin_parent'),
+  setup.qc.VarRemove('future_assassin_progress'),
+  setup.qc.VarSet('future_assassin_cooldown', '1', 100),
+
+],
+)>>
+
+:: Quest_stolen_flame [nobr]
+<p>
+Once work is done, you make it a habit to seek out your lover <<rep $g.lover>>. You have already known <<their $g.lover>> routine quite well by now.
+At this time of the day, <<therace $g.lover>> lover|is usually busy <<uhobbyverb $g.lover>>.
+But when you go over to <<their $g.lover>> place, your love is nowhere to be seen.
+</p>
+
+<p>
+Well, you normally would not be so worried,
+<<if $g.lover.isHasTrait('per_independent') or $g.lover.isHasTrait('per_loner')>>
+you know and love <<them $g.lover>> for <<their $g.lover>> lonely nature after all,
+<<else>>
+<<they $g.lover>> occasionally enjoys having an alone time after all,
+<</if>>
+but recent events came to your mind. Some time ago, a mysterious assailant did try to assault your lover.
+Did they actually succeeded this time?
+</p>
+
+<<set _u = setup.getAnySlaver([$g.lover])>>
+<p>
+As you started to worry, <<yourrep _u>> came with both a good and bad news.
+The good news is that <<therace _u>> found out where your lover had gone to.
+The bad news is that your lover had indeed been kidnapped by the mysterious assailant,
+but <<rep _u>> was able to track the disappearance down to a certain village in the <<lore region_vale>>.
+</p>
+
+<<set _v = setup.getUnit({
+tag: "future_assassin_parent"
+})>>
+<<if _v>>
+<p>
+Rescuing your lover is of utmost importance to you, and you will surely not want to miss it. But to your surprise, <<rep _v>> also insisted on going with you. <<Yourrep _v>> has always been known for <<their _v>> magical abilities — perhaps they have a vision that might help?
+</p>
+<</if>>
+
+<p>
+Either way, best to get your ass moving straight away.
+If there is any consolation, you know your lover well enough that even without your help, <<they $g.lover>> will surely be able to escape from <<their $g.lover>> predicament, and make it back home on <<their $g.lover>> own eventually. But without your help, <<they $g.lover>> will take a very, very long time...
+</p>
+
+
+:: Quest_stolen_flameCrit [nobr]
+
+<p>
+With the help of <<yourrep $g.tracker>>,
+you and your team managed to track down <<rep $g.lover>> down to a port settlement on the north. Just as you entered, you see <<rep $g.lover>> being ushered into what appeared to be a pirate ship. They were selling your lover off as if <<they $g.lover>> lover|is some nameless slave!
+</p>
+
+<p>
+Angered, you raised your <<uweapon $g.you>> and charged into the foray, with <<yourrep $g.tracker>> right behind you. Although you were few in number, you had a wealth of experience on your side, and these wannabe slavers were no match for yours and your slaver's prowess in combat. You headed directly for your <<rep $g.lover>>, and the two of you embraced for the first time these past weeks while <<rep $g.tracker>> watched <<uadv $g.tracker>>.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Fortunately, your lover appeared to be completely unscathed by the ordeal, suffering only minor trauma from the entire trial.
+</p>
+<<elseif $gOutcome == 'success'>>
+<p>
+Your lover suffered minor injuries from the trial, but nothing a poultice or two cannot heal. The mind trauma will take a little longer to heal, however.
+</p>
+<<else>>
+<p>
+It seems the trials were not kind to <<rep $g.lover>>. <<They $g.lover>> looked terrible, with bruises and cuts everywhere, not to mention the look in <<their $g.lover>> face.
+</p>
+<</if>>
+
+<<set _father = $unit.player>>
+<<set _mother = $g.parent>>
+
+<<if !_father.isHasDick()>>
+<<set _mother = $unit.player>>
+<<set _father = $g.parent>>
+<</if>>
+
+<<set _preference = $settings.getGenderPreference(setup.job.slaver)>>
+
+<<if Math.random() < 0.5>>
+<<set _preference = $settings.getGenderPreference(setup.job.slave)>>
+<</if>>
+
+<<set _w = setup.UnitBirth.generateChild(_father, _mother, _preference)>>
+
+<p>
+All these time however, <<yourrep $g.parent>> parent|was nowhere to be seen. Unbeknownst to you, <<rep $g.parent>> observed a very familiar-looking stranger who showed deep concern while watching the entire thing unfolds. <<Yourrep $g.parent>> <<uadv $g.parent>> sneaked up into the stranger, before launching a surprise leap onto <<them _w>>.
+<<Rep $g.parent>> managed to grope <<their _w>> <<ubreasts _w>> before removing the assailant's hood, revealing <<their _w>> face. To <<reps $g.parent>> shock, it deeply resembled
+<<if _w.getSubrace() == $unit.player.getSubrace()>>
+you, as if <<they _w>> is your own child. But <<rep $g.parent>> could also see traces of <<their $g.parent>> own face there.
+<<else>>
+<<their $g.parent>> own, as if <<they _w>> is <<their $g.parent>> own child. <<Rep $g.parent>> could also see traces of you (yes, you) in the assailant's face.
+<</if>>
+But what could this mean?
+</p>
+
+<p>
+Unfortunately, the assailant used the distraction to break free of your <<urace $g.parent>> slaver's hold, before escaping in a gusto, leaving you and <<rep $g.parent>> with this very odd conundrum.
+</p>
+
+<p>
+You were about to just shrug all of it as a coincidence before <<rep $g.parent>> insisted that this is far from a simple coincidence.
+In fact, <<they $g.parent>> suggested you to go back to a certain wizard in the <<lore region_sea>>, who may actually know the answer to this conundrum. You sighed, knowing that the wizard's services won't come cheap...
+</p>
+
+
+<<run setup.qc.QuestDirect('price_for_conundrum', {child: 'child'}).apply(
+  setup.costUnitHelper(_w)
+)>>
+
+

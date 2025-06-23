@@ -1,0 +1,32 @@
+:: LoadQuestWidget [nobr widget]
+
+<<focwidget 'questcardcompact'>>
+  <<set _dom = setup.DOM.Card.questcompact($args[0], $args[1])>>
+  <<attach _dom>>
+<</focwidget>>
+
+
+<<focwidget "questcard">>
+  <<set _dom = setup.DOM.Card.quest($args[0], $args[1])>>
+  <<attach _dom>>
+<</focwidget>>
+
+
+<<focwidget "questcardkey">>
+  <<questcard $questinstance[$args[0]] $args[1]>>
+<</focwidget>>
+
+
+<<focwidget "questauthorcardtext">>
+  <<set _dom = setup.DOM.Card.author($args[0])>>
+  <<attach _dom>>
+<</focwidget>>
+
+
+<<focwidget "questauthorcard">>
+  <<set _template = $args[0]>>
+  <<if _template.getAuthor().name>>
+    <<questauthorcardtext _template.getAuthor()>>
+  <</if>>
+<</focwidget>>
+

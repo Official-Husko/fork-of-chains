@@ -1,0 +1,153 @@
+:: QuestSetupQuestingSquire [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _desc = 'a|was a squire in service to a knight in the Kingdom of Tor. a|They a|was trying to prove a|themself but ultimately fell to your company instead'>>
+
+<<set _fighter = new setup.UnitCriteria(
+  'quest_questing_squire_fighter', /* key */
+  'Fighter', /* title */
+  [
+    setup.trait.per_brave,
+    setup.trait.per_cruel,
+    setup.trait.per_evil,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+  ], /* critical traits */
+  [
+    setup.trait.per_cautious,
+    setup.trait.per_kind,
+    setup.trait.per_honorable,
+    setup.trait.magic_light,
+    setup.trait.magic_light_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+    combat: 3.0,
+  }
+)>>
+
+<<run new setup.QuestTemplate(
+  'questing_squire', /* key */
+  'Questing Squire', /* Title */
+  'darko',   /* author */
+  ['vale', 'unit', 'ire',],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'fighter1': _fighter,
+    'fighter2': _fighter,
+    'raidersupport': setup.qu.raidersupport,
+  },
+  { /* actors */
+    'squire': 'quest_humankingdom_squire',
+  },
+  [ /* costs */
+  ],
+  'QuestQuestingSquire', /* passage description */
+  setup.qdiff.harder15, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestQuestingSquireCrit',
+      [
+        setup.qc.Equipment(setup.equipmentpool.combat),
+        setup.qc.Slave('squire', _desc),
+        
+      ],
+    ],
+    [
+      'QuestQuestingSquireSuccess',
+      [
+        setup.qc.Slave('squire', _desc),
+        setup.qc.Ire('humankingdom', 3),
+      ],
+    ],
+    [
+      'QuestQuestingSquireFailure',
+      [
+        setup.qc.Injury('fighter1', 1),
+        setup.qc.Injury('fighter2', 1),
+        setup.qc.Injury('raidersupport', 1),
+      ],
+    ],
+    [
+      'QuestQuestingSquireDisaster',
+      [
+        setup.qc.Injury('fighter1', 3),
+        setup.qc.Injury('fighter2', 3),
+        setup.qc.Injury('raidersupport', 3),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.rare],], /* quest pool and rarity */
+  [
+    setup.qres.QuestUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestQuestingSquire [nobr]
+
+<p>
+The Kingdom of Tor has a full order of knights serving the king and protecting their lands.
+These knights often take on promising youths as squires.
+Being a squire is a path to becoming a knight of the order, should they prove worthy.
+</p>
+
+<p>
+occasionally, squires travel through the <<lore region_vale>>, either scouting,
+tackling minor issues the knights cannot get to, or for some, spending time with their families.
+You just got wind of such a squire being seen in a tavern inquiring about the roads north.
+Using your superior knowledge of the roads and terrain, 
+you might just be able to get the drop on <<them $g.squire>>,
+and introduce the squire to a new life in your dungeons.
+Who knows, maybe one day you'll even be able to use <<them $g.squire>> to lure
+a knight into your clutches. They'd make a much more valuable and attractive, if also challenging-to-break slave.
+</p>
+
+
+:: QuestQuestingSquireCrit [nobr]
+
+<p>
+Using their superior knowledge of the terrain,
+your slavers cleverly dug a classic pit trap along a forest trail where the squire had said <<they $g.squire>> were heading.
+The trap worked perfectly --- The squire fell head over heels into the pit, hitting their head and losing 
+consciousness long enough for <<name $g.fighter1>> to <<uadv $g.fighter1>> tie
+<<them $g.squire>> up. It wouldn't be long before you introduce <<them $g.squire>> to
+<<their $g.squire>> new life serving <<their $g.squire>> <<master $unit.player>>, not with strength of arms but by giving pleasure.
+<<set _cruel = setup.selectUnit([$g.fighter1, $g.fighter2, $g.raidersupport], {trait: 'per_cruel'})>>
+<<set _kind = setup.selectUnit([$g.fighter1, $g.fighter2, $g.raidersupport], {trait: 'per_kind'})>>
+<<if _cruel>>
+  <<Rep _cruel>> taunted the hapless squire throughout the journey home, the sadistic slaver
+  deriving pleasure from the squirming <<urace $g.squire>>.
+<<elseif _kind>>
+  <<Rep _kind>> tried to soothe the squire throughout the journey, reassuring <<them $g.squire>>
+  that the slave training was much preferable to death, and in any case, could be quite enjoyable if they follow orders. After all, <<they $g.squire>> should be used to following orders...
+<</if>>
+</p>
+
+
+:: QuestQuestingSquireSuccess [nobr]
+
+<p>
+Your slavers, led by <<rep $g.fighter1>> managed to <<uadv $g.fighter1>>
+ambush and capture the squire easily. Or so it seemed. </p>
+<p>Unfortunately, it turned out that <<they $g.squire>> squire|was not only missed, but your slavers were sloppy enough to be seen. Word of your insolence quickly made it back to the Knights of Tor, and your reputation in the Kingdom has worsened as a result.
+</p>
+
+
+:: QuestQuestingSquireFailure [nobr]
+
+<p>
+Despite being a mere squire, <<they $g.squire>> managed to overpower your slavers,
+forcing them to return with nothing but injuries.
+</p>
+
+
+:: QuestQuestingSquireDisaster [nobr]
+
+<p>
+Your slaver made a bad miscalculation during the ambush, causing them to fall into
+the pit trap they had themselves dug in hopes of catching the squire.
+You should give them a rest. Their injuries aren't life threatening, but you're wondering if they really should be going on field missions if this sort of thing keeps happening.
+</p>

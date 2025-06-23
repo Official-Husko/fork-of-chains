@@ -1,0 +1,166 @@
+:: QuestSetup_brothel_rejuvenation [nobr quest]
+
+<<run new setup.QuestTemplate(
+'brothel_rejuvenation', /* key */
+"Brothel Rejuvenation", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+],
+8, /* weeks */
+35, /* expiration weeks */
+{ /* roles */
+  'planner': [ setup.qu.planner, 1],
+  'builder1': [ setup.qu.builder, 1],
+  'builder2': [ setup.qu.builder, 1],
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': [],
+},
+[ /* costs */
+  setup.qc.Money(-200000),
+],
+'Quest_brothel_rejuvenation',
+setup.qdiff.normal74, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_rejuvenationCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('elf', 300),
+      setup.qc.Favor('neko', 300),
+    ],
+  ],
+  [
+    'Quest_brothel_rejuvenationCrit',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.VarAdd('quest_brothel_high_income', 400, -1),
+    ],
+  ],
+  [
+    'Quest_brothel_rejuvenationCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Injury('builder1', 2),
+      setup.qc.Injury('builder2', 3),
+    ],
+  ],
+  [
+    'Quest_brothel_rejuvenationCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Injury('builder1', 16),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_rejuvenation [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+It has been a number of years since the exterior of <<attach _describe>> was worked on. And age has started to show its marks — the brothel's decorations are already looking a little worn down, and its interior could use some rework.
+<<if _class >= 20>>
+The red carpet decorating the entrance is starting to show its seams here and there,
+<<elseif _class <= -20>>
+The bondage devices hanged in the entrance to your brothel is starting to get rusty here and there,
+<<else>>
+Some of the plants in the reception area has already withered,
+<</if>>
+<<if _attraction == 'gravity'>>
+and the magical crystals powering the Magic Gravity Room are already starting to lose power.
+<<else>>
+and the various enchantments in the Magic Bondage Room are waning in strength.
+<</if>>
+The profit suffers as a result.
+</p>
+
+<p>
+<<Yourrep $g.owner>>, as well as the
+<<if _promotion == 'money'>>
+business manager,
+<<else>>
+customer relations officer,
+<</if>>
+are unhappy about it to. They have drafted a grand plan to rejuvenate the place, rebuilding the palace from the grounds up and ensuring everything remains shiny and in top-notch working condition.
+</p>
+
+<p>
+The only problem is that it would cost you a heavy <<money 200000>>, which will all come from your coffers. However, the cost will no doubt be recouped in the long term — at least if <<yourrep $g.owner>>'s calculations were to be believed! The renovation should make the brothel highly profitable for the next seven or eight years.
+</p>
+
+
+
+
+:: Quest_brothel_rejuvenationCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+It took two months, but your three slavers had worked hard, and the brothel was rebuild from anew. Following <<yourrep $g.planner>>'s master plan, the builders <<rep $g.builder1>> and <<utheirrel $g.builder1 $g.builder2>> <<rep $g.builder2>> worked their asses hard, and finally the new brothel building was completed.
+<<if _class >= 20>>
+The entrance feels luxurious once again,
+<<elseif _class <= -20>>
+The smell of heavy bondage now permeates the entrance again,
+<<else>>
+The entrance induces an exotic feeling again,
+<</if>>
+
+<<if _attraction == 'gravity'>>
+and the newly rebuilt Magic Gravity Room now properly hoist its customer mid-air once again.
+<<else>>
+and the various enchanted sex toys within the Magic Bondage Room now vibrate with great intensity once again.
+<</if>>
+Words of your brothel's grand renovation spreads too, and your brothel is bursting with customers once again.
+<<if $gOutcome == 'crit'>>
+<<Yourrep $g.owner>> had the bright idea of letting customers enjoy the facilities for free for a day, which makes a lot neko as well as visiting elves like your company more.
+<</if>>
+</p>
+
+<p>
+With the renovation completed, the brothel's profit should soar again for the next seven or eight years.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+Unfortunately, your builders got injured during the hefty construction process.
+</p>
+<</if>>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Unfortunately, while working on the finishing touches of the brothel's spire, <<yourrep $g.builder1>> fell from the top of the building, sustaining heavy injuries.
+</p>
+<</if>>

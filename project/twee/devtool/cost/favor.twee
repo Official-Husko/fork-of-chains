@@ -1,0 +1,83 @@
+:: CostFavorChoose [nobr]
+
+<<for _icompany, _company range $company>>
+  <<capture _company>>
+    <<if _company != $company.player && _company != $company.independent>>
+      <br/>
+      <<rep _company>>
+      <<link '(select this)' 'QGCostDone'>>
+        <<costrelationshipwidget>>
+      <</link>>
+    <</if>>
+  <</capture>>
+<</for>>
+
+
+:: CostFavor [nobr]
+
+<<focwidget 'costrelationshipwidget'>>
+  <<set $qcost = setup.qc.Favor(_company, _favor)>>
+<</focwidget>>
+
+Gain <<numberbox '_favor' 200>> favor with:
+<<message '(?)'>>
+  Insert this as 10 times the amount displayed in game.
+  For example, to add 20.5 favor, put 205.
+  Maximum favor is <<= setup.FAVOR_MAX >>.
+  5.0 favor is worth <<money 1000>>.
+<</message>>
+
+<<include 'CostFavorChoose'>>
+
+
+:: CostFavorLose [nobr]
+
+<<focwidget 'costrelationshipwidget'>>
+  <<set $qcost = setup.qc.Favor(_company, -_favor)>>
+<</focwidget>>
+
+Lose <<numberbox '_favor' 200>> favor with:
+<<message '(?)'>>
+  Insert this as 10 times the amount displayed in game.
+  For example, to lose 20.5 favor, put 205.
+  Maximum favor is <<= setup.FAVOR_MAX >>
+  5.0 favor is worth <<money 1000>>.
+<</message>>
+
+<<include 'CostFavorChoose'>>
+
+
+
+:: CostIre [nobr]
+
+<<focwidget 'costrelationshipwidget'>>
+  <<set $qcost = setup.qc.Ire(_company, _ire)>>
+<</focwidget>>
+
+Gain <<numberbox '_ire' 1>> ire with:
+<<message '(?)'>>
+  1 ire is worth <<money 500>>. When ire reaches 20,
+  something bad will happen to the company.
+<</message>>
+
+<<include 'CostFavorChoose'>>
+
+
+:: CostIreLose [nobr]
+
+<<focwidget 'costrelationshipwidget'>>
+  <<set $qcost = setup.qc.Ire(_company, -_ire)>>
+<</focwidget>>
+
+Lose <<numberbox '_ire' 20>> ire with:
+<<message '(?)'>>
+  1 ire is worth <<money 500>>. When ire reaches 20,
+  something bad will happen to the company.
+<</message>>
+
+<<include 'CostFavorChoose'>>
+
+
+
+
+

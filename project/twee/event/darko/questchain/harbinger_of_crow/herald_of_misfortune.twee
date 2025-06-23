@@ -1,0 +1,58 @@
+:: EventSetup_herald_of_misfortune [nobr event]
+
+<<run new setup.Event(
+'herald_of_misfortune', /* key */
+"Herald of Misfortune", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_herald_of_misfortune',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.Available(),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+  'you': [
+    setup.qres.You(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('quest_harbinger_of_luck_done'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_crit'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_progress'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_magic'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_lucky'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_horse'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_clover'),
+  setup.qc.VarRemove('quest_harbinger_of_luck_bath'),
+  setup.qc.VarSet('quest_harbinger_of_luck_progress', '1', -1),
+  setup.qc.SetCooldownEvent('just_coincidence', 10),
+  setup.qc.AddTag('a', 'quest_harbinger_of_luck_tagged'),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.NoUnitWithTitle('quest_harbinger_of_misfortune_0', {
+}),
+  setup.qres.NoUnitWithTitle('quest_harbinger_of_crows_1', {
+}),
+  setup.qres.NoUnitWithTitle('quest_harbinger_of_chaos_0', {
+}),
+  setup.qres.NoUnitWithTag('quest_harbinger_of_luck_tagged'),
+],
+500, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_herald_of_misfortune [nobr]
+<p>
+<<Yourrep $g.a>> a|is a relatively new recruit to your slaving company. <<Therace $g.a>> a|is a great addition, and <<their $g.a>> <<upraisenoun $g.a>> is certainly going to be an asset for the company. As you look out of the windows of your office, you can see <<them $g.a>> walking before seemingly tripping on absolutely nothing. Surely nothing more than an accident, and perhaps <<they $g.a>> just still need a bit more time to be more familiar with the workings of your fort...
+</p>
+

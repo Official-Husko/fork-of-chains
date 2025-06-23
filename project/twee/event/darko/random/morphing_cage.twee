@@ -1,0 +1,178 @@
+:: EventSetup_morphing_cage [nobr event]
+
+
+
+
+<<run new setup.Event(
+'morphing_cage', /* key */
+"Morphing Cage", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_morphing_cage',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.SlaveBedchamberHasFurniture(setup.item.f_slavebed_master),
+    setup.qres.NoTraits([setup.trait.training_mindbreak], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_morphing_cage [nobr]
+<p>
+    You worked until quite late today, and by the time you finally finish with your work, the sun has set. Exhausted, you went straight for your bedchamber.
+    <<Yourrep $g.slave>> slave|is inside, as usual,
+    and <<they $g.slave>>
+    <<if $g.slave.isHasTrait('training_obedience_basic')>>
+        greets you
+        <<if $g.slave.isHasTrait('training_obedience_advanced')>>
+            obediently,
+        <<else>>
+            reluctantly,
+        <</if>>
+        <<if $g.slave.isCanTalk()>>
+            "Welcome home, <<Master $g.you>>".
+        <<else>>
+            doing <<their $g.slave>> best to convey <<their $g.slave>> greetings wordlessly.
+        <</if>>
+    <<else>>
+        looks at you with untamed deviance.
+    <</if>>
+</p>
+
+<p>
+    Looking at the <<rep setup.item.f_slavebed_master>> inside your chamber,
+    you
+    <<if $g.slave.isHasTrait('training_obedience_basic')>>
+        can lock <<them $g.slave>> in bondage all night long, if you'd like.
+    <<else>>
+        can punish <<them $g.slave>> for <<their $g.slave>> insolence, if you'd like.
+    <</if>>
+</p>
+
+<<choose>>
+<<opt "Morph the cage and lock the slave in a punishing doggy position all night long">>
+
+    <p>
+        You morph the magical cage, forming arms, neck, and legs restraints at just the right heights to force the slave into
+        an uncomfortable doggy position
+        inside. You then
+        <<if $g.slave.isHasTrait('training_obedience_basic')>>
+            order the obedient slave to get in and
+        <<else>>
+            force the deviant slave into place and
+        <</if>>
+        lock their wrists and ankles in place.
+    </p>
+
+    <p>
+        They are now stuck in a doggy position, and you complete the night bondage with a dildo gag, a buttplug, and some weighs to weigh down their nipples.
+        The slave moans in pain
+        <<if $g.slave.isMasochistic()>>
+            and pleasure
+        <</if>>
+        ,
+        but you are too tired to care and went to sleep, oblivious to the moans that echoes throughout the night.
+    </p>
+
+    <p>
+        When you release the slave next morning, <<they $g.slave>>
+        collapsed in exhaustion.
+        It seems the poor <<urace $g.slave>> could not get any sleep last night, and understandbly why too.
+        <<Their $g.slave>> poor nipples are throbbing in pain from the night long bondage, and <<their $g.slave>> limbs are numb from being locked in place for so long.
+
+        <<if $g.slave.isHasTrait('training_obedience_basic')>>
+            The slave has become more fearful of you.
+            <<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+        <<else>>
+            The harsh punishment finally broke the slave, who has now become more obedient to you.
+            <<run setup.qc.Trait('slave', setup.trait.training_obedience_basic).apply($gQuest)>>
+        <</if>>
+    </p>
+
+
+<<opt "Morph the cage and lock the slave in a comfortable missionary position all night long">>
+
+    <<if $g.slave.isMale()>>
+    <<else>>
+        <<questimage 'morphing_cage_missionary_female.jpg'>>
+    <</if>>
+
+    <p>
+        You morph the magical cage, forming arms, neck, and legs restraints at just the right heights to force the slave into
+        a somewhat bearable position, lying up with <<their $g.slave>> back on the floor
+        inside. You then
+        <<if $g.slave.isHasTrait('training_obedience_basic')>>
+            order the obedient slave to get in and
+        <<else>>
+            force the deviant slave into place and
+        <</if>>
+        lock their wrists and ankles in place.
+    </p>
+
+    <p>
+        They are now stuck in a missionary position. You put a couple of cushions for <<their $g.slave>> comfort under them, before shoving a couple of magical dildos up <<their $g.slave>> <<uhole $g.slave>> to pleasure <<them $g.slave>> all night.
+        You are too tired to see <<their $g.slave>> reaction and go to bed, but it was clear from <<their $g.slave>>
+        <<if $g.slave.isHasTrait('training_obedience_basic')>>
+            moans that <<they $g.slave>> seems to be enjoying <<themself $g.slave>>.
+        <<else>>
+            desperate moans that <<they $g.slave>> is not enjoying the treat.
+        <</if>>
+    </p>
+
+    <p>
+        When you release the slave next morning, <<they $g.slave>>
+        collapsed in exhaustion.
+        It seems the poor <<urace $g.slave>> could not get any sleep last night, and understandbly why too.
+        <<if $g.slave.isHasTrait('training_obedience_basic')>>
+
+            <<if $g.slave.isInChastity()>>
+                <<Their $g.slave>> <<udick $g.slave>> painfully press against the chastity cage all night, preventing <<them $g.slave>> from resting at all.
+                The poor slave still managed to let an incoherent thank you as you finally pull out the vibrating dildo, accepting that <<their $g.slave>> chastity will not be taken off anytime soon.
+                <<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+            <<elseif !$g.slave.isCanOrgasm()>>
+                Despite not being allowed to orgasm, you can see dried <<ucum $g.slave>> on the floor. <<They $g.slave>> knew it too, and hope your punishment will not be too severe...
+            <<else>>
+                <<if $g.slave.isHasDick()>>
+                    Dried cum were splattered everywhere — it seems the slave had came multiple times during the night.
+                <<else>>
+                    Dried pussyjuice were littering the floor — it seems the slave climaxed multiple times during the night.
+
+                <</if>>
+
+                Being so thoroughly sexually satisfied makes the slave like you a little bit more.
+                <<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+            <</if>>
+
+
+
+
+        <<else>>
+            The constant vibrating dildo induces unwanted pleasure for <<them $g.slave>> all night, and this finally broke the slave, who has now become more obedient to you.
+            <<run setup.qc.Trait('slave', setup.trait.training_obedience_basic).apply($gQuest)>>
+        <</if>>
+
+    </p>
+<</choose>>
+
+
+

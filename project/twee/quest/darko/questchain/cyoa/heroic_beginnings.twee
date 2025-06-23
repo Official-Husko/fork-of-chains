@@ -1,0 +1,187 @@
+:: QuestSetup_heroic_beginnings [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_choose_your_own_adventure_hero1',
+"Hero 1",
+'subrace_humanvale', /* pools */
+1, /* reuse chance */
+[
+setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_revenge', 'revenge'),
+  setup.qc.DoAll([
+    setup.qc.TraitRemove('unit', setup.trait.per_humble),
+    setup.qc.TraitRemove('unit', setup.trait.per_calm),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('unit', setup.trait.per_proud),
+      setup.qc.TraitReplace('unit', setup.trait.per_aggressive),
+    ]),
+  ]),
+  setup.qc.DoAll([
+    setup.qc.TraitRemove('unit', setup.trait.per_proud),
+    setup.qc.TraitRemove('unit', setup.trait.per_aggressive),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('unit', setup.trait.per_humble),
+      setup.qc.TraitReplace('unit', setup.trait.per_calm),
+    ]),
+  ]),
+),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'quest_choose_your_own_adventure_hero2',
+"Hero 2",
+'subrace_humanvale', /* pools */
+1, /* reuse chance */
+[
+setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_revenge', 'revenge'),
+  setup.qc.DoAll([
+    setup.qc.TraitRemove('unit', setup.trait.per_humble),
+    setup.qc.TraitRemove('unit', setup.trait.per_calm),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('unit', setup.trait.per_proud),
+      setup.qc.TraitReplace('unit', setup.trait.per_aggressive),
+    ]),
+  ]),
+  setup.qc.DoAll([
+    setup.qc.TraitRemove('unit', setup.trait.per_proud),
+    setup.qc.TraitRemove('unit', setup.trait.per_aggressive),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('unit', setup.trait.per_humble),
+      setup.qc.TraitReplace('unit', setup.trait.per_calm),
+    ]),
+  ]),
+),
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'heroic_beginnings', /* key */
+"Heroic Beginnings", /* Title */
+"darko", /* Author */
+[ 'vale', 'unknown'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'scavenger1': setup.qu.scavenger,
+'scavenger2': setup.qu.scavenger,
+'guard': setup.qu.guard, },
+{ /* actors */
+'hero1': 'quest_choose_your_own_adventure_hero1',
+'hero2': 'quest_choose_your_own_adventure_hero2',
+},
+[ /* costs */
+],
+'Quest_heroic_beginnings',
+setup.qdiff.normal9, /* difficulty */
+[ /* outcomes */
+[
+'Quest_heroic_beginningsCrit',
+[
+  setup.qc.MoneyCrit(),
+  setup.qc.Outcomes('failure'),
+],
+], [
+'Quest_heroic_beginningsCrit',
+[
+  setup.qc.MoneyNormal(),
+  setup.qc.Outcomes('failure'),
+],
+], [
+'Quest_heroic_beginningsCrit',
+[
+  setup.qc.VarSet('choose_your_own_adventure_progress', '2', -1),
+  setup.qc.SetCooldownEvent('choose_your_own_adventure_chapter_2', 5),
+],
+], [
+'Quest_heroic_beginningsCrit',
+[
+  setup.qc.Injury('scavenger1', 2),
+  setup.qc.Injury('scavenger2', 2),
+  setup.qc.Injury('guard', 2),
+  setup.qc.Outcomes('failure'),
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarEqual('choose_your_own_adventure_progress', '1'), ],
+[ /* expired outcomes */
+setup.qc.SetCooldownQuest(null, 20),
+],
+)>>
+
+:: Quest_heroic_beginnings [nobr]
+
+<p>
+A village in the <<lore region_vale>> had been burned down by raiders,
+seemingly with no survivors.
+You can still send a group of slavers over to the village to scavenge what's left —
+chances are that there would still be plenty of loot left unlooted by the raiders,
+if you know where to look.
+</p>
+
+<p>
+In the back in your mind,
+you are a little unnerved that a village burned so soon after you read the
+"Choose Your Own Adventure" book...
+Surely this couldn't be anything but a coincidence?
+</p>
+
+
+:: Quest_heroic_beginningsCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+<p>
+As expected, the raiders were not at all thorough in looting the place.
+<<Rep $g.scavenger1>> <<uadv $g.scavenger1>> managed to find several valuables hidden
+in the cellars of some buildings, which will fetch quite a nice sum of money in the market.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+As expected, the raiders were not at all thorough in looting the place.
+<<Rep $g.scavenger1>> <<uadv $g.scavenger1>> managed to find several unburned closets,
+which remained locked. Your slavers made quick work of the lock and loot the valuables left inside.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+Unfortunately the raiders burnt most of the houses down, leaving whatever valuables they left behind useless.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately the raiders burnt most of the houses down, leaving whatever valuables they left behind useless. Worse, your slavers encoutered the very same raiders on their way back,
+which harried them with arrows, slightly injuring your slavers.
+</p>
+
+<</if>>
+
+<p>
+On your slavers' way back, they met a pair of
+<<= $varstore.get('choose_your_own_adventure_siblings')>>,
+apparently survivors of the village raid.
+They introduced themselves as <<name $g.hero1>> and <<name $g.hero2>>.
+With nothing left for them in their village, they were apparently embarking on a quest
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+for revenge. Whatever caused the destruction in their village, they shall pay.
+<<else>>
+to find peace. The catastrophe befalling the village shall not repeat.
+<</if>>
+An odd thing to say, given that the village was raided by raiders, but they made it sounds as if they know there was some greater forces in play of their village's destruction.
+</p>
+
+<p>
+Seeing a potential client, however, your slavers informed the <<= $varstore.get('choose_your_own_adventure_siblings')>> of your company, who took information gathering as a secondary job. They seemed to consider your slavers' offer seriously. Perhaps you will hear from them again...
+</p>

@@ -1,0 +1,113 @@
+:: QuestSetup_the_rear_deal [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'the_rear_deal', /* key */
+"The Rear Deal", /* Title */
+"darko", /* Author */
+[ 'city',
+'veteran',
+'upgrade',
+'item',
+], /* tags */
+1, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+'negotiator1': setup.qu.negotiator,
+'negotiator2': setup.qu.negotiator,
+'slavetrainer': setup.qu.slavetrainer, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_rear_deal',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_rear_dealCrit',
+[
+  setup.qc.VarSet('the_rear_deal_active', 1, -1),
+  setup.qc.SlaveOrderTheRearDeal(),
+],
+], [
+'Quest_the_rear_dealCrit',
+[
+  setup.qc.Outcomes('crit'),
+],
+], [
+'Quest_the_rear_dealCrit',
+[
+  setup.qc.Outcomes('crit'),
+],
+], [
+'Quest_the_rear_dealCrit',
+[
+  setup.qc.Outcomes('crit'),
+],
+], ],
+[
+[setup.questpool.city, setup.rarity.common],
+], /* quest pool and rarity */
+[  /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.VarNull('the_rear_deal_active'),
+setup.qres.Cooldown(8),
+],
+)>>
+
+:: Quest_the_rear_deal [nobr]
+<p>
+
+<<if $inventory.isHasItem(setup.item.rear_technology)>>
+The rich nobleman in the <<lore region_city>> has once again asked for a
+slave trained to their very
+demanding specification. The promised reward this time is five bottles of
+<<rep setup.item.potion_tight>>,
+which you can certainly make good use of. Do you have what it takes to
+complete the quest?
+<<else>>
+You have recently heard that a rich nobleman in the <<lore region_city>> is
+in possession of an extremely rare artifact: <<rep
+setup.item.rear_technology>>. This technology is said to allow
+the use of the rare and elusive potion <<rep setup.item.potion_tight>>, which
+can then be used to
+restore the tightness a slave's rear holes at will.
+Surely getting such an important and crucial technology cannot be easy,
+so why does this quest appears to be so easy?
+<</if>>
+
+</p>
+
+:: Quest_the_rear_dealCrit [nobr]
+
+<p>
+After intense negotiations, your slaver managed to drove a hard bargain —
+<<if $inventory.isHasItem(setup.item.rear_technology)>>
+five bottles of <<rep setup.item.potion_tight>>
+<<else>>
+<<rep setup.item.rear_technology>>
+<</if>>
+in exchange for a perfectly trained slave exactly to the noble's demanding
+specifications. The slave must be delivered in a timely manner too, or the
+entire deal is forfeit.
+<<if !$g.negotiator1.isYou()>>
+Once <<rep $g.negotiator1>> delivered <<their $g.negotiator1>> full report to
+you, you
+<<else>>
+You
+<</if>>
+started to wonder if <<yourrep $g.slavetrainer>>
+slavetrainer|have what it takes to lead such a difficult series of slave trainings...
+Either way,
+<<if $inventory.isHasItem(setup.item.rear_technology)>>
+you better get to work if you want to get your grubby <<uhands $unit.player>> on that <<rep setup.item.potion_tight>>s.
+<<else>>
+the fate of this artifact is now in your <<uhands $unit.player>>.
+<</if>>
+</p>
+
+<p>
+<<dangertext 'Please note'>>: This quest can only reappear once every two months.
+</p>

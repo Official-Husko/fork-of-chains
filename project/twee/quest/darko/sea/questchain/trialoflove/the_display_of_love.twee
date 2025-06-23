@@ -1,0 +1,389 @@
+:: QuestSetup_the_display_of_love [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriamaster = new setup.UnitCriteria(
+null, /* key */
+'Master Trialist', /* name */
+[
+  setup.trait.bg_boss,
+  setup.trait.bg_courtesan,
+  setup.trait.bg_raider,
+  setup.trait.per_proud,
+  setup.trait.per_dominant,
+  setup.trait.skill_creative,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.bg_maid,
+  setup.trait.bg_whore,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_humble,
+  setup.trait.per_submissive,
+  setup.trait.eq_slutty,
+  setup.trait.eq_veryslutty,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_love_trialist_0'),
+],
+{
+  slaving: 3,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Slave Trialist', /* name */
+[
+  setup.trait.bg_slave,
+  setup.trait.bg_whore,
+  setup.trait.bg_courtesan,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_large,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_large,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_playful,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.eq_slutty,
+  setup.trait.eq_veryslutty,
+],
+[
+  setup.trait.bg_boss,
+  setup.trait.bg_slaver,
+  setup.trait.dick_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.per_serious,
+  setup.trait.per_chaste,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_love_trialist_0'),
+],
+{
+  sex: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_display_of_love', /* key */
+"The Display of Love", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'prep',
+  'item',
+  'sea',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'master': [ _criteriamaster, 1.5],
+  'slave': [ _criteriaslave, 1.5],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_display_of_love',
+setup.qdiff.hardest56, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_display_of_loveCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_the_display_of_loveCrit',
+    [
+      setup.qc.VarSet('trial_of_love_cooldown', '1', 16),
+      setup.qc.VarRemove('trial_of_love_progress'),
+      setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+      setup.qc.Item(setup.item.love_potion_true),
+      setup.qc.IfThenElse(
+setup.qres.NoItem(setup.item.love_technology),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.love_technology)
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_the_display_of_loveCrit',
+    [
+      setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+      setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+      setup.qc.MoneyCustom(4000),
+    ],
+  ],
+  [
+    'Quest_the_display_of_loveDisaster',
+    [
+      setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+      setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+      setup.qc.MissingUnit('master'),
+      setup.qc.MissingUnit('slave'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+  [setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.VarNull('trial_of_love_cooldown'),
+  setup.qres.VarEqual('trial_of_love_progress', '2'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('quest_love_trialist_0'),
+setup.qres.LoverExist(),
+setup.qres.BestFriend(setup.qres.HasTitle('quest_love_trialist_0'))
+]),
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+  setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+
+],
+)>>
+
+:: Quest_the_display_of_love [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The long awaited letter has finally arrived — the invitation for the last
+bout of the Trial of Love. This time, the participants are expected to
+display the purest form of love: sex itself. Each couple will be given a
+bedroom for them to enact as raunchy of a sex scene as they could possibly
+muster — but it must be authentic and not simply a pure act. The sexual act
+must stem from their own soul and spirit, from something they are used to do
+every time.
+</p>
+
+<p>
+That complicates things, but fortunately <<yourrep _u>> has a bright idea:
+since you are running a slaving company, the most natural and kinky act they
+could display is that of a master and their slave. You'll just have to
+convince the pair of lovers that this is what they really want to do...
+</p>
+
+<<if !$inventory.isHasItem(setup.item.love_technology)>>
+<p>
+Sigh... the things you'd do for <<rep setup.item.love_technology>>. You just
+hope all of this is worth it.
+</p>
+<</if>>
+
+<p>
+<<dangertext 'Note'>>: Ignoring this quest will disqualify your slavers from
+the current Trial of Love, and they will have to restart the trials from the
+beginning.
+</p>
+
+
+:: Quest_the_display_of_loveCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+  <<if $g.master.isMale() && $g.slave.isMale()>>
+    <<questimage 'the_display_of_love_gay.jpg'>>
+  <<elseif $g.master.isFemale() && $g.slave.isFemale()>>
+    <<questimage 'the_display_of_love_lesbian.jpg'>>
+  <<else>>
+    <<questimage 'the_display_of_love_hetero.jpg'>>
+  <</if>>
+<</if>>
+
+<p>
+The final island
+<<yourrep $g.master>> and <<utheirrel $g.master $g.slave>> <<rep $g.slave>>
+arrived at was different than usual, yet remain beautiful per usual. A
+bustling city unlike any in <<lore geo_mestia>>, with people of different
+culture frolicking in their daily lives. But your slavers were here on a
+mission, not sightseeing, and made a beeline for the palace.
+</p>
+
+<p>
+Within the palace was a designated bed, covered by shroud leaving only
+silhouettes of its occupants visible from the outside. As your slavers
+arrived, they weregreeted with the silhouettes of one of the Trial of Love
+participants engaging in some very sensual deep throating action behind the curtains. Sitting in front
+was the emperor, who funded the entire trials.
+Your slavers recognized the emperor -- he is the infamous Emperor Hentei,
+known widely for his wild sexual taste.
+Your slavers got the
+feeling the entire trials was ultimately a scam to satisfy the emperor's
+voyeurism fetish, but really they coudln't argue much given the amount of
+rewards the emperor had promised.
+</p>
+
+<p>
+Your slavers <<uadv $g.master>> patiently waited for their turn, before donning
+the outfits they were using for the display. A full-on leather gear for <<rep
+$g.master>>, while <<rep $g.slave>> slave|was donning almost nothing.
+Once behind the curtain, they enacted the raunchy sex they had been always fantasizing on.
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+Unfortunately their play was far from convincing, and by the end of the
+competition, they were not chosen as the winners. An odd couple of lizardkin
+and werewolf took the trophy for the interspecies intercourse they raunchily
+displayed from behind the curtains. Your slavers had to console themselves
+with a third place prize, a hefty sum of gold. Your slavers went back home
+with a slight tinging and wondering whether all of these trials are just the
+perverted way the emperor loved to spend his money...
+</p>
+
+<<else>>
+
+
+<<if $g.slave.isHasTrait('per_submissive') and $g.master.isHasTrait('per_submissive')>>
+
+<p>
+With two submissives on the bed however, the play did not play out as anyone
+would have expected. After each crack of whip from <<rep $g.master>>, not one
+but two potential slaves could be seen writhing in a mixture of agony and
+pleasure from both the pain and the stimulation from the whip.
+<<Rep $g.master>> discovered the
+pleasant sensation of being a dom to <<themself $g.master>>, and at the end
+both lovers ended up as a mess together with plenty of
+<<if $g.master.isHasDick()>>cum<<else>>pussyjuice<</if>> scattered around the bed.
+</p>
+
+<<elseif $g.slave.isHasTrait('per_dominant') and $g.master.isHasTrait('per_dominant')>>
+
+<p>
+With a dominant grin, <<rep $g.master>> began <<their $g.master>> quest to sexually
+dominate <<rep $g.slave>>. But there was two dominants on the bed, which
+made a rather amusing scene as the lovers wrestled against each other,
+trying to grasp control of the whip and the situation. They tumbled and twisted
+on top of the bed, emitting hotly arousing sounds as the wrestling act was
+projected into the silhouettes. But <<rep $g.master>> had the advantage of
+clothing and the sex toy, and <<rep $g.slave>> ultimately had no choice but to relent to
+<<their $g.slave>> lover, before getting fucked in the <<uhole $g.slave>>.
+</p>
+
+<<elseif $g.master.isHasTrait('per_dominant') or $g.slave.isHasTrait('per_submissive')>>
+
+<p>
+With a
+<<if $g.master.isHasTrait('per_dominant')>>
+dominant
+<</if>>
+grin, <<rep $g.master>> began <<their $g.master>> quest to sexually dominate <<rep
+$g.slave>>. <<Their $g.master>>
+<<if $g.master.isHasTrait('per_submissive')>>
+submissive
+<</if>>
+lover knows all too well of the play they love to enact on their own bed, and
+the play soon became natural. <<Rep $g.master>> punished <<rep $g.slave>>
+for every mistake <<they $g.slave>> made, from failing to lick clean <<their
+$g.master>> boots to leaking
+<<if $g.slave.isHasDick()>>
+pre from <<their $g.slave>> rock-hard <<udick $g.slave>>.
+<<else>>
+juice from <<their $g.slave>> <<uvagina $g.slave>>.
+<</if>>
+The lovers ended up with a rough hard sex in the end, with <<rep $g.master>> grinding <<their $g.master>>
+<<if $g.master.isHasDick()>>
+dick
+<<else>>
+strap-on
+<</if>>
+down <<their $g.master>> lover's throat before cleaning the filthy thing up with
+<<reps $g.slave>> tongue.
+</p>
+
+<<elseif $g.master.isHasTrait('per_submissive') or $g.slave.isHasTrait('per_dominant')>>
+
+<p>
+But the play did not play out as anyone would have expected.
+As
+<<if $g.master.isHasTrait('per_submissive')>>
+the submissive slaver
+<</if>>
+<<rep $g.master>> tentatively raised <<their $g.master>> whip,
+<<if $g.slave.isHasTrait('per_dominant')>>
+the dominant "slave"
+<</if>>
+snapped, jumped over the bed and took control of the whip instead.
+Before <<rep $g.master>> master|was able to respond, <<rep $g.slave>> had
+assumed full control and whipped <<rep $g.master>> each time <<they
+$g.master>> spoke without permission.
+Soon enough the role was completely reversed, with <<rep $g.slave>> ordering
+<<their $g.slave>> lover to
+<<if $g.slave.isHasDick()>>
+suck <<their $g.slave>> dick fast.
+<<else>>
+eat <<their $g.slave>> pussy.
+<</if>>
+But it was all completely natural, with the lovers often enacting this
+particular lovely scene in their own free time, since they know each other's
+preferences very well.
+</p>
+
+<<else>>
+
+<p>
+<<Rep $g.master>> tried <<their $g.master>> best to imagine their lover as a
+slave — a job <<they $g.master>> all know too well as a slaver.
+Despite both slavers being a vanilla in this kind of sex, the play was
+incredibly convincing, no small thanks to their experiences within their
+career in your company.
+<<if $g.slave.isHasTrait('bg_slave')>>
+No doubt <<reps $g.slave>> past as a slave also helped out in the process.
+<</if>>
+The lovers even got to enjoy it as time pass, and they completed the act with
+both visibly climaxing at the same time from behind the curtains.
+</p>
+
+<</if>>
+
+<p>
+The emperor was incredibly impressed by how natural your slavers were in
+their acts. In the end, your slavers were chosen as the sole winner of the
+current Trial of Love, and were rewarded handsomely.
+<<if !$inventory.isHasItem(setup.item.love_technology)>>
+A servant brought the <<rep setup.item.love_technology>>, and presented it
+for the lovers to take back home.
+<</if>>
+</p>
+
+<p>
+But of course, all those happened in the first two weeks of their stay in the
+island. What they did with the remaining two weeks of their assignments remained a mystery, but
+rumors said that they often reenacted the bedroom scene in the fort nowadays...
+</p>
+
+<</if>>
+
+
+:: Quest_the_display_of_loveDisaster [nobr]
+
+<p>
+<<Rep $g.master>> and <<utheirrel $g.master $g.slave>> never made it back to
+the fort. It seemed that the hosts decided that the pair of lovers made
+for a great pair of slaves much better than a pair of slavers.
+</p>
+
+<<uneedrescue $g.master>>.
+<<uneedrescue $g.slave>>.

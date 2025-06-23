@@ -1,0 +1,82 @@
+:: QuestSetupTreatmentHealBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'treatment_heal_basic',  /* id */
+  'Treatment: Heal (Basic)',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait',],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.heal_head,
+    'assistant1': setup.qu.heal_assistant,
+    'assistant2': setup.qu.heal_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.healing_potion),
+  ],  /* costs */
+  'TreatmentHealBasic',  /* description */
+  setup.qdiff.easy30,
+  [
+    [
+      'TreatmentHealBasicCrit',
+      [
+        setup.qc.Heal('trainee', 8),
+      ]
+    ],
+    [
+      'TreatmentHealBasicSuccess',
+      [
+        setup.qc.Heal('trainee', 5),
+      ],
+    ],
+    [
+      'TreatmentHealBasicFailure',
+      [
+        setup.qc.Heal('trainee', 3),
+      ],
+    ],
+    [
+      'TreatmentHealBasicDisaster',
+      [
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentHealBasic [nobr]
+<p>
+Heal a unit, which removes about 4 weeks worth of injuries.
+</p>
+
+:: TreatmentHealBasicCrit [nobr]
+<p>
+<<Rep $g.head>> directed the healing procedure, effectively using the
+<<rep setup.item.healing_potion>> to heal an extraordinarily large amount of injuries
+from <<rep $g.trainee>>.
+</p>
+
+:: TreatmentHealBasicSuccess [nobr]
+<p>
+The healing procedure went about as well as expected,
+with the
+<<rep setup.item.healing_potion>> being used with standard efficiency to sufficiently heal
+<<rep $g.trainee>>.
+</p>
+
+:: TreatmentHealBasicFailure [nobr]
+<p>
+<<Rep $g.head>> head|was wasteful in <<their $g.head>> use of the
+<<rep setup.item.healing_potion>> and only able to heal <<rep $g.trainee>> by a small amount.
+</p>
+
+:: TreatmentHealBasicDisaster [nobr]
+<p>
+Your slavers mismanaged the healing operation resulting in the <<rep setup.item.healing_potion>> being
+completely wasted without any noticable effect on <<rep $g.trainee>>.
+</p>

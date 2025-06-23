@@ -1,0 +1,137 @@
+:: OpportunitySetup_intense_brothel_training [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'intense_brothel_training', /* key */
+"Brothel Training", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+],
+1, /* expiration weeks */
+'Opportunity_intense_brothel_training',
+setup.qdiff.normal32, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_intense_brothel_training_0',
+    'Opportunity_intense_brothel_training_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '28', -1),
+      setup.qc.VarAdd('quest_brothel_class', 10, -1),
+    ],
+  ],
+  [
+    'Opportunity_intense_brothel_training_1',
+    'Opportunity_intense_brothel_training_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '28', -1),
+      setup.qc.VarAdd('quest_brothel_class', -10, -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+  ],
+  'head': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_intense_brothel_training [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+Having finished supervising training the employees of <<attach _describe>>,
+<<yourrep $g.owner>> asked for your input on what skills these <<men $g.head>>
+should try to focus on.
+</p>
+
+<p>
+The first option is to focus on ther entertainment skills, which includes
+singing, seductive dancing and strip-tease.
+They will still need to perform sex on their clients, but it will occasionally
+take a back set to entertainment.
+Hopefully, they will one day
+reach professional level of proficiency, which may ultimately bring your
+brothel's class up a notch or two.
+</p>
+
+<p>
+Alternatively, you could prioritize the more primal aspect of the brothel:
+the pure act of sex itself. The workers would learn how to make their partner
+more satisfied by not only with their
+<<if $g.head.isHasDick()>>stiff pricks<<else>>wet pussies<</if>>, but also
+with every other parts of their bodies that should be made available for
+their partner for the night. This would certainly make your brothel somewhat
+raunchier.
+</p>
+
+
+:: Opportunity_intense_brothel_training_0 [nobr]
+Focus on entertainment
+
+
+:: Opportunity_intense_brothel_training_0_flavor [nobr]
+<p>
+Having made up your decision, you ask <<yourrep $g.owner>> to let the whores
+focus on their entertainment skills. <<Rep $g.owner>> and the newly elected
+head whore <<name $g.head>> spend the next few days teaching various
+entertainment skills to the whore, starting easily from how to properly sway
+their bodies in time with the music, and how to make love with a wooden pole.
+At the end of the week, the workers are more confident in their entertainment
+skills, and your brothel begins its first step to gain reputation as a
+higher-class entertainment venue.
+</p>
+
+
+
+
+:: Opportunity_intense_brothel_training_1 [nobr]
+Focus on sex
+
+
+:: Opportunity_intense_brothel_training_1_flavor [nobr]
+<p>
+Having made up your decision, you ask <<yourrep $g.owner>> to let the whores focus on their sexual skills. <<Rep $g.owner>> and the newly elected head whore <<name $g.head>> spend the next few days
+<<if $g.owner.isHasDick() and $g.head.isHasDick()>>using both their stiff pricks<<elseif $g.owner.isHasVagina() and $g.head.isHasVagina()>>using both their pussies
+<<else>>
+using their dick and pussy<</if>>
+to teach the various sexual acts one could do with every part of their
+bodies. The whores learn, probably for the very first time in their life,
+that their <<if $g.head.isHasDick()>>dicks<<else>>pussies<</if>> are not the
+only sexual organ they have.
+By the end of the week, the workers are much raunchier than before, ready to
+engage and introduce their customers to an entirely new dimension of sex.
+With this, your brothel begins its first step to become a fully debauched
+whorehouse.
+</p>

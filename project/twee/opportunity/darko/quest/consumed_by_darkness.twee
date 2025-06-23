@@ -1,0 +1,144 @@
+:: OpportunitySetup_consumed_by_darkness [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'consumed_by_darkness', /* key */
+"Consumed by Darkness", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'trait',
+  'favor',
+  'unit',
+  'unknown',
+  'special',
+],
+1, /* expiration weeks */
+'Opportunity_consumed_by_darkness',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_consumed_by_darkness_0',
+    'Opportunity_consumed_by_darkness_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('to_master_the_dark', {
+        master: "master",
+        slaver: 'slaver',
+      }),
+    ],
+  ],
+  [
+    'Opportunity_consumed_by_darkness_1',
+    'Opportunity_consumed_by_darkness_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Actor('slaver', setup.qres.IsCanBeSold()),
+    ],
+    [ /* outcomes */
+      setup.qc.AllUnitSatisfyDo(
+        [
+          setup.qres.NoTag('mist_apprentice_victim'),
+          setup.qres.NotYou(),
+          setup.qres.Job(setup.job.slaver),
+        ],
+        [
+          setup.qc.TraumatizeRandom('unit', 20),
+        ],
+      ),
+      setup.qc.AllUnitSatisfyDo(
+        [setup.qres.HasTag('mist_apprentice_victim')],
+        [setup.qc.Injury('unit', 3), setup.qc.TraumatizeRandom('unit', 12), setup.qc.Return('unit')],
+      ),
+      setup.qc.MissingUnitForever('slaver'),
+      setup.qc.SetCooldownQuest('mist_apprenticeship', 100),
+      setup.qc.Favor('demon', 2000),
+      setup.qc.Slave('demonkin', "a|was a slave given in exchange for one of your slavers", undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'demonkin': 'subrace_demonkin',
+  'slaver': [],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_consumed_by_darkness [nobr]
+
+<p>
+Unexpected, instead of a simple demand of payment like all your previous
+letters, this time the demon that is currently tutoring <<yourrep $g.slaver>> is actually
+offering you an offer.
+</p>
+
+<p>
+The demon is offering to buy <<therace $g.slaver>> from you — no doubt to be remade as
+one of <<their $g.master>> personal sex toys. It seems <<they $g.master>> master|have
+taken quite a liking to <<theslaver $g.slaver>>. The promised reward is mouth-watering:
+the demon promises to champion your company's reputation among other demons,
+propelling your company's reputation so much that it'll be on the tip of
+every demon's conversations. If that's not reward enough, the demon even
+promises to throw in one of <<their $g.master>> demonkin sex toys over to you
+as well.
+</p>
+
+<p>
+However, you have known <<rep $g.slaver>> for quite some time now, and
+<<theslaver $g.slaver>> slaver|have served you
+<<if $g.slaver.isHasTrait('per_loyal')>>
+very loyally
+<<elseif $g.slaver.isHasTrait('per_independent')>>
+well, although you question <<their $g.slaver>> loyalty from time to time
+<<else>>
+loyally
+<</if>>
+thus far. Do you really have the heart to exchange one of your slavermates
+in exchange for a demon's bargain?
+</p>
+
+
+:: Opportunity_consumed_by_darkness_0 [nobr]
+No, just complete the training by offering your body as payment
+
+
+:: Opportunity_consumed_by_darkness_0_flavor [nobr]
+
+<p>
+You reject the offer. <<Reps $g.slaver>> loyalty and long term of service
+to you will not go punished with a betrayal.
+</p>
+
+
+:: Opportunity_consumed_by_darkness_1 [nobr]
+Accept the offer
+
+
+:: Opportunity_consumed_by_darkness_1_flavor [nobr]
+<p>
+Despite <<reps $g.slaver>> long service in your company, the demon's offer
+is just too tempting, and you have fallen for it.
+The moment you sign the parchment, it burns itself to cinders, sealing
+the deal. You will never again see <<yourrep $g.slaver>>, whose destiny is now to
+be one of the no-doubt many playthings of the demon. All in exchange for a
+lot of goodwill from the demonkin, as well as a shipment of slaves to be
+delivered to your address very soon.
+</p>
+
+<p>
+You've tried all you can to prevent the news from reaching your other slavers, but
+somehow they know, and they are distressed by the turn of events...
+</p>

@@ -1,0 +1,55 @@
+:: EventSetup_nearby_violations [nobr event]
+
+<<run new setup.UnitGroup(
+"nearby_violations0",
+"Victim",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_gape),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_gape),
+],
+)>>
+
+<<run new setup.Event(
+'nearby_violations', /* key */
+"Nearby Violations", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_nearby_violations',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_doppelganged'),
+    setup.qres.Available(),
+  ],
+  'violated': 'nearby_violations0',
+  'dop': setup.contacttemplate.quest_doppelganger,
+},
+[ /* outcomes */
+  setup.qc.Ire('humanvale', 2),
+  setup.qc.QuestDirect('nearby_violations', {
+dop: "dop",
+slaver: "slaver",
+violated: "violated",
+}),
+  setup.qc.SetCooldownEvent(null, 30),
+],
+[ /* restrictions */
+  setup.qres.NoQuest('nearby_violations'),
+  setup.qres.NoOpportunity('nearby_violations'),
+  setup.qres.VarEqual('quest_doppelganger_progress', '4'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_nearby_violations [nobr]
+<<include "Quest_nearby_violations">>

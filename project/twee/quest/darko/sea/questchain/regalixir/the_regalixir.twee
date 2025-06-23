@@ -1,0 +1,242 @@
+:: QuestSetup_the_regalixir [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"the_regalixir0",
+"Skilled Slave",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTraitsRandom('unit', [setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_connected, setup.trait.skill_hypnotic, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal], 1, false, false),
+],
+)>>
+
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+  setup.trait.skill_alchemy,
+  setup.trait.per_attentive,
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  combat: 0.3,
+  brawn: 0.3,
+  survival: 0.3,
+  intrigue: 0.3,
+  slaving: 0.3,
+  knowledge: 0.3,
+  social: 0.3,
+  aid: 0.3,
+  arcane: 0.3,
+  sex: 0.3,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_regalixir', /* key */
+"The Regalixir", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'prep',
+  'trait',
+  'sea',
+  'rare',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'you': [_criteriayou, 1],
+  'alchemist': [ setup.qu.alchemist_veteran, 1],
+  'navigator': [ setup.qu.navigator, 1],
+},
+{ /* actors */
+  'slave': 'the_regalixir0',
+  'connected': [
+    setup.qres.NotYou(),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.AllTraits([setup.trait.skill_connected], true),
+  ],
+  'alc': 'sea_all',
+},
+[ /* costs */
+  setup.qc.Money(-63750),
+],
+'Quest_the_regalixir',
+setup.qdiff.hard47, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_regalixirCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('slave', "", undefined),
+    ],
+  ],
+  [
+    'Quest_the_regalixirCrit',
+    [
+      setup.qc.QuestDirect('regalixir', null),
+    ],
+  ],
+  [
+    'Quest_the_regalixirFailure',
+    [
+      setup.qc.Money(63750),
+      setup.qc.Injury('alchemist', 2),
+      setup.qc.Injury('you', 2),
+      setup.qc.Injury('navigator', 2),
+    ],
+  ],
+  [
+    'Quest_the_regalixirDisaster',
+    [
+      setup.qc.Money(30000),
+      setup.qc.Injury('you', 2),
+      setup.qc.Injury('alchemist', 1),
+      setup.qc.Injury('navigator', 2),
+      setup.qc.Slave('slave', "a|was \"bought\" for an atrocious sum from pirates of the Southern Seas", undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.NoRegalixir(),
+  setup.qres.QuestUnique(),
+  setup.qres.Not(setup.qres.QuestDone('regalixir')),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_regalixir [nobr]
+
+<p>
+<<Yourrep $g.connected>> connected|is a well-connected <<urace
+$g.connected>>, and <<their $g.connected>> connections even reach far beyond
+the <<lore region_sea>>. <<They $g.connected>> connected|have found an
+extremely rare opportunity for you: a lead into the rare and mysterious
+concoction dubbed the Regalixir.
+According to the stories, the Regalixir would awaken whatever dormant
+potential sleeping within the lucky drinker. You could certainly use such a rare
+potion for your own consumption.
+</p>
+
+<p>
+The Regalixir is incredibly rare, however, and it is likely that <<dangertext
+"you will never be able to obtain more than one in your entire career">>.
+Furthermore, you also need to gather the instructions, as well as the rare
+ingredients for the potion. Fortunately, <<rep $g.connected>> connected|have
+gathered information that a famous alchemist in the <<lore region_sea>> happens to
+be in possession of both, and it might be fruitful were you to send yourself
+and a group of slavers to patron the alchemist.
+</p>
+
+<p>
+It won't be easy though — you'd need a good alchemist to process the
+information, as well as a good navigator to navigate the treacherous waters.
+But above all else, you need money, and a lot of them. The alchemist won't
+part with <<their $g.alc>> knowledge and ingredients for free, and they will
+cost you quite a bit of fortune...
+</p>
+
+<p>
+If your company is still not yet well-established, and has no such sum, then
+it might be wise to come back to this quest later...
+</p>
+
+
+:: Quest_the_regalixirCrit [nobr]
+
+<p>
+Thanks to <<reps $g.navigator>> skills, you and your slavers arrived at the
+alchemist's island — a quaint little island in the middle of nowhere. The
+alchemist was a kindly <<woman $g.alchemist>>, who greeted your slavers and
+offered some herbal teas during the talk. Hearing of your offer, and seeing
+the amount of money you brought, <<they $g.alchemist>> <<uadv $g.alchemist>>
+agreed to your request and shared <<their $g.alchemist>> knowledge with you
+and your slavers.
+<<if $unit.player.isHasTrait('skill_alchemy')>>
+
+With your background in alchemy, you were able to understand and process all the information <<they $g.alchemist>> provides, making you feel good about yourself.
+
+<<run setup.qc.BoonizeRandom('you', 10).apply($gQuest)>>
+
+<<elseif $unit.player.isHasTrait('per_smart')>>
+
+Despite having no background in alchemy, your keen intellect proved useful,
+and you were able to digest most of the information <<they $g.alchemist>>
+provides. It felt good.
+
+<<run setup.qc.BoonizeRandom('you', 5).apply($gQuest)>>
+
+<<else>>
+
+Having no background whatsoever in alchemy, you put your trust in <<yourrep
+$g.alchemist>> to jot down everything <<they $g.alchemist>> says.
+
+<</if>>
+In the end, <<rep $g.alchemist>> had a note full of the precise instructions
+for making the potion.
+</p>
+
+<p>
+After collecting the ingredients from the alchemist — including some things you'd never
+know go into a potion — you and your slavers waved goodbye to the
+portly alchemist and returned back to your fort in the ship. Time for the
+next step: concocting the Regalixir itself!
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Apparently, making the Regalixir requires you to have either slavers or
+slaves possessing some special skills. You make a small detour during your
+trip to capture a prospective slave, which should make it a little easier for
+you to perform the ritual...
+</p>
+<</if>>
+
+
+:: Quest_the_regalixirFailure [nobr]
+<p>
+You never arrived at the alchemist's island. Your ship was attacked by rowdy
+pirates of the <<lore region_sea>>, and despite ending victorious in the ensuing battle,
+you and your slavers suffer injuries. You <<uadv $unit.player>> ordered a
+retreat, to recuperate back at your fort before trying again.
+</p>
+
+<p>
+Fortunately, this means all the money you brought along remained intact, and are put back into the treasury without a single coin lost. You imagine many coins would have been "lost" were you not personally attending to this quest...
+</p>
+
+
+
+:: Quest_the_regalixirDisaster [nobr]
+<p>
+
+You never arrive at the alchemist's island. Your ship was attacked by rowdy
+pirates of the south, who emerged victorious against you. You were helpless
+to do anything but watch as they discovered half of the money you stowed
+along the ship, and moved them one crate at a time to their ship. Seeing the
+wealth of money they had looted, the pirates "kindly" threw you a present
+slave — a recent capture from one of their raiding trip, saying that it made
+you even with them.
+</p>
+
+
+
+

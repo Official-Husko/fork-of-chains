@@ -1,0 +1,208 @@
+:: QuestSetup_the_plant_of_lewdity [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriagardener = new setup.UnitCriteria(
+null, /* key */
+'Gardener', /* name */
+[
+  setup.trait.race_elf,
+  setup.trait.race_catkin,
+  setup.trait.bg_farmer,
+  setup.trait.per_calm,
+  setup.trait.per_attentive,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.race_human,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_aggressive,
+  setup.trait.per_dreamy,
+  setup.trait.skill_flight,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+  setup.qres.AllTraits([setup.trait.magic_earth], true),
+],
+{
+  knowledge: 1,
+  aid: 1,
+  arcane: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_plant_of_lewdity', /* key */
+"The Plant of Lewdity", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'veteran',
+  'prep',
+  'trait',
+  'rare',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'gardener': [ _criteriagardener, 1],
+  'biologist': [ setup.qu.biologist, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.Money(-10000),
+],
+'Quest_the_plant_of_lewdity',
+setup.qdiff.hardest48, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_plant_of_lewdityCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Money(5000),
+    ],
+  ],
+  [
+    'Quest_the_plant_of_lewdityCrit',
+    [
+      setup.qc.Event('the_essence_of_life', 2, {
+slaver: "gardener",
+}),
+      setup.qc.SetCooldownQuest(null, 10000),
+      setup.qc.Leave('gardener', "a|is busy tending to the Plant of Lewdity in order to master earth magic", undefined),
+    ],
+  ],
+  [
+    'Quest_the_plant_of_lewdityCrit',
+    [
+      setup.qc.TraitIncreaseExisting('gardener', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('gardener', setup.trait.vagina_gape),
+      setup.qc.SetCooldownQuest(null, 10),
+    ],
+  ],
+  [
+    'Quest_the_plant_of_lewdityCrit',
+    [
+      setup.qc.MissingUnit('gardener'),
+      setup.qc.Corrupt('gardener', null, 2),
+      setup.qc.SetCooldownQuest(null, 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.AllTraits([setup.trait.magic_earth], true),
+setup.qres.NotYou()
+]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_plant_of_lewdity [nobr]
+
+<p>
+People gifted with <<rep setup.trait.magic_earth_master>> are usually born with the
+talent, and there are extremely few instances where those gifted with <<rep
+setup.trait.magic_earth>> can upgrade their mastery.
+However, if one is sufficiently insistent, it can be done with the assistance
+of the so-called Plant of Lewdity. This incredibly rare plant is grown by
+some sect of elves living in the <<lore region_forest>>, and these elves make
+their living by selling seeds of these plants at an astronomical price.
+</p>
+
+<p>
+Since you have a slaver under your employ gifted with <<rep
+setup.trait.magic_earth>>, it might be worth the efforts and money to
+purchase one of the seeds from these elves. However, on top of the expensive
+price, there is also the matter of growing the plant to maturity, which will no
+doubt takes a lot of time and efforts from your company. But should you wish to go
+along with the idea, best send the prospective slaver together with a
+biologist and a guard to ensure the purchase go as expected.
+</p>
+
+
+:: Quest_the_plant_of_lewdityCrit [nobr]
+
+<p>
+The elves live modestly in their encampments, and your slavers received
+minimal hospitality from them.
+But hospitality wasn't what your slavers
+expected —
+they were there for a sole reason: to get the seed to the Plant of Lewdity.
+</p>
+
+<p>
+After your slavers showed the crate of coins they brought, one of the elves gave
+the box containing the seed to your slavers. It looked like a regular seed to
+<<rep $g.gardener>>, but
+<<rep $g.biologist>> <<uadv $g.biologist>> convinced the team that it was the
+real deal. After all, there was no mistaking that
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+faint scent of sourness, saltiness, and sweetness
+<<elseif $gOutcome == 'failure'>>
+faint scent of musk
+<<else>>
+faint scent of corruption
+<</if>>
+coming from the seed.
+<<Rep $g.gardener>> could also sense a faint trace of power, which was
+particularly attuned to <<their $g.gardener>> mastery over <<rep setup.trait.magic_earth>>.
+<<if $gOutcome == 'crit'>>
+Your slavers were able to negotiate a very good price for the seed, only
+spending half of the money they brought.
+<</if>>
+Satisfied, your slavers exchanged the goods before heading back home to your fort.
+</p>
+
+<p>
+The next step would be to grow the plant to maturity. This is an arduous
+task, and <<yourrep $g.gardener>> will be fully occupied until the plant
+matures, being unable to do any other task whatsoever. The Seed of Lewdity is
+planted on a patch of land designated as a makeshift garden within your fort.
+Until the plant matures, <<they $g.gardener>> must continuously channel
+<<their $g.gardener>> <<rep setup.trait.magic_earth>> over into the plant,
+forcing growth onto it.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+However, something incredibly wrong happened on the next day.
+When <<rep $g.gardener>> channeled <<their $g.gardener>> magic onto the plant,
+the plant suddenly grew incredibly fast, before engulfing <<therace
+$g.gardener>> with its tentacle-like vines.
+By the time you've arrived at the garden, the plant had already entirely
+covered your slaver,
+pistoning its vines in and out of <<their $g.gardener>> <<uanus $g.gardener>>.
+You had no choice but to order the plant cut to save your slaver, whose holes were
+no doubt gaped by the ordeal if they were not already gaped to begin with...
+</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>
+However, something incredibly wrong happened on the second day. When <<rep
+$g.gardener>> channeled <<their $g.gardener>> magic onto the plant, the plant
+suddenly grew incredibly fast, before engulfing <<therace $g.gardener>> with
+its tentacle-like vines. By the time you arrived at the makeshift garden,
+neither the plant nor <<theslaver $g.gardener>> were anywhere to be seen...
+<<uneedrescue $g.gardener>>
+</p>
+<<else>>
+<</if>>

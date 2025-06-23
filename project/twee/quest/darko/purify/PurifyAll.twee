@@ -1,0 +1,90 @@
+:: QuestSetupPurifyAll [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'purify_all',  /* id */
+  'Purify: Any',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.purify_head,
+    'assistant1': setup.qu.purify_assistant,
+    'assistant2': setup.qu.purify_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.MoneyMult(-2),
+  ],  /* costs */
+  'PurifyAll',  /* description */
+  setup.qdiff.normal40,
+  [
+    [
+      'PurifyAllCrit',
+      [
+        setup.qc.Purify('trainee'),
+        setup.qc.Purify('trainee'),
+        setup.qc.Purify('trainee'),
+        
+      ]
+    ],
+    [
+      'PurifyAllSuccess',
+      [
+        setup.qc.Purify('trainee'),
+        
+      ],
+    ],
+    [
+      'PurifyAllFailure',
+      [
+      ],
+    ],
+    [
+      'PurifyAllDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: PurifyAll [nobr]
+<p>
+Purify a unit, which removes a random corruption if it has any.
+You can check whether or not a unit can be purified from their interact menu.
+</p>
+
+:: PurifyAllCrit [nobr]
+
+<p>
+The purification went very smoothly.
+The corruptions that was prevalent in <<reps $g.trainee>> body were greatly cleansed.
+</p>
+
+:: PurifyAllSuccess [nobr]
+
+<p>
+The purification attempt was successful, and some of the corruptions in <<reps $g.trainee>>
+body was exorcised out.
+</p>
+
+:: PurifyAllFailure [nobr]
+
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+<<Yourrep $g.trainee>> remained as corrupted as <<they $g.trainee>> was before.
+</p>
+
+:: PurifyAllDisaster [nobr]
+
+<p>
+Unfortunately, the purification ritual was not performed correctly and backfired,
+injuring <<rep $g.trainee>> intead.
+</p>

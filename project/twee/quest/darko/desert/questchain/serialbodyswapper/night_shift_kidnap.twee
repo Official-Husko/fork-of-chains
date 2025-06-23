@@ -1,0 +1,195 @@
+:: QuestSetup_night_shift2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'night_shift2', /* key */
+"Night Shift", /* Title */
+"darko", /* Author */
+[ 'desert', 'transformation', 'money',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'defender': setup.qu.defender,
+'trapper': setup.qu.trapper,
+'shadow': setup.qu.shadow_fighter, },
+{ /* actors */
+'slave': 'all',
+'thief': 'all',
+'lord': 'all', },
+[ /* costs */
+],
+'Quest_night_shift2',
+setup.qdiff.hard41, /* difficulty */
+[ /* outcomes */
+[
+'Quest_night_shift2Crit',
+[
+setup.qc.MoneyCrit(), ],
+], [
+'Quest_night_shift2Crit',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_night_shift2Failure',
+[
+setup.qc.TraumatizeRandom('defender', 12),
+setup.qc.TraumatizeRandom('trapper', 10),
+setup.qc.TraumatizeRandom('shadow', 9), ],
+], [
+'Quest_night_shift2Disaster',
+[
+setup.qc.MoneyNormal(),
+setup.qc.MissingUnit('shadow'),
+setup.qc.SlaveMarker('slave'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions to generate */
+setup.qres.VarLte('nightshifter', 2),
+setup.qres.NoQuest('night_shift'),
+setup.qres.NoQuest('night_shift2'),
+setup.qres.NoQuest('night_shift23'),
+],
+)>>
+
+:: Quest_night_shift2 [nobr]
+
+<p>
+There has been a series of homebreaking in the <<lore region_desert>> in the last
+few weeks. The stories differ from household to household — some say the
+thieves are just common thieves stealing valuables inside,
+while others say they only steal rare family heirlooms or even the victim's virgin
+<<daughter $g.slave>>. One thing in common though — all the victim receives
+some sort of calling card days before the heist, be it delivered under the
+doors of their house or more romantically shot with an arrow through their
+windows.
+</p>
+
+<p>
+One of the richer houses in the region has just received one such calling cards,
+<<if $gQuest.getSeed() % 3 == 0>>
+dropped from the chimney of their mansion.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+found inside their mailbox one day.
+<<else>>
+found sticking out from behind their clothes that were being hanged to dry.
+<</if>>
+Fearing for their property and more importantly their sole <<daughter $g.slave>>, they are hiring
+for extra guards to help secure their mansion in the coming days.
+</p>
+
+<p>
+You could send a group of slavers to take up the job, if you wish. It should
+be a relatively safe affair, but with anything desert there is no such hard
+guarantee...
+</p>
+
+
+
+:: Quest_night_shift2Crit [nobr]
+
+<p>
+Simple problem requires simple solution: <<Yourrep $g.defender>> will <<uadv
+$g.defender>> keep watch over the <<daughter $g.slave>> while <<rep
+$g.trapper>> and <<rep $g.shadow>> secured the house, blocking all possible
+entrances and reinforcing the all the weakest points of the house.
+Once the preparations were complete, they waited for the attack...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+A week later, in the dead of the night, <<rep $g.defender>> heard
+a shuffling sound coming from the upper floors.
+<<Rep $g.shadow>> immediately got to work, <<uadv $g.shadow>> tracing the
+sound to its origin. There, stuck in the chimney was a <<urace $g.thief>>
+apparently caught in a trap laid by <<yourrep $g.trapper>>.
+Your slavers smirked at the thief's predicament, a
+well deserved punishment for a fool foolish enough to infiltrate a heavily guarded mansion.
+</p>
+
+<p>
+With the threat neutralized, the <<lord $g.lord>> of the mansion
+congratulated your slavers on a job well done and rewarded them greatly.
+<<They $g.lord>> hurriedly shoo away your slavers afterwards — no doubt in
+order to exact unspeakable punishments the wannabe thief for disturbing
+<<them $g.lord>> so.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+A week later, in the dead of the night, <<rep $g.defender>> heard
+a shuffling sound coming from one of the upper bedrooms.
+<<Rep $g.defender>> together with <<rep $g.thief>> raced in to the room,
+apparently the room of the <<lord $g.lord>>'s <<daughter $g.slave>>, and saw
+a <<urace $g.shadow>> and another hired mercenary engaged in a fight.
+With your slavers joining in, there was no hope that the thief was going to
+be able to escape, and <<therace $g.thief>> thief thief|was quickly subdued.
+But as your slaver smugly gazed upon their handiwork, the mercenary boldly
+claimed to have done all the work to the <<lord $g.lord>> of the mansion.
+As a result your slavers were only paid the usual pittance while the
+unscrupulous mercenary took the lion's share.
+All the hirelings were quickly expelled from the house afterwards.
+No doubt it was so that the <<lord $g.lord>> could begin
+<<their $g.lord>> debauched plans for the unfortunate <<daughter $g.slave>>
+thief as punishment for <<their $g.thief>> nerve.
+</p>
+<</if>>
+
+<p>
+Another unfortunate household received another calling card in the next few
+days, which made <<yourrep $g.trapper>> wonder if <<they $g.trapper>> actually caught
+the right thief...
+</p>
+
+
+:: Quest_night_shift2Failure [nobr]
+
+<p>
+The usual occupation of your slavers were to enslave and raid, not to protect.
+As a result they were clueless during these protection missions, and nobody
+ever noticed when the <<daughter $g.slave>> of the
+mansion went missing one night. All that was left was an empty bed on the second
+floor of the mansion and the wind coming out from the open window.
+</p>
+
+<p>
+Angered by their incompetence, your slavers and the rest of the hirelings
+were punished in unspeakable ways by the <<lord $g.lord>> of the mansion,
+greatly traumatizing them.
+</p>
+
+<p>
+<<Yourrep $g.shadow>> noticed that there was no signs of struggle in the room,
+and that the window were open outwards, not inwards...
+</p>
+
+
+:: Quest_night_shift2Disaster [nobr]
+
+<p>
+The usual occupation of your slavers were to enslave and raid, not to protect.
+As a result they were clueless in these kind of protection missions. In fact,
+they performed the job so poorly that it took <<rep $g.defender>> and <<rep
+$g.trapper>> days before they realized that
+<<yourrep $g.shadow>> had went missing.
+<<if $g.shadow.getGender() == $g.slave.getGender()>>
+<<rep $g.shadow>> shadow|was apparently mistaken for the <<daughter
+$g.slave>> of the <<lord $g.lord>>, and seemed to have been kidnapped on
+<<their $g.slave>> behalf.
+<<else>>
+It was unclear how <<rep $g.shadow>> went missing, but perhaps after seeing how
+tightly the mansion was guarded, the thief gave up on kidnapping the
+<<daughter $g.slave>> and made do with <<yourrep $g.shadow>> instead.
+<</if>>
+If there was a positive thing to come out from this, it's that your slavers
+actually successfully guarded the <<daughter $g.slave>> and got paid for their
+services. But at what cost?
+</p>
+
+<p>
+<<uneedrescue $g.shadow>>
+</p>

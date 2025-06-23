@@ -1,0 +1,81 @@
+:: QuestSetupDeepContact [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'deep_contact',  /* id */
+  'Establish Contact: Deeprealm',  /* Title */
+  'darko',   /* author */
+  ['deep', 'special', 'quest'],  /* tags */
+  2, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_deep,
+    'scout2': setup.qu.scout_deep,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestDeepContact',  /* description */
+  setup.qdiff.normal30,
+  [
+    [
+      'QuestDeepContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.deeplead),
+        setup.qc.QuestDelay(setup.questpool.deep, 12),
+        
+      ]
+    ],
+    [
+      'QuestDeepContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.deeplead),
+        setup.qc.QuestDelay(setup.questpool.deep, 7),
+        
+      ],
+    ],
+    [
+      'QuestDeepContactFailure',
+      [
+        setup.qc.QuestDirect('deep_contact'),
+      ],
+    ],
+    [
+      'QuestDeepContactFailure',
+      [
+        setup.qc.QuestDirect('deep_contact'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestDeepContact [nobr]
+
+<p>
+With the <<rep setup.buildingtemplate.scouttunnel>> ready,
+you should now
+find some contact in the <<lore region_deep>> who might be willing to supply
+your company with leads for quests.
+Perhaps one of the settlements there is in need of some brave, hardy slavers to
+solve all their problems...
+</p>
+
+:: QuestDeepContactCrit [nobr]
+
+<p>
+After two weeks of traveling within the Deeprealm, as well as countless slain spiders,
+<<rep $g.scout1>> and <<rep $g.scout2>> managed to win the favor of a
+small but thriving settlement.
+Your slavers managed to convince them the benefit of having a "mercenary" company
+solving all their problems, and have agreed to send your company some leads each week.
+</p>
+
+:: QuestDeepContactFailure [nobr]
+
+<p>
+Unfortunately, your slavers failed to find any such contact. You should try again.
+</p>

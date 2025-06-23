@@ -1,0 +1,147 @@
+:: QuestSetupBountyHuntWolf [nobr quest]
+
+/* PROOFREAD COMPLETE */
+/* Edit for spelling, grammar, text flow, slightly more realistic wolf behaviour and stopping party location shifting from a remote village to your fortress while it was going on. Since the quest is desribed as a preemptive strike, changed contract offer to a bounty and changed proof to ears--something more specific that could be used as an accurate tally. */
+
+<<set _mercenary = new setup.UnitCriteria(
+  null, /* key */
+  'Mercenary', /* title */
+  [setup.trait.magic_fire, setup.trait.magic_fire_master], /* critical traits */
+  [], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    combat: 3.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'bounty_hunt_wolf', /* key */
+  'Bounty Hunt: Wolves', /* Title */
+  'darko',   /* author */
+  ['vale', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'negotiator': setup.qu.negotiator,
+    'merc1': _mercenary,
+    'merc2': _mercenary,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestBountyHuntWolf', /* passage description */
+  setup.qdiff.easier2, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestBountyHuntWolfCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.Favor('humanvale', 25),
+      ],
+    ],
+    [
+      'QuestBountyHuntWolfCrit',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humanvale', 25),
+      ],
+    ],
+    [
+      'QuestBountyHuntWolfFailure',
+      [
+
+      ],
+    ],
+    [
+      'QuestBountyHuntWolfDisaster',
+      [
+        setup.qc.Injury('merc1', 1),
+        setup.qc.Injury('merc2', 1),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestBountyHuntWolf [nobr]
+
+<p>
+The <<lore region_vale>> is home to many northerners.
+Nobody governs the land, which means nobody is there to protect the peasants
+from the many dangers of the land.
+As a result, the farmers living on the vale have grown hardy to
+the dangers of the land,
+be it the occassional flooding, bandit raids, or even the rare magical explosion.
+</p>
+
+<p>
+One of the more mundane danger in the vale is are the packs of maddened wolves who often prey on unsuspecting victims.
+These distant, feral relatives of the werewolves are vicious and savage, and there has been rare
+occassion where they've wiped out entire settlements.
+To guard against such attacks, settlements often place bounties on wolves, hoping to entice mercenaries to keep their numbers down.
+</p>
+
+<p>
+The notice of a current bounty has recently reached your desk. Given your slavers' pastime of capturing humans,
+defeating animals should be an easy task,
+although it never hurts to maintain at least a degree of caution.
+</p>
+
+
+:: QuestBountyHuntWolfCrit [nobr]
+
+<p>
+Your slavers did not sign for this when they joined to the company, but nonetheless
+they did an excellent job in dispatching the feral wolves.
+<<Rep $g.merc1>> and <<utheirrel $g.merc1 $g.merc2>> <<rep $g.merc2>> made for a dangerous duo --
+fighting back to back (and ass to ass),
+they dispatched and routed all the canines with ease.
+<<set _fire = setup.selectUnit([$g.merc1, $g.merc2], {trait: 'magic_fire'})>>
+<<if _fire>>
+  <<Reps _fire>> mastery over fire magic gave your slavers a particular edge too, as
+  the wolves are very weak to this element.
+<</if>>
+</p>
+
+<p>
+The slavers returned to the settlement, with a number of wolf ears as proof.
+
+<<if $gOutcome == 'crit'>>
+  With both of your mercenaries staring intimidatingly at <<their $g.negotiator>> back,
+  <<rep $g.negotiator>> managed to negotiate an even greater pay for the well-done job.
+<<else>>
+  The villagers celebrated your slavers victorious return with a small feast.
+  One of the villagers flirtatiously invited <<rep $g.merc1>>
+  to grab <<their $g.merc1>> private "prize",
+  <<if $g.merc1.isHasTrait('per_chaste')>>
+    but the chaste slaver rebuffed their advances.
+  <<else>>
+    and the sound of lovemaking can be heard from one of the village houses throughout the night.
+  <</if>>
+<</if>>
+</p>
+
+
+:: QuestBountyHuntWolfFailure [nobr]
+
+<p>
+Unfortunately, your slavers got lost trying to find and locate the settlement.
+By the time they arrived, the settlement was already ransacked by wolves.
+Their original job gone, the slavers slunk back to the fort with nothing to show for their efforts.
+</p>
+
+
+:: QuestBountyHuntWolfDisaster [nobr]
+
+<p>
+While your slavers are proficient at fighting humans, they had much less experience fighting animals.
+Caught off guard as wolves attacked the village, <<yourrep $g.merc1>> clumsily swung their <<uweapon $g.merc1>>, which the wolves
+dodged with ease.
+Fortunately, the incompetant antics of your slavers distracted the wolves enough for the rest of the
+villagers to hide,
+but your slavers were too overcame with shame to request pay for their sloppy work.
+</p>

@@ -1,0 +1,110 @@
+:: QuestSetupUnitTrainingToiletBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_toilet_basic',  /* id */
+  'Toilet Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingToiletBasic',  /* description */
+  setup.qdiff.easy22,
+  [
+    [
+      'QuestUnitTrainingToiletBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_toilet_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingToiletBasicSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_toilet_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingToiletBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingToiletBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingToiletBasic [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+  Just like pets, some masters prefer to toilet-train their slaves.
+  But different than pets, these slaves are trained to act as toilets for their master.
+  The basics begin with training them how to be an urinal --- how to drink
+  and gulp down all their master's piss every morning.
+  This training will remove their inhibitions including their gag and smell reflexes
+  from this act that they are expected to perform regularly.
+<</if>>
+</p>
+
+:: QuestUnitTrainingToiletBasicCrit [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+  The training was a complete success.
+  As long as it is not too much,
+  <<rep $g.trainee>> should be able to drink down all <<their $g.trainee>>
+  master's piss without any trouble.
+  Meanwhile your slavers gain a lot of experience from the training.
+<</if>>
+</p>
+
+:: QuestUnitTrainingToiletBasicSuccess [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+  At the end of the week, <<rep $g.trainee>> can now be
+  passed as a somewhat decent urinal.
+  As long as it is not too much,
+  <<rep $g.trainee>> should be able to drink down all <<their $g.trainee>>
+  master's piss without any trouble.
+<</if>>
+</p>
+
+:: QuestUnitTrainingToiletBasicFailure [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+  Unfortunately, <<rep $g.trainee>> continues to gag and vomit when
+  being sprayed with piss.
+<</if>>
+</p>
+
+:: QuestUnitTrainingToiletBasicDisaster [nobr]
+<p>
+<<if $settings.bannedtags.watersport>>
+  (Description hidden due to your settings banning this kind of content.)
+<<else>>
+  Either <<rep $g.head>> head|was too harsh in employing punishment,
+  or just pure bad luck, <<rep $g.trainee>> managed to get injured
+  and the training had to be stopped early.
+<</if>>
+</p>

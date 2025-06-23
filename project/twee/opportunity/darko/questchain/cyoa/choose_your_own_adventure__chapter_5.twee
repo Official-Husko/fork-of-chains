@@ -1,0 +1,234 @@
+:: OpportunitySetup_choose_your_own_adventure__final_chapter [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__final_chapter_true_end', /* key */
+"Choose Your Own Adventure: Final Chapter", /* Title */
+"darko", /* Author */
+[ 'special', 'fort', 'unknown', 'veteran', ], /* tags */
+setup.INFINITY, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__final_chapter',
+setup.qdiff.extreme49, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__final_chapter2_0',
+'Opportunity_choose_your_own_adventure__final_chapter_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('heroic_end'), ],
+], [
+'Opportunity_choose_your_own_adventure__final_chapter2_1',
+'Opportunity_choose_your_own_adventure__final_chapter_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_progress', '9', -1), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure__final_chapter', /* key */
+"Choose Your Own Adventure: Final Chapter", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown', 'veteran', ], /* tags */
+setup.INFINITY, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure__final_chapter',
+setup.qdiff.extreme49, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__final_chapter_0',
+'Opportunity_choose_your_own_adventure__final_chapter_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('heroic_end'), ],
+], [
+'Opportunity_choose_your_own_adventure__final_chapter_1',
+'Opportunity_choose_your_own_adventure__final_chapter_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.Never('As you move your arms to write on the book, darkness surrounds your fingers causing you to pull away. It seems that the book has become too corrupted from your tampering with it so far.'), ],
+[ /* outcomes */
+setup.qc.VarSet('choose_your_own_adventure_progress', '9', -1), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_choose_your_own_adventure__final_chapter [nobr]
+
+<<include 'Event_choose_your_own_adventure_final_chapter'>>
+
+<<include 'Opportunity_choose_your_own_adventure__final_chapterCommon'>>
+
+<p>
+<<if $varstore.get('choose_your_own_adventure_changes') > 2>>
+As usual, you would like to make changes to the story — after all, the
+default choice of "Ending you" is certainly not good for you!
+But this time, as you move your <<uhands $unit.player>> onto the book, dark
+tendrils shoot ouf of the book, preventing you from making any
+changes to it.
+Your attempt to force through the darkness only reward you with great pain.
+As it stands right now, the book is written to tell of your demise, the king
+of evil masquerading as a mercenary leader.
+It seems your actions of tampering with the book so far has its price, as the book
+now too has a strong grip upon your soul just like it has upon the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>...
+There is no other choice for you but to continue reading...
+<<else>>
+As usual, you would like to make certain changes to the story — after all, the
+default choice of "Ending you" is certainly not good for you!
+But this time, as you moved your <<uhands $unit.player>> onto the book, dark
+tendrils begin to shoot ouf of the book. But they seems to remain ethereal,
+unable to affect your body. It seems that because you have only tampered very little
+with the book's story so far, it does not have a strong grip upon your soul, and at
+this very important moment, you are still able to make changes to the book.
+You are now given the option to alter the end of the book,
+to carve yourself a better ending.
+<</if>>
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__final_chapter_0 [nobr]
+End You (Default)
+
+:: Opportunity_choose_your_own_adventure__final_chapter2_0 [nobr]
+End You (Default)
+
+
+:: Opportunity_choose_your_own_adventure__final_chapterCommon [nobr]
+<<include 'Opportunity_choose_your_own_adventure__the_showdownCommon2'>>
+
+<p>
+The fight was fierce, as a demonic horde suddenly spawns from all around the
+crater, surrounding the
+<<= $varstore.get('choose_your_own_adventure_lovers')>> and the mercenaries.
+While they are busy fending off the invading horse, the leader of
+the demons appears before them.
+With the mercenaries backing them up, the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+<<if $varstore.get('choose_your_own_adventure_caution') == 'caution'>>
+carefully
+<<else>>
+bravely<</if>>
+come into blows with the demon leader.
+</p>
+
+<p>
+After a long and fierce battle, the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+are victorious. The
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+stood there, unmoving, staring at the remnants of what was once their arch enemy.
+But deep down they know their resolve has been shaken, for the demon taunted
+them during the fight with nothing but facts, a fact that deeply pierced their souls.
+Was the demon truly the one responsible for the destruction of their village?
+</p>
+
+<p>
+They think back to beginnings of their journey, where they were just an ordinary pair of
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+living peacefully on the village with nothing for want until the fateful day
+when their village got raided into the ground and they
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+swore revenge.
+<<else>>
+looked for peace.
+<</if>>
+Who was it that they met during that day, after the burning, walking
+non-chalantly from the fire?
+</p>
+
+<p>
+Who was it? Who was it that seems to always know where they need to go — who
+was able to locate the almost impossibly hidden sage in the forest, who was
+able to scour through the sea of junk in search of the rare good equipment,
+and who was able to guide through the desert without fail to a conveniently
+located crater?
+</p>
+
+<p>
+There can be only one way for the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+to truly get their
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+revenge.
+<<else>>
+peace.
+<</if>>
+For the last time, they again take up their
+<<if $varstore.get('choose_your_own_adventure_strength')>>
+sword
+<<else>>
+staff
+<</if>>
+and begin their final quest.
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__final_chapter_0_flavor [nobr]
+<<include 'Opportunity_choose_your_own_adventure__final_chapterCommon'>>
+
+<p>
+To end you
+</p>
+
+<p>
+This time, the book never disappear, seemingly having fulfilled its purpose
+to entertain its real demonic master. But you know that a certain doom is looming
+upon your company, and sooner or later you must act on this.
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__final_chapter_1 [nobr]
+???
+
+:: Opportunity_choose_your_own_adventure__final_chapter2_1 [nobr]
+Find out the truth
+
+
+:: Opportunity_choose_your_own_adventure__final_chapter_1_flavor [nobr]
+<<include 'Opportunity_choose_your_own_adventure__final_chapterCommon'>>
+
+<p>
+To find out the real truth.
+</p>
+
+<p>
+The truth is hiding out there somewhere. To amuse themselves, the demon must
+be watching all these events unfold from somewhere. There must be another piece to
+this story that does not fit in. You can try to figure this piece out, and
+surely there you too will meet again with the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+to finish this story once and for all.
+</p>
+
+<p>
+The book never disappears this time.
+</p>

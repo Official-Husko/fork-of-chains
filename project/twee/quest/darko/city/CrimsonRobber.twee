@@ -1,0 +1,209 @@
+:: QuestSetupCrimsonRobber [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _robber = new setup.UnitCriteria(
+  null, /* key */
+  'Fake Crimson Robber', /* title */
+  [
+    setup.trait.dick_large,
+    setup.trait.breast_large,
+    setup.trait.tough_nimble,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_brave,
+    setup.trait.per_calm,
+    setup.trait.per_sly,
+    setup.trait.per_gregarious,
+    setup.trait.skill_entertain,
+    setup.trait.skill_flight,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+    setup.trait.eq_valuable,
+  ], /* critical traits */
+  [
+    setup.trait.face_scary,
+    setup.trait.face_hideous,
+    setup.trait.per_cautious,
+    setup.trait.per_aggressive,
+    setup.trait.per_direct,
+    setup.trait.per_loner,
+    setup.trait.skill_intimidating,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+  ], /* disaster traits */
+  [
+    setup.qres.Job(setup.job.slaver)
+  ], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    social: 2.0,
+    survival: 1.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'crimson_robber', /* key */
+  'Crimson Robber', /* Title */
+  'darko',   /* author */
+  ['city', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'robber': _robber,
+    'love': setup.qu.loveinterest,
+    'thief': setup.qu.thief,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestCrimsonRobber', /* passage description */
+  setup.qdiff.normal31, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestCrimsonRobberCrit',
+      [
+        setup.qc.MoneyCrit(),
+        
+      ],
+    ],
+    [
+      'QuestCrimsonRobberCrit',
+      [
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestCrimsonRobberCrit',
+      [
+      ],
+    ],
+    [
+      'QuestCrimsonRobberCrit',
+      [
+        setup.qc.Injury('robber', 4),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestCrimsonRobber [nobr]
+
+<p>
+The market square of the <<lore region_city>> is a bustling place, with vendors
+everywhere peddling their goods. Normally, with the exception of small time
+pickpockets, the area is relatively safe and it would be impossible for your
+slavers to raid the place.
+But recently, there has been rumors of a particularly sexy and eye-catching
+robber doing daylight robberies, but the culprit is so charming that the victim
+usually willingly give everything they have to them.
+Due to such bold tactic of robbing in the middle of the day and the reddish
+costume they reportedly wear, the citizen have given the robber the nickname
+"Crimson Robber".
+Reports are inconsistent whether the Crimson Robber is a handsome and well-built
+young lad, or a sexy cat burglar in a tight red suit.
+</p>
+
+<p>
+Whether the rumors are true or not, there is an opportunity here for your
+slavers to make use. Specifically, you could try to dress up one of your
+slavers to look like the Crimson Robber in an attempt to distract the marketplace's
+people. Meanwhile, one of the other slavers will gather up valuables during the distraction from
+the unattended booths.
+To make the show more convincing, you can try adding a love interest to the mix --
+one of your own slavers who will be pretending to be a normal peddler that happened to be robbed by
+the Crimson Robber only to fall in love.
+Surely such a clever plan must work, no?
+</p>
+
+
+:: QuestCrimsonRobberCrit [nobr]
+
+<p>
+<<if $g.robber.isHasTrait(setup.trait.gender_male)>>
+  Donning a crimson cape and a red hunter's gear, <<yourrep $g.robber>> robber|was truly the
+  embodiment of a shining <<uadjphys $g.robber>> young robber.
+<<else>>
+  Donning a full-body suit leaving only the cleavage open, <<rep $g.robber>> robber|was sure
+  to dazzle all the people of the market.
+<</if>>
+Meanwhile, <<yourrep $g.love>> <<uadv $g.love>> practiced <<their $g.love>> fake accent
+and the attempt to fake loving at first sight.
+<<Rep $g.thief>> also stood at the ready to <<uadv $g.thief>> rob the stalls during the ensuing commotion.
+Your slavers were ready for the mission, and it was time for the stage to open.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+In the middle of the market,
+<<rep $g.love>>, who was carrying a bucket of roses, was "accidentally"
+bumped by a stranger.
+The stranger then revealed <<themself $g.robber>> to be Crimson Robber in the flesh.
+<<They $g.robber>> then continued by demanding in a <<uadjper $g.robber>> tone
+everything that <<rep $g.love>> had, including <<their $g.love>> heart.
+<<set _beauty = setup.selectUnit([$g.love, $g.thief], {trait: 'face_beautiful'})>>
+<<set _att = setup.selectUnit([$g.love, $g.thief], {trait: 'face_attractive'})>>
+<<set _vmuscle = setup.selectUnit([$g.love, $g.thief], {trait: 'muscle_verystrong'})>>
+<<set _muscle = setup.selectUnit([$g.love, $g.thief], {trait: 'muscle_strong'})>>
+<<if _beauty>>
+The roses surrounding them as well as <<reps _beauty>> gorgeous-looking face made them
+<<elseif _att>>
+The roses surrounding them as well as <<reps _att>> attention-grabbing face made them
+<<elseif _vmuscle>>
+The roses surrounding them as well as <<reps _vmuscle>> bulging muscles made them
+<<elseif _muscle>>
+The roses surrounding them as well as <<reps _muscle>> fit body made them
+<<else>>
+The roses that fell around them enhanced the atmosphere, making them looked like
+<</if>>
+a convincing pair, with mobs of merchants
+leaving their stalls to watch the show unfold.
+Meanwhile, <<yourrep $g.thief>> had no problem at all securing the numerous goods from the
+unattended stalls, and making the exit before anyone notice.
+</p>
+
+<p>
+Some time later, you receive a large package of flowers in front of your fort, together
+with a large amount of gold.
+It is unclear who could have sent such a gift.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+In the middle of the market, <<rep $g.robber>> suddenly appeared (after hiding)
+and demanded <<reps $g.love>> attention and money.
+While the acting lacked character and enthusiasm, the outfits were apparently enough to draw
+the curious crowd into watching the scene unfold.
+There were quite a number of merchants who left their stands unattended,
+making <<reps $g.thief>> job of securing the goods pathetically easy.
+Before the guards were called in, all of your slavers escaped from the market,
+leaving none the wiser.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+In the middle of the market, <<yourrep $g.robber>> awkwardly accosted
+<<rep $g.love>> and threatened <<them $g.love>> for money.
+With such an amateur acting, nobody believed for a second that <<rep
+$g.robber>> robber|was the true Crimson Robber
+and the guards were immediately called.
+Your slavers had no choice but to hurry back home to avoid being captured.
+Perhaps slavers were not meant for acting after all.
+</p>
+
+<<else>>
+
+<p>
+<<Yourrep $g.robber>> attempted to climb the fountain in the middle of the market to
+dramatize the declaration, only to fall horribly during the climb, injuring <<their $g.robber>>
+head. Luckily, nobody suspected any foul play, but the plan had to be called off.
+</p>
+
+<</if>>

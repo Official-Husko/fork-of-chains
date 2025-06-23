@@ -1,0 +1,138 @@
+:: InitUnitPoolRaceKobold [nobr unitpool]
+
+<<set _kobold = new setup.UnitPoolTraitAlloc(
+  {  /* trait preferences */
+
+    /* =========== */
+    /* RACE */
+    /* =========== */
+    subrace_kobold: 1,
+
+    /* =========== */
+    /* BACKGROUNDS */
+    /* =========== */
+
+    bg_laborer: setup.POOL_BG_COMMON_1,
+    bg_thief: setup.POOL_BG_COMMON_1,
+    bg_soldier: setup.POOL_BG_COMMON_1,
+    bg_foodworker: setup.POOL_BG_COMMON_1,
+    bg_merchant: setup.POOL_BG_COMMON_1,
+    bg_entertainer: setup.POOL_BG_COMMON_1,
+
+    bg_slave: setup.POOL_BG_COMMON_1,
+
+    bg_artisan: setup.POOL_BG_UNCOMMON_2,
+    bg_mercenary: setup.POOL_BG_UNCOMMON_2,
+
+    bg_thug: setup.POOL_BG_UNCOMMON_2,
+    bg_raider: setup.POOL_BG_UNCOMMON_2,
+
+    bg_unemployed: setup.POOL_BG_UNCOMMON_2,
+
+    bg_adventurer: setup.POOL_BG_RARE_3,
+    bg_mystic: setup.POOL_BG_RARE_3,
+
+    bg_priest: setup.POOL_BG_RARE_3,
+    bg_hunter: setup.POOL_BG_RARE_3,
+    bg_assassin: setup.POOL_BG_RARE_3,
+    bg_informer: setup.POOL_BG_RARE_3,
+    bg_engineer: setup.POOL_BG_RARE_3,
+
+    bg_apprentice: setup.POOL_BG_RARE_3,
+    bg_artist: setup.POOL_BG_RARE_3,
+
+    bg_scholar: setup.POOL_BG_EPIC_4,
+
+    bg_monk: setup.POOL_BG_EPIC_4,
+    bg_slaver: setup.POOL_BG_EPIC_4,
+    bg_wiseman: setup.POOL_BG_EPIC_4,
+
+    bg_nomad: setup.POOL_BG_EPIC_4,
+    bg_seaman: setup.POOL_BG_EPIC_4,
+    bg_pirate: setup.POOL_BG_EPIC_4,
+    bg_woodsman: setup.POOL_BG_EPIC_4,
+    bg_farmer: setup.POOL_BG_EPIC_4,
+    bg_clerk: setup.POOL_BG_EPIC_4,
+    bg_maid: setup.POOL_BG_EPIC_4,
+    bg_whore: setup.POOL_BG_EPIC_4,
+
+    bg_mist: setup.POOL_BG_LEGENDARY_5,
+
+    bg_courtesan: setup.POOL_BG_LEGENDARY_5,
+    bg_wildman: setup.POOL_BG_LEGENDARY_5,
+    bg_knight: setup.POOL_BG_LEGENDARY_5,
+    bg_metalworker: setup.POOL_BG_LEGENDARY_5,
+    bg_healer: setup.POOL_BG_LEGENDARY_5,
+
+    bg_noble: setup.POOL_BG_MYTHIC_6,
+
+    bg_royal: setup.POOL_BG_ULTRA_7,
+
+    bg_mythical: setup.POOL_BG_FINAL_8,
+    bg_boss: setup.POOL_BG_FINAL_8,
+
+    /* =========== */
+    /* PERSONALITY */
+    /* =========== */
+
+    per_cautious: setup.POOL_PER_UNCOMMON_2,
+    per_humble: setup.POOL_PER_UNCOMMON_2,
+
+    per_smart: setup.POOL_PER_RARE_3,
+    per_submissive: setup.POOL_PER_RARE_3,
+
+    /* =========== */
+    /* MAGIC */
+    /* =========== */
+
+    skill_creative: 0.1,
+    magic_earth: 0.03,
+    magic_earth_master: 0.003,
+    magic_fire: 0.03,
+    magic_fire_master: 0.003,
+
+    /* =========== */
+    /* PHYSICAL */
+    /* =========== */
+
+    height_dwarf: 1000.0,
+    height_short: 10.0,
+
+    /* =========== */
+    /* SKIN */
+    /* =========== */
+
+    eyes_dragonkin: 1.0,
+    ears_dragonkin: 1.0,
+    mouth_dragonkin: 1.0,
+    body_dragonkin: 1.0,
+    arms_dragonkin: 1.0,
+    legs_dragonkin: 1.0,
+    tail_dragonkin: 1.0,
+    dick_dragonkin: 0.9,
+    wings_dragonkin: 0.005,
+
+  },
+  {  /* trait dispreferences */
+    height_tall: 10,
+    height_giant: 50,
+  },
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_kobold_male',
+    'Kobold Male',
+    _kobold.computePreferences(setup.trait.gender_male),
+    setup.DEFAULT_INITIAL_SKILLS,
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_kobold_female',
+    'Kobold Female',
+    _kobold.computePreferences(setup.trait.gender_female),
+    setup.DEFAULT_INITIAL_SKILLS,
+)>>
+
+

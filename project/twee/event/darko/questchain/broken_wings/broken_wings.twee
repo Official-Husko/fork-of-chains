@@ -1,0 +1,55 @@
+:: EventSetup_broken_wings [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'broken_wings', /* key */
+"Broken Wings", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+],
+'Event_broken_wings',
+{ /* roles */
+},
+{ /* actors */
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AllowDefiant(),
+    setup.qres.HasTitle('quest_broken_descent_0'),
+    setup.qres.HasTitle('quest_joy_restored_2'),
+    setup.qres.HasTitle('quest_lust_restore_3'),
+    setup.qres.HasTitle('quest_empathy_restored_4'),
+    setup.qres.HasTitle('quest_spirit_restored_5'),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('broken_wings', null),
+],
+[ /* restrictions */
+  setup.qres.VarNull('broken_wings_cooldown'),
+  setup.qres.NoQuest('broken_wings'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_broken_wings [nobr]
+
+<p>
+Over the course of your company, you and your slavers have unknowingly
+successfully restore bit by bit parts of <<yourrep $g.slave>>. <<Yourrep
+$g.slaver>> thinks that it might be possible now to actually heal the slave
+from whatever destroyed the slave's mind. It might restore the slave back to
+working condition, suitable to be used by you and your slavers. But is it
+worth the efforts?
+</p>
+
+<p>
+Either way, the quest is now sitting on your desk, should you wish to complete it...
+</p>

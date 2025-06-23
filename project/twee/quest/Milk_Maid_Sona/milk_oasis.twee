@@ -1,0 +1,449 @@
+:: QuestSetup_milk_oasis [nobr quest]
+
+/* PROOFREAD COMPLETE */
+/* PRESENT TENSE */
+
+<<run new setup.UnitGroup(
+"milk_oasis0",
+"Employee",
+'subrace_humandesert', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.dick_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_huge),
+  setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_huge),
+],
+)>> 
+
+<<set _criteriatrader = new setup.UnitCriteria(
+null, /* key */
+'Slave Trader', /* name */
+[
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_merchant,
+  setup.trait.per_smart,
+  setup.trait.per_frugal,
+  setup.trait.per_cruel,
+  setup.trait.per_sly,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_slow,
+  setup.trait.per_lavish,
+  setup.trait.per_kind,
+  setup.trait.per_direct,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  social: 2,
+}
+)>>
+
+<<set _criteriasnooper = new setup.UnitCriteria(
+null, /* key */
+'Snooper', /* name */
+[
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_informer,
+  setup.trait.bg_thief,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_sly,
+  setup.trait.per_attentive,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_direct,
+  setup.trait.per_dreamy,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 2,
+  social: 0.5,
+  sex: 0.5
+}
+)>>
+
+<<set _criteriahandler = new setup.UnitCriteria(
+null, /* key */
+'Slave Handler', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.per_logical,
+  setup.trait.per_evil,
+  setup.trait.per_attentive,
+  setup.trait.per_calm,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_cruel,
+  setup.trait.per_submissive,
+  setup.trait.per_empath,
+  setup.trait.per_honorable,
+  setup.trait.per_dreamy,
+  setup.trait.per_aggressive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 2.5,
+  brawn: 0.5,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Butler/Maid', /* name */
+[
+  setup.trait.bg_maid,
+  setup.trait.bg_foodworker,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_loyal,
+  setup.trait.per_submissive,
+  setup.trait.per_attentive,
+  setup.trait.per_playful,
+  setup.trait.per_active,
+  setup.trait.skill_entertain,
+],
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_noble,
+  setup.trait.face_scary,
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_chaste,
+  setup.trait.per_lunatic,
+  setup.trait.per_independent,
+  setup.trait.per_dominant,
+  setup.trait.per_dreamy,
+  setup.trait.per_serious,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.TraitExact(setup.trait.training_domestic_advanced),
+  setup.qres.AnyTrait([setup.trait.dick_huge, setup.trait.balls_huge, setup.trait.breast_huge]),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'milk_oasis', /* key */
+"Milk Oasis", /* Title */
+{  /* Author */
+  name: "Milk Maid Sona",
+  url: 'https://discord.com/channels/774271990571335710/780362824047394827/804975758111670272',
+},
+[ /* tags */
+  'desert',
+  'veteran',
+  'order',
+  'rare',
+],
+2, /* weeks */
+8, /* expiration weeks */
+{ /* roles */
+  'trader': [ _criteriatrader, 1],
+  'snooper': [ _criteriasnooper, 1],
+  'handler': [ _criteriahandler, 1],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'employee': 'milk_oasis0',
+},
+[ /* costs */
+],
+'Quest_milk_oasis',
+setup.qdiff.hard54, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_milk_oasisCrit',
+    [
+      setup.qc.Opportunity('milking_the_oasis', null), 
+    ],
+  ],
+  [
+    'Quest_milk_oasisCrit',
+    [
+      setup.qc.SlaveOrderFlex(
+'Order from The Milk Bar', /* name */
+'humandesert', /* company */
+8, /* expires in */
+3000,/* base price */
+1000, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.bg_maid,
+setup.trait.bg_foodworker,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_loyal,
+setup.trait.per_submissive,
+setup.trait.per_attentive,
+setup.trait.per_playful,
+setup.trait.skill_entertain,
+setup.trait.training_obedience_advanced,
+setup.trait.training_obedience_master,
+setup.trait.training_domestic_basic,
+setup.trait.training_domestic_advanced,
+setup.trait.training_domestic_master,
+],
+[ /* disaster traits */
+setup.trait.subrace_humandesert,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_chaste,
+setup.trait.per_independent,
+setup.trait.per_dominant,
+setup.trait.per_dreamy,
+setup.trait.per_serious,
+setup.trait.ears_demon,
+setup.trait.mouth_demon,
+setup.trait.body_demon,
+setup.trait.wings_demon,
+setup.trait.arms_demon,
+setup.trait.legs_demon,
+setup.trait.tail_demon,
+setup.trait.dick_demon,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.dick_huge, setup.trait.balls_huge, setup.trait.breast_huge]),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+    ],
+  ],
+  [
+    'Quest_milk_oasisCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_milk_oasisCrit',
+    [
+      setup.qc.MissingUnit('slave'),
+      setup.qc.Injury('trader', 4),
+      setup.qc.Injury('snooper', 4),
+      setup.qc.Injury('handler', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.Building('veteranhall'),
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('raiding_the_oasis'),
+  setup.qres.NoOpportunity('milking_the_oasis'), 
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_milk_oasis [nobr]
+<p>
+The <<lore region_desert>> are known for their harsh conditions, its aggressive inhabitants and closeness to <<lore concept_mist>>, but once in a while, one can find a safe haven amidst all the dangers. One of such places is a bar, popular among the desertfolk, located in a huge oasis and simply called “The Milk Bar”.
+</p>
+
+<p>
+While food, drink and safety would be enough to make any business in the desert successful, this establishment has a particularity that puts it above all others: its milk is of the highest quality, and it's served straight from the maids and butlers attending the local, whose proportions are so immense that sometimes they seem unearthly.
+</p>
+
+<p>
+While a tourist trip would be a net negative for the company's finances, a business trip could open a chance to sell them a slave of your own. While finding one with the specific attributes they want can prove a tall order, the potential profits from it are equally big. A trader and a handler can take care of this by showing the quality of your “work”, but maybe sending someone to ask around about the source of this business' success can lead to more interesting opportunities…
+</p>
+
+
+
+:: Quest_milk_oasisCrit [nobr]
+<p>
+After several days of travel, your slavers finally arrive to the famous
+establishment and are presented with a vastly different image to the one of
+the deserts that surrounds them: a beautiful landscape with greenery and
+crystalline waters, watched over by a building equally dazzling and luxurious
+as the scenery it was built upon. <<Rep $g.handler>> can hardly believe what
+<<they $g.handler>> handler|see and handler|have to pinch <<their $g.handler>> arm to make sure that it
+isn't a mirage, while <<rep $g.trader>> trader|start making mental notes on how to
+approach the owners of a place like this, that undoubtedly have more money
+and better connections than <<rep $company.player>>. When the group enters
+the building, they are met with a contradictory image. While the exterior
+radiates luxury and ostentation, the interior is decorated in a more humble
+way, similar to the other bars in the region, with wooden floors, tables and
+beams, but is far bigger than any other one.
+</p>
+
+<p>
+A woman approaches the new arrivals and welcomes them to “The Milk Bar”. Her appearance makes it obvious she's one of the famous maids of the business: her uniform is very revealing, completely exposing gigantic breasts that could easily compete against a cow's udders and from which hangs a couple of milk drops, wobbling every time the girl moves. Her miniskirt is practically inexistent, with the smallest breeze unveiling a well lubricated vagina, ready to be used by any customer that pays for it.
+<<if $g.trader.isHasTrait('per_chaste')>>
+<<rep $g.trader>> trader|try to divert <<their $g.trader>> gaze from the hostess, but the place is full with employees wearing similar outfits, so <<they $g.trader>> trader|resign to look at the ground every time <<they $g.trader>> can.
+<</if>>
+<<if $g.snooper.isHasTrait('per_chaste')>>
+<<rep $g.snooper>> snooper|try to divert <<their $g.snooper>> gaze from the hostess, but the place is full with employees wearing similar outfits, so <<they $g.snooper>> snooper|resign to look at the ground every time <<they $g.snooper>> can.
+<</if>>
+<<if $g.handler.isHasTrait('per_chaste')>>
+<<rep $g.handler>> handler|try to divert <<their $g.handler>> gaze from the hostess, but the place is full with employees wearing similar outfits, so <<they $g.handler>> handler|resign to look at the ground every time <<they $g.handler>> can.
+<</if>>
+</p>
+
+<p>
+After explaining who they were and why they came for, the girl excuses herself and leaves to find her manager, who she comes back with a minute later. The manager is a tall, muscular man, more likely to a guard than an administrator, that invites your slavers to his office to talk about the possibility of making a deal.
+</p>
+
+<p>
+<<Rep $g.trader>> trader|start talking about <<rep $company.player>> and the potential profits of both business working together, but the man doesn't seem convinced by it. To smooth things out, <<rep $g.trader>> trader|present <<rep $g.slave>> to him as an example of the quality work done by employees like <<rep $g.handler>>, and offers that <<rep $g.slave>> slave|serve a couple customers for free to show <<their $g.slave>> training and “capabilities”. The manager accepts and hands <<rep $g.slave>> an uniform that leaves <<their $g.slave>>
+<<if $g.slave.isHasTrait('dick_huge')>>
+<<if $g.slave.isHasTrait('dick_titanic')>>
+titanic
+<<else>>
+huge
+<</if>>
+dick
+<</if>>
+<<if $g.slave.isHasTrait('breast_huge')>>
+<<if $g.slave.isHasTrait('breast_titanic')>>
+titanic
+<<else>>
+huge
+<</if>>
+breasts
+<</if>>
+exposed and instruct <<them $g.slave>> on how to serve patrons in the bar. <br>
+<<rep $g.slave>> slave|approach a table and the clients asks for two milk mugs. After grabbing a couple of clean ones from the counter
+<<if $g.slave.isHasDick()>>
+the butler reaches the table, puts the mugs under his penis and invites the customers to milk him.
+<<else>>
+the maid puts them on the table, bends over them and invites the customers to milk her.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+A few squeezes and moans later, both mugs are full and <<reps $g.slave>> cheeks are flushed, but <<they $g.slave>> slave|thank them and goes towards another table that needs to be attended. This repeats several times until <<they $g.slave>> can barely stay on <<their $g.slave>> feet, <<their $g.slave>> stamina and “milk” production barely comparable to the rest of the employees of the bar, but the manager only laughs, praising <<rep $g.handler>> for the quality of their candidate. Between laughs he reveals them that they have their own “training” to increase the productivity of the maids and butlers and that, while it's almost impossible for any normal person to compete with them, <<rep $g.slave>> showed great potential, and he invites the group back to his office to talk about the details of their very likely arrangement.
+</p>
+
+<p>
+But, while all this was happening, <<rep $g.snooper>> snooper|was in different mission. After coming in with <<rep $g.trader>> and <<rep $g.handler>>, <<they $g.snooper>> had split up with the pretext of trying the bar's famous menu. After sitting down and making sure <<they $g.snooper>> snooper|wasn't drawing attention, <<they $g.snooper>> called a
+<<if $g.slave.isHasDick()>>
+butler
+<<else>>
+maid
+<</if>>
+and asked them about the details of the services they offered, that went from a simple mug of the popular milk of the bar, to the gourmet dishes you would expect from a fancy place like that and even an adults' menu with rates per minute of service and type of “kinks”. Thinking about getting as close as possible to the
+<<if $g.slave.isHasDick()>>
+butler
+<<else>>
+maid
+<</if>>
+without getting distracted themselves, <<they $g.snooper>> asked for a 30-minute groping session. While <<rep $g.employee>> took <<their $g.snooper>> payment in advance and accommodated to give <<rep $g.snooper>> a better angle of <<their $g.snooper>> “dish”, <<they $g.snooper>> understood the reason behind the interior design of the bar: it gave a comforting and homelike touch to the place, letting the customers relax and get into the mood. While <<they $g.snooper>> snooper|was enjoying the
+<<if $g.employee.isHasDick()>>
+butler's
+<<else>>
+maid's
+<</if>>
+body, they started to chit-chat with them, asking them meaningless questions between their gasps and moans. The session kept going, the intensity of the groping and the questions steadily rising bit by bit, until <<rep $g.employee>> employee|was nothing more than a tangle of limbs, gasps, sweat and other bodily fluids, and <<rep $g.snooper>> had what <<they $g.snooper>> wanted.
+</p>
+
+<p>
+After saying goodbye to the manager and the hostess, the three slavers started to share their opinions and information about the place, including the most important part: a caravan was coming to the oasis in the next few weeks, full of prospects of new employees for the bar.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+A minute of arduous work later, the mugs were half full and <<rep $g.slave>> thanked them between jagged breaths before heading to another table. This repeats a couple times before <<rep $g.handler>> handler|have to pick the
+<<if $g.slave.isHasDick()>>
+boy
+<<else>>
+girl
+<</if>>
+from the ground after two women treat the slave more aggressively than needed. The manager's face stays immutable during all this, his thoughts hard for guess for <<rep $g.trader>>, that <<uadv $g.trader>> trader|begin to apologize for such a poor display, looking for words to try to save the company's image. The man ponders for a bit, hearing the excuses and offers that your slaver is trying to use, and with a serious face, invites your three slavers back to his office to keep discussing the subject. After almost an hour of back and forth, they manage to get a slave order from the bar, that is willing to pay a good amount for slaves with the peculiar characteristics that all the employees of the bar have, as long as your company handles all the logistics of delivering straight to the bar. They don't even need to be trained since The Milk Bar apparently has its own training regimes, but they will add a little extra if the slave already has a solid base of obedience.
+</p>
+
+<p>
+After saying goodbye to the manager and the hostess, the group sets on the journey back to the fort. Unfortunately, they didn't get a chance to collect any extra info from the bar, but it the mission certainly was a financial success. Even so, you can't shake the idea that they are more opportunities here than what your team obtained.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+A couple minutes of yanks and groans later, the mugs are half empty and the clients don't look too pleased with the service, but they thank <<rep $g.slave>> anyway, that goes to serve another table. Unfortunately, after more difficulties just like the ones with the first table, the slave's face is a mix between pain and arousal, so <<rep $g.handler>> handler|have to intervene before things escalate in the wrong way. Of course, this irritates the manager, that looks with mistrust at <<rep $g.trader>> and <<rep $g.snooper>> after the speech about “the quality of our work” they made. With a grunt, the man instructs them to wait there and goes back to his office. A few uncomfortable minutes, filled with the pants of <<rep $g.slave>>, later, their host returns with a couple of reading glasses over his nose and some papers in his hands, and gives the group the bad news that at the moment the bar didn't need more employees, between the ones already working there and the recruits bound to arrive the next day. Even so, he thanks them for their visit and invites them for a round of drinks on the house, but the group turns down the offer and bids farewell, disappointed for not closing the deal.
+</p>
+
+<p>
+On their way back they try to put together the few information they got from The Milk Bar, but the details, besides the huge amount of security of the establishment, aren't enough to mount a successful operation. Although they know there's a shipment of new employees about to arrive, they don't know the route it's going to take and there's not enough time to make a plan that isn't extremely risky, so your best bet is to wait for another chance.
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+
+<p>
+Unfortunately, the men <<they $g.slave>> slave|is attending are frequent clients that start asking for more extravagant things from the <<maid $g.slave>>
+, that even with the help of <<rep $g.handler>>, doesn't know how to fulfill their requests. When it seems like things are about to explode in all the wrong ways, the manager intervenes between the customers and your employees, very upset about the rude and impolite conduct of <<rep $g.handler>> and the incompetence of <<rep $g.slave>>. After apologizing to the men and offering to put their tab on the house for this occasion, the manager looks with great annoyance at your slavers. <<Rep $g.snooper>> snooper|try to pass unnoticed, but the man now clearly sees <<their $g.snooper>> true intentions, so <<rep $g.trader>> trader|have to step up, using <<their $g.trader>> best excuses to try to save the situation, but the manager shuts <<them $g.trader>> up immediately. He stays reflective for a moment and his face goes from anger to neutrality to, surprisingly, interest, after looking at the group again, and especially, <<rep $g.slave>>. This time he apologizes to the slavers, that baffled at this, cannot find the right words to answer him, not even <<rep $g.trader>>. The man tells them it was his fault for not giving a more in-depth instruction to <<rep $g.slave>>, but that, if they were willing to wait a few minutes while he, in private, explained the more advance services to the <<girl $g.slave>>
+so <<they $g.slave>> could try again, he was sure they could come to a nice agreement. <<Rep $g.trader>> and <<rep $g.handler>> aren't too sure about this but, seeing it as a great opportunity to get information about the secrets of The Milk Bar, <<rep $g.snooper>> snooper|urge them to accept.
+</p>
+
+<p>
+The manager takes <<rep $g.slave>> through a door in the back of the building
+and invites the three slavers to sit at table while they wait. Curiously,
+during this time, no butler or maid comes to take their order and they seem
+to ignore <<rep $g.trader>> when <<they $g.trader>> trader|try to draw the
+attention of one of the employees. After thirty uncomfortable minutes pass, <<rep
+$g.handler>> handler|lose <<their $g.handler>> patience and handler|go
+towards the door <<rep $g.slave>> and the manager went through, but the
+latter comes from it before <<theslaver $g.handler>> gets to it. When <<they $g.handler>>
+handler|see the man, <<they $g.handler>> handler|start to complain for taking
+so long and demands to see <<their $g.handler>> slave, but he claims to not
+know what <<they $g.handler>> handler|was talking about, and that they didn't
+know who <<rep $g.handler>> handler|was. The argument keeps escalating,
+mostly because of <<rep $g.handler>>, until the manager threatens with
+kicking <<them $g.handler>> out of the bar if they don't calm down. The
+slaver finally loses it and attacks the manager, that easily avoid such a
+predictable strike and knocks them against the ground. Immediately, several
+guards draw near and carry <<rep $g.handler>> towards the door between kicks
+and yells. The other two slavers try to help <<them $g.handler>>, but they
+are subjugated by the guards, that use more strength than necessary to throw
+the three of them into the coarse sand outside of the oasis.
+</p>
+
+<p>
+The group treat their multiple wounds while contemplating going back in to recover their merchandise, but it's clear that the security of the bar is too strong to perform a rescue mission without more information, a plan and reinforcements. It seems like if you want <<rep $g.slave>> back, it's going to be quite complicated.
+</p>
+
+<</if>>

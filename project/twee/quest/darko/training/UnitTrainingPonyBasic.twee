@@ -1,0 +1,100 @@
+:: QuestSetupUnitTrainingPonyBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_pony_basic',  /* id */
+  'Pony Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingPonyBasic',  /* description */
+  setup.qdiff.easy26,
+  [
+    [
+      'QuestUnitTrainingPonyBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pony_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingPonyBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pony_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingPonyBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingPonyBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingPonyBasic [nobr]
+<p>
+A slave can be trained to, in addition to being a slave, to also become a
+beast of burden. These slaves can be outfitted with pony arms, legs, and tailplugs,
+and can learn how to pull carriages or work the plow.
+This training requires prior training in endurance, and is considered one of the
+hardest trainings to do.
+</p>
+
+:: QuestUnitTrainingPonyBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<if $g.head.isFemale()>>
+    <<questimage 'unit_training_pony_basic_femdom.jpg'>>
+  <<else>>
+  <</if>>
+<<else>>
+  <<questimage 'unit_training_pony_basic_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The training was a complete success.
+With the proper gear,
+<<rep $g.trainee>> would make a wonderful pony for its lucky master.
+Meanwhile your slavers gain a lot of experience from the training.
+</p>
+
+<<else>>
+
+<p>
+At the end of the week, <<rep $g.trainee>> can now be a passable
+pony for owners looking to fill their stables.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingPonyBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> continues to exhibit humanlike behaviors
+even after this amount of training.
+</p>
+
+:: QuestUnitTrainingPonyBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

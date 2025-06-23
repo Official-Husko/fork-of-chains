@@ -1,0 +1,147 @@
+:: QuestSetup_the_sour_taste_of_milk [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'you', /* name */
+[
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  arcane: 3.0,
+}
+)>>
+
+<<set _criteriacow1 = new setup.UnitCriteria(
+null, /* key */
+'Milk Cow', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.breast_large, setup.trait.breast_huge, setup.trait.breast_titanic], true),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_sour_taste_of_milk', /* key */
+"The Sour Taste of Milk", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'prep',
+  'trait',
+],
+1, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'cow1': _criteriacow1,
+  'cow2': _criteriacow1,
+  'cow3': _criteriacow1,
+  'you': [_criteriayou, 3],
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+],
+'Quest_the_sour_taste_of_milk',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_sour_taste_of_milkCrit',
+    [
+      setup.qc.Leave('cow1', "a|is imbuing the Plant of Lewdity with the sourness of milk", 15),
+      setup.qc.Leave('cow2', "a|is imbuing the Plant of Lewdity with the sourness of milk", 15),
+      setup.qc.Leave('cow3', "a|is imbuing the Plant of Lewdity with the sourness of milk", 15),
+      setup.qc.Event('the_sweet_taste_of_virginity', 20, {
+slaver: "slaver",
+}),
+      setup.qc.Mindbreak('cow1'),
+      setup.qc.Mindbreak('cow2'),
+      setup.qc.Mindbreak('cow3'),
+    ],
+  ],
+  [
+    'Quest_the_sour_taste_of_milkCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_sour_taste_of_milkCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_sour_taste_of_milkCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('withering_plant', 0, {
+slaver: "slaver",
+}),
+
+],
+)>>
+
+:: Quest_the_sour_taste_of_milk [nobr]
+<<include "PlantOfLewditySaltyAndSourTasteOfMilkCommon">>
+
+<p>
+You have chosen to help out by supplying a steady amount of milk, to be
+extracted over these months. This means you'll have to supply three humanlike
+cows for the plant's pleasure. There is little left to your
+imagination of what horrors the plant will inflict upon these poor slaves, who
+will be reduced into nothing but nutrient source for the plant for months to come,
+and you best be prepared that
+<<dangertext "whoever slave you decide to lend will unlikely to come back
+mentally intact...">>
+</p>
+
+
+
+:: Quest_the_sour_taste_of_milkCrit [nobr]
+<p>
+<<Yourrep $g.slaver>> had the presence of mind to gag the slaves securely
+tying them next to the plant. Sensing food, the plant extended its tendrils,
+before wrapping them securely, attaching an extractor vine to each of the
+slaves' nipples. The slaves gagged and moaned as they felt their breasts emptied
+over and over again, the painful feeling of forced lactation filling their minds
+as their breasts were drained of every single drop of milk.
+</p>
+
+<p>
+Being treated like a living nutrient source will no doubt drain these slaves
+of all their sanity, were they to have any to begin with. Still, the plant
+seemed to become healthier over the next few days, no doubt also thanks to <<yourrep
+$g.slaver>> who somehow managed to secure a bottle of fresh cockmilk from
+some other source that you had the presence of mind not to ask. <<if
+$g.slaver.isHasDick()>>You have the sneaking suspicion that some of them even
+come from <<theslaver $g.slaver>> <<themself $g.slaver>>... Still, it does not matter
+much.<</if>> All that's left is to wait it out and hope the plant grows big
+and healthy...
+</p>

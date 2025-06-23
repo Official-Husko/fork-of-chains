@@ -1,0 +1,92 @@
+:: OpportunitySetup_a_merchant_s_revenge_a_careless_raid [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'a_merchant_s_revenge_a_careless_raid', /* key */
+"A Merchant\'s Revenge: A Careless Raid", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_a_merchant_s_revenge_a_careless_raid',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_a_careless_raid_0',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_a_careless_raid_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Leave('merchant', "", undefined),
+      setup.qc.Event('a_merchant_s_revenge_an_unfortunate_report', 2, {
+merchant: "merchant",
+}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_a_careless_raid_1',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_a_careless_raid_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Leave('merchant', "", undefined),
+      setup.qc.Event('a_merchant_s_rage', 3, {
+merchant: "merchant",
+}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_a_merchant_s_revenge_a_careless_raid [nobr]
+<p>
+    It was only later that you found the paperwork. Your contact, <<name $g.merchant>>, never said which trading company—or trading companies—<<they $g.merchant>> ran, but you'd seen the name on the documents you'd already handed over. Clearly, someone had set you up. This left you with a choice:
+</p>
+
+<p>
+    Do you contact <<them $g.merchant>> to report the incident, or keep things quiet and hope <<they $g.merchant>> doesn't find out?
+</p>
+
+
+
+:: Opportunity_a_merchant_s_revenge_a_careless_raid_0 [nobr]
+Report the incident
+
+
+:: Opportunity_a_merchant_s_revenge_a_careless_raid_0_flavor [nobr]
+<p>
+    You leave a message for <<name $g.merchant>> with the staff at <<lore location_princeofcups>>. Hopefully <<they $g.merchant>> get back to you soon.
+</p>
+
+
+:: Opportunity_a_merchant_s_revenge_a_careless_raid_1 [nobr]
+Keep things quiet
+
+
+:: Opportunity_a_merchant_s_revenge_a_careless_raid_1_flavor [nobr]
+<p>
+    Caravans go missing all the time. You just have to hope the raid on this particular one isn't linked back to you and <<rep $company.player>>.
+</p>

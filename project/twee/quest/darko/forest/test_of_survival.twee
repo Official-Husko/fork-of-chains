@@ -1,0 +1,209 @@
+:: QuestSetup_test_of_survival [nobr quest]
+
+
+<<run new setup.Title(
+"quest_master_of_survival_0", /* key */
+"Master of Survival", /* name */
+"A true master of survival", /* description */
+"a|have proven a|themself to be a master archer by completing a challenge in the western forests", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+survival: 4,},
+)
+>>
+
+
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Archer', /* name */
+[
+  setup.trait.tough_nimble,
+  setup.trait.per_independent,
+  setup.trait.per_attentive,
+  setup.trait.skill_animal,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.eyes_neko,
+],
+[
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_loyal,
+  setup.trait.per_dreamy,
+  setup.trait.skill_flight,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.survival, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_survival_0')
+]), 'Have not yet mastered the art of survival'),
+],
+{
+  survival: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_survival', /* key */
+"Test of Survival", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'prep',
+  'item',
+  'forest',
+  'legendary',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_test_of_survival',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_survivalCrit',
+    [
+      setup.qc.EquipmentDirect('survival_torso_master'),
+      setup.qc.AddTitle('a', 'quest_master_of_survival_0'),
+    ],
+  ],
+  [
+    'Quest_test_of_survivalCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_survivalCrit',
+    [
+      setup.qc.Injury('a', 10),
+      setup.qc.Trauma('a', setup.trait.boon_survival, 5),
+    ],
+  ],
+  [
+    'Quest_test_of_survivalCrit',
+    [
+      setup.qc.MissingUnitRecapture('a', 'capturedhard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_survival_0'),
+setup.qres.SkillAtLeast(setup.skill.survival, 100)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_survival [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+A slaver in your employ stands out from the rest by virtue of their excellent archery skills.
+<<Yourrep _u>> thinks so too, and in fact, <<they _u>> thinks that perhaps your slaver has what it takes to complete the legendary challenge in the forest.
+</p>
+
+<p>
+According to the tales, somewhere within the <<lore region_forest>> lives an ancient and wise deer known as the Golden Deer. It is no ordinary animal — the deer is apparently immortal, and delights in nothing but playing prey to the most skillful hunters, apparently to ward off boredom. A hunter willing to chance a game of hunter-prey would don a red ranger clothes into the forest, and it is said that the deer would make an appearance whenever so.
+</p>
+
+<p>
+Given the deer's age and mastery over its surroundings, you surmise that it would be impossible for any slaver of yours to have even the slightest chance of capturing the deer. But
+rumors say that wondrous treasure will be bestowed on whoever hunter good enough to land even just a single arrow on the majestic creature.
+If you trust your slaver enough, they might just be able to do this, and who knows what kind of rewards it will give?
+</p>
+
+<p>
+Just be warned that the deer is said to have the shortest of temper, and should the hunter by laughably unskilled, it would bestow severe punishment on them...
+</p>
+
+
+
+:: Quest_test_of_survivalCrit [nobr]
+<p>
+After borrowing and
+then donning the awkwardly bright red ranger suit,
+<<yourrep $g.a>> ventured alone into the heart of the forests.
+<<if $g.a.isHasTrait('skill_animal')>>
+As an animal whisperer, the wildlife makes for a pleasant companion for <<their $g.a>> otherwise lonely mission.
+<</if>>
+<<if $g.a.isHasTrait('per_independent')>>
+<<They $g.a>> enjoyed getting some alone time.
+<</if>>
+Before long, night fell, and despite the dark forests, a bright golden beacon of light was visible afar.
+</p>
+
+<p>
+When <<rep $g.a>> approached, <<they $g.a>> found a deer coated with golden fur staring straight back at <<them $g.a>>. After a brief staredown, the deer took flight, apparently signaling the start of the hunt.
+<<if $g.a.isHasTrait('tough_nimble')>>
+<<Rep $g.a>> a|was nimble enough to navigate through the forest at night without much trouble.
+<</if>>
+<<if $g.a.isHasTrait('tough_tough')>>
+<<Rep $g.a>> a|was not nimble enough and had difficulties navigating the treacherous plants in the night.
+<</if>>
+<<if $g.a.isHasTrait('muscle_extremelystrong')>>
+<<Reps $g.a>> extremely muscular body proved a hindrance for moving swiftly in the dense forests.
+<</if>>
+<<if $g.a.isHasTrait('per_attentive')>>
+<<Reps $g.a>> attentive eyes made it easier to track the deer's movements.
+<</if>>
+<<if $g.a.isHasTrait('per_dreamy')>>
+<<Reps $g.a>> dreamy eyes made it difficult for <<them $g.a>> to concentrate on the task.
+<</if>>
+<<if $g.a.isHasTrait('eyes_neko')>>
+<<Reps $g.a>> eyes are able to see in the dark, greatly helping <<them $g.a>> in <<their $g.a>> mission.
+<</if>>
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Unfortunately, <<rep $g.a>> lost track of the deer very much soon after. The apparent incompetence of <<therace $g.a>> angered the deer, who later returned charging at <<theslaver $g.a>>. It was unknown what happened next, but <<rep $g.a>> never returned to the company from the mission.
+<<urescuenow $g.a>>
+</p>
+<<elseif $gOutcome == 'crit'>>
+<p>
+After closing the distance somehow, <<rep $g.a>> carefully aimed an arrow at the fast-moving but gleaming animal.
+<<if $g.a.isHasTrait('magic_wind')>>
+<<They $g.a>> used <<their $g.a>> mastery over wind magic to help guide <<their $g.a>> arrow.
+<</if>>
+With a floosh, the arrow flew into the air, before somehow finding its way into the deer's thick fur.
+While the arrow bounced harmlessly, it was enough to impress the majestic creature of <<reps $g.a>> prowess. It awarded <<rep $g.a>> with its magnificent vision, before bestowing <<them $g.a>> a part of <<their $g.a>> fur, to be remade into a breastplate suitable for a ranger of <<reps $g.a>> caliber.
+</p>
+
+<p>
+<<Rep $g.a>> took the fur into a famous artisan in the <<lore location_npc>>, who surprisingly crafted the breastplate from the fur for free, seemingly already satisfied by the chance to work with such a legendary material alone.
+</p>
+<<else>>
+<p>
+<<Rep $g.a>> managed to close the distance a little bit, before hurriedly notching an arrow into the animal. It did not arrive at its target. A few more stray hits, and before long the animal was out of <<reps $g.a>> sight.
+Still, it seems the deer was rather impressed by how close some of the arrows were to hitting it, and bestowed a little boon upon <<rep $g.a>> before disappearing into the darkness of the night.
+</p>
+
+<p>
+<<Rep $g.a>> might not have succeeded, but <<therace $g.a>> seemed eager to try again.
+<<if $gOutcome == 'failure'>>
+<<They $g.a>> suffered quite a bunch of grazes and cuts from the various brambles and vegetations in the forest, however, and would need some time to rest first.
+<</if>>
+</p>
+<</if>>
+

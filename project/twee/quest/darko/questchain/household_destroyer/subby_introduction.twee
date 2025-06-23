@@ -1,0 +1,242 @@
+:: QuestSetup_subby_introduction [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"subby_introduction2",
+"Slave",
+'vale_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplace('unit', setup.trait.per_submissive),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+  setup.qc.TraitRemove('unit', setup.trait.bg_royal),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.bg_whore, setup.trait.bg_foodworker, setup.trait.bg_farmer, setup.trait.bg_merchant, setup.trait.bg_maid, setup.trait.bg_thief, setup.trait.bg_nomad, setup.trait.bg_laborer, setup.trait.bg_soldier, setup.trait.bg_woodsman], 1, false, false),
+  setup.qc.TraitReplace('unit', setup.trait.training_obedience_advanced),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'subby_introduction', /* key */
+"Subby Introduction", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'unit',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'convincer': [ setup.qu.convincer, 1],
+  'trainer': [ setup.qu.slavetrainer, 1],
+  'handler': [ setup.qu.slavehandler, 1],
+},
+{ /* actors */
+  'drow': setup.contacttemplate.quest_household_destroyer_nearby,
+  'slave': 'subby_introduction2',
+},
+[ /* costs */
+],
+'Quest_subby_introduction',
+setup.qdiff.normal42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_subby_introductionCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_subby_introductionCrit',
+    [
+      setup.qc.Slave('slave', "a|was an unfortunate villager who happened upon the wrong drow, became a total submissive, and was convinced by your slavers that a|they would be better off as your slave", undefined),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_subby_introductionCrit',
+    [
+      setup.qc.VarAdd('quest_household_destroyer_progress', 1, -1),
+      setup.qc.SetCooldownEvent('household_destroyer_sudden_abduction2', 20),
+      setup.qc.SetCooldownQuest(null, 30),
+    ],
+  ],
+  [
+    'Quest_subby_introductionDisaster',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.Sluttify('convincer'),
+setup.qc.Sluttify('trainer'),
+setup.qc.Sluttify('handler')
+]),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_household_destroyer', '210'),
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_subby_introduction [nobr]
+<p>
+    A nearby village now hosts the overly dominant drow you know as <<rep $g.drow>>. From the past events, it is likely that several unlucky villagers might have been turned into a complete sub simply by meeting the drow in passing. If your slavers are careful enough, they might be able to find some villager who would beg to be enslaved, to be dominated by your slavers...
+</p>
+
+<p>
+    Just make sure your slavers keep a wide berth of the drow <<themself $g.drow>>, or else...
+</p>
+
+
+:: Quest_subby_introductionCrit [nobr]
+<p>
+    Your slavers <<uadv $g.convincer>> asked around the village, looking for some potential villager whom the drow might have just patroned in the recent past.
+    They picked up one such rumor in the tavern:
+    <<if $g.slave.isHasTrait('bg_whore')>>
+        one of the whore in a nearby brothel has just been visited by the drow.
+        <<set _job = 'whore'>>
+    <<elseif $g.slave.isHasTrait('bg_foodworker')>>
+        a food establishment has just been visited by the drow.
+        <<set _job = 'chef'>>
+    <<elseif $g.slave.isHasTrait('bg_farmer')>>
+        the drow was seen buying fresh tomatoes off a certain farmer's wares.
+        <<set _job = 'farmer'>>
+    <<elseif $g.slave.isHasTrait('bg_merchant')>>
+        the drow visited a certain merchant's stall, trying to buy a new hat.
+        <<set _job = 'merchant'>>
+    <<elseif $g.slave.isHasTrait('bg_maid')>>
+        the drow bumped accidentaly into one of the village mansion's many cleaning staff.
+        <<if $g.slave.isMale()>>
+            <<set _job = 'butler'>>
+        <<else>>
+            <<set _job = 'maid'>>
+        <</if>>
+    <<elseif $g.slave.isHasTrait('bg_thief')>>
+        an infamous thief tried to rob the drow.
+        <<set _job = 'thief'>>
+    <<elseif $g.slave.isHasTrait('bg_nomad')>>
+        a traveler asked the drow for road guidance.
+        <<set _job = 'traveler'>>
+    <<elseif $g.slave.isHasTrait('bg_woodsman')>>
+        a woodcutter whom the drow purchased several firewood from.
+        <<set _job = 'woodcutter'>>
+    <<elseif $g.slave.isHasTrait('bg_laborer')>>
+        a miner that happened to be in the same tavern during the drow's rare visits.
+        <<set _job = 'miner'>>
+    <<else>>
+        the village's militia who accosted the drow.
+        <<set _job = 'militia'>>
+    <</if>>
+    After paying for <<their $g.convincer>> drinks,
+    your slavers headed to where the <<= _job>> took residence.
+</p>
+
+<<if $gOutcome == 'failure'>>
+    <p>
+        Unfortunately, <<rep $g.convincer>> failed to convince the <<= _job>> the perks and benefits of being one of your many slaves. The <<= _job>> stubbornly refused to be enslaved, despite <<their $g.slave>> now obvious craving for being dominated.
+        Smack in the middle of the village, your slavers did not dare to risk kidnapping the <<urace $g.slave>>, and went back home empty-handed.
+    </p>
+<<elseif $gOutcome == 'success'>>
+    <p>
+        The <<= _job>> inside was obviously a submissive, regardless what <<their $g.slave>> prior demeanor was. <<They $g.slave>> averted <<their $g.slave>> glance, while stealing a few at your slaver's <<uhands $g.convincer>>, fantasizing being dominated by <<reps $g.convincer>>
+        <<if $g.convincer.isHasTrait('muscle_strong')>>
+            strong
+        <</if>>
+        <<uhands $g.convincer>>.
+        <<if $g.convincer.isSubmissive()>>
+            (Clearly, <<they $g.slave>> did not know just how secretly submissive <<rep $g.convincer>> was.)
+        <</if>>
+        Hence, it did not take long for your slavers to convince <<them $g.slave>> that it was in <<their $g.slave>> best interest to become one of your slaves.
+    </p>
+
+<<else>>
+
+    <p>
+        Seeing <<yourrep $g.convincer>>, the <<= _job>> inside was practically begging to be enslaved.
+        With ample time and opportunity, <<rep $g.trainer>> took the rest of the week giving the new slave some obedience training, as well as an extra, bonus training.
+    </p>
+
+    <<set _extra = [
+    ['tough_tough', 'training_endurance_advanced'],
+    ['per_attentive', 'training_domestic_advanced'],
+    ['per_frugal', 'training_oral_advanced'],
+    ['per_submissive', 'training_dominance_advanced'],
+    ['per_cruel', 'training_masochist_advanced'],
+    ['per_playful', 'training_pet_advanced'],
+    ['per_lustful', 'training_horny_advanced'],
+    ['per_sly', 'training_roleplay_advanced'],
+    ]>>
+
+    <<set _eligible = _extra.filter(
+    a => State.variables.g.trainer.isHasTrait(a[0])
+    )>>
+
+    <<if _eligible.length>>
+        <<set _choice = setup.rng.choice(_eligible)[1]>>
+    <<else>>
+        <<set _choice = 'training_anal_advanced'>>
+    <</if>>
+
+    <p>
+        <<if _choice == 'training_anal_advanced'>>
+            <<Rep $g.trainer>> did not really have any preference for a particular training or fetish, so <<they $g.trainer>> spent the weeks teaching <<rep $g.slave>> in the art of taking it up <<their $g.trainer>> ass.
+            At the end, <<rep $g.slave>> learned that with the right training, <<their $g.slave>> ass could be simply another hole to pleasure <<their $g.slave>> betters.
+        <<elseif _choice == 'training_endurance_advanced'>>
+            <<Rep $g.trainer>> trainer|is one tough <<urace $g.trainer>>. and <<they $g.slave>> trained the slave to be tough enough to handle <<them $g.trainer>>.
+            The weeks were spent with <<rep $g.slave>> being pushed to the limits, but at the end, the <<urace $g.slave>> had become much better at taking punishments.
+        <<elseif _choice == 'training_domestic_advanced'>>
+            <<Rep $g.trainer>>, being an attentive slaver, liked to have their surroundings clean. <<They $g.trainer>> taught the slave the art of cleaning, having spent weeks to instill the techniques into the slave. Of course, <<they $g.slave>> would also remain a slave, be it sexual or menial.
+        <<elseif _choice == 'training_oral_advanced'>>
+            <<Rep $g.trainer>> trainer|is one greedy <<urace $g.trainer>>. Every single hole of a slave must be available to <<them $g.trainer>>, and <<rep $g.trainer>> took special care to teach how to use the slave's mouth as another tool to pleasure <<their $g.slave>> betters. The weeks were spent with much slurping noises coming out from the noise, and it was a wonder why the neighbors did not complain or ask about the noise during your slavers' stay.
+        <<elseif _choice == 'training_dominance_advanced'>>
+            You know that <<rep $g.trainer>> trainer|is secretly a submissive, and you only shook your head when you learned that <<they $g.trainer>> had taught the slave the art of dominating others. Whatever excuse <<rep $g.trainer>> gave to the others, you would not believe it.
+        <<elseif _choice == 'training_masochist_advanced'>>
+            <<Rep $g.trainer>> took cruel delight in torturing the poor former <<= _job>>. After a few weeks of takign pain, it seemed that <<rep $g.trainer>> started to understand that behind such pain lies great pleasure. A masochist slave, if you will.
+        <<elseif _choice == 'training_pet_advanced'>>
+            <<Rep $g.trainer>> liked to play, be it with other slavers, or with slaves. And what better slave to play with but pet slaves? In the coming weeks, <<rep $g.trainer>> trained the slave in the art of being nothing but a pet. <<Their $g.trainer>> life as a sentient, strong willed <<urace $g.trainer>> must end, and <<their $g.trainer>> new life as an obedient and cute pet will begin.
+        <<elseif _choice == 'training_horny_advanced'>>
+            <<Rep $g.trainer>> trainer|is one horny slaver, and it was not really surprising that <<they $g.trainer>> taught the slave to be one as well. At the end of the four weeks, the slave had understand what <<they $g.slave>> need to do to be aroused for <<their $g.slave>> <<master $g.trainer>>'s pleasure
+        <<elseif _choice == 'training_roleplay_advanced'>>
+            <<Rep $g.trainer>> spent the remaining weeks teaching the slave how to roleplay best.
+            It's a natural fit, given how sly <<rep $g.trainer>> trainer|is.
+            By the end of the training, the slave was ready to satisfy any of <<their $g.slave>> owner's fantastical desires.
+        <</if>>
+    </p>
+
+    <<run setup.qc.TraitReplace('slave', _choice).apply($gQuest)>>
+
+<</if>>
+
+
+
+
+
+
+:: Quest_subby_introductionDisaster [nobr]
+<<if $gQuest.getSeed() % 3 == 0>>
+    <<set $g.victim = $g.convincer>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+    <<set $g.victim = $g.trainer>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+    <<set $g.victim = $g.handler>>
+<</if>>
+
+
+<p>
+    Unfortunately, <<rep $g.victim>> bumped into <<rep $g.drow>> on the way into the village. The effect was immediate: the slaver noticable becomes sluttier, unable to avert <<their $g.victim>> gaze from the drow. It took your other two slavers great efforts to haul <<rep $g.victim>> out of the village, although the damage has definitely been done...
+</p>
+
+
+

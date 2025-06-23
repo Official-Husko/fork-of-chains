@@ -1,0 +1,281 @@
+:: OpportunitySetup_lonely_alchemist [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'lonely_alchemist', /* key */
+"Alchemist Orders", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'item',
+  'order',
+  'forest',
+],
+1, /* expiration weeks */
+'Opportunity_lonely_alchemist',
+setup.qdiff.harder54, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_lonely_alchemist_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('healing_potion_greater'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_lonely_alchemist_3',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('potion_perk'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_lonely_alchemist_6',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('potion_boon'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'alc': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'lonely_alchemist2', /* key */
+"Alchemist Orders", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'item',
+  'order',
+  'forest',
+],
+1, /* expiration weeks */
+'Opportunity_lonely_alchemist',
+setup.qdiff.harder54, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_lonely_alchemist_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('level_up_potion_basic'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_lonely_alchemist_4',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('reset_potion'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_lonely_alchemist_7',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('potion_purity'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'alc': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'lonely_alchemist3', /* key */
+"Alchemist Orders", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'item',
+  'order',
+  'forest',
+],
+1, /* expiration weeks */
+'Opportunity_lonely_alchemist',
+setup.qdiff.harder54, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_lonely_alchemist_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('potion_trauma_reduce'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_lonely_alchemist_5',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('blank_potion'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_lonely_alchemist_8',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SlaveOrderLonelyAlchemist('forget_potion'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'alc': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+
+
+:: Opportunity_lonely_alchemist [nobr]
+<p>
+Your slavers had successfully made contact with the crazed alchemist <<name $g.alc>> in the
+<<lore region_forest>>, and your slavers were able to convince the <<uadjbad $g.alc>> <<urace $g.alc>>
+to brew some rare potions for you in exchange for a high-quality slave.
+This is a rare opportunity.
+You will get a number of potions depending on the
+value of the slave — the higher it is, the more potions you'll get. <<They
+$g.alc>> had given you a selection of one of <<their $g.alc>> several
+potions, for you to choose from.
+</p>
+
+<p>
+Given how erratic the alchemist is, there is no doubt that you would never see
+whichever slave unlucky enough to be sold to the
+<<urace $g.alc>> ever again.
+</p>
+
+
+:: Opportunity_lonely_alchemist_0 [nobr]
+<<rep setup.item.healing_potion_greater>>
+
+
+
+:: Opportunity_lonely_alchemist_1 [nobr]
+<<rep setup.item.level_up_potion_basic>>
+
+
+
+:: Opportunity_lonely_alchemist_2 [nobr]
+<<rep setup.item.potion_trauma_reduce>>
+
+
+
+:: Opportunity_lonely_alchemist_3 [nobr]
+<<rep setup.item.potion_perk>>
+
+
+
+:: Opportunity_lonely_alchemist_4 [nobr]
+<<rep setup.item.reset_potion>>
+
+
+
+:: Opportunity_lonely_alchemist_5 [nobr]
+<<rep setup.item.blank_potion>>
+
+
+
+:: Opportunity_lonely_alchemist_6 [nobr]
+<<rep setup.item.potion_boon>>
+
+
+
+:: Opportunity_lonely_alchemist_7 [nobr]
+<<rep setup.item.potion_purity>>
+
+
+:: Opportunity_lonely_alchemist_8 [nobr]
+<<rep setup.item.forget_potion>>
+
+

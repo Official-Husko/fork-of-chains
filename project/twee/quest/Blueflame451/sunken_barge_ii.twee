@@ -1,0 +1,175 @@
+:: QuestSetup_sunken_barge_ii [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriadiver = new setup.UnitCriteria(
+null, /* key */
+'Swimmer', /* name */
+[
+  setup.trait.subrace_lizardkin,
+  setup.trait.subrace_humansea,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.muscle_strong,
+  setup.trait.per_active,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'sunken_barge_ii', /* key */
+"Sunken Barge II", /* Title */
+"Blueflame451", /* Author */
+[ /* tags */
+  'vale',
+  'money',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'mage': [ setup.qu.arcanewater, 1],
+  'scavenger': [ setup.qu.scavenger, 1],
+  'diver': [ _criteriadiver, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_sunken_barge_ii',
+setup.qdiff.hard14, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_sunken_barge_iiCrit',
+    [
+      setup.qc.MoneyCustom(10000),
+    ],
+  ],
+  [
+    'Quest_sunken_barge_iiCrit',
+    [
+      setup.qc.MoneyCustom(7000),
+    ],
+  ],
+  [
+    'Quest_sunken_barge_iiFailure',
+    [
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_sunken_barge_iiDisaster',
+    [
+      setup.qc.MoneyCustom(1000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_sunken_barge_ii [nobr]
+<p>
+You have deciphered the rumors, located and verified the barge, and at last ready to reap the rewards
+of your little treasure hunt.
+All that's left is to salvage and loot all you can from wreck.
+It won't be too easy, however, and best to make sure your slavers are up for the task.
+A competent diver is required, and also a skilled water mage to help around.
+</p>
+
+
+:: Quest_sunken_barge_iiCrit [nobr]
+
+<p>
+Following <<reps $g.scavenger>> <<uadjgood $g.scavenger>> direction,
+your slavers arrived at the riverbank and were set to finally loot the wrecked river vessel for good.
+</p>
+
+<p>
+Again and again, <<rep $g.diver>> dived down into the sunken barge.
+Each time, <<therace $g.diver>> either hauled up sacks of valuables or
+affixed more rope to pull even more chests and other heavier spoils.
+<<if $g.mage.isHasTrait('magic_water')>>
+This would have been a difficult and life-threatening task were it not for the
+<<if $g.mage.isHasTrait('magic_water_master')>>
+potent water
+<<else>>
+water
+<</if>>
+magic of <<rep $g.mage>>.
+<<else>>
+<<run setup.qc.Injury('diver', 2).apply($gQuest)>>
+Without any magical help, however, <<rep $g.diver>> suffered minor injuries when diving
+down below. Perhaps it would have been better if <<rep $g.mage>> mage|was capable of using
+<<rep setup.trait.magic_water>>...
+<</if>>
+</p>
+
+<p>
+<<if $gOutcome == 'crit'>>
+It took several days to bring up the many valuables up ashore.
+But your slavers did not just haul up the loose treasure, abandoned coins, jewelry and the like,
+but even greedily managed to tear free the still gleaming silver fixtures of the forgotten pleasure craft, determined to loot everything of value.
+<<else>>
+Coins, gems, surviving art pieces and jewelry were all hauled up.
+In the coming days,
+your slavers spent the better part of the day working hard and the
+raunchier part of the night to celebrate with the piles of booty that kept growing day by day.
+<</if>>
+By the end of the endeavor your slavers and by extension you must be feeling filthy rich from all the hauled cargo.
+</p>
+
+
+:: Quest_sunken_barge_iiFailure [nobr]
+
+<p>
+Following <<reps $g.scavenger>> <<uadjgood $g.scavenger>> direction,
+your slavers arrived at the riverbank and were set to finally loot the wrecked river vessel for good.
+</p>
+
+<p>
+Yet the ice-cold river seemed unwilling to surrender its treasures.
+<<Rep $g.diver>> had to work very hard diving through the chilly waters into the vessel, and
+neither <<reps $g.scavenger>> guidance nor <<reps $g.mage>> magical aid did much to make the task easier.
+</p>
+
+<p>
+After days of grueling work, your slavers had assembled a modest pile of coins and jewelry from the barge.
+These fetched a fair sum, although after spending so long searching for the treasure,
+everyone wished the treasures were greater.
+</p>
+
+
+:: Quest_sunken_barge_iiDisaster [nobr]
+
+<p>
+The foulest of luck! Just as your slavers arrived and prepared to undertake to loot the wreck,
+a fierce storm rolled in from the North.
+To give your slavers credits, they did try to make a go of it in spite of the weather,
+but as the downpour became torrential they had no choice but to call off the task.
+In fact they only narrowly made it into the higher ground to escape the surging flood waters that overflew from the river.
+</p>
+
+<p>
+Following the storm, your slavers were disheartened to learn that the flood had smashed the sunken barge to splinters whatever treasure remained in the vessel.
+Your slavers managed to recover some of these, but it's a pittance compared
+to what they would've gotten otherwise...
+</p>

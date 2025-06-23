@@ -1,0 +1,157 @@
+:: QuestSetup_tower_of_roses [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'tower_of_roses_admirer',  /* key */
+  "Admirer of Roses",   /* name */
+  'Currently wooing a certain elven noble sealed in a thorny tower',   /* name */
+  'a|is currently wooing a certain elven noble sealed inside a tower in the forest.',
+  0,   /* slave value */
+  {},
+)>>
+
+<<run new setup.Title(
+  'tower_of_roses_obtained',  /* key */
+  "Dethorned Rose",   /* name */
+  'A hopelessly romantic elven noble who sealed themselves in a thorny tower and fell for the wrong slaver',   /* name */
+  'a|was an elven romantic holed up in a tower in search for true love.',
+  3000,   /* slave value */
+  {},
+)>>
+
+<<run new setup.UnitGroup(
+'quest_tower_of_roses1',
+"prince",
+'subrace_elf', /* pools */
+1, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+setup.qc.Trait('unit', setup.trait.face_attractive), ],
+)>>
+
+<<set _criteriaadmirer = new setup.UnitCriteria(
+null, /* key */
+'admirer', /* name */
+[
+setup.trait.bg_noble,
+setup.trait.bg_knight,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_smart,
+setup.trait.per_lavish,
+setup.trait.per_honorable,
+setup.trait.skill_entertain,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.bg_laborer,
+setup.trait.bg_farmer,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_slow,
+setup.trait.per_frugal,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.Not(setup.qres.LoverExist()),
+],
+{
+knowledge: 1,
+social: 1,
+sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'tower_of_roses', /* key */
+"Tower of Roses", /* Title */
+"darko", /* Author */
+[ 'forest', 'money',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'admirer': _criteriaadmirer,
+'writer': setup.qu.writer,
+'performer': setup.qu.performer, },
+{ /* actors */
+'prince': 'quest_tower_of_roses1', },
+[ /* costs */
+],
+'Quest_tower_of_roses',
+setup.qdiff.normal18, /* difficulty */
+[ /* outcomes */
+[
+'Quest_tower_of_rosesCrit',
+[
+setup.qc.AddTitle('admirer', 'tower_of_roses_admirer'),
+setup.qc.VarSet('tower_of_roses_affection', 35, -1),
+setup.qc.MoneyCrit(), ],
+], [
+'Quest_tower_of_rosesCrit',
+[
+setup.qc.AddTitle('admirer', 'tower_of_roses_admirer'),
+setup.qc.VarSet('tower_of_roses_affection', 0, -1),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_tower_of_rosesFailure',
+[
+],
+], [
+'Quest_tower_of_rosesFailure',
+[
+setup.qc.SlaveMarker('prince'),
+setup.qc.TraumatizeRandom('admirer', 10), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoUnitWithTitle('tower_of_roses_obtained'),
+setup.qres.NoUnitWithTitle('tower_of_roses_admirer'),
+],
+[ /* expiration outcomes */
+setup.qc.EmptyUnitGroup('quest_tower_of_roses1'),
+],
+)>>
+
+
+:: Quest_tower_of_roses [nobr]
+<<include 'Quest_tower_of_rosesDescCommon'>>
+
+<p>
+You can try to send one of your slavers to woo the <<prince $g.prince>>,
+supplied with a prewritten script and another slaver to help arrange the
+performance with suitably placed flower petals. Of course, you are only interested
+in doing so because of a certain rumors you've been hearing: the <<prince
+$g.prince>> kept many valuables in the tower which <<they $g.prince>> often
+give to the suitors <<they $g.prince>> find attractive.
+Beware that this is going to be a long-term endeavor and whoever you select as the suitor
+will have to commit to it!
+</p>
+
+
+:: Quest_tower_of_rosesCrit [nobr]
+
+<<include 'Quest_tower_of_roses2Crit'>>
+
+<p>
+Thus began <<reps $g.admirer>> adventure to woo the <<prince $g.prince>>.
+Whether or not <<they $g.admirer>> succeed will depend on your decisions...
+</p>
+
+
+:: Quest_tower_of_rosesFailure [nobr]
+<<include 'Quest_tower_of_roses2Failure'>>
+

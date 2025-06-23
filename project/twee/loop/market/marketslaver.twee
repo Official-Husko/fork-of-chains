@@ -1,0 +1,50 @@
+:: MarketSlaver [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.prospectshall)>>
+<<set _prospects = $market.slavermarket.getMarketObjects()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>You exit the outer wall of your fort, and enter the prospects hall just outside.
+<<if _prospects.length>>
+  There are <<successtext _prospects.length>> potential slavers here at the moment.
+  <<if $company.player.isCanAddUnitWithJob(setup.job.slaver)>>
+    You can hire them, or if you decide not to hire them, they will leave in a few weeks.
+  <<else>>
+    You <<dangertextlite 'do not have any more space'>> for a slaver in your company right now. It might be
+    a good idea to furnish some new rooms for some more slaver space.
+  <</if>>
+<<else>>
+  It is empty at the moment. It might be a good idea to search for potential slavers. They
+  will then appear here, for you to hire if you wish.
+<</if>>
+<<set _favor = $favor.getFavor($company.humankingdom)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  Your company is very famous in the <<rep $company.humankingdom>>, and a steady stream
+  of hopefuls comes to the prospect hall each week.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  Your company is well-known in the <<rep $company.humankingdom>>, and usually one or two
+  hopeful slavers come to the prospects hall for you to recruit.
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  Your company is well-known within certain circles in the <<rep $company.humankingdom>>,
+  which usually attracts a slaver hopeful to this place each week.
+<</if>>
+<<set _favor = $favor.getFavor($company.royal)>>
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+  A particularly capable slaver
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+  A noticably skilled slaver
+<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  An expert slaver
+<</if>>
+  would occasionally appear here,
+  citing that they hear from some "very credible sources" there are lucrative work to be done here.
+</p>
+
+<<set _dom = setup.DOM.Card.market({
+  market: $market.slavermarket,
+  is_can_delete: true,
+})>>
+<<attach _dom>>

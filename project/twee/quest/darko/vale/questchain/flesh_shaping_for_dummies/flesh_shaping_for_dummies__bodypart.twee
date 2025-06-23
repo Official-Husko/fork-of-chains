@@ -1,0 +1,195 @@
+:: QuestSetup_flesh_shaping_for_dummies_bodyparts [nobr quest]
+
+<<run new setup.Title(
+"quest_flesh_shaping_dummy_0", /* key */
+"Flesh-Shaping Dummy", /* name */
+"Currently learning to master water magic", /* description */
+"a|is currently learning to master water magic", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<set _criteriaslave2 = new setup.UnitCriteria(
+null, /* key */
+'Endowed Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.dick_titanic, setup.trait.balls_titanic, setup.trait.breast_titanic], true),
+],
+{
+}
+)>>
+
+<<set _criteriaslave1 = new setup.UnitCriteria(
+null, /* key */
+'Endowed Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.dick_titanic, setup.trait.balls_titanic, setup.trait.breast_titanic], true),
+],
+{
+}
+)>>
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Trainee', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_flesh_shaping_dummy_0'),
+  setup.qres.AllTraits([setup.trait.magic_water], true),
+],
+{
+  arcane: 2.0,
+  brawn: 1.0,
+}
+)>>
+<<run new setup.QuestTemplate(
+'flesh_shaping_for_dummies_bodyparts', /* key */
+"Flesh-Shaping for Dummies: Bodyparts", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'trait',
+  'prep',
+  'vale',
+],
+8, /* weeks */
+1000, /* expiration weeks */
+{ /* roles */
+  'slave2': _criteriaslave2,
+  'slave1': _criteriaslave1,
+  'slaver': [ _criteriaslaver, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_flesh_shaping_for_dummies_bodyparts',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_flesh_shaping_for_dummies_bodypartsCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_bodypartsCrit',
+    [
+      setup.qc.RemoveTitleGlobal('quest_flesh_shaping_dummy_0'),
+      setup.qc.TraitReplace('slaver', setup.trait.magic_water_master),
+      setup.qc.Injury('slave1', 10),
+      setup.qc.Injury('slave2', 10),
+      setup.qc.TraitReplaceExisting('slave2', setup.trait.dick_tiny),
+      setup.qc.TraitReplaceExisting('slave2', setup.trait.breast_tiny),
+      setup.qc.TraitReplaceExisting('slave2', setup.trait.balls_tiny),
+      setup.qc.TraitReplaceExisting('slave1', setup.trait.dick_tiny),
+      setup.qc.TraitReplaceExisting('slave1', setup.trait.breast_tiny),
+      setup.qc.TraitReplaceExisting('slave1', setup.trait.balls_tiny),
+      setup.qc.TraitReplaceExisting('slaver', setup.trait.dick_tiny),
+      setup.qc.TraitReplaceExisting('slaver', setup.trait.breast_tiny),
+      setup.qc.TraitReplaceExisting('slaver', setup.trait.balls_tiny),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_bodypartsCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_flesh_shaping_for_dummies_bodypartsCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTitleGlobal('quest_flesh_shaping_dummy_0'),
+
+],
+)>>
+
+:: Quest_flesh_shaping_for_dummies_bodyparts [nobr]
+<<set _u = setup.getUnit({title: 'quest_flesh_shaping_dummy_0'})>>
+
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+<p>
+Having completed <<their _u>> studies on muscles and orifice anatomy, the final lesson that <<yourrep _u>> must learn in order to master <<rep setup.trait.magic_water_master>> is on the topic of bodyparts. That is to say, the genitals. When fully mastered, masters of water magic is able to shape even the most sensitive bodypart in a <<urace _u>> body, able to make it more or less endowed at will.
+</p>
+
+<p>
+Like before, two "volunteers" are needed in order for <<rep _u>> to fully learn this knowledge, and the requirements are as strict as ever. The two volunteers must be quite well endowed indeed, with the full knowledge that they will very likely leave the experiment with the genitals shrunk considerably. However, since <<yourrep _u>> is but a student in the art of flesh-shaping, some of the experiment will fail, and who knows what might happen to <<their _u>> own genitals... Such is the price one must pay for the powerful knowledge.
+</p>
+
+<</if>>
+
+
+
+
+
+:: Quest_flesh_shaping_for_dummies_bodypartsCrit [nobr]
+<p>
+After months of constant studies, <<yourrep $g.slaver>> slaver|have finally mastered the elusive <<rep setup.trait.magic_water_master>>. But the cost paid was steep indeed.
+</p>
+
+<p>
+The two volunteers of the experiment lied battered from the experiment —
+<<if $g.slave1.isHasTrait('dick_small')>>
+<<Reps $g.slave1>> <<udick $g.slave1>> shrunk to a tiny stump.
+<<elseif $g.slave1.isHasTrait('breast_small')>>
+<<Reps $g.slave1>> <<ubreasts $g.slave1>> shrunk to but a tiny, almost unnoticable bump in <<their $g.slave1>> chest.
+<<else>>
+<<Reps $g.slave1>> <<uballs $g.slave1>> shrunk, becoming a tiny pair of balls barely visible under <<their $g.slave1>> <<udick $g.slave1>>.
+<</if>>
+Similarly,
+<<if $g.slave2.isHasTrait('dick_small')>>
+<<reps $g.slave2>> <<udick $g.slave2>> is now but a tiny little shaft.
+<<elseif $g.slave2.isHasTrait('breast_small')>>
+<<reps $g.slave2>> <<ubreasts $g.slave2>> greatly decreased in size to a small, barely visible bump in <<their $g.slave2>> chest.
+<<else>>
+<<reps $g.slave2>> <<uballs $g.slave2>> diminished into almost marble-sized pair of balls.
+<</if>>
+
+<<if $g.slaver.isHasTrait('dick_small') or
+$g.slaver.isHasTrait('balls_small') or
+$g.slaver.isHasTrait('breast_small')>>
+<<Yourrep $g.slaver>> slaver|was affected too.
+<<if $g.slaver.isHasTrait('dick_small')>>
+<<Their $g.slaver>> <<udick $g.slaver>> was accidentally shrunk during one botched ritual attempt, becoming embarrassingly small.
+<<elseif $g.slaver.isHasTrait('balls_small')>>
+<<Their $g.slaver>> <<uballs $g.slaver>> was accidentally shrunk during one botched ritual attempt, becoming disappointingly small.
+<<else>>
+<<Their $g.slaver>> <<udick $g.slaver>> was accidentally shrunk during one botched ritual attempt, becoming humiliatingly small.
+<</if>>
+<<else>>
+<<Yourrep $g.slaver>> would have been affected too, but as it turned out, <<their $g.slaver>> assets were all already too small and nothing "bad" happened to <<therace $g.slaver>>.
+<</if>>
+</p>
+
+<p>
+Still, <<yourrep $g.slaver>> now possess a great mastery over <<rep setup.trait.magic_water_master>>. With a flick of <<their $g.slaver>> finger, it suddenly started raining. With a proper ritual room as well as a good amount of preparation, perhaps <<they $g.slaver>> can undo all these "damages" that have happened to the volunteer's genitals.
+</p>

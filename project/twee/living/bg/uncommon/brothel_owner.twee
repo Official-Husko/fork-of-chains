@@ -1,0 +1,41 @@
+:: LIVINGSETUP_brothel_owner [nobr living]
+
+<<run new setup.Living({
+  key: 'brothel_owner',
+  name: 'Brothel Owner',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_courtesan: setup.LIVING_COMMON_PREFERENCE,
+    bg_whore: setup.LIVING_MORECOMMON_PREFERENCE,
+    skill_entertain: setup.LIVING_MORECOMMON_PREFERENCE,
+  },
+  business: [
+    'managing a|their brothel expenses',
+    'training a|their brothel slaves',
+    'attending to an important customer',
+  ],
+  location: 'brothel',
+})>>
+
+:: LIVING_brothel_owner [nobr]
+
+<p>
+<<Rep $g.a>> uses the money a|they had hard-earned to make even more money
+by employing the oldest trade known to a|race: selling sex.
+But this time, a|they would not be selling a|their own body,
+but rather a|they acquires a stable of slaves and begin selling a|their body.
+<<if $g.a.isHasTrait('skill_entertain')>>
+<<Rep $g.a>> a|is rather good at entertaining others too, which helps grow
+the popularity of the brothel.
+<</if>>
+In time, the brothel becomes rather popular,
+<<if $g.a.isHasTrait('per_chaste')>>
+although <<reps $g.a>> own <<ubody $g.a>> always remain off-limit regardless of how
+high a customer is willing to pay.
+<<else>>
+and it is said that <<reps $g.a>> own <<ubody $g.a>> would be available for the right price.
+<</if>>
+</p>
+

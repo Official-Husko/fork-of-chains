@@ -1,0 +1,160 @@
+:: EventSetup_bouncer_needed [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'bouncer_needed', /* key */
+"Bouncer Needed", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_bouncer_needed',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.IfThenElse(
+setup.qres.Actor('head', setup.qres.AllTraits([setup.trait.gender_male], true)),
+setup.qc.DoAll([
+setup.qc.SlaveOrderFlex(
+'Bouncer', /* name */
+'player', /* company */
+50, /* expires in */
+0, /* base price */
+1000, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+setup.trait.bg_thug,
+setup.trait.height_tall,
+setup.trait.height_giant,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.per_dominant,
+setup.trait.skill_intimidating,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[ /* disaster traits */
+setup.trait.height_dwarf,
+setup.trait.height_short,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_thin,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_submissive,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AllTraits([setup.trait.gender_male], true),
+setup.qres.XTraits([setup.trait.bg_thug, setup.trait.height_tall, setup.trait.height_giant, setup.trait.muscle_strong, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong, setup.trait.face_hideous, setup.trait.face_scary, setup.trait.per_dominant, setup.trait.skill_intimidating, setup.trait.magic_earth, setup.trait.magic_earth_master], 1),
+setup.qres.AnyTrait([setup.trait.training_dominance_advanced, setup.trait.training_dominance_master], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.HideAll([
+  setup.qc.VarSet('quest_brothel_progress', '44', -1),
+  setup.qc.VarSet('quest_brothel_wait', '4', -1),
+], "Increase your brothel's profit",),
+],
+[ /* unfulfilled outcomes */
+],
+)
+], undefined),
+setup.qc.DoAll([
+setup.qc.SlaveOrderFlex(
+'Bouncer', /* name */
+'player', /* company */
+50, /* expires in */
+0, /* base price */
+1000, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+setup.trait.bg_thug,
+setup.trait.height_tall,
+setup.trait.height_giant,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.per_dominant,
+setup.trait.skill_intimidating,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[ /* disaster traits */
+setup.trait.height_dwarf,
+setup.trait.height_short,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_thin,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_submissive,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AllTraits([setup.trait.gender_female], true),
+setup.qres.XTraits([setup.trait.bg_thug, setup.trait.height_tall, setup.trait.height_giant, setup.trait.muscle_strong, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong, setup.trait.face_hideous, setup.trait.face_scary, setup.trait.per_dominant, setup.trait.skill_intimidating, setup.trait.magic_earth, setup.trait.magic_earth_master], 1),
+setup.qres.AnyTrait([setup.trait.training_dominance_advanced, setup.trait.training_dominance_master], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.HideAll([
+  setup.qc.VarSet('quest_brothel_progress', '44', -1),
+  setup.qc.VarSet('quest_brothel_wait', '4', -1),
+], "Increase your brothel's profit",),
+],
+[ /* unfulfilled outcomes */
+],
+)
+], undefined)),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_brothel_progress', '36'),
+  setup.qres.VarNull('quest_brothel_wait'),
+],
+53, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_bouncer_needed [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+The bandit attack last month on <<attach _describe>> highlights an important issue with your brothel: the lack of security.
+<<if $g.owner.getSkill(setup.skill.combat) >= 40>>
+While <<yourrep $g.owner>> owner|is no slouch in combat, <<they $g.owner>> alone won't be sufficient to keep the compound safe.
+<<else>>
+This is further compounded by <<yourrep $g.owner>>'s lack of combat ability.
+<</if>>
+</p>
+
+<p>
+The head whore, <<name $g.head>>, head|have suggested to your slaver to hire a bouncer or two, to keep the place safe from degenerates. While that's certainly a good idea, a bouncer's services won't come cheap. However, as the leader of a slaving company, you are in a unique position to offer an alternative solution: offer one of your dominant but obedient slaves as a permanently-stationed bodyguard instead. The slave would need to be sufficiently good as a bouncer, however, and must exhibit at least some qualities befitting of a proper bouncer. While the slave will be "freed", as long as they have been sufficiently trained and stamped out of their free will, they will become a free person in title only.
+</p>

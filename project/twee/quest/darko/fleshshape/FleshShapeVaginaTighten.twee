@@ -1,0 +1,82 @@
+:: QuestSetupFleshShapeVaginaTighten [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'fleshshape_vagina_tighten',  /* id */
+  'Flesh Shaping: Tighten Vagina',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.fleshshape_head,
+    'assistant1': setup.qu.fleshshape_assistant,
+    'assistant2': setup.qu.fleshshape_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [  /* costs */
+    setup.qc.LoseItem(setup.item.potion_tight, 1),
+  ],
+  'FleshShapeVaginaTighten',  /* description */
+  setup.qdiff.normal50,
+  [
+    [
+      'FleshShapeVaginaTightenCrit',
+      [
+        setup.qc.TraitDecrease('trainee', setup.trait.vagina_tight),
+        setup.qc.TraitDecrease('trainee', setup.trait.vagina_tight),
+      ]
+    ],
+    [
+      'FleshShapeVaginaTightenSuccess',
+      [
+        setup.qc.TraitDecrease('trainee', setup.trait.vagina_tight),
+      ],
+    ],
+    [
+      'FleshShapeVaginaTightenFailure',
+      [],
+    ],
+    [
+      'FleshShapeVaginaTightenDisaster',
+      [
+        setup.qc.Injury('head', 2),
+        setup.qc.Injury('assistant1', 1),
+        setup.qc.Injury('assistant2', 1),
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: FleshShapeVaginaTighten [nobr]
+<p>
+Tighten the slave's vagina from what gaping hole it currently is.
+</p>
+
+:: FleshShapeVaginaTightenCrit [nobr]
+<p>
+The orifice tightening procedure was very successful, no small thanks to <<yourrep $g.head>>
+masterfully handling the rare <<rep setup.item.potion_tight>>.
+The slave's vagina has been re-tightened back to near virgin state.
+</p>
+
+:: FleshShapeVaginaTightenSuccess [nobr]
+<p>
+The orifice tightening procedure was successful, no small thanks to <<yourrep $g.head>>.
+</p>
+
+:: FleshShapeVaginaTightenFailure [nobr]
+<p>
+The orifice tightening procedure was successful, no small thanks to <<yourrep $g.head>>.
+But <<rep $g.trainee>> trainee|was severely damaged by the invasive procedure, and will need some time to rest.
+</p>
+
+:: FleshShapeVaginaTightenDisaster [nobr]
+<p>
+There was an accident during the process which causes some of the alchemical ingredients
+to combust, injuring all parties involved.
+</p>

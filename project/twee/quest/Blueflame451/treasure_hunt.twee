@@ -1,0 +1,143 @@
+:: QuestSetup_treasure_hunt [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'treasure_hunt', /* key */
+"Treasure Hunt", /* Title */
+"Blueflame451", /* Author */
+[ /* tags */
+  'vale',
+  'quest',
+  'money',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'scout': [ setup.qu.scout_vale, 1],
+  'explorer': [ setup.qu.explorer, 1],
+  'questioner': [ setup.qu.convincer, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_treasure_hunt',
+setup.qdiff.hard8, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_treasure_huntCrit',
+    [
+      setup.qc.MoneyCustom(-250),
+      setup.qc.QuestDirect('sunken_barge_i', null),
+      setup.qc.SetCooldownQuest(null, 200),
+    ],
+  ],
+  [
+    'Quest_treasure_huntCrit',
+    [
+      setup.qc.MoneyCustom(-500),
+      setup.qc.QuestDirect('sunken_barge_i', null),
+      setup.qc.SetCooldownQuest(null, 200),
+    ],
+  ],
+  [
+    'Quest_treasure_huntFailure',
+    [
+      setup.qc.MoneyCustom(-250),
+      setup.qc.BoonizeRandom('scout', 1),
+      setup.qc.BoonizeRandom('explorer', 1),
+    ],
+  ],
+  [
+    'Quest_treasure_huntDisaster',
+    [
+      setup.qc.MoneyCustom(-1000),
+      setup.qc.TraumatizeRandom('explorer', 1),
+      setup.qc.TraumatizeRandom('questioner', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_treasure_hunt [nobr]
+<p>
+Your scouts have returned from the <<lore region_vale>> with rumors of lost treasure.
+A fool's errand: treasure hunt is almost always a time-consuming affair, and does not always
+yield a reward. No matter how much
+<<rep $company.player>>'s coffers could use the extra coin,
+the thought of following-up on a lost treasure rumor is too idiotic even for you.
+</p>
+
+<p>
+But well, when had such a logical consideration stopped you from doing whatever it is that
+you want?
+If you want to waste your slaver's time on this fool's errand,
+the first step would be to send out a group to follow up on these rumors.
+They would need to explore the land while talking to the locals to see where the rumors might lead.
+This will incur costs, and the payout will not be immediate, if there is any payout at all...
+</p>
+
+
+:: Quest_treasure_huntCrit [nobr]
+
+<p>
+<<Rep $g.scout>> led your slavers on a jaunty trek across the <<lore region_vale>>.
+Each stop at a village, a farmstead or a tavern seemed to offer another clue to the treasure, another facet to the treasure hunt tale.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Rep $g.questioner>> <<uadv $g.questioner>> drew tales from the many northern folk encountered,
+sometimes for free, sometimes for a bribe, sometimes for a friendly cup of ale, and some other times with just
+<<if $g.questioner.getSpeech() == setup.speech.friendly>>
+a friendly word and smile.
+<<elseif $g.questioner.getSpeech() == setup.speech.bold>>
+<<their $g.questioner>> bold claims about being a treasure hunter.
+<<elseif $g.questioner.getSpeech() == setup.speech.cool>>
+<<their $g.questioner>> direct questions.
+<<elseif $g.questioner.getSpeech() == setup.speech.witty>>
+<<their $g.questioner>> witty charm.
+<<elseif $g.questioner.getSpeech() == setup.speech.debauched>>
+a suggestive wink.
+<</if>>
+Each bit of lore helped <<uadjgood $g.explorer>> <<rep $g.explorer>> to get closer and closer to the bottom of the tale, until finally <<they $g.explorer>> explorer|was confident that <<they $g.explorer>> had uncovered enough information to really begin the treasure hunt.
+</p>
+
+<<else>>
+
+<p>
+Over many mugs of mead did <<rep $g.questioner>> get to the bottom of the rumors.
+Before long, <<rep $g.explorer>> believed <<they $g.explorer>> had enough information to really begin this treasure hunt in earnest.
+The information costed coin, of course, but who can say how much was spent for tales and how much might have been spent on the comfort of fair company?
+</p>
+<</if>>
+
+
+:: Quest_treasure_huntFailure [nobr]
+
+<p>
+<<Rep $g.scout>> spent the week leading your slavers from village to village, from lone farmsteads to sleepy taverns, but regardless of the countless rumors and stories <<rep $g.questioner>> kept drawing from the many northern folk encountered, they returned without any solid leads whatsoever.
+Some coin was spent in travel and in drawing out all these useless tales, but at least <<rep $g.scout>> and <<rep $g.explorer>> had a relaxing week wandering the countryside.
+</p>
+
+
+:: Quest_treasure_huntDisaster [nobr]
+<p>
+<<Yourrep $g.explorer>> led your slavers on the north chasing rumors, and they went norther and norther.
+During their stay in one of the chilly northern tavern, <<rep $g.questioner>> had simply too much to drink, and agreed to purchase a treasure map from some wizened old geezer.
+</p>
+
+<p>
+The following morning, once your slavers mind cleared, they realized that they had just been fooled.
+The map they purchased contained nothing but a crude dick drawing of an old man.
+Swallowing their anger (but mostly shame) they returned to the <<rep $company.player>> without any leads and with much lighter pockets. Thankfully they ditched the ugly dick picture on the way so you don't have to see it too.
+</p>

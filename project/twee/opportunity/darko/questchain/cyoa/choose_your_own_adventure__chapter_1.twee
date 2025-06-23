@@ -1,0 +1,82 @@
+:: OpportunitySetup_choose_your_own_adventure_ [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'choose_your_own_adventure_', /* key */
+"Choose Your Own Adventure!", /* Title */
+"darko", /* Author */
+[ 'fort', 'unknown', ], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_choose_your_own_adventure_',
+setup.qdiff.normal9, /* difficulty */
+[ /* options */
+[
+'Opportunity_choose_your_own_adventure__0',
+'Opportunity_choose_your_own_adventure__0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.OneRandom([
+setup.qc.Opportunity('choose_your_own_adventure__the_beginning___relation2'),
+setup.qc.Opportunity('choose_your_own_adventure__the_beginning___relation'),
+])
+],
+],
+[
+'Opportunity_choose_your_own_adventure__1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.SetCooldownOpportunity(null, 500),
+],
+],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+[setup.questpool.forest, setup.rarity.common],
+[setup.questpool.city, setup.rarity.common],
+[setup.questpool.desert, setup.rarity.common],
+[setup.questpool.sea, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.Cooldown(10),
+setup.qres.OpportunityUnique(),
+setup.qres.VarNull('choose_your_own_adventure_progress'),
+setup.qres.Building(setup.buildingtemplate.mailroom),
+],
+)>>
+
+:: Opportunity_choose_your_own_adventure_ [nobr]
+<p>
+A book has mysteriously appeared on your desk. On the cover is written
+"Choose Your Own Adventure" with a very sloppy and barely legible
+handwriting. The book looks slightly creepy, but you can sense that it is
+inviting you to read it...
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__0 [nobr]
+Open Chapter 1...
+
+
+:: Opportunity_choose_your_own_adventure__0_flavor [nobr]
+<p>
+You open the book. Another sloppy handwriting fills the first page, which
+explains how the book works. Apparently it is a magical "Choose Your Own
+Adventure" book, where you decide what the heroes of the book should do.
+</p>
+
+<p>
+You can try to read the book, if it interests you.
+</p>
+
+
+:: Opportunity_choose_your_own_adventure__1 [nobr]
+You have no time for games
+

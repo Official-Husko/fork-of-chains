@@ -1,0 +1,156 @@
+:: QuestSetupFleshShaperTempleRaid [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _raider = setup.CriteriaHelper.CritTraits(
+  [setup.trait.magic_water, setup.trait.magic_water_master],
+  setup.CriteriaHelper.DisasterTraits(
+    [
+      setup.trait.race_wolfkin,
+      setup.trait.magic_fire,
+      setup.trait.magic_fire_master,
+    ],
+    setup.qu.raider,
+  )
+)>>
+
+<<run new setup.QuestTemplate(
+  'flesh_shaper_temple_raid', /* key */
+  'Flesh Shaper Temple: Raid', /* Title */
+  'darko',   /* author */
+  ['transformation', 'vale', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'raider1': _raider,
+    'raider2': _raider,
+    'raidersupport': setup.qu.raidersupport,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestFleshShaperTempleRaid', /* passage description */
+  setup.qdiff.normal19, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestFleshShaperTempleRaidCrit',
+      [
+        setup.qc.MoneyCrit(),
+        
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleRaidCrit',
+      [
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleRaidFailure',
+      [
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleRaidDisaster',
+      [
+        setup.qc.TraitDecrease('raider1', setup.trait.dick_small),
+        setup.qc.TraitDecrease('raider1', setup.trait.balls_tiny),
+        setup.qc.TraitDecrease('raider1', setup.trait.breast_tiny),
+        setup.qc.TraitDecrease('raider2', setup.trait.dick_small),
+        setup.qc.TraitDecrease('raider2', setup.trait.balls_tiny),
+        setup.qc.TraitDecrease('raider2', setup.trait.breast_tiny),
+        setup.qc.TraitDecrease('raidersupport', setup.trait.dick_small),
+        setup.qc.TraitDecrease('raidersupport', setup.trait.balls_tiny),
+        setup.qc.TraitDecrease('raidersupport', setup.trait.breast_tiny),
+      ],
+    ],
+  ],
+  [], /* rarity, pool */
+  [
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestFleshShaperTempleRaid [nobr]
+
+<<include 'OpportunityFleshShaperTemple'>>
+
+<p>
+You have decided to try and raid the temple.
+</p>
+
+
+:: QuestFleshShaperTempleRaidCrit [nobr]
+
+<p>
+The temple your slavers happened upon turned out to be relatively new.
+As a result, it had very little protection, and,
+led by <<yourrep $g.raider1>>, your slavers had no problem at all
+raiding the temple.
+One by one, the defenders of the temple were downed by <<reps $g.raider1>>
+masterful swing of <<their $g.raider1>> <<uweapon $g.raider1>>, 
+who was fully supported by <<rep $g.raidersupport>> from behind.
+
+<<set _water = setup.selectUnit([$g.raider1, $g.raider2, $g.raidersupport], {trait: 'magic_water'})>>
+<<if _water>>
+  <<Reps _water>> mastery over water magic helped them ward off some of the offensive spells
+  cast by the defenders.
+<</if>>
+
+<<set _tough = setup.selectUnit([$g.raider1, $g.raider2, $g.raidersupport], {trait: 'tough_tough'})>>
+<<if _tough>>
+  <<Reps _tough>> toughness helped <<therace _tough>> shrugged some of the attacks away.
+<</if>>
+
+Once all its defenders are downed, the temple was all ripe for your slavers
+to raid.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+They found many debauched rituals being performed inside, including several
+offering slaves being chaned on top of the altars.
+Your slavers thought about bringing them home,
+but ultimatelly decided against it -- the slaves'
+assets were too big --
+<<if $g.raider1.isMale()>>
+one even has a dick at the size of <<reps $g.raider1>> body.
+<<else>>
+one even has a pair of breasts larger than <<reps $g.raider1>> body.
+<</if>>
+This would prevent the slaves from walking on their own, and there was no way your
+slavers would be able to carry these writhing mass of flesh back home.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, one of the defenders managed to escape, who will no doubt seek
+reinforcements to wrest control of the temple back.
+Your slavers hurriedly grabbed whatever nearby valuables from the temple and escaped before
+the reinforcements arrived.
+</p>
+
+<</if>>
+
+
+
+:: QuestFleshShaperTempleRaidFailure [nobr]
+
+<p>
+The raiding attempt were unfortunately botched. All things considered,
+your slavers were lucky to escape unscathed from the failure,
+especially in the presence of such powerful magic wielders.
+</p>
+
+
+:: QuestFleshShaperTempleRaidDisaster [nobr]
+
+<p>
+Unfortunately, your slavers were unsuccessful in their raid, and were captured by the priests.
+As punishment, they were subjected to some intense sexual shrinking ritual before being
+able to escape their bondage and returned home.
+</p>

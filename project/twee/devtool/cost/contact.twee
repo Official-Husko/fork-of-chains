@@ -1,0 +1,49 @@
+:: CostContactNoUnit [nobr]
+
+<p>Gain the following contact:</p>
+
+<<for _bt range Object.values(setup.contacttemplate).filter(contact => !contact.getTags().includes('hasunit'))>>
+  <div>
+    <<capture _bt>>
+      <<button 'Select' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qc.Contact(_bt)>>
+      <</button>>
+    <</capture>>
+    <<rep _bt>>
+  </div>
+<</for>>
+
+
+:: CostContactHasUnit [nobr]
+
+<p>Gain <<devactordefault>> as the following contact:</p>
+
+<<for _bt range Object.values(setup.contacttemplate).filter(contact => contact.getTags().includes('hasunit'))>>
+  <div>
+    <<capture _bt>>
+      <<button 'Select' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qc.Contact(_bt, $qgDefaultActorName)>>
+      <</button>>
+    <</capture>>
+    <<rep _bt>>
+  </div>
+<</for>>
+
+
+:: CostContactLose [nobr]
+
+<p>Lose the following contact:</p>
+
+<<for _bt range Object.values(setup.contacttemplate)>>
+  <div>
+    <<capture _bt>>
+      <<button 'Select' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qc.ContactLose(_bt)>>
+      <</button>>
+    <</capture>>
+    <<rep _bt>>
+  </div>
+<</for>>
+
+
+

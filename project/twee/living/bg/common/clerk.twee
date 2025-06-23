@@ -1,0 +1,37 @@
+:: LIVINGSETUP_clerk [nobr living]
+
+<<run new setup.Living({
+  key: 'clerk',
+  name: 'Clerk',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_clerk: setup.LIVING_COMMON_PREFERENCE,
+    per_attentive: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_dreamy: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'sorting out red tape',
+    'writing important-looking documents',
+    'doing paperwork',
+  ],
+  location: 'office',
+})>>
+
+:: LIVING_clerk [nobr]
+
+<p>
+After retiring, <<rep $g.a>> took up
+<<if $g.a.isHasTrait('bg_clerk')>>
+a|their old occupation and began anew
+<</if>>
+a desk job.
+a|They would spend a|their day seated behind the desk writing and stamping
+various bureaucratic papers.
+<<if !$g.a.isHasTrait('per_chaste')>>
+  A visitor could occasionally hear strange slurping noise whenever they come into
+  <<reps $g.a>> office, coming from the slave <<rep $g.a>> had bought using some
+  of a|their money, and who is chained under the desk to service a|them as a|they work.
+<</if>>
+</p>

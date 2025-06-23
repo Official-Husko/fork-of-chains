@@ -1,0 +1,256 @@
+:: OpportunitySetup_slave_merchant [nobr opportunity]
+
+<<set _order_high =
+      setup.qc.SlaveOrderFlex(
+'Slave Merchant Order - High Quality', /* name */
+'independent', /* company */
+12, /* expires in */
+750, /* base price */
+1500, /* trait multi */
+0.8, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom(setup.TraitHelper.getAllTraitsOfTags(['bg']).filter(trait => !trait.getTags().includes('unicorn') && !trait.getTags().includes('rare')), 3, 2, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+)>>
+
+<<set _order_medium =
+      setup.qc.SlaveOrderFlex(
+'Slave Merchant Order - Medium Quality', /* name */
+'independent', /* company */
+12, /* expires in */
+300, /* base price */
+500, /* trait multi */
+0.65, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom(setup.TraitHelper.getAllTraitsOfTags(['bg']).filter(trait => !trait.getTags().includes('unicorn') && !trait.getTags().includes('rare')), 3, 2, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+)>>
+
+<<set _order_low =
+      setup.qc.SlaveOrderFlex(
+'Slave Merchant Order - Low Quality', /* name */
+'independent', /* company */
+12, /* expires in */
+200, /* base price */
+300, /* trait multi */
+0.5, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom(setup.TraitHelper.getAllTraitsOfTags(['bg']).filter(trait => !trait.getTags().includes('unicorn') && !trait.getTags().includes('rare')), 3, 2, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'slave_merchant_low_level', /* key */
+"Slave Merchant", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'order',
+],
+1, /* expiration weeks */
+'Opportunity_slave_merchant',
+setup.qdiff.normal20, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_slave_merchant_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      _order_high,
+      _order_high,
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_slave_merchant_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      _order_medium,
+      _order_medium,
+      _order_medium,
+      _order_medium,
+      _order_medium,
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_slave_merchant_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+
+<<run new setup.OpportunityTemplate(
+'slave_merchant_high_level', /* key */
+"Slave Merchant", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'order',
+],
+1, /* expiration weeks */
+'Opportunity_slave_merchant',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_slave_merchant_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      _order_high,
+      _order_high,
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_slave_merchant_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      _order_medium,
+      _order_medium,
+      _order_medium,
+      _order_medium,
+      _order_medium,
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_slave_merchant_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+      _order_low,
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_slave_merchant [nobr]
+<p>
+Having secured a deal, you can now cash in from a selection of possible slave orders.
+A few good orders, a bunch of very cheap slave orders, or something in between.
+</p>
+
+
+:: Opportunity_slave_merchant_0 [nobr]
+Two alright orders
+
+
+
+:: Opportunity_slave_merchant_1 [nobr]
+Five less than average orders
+
+
+
+:: Opportunity_slave_merchant_2 [nobr]
+Ten wholesale orders

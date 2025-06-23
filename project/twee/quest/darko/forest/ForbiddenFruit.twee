@@ -1,0 +1,213 @@
+:: QuestSetupForbiddenFruit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'forbidden_fruit', /* key */
+  'Forbidden Fruit', /* Title */
+  'darko',   /* author */
+  ['transformation', 'forest', 'trait', 'money', 'ire', ],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'biologist': setup.qu.biologist,
+    'scout1': setup.qu.scout_forest,
+    'scout2': setup.qu.scout_forest,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestForbiddenFruit', /* passage description */
+  setup.qdiff.normal18, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestForbiddenFruitCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.Ire('elf', 3),
+      ],
+    ],
+    [
+      'QuestForbiddenFruitSuccess',
+      [
+        setup.qc.MoneyCustom(2000),
+        setup.qc.Ire('elf', 1),
+      ],
+    ],
+    [
+      'QuestForbiddenFruitFailure',
+      [
+        setup.qc.OneRandom([
+          setup.qc.DoAll([
+            setup.qc.TraitDecrease('scout1', setup.trait.dick_tiny),
+            setup.qc.TraitDecrease('scout1', setup.trait.breast_tiny),
+          ]),
+          setup.qc.DoAll([
+            setup.qc.TraitDecrease('scout1', setup.trait.balls_tiny),
+            setup.qc.TraitDecrease('scout1', setup.trait.breast_tiny),
+          ]),
+        ]),
+        setup.qc.OneRandom([
+          setup.qc.DoAll([
+            setup.qc.TraitDecrease('scout2', setup.trait.dick_tiny),
+            setup.qc.TraitDecrease('scout2', setup.trait.breast_tiny),
+          ]),
+          setup.qc.DoAll([
+            setup.qc.TraitDecrease('scout2', setup.trait.balls_tiny),
+            setup.qc.TraitDecrease('scout2', setup.trait.breast_tiny),
+          ]),
+        ]),
+      ],
+    ],
+    [
+      'QuestForbiddenFruitFailure',
+      [
+        setup.qc.Outcomes('failure'),
+        setup.qc.OneRandom([
+          setup.qc.DoAll([
+            setup.qc.TraitDecrease('biologist', setup.trait.dick_tiny),
+            setup.qc.TraitDecrease('biologist', setup.trait.breast_tiny),
+          ]),
+        ]),
+      ],
+    ],
+  ],
+  [[setup.questpool.forest, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestForbiddenFruit [nobr]
+
+<p>
+While most modern elves live just like any other people,
+some particularly traditional elves are infamous for worshipping trees.
+Many worship mundane and particularly old trees, but one particular elven cult
+worships the so-called "Tree of Fertility".
+These rare trees produce fruits which is said to grant whoever
+consumed them their sexual youth back.
+Whether true or not, there are sure people who would pay a lot
+for such a delicious-sounding fruit.
+You can try to send a group of slavers deep into the <<lore region_forest>> to locate these trees.
+Just make sure your slavers keep far, far away from the other types of fruits that grow
+abundantly there...
+</p>
+
+
+:: QuestForbiddenFruitCrit [nobr]
+
+<p>
+After a few days of searching, <<rep $g.scout1>> stumbled
+into a clearing with nothing but a single large ancient-looking tree in the middle of it.
+The tree was full of "endowed-looking" fruits that <<rep $g.biologist>> biologist|was so
+<<uadv $g.biologist>> sure that this had to be the fruit you were looking for: the Fruit of Fertility.
+Your slavers then proceeded to harvest the tree, groping the fruit by its cockheads to yank it from
+their bases. White-ish plan juice spluttered from a small opening in the fruit's head, spraying
+<<rep $g.biologist>> right in <<their $g.biologist>> face with salty plant juice.
+</p>
+
+<<set _ch = 0>>
+<<set _g1 = false>>
+<<set _g2 = false>>
+<<if $g.scout1.isHasTrait('per_frugal')>>
+  <<set _ch = _ch + 2>>
+  <<set _g1 = true>>
+<</if>>
+<<if $g.scout2.isHasTrait('per_frugal')>>
+  <<set _ch = _ch + 2>>
+  <<set _g2 = true>>
+<</if>>
+
+<<if $gQuest.getSeed() % 20 < _ch>>
+<p>
+  Nobody in the right mind would eat such an un-innocent-ly shaped fruit, or so
+  <<rep $g.biologist>> thought. After all, there are numerous similarly shaped fruit in the
+  <<lore region_forest>>, but with very "bad" effects.
+  Unfortunately, logic did not apply to
+  <<if _g1 && _g2>>
+    both of your extremely greedy scouts.
+  <<elseif _g1>>
+    your greedy slaver <<rep $g.scout1>>.
+    <<set _s = $g.scout1>>
+  <<else>>
+    your greedy slaver <<rep $g.scout2>>.
+    <<set _s = $g.scout2>>
+  <</if>>
+  Right when <<rep $g.biologist>> biologist|was not looking,
+  <<if _g1 && _g2>> both of them
+  <<else>> <<rep _s>> swiped one of the fruits and
+  <</if>>
+  gobbled the thing down <<if _g1 && _g2>> their throats, <<else>> <<their _s>> throat, <</if>>
+  choking at the sensation, very similar to having a juicy cock deep-throating the organ.
+  The effects of eating the fruit might not be noticable from the outside, but
+  <<if _g1 && _g2>>
+    they could
+  <<else>>
+    <<rep _s>> could
+  <</if>>
+  feel a certain part of their body returned to youth.
+  Fortunately there were enough of the fruits that your slavers still made a tidy amount of profit
+  after selling the ones your unscrupulous scouts did not touch,
+  but you made a mental note to scold your slavers later.
+</p>
+
+<<if _g1>>
+  <<run setup.qc.TraitDecrease('scout1', setup.trait.vagina_tight).apply($gQuest)>>
+  <<run setup.qc.TraitDecrease('scout1', setup.trait.anus_tight).apply($gQuest)>>
+<</if>>
+<<if _g2>>
+  <<run setup.qc.TraitDecrease('scout2', setup.trait.vagina_tight).apply($gQuest)>>
+  <<run setup.qc.TraitDecrease('scout2', setup.trait.anus_tight).apply($gQuest)>>
+<</if>>
+
+<<else>>
+<p>
+To your complete surprise, the fruit all arrived at your fort intact.
+Somehow, your slavers were able to hold off eating or desecrating any of the
+well-endowed little fruits, probably not in small part thanks to the white and salty juice
+that coated most of the fruits.
+Your slavers told you that the plant produced these substance,
+but you were not taking any chances, and you ordered <<rep $g.biologist>> to
+thoroughly wash all these fruits before you offloaded them to the nearest black market.
+</p>
+<</if>>
+
+:: QuestForbiddenFruitSuccess [nobr]
+
+<p>
+After a few days of fruitless search,
+<<rep $g.scout1>> stumbled into a clearing with nothing but a single large ancient-looking tree
+in the middle of it.
+Surrounding the tree were numerous elves engaged in debauched ritual.
+They grope and stroke the dick-shaped fruits, before the fruit shuddered and leaked
+plant juice, which the elves drank lasciviously --
+These elves worshipped the tree to the level of a god,
+and considered its juice to grant them blessings and perpetual youth.
+Your slavers waited until all the elves were completely spent from the debauchery before
+sneaking in and gathering some of the fruits for resale.
+Unfortunately, some of the elves also tried to bore a child sired by the tree,
+which they did by inserting the fruits into holes a fruit should never have gone into.
+Your slavers decided that these unlucky fruits were probably too smelly and it would be unwise
+to try and sell these too.
+</p>
+
+
+:: QuestForbiddenFruitFailure [nobr]
+
+<p>
+After a few days of fruitless search, <<rep $g.scout1>> stumbled
+into a clearing with nothing but a single large tree in its center.
+Excited, <<rep $g.scout1>> and <<rep $g.scout2>> <<uadv $g.scout1>> rushed into the
+clearing, without realizing that <<rep $g.biologist>> had mistaken the tree with another close relative
+of the tree, but with a completely different effect.
+<<if $gOutcome == 'disaster'>>
+<<Rep $g.biologist>> even joined in the excitement and
+tasted the fruits together, first one fruit, two fruits, until several were already consumed by the time
+<<rep $g.biologist>> realized the mistake.
+<<else>>
+With <<rep $g.biologist>> far behind them, the scouts proceeded to sample the fruits and
+taste them, first one fruit, two fruits, until several were already consumed by the time
+<<rep $g.biologist>> realized the mistake.
+<</if>>
+</p>

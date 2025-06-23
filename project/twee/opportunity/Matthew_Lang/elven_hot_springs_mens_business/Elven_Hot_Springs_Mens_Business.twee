@@ -1,0 +1,172 @@
+:: OpportunitySetup_elven_hot_springs_men_s_business [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'elven_hot_springs_men_s_business', /* key */
+"Elven Hot Springs: Men\'s Business", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'forest',
+  'maleonly',
+  'prep',
+  'unit',
+  'favor',
+  'ire',
+],
+1, /* expiration weeks */
+'Opportunity_elven_hot_springs_men_s_business',
+setup.qdiff.normal25, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_elven_hot_springs_men_s_business_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 52),
+      setup.qc.QuestDirect('elven_hot_springs_men_s_business_attend_', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_elven_hot_springs_men_s_business_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 52),
+      setup.qc.QuestDirect('elven_hotsprings_men_s_business_raid_', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_elven_hot_springs_men_s_business_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 52),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.uncommon],
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'elf': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.AllTraits([setup.trait.gender_male, setup.trait.race_elf], true),
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_elven_hot_springs_men_s_business [nobr]
+<<set _u = setup.getUnit({
+job: 'slaver',
+notyou: true,
+available: true,
+anytraits: ['race_human', 'race_catkin', 'race_lizardkin', 'race_wolfkin', 'race_greenskin', 'race_demon'],
+})>>
+
+<<if !_u>>
+    <<set _u = setup.getAnySlaver([$g.elf])>>
+<</if>>
+
+<<if $g.elf.isYou()>>
+    <p>
+        A stretch of blustery cold weather reminds you that the seasons are turning, and it's getting close to that time of the year again, when the Cult of Caledain holds a sacred gathering at one of the many hot springs deep within the <<lore region_forest>>. In line with the cult's beliefs, the gathering is open to any male elf who wishes to attend, and the festivities mostly include drinking lots of wine, pissing in the open, and orgies in the hot springs. The Cultists believe that taking the cum of a strong warrior into one's body increases both strength and virility, and with clothing being strictly prohibited, the gathering sounds like a lot of fun for those inclined towards mansex. Or elves so inclined anyway.
+    </p>
+    <p>
+        This could be a great chance to either raid the event to capture a slave or two, or send some of your own slavers as attendees, along with a domestically trained slave, to build goodwill with your wood elf neighbors. Either decision would mean being able to convince the wood elves to share the location of the gathering with you, and raiding a holy festival specifically intended to be a neutral, conflict free zone might annoy some of your wood elven slavers. Of course, if those options seem like too much work, you could just pass on the entire thing this year. It's not like you're expected to attend every year. Or any year, for that matter.
+    </p>
+<<else>>
+    <<if $g.elf.isHasTrait('per_chaste')>>
+        <<dialogue $g.elf>>
+            Yes, taking a warrior's seed makes you stronger, and giving yours to your bothers is a generous act. The fact that I don't personally enjoy the act as much as some of you doesn't change that.
+        <</dialogue>>
+        <p>
+            <<if $unit.player.isHasTrait('race_elf')>>
+                "Are you talking about the Cult of Caledain?" you ask, stopping at a group of slavers drinking in the courtyard.<br>
+                "Uh, yes <<unickname $g.elf>>," <<name $g.elf>> says, dropping his eyes.<br>
+                "Huh, I'd almost forgotten that was coming up," you say. "Maybe you should go."<br>
+            <<else>>
+                "What's this?" you ask, stopping at a group of slavers drinking in the courtyard.<br>
+                "<<name $g.elf>> was just explaining how some wood elves believe taking loads up your butt makes you a stronger man," <<name _u>> says with a grin.<br>
+                "It doesn't have to be up your... shut up!" <<name $g.elf>> snaps, his face reddening.<br>
+                "Okay. How did you get onto the topic anyway?"<br>
+                "The Cult of Caledain's Men's gathering is coming up soon," <<name $g.elf>> mutters. "And I'm already regretting bringing it up."
+            <</if>>
+        </p>
+    <<else>>
+        <<dialogue $g.elf>>
+            Oh it's great! Three to four days of fucking, feasting and wine soaked merriment. And the hot springs, of course.
+        <</dialogue>>
+        "But no women?" <<name _u>> asks.<br>
+        "Well no, they have their own gatherings," <<name $g.elf>> says, taking a long drink from his tankard.<br>
+        <<if $unit.player.isHasTrait('race_elf')>>
+            "Are you talking about the Cult of Caledain?" you ask, stopping at a group of slavers drinking in the courtyard.<br>
+            "Uh, yes <<unickname $g.elf>>," <<name $g.elf>> says. "I was considering going this year."<br>
+            "Huh, I'd almost forgotten that was coming up," you say.<br>
+        <<else>>
+            "What's this?" you ask, stopping at a group of slavers drinking in the courtyard.<br>
+            "<<name $g.elf>> was just explaining how some wood elves believe taking loads up your butt makes you a stronger man," <<name _u>> says with a grin.<br>
+            "Or down your throat," <<name $g.elf>> says mildly. "And I was talking about a sacred gathering. You all just wanted to know about the sex.<br>
+            "What gathering?"<br>
+            "The Cult of Caledain has Men's gathering every year and it's coming up soon," <<name $g.elf>> says. "I was thinking of going."
+        <</if>>
+    <</if>>
+    <p>
+        From what you
+        <<if $unit.player.isHasTrait('race_elf')>>
+            recall,
+        <<else>>
+            gather,
+        <</if>>
+        the Cult of Caledain holds a sacred gathering at one of the many hot springs deep within the <<lore region_forest>>. In line with the cult's beliefs, the gathering is open to any male elf who wishes to attend, and the festivities mostly include drinking lots of wine, pissing in the open, and orgies in the hot springs. The Cultists believe that taking the cum of a strong warrior into one's body increases both strength and virility, and with clothing being strictly prohibited, the gathering sounds like a lot of fun for those inclined towards mansex. Or elves so inclined anyway.
+    </p>
+    <p>
+        This could be a great chance to either raid the event to capture a slave or two, or send some of your own slavers as attendees, along with a domestically trained slave, to build goodwill with your wood elf neighbors. Either decision would mean being able to convince the wood elves to share the location of the gathering with you, and raiding a holy festival specifically intended to be a neutral, conflict free zone might annoy some of your wood elven slavers. Of course, if those options seem like too much work, you could just pass on the entire thing this year. It's not like you're expected to attend every year. Or any year, for that matter.
+    </p>
+
+<</if>>
+
+<<dangertext "Warning:">> Some of your wood elven slavers may <<dangertextlite 'hate you'>> doing something as dishonorable as raiding a sacred festival. If you do that, you could risk them leaving your service. Or worse.
+
+
+
+:: Opportunity_elven_hot_springs_men_s_business_0 [nobr]
+Attend the Gathering
+
+
+
+:: Opportunity_elven_hot_springs_men_s_business_1 [nobr]
+Raid the Gathering (!!!)
+
+
+
+:: Opportunity_elven_hot_springs_men_s_business_2 [nobr]
+Maybe next year
+
+

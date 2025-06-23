@@ -1,0 +1,289 @@
+:: OpportunityGenSetup [nobr]
+
+<<set $devtooltype = 'opportunity'>>
+
+<<set $qcustomslaveorder = []>>
+<<set $qcustomcriteria = []>>
+<<set $qcustomunitgroup = []>>
+<<set $qcustomtitle = []>>
+
+<<set _okey = '__devtool_opportunity'>>
+<<set _opassage = 'DummyOpportunityPassageDesc'>>
+
+<<set $opool = null>>
+<<set $orarity = setup.rarity.never>>
+
+<<set $odesc = "">>
+<<set $ooptiondesc = []>>
+<<set $ooptiontitle = []>>
+
+<<if _okey in setup.opportunitytemplate>>
+  <<run delete setup.opportunitytemplate[_okey]>>
+<</if>>
+
+<<if !_obase>>
+  <<set $dtquest = new setup.OpportunityTemplate(
+    _okey,  /* key */
+    "",  /* name */
+    {name: '', url: ''},  /* author */
+    [],  /* tags */
+    1,  /* deadline weeks */
+    _opassage,  /* description passage */
+    setup.qdiff.normal40,  /* difficulty */
+    [],  /* options */
+    [],  /* quest pools */
+    [],  /* restrictions */
+    {},  /* actors */
+    [],  /* expiration outcomes */
+    true,  /* is_must_be_answered */
+  )>>
+<<else>>
+  <<set $odesc = Story.get(_obase.getDescriptionPassage()).text>>
+
+  <<set _ooptions = []>>
+  <<for _ioption, _option range _obase.getOptions()>>
+    <<set _optiondesc = ''>>
+    <<if _option.outcome_passage>>
+      <<set _optiondesc = Story.get(_option.outcome_passage).text>>
+    <</if>>
+
+    <<run $ooptiondesc.push(_optiondesc)>>
+    <<run $ooptiontitle.push(Story.get(_option.description_passage).text)>>
+
+    <<run _ooptions.push({
+      description_passage: `DummyOpportunityPassage${_ioption}`,
+      outcome_passage: `DummyOpportunityPassageFlavor${_ioption}`,
+      costs: _option.costs,
+      restrictions: _option.restrictions,
+      outcomes: _option.outcomes,
+      visibility_restrictions: _option.visibility_restrictions,
+    })>>
+  <</for>>
+
+  <<set $dtquest = new setup.OpportunityTemplate(
+    _okey,  /* key */
+    _obase.getName(),  /* name */
+    _obase.getAuthor(),  /* author */
+    _obase.tags,  /* tags */
+    _obase.getDeadlineWeeks(),  /* deadline weeks */
+    _opassage,  /* description passage */
+    _obase.getDifficulty(),  /* difficulty */
+    _ooptions,  /* options */
+    [],  /* quest pools */
+    _obase.getPrerequisites(),  /* restrictions */
+    _obase.getActorUnitGroups(),  /* actors */
+    _obase.getExpiredOutcomes(),  /* expiration outcomes */
+    _obase.isMustBeAnswered(),  /* is_must_be_answered */
+  )>>
+  <<set $dtquest.old_key = _obase.key>>
+
+  /* pool and rarity */
+  <<set _poolrarity = _obase.getAnyQuestPoolRarity()>>
+  <<if _poolrarity>>
+    <<set $opool = _poolrarity.pool>>
+    <<set $orarity = _poolrarity.rarity>>
+  <</if>>
+<</if>>
+
+
+:: OpportunityGen [nobr]
+
+<<run setup.DevToolHelper.restoreScrollPos()>>
+
+<<dtauthor "$dtquest.author" $dtquest.author>>
+
+<<dtname "$dtquest.name" $dtquest.name>>
+
+<<dtquestpool "$opool" $opool 'OGChooseQuestPool'>>
+
+<<dtrarity "$orarity" $orarity 'OGChooseRarity'>>
+
+<<dtdifficulty $dtquest 'OGChooseDifficulty'>>
+
+<<dttags $dtquest>>
+
+<<dtactor $dtquest>>
+
+<<dtrestriction '$dtquest.prerequisites'>>
+
+<div class='questcard'>
+  Options: <<message '(?)'>>
+    <div class='helpcard'>
+      The various choices you can make on this opportunity.
+      <br/>
+      <br/>
+      An opportunity should always have at least one option.
+      Maximum 10 options.
+    </div>
+  <</message>>
+  <<if $ooptiondesc.length < 10>>
+    <<link '(Add new option)' 'OpportunityGen'>>
+      <<set _i = $ooptiondesc.length>>
+      <<run $dtquest.options.push({
+        description_passage: `DummyOpportunityPassage${_i}`,
+        outcome_passage: `DummyOpportunityPassageFlavor${_i}`,
+        costs: [],
+        restrictions: [],
+        outcomes: [],
+        visibility_restrictions: [],
+      })>>
+
+      <<run $ooptiondesc.push('')>>
+      <<run $ooptiontitle.push('')>>
+      <<run setup.DevToolHelper.saveScrollPos()>>
+    <</link>>
+  <</if>>
+  <<for _ioption, _option range $dtquest.options>>
+    <<set _baseoptionvar = `$dtquest.options[${_ioption}]`>>
+    <<capture _ioption, _option>>
+      <div class='opportunitycardoption'>
+        <div>
+          Option name:
+          <<message '(?)'>>
+            <div class='helpcard'>
+              The displayed option name.
+              <br/>
+              <br/>
+              For example, "Raid the vilage"
+            </div>
+          <</message>>
+          <<set _title = `$ooptiontitle[${_ioption}]`>>
+          <<textbox _title $ooptiontitle[_ioption]>>
+        </div>
+
+        <div>
+          Option flavor text:
+          <<message '(?)'>>
+            <div class='helpcard'>
+              Flavor text of what happens after you select this option.
+              <br/>
+              <br/>
+              Can be left empty if you don't want to have any text.
+            </div>
+          <</message>>
+          <br/>
+          <<set _desccontainer = `$ooptiondesc[${_ioption}]`>>
+          <<codeeditor _desccontainer $ooptiondesc[_ioption]>>
+        </div>
+
+        <<set _cost = `$dtquest.options[${_ioption}].costs`>>
+        <<dtcost _cost>>
+
+        <<set _restriction = `$dtquest.options[${_ioption}].restrictions`>>
+        <<dtrestriction _restriction>>
+
+        <<set _outcomes = `$dtquest.options[${_ioption}].outcomes`>>
+        <<dtoutcome _outcomes>>
+
+        <!--
+        <<set _vis_restrictions = `$dtquest.options[${_ioption}].visibility_restrictions`>>
+        <<dtvisrestriction _vis_restrictions>>
+        -->
+
+        <<link '(DELETE THIS OPTION)' 'OpportunityGen'>>
+          <<run setup.DevToolHelper.saveScrollPos()>>
+          <<run $dtquest.options.splice(_ioption, 1)>>
+          <<run $ooptiontitle.splice(_ioption, 1)>>
+          <<run $ooptiondesc.splice(_ioption, 1)>>
+        <</link>>
+      </div>
+    <</capture>>
+  <</for>>
+</div>
+
+<<if $dtquest.isMustBeAnswered()>>
+  <div>This opportunity <<dangertext 'must be answered'>> by the player.
+  <<link '(Click to allow this to be ignored)' 'OpportunityGen'>>
+    <<set $dtquest.is_must_be_answered = false>>
+    <<run setup.DevToolHelper.saveScrollPos()>>
+  <</link>>
+  </div>
+<<else>>
+  <div>This opportunity <<successtext 'can be ignored'>> and expire on its own.
+  <<link '(Click to force players to answer this opportunity)' 'OpportunityGen'>>
+    <<set $dtquest.is_must_be_answered = true>>
+    <<run setup.DevToolHelper.saveScrollPos()>>
+  <</link>>
+  </div>
+  <<dtexpires "$dtquest.deadline_weeks" $dtquest.deadline_weeks>>
+
+  <<dtexpireoutcome '$dtquest.expired_outcomes'>>
+<</if>>
+
+
+<hr/>
+
+<<dtstoryhelp>>
+
+<div class="overflow-story-container">
+
+<hr/>
+
+<p>
+<b>Opportunity description</b>:
+<br/>
+<<codeeditor '$odesc' $odesc>>
+</p>
+
+<hr/>
+
+<p class="center">
+<br/>
+<<button 'CREATE OPPORTUNITY!'>>
+  <<run setup.DOM.Menu.devtoolverifycreate()>>
+
+<</button>>
+</p>
+
+<<if $dtquest.old_key>>
+
+<p class='center'>
+<<link 'create opportunity (override existing)'>>
+  <<run setup.DOM.Menu.devtoolverifycreate(true)>>
+<</link>>
+</p>
+
+<</if>>
+
+</div>
+
+
+
+:: OGChooseQuestPool [nobr]
+
+<p>Choose where quest can appear</p>
+
+<<dtquestpoolchoose 'OGChooseQuestPoolDo'>>
+
+
+:: OGChooseQuestPoolDo [nobr]
+
+<<set $opool = _questpoolchosen>>
+<<gotowipehistory 'OpportunityGen'>>
+
+
+
+:: OGChooseDifficulty [nobr]
+
+<p>Choose quest difficulty</p>
+<<devchoosedifficulty 'OGChooseDifficultyDo'>>
+
+:: OGChooseDifficultyDo [nobr]
+
+<<set $dtquest.difficulty = _diffchosen>>
+<<gotowipehistory 'OpportunityGen'>>
+
+
+:: OGChooseRarity [nobr]
+
+<<dtraritychoose 'OGChooseRarityDo'>>
+
+
+:: OGChooseRarityDo [nobr]
+
+<<set $orarity = _raritychosen>>
+<<gotowipehistory 'OpportunityGen'>>
+
+
+
+

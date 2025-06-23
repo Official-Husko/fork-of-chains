@@ -1,0 +1,80 @@
+:: EventSetup_teachings_of_obedience [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_author_of_the_teachings_of_obedience_0", /* key */
+"Author of the Teachings of Obedience", /* name */
+"The sole author of the Teaching of Obedience book", /* description */
+"wrote the \"Teachings of Obedience\" book", /* unit text */
+7500, /* slave value */
+{ /* skill additives */
+slaving: 4,knowledge: 2,},
+)
+>>
+
+
+<<run new setup.Event(
+'teachings_of_obedience', /* key */
+"Teachings of Obedience", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'upgrade',
+],
+'Event_teachings_of_obedience',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.technology_obediencemaster),
+  setup.qc.BoonizeRandom('slaver', 100),
+  setup.qc.Return('slaver'),
+  setup.qc.AddTitle('slaver', 'quest_author_of_the_teachings_of_obedience_0'),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_teachings_of_obedience [nobr]
+<p>
+It's been almost three months after <<yourrep $g.slaver>> asked for a break
+from <<their $g.slaver>> slaving duties, and you have not heard any wind from
+<<therace $g.slaver>>. Out of concern, you've decided to enter <<their
+$g.slaver>> room in the fort as quietly as you can.
+</p>
+
+<p>
+Peeking through the gap in the door, you see your slaver apparently asleep on
+<<their $g.slaver>> small desk, next to what appears to be a large tome. Not
+wanting to disturb the slaver, you tiptoe and approach the desk, before sneaking
+glance at the tome deftly titled the "Training of Obedience". The tome
+details a wealth of knowledge on how to properly break a slave's will
+permanently, but with proper care as not to damage the slave nor make them
+snap.
+<<if $g.slaver.isHasTrait('per_studious')>>
+The book is written meticulously — as expected from your studious slaver,
+which makes it very easy for you to read in its entirety.
+<<elseif $g.slaver.isHasTrait('per_active')>>
+While the writing is sloppy, the book's storytelling is very engaging, and
+before long you've finished reading the entire tome.
+<<else>>
+The book's writing is great, and before you know it you've finished reading
+the book.
+<</if>>
+
+</p>
+
+<p>
+Having finished reading the tome, you are surprised to find <<yourrep $g.slaver>>
+smiling amusedly behind you, before thanking you for the break and offering
+you the book as the result of their work. You can see <<theslaver $g.slaver>> beaming proudly
+at the book, no doubt <<their $g.slaver>> magnum opus. You would too, if you
+were to write such a well-written piece of work!
+</p>

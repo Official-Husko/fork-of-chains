@@ -1,0 +1,34 @@
+:: ItemDebug [nobr]
+
+<h2>Select item to add to inventory</h2>
+
+<<focmove 'Done' 'Inventory'>>
+
+<<for _iitem, _item range setup.item>>
+  <br/>
+  <<capture _item>>
+    <<rep _item>>
+    <<link '(Add)'>>
+      <<run $inventory.addItem(_item)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+
+:: EquipmentDebug [nobr]
+
+<h2>Select equipment to add to armory</h2>
+
+<<focmove 'Done' 'Armory'>>
+
+<<for _iequipment, _equipment range setup.equipment>>
+  <br/>
+  <<capture _equipment>>
+    <<rep _equipment>>
+    <<link '(Add)'>>
+      <<run $armory.addEquipment(_equipment)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+

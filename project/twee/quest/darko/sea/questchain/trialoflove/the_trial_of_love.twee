@@ -1,0 +1,323 @@
+:: QuestSetup_the_trial_of_love [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaknight = new setup.UnitCriteria(
+null, /* key */
+'Knight Trialist', /* name */
+[
+  setup.trait.bg_knight,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_soldier,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_brave,
+  setup.trait.per_loyal,
+  setup.trait.per_chaste,
+  setup.trait.per_honorable,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.per_cautious,
+  setup.trait.per_independent,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_masochistic,
+  setup.trait.per_evil,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.LoverExist(),
+],
+{
+  combat: 1.5,
+  brawn: 1.5,
+}
+)>>
+
+<<set _criteriahealer = new setup.UnitCriteria(
+null, /* key */
+'Healer Trialist', /* name */
+[
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.breast_large,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_lavish,
+  setup.trait.per_kind,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.eq_slutty,
+  setup.trait.eq_veryslutty,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_frugal,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.LoverExist(),
+],
+{
+  aid: 1.5,
+  arcane: 1.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_trial_of_love', /* key */
+"The Trial of Love: Hardship", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'prep',
+  'item',
+  'sea',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'knight': [ _criteriaknight, 1.5],
+  'healer': [ _criteriahealer, 1.5],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_trial_of_love',
+setup.qdiff.harder51, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_trial_of_loveCrit',
+    [
+      setup.qc.IfThenElse(
+        setup.qres.Lovers('knight', 'healer'),
+        setup.qc.DoAll([
+          setup.qc.VarSet('trial_of_love_progress', '1', -1),
+          setup.qc.Equipment(setup.equipmentpool.aid_good),
+          setup.qc.Equipment(setup.equipmentpool.brawn_good),
+          setup.qc.AddTitle('knight', 'quest_love_trialist_0'),
+          setup.qc.AddTitle('healer', 'quest_love_trialist_0')
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined)),
+    ],
+  ],
+  [
+    'Quest_the_trial_of_loveCrit',
+    [
+      setup.qc.IfThenElse(
+        setup.qres.Lovers('knight', 'healer'),
+        setup.qc.DoAll([
+          setup.qc.VarSet('trial_of_love_progress', '1', -1),
+          setup.qc.OneRandom([
+            setup.qc.Equipment(setup.equipmentpool.aid_good),
+            setup.qc.Equipment(setup.equipmentpool.brawn_good),
+          ]),
+          setup.qc.AddTitle('knight', 'quest_love_trialist_0'),
+          setup.qc.AddTitle('healer', 'quest_love_trialist_0')
+        ], undefined),
+        setup.qc.DoAll([
+        ], undefined)),
+    ],
+  ],
+  [
+    'Quest_the_trial_of_loveFailure',
+    [
+      setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+      setup.qc.MissingUnitRecapture('knight', 'capturedmedium'),
+    ],
+  ],
+  [
+    'Quest_the_trial_of_loveFailure',
+    [
+      setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+      setup.qc.MissingUnitRecapture('knight', 'capturedhard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.VarNull('trial_of_love_cooldown'),
+  setup.qres.NoUnitWithTitle('quest_love_trialist_0'),
+  setup.qres.ExistUnit([
+    setup.qres.Job(setup.job.slaver)
+  ]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_trial_of_love [nobr]
+
+<p>
+The <<lore region_sea>> is full of wondrous islands, many with scenery
+commonly described as "paradise". One such island celebrates a yearly
+tradition, a competition known as the "Trial of Love". Pairs of lovers are
+invited to participate to show the strength of their body, mind, and love,
+with the winner taking the grand and ilusive prize: the <<rep
+setup.item.love_technology>>.
+</p>
+
+<<if $inventory.isHasItem(setup.item.love_technology)>>
+
+<p>
+While you already have the technology in your fort, it could never hurt to
+get more of that rare <<rep setup.item.love_potion_true>>. You could try to
+resend a pair of lovebirds on a quest to a paradise island. If anything, the
+lovebirds could certainly use the R&R.
+</p>
+
+<<else>>
+
+<p>
+You have heard about the wonderful potency of <<rep
+setup.item.love_technology>>, forcing anyone to fall in love with you, even
+former arch enemies! It would certainly be good for your... business... yes,
+for your business to get your <<uhands $unit.player>> on this artifact. All
+you need to do is to send a pair of lovebirds among your slavers to a
+vacation in a paradise island.
+</p>
+
+<</if>>
+
+<p>
+<<dangertext 'Note'>>: The two slavers send on this quest must be lovers. Otherwise they can never win the competition!
+</p>
+
+
+:: Quest_the_trial_of_loveCrit [nobr]
+
+<<if $g.knight.getLover() == $g.healer>>
+
+<p>
+<<Yourrep $g.knight>> and <<utheirrel $g.knight $g.healer>> <<rep $g.healer>>
+arrived at the island, and were immediately greeted with what they could only
+describe as paradise. Lush vegetations, pristine beach, and clear waters, it
+was everything a paradise should have been and more. But the lovebirds knew
+they were there on a mission, to demonstrate their love and more!
+</p>
+
+<p>
+The Trial of Love consists of a series of trials, this being its first. The
+first trial was trial by combat, where your slavers must demonstrate their
+ability to work with each other in hardship. Pairs of lovers were brought in
+to fight another in a competitive bracket within the lush island, using the
+strengths of their bonds to gain an edge over the others.
+</p>
+
+<p>
+<<Rep $g.knight>> knight|is not a stranger to fighting —
+<<if $g.knight.isHasTrait('muscle_strong')>>
+using <<their $g.knight>> big muscles,
+<<else>>
+using <<their $g.knight>> fighting ability,
+<</if>>
+<<they $g.knight>> dispatched all the combatants one by one, while <<their
+$g.knight>> one true love <<rep $g.healer>>
+<<if $g.healer.isHasTrait('magic_light')>>
+cast healing spells upon healing spells to
+<<else>>
+used healing potions upon healing potions (which cost you money, by the way) to
+<<run $company.player.substractMoney(1000)>>
+<</if>>
+restore both the health and spirit of <<their $g.healer>> beloved the back.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The lovers slavers fought waves upon waves of combatants until finally they
+were the only pair left standing. ...which wasn't supposed to happen, as
+there was supposed to be two winners in this first bout. Seeing this, the
+lovemaster awarded both the first and second place rewards to your slavers,
+one equipment for the gallant knight, and another for the caring healer.
+</p>
+
+<<else>>
+
+<p>
+Your slavers fought valiantly until there were only two teams left. The
+remaining two teams including your slavers were then crowned winners of the
+first bout of Trial of Love, each awarded a rare piece of equipment as a
+prize.
+</p>
+
+<</if>>
+
+<p>
+The lovebirds spent the rest of their time in the islands deepening their
+love by the beachside before eventually returning to reality — back at your
+fort with the prize. Expect an invitation for the second bout to come to your
+desk anytime soon, and your slavers better get ready for it.
+</p>
+
+<<else>>
+
+<p>
+<<Rep $g.knight>> and <<their $g.knight>> certainly not lovers <<rep
+$g.healer>> had returned to your fort. They looked a little refreshed from the
+vacation, but there were nothing else to report. In their stay on the
+paradise island, they were immediately disqualified from the competition due
+to not being actual lovers. Perhaps you should consider sending an actual
+pair of lovers for this quest next time.
+</p>
+
+<</if>>
+
+
+:: Quest_the_trial_of_loveFailure [nobr]
+
+<p>
+Only <<yourrep $g.healer>> returned from the quest. <<They $g.healer>>
+tearfully begged you to save
+<<utheirrel $g.healer $g.knight>> <<rep $g.knight>> — the slavers had
+apparently fallen into a trap, as the "Trial of Love" turned out to be a simple scheme to
+lure in people from your land to be remade as a love slave.
+</p>
+
+<p>
+<<Therace $g.knight>> had apparently sacrificed <<themself $g.knight>> to let
+<<rep $g.healer>> escape alone.
+<<if $gOutcome == 'disaster'>>
+It will be a monumental challenge to rescue the slaver,
+<<else>>
+It won't be easy to rescue the slaver,
+<</if>>
+but if you (and <<rep $g.healer>>) ever wanted to see <<rep $g.knight>> again
+then you have to act now.
+</p>
+

@@ -1,0 +1,25 @@
+:: ExportSaveText [nobr]
+
+<div>
+Your exported save file is below. Copy it and save it somewhere.
+<<focmove "(Click here to import a save)" "ImportSaveText">>
+<<focmove "(Return)" "SettingsMenu">>
+</div>
+
+<textarea autofocus="autofocus" onfocus="this.select()">
+  <<printtext setup.SaveUtil.getSaveAsText()>>
+</textarea>
+
+
+:: ImportSaveText [nobr]
+
+<div>
+Copy your <<focmove "exported" "ExportSaveText">> save into the text box below,
+and then click
+<<focbutton "Load Save">>
+  <<run setup.SaveUtil.importSaveFromText(_importedsave, "")>>
+<</focbutton>>.
+<<focmove "(Cancel)" "SettingsMenu">>
+</div>
+
+<<textarea "_importedsave" "">>

@@ -1,0 +1,31 @@
+:: InitCompanyHumanDesert [nobr company]
+
+<<set _scout = setup.qc.OneRandom([
+  setup.qc.QuestDelay('desert', 1),
+  setup.qc.QuestDelay('sea', 1),
+])>>
+
+<<run new setup.CompanyTemplate(
+  'humandesert',
+  'Nomads of the Eastern Desert',
+  'CompanyTemplateHumanDesert',
+  [ /* favor effects */
+    [
+      _scout,
+    ],
+    [
+      _scout,
+      _scout,
+    ],
+    [
+      _scout,
+      _scout,
+      _scout,
+    ],
+  ],
+)>>
+
+:: CompanyTemplateHumanDesert [nobr]
+
+Hardy people of the <<lore region_desert>>.
+When befriended, these people can supply your company with leads for quests from faraway lands.

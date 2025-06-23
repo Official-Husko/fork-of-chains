@@ -1,0 +1,144 @@
+:: QuestSetupRecruitmentDeep [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _deep_multi = 1.2>>
+
+<<run new setup.QuestTemplate(
+  'recruitmentdeep', /* key */
+  'Recruitment: Deep', /* Title */
+  'darko',   /* author */
+  ['deep', 'unit'],  /* tags */
+  2,  /* weeks */
+  setup.INFINITY,  /* quest expiration weeks */
+  { /* roles */
+    'recruiter1': setup.qu.recruiter,
+    'recruiter2': setup.qu.recruiter,
+    'fighter': setup.qu.fighter_deep,
+  },
+  { /* actors */
+    'recruit1': 'deep_all',
+    'recruit2': 'deep_all',
+    'recruit3': 'deep_all',
+    'recruit4': 'deep_all',
+    'recruit5': 'deep_all',
+    'recruit6': 'deep_all',
+    'recruit7': 'deep_all',
+    'recruit8': 'deep_all',
+  },
+  [ /* costs */
+  ],
+  'QuestRecruitmentDeep', /* passage description */
+  setup.qdiff.normal30, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestRecruitmentDeepCrit',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit5', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit6', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit7', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit8', "", /* is mercenary = */ true, _deep_multi),
+      ],
+    ],
+    [
+      'QuestRecruitmentDeepSuccess',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit5', "", /* is mercenary = */ true, _deep_multi),
+      ],
+    ],
+    [
+      'QuestRecruitmentDeepFailure',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true, _deep_multi),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true, _deep_multi),
+      ],
+    ],
+    [
+      'QuestRecruitmentDeepDisaster',
+      [
+        setup.qc.Injury('recruiter1', 2),
+        setup.qc.Injury('recruiter2', 2),
+        setup.qc.Injury('fighter', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.recruitmentdeep, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.QuestAvailableUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestRecruitmentDeep [nobr]
+
+<p>
+The <<lore region_deep>> is inhabited by both the
+<<rep setup.trait.subrace_kobold>> and the <<rep setup.trait.subrace_drow>>.
+</p>
+
+<p>
+Between the two, the kobolds are much more numerous, being commonly found in the realm.
+Despite being physically inadept, kobolds are often cunning and creative,
+a very useful trait to have as a slaver.
+</p>
+
+<p>
+Meanwhile, the drows are natural slavers, having practiced slavery for a very long time.
+Like their surface elf counterpart, the drows retained great affinity to alchemy,
+and often employ their gift in mixing potions to help break or enhance their many slaves.
+The drows are also attuned to dark magic, making them great corruptors.
+All these traits mean that one could never go wrong inviting a drow or two into a slaving company.
+</p>
+
+<p>
+This quest is available thanks to your <<rep setup.buildingtemplate.hiringsquaredeep>>.
+</p>
+
+
+:: QuestRecruitmentDeepCrit [nobr]
+
+<p>
+The team's recruiters <<rep $g.recruiter1>> and <<rep $g.recruiter2>> were relentless
+during their recruitment drive and as a result
+eight potential slavers signed up for your company.
+They are now waiting in the prospects hall for your
+decision, and need to be paid if you want to hire them.
+</p>
+
+
+:: QuestRecruitmentDeepSuccess [nobr]
+
+<p>
+The team's recruiters <<rep $g.recruiter1>> and <<rep $g.recruiter2>>
+traveled through the Deeprealm highways, visiting all the settlements nearby and the occasional
+slave camps.
+They managed to find five potential slavers amongs the people living down there, who are
+now awaiting your decision in the prospects hall.
+</p>
+
+
+:: QuestRecruitmentDeepFailure [nobr]
+
+<p>
+Unfortunately, <<lore region_deep>> was simply too infested with monstrosities by the time
+your slavers descended.
+They were unable to visit as many settlements as they could while trying not to draw the attention
+of the monster horde, and were only able to find two potential recruits.
+</p>
+
+
+:: QuestRecruitmentDeepDisaster [nobr]
+
+<p>
+Unfortunately, there was a massive monster horde within <<lore region_deep>>, and your slavers
+were caught in their march. They wisely retreated, although they suffered minor injuries
+on the way back.
+</p>

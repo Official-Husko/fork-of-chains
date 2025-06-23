@@ -1,0 +1,178 @@
+:: QuestSetup_endurance_trainer_for_hire [nobr quest]
+
+<<run new setup.Title(
+"quest_master_endurance_trainer_0", /* key */
+"Master Endurance Trainer", /* name */
+"Was a master endurance trainer in V\'errmyrdn, renowned for transforming even the weakest slave into a restless labor slave", /* description */
+"used to be a master endurance trainer in V\'errmyrdn", /* unit text */
+5000, /* slave value */
+{ /* skill additives */
+ brawn: 2, slaving: 4,},
+{
+ is_negative: false,
+},
+)
+>>
+<<run new setup.UnitGroup(
+"endurance_trainer_for_hire1",
+"Master Endurance Trainer",
+'subrace_drow', /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplace('unit', setup.trait.per_submissive),
+  setup.qc.TraitReplace('unit', setup.trait.skill_intimidating),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_dark_master, setup.trait.face_hideous, setup.trait.muscle_extremelystrong, setup.trait.per_aggressive, setup.trait.per_proud, setup.trait.per_stubborn], 2, false, false),
+  setup.qc.AddTitle('unit', 'quest_master_endurance_trainer_0'),
+  setup.qc.PerkChoice('unit', setup.trait.perk_switch),
+],
+)>>
+
+
+
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Endurance Slave', /* name */
+[
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_slow,
+  setup.trait.per_stubborn,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.tough_nimble,
+  setup.trait.per_smart,
+  setup.trait.per_curious,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllTraits([setup.trait.training_endurance_advanced], true),
+  setup.qres.NoTraits([setup.trait.training_obedience_master, setup.trait.training_endurance_master, setup.trait.training_domestic_master, setup.trait.training_oral_master, setup.trait.training_vagina_master, setup.trait.training_anal_master, setup.trait.training_dominance_master, setup.trait.training_masochist_master, setup.trait.training_sissy_master, setup.trait.training_pet_master, setup.trait.training_pony_master, setup.trait.training_toilet_master, setup.trait.training_horny_master, setup.trait.training_roleplay_master, setup.trait.training_mindbreak], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'endurance_trainer_for_hire', /* key */
+"Endurance Trainer for Hire", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'trait',
+],
+3, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'trainer': [ setup.qu.slavetrainer, 1.5],
+  'guard': [ setup.qu.guard, 1.5],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'they': 'endurance_trainer_for_hire1',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-10500),
+],
+'Quest_endurance_trainer_for_hire',
+setup.qdiff.hard42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_endurance_trainer_for_hireCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_endurance_trainer_for_hireCrit',
+    [
+      setup.qc.TraitReplace('slave', setup.trait.training_endurance_master),
+      setup.qc.TraitRemove('slave', setup.trait.tough_nimble),
+      setup.qc.VarAdd('endurance_trainer_patron', 1, -1),
+    ],
+  ],
+  [
+    'Quest_endurance_trainer_for_hireCrit',
+    [
+      setup.qc.MoneyCustom(7500),
+      setup.qc.Injury('slave', 4),
+    ],
+  ],
+  [
+    'Quest_endurance_trainer_for_hireCrit',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoOpportunity('the_secret_to_endurance'),
+  setup.qres.NoQuest('the_secret_to_endurance'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_endurance_trainer_for_hire [nobr]
+<p>
+    The drows keep many slaves, and most of the manual labors are done by them. Be it mining for valuable minerals, growing fungi, or building new homes, all are done by the slaves under the strict supervision of the drow slavers and powerful wizards. The slaves work very long hours, possible no small thanks to the slave trainings that the drow mercilessly drilled into these slaves.
+</p>
+
+<p>
+    One of the most famous slave trainers in <<rep $company.drow>> is currently offering <<their $g.they>> services to you. You could bring a slave that knows basic endurance training to the trainer, and <<they $g.they>> could improve it further, enough for the slave to be called a master of endurance.
+    <<if $inventory.isHasItem("technology_endurancemaster")>>
+        Given your possession of <<rep setup.item.technology_endurancemaster>>, you already know how to do this yourself, of course, but doing it yourself is significantly harder.
+    <<else>>
+        Given that you do not know how to train such slaves, this could be your only way right now to get your slave trained fully in the art of endurance.
+    <</if>>
+    The fee is steep — a hefty <<money 10000>>, but surely it's worth it?
+</p>
+
+
+
+
+:: Quest_endurance_trainer_for_hireCrit [nobr]
+<p>
+    <<Rep $g.slave>> was delivered to the <<master $g.they>>, who took in the slave. Your slavers were afforded luxury accomodation within the mansion for the next few weeks as <<rep $g.slave>> was put into rigorous training. Every inch of <<their $g.slave>> body was trained to withstand punishment of any form, be it relentless whipping from <<their $g.slave>> master, carrying a plow all day long, or even non-stop phallus invading <<their $g.slave>> anus. As a master slave, <<they $g.slave>> would be expected to withstood all of these, even at the same time, all with a smile on <<their $g.slave>> face.
+</p>
+
+<<if $gOutcome == 'failure'>>
+    <p>
+        But even after three long weeks, <<rep $g.slave>> remained relatively weak. The <<master $g.they>> blamed it on the slave, saying that <<their $g.slave>> prior training was not enough, and reimbursed part of the fee back to your slavers. It was a meager reimbursement, but given the scream of agony continuously being heard from inside the mansion, your slavers made the decision not to question it further and went back home.
+    </p>
+<<else>>
+    <p>
+        <<Yourrep $g.slave>> took the training very well.
+        <<if $g.slave.isHasTrait('muscle_verystrong')>>
+            <<Their $g.slave>> bulging muscles no doubt helped a great deal in withstanding long physical exertion.
+        <<elseif $g.slave.isHasTrait('muscle_strong')>>
+            <<Their $g.slave>> muscles no doubt helped a great deal in withstanding long physical exertion.
+        <</if>>
+        <<if $g.slave.isHasTrait('tough_tough')>>
+            <<Their $g.slave>> naturally tough body made the training easier.
+        <</if>>
+        <<if $g.slave.isHasTrait('per_stubborn')>>
+            <<Their $g.slave>> strong will was crucial to the success, of course.
+        <</if>>
+        In the end, <<rep $g.slave>> was returned to your slavers, transformed into a fully compliant endurance slave, for you to use as you see fit.
+    </p>
+
+    <<if $gOutcome == 'crit'>>
+        <p>
+            The training went so smoothly, in fact, that the <<master $g.they>> decided to refund part of the fee back to your slavers.
+        </p>
+    <</if>>
+
+<</if>>

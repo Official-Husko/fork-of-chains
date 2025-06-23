@@ -1,0 +1,130 @@
+:: OpportunitySetup_the_seven_deadly_transformation__virtue_or_sin [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'the_seven_deadly_transformation__virtue_or_sin', /* key */
+"The Seven Deadly Transformation: Virtue or Sin", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'veteran',
+'sea',
+'special',
+'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_the_seven_deadly_transformation__virtue_or_sin',
+setup.qdiff.hell62, /* difficulty */
+[ /* options */
+[
+'Opportunity_the_seven_deadly_transformation__virtue_or_sin_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.NoItem(setup.item.transformation_technology),
+setup.qres.HasSlaverWithTraits([setup.trait.magic_dark]),
+setup.qres.HasUnitWithTitle('seven_deadly_transformation', {job_key: 'slave'}), ],
+[ /* outcomes */
+setup.qc.QuestDirect('the_seven_deadly_transformation__pride2'), ],
+], [
+'Opportunity_the_seven_deadly_transformation__virtue_or_sin_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.HasSlaverWithTraits([setup.trait.magic_fire]),
+setup.qres.HasUnitWithTitle('seven_deadly_transformation', {job_key: 'slave'}), ],
+[ /* outcomes */
+setup.qc.QuestDirect('the_seven_deadly_transformation__beginnings'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.OpportunityUnique(),
+setup.qres.NoQuest('the_seven_deadly_transformation__pride2'),
+setup.qres.NoQuest('the_seven_deadly_transformation__beginnings'),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slave),
+  setup.qres.HasTitle('seven_deadly_transformation'),
+  setup.qres.TraitExact(setup.trait.tail_werewolf),
+  setup.qres.TraitExact(setup.trait.eyes_neko),
+  setup.qres.TraitExact(setup.trait.ears_elf),
+  setup.qres.TraitExact(setup.trait.mouth_orc),
+  setup.qres.TraitExact(setup.trait.body_dragonkin),
+  setup.qres.TraitExact(setup.trait.legs_demon),
+  setup.qres.TraitExact(setup.trait.tail_werewolf),
+  setup.qres.Not(setup.qres.TraitExact(setup.trait.arms_werewolf)),
+  setup.qres.Not(setup.qres.TraitExact(setup.trait.arms_neko)),
+  setup.qres.Not(setup.qres.TraitExact(setup.trait.arms_demon)),
+  setup.qres.Not(setup.qres.TraitExact(setup.trait.arms_dragonkin)),
+])
+],
+)>>
+
+:: Opportunity_the_seven_deadly_transformation__virtue_or_sin [nobr]
+<<set _headunit = setup.getUnit({job: setup.job.slave, title: "seven_deadly_transformation"})>>
+<<if !_headunit>>
+<<dangertext "Due to your company missing a slave important for this opportunity, this opportunity is no longer able to be completed.">>
+<<else>>
+
+<p>
+Having completed all the necessary steps to fulfill <<their _headunit>>
+destiny, your company has gained clear understanding of what kind of destiny
+awaited <<rep _headunit>> — the trials represented the seven great sins:
+Sloth - represented by <<their _headunit>> human-like arms,
+Gluttony - represented by <<their _headunit>> werewolf tail,
+Lust - represented by <<their _headunit>> addled neko eyes,
+Greed - represented by <<their _headunit>> twitching elven ears,
+Wrath - represented by <<their _headunit>> orcish tusks,
+Envy - represented by <<their _headunit>> painful hooves,
+and Pride - represented by <<their _headunit>> lizard-like scales.
+This can only means that the destiny
+that awaits <<rep _headunit>> is to be an exalted plaything of one of the
+demon lords of <<lore concept_mist>>, who loves nothing more than the most
+debauched and the rarest of specimens.
+</p>
+
+<p>
+With a slaver gifted in corruption, it would be possible to deliver the fully
+corrupted slave yourself to the demon lord. The ritual must take place on a
+specific island within the <<lore region_sea>>, and furthemore it will be both lengthy
+and incredibly dangerous. But if done properly, the demon lord might be
+willing to bestow some of the otherwordly technology upon your unworthy
+company.
+</p>
+
+<p>
+Choosing to complete the ritual will surely condemn <<yourrep _headunit>> to an
+eternity of being the demon lord's plaything. Having to spend all <<their
+_headunit>> time in service to the demon lord's debauched fantasies, it would
+be impossible for you to meet the slave again. But the reward is <<umouth $unit.player>>-watering.
+</p>
+
+<p>
+However, there is hope if you instead foolishly wish to save the slave. If
+you somehow have grown too attached to a mere slave such as <<rep _headunit>>,
+you can try to contact some
+of the strongest purifiers living off the <<lore region_sea>> for the slight chance
+that they will be able to lift the curse from <<rep _headunit>> forever,
+freeing <<them _headunit>> from the terrible fate that awaits them. There is
+no doubt that such purification ritual will also have a profound effect on
+the slave's body, possibly reverting some of the bodily transformation that
+has been inflicted upon <<them _headunit>>. If you choose this option and
+still wish to obtain the demon's technology, then you must find another fated
+adventurer and begin anew at a later date..., so why would anyone choose this option?
+</p>
+
+<</if>>
+
+
+:: Opportunity_the_seven_deadly_transformation__virtue_or_sin_0 [nobr]
+Seal the deal
+
+
+:: Opportunity_the_seven_deadly_transformation__virtue_or_sin_1 [nobr]
+Save the slave
+
+

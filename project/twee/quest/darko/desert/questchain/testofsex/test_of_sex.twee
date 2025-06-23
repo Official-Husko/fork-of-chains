@@ -1,0 +1,280 @@
+:: QuestSetup_test_of_sex [nobr quest]
+
+<<run new setup.Title(
+"quest_master_of_sex_0", /* key */
+"Master of Sex", /* name */
+"A true master of sex", /* description */
+"a|have proven a|themself to be a master of sex by completing a challenge in the deserts", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+sex: 4,},
+)
+>>
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Whore', /* name */
+[
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.anus_tight,
+  setup.trait.tough_tough,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.anus_gape,
+  setup.trait.tough_nimble,
+  setup.trait.per_chaste,
+  setup.trait.per_dominant,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.sex, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_sex_0')
+]), 'Have not yet mastered the art of (butt)sex'),
+],
+{
+  sex: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_sex', /* key */
+"Test of Sex", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'veteran',
+  'prep',
+  'danger',
+  'item',
+  'desert',
+  'legendary',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'judge': 'desert_all',
+},
+[ /* costs */
+],
+'Quest_test_of_sex',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_sexCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_sex_0'),
+      setup.qc.EquipmentDirect('sex_nipple_master'),
+      setup.qc.Leave('a', "a|was nominated \"Best ass\" in the Ass Competition and a|was \"hired\" as a permanent \"employee\"", undefined),
+      setup.qc.MoneyCustom(20000),
+      setup.qc.Event('best_ass_rescue', 15, {
+        'a': 'a',
+      }),
+    ],
+  ],
+  [
+    'Quest_test_of_sexCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_sexCrit',
+    [
+      setup.qc.Injury('a', 10),
+      setup.qc.IfThenElse(
+setup.qres.Actor('a', setup.qres.AllTraits([setup.trait.per_chaste], true)),
+setup.qc.DoAll([
+setup.qc.Trauma('a', setup.trait.trauma_sex, 20)
+], undefined),
+setup.qc.DoAll([
+setup.qc.IfThenElse(
+setup.qres.Actor('a', setup.qres.AnyTrait([setup.trait.per_lustful, setup.trait.per_sexaddict], true)),
+setup.qc.DoAll([
+setup.qc.Trauma('a', setup.trait.boon_sex, 20)
+], undefined),
+setup.qc.DoAll([
+
+], undefined))
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_test_of_sexCrit',
+    [
+      setup.qc.MissingUnit('a'),
+      setup.qc.TraitIncreaseExisting('a', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('a', setup.trait.anus_gape),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.SkillAtLeast(setup.skill.sex, 100),
+setup.qres.NoTitle('quest_master_of_sex_0')
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_sex [nobr]
+<p>
+The desert region of the east is infamous for its many festivals, be it the orcish ones or the desertfolk ones. Among these festivals are one celebrating the most carnal skill of all people: buttsex. Every year, the biggest orc tribe in the region would invite the most skillful whores to, (clears throat), "demonstrate their skills" in front of the orcs. Despite the degrading nature of the festival, many skillful whores and even the occasional courtesan would participate for it promises a large wealth of gold as well as an extremely lucrative reward to the winner: a
+<<rep setup.equipment.sex_nipple_master>>, be it for their own amusement or to be sold for an astronomical sum.
+</p>
+
+<p>
+As it happens, you have a masterful whore among your slavers. Should they enter, they might just be able to win you the legendary nipple chains. But be warned, rumors are abound that the Ass Festival carries an extra "prize", and the rumors are inconsistent whether the prize is a good thing, or a very, very bad thing...
+</p>
+
+
+
+
+
+:: Quest_test_of_sexCrit [nobr]
+<p>
+<<Yourrep $g.a>> arrived at the designated orcish camp, joining a group of hopeful whores in an attempt to be nominated as "Best Ass" and win the ass championship home.
+The participants were stripped naked in order to showcase their asses to the masses, and the first round was relatively easy. They were told to do nothing but mingle around with the other participants, within an orcish hut, which has been enchanted (unknowingly to the participants) with the foresight enchantment. Many orcish warriors as well as some invited gentle<<men $g.judge>> would be able to see the content of the tent from all angles from a neighboring tent, and they would discuss with each other how well-shaped the participant's fuckholes are as the hopeful whores sit and expand their asses for judge's amusement.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+<<Rep $g.a>> never passed even the qualification round.
+Whether it's <<their $g.a>>
+<<if $g.a.isHasTrait('anus_gape')>>
+gaping anus,
+<</if>>
+<<if $g.a.isHasTrait('tough_nimble')>>
+low endurance,
+<</if>>
+<<if $g.a.isHasTrait('per_chaste')>>
+low sexual liberty,
+<</if>>
+<<if $g.a.isHasTrait('dick_tiny')>>
+<<udick $g.a>>,
+<</if>>
+<<if $g.a.isHasTrait('breast_tiny')>>
+<<ubreasts $g.a>>,
+<</if>>
+<<if $g.a.isHasTrait('per_dominant')>>
+unslavelike demeanor,
+<</if>>
+bad luck,
+or some other reason,
+<<rep $g.a>> and the rest of the participants that failed the qualification round were "reassigned" as the festival's entertainment for the duration of their stay. Each were locked into a stockade, making both their mouth hole and their rear holes available for all the festival attendants to enjoy. Evidently, they must accidentally left <<rep $g.a>> hanging in the stockade long after the festival ended, as <<therace $g.a>> never made it back home.
+<<uneedrescue $g.a>>, although there is little doubt that their anus will already be gaped beyond recovery by then...
+</p>
+<<else>>
+
+<p>
+The judging came next, and <<rep $g.a>> passed with flying colors, together with a dozen other participants. The losers were ushered outside, surely to be given some money and returned to their respective homes with pride. Meanwhile the winners are led to a different tent this time for the final bout. As the participants made themselves comfortable for the second round, they all suddenly felt very, very sleepy, and all fell asleep in the tent, which had been enchanted with the enchantment of drowsiness.
+</p>
+
+<p>
+By the time <<yourrep $g.a>> regained consciousness, <<they $g.a>> were locked securely within a movable stockade.
+<<if $g.a.isHasTail()>>
+<<Their $g.a>> <<utail $g.a>> were raised too, and chained into <<their $g.a>> new collars, exposing <<their $g.a>> ass entirely.
+<</if>>
+<<Rep $g.a>> understandably panicked, <<if $g.a.isHasTrait('per_submissive')>>
+although not before letting out a little submissive squeal,
+<<elseif $g.a.isHasTrait('per_dominant')>>
+attempting to scream a curse or two,
+<</if>>
+but <<their $g.a>> mouth were securely ring-gagged.
+<<Their $g.a>> ass was exposed and up in the air, ready for the inspections.
+Looking around, <<they $g.a>> noticed <<they $g.a>> a|was not alone, and <<they $g.a>> saw all the other finalists in the same predicament.
+</p>
+
+<p>
+<<Yourrep $g.a>> a|was spared little time to process the situation as the festival master announced the start of the climax of the festival — judging the finalists for who has the best ass. It was a long grueling process, as each of the twenty or so judges would take turn feeling and assfucking the many participants one by one.
+And <<rep $g.a>> a|was not spared from the judging.
+<<if $g.a.isHasTrait('anus_tight')>>
+The judge took great pleasure inserting <<their $g.judge>>
+<<udickorstrap $g.judge>> into <<reps $g.a>> extremely tight asshole, earning an agonized muffle from <<therace $g.a>>, but earning <<them $g.a>> a lot of points in the judging.
+<</if>>
+<<if $g.a.isHasTrait('anus_loose')>>
+Despite having an experienced ass, the sheer length of the judge's
+orcish
+<<if $g.judge.isFemale()>>strap-on<<else>>cock<</if>> still force the poor hole agonizingly wide, and <<rep $g.a>> let out an agonized muffle as <<their $g.a>> hole a|was violently violated.
+<</if>>
+<<if $g.a.isHasTrait('anus_gape')>>
+The judges were disappointed by <<reps $g.a>> gaping hole, earning <<therace $g.a>> little score but still not sparing <<them $g.a>> from the rape.
+<</if>>
+<<if $g.a.isHasTrait('per_lustful')>>
+<<Rep $g.a>> is already rather addicted to sex, and <<their $g.a>> enthusiasm being buttfucked earned <<them $g.a>> some extra score.
+<</if>>
+<<if $g.a.isHasTrait('per_submissive')>>
+<<Rep $g.a>> is a natural submissive, and taking a phalli inside <<them $g.a>> feels natural, earning <<them $g.a>> a higher score than normal.
+<</if>>
+<<if $g.a.isHasTrait('per_masochistic')>>
+<<Rep $g.a>> couldn't help but get masochistically aroused from having been used so, a fact the judges took a positive note of.
+<</if>>
+<<if $g.a.isHasTrait('dick_huge')>>
+<<Reps $g.a>> huge phallus also draw the judge's attention, who appreciated the added decoration and entertainment offered by playing with the massive thing.
+<</if>>
+<<if $g.a.isHasTrait('breast_huge')>>
+<<Reps $g.a>> huge breasts also draw the judge's attention, who appreciated the added decoration and entertainment offered by playing with the massive fleshy thing.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+After being used and passed around like a sexual plaything for hours, the final judging finally commenced.
+Still not freed from <<their $g.a>> bondage, <<rep $g.a>> watched as the judges voted one by one for the best ass in the competition. <<Rep $g.a>> heard <<their $g.a>> name mentioned again, and again, and again, and eventually, <<they $g.a>> a|was announced "best ass in the festival". <<They $g.a>> watched helplessly as <<they $g.a>> a|was crowned winner, and the judge painfully clamped the prize <<rep setup.equipment.sex_nipple_master>> on <<their $g.a>> nipples. But despite the competition being over, <<rep $g.a>> a|was not freed from <<their $g.a>> bondage, and <<they $g.a>> together with the rest of the finalists were made available for public use for the rest of the festivals. <<Rep $g.a>> got used by the oh so many attendants who were very much interested in feeling an ass good enough to win best ass in festival before finally mercifully passing out mid-fuck.
+</p>
+
+<p>
+A few days later, your fort receives a shipment of a large amount of gold, as well as the <<rep setup.equipment.sex_nipple_master>>. <<Rep $g.a>> a|was nowhere to be found, however, and instead you received a letter thanking you for the wonderful ass that is <<rep $g.a>> and informing you about <<their $g.a>> new "occupation" as a sex toy under the orc's employ. A toast for a new career?
+</p>
+
+<p>
+Either way, an opportunity will surely come should you decide to rescue <<rep $g.a>>. Although by the time you get the opportunity, what state of mind and body would <<therace $g.a>> already be in after being so thoroughly used as nothing but a cum receptacle?
+</p>
+
+<<else>>
+<p>
+After being used and passed around like a sexual plaything for hours, the final judging finally commenced.
+Still not freed from <<their $g.a>> bondage, <<rep $g.a>> watched as the judges voted one by one for the best ass in the competition. <<Rep $g.a>> heard <<their $g.a>> name mentioned a couple of times, but it was not enough of times, and eventually, <<they $g.a>> lost the final round. <<They $g.a>> watched as the winner was awarded the prize, and have their nipples adorned with the <<rep setup.equipment.sex_nipple_master>>. The competition over, all the finalists were made available for public use for the rest of the festivals, and <<rep $g.a>> got used by the oh so many attendants before finally mercifully passing out mid-fuck.
+</p>
+
+<p>
+When <<rep $g.a>> came to, <<they $g.a>> a|was already on a carriage on the way back to your fort, courtesy of the festival.
+<<Their $g.a>> ass was incredibly sore, no doubt still being used long after <<they $g.a>> passed out, and is now a lewd gape.
+<<if $g.a.isHasTrait('per_lustful')>>
+Still, <<they $g.a>> seemed to like it quite a bit...
+<<elseif $g.a.isHasTrait('per_chaste')>>
+A fact that horrified the chaste <<urace $g.a>>.
+<<else>>
+<<They $g.a>> tried to reduce the pain as much as possible by softly rubbing <<their $g.a>> poor and well-used rearhole.
+<</if>>
+Back at your fort, <<they $g.a>> would need some rest after such a brutal experience.
+<<if $gOutcome == 'success'>>
+Despite losing, the festival orcs appreciated your slaver's performance enough to send an invitation to yet another ass-wrecking festival...
+<</if>>
+</p>
+
+<</if>>
+
+<</if>>

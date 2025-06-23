@@ -1,0 +1,178 @@
+:: EventSetup_healer_slaver [nobr event]
+
+<<run new setup.Event(
+'healer_slaver', /* key */
+"Healer Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_healer_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_healer], true),
+  ],
+  'injured': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.IsInjured(5),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.hospital),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_healer_slaver [nobr]
+<p>
+In the past few weeks, <<yourrep $g.injured>> spent most of <<their $g.injured>> time resting in the <<rep setup.buildingtemplate.hospital>>, recuperating from <<their $g.injured>> grave injuries.
+But today, something interesting happens.
+<<Yourrep $g.slaver>> slaver|have come to visit the injured slaver. If you recall correctly, <<therace $g.slaver>> used to become a healer before becoming one of your slavers, and <<they $g.slaver>> might just have a cure or two for the injured <<urace $g.injured>>.
+</p>
+
+<<set _heal = 1>>
+<p>
+<<Rep $g.slaver>> slaver|sit next to <<rep $g.injured>>, and begin to administer some home-made curatives.
+<<if $g.slaver.isHasTrait('skill_alchemy')>>
+The curative is highly potent, thanks to <<reps $g.slaver>> knowledge in <<rep
+setup.trait.skill_alchemy>>.
+<<set _heal += 2>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_slow')>>
+The slow slaver might have misplaced an ingredient or two, however.
+<<set _heal -= 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_smart')>>
+The slaver is smart enough to add several specialized ingredients to cure the specific ailment that plagues <<rep $g.injured>>.
+<<set _heal += 1>>
+<</if>>
+
+<<if $g.slaver.isHasTrait('per_attentive')>>
+<<They $g.slaver>> slaver|make sure to double-check <<they $g.slaver>> slaver|is not missing a single ingredient on every step of the process.
+<<set _heal += 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_dreamy')>>
+<<They $g.slaver>> may have also forgotten an ingredient or two, being as inattentive as <<they $g.slaver>> slaver|is.
+<<set _heal -= 1>>
+<</if>>
+
+<<if $g.slaver.isHasTrait('race_lizardkin') or $g.slaver.isHasTrait('subrace_humansea')>>
+The recipe is a secret one — passed generation from generation in the land beyond the <<lore region_sea>>.
+<<set _heal += 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_evil')>>
+The evil slaver may have put some questionable ingredients such as frog's eyes, but surely it's just a baseless rumor.
+<<set _heal -= 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_lunatic')>>
+Your other slavers can hear <<therace $g.slaver>> giggling to <<themself $g.slaver>> lunatically as <<they $g.slaver>> mix the potion.
+<<set _heal -= 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('magic_dark_master')>>
+The potion accidentally absorbs the vast dark energy within <<therace $g.slaver>>,
+corrupting it and surely making it less effective.
+<<set _heal -= 2>>
+<<elseif $g.slaver.isHasTrait('magic_dark')>>
+The potion accidentally absorbs the dark energy within <<therace $g.slaver>>,
+corrupting it and surely making it less effective.
+<<set _heal -= 1>>
+<</if>>
+</p>
+
+<p>
+<<Rep $g.slaver>> <<uadv $g.slaver>> make the patient drink the potion.
+<<if $g.slaver.isHasTrait('corruptedfull')>>
+However, the rampant corruption plaguing <<their $g.slaver>> body seeps into the potion, making it much less effective.
+<<set _heal -= 2>>
+<<elseif $g.slaver.isHasTrait('corrupted')>>
+However, the corruption plaguing <<their $g.slaver>> body seeps a little into the potion, reducing its effectiveness.
+<<set _heal -= 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_aggressive')>>
+The treatment is pretty rough — the slaver isn't known for <<their $g.slaver>> calm and measured approach.
+<<set _heal -= 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_calm')>>
+The treatment is delivered very gently, making it more effectiveness.
+<<set _heal += 1>>
+<</if>>
+
+<<if $g.slaver.isHasTrait('per_cruel')>>
+When the patient winces in pain, the cruel slaver simply shuts <<them $g.slaver>> down with even more pain.
+<<set _heal -= 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('per_kind')>>
+When the patient winces in pain, the kind slaver soothes <<them $g.slaver>> with kind words.
+<<set _heal += 1>>
+<</if>>
+
+<<if $g.slaver.isHasTrait('muscle_verystrong')>>
+<<Rep $g.slaver>> slaver|is a little too strong as a healer, and sometimes <<they $g.slaver>> slaver|exert too much power, making the treatment less gentle than it should.
+<<set _heal -= 1>>
+<</if>>
+<<if $g.slaver.isHasTrait('magic_light_master')>>
+<<Rep $g.slaver>> also slaver|use <<their $g.slaver>> advanced mastery of the light magic to enhance the healing.
+<<set _heal += 2>>
+<<elseif $g.slaver.isHasTrait('magic_light')>>
+<<Rep $g.slaver>> also slaver|use <<their $g.slaver>> small mastery of light magic to enhance the healing.
+<<set _heal += 1>>
+<</if>>
+</p>
+
+<<if $g.you.isHasTrait('bg_healer')>>
+<p>
+You were a healer too, and you pitched your considerable skills in to help with the healing.
+<<set _heal += 30>>
+</p>
+<</if>>
+
+<<if _heal >= 10>>
+<p>
+The treatment was simply miraculous,
+<<if $g.you.isHasTrait('bg_healer')>>
+(in no small part thanks to you, obviously!)
+<</if>>
+and <<rep $g.injured>> injured|become
+far better after gulping down the potion.
+<<Yourrep $g.slaver>> slaver|look very proud with the result.
+</p>
+<<run setup.qc.BoonizeRandom('slaver', 25).apply($gQuest)>>
+<<run setup.qc.Heal('injured', _heal).apply($gQuest)>>
+<<elseif _heal >= 3>>
+<p>
+The treatment was very effective, and <<rep $g.injured>> injured|become visibly much better after gulping down the potion. <<Yourrep $g.slaver>> slaver|look quite satisfied with the result.
+</p>
+<<run setup.qc.BoonizeRandom('slaver', 5).apply($gQuest)>>
+<<run setup.qc.Heal('injured', _heal).apply($gQuest)>>
+<<elseif _heal > 0>>
+<p>
+The treatment works, and <<rep $g.injured>> injured|recover a little more from <<their $g.injured>> injuries.
+</p>
+<<run setup.qc.Heal('injured', _heal).apply($gQuest)>>
+<<elseif _heal <= -2>>
+<p>
+In a strange twist, the potion instead ravaged <<reps $g.injured>> body, injuring it even further...
+<<run setup.qc.Injury('injured', Math.round(-_heal / 2)).apply($gQuest)>>
+</p>
+<<else>>
+<p>
+Unfortunately, the treatment was a bust, and despite gulping down the potion, <<reps $g.injured>> injuries do not get any better.
+</p>
+<</if>>

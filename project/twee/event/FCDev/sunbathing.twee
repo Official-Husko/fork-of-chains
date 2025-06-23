@@ -1,0 +1,117 @@
+:: EventSetup_sunbathing [nobr event]
+
+<<run new setup.Event(
+'sunbathing', /* key */
+"Sunbathing", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_sunbathing',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTraits([setup.trait.body_demon], true),
+    setup.qres.Available(),
+    setup.qres.FriendshipWithYouAtLeast(300),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.courtyard),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_sunbathing [nobr]
+<p>
+It's an unusually nice day, with mild sunshine, light breezes, and nothing corruptive in the air.
+In the middle of the afternoon, you take a break from your busy schedule and stroll out onto the <<rep setup.buildingtemplate.courtyard>>. It seems <<yourrep $g.slave>> was struck by a similar impulse.
+<<set _duty = $g.slave.getDuty()>>
+<<if _duty>>
+<<They $g.slave>>'s assigned as your <<rep _duty>>, but this is one of <<their $g.slave>> rest periods,
+<<else>>
+<<They $g.slave>> is currently idle,
+<</if>>
+so <<they $g.slave>>'s come out there to lay naked on a towel and enjoy the sun.
+
+<<if $g.slave.isHasTrait('body_werewolf') or $g.slave.isHasTrait('body_neko') or
+$g.slave.isHasTrait('body_dragonkin')>>
+Their <<uskin $g.slave>> doesn't tan like humans do, but it still feels nice to let them bask in the warmth of the sun.
+<<elseif $g.slave.isHasTrait('body_orc')>>
+Their green skin is quite resistant to the sun, having adapted to a life in the deserts, but it still feels nice to let them bask in the warmth of the sun.
+<<elseif $g.slave.isHasTrait('body_drow')>>
+Their drow body completely unused to the bright sunlight.
+<<elseif $g.slave.isHasTrait('subrace_humandesert')>>
+Their naturally dark skin doesn't tan much, so <<they $g.slave>>'s just out here to bask in its warmth.
+<<else>>
+<<Their $g.slave>> skin shines with sunblock potion from a bottle lying next to <<them $g.slave>>. It would be foolish of <<them $g.slave>> to let the sun ruin <<their $g.slave>> <<uskin $g.slave>>.
+<</if>>
+</p>
+
+<p>
+<<They $g.slave>>'s lying on <<their $g.slave>> back with <<their $g.slave>> <<uarms $g.slave>> outstretched, <<their $g.slave>>
+<<if $g.slave.isHasTrait('breast_titanic')>>
+titanic breasts resting to either side. They're so enormous they touch the ground on either side of <<them $g.slave>>.
+<<elseif $g.slave.isHasTrait('breast_large')>>heavy breasts resting to either side.
+<<else>>
+modest breasts resting a little to either side as <<their $g.slave>> chest rises and falls with <<their $g.slave>> breath.
+<</if>>
+<<They $g.slave>>'s relaxed and breathing slowly, and it isn't immediately clear if <<they $g.slave>>'s asleep or not.
+<<They $g.slave>>'s not aroused, and <<their $g.slave>> nipples look pleasantly soft and warm in the sun.
+As you consider <<their $g.slave>> radiant body, <<they $g.slave>> senses your presence, either realizing you're there through <<their $g.slave>> closed eyes or coming out of a light sleep at your proximity.
+<<if $g.slave.isHasTrait('per_chaste')>>
+<<They $g.slave>> shields <<their $g.slave>> <<ugenital $g.slave>> with <<their $g.slave>> <<uhands $g.slave>> before greeting you,
+<<else>>
+<<They $g.slave>> opens <<their $g.slave>> <<ueyes $g.slave>> a slit and stretches deliciously, arching <<their $g.slave>> back luxuriantly, and murmurs,
+<</if>>
+"Hi, <<name $unit.player>>."
+</p>
+
+<p>
+<<if $unit.player.isHasTrait('per_chaste')>>
+It's a little embarrasing, but somewhere in your mind, you think it might be fun
+<<else>>
+It looks very tempting
+<</if>>
+to enjoy the sunlight with <<therace $g.slave>> for a while, before going back to work. Or, you can just forget about today's work and go on a full sunbathing vacation for the day. You'll lose some money, but it'll be fun!
+</p>
+
+<<choose>>
+
+<<opt "Enjoy the sunshine with <<them $g.slave>>">>
+
+<p>
+<<if $unit.player.isHasTrait('per_chaste')>>
+Blushing a little,
+<<else>>
+Wordlessly,
+<</if>>
+you fetch a towel of your own. <<Yourrep $g.slave>> sees what you're doing, and simply closes <<their $g.slave>> eyes again. You strip and lie down next to <<them $g.slave>>. The sun is warm and gentle, and the interminable demands of leadership suddenly seem very far away. You drop off for a short while, only waking when the cloud finally hides the sun away. As you get your senses back, you notice that <<name $g.slave>> is right next to you. <<Their $g.slave>> eyes remain closed, and <<their $g.slave>> breath is steady; <<they $g.slave>>'s fast asleep. You consider waking the sun-warmed <<urace $g.slave>>, but then again days like this are quite rare. Who knows when the sun will be this nice again?
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Ditch your work for the day and go out for a day at the riverside">>
+
+<p>
+You suggest to <<yourrep $g.slave>> to ditch today's work altogether, and go to the pleasant riverside. Word starts to spread within your fort, and soon some other slavers have the idea to follow suit and go into the riverside. Once there, all they see is you and <<name $g.slave>> luxuriating on the towel spread over the riverside. As they arrive, they use their own towels before lining up with you one by one. After a long sunbathing session, you and your slavers have all relaxed from the simple, nonsexual pleasure of a little time in the sun.
+</p>
+
+<<run setup.qc.Money(-1500).apply($gQuest)>>
+<<for _unit range $company.player.getUnits({job: setup.job.slaver}).filter(unit => unit.isAvailable())>>
+<<run setup.qc.BoonizeRandom('unit', 2).apply(setup.costUnitHelper(_unit))>>
+<</for>>
+
+<</choose>>

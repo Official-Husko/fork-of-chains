@@ -1,0 +1,160 @@
+:: QuestSetup_kobold_rescue [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"kobold_rescue0",
+"Kobold Slave",
+'subrace_kobold', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slave),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'kobold_rescue', /* key */
+"Kobold Rescue", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'favor',
+  'scaley',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'cap': [ setup.qu.slavecapturer, 1],
+  'inf': [ setup.qu.infiltrator, 1],
+  'thief': [ setup.qu.thief, 1],
+},
+{ /* actors */
+  'kobold': 'kobold_rescue0',
+  'kobold2': 'kobold_rescue0',
+},
+[ /* costs */
+],
+'Quest_kobold_rescue',
+setup.qdiff.hard34, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_kobold_rescueCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('kobold', "a|was a newly acquired slave drows whom you \"freed\"", undefined),
+      setup.qc.Slave('kobold2', "a|was a newly acquired slave drows whom you \"freed\"", undefined),
+    ],
+  ],
+  [
+    'Quest_kobold_rescueCrit',
+    [
+      setup.qc.Favor('kobold', 150),
+    ],
+  ],
+  [
+    'Quest_kobold_rescueFailure',
+    [
+      setup.qc.Ire('drow', 2),
+    ],
+  ],
+  [
+    'Quest_kobold_rescueDisaster',
+    [
+      setup.qc.MissingUnit('inf'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_kobold_rescue [nobr]
+
+<<questimage 'kobold_rescue.jpg'>>
+
+<p>
+    The drow economy relies much on slaves, to the point that the slaves are said to outnumber the drows. Among these slaves are a large number of kobold slaves, who are forced to mine in the many drow mineshafts in the <<lore region_deep>>.
+    Despite this, the drow and kobolds are not "technically" enemies — the drows maintained that these kobolds are criminals and scums they have captured somewhere. But one would be foolish to blindly trust a drow.
+</p>
+
+<p>
+    Recently, one of the expedition party from the city of <<rep $company.kobold>> has gone missing. The kobolds suspected foul play: They asked you to try and infiltrate the drow's many mineshafts, to find and free their fellow kobolds that has been "misidentified" as bandits by the drows. The mines are heavily guarded by day, but thankfully they are much less so during the nights, when the slaves are all shackled and sleeping. You just need a group stealthy enough to infiltrate the compound and pick the shackles' locks.
+</p>
+
+
+
+
+:: Quest_kobold_rescueCrit [nobr]
+<p>
+    The mine was indeed lightly guarded during the night: the drows must have felt that the kobolds won't be able to escaped being collared into the floor at night. <<Yourrep $g.inf>> <<uadv $g.inf>> lead the team to infiltrate, and they indeed manage to indentify the kobolds that once belonged to the lost expedition.
+    <<Rep $g.thief>> then got to work, undoing the shackles one by one without drawing undue attention.
+</p>
+
+<p>
+    The locks were finally undone, but it turned out to not be the end of their problems.
+    The freed kobolds were worked to the bone by the drows, and was very weak as a result. Your slavers had to carry the five of them — in stealth — out of the compound.
+    <<set _unit = setup.selectUnit([$g.cap, $g.inf, $g.thief], {trait: 'magic_dark'})>>
+    <<if _unit>>
+        Using dark magic, <<rep _unit>> camouflaged the entire team in a shroud of darkness, helping the escape.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.cap, $g.inf, $g.thief], {trait: 'per_cautious'})>>
+    <<if _unit>>
+        <<Rep _unit>> ensured that the team would not draw undue attention — the careful slaver taking care not to get the team anywhere near the remaining drow guards.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.cap, $g.inf, $g.thief], {trait: 'height_dwarf'})>>
+    <<if _unit>>
+        <<Reps _unit>> stubby height prove useful to sneak out from the compound.
+    <</if>>
+</p>
+
+<p>
+    It took some time of sneaky sneaking, but the kobolds were successfully smuggled out of the compound. They were quite in a bad shape, however, and most slept throughout the journey to <<lore location_drak_xoth>>.
+</p>
+
+<p>
+    Your slavers were celebrated as friends of the kobolds, for having saved many of the lost kobold adventurers. While they may not have gotten any monetary rewards, your company's reputation among the kobolds of <<lore location_drak_xoth>> has soared.
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        Not all of the expedition members were found in the mines, however.
+        Or so your slavers has claimed.
+        Apparently two of the saved kobolds were relatively healthy ones, and your slavers decided wisely that they serve better as your slaves than returned to the city...
+    </p>
+<</if>>
+
+
+
+:: Quest_kobold_rescueFailure [nobr]
+<p>
+    Unfortunately, the mines were not as lightly guarded as your slavers had expected. <<Reps $g.inf>> attempt to sneak in were in failure as a drow guard identified <<therace $g.inf>> and raised the alarm.
+    They managed to escape, but the drows somehow know that it was you who had sent them...
+</p>
+
+
+
+
+
+:: Quest_kobold_rescueDisaster [nobr]
+<p>
+    Unfortunately, the mines were not as lightly guarded as your slavers had expected. <<Reps $g.inf>> attempt to sneak in were met with failure as one of the drow guards spotted <<therace $g.inf>>. Instead of raising the alarm, the cunning guard instead trailed <<them $g.inf>>, before knocking <<them $g.inf>> out with one swift blow.
+    The other two of your slavers managed to escape, thankfully.
+    As for <<rep $g.inf>>, you'll just have to rescue <<therace $g.inf>>, preferably before the drows drained <<them $g.inf>> of all <<their $g.inf>> worth in one of the many drow mines in the realm...
+</p>
+
+
+
+

@@ -1,0 +1,137 @@
+:: QuestSetup_kobold_ [nobr quest]
+
+
+
+
+
+<<set _criteriakobold = new setup.UnitCriteria(
+null, /* key */
+'Kobold', /* name */
+[
+  setup.trait.subrace_kobold,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.wings_dragonkin,
+],
+[
+  setup.trait.height_dwarf,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+  setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+],
+{
+  arcane: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'kobold_', /* key */
+"Kobold?", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'prep',
+  'unknown',
+  'special',
+],
+2, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'kobold': [ _criteriakobold, 3],
+},
+{ /* actors */
+  'mirror': 'subrace_dragonkin',
+},
+[ /* costs */
+],
+'Quest_kobold_',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_kobold_Crit',
+    [
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_kobold_Crit',
+    [
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_kobold_Crit',
+    [
+      setup.qc.VarSet('quest_shunned_kobold_progress', '45', -1),
+      setup.qc.TraumatizeRandom('kobold', 5),
+    ],
+  ],
+  [
+    'Quest_kobold_Crit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Injury('kobold', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_kobold_ [nobr]
+<<set _u = setup.getUnit({
+job: 'slaver',
+title: 'quest_the_shunned_kobold_0',
+})>>
+
+<<if _u>>
+
+    <p>
+        A dragonkin envoy that happened to come to your fort has hinted the existence of the Mirror of Desires, somewhere within the vast maze of <<lore region_deep>>.
+        It may reveal whatever secret <<rep _u>> may hold, and is perhaps the only way for <<rep _u>> to know whether <<they _u>> is truly a kobold.
+        It is said that the mirror only shows itself to those truly in need, however, and so <<rep _u>> must walk the path alone...
+    </p>
+
+<<else>>
+
+    <<missingunitquest>>
+
+<</if>>
+
+
+
+:: Quest_kobold_Crit [nobr]
+<<questimage "kobold_mirror.jpg">>
+
+<p>
+    The usual dangers of the <<lore region_deep>> was surprisingly nowhere to be seen. <<Rep $g.kobold>> safely reached the Mirror of Desires, or rather, the mirror abruptly appears before <<them $g.kobold>>. But it did not reveal the exact answers that you has been looking for...
+</p>
+
+<p>
+    The mirror reveals <<reps $g.kobold>> true desires:
+    A desire to make peace with <<their $g.kobold>> past. Whether or not <<rep $g.kobold>> is a kobold, does not matter, and knowing the answer would not resolve the conflict in <<their $g.kobold>> heart.
+</p>
+
+<p>
+    Still, the mirror was not completely useless, as it gave <<rep $g.kobold>> one very pointed advise.
+</p>
+
+<p>
+    Scout the <<lore region_deep>>...
+</p>
+
+
+
+
+

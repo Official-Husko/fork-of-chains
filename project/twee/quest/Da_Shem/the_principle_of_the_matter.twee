@@ -1,0 +1,207 @@
+:: QuestSetup_the_principle_of_the_matter2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"the_principle_of_the_matter0",
+"headteacher1",
+'subrace_humankingdom_male', /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Trait('unit', setup.trait.skill_hypnotic),
+  setup.qc.Trait('unit', setup.trait.per_dominant),
+  setup.qc.Trait('unit', setup.trait.per_evil),
+],
+)>>
+
+
+<<set _criteriastudent = new setup.UnitCriteria(
+null, /* key */
+'Fake Student', /* name */
+[
+  setup.trait.per_submissive,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_loyal,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+  setup.trait.training_obedience_master,
+  setup.trait.training_endurance_master,
+  setup.trait.training_domestic_master,
+  setup.trait.training_oral_master,
+  setup.trait.training_vagina_master,
+  setup.trait.training_anal_master,
+  setup.trait.training_dominance_master,
+  setup.trait.training_masochist_master,
+  setup.trait.training_sissy_master,
+  setup.trait.training_pet_master,
+  setup.trait.training_pony_master,
+  setup.trait.training_toilet_master,
+  setup.trait.training_horny_master,
+  setup.trait.training_roleplay_master,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_dominant,
+  setup.trait.per_loner,
+  setup.trait.per_chaste,
+  setup.trait.per_stubborn,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.Trait(setup.trait.training_obedience_basic),
+  setup.qres.Trait(setup.trait.gender_male),
+],
+{
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_principle_of_the_matter2', /* key */
+"The Principle of the Matter", /* Title */
+{  /* Author */
+  name: "Da_Shem",
+  url: 'https://discord.com/channels/774271990571335710/780362824047394827/804270432689455104',
+},
+[ /* tags */
+  'maleonly',
+  'city',
+  'unit',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'negotiator': [ setup.qu.negotiator, 1.5],
+  'noble': [ setup.qu.conartist, 1.5],
+  'student': _criteriastudent,
+},
+{ /* actors */
+  'headteacher': 'the_principle_of_the_matter0',
+},
+[ /* costs */
+],
+'Quest_the_principle_of_the_matter2',
+setup.qdiff.hard43, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_principle_of_the_matter2Crit',
+    [
+      setup.qc.Slaver('headteacher', "a|was a teacher at a harsh institute", true),
+      setup.qc.Opportunity('schools_out', {headteacher: 'headteacher'}),
+    ],
+  ],
+  [
+    'Quest_the_principle_of_the_matter2Crit',
+    [
+      setup.qc.Opportunity('schools_out', {headteacher: 'headteacher'}),
+    ],
+  ],
+  [
+    'Quest_the_principle_of_the_matter2Crit',
+    [
+      setup.qc.Trauma('negotiator', setup.trait.trauma_social, 30),
+    ],
+  ],
+  [
+    'Quest_the_principle_of_the_matter2Crit',
+    [
+      setup.qc.MissingUnitRecapture('negotiator', 'capturedmedium'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_principle_of_the_matter2 [nobr]
+
+<p>
+The <<lore location_institute_of_higher_learning>> for Men clearly has a lot of secrets, or at least it's leader seems to do.
+Its head teacher, <<rep $g.headteacher>> seemed amused by your slavers' attention to his students,
+perhaps he might be interested in an arrangements of sorts.
+A... change of job, if you may.
+After all, someone would have to take in the poor souls who flunks out from the school.
+</p>
+
+:: Quest_the_principle_of_the_matter2Crit [nobr]
+<p>
+<<Rep $g.noble>> arranged a meeting pretending to be a parent of a particularly <<uadjbad $g.student>> young man. Walking into his office, they found the headteacher sitting behind an enormous desk, a ticking clockwork mechanism behind him.
+</p>
+
+<p>
+Here <<rep $g.negotiator>> took charge,
+
+<<if $g.negotiator.getSpeech() == setup.speech.friendly>>
+trying to charm <<rep $g.headteacher>> with flowery doublespeak about common goals.
+<<elseif $g.negotiator.getSpeech() == setup.speech.bold>>
+boldly laying their cards on the table, <<rep $g.headteacher>> had a product and you have a market.
+<<elseif $g.negotiator.getSpeech() == setup.speech.cool>>
+smoothly pointing out several incidents within the city limits that you have been involved in an attempt to impress, not breaking eye contact the once.
+<<elseif $g.negotiator.getSpeech() == setup.speech.witty>>
+jokingly pointing out that the institute really should outsource some work placement if they want the boys to turn into productive members of society.
+<<elseif $g.negotiator.getSpeech() == setup.speech.debauched>>
+Pushing <<rep $g.student>> down on his knees, while lecherously talking about all the better use you could have of all the young noblemen within the institute.
+<</if>>
+
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<p>
+<<Rep $g.headteacher>> did not seem overly impressed with <<reps $g.negotiator>> <<if $g.negotiator.getSpeech() == setup.speech.friendly>>
+charm
+<<elseif $g.negotiator.getSpeech() == setup.speech.bold>>
+boldness
+<<elseif $g.negotiator.getSpeech() == setup.speech.cool>>
+steely nerve
+<<elseif $g.negotiator.getSpeech() == setup.speech.witty>>
+jokes
+<<elseif $g.negotiator.getSpeech() == setup.speech.debauched>>
+leering
+<</if>>
+but he still listened intently and started taking notes and asking questions.
+Questions like,
+"how much product can you move in a year?", and "Are <<rep $company.player>> interested more in finished product or lower end?", and even things like "Are you getting sleepy?".
+All the while the happy little clockwork engine kept ticking away....
+</p>
+
+<p>
+While <<rep $g.noble>> had been trying to overcome <<their $g.noble>> sudden tiredness to help
+<<their $g.noble>> comrade, everything turned out alright in the end.
+<<Rep $g.headteacher>> had just been amusing himself but soon brought <<rep $g.negotiator>> out of <<their $g.negotiator>> trance and took them on a tour of the facility. Turned out he had been onto your fake teacher from the beginning and you slavers got a whole different level of insight into the organization which turned the nobility cast-off into quite the slutty little treasures. The upper staff levels contain quite the number of obedient young men walking collared and with their heads submissively down while the basement is full of empty-eyed failures with their minds shattered by too much manipulation.
+<<if $gOutcome == 'crit'>>
+He not only offers you a choice of either a few graduates or a collection of dropouts, but also offered to join you, for a price of course.
+<<else>>
+He offers you a choice of either a few graduates a collection of dropouts.
+<</if>>
+</p>
+
+<<else>>
+
+<p>
+While <<rep $g.noble>> had been trying to overcome <<their $g.noble>> sudden tiredness to help <<their $g.noble>> comrade, <<they $g.noble>> found <<themselves $g.noble>> frozen in place as <<rep $g.headteacher>> took his time working <<rep $g.negotiator>> over. He made <<theslaver $g.negotiator>> strip and lay down over the desk putting <<their $g.negotiator>> <<uhole $g.negotiator>> on full display. He pointed out in a matter of fact tone that breaking <<uadjbad $g.negotiator>> <<if $g.negotiator.isHasTrait('gender_male')>>men
+
+<<elseif $g.negotiator.isHasTrait('gender_female')>>people
+
+<<else>>
+people
+<</if>>
+was in fact his job and he saw no reason to involve grubby little slavers who could be put to better use.
+</p>
+<p>
+After that, he took his time fucking <<reps $g.negotiator>> <<uhole $g.negotiator>> while making <<them $g.negotiator>> recite what a good little slut <<they $g.negotiator>> negotiator|was.
+<<if $gOutcome == 'failure'>>
+Once he finally finished inside <<them $g.negotiator>>, he whispered a few last instructions before ordering <<rep $g.noble>> to take <<their $g.noble>> slut home, before he changed his mind about letting them leave.
+<<else>>
+Once he finished inside <<them $g.negotiator>>, he seemed to remember that <<rep $g.noble>> and <<rep $g.student>> were still there and coldly ordered them to leave before he decided to keep them as well. They prudently took his instruction and left.
+<</if>>
+</p>
+
+<</if>>

@@ -1,0 +1,46 @@
+:: EventSetup_disappearing_act [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'disappearing_act', /* key */
+"Disappearing Act", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_disappearing_act',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slave),
+setup.qres.Available(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('elf', -20),
+setup.qc.MissingUnitRecapture('victim', 'escapehard'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('elf', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_disappearing_act [nobr]
+
+<p>
+Today has been a stressful day, with many new assignments and many antics
+from your slavers occupying your mind. As you contemplate using <<yourrep
+$g.victim>> to ease the stress, a sudden magical circle
+forms under <<yourrep $g.victim>>. Before your eyes, <<their $g.victim>> body
+disintegrates, no doubt being transported to another plane via portal magic.
+As the magic finishes, there are no trace left of <<rep $g.victim>>, outside
+of their equipment which falls into the floor.
+</p>
+
+<p>
+The elves are said to be masters of such portal magic, and you suspect this is
+one of their doings. After all you have done to <<rep $company.elf>>, it
+should be no surprise that they decide to retaliate. Still, somehow you are able to
+track down <<reps $g.victim>> location. <<uneedrescue $g.victim>>, but it
+will sure be an incredibly difficult job to do.
+</p>

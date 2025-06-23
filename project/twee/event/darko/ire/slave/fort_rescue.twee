@@ -1,0 +1,63 @@
+:: EventSetup_fort_rescue [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'fort_rescue', /* key */
+"Fort Rescue", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_fort_rescue',
+{ /* roles */
+'victim': [
+setup.qres.Available(),
+setup.qres.Job(setup.job.slave),
+],
+
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('humankingdom', -20),
+setup.qc.MissingUnit('victim'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humankingdom', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_fort_rescue [nobr]
+
+<p>
+Ever since slavery was banned ten years ago, the people of the <<rep $company.humankingdom>>
+abhor slavery. This, compounded with your recent acts against them, has made
+them painfully aware of your existence, and you have been wary of some sort
+of retaliation in the past few weeks.
+</p>
+
+<p>
+Today, a small band of adventurers, no doubt sent over by the representatives of the <<rep
+$company.humankingdom>>, comes into your fort and launches a surprise attack on your
+fort. While you and your slavers manages to fend off their attacks from
+damaging the compound, there are nobody to guard the dungeons. When the
+assault ends, <<yourrep $g.victim>> victim|is nowhere to be seen, quite
+possibly being rescued by the adventurers on order from the <<rep
+$company.humankingdom>>.
+</p>
+
+<p>
+<<if $g.victim.isHasTrait('training_obedience_advanced')>>
+Given the slave's trainings, it will be quite difficult for them to restore the
+slave into a normal <<urace $g.victim>> being again.
+<<elseif $g.victim.isMindbroken()>>
+It's unclear however, if the mindbroken slave can ever be reintegrated into
+the society.
+<<else>>
+The disobedient slave surely rejoices at <<their $g.victim>> daring rescue.
+<</if>>
+<<uneedrescue $g.victim>>, before <<they $g.victim>> disappear forever into the <<lore region_city>>...
+</p>

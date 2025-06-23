@@ -1,0 +1,84 @@
+:: QuestSetupTreatmentResetLevel [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'treatment_resetlevel',  /* id */
+  'Treatment: Reset Level',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.heal_head,
+    'assistant1': setup.qu.heal_assistant,
+    'assistant2': setup.qu.heal_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.reset_potion),
+  ],  /* costs */
+  'TreatmentResetLevel',  /* description */
+  setup.qdiff.hard44,
+  [
+    [
+      'TreatmentResetLevelCrit',
+      [
+        setup.qc.ResetLevel('trainee'),
+      ]
+    ],
+    [
+      'TreatmentResetLevelSuccess',
+      [
+        setup.qc.ResetLevel('trainee'),
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+    [
+      'TreatmentResetLevelFailure',
+      [
+        setup.qc.ResetLevel('trainee'),
+        setup.qc.Injury('trainee', 5),
+      ],
+    ],
+    [
+      'TreatmentResetLevelDisaster',
+      [
+        setup.qc.ResetLevel('trainee'),
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentResetLevel [nobr]
+<p>
+Resets the level of a unit to level 1. Also resets their skills to their level 1 skills.
+While this procedure always succeeds, it usually cause injuries to the patient.
+</p>
+
+:: TreatmentResetLevelCrit [nobr]
+<p>
+<<Rep $g.head>> directed the procedure with such skill that <<rep $g.trainee>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+
+:: TreatmentResetLevelSuccess [nobr]
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>> will need some time to recover from the procedure.
+</p>
+
+:: TreatmentResetLevelFailure [nobr]
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was severely injured during the procedure.
+</p>
+
+:: TreatmentResetLevelDisaster [nobr]
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was heavily injured during the procedure.
+</p>

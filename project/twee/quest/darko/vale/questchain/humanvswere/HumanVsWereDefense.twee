@@ -1,0 +1,115 @@
+:: QuestSetupHumanVsWereDefense [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'human_vs_were_defense', /* key */
+  'Human vs Werewolf: Defensive', /* Title */
+  'darko',   /* author */
+  ['furry', 'vale', 'money', 'favor', 'ire',],  /* tags */
+  1,  /* weeks */
+  2,  /* quest expiration weeks */
+  { /* roles */
+    'guard1': setup.qu.guard,
+    'guard2': setup.qu.guard,
+    'guardsupport': setup.qu.guardsupport,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestHumanVsWereDefense', /* passage description */
+  setup.qdiff.easy14, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestHumanVsWereDefenseCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.Favor('humanvale', 50),
+        setup.qc.Ire('werewolf', 2),
+      ],
+    ],
+    [
+      'QuestHumanVsWereDefenseSuccess',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humanvale', 50),
+        setup.qc.Ire('werewolf', 2),
+      ],
+    ],
+    [
+      'QuestHumanVsWereDefenseFailure',
+      [
+        setup.qc.Favor('humanvale', 25),
+        setup.qc.Ire('werewolf', 2),
+      ],
+    ],
+    [
+      'QuestHumanVsWereDefenseDisaster',
+      [
+        setup.qc.Injury('guard1', 1),
+        setup.qc.Injury('guard2', 1),
+        setup.qc.Injury('guardsupport', 1),
+      ],
+    ],
+  ],
+  [], /* quest pool and rarities */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestHumanVsWereDefense [nobr]
+
+<<include 'OpportunityHumanVsWere'>>
+
+<p>
+You have chosen to inform the villagers and stand besides them in defense.
+</p>
+
+
+:: QuestHumanVsWereDefenseCrit [nobr]
+
+<p>
+The defense was a complete success. The villagers even managed to
+capture some of the werewolf attackers to train as valuable pets.
+The villagers offered the first fuck of the former werewolf commander to
+<<yourrep $g.guard1>>, who
+<<if $g.guard1.isHasTrait('per_chaste')>>
+declined, since <<they $g.guard1>> guard1|is rather chaste.
+<<else>>
+<<uadv $g.guard1>> obliged.
+<</if>>
+Afterwards, as your slavers were rewarded for their effort, they can see the werewolf commander
+being dragged into the village dungeons by one of the villagers.
+Your slavers started to wonder if the villagers intentionally goaded the werewolves to attack,
+but one thing for sure -- the next time you visited the village, they will no doubt had several
+guard pets in fray. Your slavers made a mental note to never anger this particular settlement on the north...
+</p>
+
+
+:: QuestHumanVsWereDefenseSuccess [nobr]
+
+<p>
+The battle was tough, but ultimately your slavers and villagers managed to clutch out the
+victory, and the werewolves retreated.
+But with so much of their village destroyed by the attack,
+they were only to muster a meager reward for your slavers, who
+<<uadv $g.guard1>> accepted it.
+</p>
+
+
+:: QuestHumanVsWereDefenseFailure [nobr]
+
+<p>
+The werewolves overwhelmed both your slavers and the villagers.
+Fortunately, your slavers managed to escape at the nick of time, abandoning the
+unfortunate village but avoided getting injured.
+</p>
+
+
+:: QuestHumanVsWereDefenseDisaster [nobr]
+
+<p>
+The werewolves overwhelmed both your slavers and the villagers.
+As a result, your slavers returned home injured from the experience.
+</p>

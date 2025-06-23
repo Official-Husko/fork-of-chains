@@ -1,0 +1,39 @@
+:: LIVINGSETUP_juggler [nobr living]
+
+<<run new setup.Living({
+  key: 'juggler',
+  name: 'Juggler',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_entertainer: setup.LIVING_COMMON_PREFERENCE,
+    skill_entertain: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_playful: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_serious: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'practicing juggling',
+    'performing for a crowd',
+    'travelling with a|their troupe',
+  ],
+  location: 'troupe',
+})>>
+
+:: LIVING_juggler [nobr]
+
+<p>
+After leaving your company, <<rep $g.a>> found new friends in a travelling
+circus troupe.
+a|They joined as the troupe's resident juggler, and the exslaver's
+<<if $g.a.isHasTrait('bg_entertainer')>>
+past as an entertainer ensured a|their success.
+<<elseif $g.a.isHasTrait('skill_entertain')>>
+entertaining skills ensured a|their success.
+<<elseif $g.a.isHasTrait('per_playful')>>
+playful attitude helped a|them succeed.
+<<else>>
+deft a|hands helped a|them succeed.
+<</if>>
+a|They now spends a|their days traveling the land and performing for the adoring masses.
+</p>

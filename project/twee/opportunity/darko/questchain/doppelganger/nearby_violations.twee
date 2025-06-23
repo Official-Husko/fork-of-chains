@@ -1,0 +1,125 @@
+:: OpportunitySetup_nearby_violations [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'nearby_violations', /* key */
+"Nearby Violations", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+  'special',
+],
+1, /* expiration weeks */
+'Opportunity_nearby_violations',
+setup.qdiff.normal58, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_nearby_violations_0',
+    'Opportunity_nearby_violations_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.MoneyCustom(20000),
+      setup.qc.ContactLose(setup.contacttemplate.quest_doppelganger),
+      setup.qc.VarRemove('quest_doppelganger_progress'),
+      setup.qc.TraumatizeRandom('slaver', 10),
+      setup.qc.SetCooldownQuest('the_virgin_raider', 100),
+      setup.qc.RemoveTitleGlobal('quest_doppelganged'),
+      setup.qc.RemoveTitleGlobal('quest_doppelganger'),
+    ],
+  ],
+  [
+    'Opportunity_nearby_violations_1',
+    'Opportunity_nearby_violations_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_doppelganger_progress', '5', -1),
+      setup.qc.Money(-10000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+  'dop': [
+    setup.qres.Home(),
+  ],
+  'visitor': 'all',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_nearby_violations [nobr]
+<p>
+Now that you've uncovered <<rep $g.dop>> as the culprit the midnight virgin raider, you should decide what to do with the treacherous doppelganger. <<Yourrep $g.slaver>> slaver|maintain that <<they $g.slaver>> believe in the doppelganger's innocence, and that the midnight transformation was completely involuntary, but <<they $g.slaver>> resigns to whatever you decide to choose, and won't begrudge you (too much) for whatever it is you decide to do.
+</p>
+
+<p>
+Maybe it's finally time to collect your bounty over the doppelganger.
+</p>
+
+<p>
+Or, you could try to invest a large amount of money, if you really believe <<reps $g.slaver>> claim that the doppelganger is actually innocent in all this...
+</p>
+
+
+:: Opportunity_nearby_violations_0 [nobr]
+Fulfill bounty
+
+
+:: Opportunity_nearby_violations_0_flavor [nobr]
+<p>
+Violating your hospitality is a crime punishable with slavery, and hence you decided to sell the doppelganger away and fulfill <<their $g.dop>> bounty.
+</p>
+
+<p>
+Having irrefutable proof that <<they $g.dop>> dop|was the midnight virgin raider, <<rep $g.slaver>> slaver|is only a little saddened at the departure of <<their $g.slaver>> friend, and will quickly get over it with a couple of drinks or two.
+</p>
+
+
+:: Opportunity_nearby_violations_1 [nobr]
+Invest money to investigate
+
+
+:: Opportunity_nearby_violations_1_flavor [nobr]
+<p>
+Against your better judgment,
+<<if $unit.player.isHasTrait('per_frugal')>>
+as well as your greedy nature,
+<</if>>
+you decide to spend money on money on trying to figure out that maybe <<rep $g.slaver>> is not a total liar and there is something wrong with the doppelganger.
+</p>
+
+<p>
+You let a bounty for information be spread around your fort, and while waiting, you spend a day reading your own <<rep setup.item.lorebook_doppelganger>><<set _unit = $dutylist.getUnitIfAvailable('doctor')>><<if _unit>>
+, as well as consulting the resident doctor <<rep _unit>><</if>>.
+You find that there has been several such occurrences of doppelgangers involuntarily transforming into people they've copied in the past — and there is one common thread among all of them. The person they copied involuntarily has done something terrible to all of them — and it is likely this is a doppelganger's coping mechanism against such things.
+</p>
+
+<p>
+As you ponder on the information, a visitor comes to your office to claim the bounty you posted for information. The visitor introduces <<themself $g.visitor>> as a traveling bard, (a synonym with traveling con-artist in your head), and has information about the doppelganger, or rather, the person <<rep $g.dop>> has copied. As it happens, the bard was visiting a tavern in the <<lore region_desert>> when <<they $g.visitor>> met a desert human much alike the <<man $g.dop>> in the wanted poster you posted in your fort. It is a very strong clue, and you might be able to find the source of the doppelganger somewhere there...
+</p>
+
+<p>
+You are experienced enough to know the old age saying of "never trust a <<man $g.visitor>> with the strange hat", but then you recall a quest you've taken some time ago from a desert bandit. Indeed, now that you think about it, <<their $g.dop>> face dop|was strikingly similar to your little doppelganger's transformed visage. You begrudgingly paid the bard for the information before deciding to get yourself drunk to forgot the large amount of sum you've just paid to learn something you already know.
+</p>
+
+<p>
+Best get moving and scout the <<lore region_desert>>.
+</p>

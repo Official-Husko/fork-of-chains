@@ -1,0 +1,35 @@
+:: LIVINGSETUP_wildman [nobr living]
+
+<<run new setup.Living({
+  key: 'wildman',
+  name: 'Wildman',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_wildman: setup.LIVING_COMMON_PREFERENCE,
+    per_gregarious: -setup.LIVING_UNCOMMON_PREFERENCE,
+    per_loner: setup.LIVING_MORECOMMON_PREFERENCE,
+  },
+  business: [
+    'spending a|their days away lost in the wilds',
+    'venturing out in the wilds',
+    'braving the unknown',
+  ],
+  location: 'hut',
+})>>
+
+:: LIVING_wildman [nobr]
+
+<p>
+After making sure a|their money are stored safely in the <<rep $company.bank>>'s vaults,
+<<rep $g.a>> retreated back into the wilderness of
+<<uhomeland $g.a>>
+<<if $g.a.isHasTrait('bg_wildman')>>
+The wild<<man $g.a>> resumes a|their old lifestyle, and seems perfectly content with it.
+<<else>>
+The loner a|race has always felt uncomfortable near other people, and living as a recluse seems
+like a perfect fit for a|them.
+<</if>>
+a|They keeps a single slave with a|them, no doubt a warm reminder of a|their past as a slaver.
+</p>

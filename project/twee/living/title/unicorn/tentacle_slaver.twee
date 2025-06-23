@@ -1,0 +1,43 @@
+:: LIVINGSETUP_tentacle_slaver [nobr living]
+
+<<run new setup.Living({
+  key: 'tentacle_slaver',
+  name: 'Tentacle Slave Seller',
+  tags: ['rare', ],
+  unit_restrictions: [
+    setup.qres.HasTitle('quest_tentacle_attuned_0'),
+  ],
+  default_preference: setup.LIVING_RARE_PREFERENCE,
+  trait_preferences: {
+    per_cruel: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_evil: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_kind: -setup.LIVING_UNCOMMON_PREFERENCE,
+    per_honorable: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'harvesting new slaves from the tentacle monster',
+    'enjoying using one of the mindbroken slaves from the tentacle monster',
+    'selling new batch of freshly harvested slaves from the tentacle aberration',
+  ],
+  location: 'house',
+})>>
+
+:: LIVING_tentacle_slaver [nobr]
+
+<p>
+Having a bond with one of the tentacle aberrations in the deserts,
+<<yourrep $g.a>> decided to turn that into a profit.
+<<They $g.a>> would venture into the desert every now and then to harvest the slaves there,
+and sell them off for a good fortune.
+Rumors said that they would keep some of the best harvests all for <<themself $g.a>>,
+<<if $g.a.isHasTrait('per_lustful')>>
+to be used as a personal sex toy to satisfy <<their $g.a>> perpetually horny needs.
+<<elseif $g.a.isHasTrait('per_chaste')>>
+not for sexual purposes (the chaste <<urace $g.a>> dislikes that!), but just to keep around for company.
+<<else>>
+to be used as <<their $g.a>> own personal sex toy.
+<</if>>
+<<They $g.a>> became quite famous for the deed, and can be seen sometimes in the desert offering
+wayward information to those seeking refuge in the vast deserts, leading them to the monster
+instead of to safety.
+</p>

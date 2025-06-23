@@ -1,0 +1,124 @@
+:: OpportunitySetup_the_half_werewolf [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'the_half_werewolf', /* key */
+"The Half-Werewolf", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'vale', 'unknown', 'special',
+],
+1, /* expiration weeks */
+'Opportunity_the_half_werewolf',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_the_half_werewolf_0',
+    'Opportunity_the_half_werewolf_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Actor('wanderer', setup.qres.IsCanBeSold()),
+    ],
+    [ /* outcomes */
+      setup.qc.MissingUnitForever('wanderer'),
+    ],
+  ],
+  [
+    'Opportunity_the_half_werewolf_1',
+    'Opportunity_the_half_werewolf_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTitle('wanderer', 'quest_mysterious_wanderer_0'),
+      setup.qc.AddTitle('wanderer', 'quest_shapeshifter__werewolf_1'),
+      setup.qc.AddHistory('wanderer', "finally found a company who is willing to accept a|them for what a|they is"),
+      setup.qc.Trait('weremale', setup.trait.muscle_verystrong),
+      setup.qc.Trait('werefemale', setup.trait.muscle_verystrong),
+      setup.qc.IfThenElse(
+        setup.qres.Actor('wanderer', setup.qres.Trait(setup.trait.gender_male)),
+        setup.qc.DoAll([
+          setup.qc.SetBodyshifter('wanderer', 'weremale')
+        ], undefined),
+        setup.qc.DoAll([
+          setup.qc.SetBodyshifter('wanderer', 'werefemale')
+        ], undefined)
+      ),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'wanderer': [
+  ],
+  'weremale': 'subrace_werewolfmale',
+  'werefemale': 'subrace_werewolf_female',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_the_half_werewolf [nobr]
+
+<p>
+You have uncovered <<reps $g.wanderer>> secret: <<they $g.wanderer>> wanderer|is actually an
+unnatural half-man half-werewolf. <<Their $g.wanderer>> heritage had
+shunned the poor <<man $g.wanderer>> from the company of both the northerners and the werewolves.
+Would you be so heartless as turn <<them $g.wanderer>> away as well?
+</p>
+
+
+:: Opportunity_the_half_werewolf_0 [nobr]
+Turn the wanderer away
+
+
+:: Opportunity_the_half_werewolf_0_flavor [nobr]
+<p>
+As <<rep $g.wanderer>> left your fort, <<they $g.wanderer>> gave one last
+tentative glance towards you before leaving the fort for good. When not even
+the company of slavers would even accept a <<man $g.wanderer>> such as <<them
+$g.wanderer>>, who would?
+</p>
+
+
+:: Opportunity_the_half_werewolf_1 [nobr]
+Accept the wanderer for what <<they $g.wanderer>> wanderer|is
+
+
+:: Opportunity_the_half_werewolf_1_flavor [nobr]
+<p>
+<<Rep $g.wanderer>> did not respond when you said you were happy to accept
+<<them $g.wanderer>> for what <<they $g.wanderer>> is. You had to repeat it
+a few more times before the slack-jawed slaver
+<<if $g.wanderer.isHasTrait('per_serious')>>
+stoically
+<<else>>
+tearfully
+<</if>>
+asked whether you are sure about the decision. A lifetime of being shunned
+had turned <<theslaver $g.wanderer>> hopeless to find a company that would accept <<them
+$g.wanderer>>, even though <<their $g.wanderer>> heritage was not in any way
+<<their $g.wanderer>> own fault.
+</p>
+<p>
+With this,
+<<their $g.wanderer>> journey has come to an end, and in the
+strangest of company: the company of slavers. No longer <<they $g.wanderer>>
+wanderer|need to excuse <<themself $g.wanderer>> during the full moon nights. A happy
+ending all around, including for you who just gained a most talented slaver. Perhaps
+you could ask the <<uadjgood $g.wanderer>> slaver to transform if it suits
+your company better...
+</p>
+
+<p>
+<<successtext 'Note'>>: <<rep $g.wanderer>> can actually shapeshift in the game! Try it out
+by interacting with <<them $g.wanderer>>, and then choosing the <<successtextlite 'Bodyshift'>> interaction.
+</p>

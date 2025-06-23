@@ -1,0 +1,123 @@
+:: FortGridConstructionHelpText [nobr]
+
+<div class='helpcard'>
+  <p>
+    There are some restrictions where you can place your rooms.
+    First, the rooms <b>cannot overlap</b> each other.
+    Second, the room <b>entrances must be empty</b>.
+    Third, each room has a restriction that it can either be build in the indoor area or in the outdoor area
+    of your fort.
+    Finally, the remaining empty spaces must be reachable from one another.
+    In particular, this means you cannot surround an empty space completely with buildings.
+  </p>
+
+  <p>
+    You can press the "[" or "]" keys as a shortcut to rotate your room.
+  </p>
+</div>
+
+:: FortGridHelp [nobr]
+
+<div class='helpcard'>
+  <p>
+    This is the current state of your fort. It is in a rather sorry state right now,
+    having minimum room for building, but as you progress in the game, you will be able
+    to afford expanding the fort further.
+  </p>
+
+  <p>
+    You should continue by going into the <<successtext "Build">> menu and build the
+    <<rep setup.buildingtemplate.scouthut>>.
+  </p>
+</div>
+
+:: FortGrid [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<if !$fort.player.isHasBuilding(setup.buildingtemplate.scouthut)>>
+  <<include 'FortGridHelp'>>
+<</if>>
+
+<<if !$company.player.isCanAddUnitWithJob(setup.job.slaver) &&
+$fort.player.getBuilding(setup.buildingtemplate.lodgings).getLevel() == 1>>
+  <div class='helpcard'>
+    Looks like your slaver capacity is full. You can increase the number of slavers
+    you can hire by <<successtext "Upgrading">> your <<rep setup.buildingtemplate.lodgings>>.
+    Click on the "View / Upgrade" button to proceed.
+  </div>
+<</if>>
+
+<<unset $gFortGridControl>>
+<<set _dom = setup.DOM.Menu.fortgrid({mode: 'view'})>>
+<<attach _dom>>
+
+
+:: FortGridRenovate [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.fortgrid({mode: 'edit'})>>
+<<attach _dom>>
+
+
+:: FortGridPlace [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.fortgrid({})>>
+<<attach _dom>>
+
+
+:: FortGridBuild [nobr]
+
+<<set $gMenuVisible = false>>
+
+<p>
+Building <<rep $roominstance[$gFortGridBuildRoomKey]>>:
+<<message '(?)'>>
+  <<include 'FortGridConstructionHelpText'>>
+<</message>>
+</p>
+
+<<if !$fort.player.isHasBuilding(setup.buildingtemplate.scouthut)>>
+  <div class='helpcard'>
+    <p>
+      To complete building your <<rep setup.buildingtemplate.scouthut>>, you must select
+      a valid orientation and a valid place to place the new structure.
+      Since <<rep setup.buildingtemplate.scouthut>> is an
+      <<successtext "outdoors">> improvement, it must be placed on the green
+      area of your fort, i.e, the "outdoor" location.
+      There are some other restrictions for placing buildings, e.g.,
+      they cannot overlap each other, cannot have their entrances blocked,
+      and cannot cut off the empty spaces into two or more segments.
+      Click
+      <<message 'here'>>
+        <<include 'FortGridConstructionHelpText'>>
+      <</message>>
+      for the full restrictions on structure placement.
+    </p>
+
+    <p>
+      For your <<rep setup.buildingtemplate.scouthut>>, there is actually only one possible
+      location AND orientation to place it.
+      You can click the "Rotate" button (or press the "[" and "]" keys) to rotate your building.
+      Can you figure out where?
+      If you are stuck, you can click on the <<successtextlite "Auto-place">> to let
+      the game place it automatically for you.
+    </p>
+
+    <p>
+      As you expand and continue playing the game, you will unlock more options, as well as
+      being able to move your existing buildings to a different location.
+    </p>
+
+    <p>
+      When you have placed the building successfully, proceed by either clicking the
+      <<successtextlite "Confirm placement">> button, or by pressing the Spacebar key.
+    </p>
+  </div>
+<</if>>
+
+<<set _dom = setup.DOM.Menu.fortgrid({mode: 'build', room_key: $gFortGridBuildRoomKey })>>
+<<attach _dom>>

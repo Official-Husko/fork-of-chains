@@ -1,0 +1,95 @@
+:: QuestSetupUnitTrainingHornyBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_horny_basic',  /* id */
+  'Horny Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingHornyBasic',  /* description */
+  setup.qdiff.easy18,
+  [
+    [
+      'QuestUnitTrainingHornyBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_horny_basic),
+      ]
+    ],
+    [
+      'QuestUnitTrainingHornyBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_horny_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingHornyBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingHornyBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingHornyBasic [nobr]
+<p>
+This training's goal is to increase the arousal rate of the slave.
+A graduate of this training must be able to arouse themself on demand,
+and keep themselves aroused for a period of time.
+A standard reinforcement training is usually best for instilling
+such behavior --- rewarding them for being <<hard $g.trainee>> and punishing them for
+getting <<soft $g.trainee>>.
+</p>
+
+:: QuestUnitTrainingHornyBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_horny_basic_male_neko.jpg'>>
+<<else>>
+<</if>>
+
+<<if $gQuest == 'crit'>>
+
+<p>
+The training was a complete success. <<Rep $g.trainee>> now proficient in making themselves <<hard $g.trainee>> on command,
+surely a useful ability for a slave.
+</p>
+
+<<else>>
+
+<p>
+At the end of the week, <<rep $g.trainee>> can now make themselves <<hard $g.trainee>>
+on your command. A passing grade for this training.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingHornyBasicFailure [nobr]
+<p>
+Unfortunately, <<reps $g.trainee>> thick skull means that
+<<they $g.trainee>> continue to struggle with getting aroused on
+command.
+</p>
+
+:: QuestUnitTrainingHornyBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

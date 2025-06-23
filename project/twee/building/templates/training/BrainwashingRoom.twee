@@ -1,0 +1,46 @@
+:: InitBuildingBrainwashingRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'brainwashingroom',
+  tags: [],
+  width: 5,
+  height: 5,
+  door_column: 2,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'brainwashingroom',
+  name: 'Brainwashing Room',
+  tags: ['training'],
+  description_passage: 'BuildingBrainwashingRoom',
+  costs: [
+    [
+      setup.qc.MoneyMult(-setup.BUILDING_HIGH_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('trainingchamber'),
+      setup.qres.Building('convincingroom'),
+      setup.qres.Building('veteranhall'),
+      setup.qres.HasItem(setup.item.brainwash_technology),
+    ],
+  ],
+  main_room_template_key: 'brainwashingroom',
+})>>
+
+
+:: BuildingBrainwashingRoom [nobr]
+
+<p>
+Where you can practice your brainwash-assisted manipulation techniques to convert
+a slave into a slaver without side-effects.
+Unlocks a training that can convert a slave into a slaver with no side effect other than
+losing all their slave trainings.
+</p>
+

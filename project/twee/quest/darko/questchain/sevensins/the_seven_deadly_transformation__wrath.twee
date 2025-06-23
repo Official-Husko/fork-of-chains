@@ -1,0 +1,162 @@
+:: QuestSetup_the_seven_deadly_transformation__wrath [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+],
+{
+}
+)>>
+
+
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__wrath', /* key */
+"The Seven Deadly Transformation: Wrath", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'desert',
+'trait',
+'prep'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'fated': _criteriafated,
+'trainer': setup.qu.slavetrainer,
+'pimp': setup.qu.pimp,
+'guard': setup.qu.guard, },
+{ /* actors */
+'orc': 'subrace_orc', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__wrath',
+setup.qdiff.hard37, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__wrathCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyCustom(2500), ],
+], [
+'Quest_the_seven_deadly_transformation__wrathCrit',
+[
+setup.qc.Trait('fated', setup.trait.training_obedience_basic),
+setup.qc.Trait('fated', setup.trait.training_masochist_basic),
+setup.qc.TraitReplace('fated', setup.trait.mouth_orc),
+setup.qc.MoneyCustom(1500), ],
+], [
+'Quest_the_seven_deadly_transformation__wrathFailure',
+[
+setup.qc.Injury('fated', 2),
+setup.qc.Injury('guard', 4),
+setup.qc.Injury('trainer', 2),
+setup.qc.Injury('pimp', 2), ],
+], [
+'Quest_the_seven_deadly_transformation__wrathDisaster',
+[
+setup.qc.Injury('guard', 8),
+setup.qc.Injury('trainer', 6),
+setup.qc.Injury('pimp', 6),
+setup.qc.SlaveMarker('orc'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slave),
+  setup.qres.HasTitle('seven_deadly_transformation'),
+  setup.qres.NoTrait(setup.trait.mouth_orc),
+]),
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__wrath [nobr]
+<<set _headunit = setup.getUnit({job: setup.job.slave, title: "seven_deadly_transformation"})>>
+
+<<if !_headunit>>
+<<dangertext "Due to your company missing a slave important for this quest, this quest is no longer able to be completed.">>
+
+<<else>>
+
+<p>
+Recently, you have read in your library about the "Trial of Wrath" — which
+requires its participant to join and survive the initiation rite of the
+orcish tribe. Hearing this, you can't help but wonder if this trial is one of
+the challenges that <<yourrep _headunit>> must overcome to fulfill <<their
+_headunit>> destiny.
+</p>
+
+<p>
+It would be impossible to subject <<rep _headunit>> directly to the rite, for the rite
+is only done for new prospective members of the orcish tribe. But perhaps you can ask
+some of the tribes on how the rite is actually done, which can help you perform the
+rite on the slave. You can try to send a group of slavers over to the desert
+to find relatively unwrathful orc encampment, and see what they can find there.
+</p>
+
+<</if>>
+
+
+:: Quest_the_seven_deadly_transformation__wrathCrit [nobr]
+
+<p>
+Your slavers managed to find one small orcish encampment who mostly lives off
+trading. <<Yourrep $g.pimp>> managed to <<uadv $g.pimp>> represent your team well
+— effectively acting as <<reps $g.fated>> pimp. Once inside, <<rep $g.fated>> fated|was
+immediately rented by some of the orcs, while <<rep $g.guard>> busily search
+for relevant information. They gathered much information about the rite,
+including all the spanking and whipping that surprisingly comes with it.
+</p>
+
+<p>
+In fact, one of the orcs had just come to age, and would be
+subjected to the rite later that night. Your slavers were invited to watch,
+which they gladly agreed. That night, your slavers watched as the new orc
+member was chained to a post and then whipped and flogged by their fellow
+orcs — you could not help but notice that the orc's
+<<if $g.orc.isHasDick()>>dick<<else>>pussy<</if>> remains <<wet $g.orc>> all that time.
+That looked simple enough, so your slavers eagerly tried this out on <<rep
+$g.fated>> on the spot. They tied <<therace $g.fated>> on a tree, and synchronised their whipping and
+spanking with the ritual — soon enough, <<rep $g.fated>> started to glow red
+and tusks formed around <<their $g.fated>> mouth. By the end of the
+ritual, the red glow faded, and <<reps $g.fated>> entire body was red from
+the whipping. <<They $g.fated>> sported new orcish tusks jutting out of
+their mouth, surely signifying the success of the ritual.
+</p>
+
+<p>
+The next day, your slavers bid farewell to the nice orcs while
+<<yourrep $g.pimp>> <<uadv $g.pimp>> collected the money obtained from whoring <<rep $g.fated>> out.
+</p>
+
+
+:: Quest_the_seven_deadly_transformation__wrathFailure [nobr]
+<p>
+Unfortunately, your slavers were not able to find a particularly friendly
+orcish encampment. When your slavers tried to insist on one of the
+encampments, the guards attacked your slavers, leaving them a little injured.
+</p>
+
+
+:: Quest_the_seven_deadly_transformation__wrathDisaster [nobr]
+<p>
+When your slavers attempted to parlay with the guards of one of the orcish
+encampment, they were ambushed by orcish ambusher who lied in wait precisely
+for such travelers. Your
+slavers somehow managed to escape from the situation, albeit sustaining heavy
+injuries.
+</p>

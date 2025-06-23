@@ -1,0 +1,153 @@
+:: EventSetup_ex_reserved [nobr event]
+
+<<run new setup.Event(
+'ex_reserved', /* key */
+"Ex-Reserved", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_ex_reserved',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.bg_priest, setup.trait.bg_mythical, setup.trait.bg_scholar, setup.trait.bg_engineer, setup.trait.bg_monk, setup.trait.bg_noble, setup.trait.bg_royal, setup.trait.bg_healer], true),
+    setup.qres.AnyTrait([setup.trait.per_sexaddict, setup.trait.training_oral_master, setup.trait.training_anal_master], true),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.gym),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_ex_reserved [nobr]
+<p>
+You would check up on your more obedient slaves from time to time, and <<yourrep $g.slave>> happens to be scheduled for inspection today. <<They $g.slave>> comes into your office naked, to find that the earlier inspection is going a little long. The slave before <<them $g.slave>> is obediently riding
+<<if (!$unit.player.isHasDick())>>one of your larger strap-ons<<else>>your cock<</if>>.
+<<They $g.slave>> waits patiently, but does not bother to hide <<their $g.slave>> arousal at the lewd sight. <<They $g.slave>> obviously wants to be next;
+<<if $g.slave.isHasDick() && $g.slave.isInChastity()>>
+<<their $g.slave>> chastity cage is dribbling precum, and <<they $g.slave>>'s clearly uncomfortable with simultaneous arousal and unwillingness to suffer a hardon inside it
+<<elseif $g.slave.isHasDick()>>
+<<their $g.slave>> <<udick $g.slave>> is painfully erect
+<<else>>a sheen is visible on <<their $g.slave>> pussylips<</if>>, <<their $g.slave>> nipples are stiff, and <<they $g.slave>>'s starting to breathe a little hard.
+</p>
+
+<p>
+When you finish and send the slave you were boning on <<their $g.slave>> way with a light slap on the rump, you seat yourself to inspect <<name $g.slave>>. As you do,
+<<if (!$unit.player.isHasDick())>>your rather realistically modeled phallus dangles between your legs<<else>>your half-hard <<udick $unit.player>> hangs between your legs<</if>>, still slick from fucking the previous inspectee. <<Reps $g.slave>> <<ueyes $g.slave>> focus on it with painful intensity, and the <<urace $g.slave>>'s
+<<if $g.slave.isHasDick() && $g.slave.isInChastity()>>
+chastity cage begins to bother <<them $g.slave>> even more.
+<<elseif $g.slave.isHasDick()>>
+hard dick releases a string of precum.
+<<else>>
+the distinct smell of female arousal in the office intensifies.
+<</if>>
+You recall <<their $g.slave>> rather reserved past —
+<<if $g.slave.isHasTrait('bg_royal')>>
+<<they $g.slave>> slave|was born to rule, not to be used as sex toy.
+<<elseif $g.slave.isHasTrait('bg_mythical')>>
+<<they $g.slave>> slave|was born to be worshipped as a deity, not as a sex object.
+<<elseif $g.slave.isHasTrait('bg_engineer')>>
+<<they $g.slave>> slave|was an engineer, usually working with mechanical devices and not sex toys.
+<<elseif $g.slave.isHasTrait('bg_scholar')>>
+<<they $g.slave>> used to spend most of <<their $g.slave>> time buried in the books, and have little time for sex.
+<<elseif $g.slave.isHasTrait('bg_noble')>>
+<<they $g.slave>> attended modest and noble parties, and would often use slaves instead of being used as one.
+<<elseif $g.slave.isHasTrait('bg_healer')>>
+<<they $g.slave>> practiced the art of healing, an art very far yet very close to sex.
+<<elseif $g.slave.isHasTrait('bg_monk')>>
+<<they $g.slave>> spent <<their $g.slave>> days honing <<their $g.slave>> body and mind.
+<<elseif $g.slave.isHasTrait('bg_priest')>>
+<<they $g.slave>> spent <<their $g.slave>> days in chaste solitude as a dedicated priest.
+<</if>>
+<<They $g.slave>> must not have been a fan of the dick then, but <<they $g.slave>>'s certainly come around.<<if (!$unit.player.isHasDick())>> Even a strap-on is enough to get <<them $g.slave>> all hot and bothered.<</if>> On impulse, you ask <<them $g.slave>> if <<they $g.slave>> remembers how <<they $g.slave>> used to feel about cock. <<They $g.slave>> hesitates, wondering how to answer, but decides that honesty is the best policy and says, "Yes, <<Master $unit.player>>. I do. I mean, not all the time. It's easy to forget that I wasn't always such a cock-hungry slut." <<They $g.slave>> laughs, a rueful sound.
+<<if $g.slave.isHasTrait('per_sexaddict')>>
+"I need it so bad now, I'll let anybody fuck me. I mean, I'd let anybody fuck me, if it wasn't already my job as a slave.
+<<elseif $g.slave.getMainTraining().getTags().includes('troral')>>
+"Cocks are so hot. Just thinking about them gets me all horny. How they're all throbbing and warm and then they cum..." <<They $g.slave>> trails off. "Sorry, got distracted.
+<<elseif $g.slave.getMainTraining().getTags().includes('tranal')>>
+"I didn't know how much fun getting fucked in the butt was back then.
+<<else>>
+"Guys are just so hot - all big and strong and muscly.
+<</if>>
+<<if $unit.player.isHasDick()>>
+<<if $unit.player.isHasTrait('face_attractive')>>
+And being owned by such a handsome man has helped."
+<<elseif $unit.player.isHasTrait('muscle_strong')>>
+And being owned by such a shapely man has helped."
+<<else>>
+And being owned by a man like you has helped."
+<</if>>
+<<else>>
+Not that I don't love ladies too."
+<</if>>
+<<They $g.slave>> arches <<their $g.slave>> back and bats <<their $g.slave>> eyes at you. "A lot."
+</p>
+
+
+<<choose>>
+
+<<opt "<<They $g.slave>> wants dick. Give <<them $g.slave>> the dick">>
+
+<p>
+You rise fluidly out of your chair, pointing at the floor at <<their $g.slave>> feet. <<They $g.slave>> needs no further direction, and hurriedly gets down to place <<their $g.slave>> <<umouth $g.slave>> at dick height. <<They $g.slave>> <<if (!$unit.player.isHasDick())>>gives your strap-on a blowjob<<else>>sucks you off<</if>> with relish, looking adoringly up at you as <<they $g.slave>> rhythmically works <<their $g.slave>> lips up and down
+<<if (!$unit.player.isHasDick())>>the<<else>>your<</if>> thick shaft. After a bit of this, you pull
+<<if (!$unit.player.isHasDick())>>the phallus<<else>>yourself<</if>>
+free with a delicious popping noise, and haul the slave to <<their $g.slave>> feet. You grab <<their $g.slave>> <<uarms $g.slave>> in a firm hold and pull <<them $g.slave>> up on tiptoe (at which the horny <<urace $g.slave>>
+<<if $g.slave.isFemale()>>
+giggles
+<<else>>
+smiles
+<</if>>
+with anticipation), and then thrust into the gap between <<their $g.slave>> thighs. This motion slides <<if (!$unit.player.isHasDick())>>the strap-on<<else>>your hard dick<</if>> <<if $g.slave.isHasVagina()>>against <<their $g.slave>> moist pussylips<<else>>against <<their $g.slave>> anus and then past <<their $g.slave>> ballsack<</if>>, eliciting a shocked gasp and then a prolonged whine of pleasure. <<They $g.slave>> humps <<themself $g.slave>> along <<if (!$unit.player.isHasDick())>>the phallus<<else>>your shaft<</if>> shamelessly, craning around to rain kisses on your jawline and neck.
+</p>
+
+<p>
+<<if $g.slave.isHasVagina()>>
+
+When you gently push <<their $g.slave>> face away from you by tipping <<their $g.slave>> torso forward, <<they $g.slave>> moans a little from the loss of closeness, but soon forgets it when you press your <<if (!$unit.player.isHasDick())>>strap-on<<else>>dick<</if>> inside <<them $g.slave>>. <<They $g.slave>> begins to gasp your name, moan adoration, and beg nonsensically, and <<they $g.slave>>
+orgasms promptly.
+<<They $g.slave>> groans with overstimulation as you pull out, and then whines when you redouble it by immediately switching to <<their $g.slave>> <<if $g.slave.isHasTrait('anus_gape')>>loose<<elseif $g.slave.isHasTrait('anus_loose')>>practiced<<else>>tight<</if>> ass.
+
+<<else>>
+
+When you gently push <<their $g.slave>> face away from you by tipping <<their $g.slave>> torso forward, <<they $g.slave>> moans a little from the loss of closeness, but soon forgets it when you press your <<if (!$unit.player.isHasDick())>>strap-on<<else>>dick<</if>> against <<their $g.slave>> <<if $g.slave.isHasTrait('anus_gape')>>loose<<elseif $g.slave.isHasTrait('anus_loose')>>practiced<<else>>tight<</if>> anus. As you push inside <<them $g.slave>>, <<they $g.slave>> begins to gasp your name, moan adoration, and beg nonsensically, and <<they $g.slave>> orgasms promptly. <<They $g.slave>> groans with overstimulation, but you're just getting started; you grab <<their $g.slave>> knees and hoist <<them $g.slave>> up to fuck <<their $g.slave>> ass some more.
+<</if>>
+
+You climax there, your tour of <<their $g.slave>> holes completed; <<they $g.slave>> drops down to clean you off again before thanking you earnestly and taking <<their $g.slave>> leave, though not without a final turn in the doorway to steal a final loving glance at <<if (!$unit.player.isHasDick())>>your strap-on<<else>>your junk<</if>>.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Send <<their $g.slave>> down to the gym to share that attraction around">>
+
+<p>
+You bring up a map of your fort and point out the <<rep setup.buildingtemplate.gym>> to <<them $g.slave>>; you tell <<them $g.slave>> to go down there, and let <<them $g.slave>> know <<they $g.slave>>'ll spend the rest of the day there. <<They $g.slave>> looks mystified, and when you do not elaborate further, <<they $g.slave>> asks,
+"What should I do there, <<Master $unit.player>>?"
+Anything <<they $g.slave>> wants, you tell <<them $g.slave>>. <<They $g.slave>> still looks somewhat puzzled, but <<they $g.slave>> heads down to the gym anyway. When <<they $g.slave>> gets there, <<they $g.slave>> sees a steady stream of well-muscled male visitors as well as some of your slavers entering the showers area, and gets it. <<They $g.slave>> heads into the locker room. Given the atmosphere of your fort, there isn't much reaction to a naked <<urace $g.slave>> entering a male-dominated gym. That is, until <<they $g.slave>> selects from among the sweaty gentlemen coming in from the weight room, sidles up to one, and says cheerfully, "Hi! Do you wanna fuck me?" He does, and so do many of other visitors. So many, in fact, that having the showers right there becomes convenient for <<them $g.slave>> as the day goes on.
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 5).apply($gQuest)>>
+
+<</choose>>

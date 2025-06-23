@@ -1,0 +1,40 @@
+:: InitBuildingMessengerPost [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'messengerpost',
+  tags: [],
+  width: 2,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'messengerpost',
+  name: 'Messenger post',
+  tags: ['critical', 'misc'],
+  description_passage: 'BuildingMessengerPost',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('questoffice'),
+      setup.qres.Building('veteranhall'),
+    ],
+  ],
+  main_room_template_key: 'messengerpost',
+})>>
+
+:: BuildingMessengerPost [nobr]
+
+<p>
+Where you send and receive messages from all across the realm.
+Unlocks managing your contacts.
+
+</p>

@@ -1,0 +1,272 @@
+:: QuestSetup_night_shift23 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_night_shift231',
+"shifter2",
+'all',  /* pools */
+1, /* reuse chance */
+[
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'night_shift23', /* key */
+"Night Shift", /* Title */
+"darko", /* Author */
+[ 'desert', 'transformation', 'money',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'defender': setup.qu.defender,
+'trapper': setup.qu.trapper,
+'shadow': setup.qu.shadow_fighter, },
+{ /* actors */
+'thief': 'all',
+'lord': 'all',
+'slave': 'desert_all',
+'shifter2': 'quest_night_shift231', },
+[ /* costs */
+],
+'Quest_night_shift23',
+setup.qdiff.hard41, /* difficulty */
+[ /* outcomes */
+[
+'Quest_night_shift23Crit',
+[
+setup.qc.VarAdd('nightshifter', 2, -1),
+setup.qc.VarRemove('nightshifter_bodyswapped'),
+setup.qc.MoneyCrit(), ],
+], [
+'Quest_night_shift23Crit',
+[
+setup.qc.VarAdd('nightshifter', 1, -1),
+setup.qc.VarRemove('nightshifter_bodyswapped'),
+setup.qc.SlaveMarker('thief'),
+setup.qc.Bodyswap('thief', 'slave'),
+setup.qc.Slave('slave', "a|was a victim of the serial bodyswapper", undefined), ],
+], [
+'Quest_night_shift23Failure',
+[
+setup.qc.VarRemove('nightshifter'),
+setup.qc.VarRemove('nightshifter_bodyswapped'),
+setup.qc.TraumatizeRandom('defender', 10),
+setup.qc.TraumatizeRandom('trapper', 10),
+setup.qc.TraumatizeRandom('shadow', 10), ],
+], [
+'Quest_night_shift23Disaster',
+[
+setup.qc.SlaveMarker('slave'),
+setup.qc.SlaverMarker('shifter2'),
+setup.qc.Corrupt('shifter2'),
+setup.qc.Corrupt('shifter2'),
+setup.qc.VarAdd('nightshifter', 3, -1),
+setup.qc.IfThenElse(
+setup.qres.VarEqual('nightshifter_bodyswap', 'defender'),
+setup.qc.Bodyswap('defender', 'shifter2'),
+setup.qc.IfThenElse(
+setup.qres.VarEqual('nightshifter_bodyswap', 'shadow'),
+setup.qc.Bodyswap('shadow', 'shifter2'),
+setup.qc.Bodyswap('trapper', 'shifter2'))), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.uncommon],
+],
+[ /* restrictions to generate */
+setup.qres.VarLte('nightshifter', 2),
+setup.qres.NoQuest('night_shift'),
+setup.qres.NoQuest('night_shift2'),
+setup.qres.NoQuest('night_shift23'),
+],
+)>>
+
+:: Quest_night_shift23 [nobr]
+
+<<include 'Quest_night_shift2'>>
+
+
+:: Quest_night_shift23Crit [nobr]
+
+<p>
+Simple problem requires simple solution: <<Yourrep $g.defender>> will <<uadv
+$g.defender>> keep watch over the <<daughter $g.slave>> while <<rep
+$g.trapper>> and <<rep $g.shadow>> secured the house, blocking all possible
+entrances and reinforcing the all the weakest points of the house.
+Once the preparations were complete, they waited for the attack...
+</p>
+
+<<set _ns = $varstore.get('nightshifter') || 0>>
+<<if $gOutcome == 'crit'>>
+<<set _ns = _ns + 2>>
+<<else>>
+<<set _ns = _ns + 1>>
+<</if>>
+
+<<if _ns >= 3>>
+<p>
+Your slavers waited and waited, but nothing ever happened. In a sudden
+realization, <<yourrep $g.shadow>> suggested the rest of the team to remain on high alert, as this reminded
+<<them $g.shadow>> of the previous quests where the <<daughter $g.slave>>
+would somehow transform within a night.
+Their vigilance was rewarded as after two weeks of vigilance, during one of the nights
+<<rep $g.shadow>> spotted a faint purple glow coming from the second floor bedroom
+— the one where the <<lord $g.lord>>'s <<daughter $g.slave>> was supposed to
+rest in.
+</p>
+
+<p>
+Your slavers hurriedly rushed to the room and were met with the most debauched of
+scenes as the <<daughter $g.slave>> physical body was being transformed before
+your slavers' eyes.
+<<ubodyswap $g.slave $g.thief>>
+</p>
+
+<p>
+But something was off with the transformation, and your slavers were clueless.
+That is, until <<rep $g.shadow>>
+perceptively recalled one of the earlier quests they had done. Apparently,
+the poor <<girl $g.slave>> transformed into the exact same body with
+the victim of the first nightshifting!
+This could only mean that this was not actually a mere transformation — rather, it
+was a bodyswapping ritual somehow performed remotely.
+They were now convinced that this serial bodyswapping all came from the same
+perpetrator — somewhere out there in the desert performing remote bodyswapping rituals.
+</p>
+
+<p>
+Still, they were powerless to stop the transformation and were unable to do
+nothing but enjoy the magical transformation of the poor
+<<daughter $g.slave>>. But your slavers by now should have enough information
+to track down the perpetrator, and end the serial bodyswapping for good.
+</p>
+<<else>>
+
+<p>
+Your slavers waited and waited, but nothing ever happened. After two weeks of
+nothing, they let their guard down. It was then that one day, the <<daughter
+$g.slave>> of the mansion woke up completely transformed from head to toe, a
+far cry from the <<if $g.slave.isFemale()>>pretty young lady<<else>>dashing
+young man<</if>> <<they $g.slave>> once were.
+</p>
+
+<<if $varstore.get('nightshifter')>>
+<p>
+Your slavers realized this was very similar to what happened last time in a
+similar quest. They started to suspect that this was done by the same
+perpetrator — a serial transformer that transformed their victim at night.
+Perhaps they could try to remember this fact some other time and stay vigilant
+throughout the night.
+The deed had been done, however. They <<lord $g.lord>> of the mansion
+was surely going to be displeased at this turn of events...
+</p>
+<<else>>
+<p>
+Your slavers were completely clueless as how this strange transformation
+could have happened over night.
+Still, there were few clues they could gather from the scenes that might help
+with future events, but for this mission, it was a failure.
+</p>
+<</if>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Fortunately for you, the <<lord $g.lord>> of the mansion was a <<man $g.lord>>
+with a big heart. <<They $g.lord>> did not care about the appearance of <<their $g.lord>>
+<<daughter $g.slave>>, as long as <<they $g.slave>> <<if $g.slave.getGender()
+!= $g.shifter2.getGender()>>(or <<they $g.shifter2>> now?) <</if>> remained
+with <<them $g.lord>>. Your slavers were paid for their services, even though
+they didn't actually do anything. But <<rep $g.defender>> defender|was certainly not
+about to complain about free money!
+</p>
+<<else>>
+<p>
+As expected, the <<lord $g.lord>> lord|was completely upset by what <<they
+$g.lord>> perceived as a big loss of <<their $g.lord>> investment. <<They
+$g.lord>> kicked your slavers out of the mansion together with the former
+(apparently adopted) <<daughter $g.slave>> of the mansion.
+With nowhere to go, your slavers offered the <<daughter $g.slave>> to come
+with them, which <<they $g.lord>> agreed, not knowing what kind of fate
+awaits <<them $g.slave>> in your fort...
+</p>
+<</if>>
+
+
+
+
+:: Quest_night_shift23Failure [nobr]
+<p>
+Your slavers are raiders and slavers, not protectors of the innocent. They
+had difficulty trying to understand what they were supposed to do in this
+kind of mission where their goal is to protect, not to destroy.
+</p>
+
+<p>
+Ultimately, during one of their guard shifts, somehow the <<daughter
+$g.slave>> of the mansion got fully transformed overnight —- the once
+<<if $g.slave.isFemale()>>pretty young girl<<else>>
+dashing young man<</if>> became a shadow of <<their $g.slave>> former self.
+Your slavers were found in the same day completely dazed in their respective guard stations
+— apparently lightly affected by the same attack that transformed the poor
+<<daughter $g.slave>>.
+Fortunately for you, your slavers' physical appearances remained intact. But they have
+lost all memories regarding the perpetrator and would also need a few weeks to
+recover from the mental trauma.
+</p>
+
+
+:: Quest_night_shift23Disaster [nobr]
+/* Choose the bodyswap target here */
+<<if Math.random() < 0.333>>
+<<run $varstore.set('nightshifter_bodyswap', 'defender', 1)>>
+<<set _u = $g.defender>>
+<<elseif Math.random() < 0.5>>
+<<run $varstore.set('nightshifter_bodyswap', 'shadow', 1)>>
+<<set _u = $g.shadow>>
+<<else>>
+<<run $varstore.set('nightshifter_bodyswap', 'trapper', 1)>>
+<<set _u = $g.trapper>>
+<</if>>
+<<run $varstore.set('nightshifter_bodyswapped', _u.key, -1)>>
+
+<<if _u.getGender() != $g.shifter2.getGender()>>
+  <<set _v = setup.unitgroup.desert_all.getUnit({
+    trait_key: _u.getGender().key,
+    retries: 1000,
+  })>>
+  <<run setup.qcImpl.Bodyswap.doBodySwap(_v, $g.shifter2)>>
+<</if>>
+
+<p>
+Your slavers stood watch as best as they could, but nothing happened within the
+first two weeks. They grew complacent — and it was during this very time that
+one night,
+<<yourrep _u>> accidentally stepped into the center of an ominous-looking
+purple magical circle that appeared seemingly out of nowhere.
+Your other slavers watched helplessly as
+<<rep _u>>'s <<ubody _u>> was assaulted by the spell and
+transformed before their eyes.
+<<ubodyswap _u $g.shifter2>>
+</p>
+
+<p>
+Fortunately, <<rep _u>>
+<<if _u.isYou()>>
+were
+<<else>>
+was
+<</if>>
+surprisingly not mentally affected by the ordeal
+— in fact, being the direct target of the
+transformation spell gave
+<<them _u>> the knowledge of the exact location where the spell was being
+cast from. <<Rep _u>> licked their (new) lips as
+<<they _u>> began to plan <<their _u>> revenge and the things <<they _u>> would do
+once <<they _u>> got <<their _u>> (new)
+<<uarms _u>> around the perpetrator.
+Perhaps <<their _u>> own <<ubody _u>> could even be found and be reclaimed back.
+</p>

@@ -1,0 +1,239 @@
+:: QuestSetup_werewolf_hunt [nobr quest]
+
+<<run new setup.UnitGroup(
+"werewolf_hunt0",
+"Werewolf Outcast",
+'subrace_werewolf', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_thief),
+  setup.qc.TraitReplace('unit', setup.trait.per_loner),
+  setup.qc.TraitRemove('unit', setup.trait.muscle_strong),
+  setup.qc.TraitRemove('unit', setup.trait.muscle_verystrong),
+  setup.qc.TraitRemove('unit', setup.trait.muscle_extremelystrong),
+],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'werewolf_hunt', /* key */
+"Werewolf Hunt", /* Title */
+{ /* Author */
+  name: "J1009",
+  url: "",
+},
+[ /* tags */
+  'furry',
+  'vale',
+  'money',
+  'rare',
+],
+3, /* weeks */
+6, /* expiration weeks */
+{ /* roles */
+  'spotter': [ setup.qu.spotter, 1],
+  'hunter1': [ setup.qu.hunter, 1],
+  'hunter2': [ setup.qu.hunter, 1],
+},
+{ /* actors */
+  'ziggar': 'werewolf_hunt0',
+},
+[ /* costs */
+],
+'Quest_werewolf_hunt',
+setup.qdiff.hard28, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_werewolf_huntCrit',
+    [
+      setup.qc.Slave('ziggar', "a|was a thief", undefined),
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_werewolf_huntCrit',
+    [
+      setup.qc.MoneyCustom(3500),
+      setup.qc.Favor('humanvale', 50),
+    ],
+  ],
+  [
+    'Quest_werewolf_huntFailure',
+    [
+      setup.qc.Ire('humanvale', 2),
+    ],
+  ],
+  [
+    'Quest_werewolf_huntDisaster',
+    [
+      setup.qc.Injury('spotter', 4),
+      setup.qc.Injury('hunter1', 4),
+      setup.qc.Injury('hunter2', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.epic],
+],
+[ /* restrictions */
+    setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_werewolf_hunt [nobr]
+<p>
+Word has come to your fort that a <<female $g.ziggar>> <<urace $g.ziggar>>
+has been seen terrorizing the small mountain settlements of the <<lore region_vale>>.
+According to the villagefolk, the <<urace $g.ziggar>> has been
+entering their homes at night and stealing their hard-earned gold, before
+disappearing into the darkness.
+So dire is the situation that the <<rep
+$company.humanvale>> have commissioned your company <<rep $company.player>>
+to take care of the threat, using any means upon which you deem necessary.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+<<Yourrep _u>> points out that something is odd here — werewolves don't usually
+go out alone under the cover of darkness to sneak around and steal goods.
+These furry race usually prefers the more direct approach of simply
+raiding the villages to the ground, so this could be a rare outcast of the werewolves,
+which could present an opportunity for you to capture one without too many repercussions.
+Dealing with any <<urace $g.ziggar>> will be no easy task, however.
+First, you will need a good spotter in order to locate the
+<<urace $g.ziggar>> in it's surely hidden hideout, and then two
+hunters in order to take <<them $g.ziggar>> down and capture <<them
+$g.ziggar>>.
+It will not be an easy mission, but the money will
+(hopefully?) be well worth it.
+</p>
+
+
+
+:: Quest_werewolf_huntCrit [nobr]
+
+<<questimage 'werewolf_hunt.jpg'>>
+
+<p>
+Adventuring into the icy peaks of the <<lore region_vale>>, <<yourrep $g.spotter>>
+spotter|was able to <<uadv $g.spotter>> locate and track
+the <<urace $g.ziggar>>'s footsteps back into <<their $g.ziggar>> hiding
+place:
+a small cave on
+<<if $gQuest.getSeed() % 3 == 0>>
+the side of a mountain.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+the side of an icy river.
+<<else>>
+the underside of a cliff.
+<</if>>
+Entering with caution, your
+<<uadjphys $g.hunter1>> hunter <<rep $g.hunter1>> and your <<uadjphys
+$g.hunter2>> hunter <<rep $g.hunter2>> caught the <<urace $g.ziggar>>
+completely by surprise, and
+<<set _water = setup.selectUnit([$g.spotter, $g.hunter1, $g.hunter2], {trait: 'magic_water'})>>
+<<set _earth = setup.selectUnit([$g.spotter, $g.hunter1, $g.hunter2], {trait: 'magic_earth'})>>
+<<set _muscle = setup.selectUnit([$g.spotter, $g.hunter1, $g.hunter2], {trait: 'muscle_strong'})>>
+<<if _water>>
+<<rep _water>> used <<their _water>> water magic to freeze <<them $g.ziggar>> in <<their $g.ziggar>> step and
+<<elseif _earth>>
+<<rep _earth>> used <<their _earth>> earth magic to conjure binding vines and
+<<elseif _muscle>>
+<<rep _muscle>> used <<their _muscle>> considerable muscles
+<<else>>
+<<rep $g.spotter>> immediately charged in
+<</if>>
+to try and capture <<them $g.ziggar>>.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Surprisingly, the <<urace $g.ziggar>> offered little resistance, and was
+quickly overpowered before being bound and gagged by your hunters.
+The reason, as was discovered, was quite obvious: the werewolf was rather scrawny for one of its race,
+and must be one of the many reasons that the poor thing had been exiled from <<their $g.ziggar>>
+pack.
+Satisfied with the outcome, your
+slavers collected their reward and made their way back to the fort, having
+not only gained a decent sum of cash and a little more favor with the <<rep
+$company.humanvale>>, but also a new and <<uadjphys $g.ziggar>> <<urace $g.ziggar>>
+slave to have fun with.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately for <<them $g.hunter2>>, the werewolf was a particularly tough and strong one, perhaps
+exiled from <<their $g.ziggar>> pack after attempting to challenge <<their $g.ziggar>> alpha.
+The <<urace $g.ziggar>> fought back fiercely, claws clashing with <<reps $g.hunter2>> <<uweapon $g.hunter2>>,
+but seeing no hope of victory given that <<they $g.ziggar>> ziggar|was clearly
+outnumered made the wise decision to
+charge out of the cave at the first opportunity, dissapearing into the snowy lands before any of your slavers could stop <<them $g.ziggar>>.
+</p>
+
+<p>
+Despite the escape, the werewolf seemed to have decided that the area was simply too well-guarded — or perhaps your hunter's performance was just good enough to scare <<them $g.ziggar>> away —
+and was never seen around the area again.
+For driving away the nuisance, your slavers were paid
+handsomely, as well as gaining a little bit more favour with the <<rep $company.humanvale>>.
+</p>
+
+<</if>>
+
+
+
+:: Quest_werewolf_huntFailure [nobr]
+<p>
+Despite your <<uadjphys $g.spotter>> spotter <<reps $g.spotter>> best
+efforts, <<they $g.spotter>> was unable to locate the <<urace $g.ziggar>>
+amidst the icy peaks of the <<lore region_vale>>.
+Your slavers had to return to the settlement empty-handed, who lost trust in your company's
+abilities to solve their problems.
+</p>
+
+
+
+:: Quest_werewolf_huntDisaster [nobr]
+
+<<questimage 'werewolf_hunt.jpg'>>
+
+<p>
+Adventuring into the icy peaks of the <<lore region_vale>>, <<yourrep $g.spotter>>
+spotter|was able to <<uadv $g.spotter>> locate and track
+the <<urace $g.ziggar>>'s footsteps back into <<their $g.ziggar>> hiding
+place:
+a small cave on
+<<if $gQuest.getSeed() % 3 == 0>>
+the side of a mountain.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+the side of an icy river.
+<<else>>
+the underside of a cliff.
+<</if>>
+Entering seemingly without care,
+<<if $g.hunter1.isHasTrait('per_cautious')>>
+a rare thing given how cautious <<therace $g.hunter1>> normally hunter1|is,
+<</if>>
+<<yourrep $g.hunter1>> and <<utheirrel $g.hunter1 $g.hunter2>>
+<<rep $g.hunter2>>
+found the cavern completely deserted.
+Ready to leave empty-handed, your slavers turned their backs around and were horrified to discover that the
+<<uadjgood $g.ziggar>> <<urace $g.ziggar>> was waiting for them at the
+entrance, having seemingly spotted them coming before they could get there.
+<<Rep $g.spotter>>, who had been left alone outside the cave,
+had already been overpowered by the <<urace $g.ziggar>> and laid unconscious at <<their
+$g.ziggar>> side.
+</p>
+
+<p>
+With no other way out, your slavers fought their way against the powerful enemy,
+and while they were able to escape, they suffered a great many injuries and had to
+stumble their way out of the <<urace $g.ziggar>>'s lair while
+carrying <<rep $g.spotter>> with them.
+</p>
+

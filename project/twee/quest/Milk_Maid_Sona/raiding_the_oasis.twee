@@ -1,0 +1,368 @@
+:: QuestSetup_raiding_the_oasis [nobr quest]
+
+/* PROOFREAD COMPLETE */
+/* PRESENT TENSE */
+
+<<run new setup.UnitGroup(
+"raiding_the_oasis",
+"maid",
+[ /* pools */
+  [setup.unitpool.subrace_humandesert_female, 0.5],
+  [setup.unitpool.subrace_humandesert_male, 0.5],
+  [setup.unitpool.subrace_humankingdom_female, 0.08333333333333333],
+  [setup.unitpool.subrace_humankingdom_male, 0.08333333333333333],
+  [setup.unitpool.subrace_humanvale_female, 0.08333333333333333],
+  [setup.unitpool.subrace_humanvale_male, 0.08333333333333333],
+  [setup.unitpool.subrace_humansea_female, 0.08333333333333333],
+  [setup.unitpool.subrace_humansea_male, 0.08333333333333333],
+  [setup.unitpool.subrace_elf_female, 0.08333333333333333],
+  [setup.unitpool.subrace_elf_male, 0.08333333333333333],
+  [setup.unitpool.subrace_neko_female, 0.08333333333333333],
+  [setup.unitpool.subrace_neko_male, 0.08333333333333333],
+  [setup.unitpool.subrace_orc_female, 0.08333333333333333],
+  [setup.unitpool.subrace_orc_male, 0.08333333333333333],
+],
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplaceExisting('unit', setup.trait.breast_huge),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.dick_huge),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.balls_huge),
+],
+)>>
+
+<<set _criteriaraider1 = new setup.UnitCriteria(
+null, /* key */
+'Raider', /* name */
+[
+  setup.trait.bg_mercenary,
+  setup.trait.bg_raider,
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_lunatic,
+  setup.trait.per_loyal,
+  setup.trait.per_aggressive,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_intimidating,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.tough_nimble,
+  setup.trait.per_cautious,
+  setup.trait.per_independent,
+  setup.trait.per_submissive,
+  setup.trait.per_calm,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriaraider2 = new setup.UnitCriteria(
+null, /* key */
+'Raider', /* name */
+[
+  setup.trait.bg_mercenary,
+  setup.trait.bg_raider,
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_lunatic,
+  setup.trait.per_loyal,
+  setup.trait.per_aggressive,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_intimidating,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.tough_nimble,
+  setup.trait.per_cautious,
+  setup.trait.per_independent,
+  setup.trait.per_submissive,
+  setup.trait.per_calm,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriakidnapper = new setup.UnitCriteria(
+null, /* key */
+'Kidnapper', /* name */
+[
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_assassin,
+  setup.trait.bg_thief,
+  setup.trait.tough_nimble,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.per_evil,
+  setup.trait.per_attentive,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.tough_tough,
+  setup.trait.per_gregarious,
+  setup.trait.per_loyal,
+  setup.trait.per_honorable,
+  setup.trait.per_dreamy,
+  setup.trait.per_aggressive,
+  setup.trait.per_playful,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1.5,
+  slaving: 1.5,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'raiding_the_oasis', /* key */
+"Raiding the Oasis", /* Title */
+{  /* Author */
+  name: "Milk Maid Sona",
+  url: 'https://discord.com/channels/774271990571335710/780362824047394827/804975758111670272',
+},
+[ /* tags */
+  'desert',
+  'veteran',
+  'unit',
+  'ire',
+  'rare',
+],
+2, /* weeks */
+8, /* expiration weeks */
+{ /* roles */
+  'raider1': [ _criteriaraider1, 1],
+  'raider2': [ _criteriaraider2, 1],
+  'kidnapper': [ _criteriakidnapper, 1],
+},
+{ /* actors */
+  'maid': 'raiding_the_oasis',
+},
+[ /* costs */
+],
+'Quest_raiding_the_oasis',
+setup.qdiff.hardest57, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_raiding_the_oasisCrit',
+    [
+      setup.qc.TraitReplaceExisting('maid', setup.trait.breast_titanic),
+      setup.qc.TraitReplaceExisting('maid', setup.trait.dick_titanic),
+      setup.qc.TraitReplaceExisting('maid', setup.trait.balls_titanic),
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_raiding_the_oasisCrit',
+    [
+      setup.qc.Slave('maid', "a|was going to become an employee in The Milk Bar", undefined),
+      setup.qc.EquipmentDirect('cowbell_collar'),
+      setup.qc.Injury('raider1', 4),
+      setup.qc.Injury('raider2', 4),
+      setup.qc.Ire('humandesert', 8),
+    ],
+  ],
+  [
+    'Quest_raiding_the_oasisCrit',
+    [
+      setup.qc.Injury('raider1', 8),
+      setup.qc.Injury('raider2', 8),
+      setup.qc.Injury('kidnapper', 8),
+      setup.qc.Ire('humandesert', 12),
+    ],
+  ],
+  [
+    'Quest_raiding_the_oasisCrit',
+    [
+      setup.qc.MissingUnit('kidnapper'),
+      setup.qc.Injury('raider1', 8),
+      setup.qc.Injury('raider2', 8),
+      setup.qc.Ire('humandesert', 12),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_raiding_the_oasis [nobr]
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+After discussing with <<yourrep _u>>
+about how to do this robbery, you decide that the most efficient way is a two-fronts attack: on one side, two raiders will attack the group protecting the caravan, causing enough chaos to stop the advance of the vehicle and catch the attention of most of the guards. Of course, this role is extremely dangerous: the two slavers will face the entire retinue of the caravan without additional support, so it's inevitable that they'll get badly injured.
+</p>
+
+<p>
+But while this is happening, a third participant will sneaky around the back, trying to stay out of sight, and break into the wagon where the slaves are, taking the one they consider most valuable and getting out without being followed, not before sending a signal for its teammates to retire to the rendezvous point.
+</p>
+
+<p>
+The plan sound good on paper, but you have enough experience in this business to know that things rarely go as planned, so it's important that the three people in charge of this mission are well prepared, equipped and ready to improvise if necessary, and that a medical team is close by to avoid any casualties.
+</p>
+
+
+:: Quest_raiding_the_oasisCrit [nobr]
+
+<<set _officer = $dutylist.getUnitIfAvailable('damagecontrolofficer')>>
+
+<p>
+With the information collected, you know the best moment to attack the
+caravan is in the middle of the night, while they travel from their last
+control point to the oasis. And it's right on that route where your slavers
+take their positions, hidden with a small dune near the road that the convoy
+has to take to get to their destination. After the night falls,
+<<rep $g.kidnapper>>, <<rep $g.raider1>> and <<rep $g.raider2>> agree on their retreat signal and
+the meeting point for the group after completing the operation. <<Rep $g.kidnapper>>
+kidnapper|move to a dune on the opposite side of the road and kidnapper|wait for
+<<their $g.kidnapper>> companions to start the distraction, that get their weapons
+and armors ready for what, undoubtedly, will be a tough fight.
+</p>
+
+<p>
+After a minutes of tense wait, the raiders detect torchlights getting closer,
+which reveal a huge, covered wagon pulled by four horses and escorted by
+multiple guards, some on horsebacks and others on foot. The cortege looks
+pretty professional: the men and women that figure as guards carries good
+quality armors and different types of weapons, including, to <<reps $g.raider1>> displeasure,
+bows, that surely will make things more complicated and
+painful that what they had wanted. The chitchat among them is keep to a
+minimum, the group entirely focused on their job, and the silence of the
+desert is only interrupted by the steps on the sand and the screeches of the
+wood.
+</p>
+
+<p>
+<<Rep $g.raider2>> raider2|look towards where <<rep $g.kidnapper>> kidnapper|is hidden and then raider2|turn towards <<rep $g.raider1>>, who simply raider1|nod with <<their $g.raider1>> head.
+They begin to run towards the caravan and when a couple of guards detect them, they let a warcry to get the attention of the rest. The clash of weapons and shields resonates in the darkness and both raiders manage to get some good hits and knock down a couple of guards, but their superior numbers and long-range weapons force your slavers to take a defensive position while also making sure they keep the attention of most of the wardens.
+</p>
+
+<p>
+When <<they $g.kidnapper>> kidnapper|hear the warcry, <<rep $g.kidnapper>> kidnapper|wait for a couple of guards to leave their posts before sneaking closer to the wagon. The noise of the battle scared the horses and without its defenders, the driver was forced to stop the caravan, creating the perfect opportunity to break into it and try to take some of its merchandise before they notice it.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Thanks to their coordination, strength and bravery, <<rep $g.raider1>> and <<rep $g.raider2>> manage to keep their positions longer than expected, diverting blows, breaking shields, evading arrows and even knocking out several guards despite being greatly outnumbered. Because of these deeds, the guard is forced to use all their resources to stop the pair of berserkers, that despite fighting better than their opponents, are incapable of coming out triumphant in this combat. But they both know that their winning condition lays on how long they can keep the attention of the guards. And it's precisely this extra time and attention that allows <<rep $g.kidnapper>> to enter the wagon without being detected and, once inside, make a quick but meticulous inspection of the slaves they carry inside. Men and women sit naked at each side, all chained both in hands and feet. Most of them are humans, but there's also neko, elves and even orcs among them, and they all possess certain features that are far bigger than normal.
+</p>
+
+<p>
+But amidst them, <<rep $g.kidnapper>> kidnapper|see one that surpasses all the others:
+<<if $g.maid.isHasDick()>>
+a man with one of the biggest dicks that <<theslaver $g.kidnapper>> has ever seen, under
+which hangs a pair of balls equally big, capable of filling more than a
+single mug in a single ejaculation.
+<<else>>
+a woman with breasts of a monstruous size, almost out of the world, from which hangs small droplets of milk, like if the milk inside of them barely fit and that undoubtedly could serve an entire table without issue.
+<</if>>
+</p>
+
+<p>
+<<Rep $g.kidnapper>> barely kidnapper|contain itself from molesting the
+<<man $g.maid>>
+in that moment, but <<they $g.kidnapper>> kidnapper|manage to refocus in the mission at hand and kidnapper|free the slave from the bindings that keep it seated in the wagon. Believing that <<theslaver $g.kidnapper>> is part of a rescue mission,
+<<they $g.maid>>
+maid|follow them outside of the carriage and starts running alongside <<rep $g.kidnapper>>, that looks towards the direction of the combat noise, throws a small bomb into the air and runs towards a safe place. A few seconds later, the bomb causes a small explosion that resounds in the desert and that <<rep $g.raider1>> raider1|recognize as the retreat signal. <<they $g.raider1>> raider1|get its partners attention, that understands and starts fighting to open a way for them to escape. After a couple of strong hits and getting multiple wounds while they run away, the raiders leave the way they came while the escort is too busy celebrating their victory to chase them, unaware of the success of their attack.
+</p>
+
+<p>
+Both couples get to the meeting point, where the medics treat <<rep $g.raider1>> and <<rep $g.raider2>> most serious injuries, but the slavers will need to rest for several weeks after such fight. Meanwhile, <<rep $g.kidnapper>> kidnapper|look closely at the price of the mission. Still wearing <<their $g.maid>> cowbell collar, the slave introduces
+<<if $g.maid.isHasDick()>>
+himself as <<rep $g.maid>> and thanks the group for rescuing him from a live of slavery, that makes everyone there laugh at the expense of the poor man. Confused, he asks them to release him from its shackles, but <<rep $g.kidnapper>> kidnapper|make sure they are tight and kidnapper|hang a new chain, welcoming him to <<rep $company.player>>. That night, your three slavers celebrate their success giving themselves a little “test run” of <<rep $g.maid>> and his titanic characteristics.
+<<else>>
+herself as <<rep $g.maid>> and thanks the group for rescuing her from a live of slavery, that makes everyone there laugh at the expense of the poor woman. Confused, she asks them to release her from its shackles, but <<rep $g.kidnapper>> kidnapper|make sure they are tight and kidnapper|hang a new chain, welcoming her to <<rep $company.player>>. That night, your three slavers celebrate their success giving themselves a little “test run” of <<rep $g.maid>> and her titanic characteristics.
+<</if>>
+</p>
+
+<p>
+Unfortunately, a couple days after your team returns you find out that somehow, the owners of The Milk Bar found out about your little raid and are more than furious for the audacity of stealing what could have become one of their best employees. Maybe it's better if
+<<if _officer>>
+<<rep _officer>> starts working on patching up your relationship with the bar, before they look for revenge against the company.
+<<else>>
+you avoid pissing off such a powerful group again, if you don't want them taking it back against the company.
+<</if>>
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+<<Rep $g.raider1>> and <<rep $g.raider2>> fight the best they can in the middle of flurries of attacks and arrows coming from every side, and despite fighting back-to-back, they barely manage to defend themselves enough to keep most of the guards focused on them. Knowing that the success of the mission depends on how much noise they can make, they let another warcry, trying to make some guards break their formation to make theirs partners work easier, but the experienced escort doesn't fall into their ruse and stand firm, waiting for the pairs next movement. Resigned to their fates, <<rep $g.raider2>> raider2|let a huff and they throw themselves again to a fight they know lost. Meanwhile, <<rep $g.kidnapper>> kidnapper|look for a gap in the security of the wagon, that now counts with less staff, but it's still impossible to get close without being seen.
+</p>
+
+<p>
+Waiting for any opportunity, the second warcry distracts a guard enough for <<them $g.kidnapper>> to get closer, take it out and quickly hide it under the wagon to avoid anyone else finding it. Knowing that <<they $g.kidnapper>> kidnapper|have little time, <<rep $g.kidnapper>> kidnapper|get into the wagon and finds <<themselves $g.kidnapper>> with rows of men and women of different races at each side of the carriage, all of them with certain features that are far bigger than normal. With few moments to choose who to take, <<they $g.kidnapper>> kidnapper|free one of the closest slaves from the chains that connect them to their seat and kidnapper|push them towards the exit, despite the confusion of it.
+<<Therace $g.kidnapper>>
+kidnapper|drag the stolen merchandise as quickly as possible, and once <<they $g.kidnapper>> kidnapper|get far enough, kidnapper|throw a small bomb into the air before running towards a safe place. A few seconds later, the bomb causes a small explosion that resounds in the desert and that <<rep $g.raider1>> raider1|recognize as the retreat signal. <<they $g.raider1>> raider1|get its partners attention, that understands and starts fighting to open a way for them to escape. After a couple of strong hits and getting multiple wounds while they run away, the raiders leave the way they came while the escort is too busy celebrating their victory to chase them, unaware of the success of their attack.
+</p>
+
+<p>
+Both couples get to the meeting point, where the medics treat <<rep $g.raider1>> and <<rep $g.raider2>> most serious injuries, but the slavers will need to rest for several weeks after such fight. <<They $g.kidnapper>> finally kidnapper|have enough time to look at the slave they stole, who says their name is
+<<rep $g.maid>>
+and it's still as confused as before. Without much to explain, <<rep $g.kidnapper>> kidnapper|secure <<their $g.maid>> shackles and kidnapper|hang a new chain on <<them $g.maid>>. That same night, the three slaves relieve their stress by welcoming their new slave to the company, taking advantage of the rare opportunity of being with someone with such huge characteristics.
+</p>
+
+<p>
+Unfortunately, a couple days after your team returns you find out that somehow, the owners of The Milk Bar found out about your little raid and are more than furious for the audacity of stealing what could have become one of their best employees. Maybe it's better if
+<<if _officer>>
+<<rep _officer>> starts working on patching up your relationship with the bar, before they look for revenge against the company.
+<<else>>
+you avoid pissing off such a powerful group again, if you don't want them taking it back against the company.
+<</if>>
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+The raiders give their best, but they keep losing terrain and are forced to slowly and steadily back away from the caravan. Seeing the state of the combat, the leader of the guards instructs them to keep their positions and stay vigilant while the group fighting takes care of the bandits. Looking at the desperate situation of <<their $g.kidnapper>> teammates and that the ranks protecting the wagon where they surely had all the slaves hasn't moved, <<rep $g.kidnapper>> kidnapper|decide to make a bold move and kidnapper|throw several rocks against the wagon, hoping that the noise distracts one of the guards enough time to sneak into the carriage. One of them moves to check the source of the sounds and <<rep $g.kidnapper>> kidnapper|take the chance, but <<they $g.kidnapper>> kidnapper|do not make it to a blind spot before the guards detects them and calls for backup against a second attack. Several guards that were nearby quickly attend the call and surround the thief that isn't equipped to face several enemies at the same time, unlike <<their $g.kidnapper>> companions. Miraculously, <<rep $g.kidnapper>> kidnapper|manage to evade most of the attacks, not without getting several cuts and bruises while <<they $g.kidnapper>> kidnapper|escape towards the place where <<rep $g.raider1>> and <<rep $g.raider2>> are fighting. However, a pair of guards that were fighting against the raiders notices <<them $g.kidnapper>> and intercept <<their $g.kidnapper>> escape, forcing <<them $g.kidnapper>> to join <<their $g.kidnapper>> companions. This time, all the wardens surround them, and a woman they recognize as the leader of the caravan laughs at their efforts of raiding them, before commanding all her employees to attack the group without mercy.
+</p>
+
+<p>
+A few days later, the slavers manage to get back to the fort, but their wounds are quite severe and they don't have any new slave with them, revealing that the mission was a complete failure. Even worse, soon after you receive a very threating note from The Milk Bar, mocking your attempt of stealing from them and making it very clear that, if someone like that happens again, your slaver's wounds will look like a joke in comparison to what's going to happen to you.
+</p>
+
+
+<<elseif $gOutcome == 'disaster'>>
+
+<p>
+Although the start of the fight seemed encouraging, <<rep $g.raider2>> quickly raider2|realize that after losing the element of surprise, the two raiders had no opportunity against the mercenaries hired to defend the caravan. Both fighters soon begin to bleed from the multiple cuts and bruises in their bodies, and this sign of weakness only increases the aggressivity of their enemies, forcing them to retreat and move far away from the caravan, but despite distancing themselves from which they had to protect, the guards don't stop their relentless assault. Seeing that everything is under control, the leader of the caravan soon commands that everyone stays alert for possible reinforcements and that a scouting group is sent to check the rest of the road for any other possible ambushes.
+</p>
+
+<p>
+One of the wagon's guards is selected as part of the group and abandons its position to join its colleagues, which <<rep $g.kidnapper>> kidnapper|see as the perfect opportunity to get into the carriage without being seen. <<their $g.kidnapper>> instinct tells them something's wrong, since <<they $g.kidnapper>> couldn't listen the noise of the battle or the screams of <<their $g.kidnapper>> teammates anymore, but the sudden movement of several guards away from their posts makes <<them $g.kidnapper>> think that maybe the raiders managed to catch their attention some other way and <<their $g.kidnapper>> boldness got the best of <<them $g.kidnapper>>. Once inside the wagon, <<they $g.kidnapper>> kidnapper|is received with an incredible image: naked men and women fill both sides of the vehicle, each one with beautiful features and gigantic attributes. Truly, it was heaven for any lover of huge boobs and horse-like cocks. The delight of the image in front of <<them $g.kidnapper>> make <<them $g.kidnapper>> kidnapper|miss the guard at <<their $g.kidnapper>> back, that knocks them unconscious with a blow to their head.
+<<They $g.raider1>> and <<rep $g.raider2>> barely make it to the meeting point, where a group of medics start to treat the multiple wounds they had that could prove to be fatal if unattended. They had to run from their assailants while arrows and javelins hit them from behind, but luckily, they managed to lose them before running out of energy. <<They $g.raider1>> raider1|decide to wait half an hour to give <<rep $g.kidnapper>> enough time to come back, given that they probably had a slave with them that would only slow <<them $g.kidnapper>> down, but after waiting for a while, both realize that their partner wasn't coming back.
+</p>
+
+<p>
+Sometime after, you still fear the worst about <<reps $g.kidnapper>> fate, but a letter arrives that clears all your doubts. Apparently, the owners of The Milk Bar have your slaver, and they say they'll keep <<them $g.kidnapper>> as compensation for the damage incurred by their employees after your raid attempt, but that things could change and, if your group decided to try something stupid like that again, the consequences would be more severe that the disappearance of a single person. Seems like it will be necessary to start digging around if you want to see <<rep $g.kidnapper>> again…
+</p>
+
+<</if>>

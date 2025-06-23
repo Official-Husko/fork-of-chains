@@ -1,0 +1,316 @@
+:: QuestSetup_test_of_arcane [nobr quest]
+
+<<run new setup.Title(
+"quest_master_of_arcane_0", /* key */
+"Master of Arcane", /* name */
+"A true master of arcane", /* description */
+"a|have proven a|themself to be a master of arcane by completing a challenge in the vales", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+arcane: 4,},
+)
+>>
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Wizard', /* name */
+[
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_gregarious,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_light_master,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_loner,
+  setup.trait.per_submissive,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTitle('quest_master_of_arcane_0'),
+  setup.qres.SkillAtLeast(setup.skill.arcane, 150),
+  setup.qres.AnyTrait([
+    setup.trait.magic_fire_master,
+    setup.trait.magic_water_master,
+    setup.trait.magic_wind_master,
+    setup.trait.magic_earth_master,
+    setup.trait.magic_light_master,
+    setup.trait.magic_dark_master,
+  ], true),
+],
+{
+  arcane: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_arcane', /* key */
+"Test of Arcane", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'legendary',
+  'veteran',
+  'prep',
+  'danger',
+  'vale',
+  'unit',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'wiz': 'all',
+  'owner': 'all',
+},
+[ /* costs */
+],
+'Quest_test_of_arcane',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_arcaneCrit',
+    [
+      setup.qc.EquipmentDirect('arcane_head_master'),
+      setup.qc.AddTitle('a', 'quest_master_of_arcane_0'),
+      setup.qc.SlaverMarker('owner'),
+    ],
+  ],
+  [
+    'Quest_test_of_arcaneCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+    ],
+  ],
+  [
+    'Quest_test_of_arcaneCrit',
+    [
+      setup.qc.Injury('a', 16),
+    ],
+  ],
+  [
+    'Quest_test_of_arcaneCrit',
+    [
+      setup.qc.MissingUnit('a'),
+      setup.qc.Trait('a', setup.trait.per_lustful),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.SkillAtLeast(setup.skill.arcane, 100),
+setup.qres.NoTitle('quest_master_of_arcane_0')
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_arcane [nobr]
+<<set _slaver = setup.getUnit({
+job: 'slaver',
+skill_max: setup.skill.arcane,
+notyou: true,
+})>>
+
+<p>
+<<Rep _slaver>> is very good at magic. Whether it's magical dowsing,
+<<if _slaver.isHasTrait('magic_fire')>>
+summoning pillars of flames,
+<</if>>
+<<if _slaver.isHasTrait('magic_water')>>
+cooling of hot food,
+<</if>>
+<<if _slaver.isHasTrait('magic_wind')>>
+conjuring winds in a busy market,
+<</if>>
+<<if _slaver.isHasTrait('magic_earth')>>
+making plants grow faster for fun,
+<</if>>
+<<if _slaver.isHasTrait('magic_light')>>
+healing the wounded and closing gapes,
+<</if>>
+<<if _slaver.isHasTrait('magic_dark')>>
+corrupting innocents,
+<</if>>
+or just general fancy party tricks, <<rep _slaver>> is very good at it.
+</p>
+
+<p>
+In fact, <<their _slaver>> magical prowess is spreading so much so that a visitor has come into your fort, demanding a wizardry duel of prowess with your <<urace _slaver>> slaver. The challenger has located one of the abandoned fortresses in the vales suitable for the duel, and challenges your most skillful wizard for the honor. You imagine a magical fight between two master wizards taking place inside, but your imagination is cut short as the wizard explained it as a simple magical contest of who-can-blow-the-bigger-hole in the fortress.
+</p>
+
+<p>
+With your dream of a legendary magical battle shattered, you almost have the mind to flat out refuse just out of spite, but then you saw the almost inhuman
+<<if $g.wiz.isFemale()>>
+beauty
+<<else>>
+handsomeness
+<</if>>
+radiating from the challenger.
+So captivating <<their $g.wiz>>
+<<if $g.wiz.isFemale()>>
+beauty
+<<else>>
+handsomeness
+<</if>>
+was that by the time you regain your wits, you have somehow accepted the <<urace $g.wiz>>'s challenge...
+</p>
+
+
+:: Quest_test_of_arcaneCrit [nobr]
+<p>
+<<Yourrep $g.a>> ventured alone with only the company of the wizard into the abandoned fortress of the north.
+The competition is very simple — whoever can punch the bigger hole into the fortress wins.
+Sounds easy enough.
+The competitor begins with <<their $g.wiz>> own perfected
+<<if $gQuest.getSeed() % 4 == 0>>
+fireball spell, conjuring a fireball the size of a house before hurling it into the fort, scorching a part of its walls.
+<<elseif $gQuest.getSeed() % 4 == 1>>
+ice spear spell, conjuring an icicle the size of a horse carriage before hurling it into the fort, crushing a part of its walls by force.
+<<elseif $gQuest.getSeed() % 4 == 2>>
+lightning spell, conjuring a lance of pure energy before hurling it into the fort, zapping a part of its walls by force.
+<<elseif $gQuest.getSeed() % 4 == 3>>
+magma sphere spell, conjuring a sphere of extremely dense earth before hurling it into the fort, crashing loudly with a part of its walls by force.
+<</if>>
+A suspiciously small hole resulted at the wake of the spell.
+Passing over the baton, it was <<reps $g.a>> turn to demonstrate <<their $g.a>> magic.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+However, <<rep $g.a>> knew that true mastery over magic does not equate the biggest, baddest boom. <<They $g.a>> knew that magic is far more delicate that it, and <<they $g.a>> a|was able to sense that something magical was protecting the fort, mitigating the damage.
+A magical defense spell covering the huge circumference of the fort can only mean it was inhabited by an extremely powerful wizard, and hence <<rep $g.a>> switched <<their $g.a>> focus, instead attuning <<themself $g.a>> to find an unnaturally large source of magic around.
+<<if $g.a.isHasTrait('magic_fire_master')>>
+It is a remarkably similar process to purification — finding the source of the evil — and <<their $g.a>> mastery over the purification arts helped quite a bit.
+<</if>>
+<<if $g.a.isHasTrait('magic_water_master')>>
+As a master flesh-shaper, <<they $g.a>> could also link the source to a blob of moving water — making the task easier.
+<</if>>
+<<if $g.a.isHasTrait('magic_wind_master')>>
+<<Rep $g.a>>, being a master of wind magic, received hints from the flow of the winds on the possible whereabouts of the source.
+<</if>>
+<<if $g.a.isHasTrait('magic_earth_master')>>
+<<Rep $g.a>> closed <<their $g.a>> eyes and put <<their $g.a>> <<uhand $g.a>> into the earth, asking for directions. The earth of course complies with <<their $g.a>> <<master $g.a>>.
+<</if>>
+<<if $g.a.isHasTrait('magic_dark_master')>>
+<<Rep $g.a>> attuned <<themself $g.a>> with the shadows, asking tracing the assailant from the shadows.
+<</if>>
+<<if $g.a.isHasTrait('magic_light_master')>>
+<<Rep $g.a>> used <<their $g.a>> mastery over light domain to help divine for directions.
+<</if>>
+</p>
+
+<p>
+Indeed, an exceedingly large magical energy is approaching, and approaching at an inhuman speed. Judging from the intensity of the magical energy, this could be no ordinary mortal, and fleeing would be futile. With the time running out, <<rep $g.a>> came out with a plan after seeing how the challenger wizard was still completely clueless to the impending danger.
+<<if $g.a.isHasTrait('skill_hypnotic')>>
+Pretending defeat, <<rep $g.a>> put some hypnotic suggestions into the challenger before
+<<elseif $g.a.isHasTrait('face_attractive')>>
+Using <<their $g.a>> pretty face, <<rep $g.a>> lowered the challenger's guard before
+<<elseif $g.a.isHasTrait('per_gregarious')>>
+Using a couple of honeyed words, <<rep $g.a>> lowered the challenger's guard before
+<<else>>
+Taking advantage of <<their $g.a>> <<upraisenoun $g.a>>, <<rep $g.a>> lowered the challenger's guard before
+<</if>>
+knocking <<them $g.wiz>> out with a simple
+<<if $g.a.isHasTrait('magic_wind')>>
+wind of sleep spell.
+<<elseif $g.a.isHasTrait('magic_water')>>
+cold snap spell.
+<<elseif $g.a.isHasTrait('magic_fire')>>
+fire twist spell.
+<<elseif $g.a.isHasTrait('magic_earth')>>
+pollen spell.
+<<elseif $g.a.isHasTrait('magic_dark')>>
+mind-disabling spell.
+<<elseif $g.a.isHasTrait('magic_light')>>
+relaxation spell.
+<</if>>
+The helpless <<urace $g.wiz>> was then tied up, and the preparations was complete.
+</p>
+
+<p>
+The source of the energy turned out to be a demon angry at having <<their $g.wiz>> home attacked for no reason — it seemed the fort was not as abandoned as they had hoped.
+Fortunately, <<rep $g.a>> a|was ready, and <<uadv $g.a>> explained that the challenger was the culprit, and <<they $g.a>> wanted to help bring justice.
+The demon was quite amused by the story, no doubt sensing the magical energies in both your slaver and the challenger, and accepted the explanation. Unfortunately, the demon took the challenger away to be trained proper as a slut, but it was not all in vain. The hat of the challenger was dropped along the way — a hat which turned out to be quite an artefact: the <<rep setup.equipment.arcane_head_master>>.
+At the end of the day, <<rep $g.a>> proved who was the superior master of arcane, and rightfully earned <<their $g.a>> new title as Master of Arcane.
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+<p>
+Seeing how the challenger failed to punch a big hole motivated <<yourrep $g.a>>, who then prepared <<their $g.a>> biggest and baddest spell:
+<<if $g.a.isHasTrait('magic_earth')>>
+the worldly lance.
+<<elseif $g.a.isHasTrait('magic_wind')>>
+the miniature tornado.
+<<elseif $g.a.isHasTrait('magic_water')>>
+the ice trident.
+<<elseif $g.a.isHasTrait('magic_fire')>>
+the volcano strike.
+<<elseif $g.a.isHasTrait('magic_dark')>>
+the dark bolt.
+<<elseif $g.a.isHasTrait('magic_light')>>
+the spears of light.
+<</if>>
+It requires utmost concentration to prepare, and because of that, they failed to notice when
+another demonkin wizard approached — a wizard so vile and malicious that the locals would simply call <<them $g.owner>> the dark lord. The fort was not so uninhabited, it turned out, and the owner was very angry at whoever dared to attack their homefort.
+The challenger sensed the immense magical power of the dark lord, and wisely decided to flee, but <<rep $g.a>> was still too deep in concentration.
+<<They $g.a>> never returned to your fort, perhaps the dark lord found it amusing to try and break a master wizard for <<their $g.a>> amusement...
+</p>
+
+<p>
+<<uneedrescue $g.a>>, preferably before <<they $g.a>> lost <<their $g.a>> mind under the untender care of the dark lord...
+</p>
+<<else>>
+
+<p>
+Seeing how the challenger failed to punch a big hole motivated <<yourrep $g.a>>, who then prepared <<their $g.a>> biggest and baddest spell:
+<<if $g.a.isHasTrait('magic_earth')>>
+the worldly lance.
+<<elseif $g.a.isHasTrait('magic_wind')>>
+the miniature tornado.
+<<elseif $g.a.isHasTrait('magic_water')>>
+the ice trident.
+<<elseif $g.a.isHasTrait('magic_fire')>>
+the volcano strike.
+<<elseif $g.a.isHasTrait('magic_dark')>>
+the dark bolt.
+<<elseif $g.a.isHasTrait('magic_light')>>
+the spears of light.
+<</if>>
+It required quite a bit of concentration, but <<rep $g.a>> managed to pull it off, blasting a large hole on one of the walls. The challenger upped the intensity next by blasting another part of the wall, and so on until the fort was almost flattened into the ground.
+</p>
+
+<p>
+Little did they know that the fort was not entirely uninhabited, and before they knew it they were face to face with a very powerful wizard who interrupted their competition. Sensing the immense power of the new enemy, <<yourrep $g.a>> made the right decision to flee, abandoning the challenger to <<their $g.wiz>> fate. Still, it was not a clean escape, as the wizard was also quite angry at your slaver, and <<they $g.a>> sustained some magical damage as <<they $g.a>> fled while being assaulted by various spells.
+</p>
+
+<p>
+Having been able to escape from such an exceedingly powerful wizard spoke volumes of their own magical talents, motivating your slaver quite a bit.
+<<if $gOutcome == 'success'>>
+As luck would have it, yet another foolish challenger came challenging for an oddly similar competition, and yet another opportunity presented itself in front of you...
+<<else>>
+<</if>>
+</p>
+
+
+<</if>>

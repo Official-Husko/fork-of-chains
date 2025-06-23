@@ -1,0 +1,166 @@
+:: QuestSetup_royal_visit [nobr quest]
+
+<<run new setup.QuestTemplate(
+'royal_visit', /* key */
+"Royal Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+],
+4, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'dom1': [ setup.qu.dom, 1],
+  'dom2': [ setup.qu.dom, 1],
+  'wizard': [ setup.qu.arcanedarkveteran, 1],
+},
+{ /* actors */
+  'head': [
+    setup.qres.Home(),
+  ],
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+  'target': [
+  ],
+},
+[ /* costs */
+],
+'Quest_royal_visit',
+setup.qdiff.hardest69, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_royal_visitCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('neko', 300),
+    ],
+  ],
+  [
+    'Quest_royal_visitCrit',
+    [
+      setup.qc.Opportunity('royal_visit', {
+owner: "owner",
+head: "head",
+slave: "slave",
+target: "target",
+}),
+      setup.qc.MoneyCustom(6000),
+    ],
+  ],
+  [
+    'Quest_royal_visitFailure',
+    [
+      setup.qc.MissingUnit('dom1'),
+      setup.qc.MissingUnit('dom2'),
+      setup.qc.MissingUnit('wizard'),
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+    ],
+  ],
+  [
+    'Quest_royal_visitFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.OneRandom([
+setup.qc.Trait('dom1', setup.trait.per_submissive),
+setup.qc.Trait('dom2', setup.trait.per_submissive),
+setup.qc.Trait('wizard', setup.trait.per_submissive)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+
+],
+)>>
+
+:: Quest_royal_visit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The manager of your brothel, <<yourrep $g.owner>>, owner|have
+informed you that
+a most noble visitor is planning a visit to <<attach _describe>>. The visitor
+is no ordinary noble — in fact, <<they $g.target>> target|is a member of the
+neko royalty, a title held by an extreme select few within <<lore
+geo_mestia>>. The official reason for the visit is as follows: the royal
+has heard of the many wonders provided by your brothel, especially the
+<<if _attraction == 'gravity'>>
+Magic Gravity Room,
+<<else>>
+Magic Bondage Room,
+<</if>>
+and would like to ensure that it meets all the required safety standard within the <<lore location_npc>>.
+</p>
+
+<p>
+However, a tip from one of the brothel's worker gives a very different reason. The noble is apparently a secretly submissive slut, and
+<<if _sub == 'dom'>>
+having heard of the many dominant courtesans within your brothel,
+<<else>>
+having heard that your brothel's courtesans are also capable of domming,
+<</if>>
+<<they $g.target>> target|have decided that perhaps the brothel would be able to provide <<them $g.target>> with one of <<their $g.target>> darkest fantasies: being completely dominated by an evil dark wizard and their two evil hulking minions.
+</p>
+
+<p>
+If you want to ensure that the royal is satisfied, you can try to send a group of slavers to help out with the client. A real dark wizard should do wonder, as well as two other slavers to act as the minions. With luck, the royal should pay very well for the outstanding service.
+</p>
+
+
+
+
+
+
+:: Quest_royal_visitCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The royal spent lavishly on the compound, and bought your three slavers together with the head courtesan <<name $g.slave>> for a full month. Knowing full well of the royal's submissive tendencies, once they arrive at a secluded dungeon cell, <<yourrep $g.wizard>> <<uadv $g.wizard>> began the play. <<They $g.wizard>> used <<their $g.wizard>> real mastery over dark magic to conjure darkness, enveloping the area and blocking off the exit while <<yourrep $g.dom1>> and <<utheirrel $g.dom1 $g.dom2>> <<rep $g.dom2>> began their molestations over the royal. The royal tried to struggle, but judging from
+<<if $g.target.isHasDick()>>erect dick<<else>>wet pussy<</if>>, your slavers knew all too well that it was an act, and the royal was having the time of <<their $g.target>> life. Not to be outdone by your slavers, your former slave <<name $g.slave>> without warning shoved <<their $g.slave>> <<udickorstrap $g.slave>> into the royal's gaping <<umouth $g.target>>. The sound of rough sex then continued over the night, and then the next few days, and so until finally a month had passed.
+</p>
+
+<p>
+The royal appeared as a mess to your slavers, with <<their $g.target>> every hole filled with questionable bodily and not-so-bodily fluids. But the royal turned out to be a level-headed <<urace $g.target>>, and once the playtime was up, <<they $g.target>> got to <<their $g.target>> slightly wobbly feet, and resumed <<their $g.target>> professional-looking face. Completely satisfied with the service, <<they $g.target>> paid generously for your brothel's services<<if $gOutcome == 'crit'>>, as well as promising to put good words about your company.<</if>>
+</p>
+
+<p>
+Surprisingly, a few days after the visit, you found the royal all by <<themself $g.target>> knocking literally on your office door.
+</p>
+
+
+
+
+
+:: Quest_royal_visitFailure [nobr]
+<p>
+Unfortunately, despite being secretly submissive, the royal maintained <<their $g.target>> professional mask throughout. When your slaver tried to assume dominance, the royal took it as a personal insult, and had all three of your slavers arrested for treachery. You've never heard back from the trio, but if you have a Rescuer, they might be able to locate your slavers back if they work very hard. <<if $gOutcome == 'disaster'>>Although it's unclear if your slavers would be able to return unchanged.<</if>>
+</p>

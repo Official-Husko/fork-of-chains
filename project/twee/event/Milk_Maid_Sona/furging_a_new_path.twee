@@ -1,0 +1,74 @@
+:: EventSetup_furging_a_new_path [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'furging_a_new_path', /* key */
+"Furging a New Path", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_furging_a_new_path',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_living_pawst_0'),
+    setup.qres.NoTraits([setup.trait.training_mindbreak, setup.trait.will_defiant, setup.trait.will_indomitable], true),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+  ],
+  'you': [
+    setup.qres.You(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Favor('neko', 100),
+  setup.qc.Opportunity('furging_a_new_path', {
+slaver: "slaver",
+slave: "slave",
+you: "you",
+}),
+],
+[ /* restrictions */
+  setup.qres.NoOpportunity('furging_a_new_path'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_furging_a_new_path [nobr]
+<<if !$varstore.get('quest_furging_a_new_path_completed')>>
+
+<p>
+<<Yourrep $g.slave>>'s mind has been restored, thanks to the recent treatment you have arranged for <<therace $g.slave>>.
+You have done exactly as asked by the mysterious person behind a letter you received some time ago.
+And new reports from your contacts in the <<lore region_forest>> reveal that this same person has apparently fulfilled their
+part of the deal. As promised, multiple groups of neko see <<rep $company.player>>
+as an ally. An ally for what, you aren't sure, but you don't look at a gift…
+neko, in the fang, you guess? While you try to untangle the mind puzzle you
+brought upon yourself, you notice another envelope just like the one before
+slipped precariously between the other reports detailing multiple slimes
+sightings in the vicinity of the <<lore region_city>>.
+</p>
+
+<<else>>
+
+<p>
+As soon as you sit in your office to relax, you notice an awfully familiar
+letter on top of you desk.
+It appears the old neko got his whiskers back in your business and had found out of the success
+of your treatment for <<rep $g.slave>>.
+Time to see what the neko writes to you this time.
+</p>
+
+<</if>>

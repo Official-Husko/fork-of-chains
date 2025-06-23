@@ -1,0 +1,48 @@
+:: EventSetup_chance_greeting [nobr event]
+
+<<run new setup.Event(
+'chance_greeting', /* key */
+"Chance Greeting", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+'Event_chance_greeting',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'drow': setup.contacttemplate.quest_household_destroyer_host,
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.NoTraits([setup.trait.per_dominant], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_household_destroyer', '105', -1),
+  setup.qc.Sluttify('slaver'),
+  setup.qc.SetCooldownEvent('chance_meeting', 10),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_household_destroyer', '100'),
+],
+0, /* Cooldown */
+setup.rarity.epic, /* Rarity */
+)>>
+
+:: Event_chance_greeting [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+    <<Yourrep _u>> alerted you today that one of your slavers, <<rep $g.slaver>> had been noticably... sluttier of late.
+    The cause was apparently a chance meeting with your resident drow guest, <<rep $g.drow>>, whom as you recall was the overly dominant drow that you had decided to host just outside of your fort.
+</p>
+
+<p>
+    The damage has been done, and <<rep $g.slaver>> might be mistaken for a slave right now, but this might not be the end of your problems with the drow...
+</p>
+
+

@@ -1,0 +1,307 @@
+:: QuestSetup_demon_hunting_party [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"demon_hunting_party0",
+"Demon Hunter Squire",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_soldier),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_light, setup.trait.magic_fire, setup.trait.skill_ambidextrous, setup.trait.face_attractive, setup.trait.muscle_strong], 1, true, false),
+  setup.qc.TraitReplace('unit', setup.trait.per_chaste),
+],
+)>> <<run new setup.UnitGroup(
+"demon_hunting_party1",
+"Demon Hunter",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_knight),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_fire_master, setup.trait.magic_light_master, setup.trait.face_beautiful, setup.trait.per_smart, setup.trait.skill_ambidextrous], 1, true, false),
+  setup.qc.TraitReplace('unit', setup.trait.per_chaste),
+],
+)>>
+
+
+<<set _criteriademon = new setup.UnitCriteria(
+null, /* key */
+'"Demon\"', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.subrace_drow,
+  setup.trait.subrace_demon,
+  setup.trait.bg_mist,
+  setup.trait.face_hideous,
+  setup.trait.corruptedfull,
+  setup.trait.per_playful,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.race_human,
+  setup.trait.per_serious,
+  setup.trait.per_honorable,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1.5,
+  sex: 1.5,
+}
+)>>
+
+<<set _criteriaminion1 = new setup.UnitCriteria(
+null, /* key */
+'Minion', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.subrace_demonkin,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_playful,
+  setup.trait.per_lunatic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_serious,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  intrigue: 1,
+}
+)>>
+
+<<set _criteriaminion2 = new setup.UnitCriteria(
+null, /* key */
+'Minion', /* name */
+[
+  setup.trait.race_demon,
+  setup.trait.subrace_demonkin,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_playful,
+  setup.trait.per_lunatic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_serious,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  intrigue: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'demon_hunting_party', /* key */
+"Demon Hunting Party", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'rare',
+  'unit',
+  'danger',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'demon': [ _criteriademon, 1],
+  'minion1': [ _criteriaminion1, 1],
+  'minion2': [ _criteriaminion2, 1],
+},
+{ /* actors */
+  'squire': 'demon_hunting_party0',
+  'hunter': 'demon_hunting_party1',
+},
+[ /* costs */
+],
+'Quest_demon_hunting_party',
+setup.qdiff.hardest44, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_demon_hunting_partyCrit',
+    [
+      setup.qc.Slave('hunter', "a|was a demon hunter who foolishly braved the dangers of the Deeprealm alone with a|their squire", undefined),
+    ],
+  ],
+  [
+    'Quest_demon_hunting_partyCrit',
+    [
+      setup.qc.Slave('squire', "a|was the squire to a demon hunter who foolishly ventured into the Deeprealm alone to slay some demons", undefined),
+      setup.qc.Injury('demon', 1),
+      setup.qc.Injury('minion1', 1),
+      setup.qc.Injury('minion2', 1),
+    ],
+  ],
+  [
+    'Quest_demon_hunting_partyCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.MissingUnit('minion1'),
+setup.qc.MissingUnit('minion2')
+]),
+    ],
+  ],
+  [
+    'Quest_demon_hunting_partyCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.MissingUnit('demon'),
+      setup.qc.TraitRemove('demon', setup.trait.per_evil),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_demon_hunting_party [nobr]
+<p>
+    The <<lore region_deep>> has gained a well-earned reputation for being the nest of evil. After all, it is inhabited by the cunning kobolds, the cruel drows, and even the occasional demons.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    While most people would avoid the dangerous realm, some do-gooders would occasionally be attracted to the place, trying to do some good.
+    In fact, <<yourrep _u>> has informed you that a demon hunter and <<their $g.hunter>> squire has been spotted entering the <<lore region_deep>> alone, apparently trying to slay whatever demons that infested the place. Knowing the demons, they'll be soundly defeated, before being raped over and over again until they are useful for nothing but as a living sex toy.
+</p>
+
+<p>
+    However, these demon slayers must be quite skilled, and must fetch a rather good sum of money in the right market. If you act fast, you might just be able to get to them before they encounter any real demon down there. You'll just need to send a group of slavers who will pose as a demon and their two minions. Of course, they will need to defeat these hunters, but that should be the easy part... right?
+</p>
+
+
+
+
+:: Quest_demon_hunting_partyCrit [nobr]
+<p>
+    The duo was apparently has just arrived in <<rep $company.drow>>, and was wondering around the city, seemingly sightseeing.
+    For foolish adventurers like this, there was no doubt their next destination would be the taverns. Your slavers thought so too, and they headed first into the taverns, spreading rumors about a great "ancient evil" that was making a particular <<lore region_deep>> as their nest. The preparation set, your slavers headed to said ruins, and donned their demon disguise...
+</p>
+
+<p>
+    As expected, the adventurers were lured into the ruins.
+    <<Rep $g.demon>>, the great "demon", was already waiting there.
+    <<if $g.demon.isHasTrait('subrace_demon')>>
+        <<Rep $g.demon>> demon|is an actually demon...
+    <<elseif $g.demon.isHasTrait('race_demon')>>
+        <<Rep $g.demon>> might not be an actual demon, but <<urace $g.demon>> is pretty close to one.
+    <<elseif $g.demon.isHasTrait('race_human')>>
+        Being a <<urace $g.demon>> meant <<rep $g.demon>> had a harder time trying to act menacing.
+    <</if>>
+    <<if $g.demon.isHasTrait('bg_mist')>>
+        <<Rep $g.demon>> used to travel into the Mist before, and knows just how to act like a proper demon.
+    <</if>>
+    <<if $g.demon.isHasTrait('face_scary')>>
+        <<Reps $g.demon>> <<uface $g.demon>> added to the immersion.
+    <</if>>
+    <<if $g.demon.isHasTrait('corruptedfull')>>
+        Being fully demon-looking helped terrify the poor duo.
+    <</if>>
+    <<if $g.demon.isHasTrait('per_playful')>>
+        <<Rep $g.demon>> demon|is natural at playing tricks and pretending to be someone else.
+    <</if>>
+    <<if $g.demon.isHasTrait('per_lunatic')>>
+        Being a mad raving lunatic is appropriate for a demon.
+    <</if>>
+    <<if $g.demon.isHasTrait('per_evil')>>
+        <<Rep $g.demon>> demon|is naturally evil, and the hunter duo could sense it too...
+    <</if>>
+    <<if $g.demon.isHasTrait('magic_dark')>>
+        <<Rep $g.demon>> demon|command dark magic, like most demons do.
+    <</if>>
+    <<if $g.demon.isHasTrait('magic_light')>>
+        The hunters could unfortunately sense light magic coming up from <<rep $g.demon>>, which is not something a demon would have...
+    <<elseif $g.demon.isHasTrait('magic_fire')>>
+        The hunters could unfortunately sense fire magic coming up from <<rep $g.demon>>, which is not something a demon would have...
+    <</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        Even before the fight, it was obvious that <<reps $g.demon>> appearance had greatly unsettled the duo. They fought clumsily, and your slavers had an easy time subduing the hunter.
+        Unfortunately, the squire managed to escape, but the hunter was indeed the bigger prize.
+        After all, <<therace $g.demon>>
+        <<if $g.hunter.isHasTrait('magic_light_master')>>
+            commands light magic,
+        <<elseif $g.hunter.isHasTrait('magic_fire_master')>>
+            commands fire magic,
+        <<elseif $g.hunter.isHasTrait('skill_ambidextrous')>>
+            is ambidextrous,
+        <<elseif $g.hunter.isHasTrait('face_beautiful')>>
+            looks gorgeous,
+        <<elseif $g.hunter.isHasTrait('per_smart')>>
+            looks intelligent,
+        <<else>>
+
+        <</if>>
+        ensuring your new slave will sell for a good sum in the markets.
+    </p>
+<<elseif $gOutcome == 'success'>>
+    <p>
+        A fight ensued after that, with your slaver trio fighting against the hunter duo. They are surprisingly good, but your slavers was not trying to defeat them. In a brief moment of weakness, <<rep $g.minion1>> knocked the squire unconscious, while <<rep $g.minion2>> and <<rep $g.demon>> engaged the hunter.
+        <<Rep $g.minion1>> took the squire and fled, and your other slavers followed suit.
+    </p>
+
+    <p>
+        Your slavers suffered minor injuries during the fight, but it was surely worth it for the struggling, gagging slave that is now being carried back to the fort.
+        There is a lesson to be learnt here: the <<lore region_deep>> is dangerous, and one should never brave the place alone...
+    </p>
+<<else>>
+    <p>
+        A fight then ensued. The hunters turned out to be incredibly fierce fighters, and <<reps $g.demon>> attempt to play demon did not seem to faze them.
+        In a moment of weakness,
+        <<if $gQuest.getSeed() % 2 == 0>>
+            <<set $g.o = $g.minion1>>
+        <<elseif $gQuest.getSeed() % 2 == 1>>
+            <<set $g.o = $g.minion2>>
+        <</if>>
+        <<rep $g.o>> was knocked unconscious.
+        With the advantage of number gone, your slavers made the wise decision to flee,
+        leaving <<rep $g.o>> to <<their $g.o>> fate.
+        <<if $gOutcome == 'disaster'>>
+            But an arrow took down <<rep $g.demon>>, and in the end only one of your slavers returned home...
+        <<else>>
+            The two of them returned home, but <<rep $g.o>> would need rescuing later...
+        <</if>>
+    </p>
+<</if>>
+
+
+
+
+

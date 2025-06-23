@@ -1,0 +1,41 @@
+:: RestrictionHasMissingSlaver [nobr]
+
+<<set $qrestriction = setup.qres.UnitGroupHasUnit(setup.unitgroup.missingslavers)>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionHasMissingSlave [nobr]
+
+<<set $qrestriction = setup.qres.UnitGroupHasUnit(setup.unitgroup.missingslaves)>>
+<<include 'QGRestrictionDone'>>
+
+
+:: RestrictionUnitGroupHasUnit [nobr]
+
+<<for _iug, _ug range setup.unitgroup>>
+  <<if _ug.reuse_chance>>
+    <<rep _ug>>
+    <<capture _ug>>
+      <<button 'Select' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qres.UnitGroupHasUnit(_ug)>>
+      <</button>>
+    <</capture>>
+    <br/>
+  <</if>>
+<</for>>
+
+:: RestrictionUnitGroupNotBusy [nobr]
+
+<<for _iug, _ug range setup.unitgroup>>
+  <<if _ug.reuse_chance>>
+    <<rep _ug>>
+    <<capture _ug>>
+      <<button 'Select' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qres.UnitGroupNotBusy(_ug)>>
+      <</button>>
+    <</capture>>
+    <br/>
+  <</if>>
+<</for>>
+
+

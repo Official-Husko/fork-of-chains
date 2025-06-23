@@ -1,0 +1,172 @@
+:: QuestSetup_blessings_of_the_south [nobr quest]
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Test Subject', /* name */
+[
+  setup.trait.anus_loose,
+  setup.trait.anus_gape,
+  setup.trait.tough_nimble,
+  setup.trait.per_submissive,
+  setup.trait.skill_alchemy,
+],
+[
+  setup.trait.anus_tight,
+  setup.trait.tough_tough,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_dominant,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+],
+{
+  brawn: 1,
+  arcane: 2,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'blessings_of_the_south', /* key */
+"Blessings of the South", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'special',
+  'prep',
+  'trait',
+  'sea',
+],
+4, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 1],
+  'alchemist1': [ setup.qu.alchemist, 1],
+  'alchemist2': [ setup.qu.alchemist, 1],
+},
+{ /* actors */
+  'nun': 'sea_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_blessings_of_the_south',
+setup.qdiff.hard61, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_blessings_of_the_southCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_crit', 1, -1),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_blessings_of_the_southCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_done', 1, -1),
+      setup.qc.VarSet('quest_harbinger_of_luck_magic', '1', -1),
+      setup.qc.Blessing('alchemist1', 1, 'blessing_life8', undefined),
+      setup.qc.Blessing('alchemist2', 1, 'blessing_life8', undefined),
+      setup.qc.SetCooldownEvent('harbinger_of_chaos', 10),
+      setup.qc.SetCooldownEvent('harbinger_of_crows', 10),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_blessings_of_the_southCrit',
+    [
+      setup.qc.Blessing('a', 1, 'curse_demise8', undefined),
+      setup.qc.SetCooldownEvent('luck_chaser', 10),
+    ],
+  ],
+  [
+    'Quest_blessings_of_the_southCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Blessing('alchemist1', 1, 'curse_demise8', undefined),
+      setup.qc.Blessing('alchemist2', 1, 'curse_demise8', undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_blessings_of_the_south [nobr]
+<<set _unit = setup.getUnit({title: 'quest_harbinger_of_misfortune_0'})>>
+<<if !_unit>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+Many people living in the lands beyond the <<lore region_sea>> are gifted in the domain of the <<lore magic_light>>. They can heal wounds, mend minds, and it is said that the greatest wizards over yonder is even capable of bestowing blessing and good fortune on another.
+</p>
+
+<p>
+...at least, such is what <<yourrep _unit>> believed. <<They _unit>> is already so desperate to try and make <<them _unit>> somewhat luckier that <<they _unit>> had already spent time and efforts to locate one of the potential monasteries in the south that might be willing to bless a slaver such as <<themself _unit>>, by any means necessary. Given the sheer unluckiness of the slaver, however, the monastery demands payment as well as some alchemical assistance for the endeavor. These all sounds like nothing but a cheap scam to trick you out of your money, but what other ideas do you have?
+</p>
+
+<</if>>
+
+
+
+:: Quest_blessings_of_the_southCrit [nobr]
+<p>
+After taking the offered money, the monks of the monasteries took <<yourrep $g.a>> to the innermost chamber of the sanctum, where they began the holy ritual of bestowing a blessing upon the <<urace $g.a>>. Normally, this could be done by simply having the head monk chant a scripture or two, but knowing <<rep $g.a>>, they had to go into more extreme territory. With the help of <<yourrep $g.alchemist1>> and <<rep $g.alchemist2>>, they concocted various supposedly luck-inducing potions for <<rep $g.a>> to consume.
+<<if $g.a.isHasTrait('tough_nimble')>>
+<<Reps $g.a>> malleable body absorbed the potions quickly.
+<</if>>
+<<if $g.a.isHasTrait('tough_tough')>>
+<<Reps $g.a>> resilient body means the potions are less effective, however.
+<</if>>
+<<if $g.a.isHasTrait('corrupted')>>
+The corruption spreading around <<their $g.a>> body made the potions far less effective.
+<</if>>
+<<if $g.a.isHasTrait('skill_alchemy')>>
+As a fellow alchemist <<they $g.a>>, knows the efficacy of these potions, and <<they $g.a>> consumes them eagerly.
+<</if>>
+Some are even administered anally, for a reason or another that remains unknown to you even to this day.
+<<if $g.a.isHasTrait('anus_gape')>>
+<<Reps $g.a>> gaping anus means that the insertion apparatus slides in effortlessly into the caverns.
+<<elseif $g.a.isHasTrait('anus_loose')>>
+<<Reps $g.a>> anus is loose enough to comfortably take in the apparatus, thankfully.
+<<elseif $g.a.isHasTrait('anus_tight')>>
+The monks had to push the apparatus very hard past <<reps $g.a>> almost virgin-tight anus.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+<p>
+Even with the assault of chemicals, incantations, and drugs, the blessing failed to keep hold inside <<reps $g.a>> cursed body. The ritual was a success, however, as evidenced the blessing of life hovering over both <<rep $g.alchemist1>> and <<rep $g.alchemist2>>, but it just stubbornly refused to take hold within <<rep $g.a>>. In fact, <<rep $g.a>> felt even more cursed than normal, <<their $g.a>> curse holding out too strong and triggered a "self-defense-system" out of the curse itself.
+</p>
+
+<p>
+It seems you would not be able to bless <<rep $g.a>> this way. Perhaps another way would be better?
+</p>
+<<else>>
+<p>
+Unfortunately, something went incredibly wrong during the ritual. Whether it's a wrong concoction, a mis-spelled incantation, or simply <<reps $g.a>> sheer unluckiness, the ritual backfired, engulfing
+<<if $gOutcome == 'failure'>>
+<<rep $g.a>>
+<<else>>
+everyone within the room
+<</if>>
+in a dark shroud of corruption.
+When it finally settled,
+<<if $gOutcome == 'failure'>>
+<<rep $g.a>>
+<<else>>
+everyone
+<</if>>
+felt much more cursed than usual, and your slavers wisely decided to pull the trigger short and returned home cursed and defeated.
+</p>
+<</if>>

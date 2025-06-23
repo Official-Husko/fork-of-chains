@@ -1,0 +1,81 @@
+:: QuestSetupSeaContact [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'sea_contact',  /* id */
+  'Establish Contact: Southern Seas',  /* Title */
+  'darko',   /* author */
+  ['sea', 'special', 'quest'],  /* tags */
+  3, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_sea,
+    'scout2': setup.qu.scout_sea,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestSeaContact',  /* description */
+  setup.qdiff.hard45,
+  [
+    [
+      'QuestSeaContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.sealead),
+        setup.qc.QuestDelay(setup.questpool.sea, 10),
+        
+      ]
+    ],
+    [
+      'QuestSeaContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.sealead),
+        setup.qc.QuestDelay(setup.questpool.sea, 6),
+        
+      ],
+    ],
+    [
+      'QuestSeaContactFailure',
+      [
+        setup.qc.QuestDirect('sea_contact'),
+      ],
+    ],
+    [
+      'QuestSeaContactFailure',
+      [
+        setup.qc.QuestDirect('sea_contact'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestSeaContact [nobr]
+
+<p>
+With your <<= setup.buildingtemplate.scoutharbor.rep()>> finally ready,
+it is now possible for you to send a group of slavers on a boat trip south into the
+<<lore region_sea>> for the slight
+chance of obtaining a contact across the <<lore region_sea>>.
+Such a contact would prove invaluable in supplying your company with precious quest leads.
+It is said that venturing south is always a dangerous affair -- far more dangerous
+than any other locations you've been to, and you should prepare for the worst.
+</p>
+
+:: QuestSeaContactCrit [nobr]
+
+<p>
+Your slavers came back in one piece, thankfully, and they even managed to find a contact
+willing to send quest leads to your fort should they find someone in need of your services.
+When pressed to tell you more about the contact, your slavers froze in place and refused
+to elaborate, their gaze becoming empty whenever you press even further.
+What kind of creature out there have they struck a deal with?
+</p>
+
+:: QuestSeaContactFailure [nobr]
+<p>
+Unfortunately, your slavers failed to find any such contact. You should try again.
+</p>

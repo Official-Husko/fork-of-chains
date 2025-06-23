@@ -1,0 +1,190 @@
+:: QuestSetup_bounty_hunt_bandits [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"bounty_hunt_bandits0",
+"Vale Bandits",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_raider),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'bounty_hunt_bandits', /* key */
+"Bounty Hunt: Bandits", /* Title */
+{  /* Author */
+  name: "Blueflame451",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/l9oppz/bounty_hunt_bandits_a_simple_quest/',
+},
+[ /* tags */
+  'vale',
+  'money',
+  'ire',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'tracker': [ setup.qu.scout_vale, 1],
+  'merc1': [ setup.qu.mercenary, 1],
+  'merc2': [ setup.qu.mercenary, 1],
+},
+{ /* actors */
+  'bandit': 'bounty_hunt_bandits0',
+},
+[ /* costs */
+],
+'Quest_bounty_hunt_bandits',
+setup.qdiff.normal5, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_bounty_hunt_banditsCrit',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.Favor('humanvale', 50),
+      setup.qc.Ire('outlaws', 2),
+      setup.qc.Slave('bandit', "a|was a bandit", undefined),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_banditsSuccess',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.Favor('humanvale', 50),
+      setup.qc.Ire('outlaws', 2),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_banditsFailure',
+    [
+      setup.qc.Ire('humanvale', 1),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_banditsDisaster',
+    [
+      setup.qc.Ire('humanvale', 1),
+      setup.qc.Injury('merc1', 1),
+      setup.qc.Injury('merc2', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_bounty_hunt_bandits [nobr]
+
+<p>
+The <<lore region_vale>> is the home to many northerners.
+Nobody governs the land, which means nobody is there to protect the peasant
+from the dangers of the land. The farmers on the vale have grown hardy to
+the dangers of the land, be it the occassional flooding, bandit raids,
+or even the rare magical explosion.
+</p>
+
+<p>
+As it happens, these hardy peasants are currently having trouble with a group of bandits who have been attacking wagons, pillaging farms and burning crops.
+To combat these, they gathered some funds and is now seeking mercenaries to drive off the bandits
+from their lands.
+While enforcing law and order isn't your official designation, coin is coin, and you could take up the job.
+Besides, the actions of these outlaws could make your own affairs more difficult,
+especially if this job was to be taken by some other mercenary company.
+Plus, you could say no to the potential of acquiring some bandit for your slave collection.
+</p>
+
+
+:: Quest_bounty_hunt_banditsCrit [nobr]
+
+<p>
+While your slavers don't often hunt bandits, hunting men and women is not so unusual for them.
+It was therefore not very surprising that <<rep $g.tracker>> tracker|was able
+to track the outlaws to their hidden camp easily.
+</p>
+
+<p>
+Yet it was sneaking into the bandit camp under cover of darkness that
+guaranteed their victory. <<Rep $g.merc1>> and <<utheirrel $g.merc1
+$g.merc2>> <<rep $g.merc2>> took the group of outlaws completely by surprise!
+
+<<set _nimble = setup.selectUnit([$g.merc1, $g.merc2, $g.tracker], {trait: 'tough_nimble'})>>
+<<set _dark = setup.selectUnit([$g.merc1, $g.merc2, $g.tracker], {trait: 'magic_dark'})>>
+<<if _nimble>>
+  Using <<their _nimble>> superior agility, <<rep _nimble>> delivered a preemptive strike
+  to the unaware bandits.
+<<elseif _dark>>
+  Using <<their _dark>> dark magic, <<rep _dark>> covered the group in a shroud of darkness,
+  allowing the team to strike at the unaware bandits from the shadows.
+<</if>>
+
+The sudden chaos of battle and burning tents gave the neverdowells a taste of
+their own medicine.
+Your slavers not only routed their enemy without taking
+any wound, but were able to recover some of the bandits' meager loot and even
+took one of the downed bandits as a captive.
+</p>
+
+<p>
+The farmers were very pleased with the efforts of your slavers, and happily paid them the bounties for driving off the bandits. Your slavers too were quite satisfied with themselves and celebrated with a bottle of fine brandy liberated from the camp. With the captive bandit trudging behind them in chains, the group made their way back to the <<rep $company.player>>.
+</p>
+
+
+:: Quest_bounty_hunt_banditsSuccess [nobr]
+<p>
+While your slavers don't often hunt bandits, hunting men and women is not so unusual for them.
+It was not really surprising <<rep $g.tracker>> tracker|was able to pick up the tracks and locate the outlaws.
+</p>
+
+<p>
+Following the tracks, your slavers encountered a still burning farmstead, no doubt being raided by the bandits.
+A fierce and desperate fight erupted on the smoldering farm grounds, but <<rep $g.merc1>> and <<rep $g.merc2>> prove themselves more then a match for the bandits. After a bloody exchange, the wounded outlaws were routed, and your slavers emerged victorious.
+</p>
+
+<p>
+The farmers were saddened to hear of yet another homestead being lost to the bandit, but still agreed that your slavers did as requested by driving off the outlaws from their lands. They paid the promised bounty to your slavers. Your team may have spent a portion of the reward at a roadside tavern before returning to the fort, but who could blame them after they risked their lives on the job?
+</p>
+
+
+:: Quest_bounty_hunt_banditsFailure [nobr]
+
+<p>
+Your slavers lost day after day following either an old trail or a misleading trail.
+After the rain wiped out the last remaining remnants of the trail,
+your slavers gave up trying to locate the bandits.
+</p>
+
+<p>
+Furthermore their frustration and shame were not all they suffer.
+After their failure, the farmers seemed certain your slavers were in league with the bandits.
+The only thanks your slavers received for their efforts were the hateful stares of the farmers
+of the land.
+<<if !$g.merc1.isHasTrait('per_kind')>>
+  <<Yourrep $g.merc1>> suggested to you to kidnap one of the farmer's daughter later,
+  out of spite.
+<</if>>
+</p>
+
+
+:: Quest_bounty_hunt_banditsDisaster [nobr]
+
+<p>
+Hunting men and women is not such an unusual task for your slavers to begin with,
+so when <<rep $g.tracker>> found the outlaws tracks, <<they $g.tracker>> became overconfident and <<uadv $g.tracker>> gave chase.
+</p>
+
+<p>
+<<They $g.tracker>> tracker|was taken quite by surprise then when
+<<they $g.tracker>> stumbled into an ambush laid by the cunning bandits they were hunting.
+<<Rep $g.merc1>> and <<rep $g.merc2>> waged a desperate fight to escape from the ambush.
+They managed to escape alive and able to return home, but were injured both physically
+and mentally from the shame.
+</p>
+

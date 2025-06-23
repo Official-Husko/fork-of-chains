@@ -1,0 +1,169 @@
+:: QuestSetup_carnal_experience [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'carnal_experience', /* key */
+"Carnal Experience", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'vale', 'unknown'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'knight': setup.qu.knight,
+'whore': setup.qu.whore,
+'trainer': setup.qu.slavetrainer,
+'slave': setup.qu.slaveobedient, },
+{ /* actors */
+'chief': 'opportunity_aspect_of_experience1',
+'daughter': 'subrace_humanvale', },
+[ /* costs */
+],
+'Quest_carnal_experience',
+setup.qdiff.hardest51, /* difficulty */
+[ /* outcomes */
+[
+'Quest_carnal_experienceCrit',
+[
+setup.qc.SlaverMarker('chief'),
+setup.qc.Outcomes('success'),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_carnal_experienceCrit',
+[
+setup.qc.Opportunity('aspect_of_experience', {
+  knight: 'knight',
+  slave: 'slave',
+}),
+],
+], [
+'Quest_carnal_experienceFailure',
+[
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_experience1'),
+setup.qc.MissingUnit('slave'),
+setup.qc.RemoveTraitsWithTag('slave', 'training'),
+],
+], [
+'Quest_carnal_experienceFailure',
+[
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_experience1'),
+setup.qc.MissingUnit('slave'),
+setup.qc.RemoveTraitsWithTag('slave', 'training'),
+setup.qc.MissingUnitRecapture('trainer', 'capturedmedium'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.Cooldown(12),
+setup.qres.QuestUnique(), ],
+[ /* expiration outcomes */
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_experience1'), ],
+)>>
+
+:: Quest_carnal_experience [nobr]
+
+<<if $g.chief.isMale()>>
+  <<questimage 'carnal_experience_desc_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+Your company has received a most unexpected visitor: A young <<lady $g.daughter>> who introduces <<themself $g.daughter>> as <<name $g.daughter>>, <<daughter $g.daughter>> of <<name $g.chief>>. <<They $g.daughter>> has came with a most unusual problem for your company to solve.
+</p>
+
+<p>
+You see, <<they $g.daughter>> daughter|have fallen in love with another <<man $unit.player>>, who resides far outside the vale. <<Their $g.daughter>> <<mother $g.chief>>, on the other hand, is a bonafide prude, strongly believing in the tradition that a <<daughter $g.daughter>> of the vale must marry a <<man $unit.player>> of the vale. <<name $g.daughter>> comes to your company with a proposition: do whatever you can to change <<their $g.daughter>> <<mother $g.chief>>'s stubborn mind.
+</p>
+
+<p>
+Of course, the resourceful <<girl $g.daughter>> has done <<their $g.daughter>> research, and <<they $g.daughter>> knows that you love nothing more than great rewards. <<Their $g.daughter>> tribe is one of the tribes with the longer history on the vale, and <<their $g.daughter>> <<father $g.chief>> has a wealth of experience much beyond <<their $g.chief>> peers. If you can convince the stubborn chief to change <<their $g.chief>> mind, surely you can also convince <<them $g.chief>> to share <<their $g.chief>> experiences with your slavers.
+</p>
+
+<p>
+The clever <<girl $g.daughter>> surely know your weakness well.
+After all, what greater rewards are there than wisdom?
+</p>
+
+
+:: Quest_carnal_experienceCrit [nobr]
+
+<<if $g.slave.isFemale()>>
+  <<questimage 'carnal_experience_female.jpg'>>
+<</if>>
+
+<p>
+The chieftain turned out to be a prude beyond what your slavers imagined possible.
+After conversing with the chieftain, even with the slave <<rep $g.slave>> sensuously bound before them,
+there was zero reaction from the chieftain.
+As <<rep $g.whore>> questioned silently how <<they $g.chief>> could possibly have a <<daughter $g.daughter>> with that attitude, <<rep $g.knight>> started to enact the plan for slowly enacting hotter and hotter "accidental" scenes around the encampment, passing it as the, uh, "traditional culture" of whichever faraway region your slavers decided to came up with.
+</p>
+
+<p>
+It started slow and bashful -- initially, the sequence of "accidents" only included things such as one where <<rep $g.slave>> accidentally tripped over when walking and fell ass-flat into the chieftain's <<if $g.chief.isHasDick()>>crotch<<else>>ample breasts<</if>>.
+But it still drew no reaction from the chief,
+<<set _creative = setup.selectUnit([$g.knight, $g.whore, $g.trainer], {trait: 'skill_creative'})>>
+<<if _creative>>
+forcing <<rep _creative>> to use <<their _creative>> mind to come up with something else...
+<<else>>
+and your slavers began to get desperate and creative
+with their acts...
+<</if>>
+</p>
+
+<p>
+The "accidental" sexual events became bolder and bolder until when during one night,
+<<rep $g.knight>> had the brilliant idea of smuggling <<rep $g.slave>> into the chief's sleeping tent and service <<them $g.chief>> during <<their $g.chief>> sleep.
+After all, no matter how strong <<therace $g.chief>>'s mind is, sex is still a part of <<their $g.chief>> primal instinct and surely not even the prude chief was immune to wet dreams.
+Sure enough, the chief quickly <<if $g.chief.isHasDick()>>came inside <<reps $g.slave>> <<umouth $g.slave>><<else>>climaxed from <<reps $g.slave>> cunnilingus<</if>> every night.
+Eventually, without knowing why, the chief started to get a little flushed each time <<rep $g.slave>> slave|was brought around for entertainment.
+</p>
+
+<p>
+By the end of the first few weeks, your slavers' plan was starting to bear fruit.
+<<Rep $g.chief>> started to ask your slavers raunchy questions of various kinds, which your slaveres happily oblige. Be it bondage, pet play, <<if !$settings.bannedtags.watersport>>watersports,<</if>> or even tail sex, your slavers obliged the prude and told all sorts of degenerate stories.
+</p>
+
+<p>
+In the last few days, the chief spent almost <<their $g.chief>> entire days exploring various new techniques with <<yourrep $g.slave>>.
+Seeing their task complete, it is time for your slavers to get rewarded... with knowledge? Well seeing how the chief is now very open to other stuffs perhaps there are better option for rewards now...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+With <<their $g.daughter>> <<father $g.chief>>'s horizons opened, the young <<lady $g.daughter>>, <<name $g.daughter>>, <<daughter $g.daughter>> of <<name $g.chief>> is confident that <<their $g.daughter>> <<father $g.chief>> will no longer object to <<their $g.daughter>> lovers' background. Your slavers are rewarded with extra money for their splendid efforts.
+</p>
+<</if>>
+
+
+
+:: Quest_carnal_experienceFailure [nobr]
+
+<p>
+The chieftain turns out to be a prude beyond what your slavers imagined possible.
+After conversing with the chieftain, even with the slave <<rep $g.slave>> sensuously bound before them,
+there was zero reaction from the chieftain.
+As <<rep $g.whore>> questioned silently how <<they $g.chief>> could possibly have a <<daughter $g.daughter>> with that attitude, <<rep $g.knight>> started to enact the plan for slowly enacting hotter and hotter "accidental" scenes around the encampment, passing it as the, uh, "traditional culture" of whichever faraway region your slavers decided to came up with.
+</p>
+
+<p>
+It started slow, initially with a sequence of "accidents" including one where <<rep $g.slave>> accidentally tripped over when walking and fell ass-flat into the chieftain's <<if $g.chief.isHasDick()>>crotch<<else>>ample breasts<</if>>.
+But something snapped within the chieftain's head, and it was not looking good for your slavers...
+</p>
+
+<p>
+Without warning, the chieftain denounced the evils of slavery, taking the slave <<rep $g.slave>> with <<them $g.chief>> and freeing the obedient little <<urace $g.slave>> from <<their $g.slave>> bondage.
+Your slavers were then swiftly kicked out of the encampment as <<they $g.chief>> no doubt will begin trying to reverse the slave programming on <<rep $g.slave>>.
+<<uneedrescue $g.slave>>, although by then the slave's training would probably have already been completely reversed...
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+For good measure, the chieftain also took <<rep $g.trainer>> hostage, to coax information from <<therace $g.trainer>> on how to best undo the slave's mentality. <<urescuenow $g.trainer>>.
+</p>
+<</if>>
+
+

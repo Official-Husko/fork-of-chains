@@ -1,0 +1,223 @@
+:: CompanyInfo [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.greathall)>>
+<<set _veteranroom = $fort.player.getBuilding(setup.buildingtemplate.veteranhall)>>
+<<set _viceleader = $dutylist.getDuty('viceleader')>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You enter the great hall of your fort. The room is the centerpiece of your fort,
+and this is where you gather your slavers for important occassions.
+A
+<<message 'map of the region'>>
+  <<worldmap>>
+<</message>>
+is displayed on the walls (Click to show).
+<<if _viceleader>>
+  <<set _unit = _viceleader.getAssignedUnit()>>
+  <<if _unit>>
+    Your <<rep _viceleader>> <<rep _unit>> can often be seen being busy
+    around here.
+    <<if !_unit.isAvailable()>>
+      But you know <<they _unit>> is not available for the job right now.
+    <</if>>
+  <<else>>
+    The room overseeing your great hall has been made into an office
+    for your <<rep _viceleader>>, although it is empty right now.
+  <</if>>
+<</if>>
+<<if _veteranroom>>You have renovated the floor above your great hall as
+a <<rep _veteranroom>>, which displays the various achivements of your company.<</if>>
+</p>
+
+<p>
+You are:
+<<unitcard $unit.player 1>>
+</p>
+
+<p>
+You lead the following company:
+<<companycard $company.player 1>>
+</p>
+
+<p>
+You have been leading this company for <<= $calendar.getWeek()>> weeks, and hopefully many more to come!
+Currently, you have <<money $company.player.getMoney()>> and
+<<prestige $company.player.getPrestige()>>.
+Your company consists of
+<<= $company.player.getUnits({job: setup.job.slaver}).length>> slavers
+and
+<<= $company.player.getUnits({job: setup.job.slave}).length>> slaves.
+</p>
+
+<<if !_veteranroom>>
+  Build the <<rep setup.buildingtemplate.veteranhall>> to see your company statistics.
+<<else>>
+
+  <p>
+  <b>Money and prestige.</b>
+  Currently, you have <<money $company.player.getMoney()>> and <<prestige $company.player.getPrestige()>>.
+  The maximum amount of money your company ever had is <<money $statistics.get('money_max')>>,
+  while the maximum prestige your company ever had is <<prestige $statistics.get('prestige_max')>>.
+  The maximum money gained all at once is <<money $statistics.get('money_max_gain')>>,
+  while the maximum money lost at once is <<set _loss = $statistics.get('money_max_lose')>>
+  <<moneyloss _loss>>.
+  </p>
+
+  <p>
+    <b>Quest and mail.</b>
+    <<set _crit = $statistics.get('quest_crit')>>
+    <<set _success = $statistics.get('quest_success')>>
+    <<set _failure = $statistics.get('quest_failure')>>
+    <<set _disaster = $statistics.get('quest_disaster')>>
+    You have obtained total <<= $statistics.get('quest_obtained')>> quests,
+    including <<= $statistics.get('quest_obtained_veteran')>> veteran quests.
+    Amongs these, you took <<= _crit + _success + _failure + _disaster>> of them,
+    including <<= $statistics.get('quest_done_veteran')>> veteran quests.
+    <<= _crit>> ended in critical success, <<= _success>> in success, <<= _failure>> in failure, and
+    <<= _disaster>> in disaster.
+    The highest number of quests you ever have in your office at the same time is
+    <<= $statistics.get('quest_max_simultaneous_have') >>.
+    The highest level of a quest your company ever scouted is
+    <<= $statistics.get('quest_max_get_level')>>.
+    while for quests you took it's
+    <<= $statistics.get('quest_max_took_level')>>.
+    You have obtained total <<= $statistics.get('opportunity_obtained')>> mails
+    and you answered <<= $statistics.get('opportunity_answered')>> of them.
+    <<set _events = $statistics.get('events')>>
+    <<if _events>>
+      Your company has been beset by <<= _events>> events.
+    <</if>>
+  </p>
+
+  <p>
+    <b>Slavers and slaves.</b>
+    You have hired total <<= $statistics.get('slavers_hired')>> slavers
+    and <<= $statistics.get('slaves_hired')>> slaves.
+    At one point, you had a maximum of
+    <<= $statistics.get('slavers_max')>> slavers and
+    <<= $statistics.get('slaves_max')>> slaves.
+    Throughout your career,
+    you have lost
+    <<= $statistics.get('slavers_lost')>> slavers and
+    lost/sold
+    <<= $statistics.get('slaves_lost')>> slaves.
+    The total number of slavers that ever appeared in the <<rep setup.buildingtemplate.prospectshall>>
+    is
+    <<= $statistics.get('slavers_offered')>>, while
+    the total number of slaves that ever appeared in the <<rep setup.buildingtemplate.slavepens>>
+    is
+    <<= $statistics.get('slaves_offered')>>.
+    You have interacted
+    <<= $statistics.get('interactions_slaver')>>
+    times with a slaver, and
+    <<= $statistics.get('interactions_slave')>>
+    with a slave.
+    Throughout your company, you and your slavers have bantered
+    <<= $statistics.get('banters')>>
+    times between each other.
+    Throughout your career,
+    <<= $statistics.get('corruptions_slaver')>>
+    and
+    <<= $statistics.get('corruptions_slave')>>
+    corruption attempts have been made on your slavers and slaves, respectively.
+    Meanwhile,
+    <<= $statistics.get('purifications_slaver')>>
+    and
+    <<= $statistics.get('purifications_slave')>>
+    purification attempts have been made on your slavers and slaves, respectively.
+  </p>
+
+  <p>
+    <b>Inventory.</b>
+    You have obtained
+    <<= $statistics.get('items_obtained')>> items,
+    among those
+    <<= $statistics.get('items_bought')>> were bought from the
+    <<rep setup.buildingtemplate.market>>,
+    which has offered you a total of
+    <<= $statistics.get('items_offered')>> items for sale.
+    You have lost
+    <<= $statistics.get('items_lost')>> items, including selling
+    <<= $statistics.get('items_sold')>> of those.
+    You have bought
+    <<= $statistics.get('equipment_bought')>> equipment pieces from the
+    <<rep setup.buildingtemplate.forge>> and
+    <<rep setup.buildingtemplate.sexshop>>, which combined has offered you
+    <<= $statistics.get('equipment_offered')>> equipment pieces for sale.
+  </p>
+
+  <p>
+    <b>Fort.</b>
+    You have built <<= $statistics.get('buildings_built')>> improvements and
+    upgraded an improvement <<= $statistics.get('buildings_upgraded')>> times.
+  </p>
+
+  <p>
+    <b>Slave order and contact.</b>
+    You have obtained a total of <<= $statistics.get('slave_order_obtained')>> slave orders and
+    fulfilled <<= $statistics.get('slave_order_fulfilled')>> of them.
+    You have grossed
+    <<money $statistics.get('slave_order_money_sum')>> from slave orders,
+    and the maximum money you got from one slave order is
+    <<money $statistics.get('slave_order_money_max')>>.
+    The most valuable slave you sold in a slave order was worth
+    <<money $statistics.get('slave_order_slave_value_max')>>.
+    You have obtained a total of
+    <<= $statistics.get('contact_obtained')>> contacts.
+  </p>
+
+  <p>
+    <b>Injuries.</b>
+    Throughout your company's history,
+    your slavers have been injured
+    <<= $statistics.get('injury_slaver_count')>>
+    times for a total of
+    <<= $statistics.get('injury_slaver_week_sum')>> weeks,
+    and your slaves have been injured
+    <<= $statistics.get('injury_slave_count')>>
+    times for a total of
+    <<= $statistics.get('injury_slave_week_sum')>> weeks.
+    The longest injury sustained by a slaver lasted for
+    <<= $statistics.get('injury_slaver_week_max')>> weeks, while on slaves it's
+    <<= $statistics.get('injury_slave_week_max')>> weeks.
+    The largest number of slavers that were injured at the same time is
+    <<= $statistics.get('injury_slaver_simultaneous')>>,
+    while for slaves it's
+    <<= $statistics.get('injury_slave_simultaneous')>>.
+  </p>
+
+  <p>
+    <b>Traumas and boons.</b>
+    Trauma is an unavoidable part of a slaver's career.
+    Your slavers have been traumatized
+    <<= $statistics.get('trauma_count')>>
+    times for a total of
+    <<= $statistics.get('trauma_week_sum')>> weeks.
+    The longest time a slaver has been traumatized is
+    <<= $statistics.get('trauma_week_max')>> weeks.
+    On the other hand,
+    your slavers have received a boon
+    <<= $statistics.get('boon_count')>>
+    times for a total of
+    <<= $statistics.get('boon_week_sum')>> weeks.
+    The longest boon a slaver received lasted
+    <<= $statistics.get('boon_week_max')>> weeks.
+  </p>
+
+  <p>
+    <<if $statistics.get('new_game_plus_count')>>
+    <b>Past glory.</b>
+      Somehow, you get the feeling that you have been in charge of
+      as many as <<= $statistics.get('new_game_plus_count') + 1>> companies by this point.
+    <</if>>
+    Should you choose, you could
+    <<foclink 'retire' 'NewGamePlus'>>
+    <</foclink>>
+    from the position of being the leader of this slaving company...
+  </p>
+
+<</if>>

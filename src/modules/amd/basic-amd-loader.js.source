@@ -1,0 +1,58 @@
+// Custom very basic AMD module loader
+// (because I couldn't find any that worked in this setup)
+// Not intended to have full AMD compatibility, just to work for our use case
+
+(function() {
+
+  /** @type {Record<string, { promise: Promise<void>, resolve: () => void, exports: any }>} */
+  const loadedModules = {}
+
+  const require = Object.assign((depIds, callback) => {
+    //console.log("[AMD] require", depIds)
+    Promise.all(depIds.map(id => {
+      const entry = (loadedModules[id] ||= {})
+      return entry.promise || (entry.promise = new Promise((resolve, reject) => {
+        entry.resolve = resolve
+        const script = document.createElement('script')
+        script.onerror = () => (console.error('Failed to load module:', id), reject())
+        script.setAttribute('data-module-id', id)
+        script.src = id
+        document.body.appendChild(script)
+      }))
+    })).then(callback)
+  }, {
+    toUrl: (url) => url,
+  })
+
+  /**
+   * @param {string|undefined} id
+   * @param {string[]} deps
+   * @param {(...deps: any[]) => void} factory
+   */
+  window.define = (id, depIds, factory) => {
+    //console.log("[AMD] defined", id, depIds)
+
+    const module = {
+      exports: {},
+    }
+    
+    const resolvedDeps = depIds.map(id => {
+      if (id === 'require') return require
+      if (id === 'module') return module
+      if (id === 'exports') return module.exports
+      return loadedModules[id] || null
+    })
+
+    factory.apply(module.exports, resolvedDeps)
+
+    id = document.currentScript?.getAttribute?.('data-module-id') || id
+    if (id) {
+      const entry = (loadedModules[id] ||= {})
+      if (entry.resolve) {
+        entry.exports = module.exports
+        entry.resolve(module.exports)
+      }
+    }
+  }
+  
+})()

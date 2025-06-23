@@ -1,0 +1,126 @@
+:: QuestSetup_trading_mission_v_errmyrdn [nobr quest]
+
+<<run new setup.QuestTemplate(
+'trading_mission_v_errmyrdn', /* key */
+"Trading Mission: V\'errmyrdn", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'money',
+  'deep',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'trader1': [ setup.qu.trader, 1],
+  'trader2': [ setup.qu.trader, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_trading_mission_v_errmyrdn',
+setup.qdiff.normal33, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_trading_mission_v_errmyrdnCrit',
+    [
+      setup.qc.Favor('drow', 10),
+      setup.qc.MoneyCustom(5000),
+    ],
+  ],
+  [
+    'Quest_trading_mission_v_errmyrdnCrit',
+    [
+      setup.qc.MoneyCustom(3500),
+      setup.qc.Favor('drow', 5),
+    ],
+  ],
+  [
+    'Quest_trading_mission_v_errmyrdnCrit',
+    [
+      setup.qc.MoneyCustom(500),
+    ],
+  ],
+  [
+    'Quest_trading_mission_v_errmyrdnCrit',
+    [
+      setup.qc.MoneyCustom(-3000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_trading_mission_v_errmyrdn [nobr]
+<p>
+    Entering the <<lore region_deep>> can only be done via the ancient Deeprealm entrances found rarely throughout the land. This makes trading with these cities awkward, and as a result there are relatively few traders going in and out of the realm.
+</p>
+
+<p>
+    Fortunately for you, your little <<rep setup.buildingtemplate.scouttunnel>> provides a unique opportunity for you to trade with the settlements there. In particular, the city of <<rep $company.drow>> is fairly close by, and surface products such as sun-grown vegetables and fruits that are relatively mundane on the surface fetch for a lucrative amount down there. You could make a profit selling the goods down there, should you have a shrewd enough traders to outdeal the cunning drow merchants.
+</p>
+
+
+
+:: Quest_trading_mission_v_errmyrdnCrit [nobr]
+<p>
+    <<Yourrep $g.trader1>> and <<utheirrel $g.trader1 $g.trader2>> traveled underground, bringing a caravan full of fresh goodies to be sold underground. They wisely stick to the main highways, avoiding meeting the numerous monsters that call the dark places their home.
+</p>
+
+<p>
+    After a few days of travel, they arrived at <<rep $company.drow>>, where they began to trade.
+    The drow are cunning and smart, and their merchants especially so, and your slavers' shrewdness were tested.
+    <<set _unit = setup.selectUnit([$g.trader1, $g.trader2, $g.guard], {trait: 'per_gregarious'})>>
+    <<if _unit>>
+        <<Rep _unit>> led the trade negotiations, using <<their _unit>> gift with words to sway the outcome your way.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.trader1, $g.trader2, $g.guard], {trait: 'per_sly'})>>
+    <<if _unit>>
+        <<Rep _unit>>
+        <<if _unit.isYou()>>
+            are
+        <<else>>
+            is
+        <</if>>
+        no stranger to deceit, and managed to spot the occasional times the drow merchants tried to outsmart your slavers.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.trader1, $g.trader2, $g.guard], {trait: 'per_frugal'})>>
+    <<if _unit>>
+        <<Rep _unit>> always have an eyes for money, making sure the deal is not going to be sub-par.
+    <</if>>
+</p>
+
+<p>
+    After a tense round of negotiation,
+    your slavers
+    <<if $gOutcome == 'crit'>>
+        managed to outsmart them somehow.
+        Once the drow's many slaves finished unloading the goods,
+        your slavers returned home with an empty card and much more money than you would have expected from selling, well, corn really.
+        If you had known that farming and selling them underground would net you such a profit. It sounds a bit corny, but perhaps you would have reconsidered being a slaver...
+    <<elseif $gOutcome == 'success'>>
+        managed to negotiate a good deal.
+        Once the drow's many slaves finished unloading the goods,
+        your slavers returned home with the expected money. Overall, it was a job well done, and your slavers deserve some good rest.
+    <<elseif $gOutcome == 'failure'>>
+        were outsmarted by the merchants. The drows know that should they refuse to buy the produce, it will all go to waste by the time your slavers returned to the surface, and used this as a leverage.
+        In the end, your slavers were forced to sell them at a ridiculously low price, even less than what you would have gotten in the surface. You lose quite some money from this endeavor.
+    <<else>>
+        were completely outsmarted by the merchants. One way or another, instead of returning with money, your slavers returned with promises from the drow for money. Of course, those are all drow trickeries, and after a full accounting is done you somehow ended up in debt to the drow.
+        After chastising your slavers you sighed to yourself and decided to get it over with and clear out your "debt"...
+    <</if>>
+</p>

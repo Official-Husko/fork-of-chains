@@ -1,0 +1,47 @@
+:: EventSetup_mist_apprentice_first_payment [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'mist_apprentice_first_payment', /* key */
+"Mist Apprentice: First Payment", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'trait',
+],
+'Event_mist_apprentice_first_payment',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [
+    setup.qres.HasTitle('quest_mist_apprentice_0'),
+    setup.qres.HomeExceptOnLeave(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.OneRandomSeed([
+setup.qc.QuestDirect('mist_apprentice_payment_the_first', {
+master: "master",
+slaver: "slaver",
+}),
+setup.qc.QuestDirect('mist_apprentice_payment_the_first2', {
+master: "master",
+slaver: "slaver",
+})
+]),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_mist_apprentice_first_payment [nobr]
+<p>
+A demonkin messenger has arrived at your fort today, bearing a message from
+<<rep $g.master>>. Apparently, the first payment for <<reps $g.slaver>>
+training is due. You sighed as you shelf the letter in your office for
+reading later...
+</p>

@@ -1,0 +1,111 @@
+:: OpportunitySetup_a_domestic_matter [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"a_domestic_matter0",
+"Master \"Maid\"",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitsReplace('unit', [setup.trait.training_obedience_advanced, setup.trait.training_domestic_master, setup.trait.per_sly]),
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'a_domestic_matter', /* key */
+"A Domestic Matter", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'city',
+  'unknown',
+  'order',
+  'prep',
+  'veteran',
+],
+1, /* expiration weeks */
+'Opportunity_a_domestic_matter',
+setup.qdiff.hardest48, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_a_domestic_matter_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('a_domestic_matter', {
+rich: "rich",
+maid: "maid",
+master: "master",
+}),
+      setup.qc.VarRemove('quest_seasonal_training_success'),
+    ],
+  ],
+  [
+    'Opportunity_a_domestic_matter_1',
+    'Opportunity_a_domestic_matter_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 50),
+      setup.qc.VarRemove('quest_seasonal_training_success'),
+      setup.qc.SlaveMarker('maid'),
+      setup.qc.SlaverMarker('master'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.Building('veteranhall'),
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoQuest('seasonal_training'),
+  setup.qres.NoQuest('a_domestic_matter'),
+  setup.qres.NoOpportunity('domestic_rewards'),
+  setup.qres.VarGte('quest_seasonal_training_success', 2),
+],
+{ /* actors */
+  'yourslaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('seasonal_cleaning_head_full'),
+  ],
+  'rich': 'quest_seasonal_cleaning1',
+  'master': 'all',
+  'maid': 'a_domestic_matter0',
+},
+[ /* expiration outcomes */
+  setup.qc.SetCooldownOpportunity(null, 50),
+  setup.qc.VarRemove('quest_seasonal_training_success'),
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_a_domestic_matter [nobr]
+<<include "Quest_a_domestic_matter">>
+
+
+:: Opportunity_a_domestic_matter_0 [nobr]
+Accept
+
+
+
+:: Opportunity_a_domestic_matter_1 [nobr]
+Reject
+
+
+:: Opportunity_a_domestic_matter_1_flavor [nobr]
+<p>
+Making you pay for selling your own slaves?
+There are no way you would acquiesce to such an outrageous demand, no matter the potential rewards.
+</p>
+

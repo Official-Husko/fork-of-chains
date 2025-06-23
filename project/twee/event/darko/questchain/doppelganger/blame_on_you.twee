@@ -1,0 +1,54 @@
+:: EventSetup_blame_on_you [nobr event]
+
+<<run new setup.Event(
+'blame_on_you', /* key */
+"Blame on You", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_blame_on_you',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_doppelganged'),
+    setup.qres.Available(),
+    setup.qres.Home(),
+  ],
+  'dop': setup.contacttemplate.quest_doppelganger,
+  'slave': 'all',
+},
+[ /* outcomes */
+  setup.qc.Ire('humanvale', 1),
+  setup.qc.VarSet('quest_doppelganger_progress', '4', -1),
+  setup.qc.SetCooldownEvent('nearby_violations', 5),
+  setup.qc.SlaveMarker('slave'),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_doppelganger_progress', '3'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_blame_on_you [nobr]
+<p>
+Your fort is located in a particularly lawless region of <<lore geo_mestia>>, and random bandit ambush as well as slave hunting parties are rather common in the area. Despite that, something rather eccentric would happen from time to time, and the rumors spread quickly among the many gossipwomen of the vale. The latest of such rumors is regarding the recent cases that seems to only target young, idyllic, and virginal <<men $g.slave>>. The victims would be later found a far cry from their once pure and innocent self — their holes would be gaped beyond repair and their faces locked in permanent ahegao (or at least for a couple of weeks). Despite that, nothing valuable was lost, and it seems that the perpetrator's only goal was to simply enjoy the rape.
+</p>
+
+<p>
+Because of such uncommon motive, the blame somehow fell into your company, and your reputation takes a little hit with the surrounding people. You round up your slavers, asking if anyone would happen to know something related to this. Unsurprisingly, nobody claims any connection.
+<<if $unit.player.isHasTrait('per_attentive')>>
+Although most looks trustworthy (at least to your very low standards of trustworthy), you are perceptive enough to note that <<rep $g.slaver>> behaved unnaturally. <<They $g.slaver>> might know something more, but decided not to tell you. You don't have any proof though, so you just shrugged and go on with the rest of your day.
+<<elseif $unit.player.isHasTrait('per_dreamy')>>
+You roll your eyes upwards, and being the inattentive slaver that you are, you simply get back to work and just hope for the best.
+<<else>>
+Still, you somehow sense that something was off regarding <<reps $g.slaver>> behavior, and <<therace $g.slave>> might actually know something. But that's all your intuition, and without any proof, you decide to just go on with the rest of your day.
+<</if>>
+
+</p>

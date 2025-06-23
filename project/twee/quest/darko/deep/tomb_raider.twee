@@ -1,0 +1,312 @@
+:: QuestSetup_tomb_raider [nobr quest]
+
+<<set _criteriaraider1 = new setup.UnitCriteria(
+null, /* key */
+'Tomb Raider', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.bg_priest,
+  setup.trait.per_brave,
+  setup.trait.per_attentive,
+  setup.trait.per_stubborn,
+  setup.trait.skill_flight,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cautious,
+  setup.trait.per_dreamy,
+  setup.trait.per_curious,
+  setup.trait.per_masochistic,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  intrigue: 1,
+  aid: 1,
+}
+)>>
+
+<<set _criteriaraider2 = new setup.UnitCriteria(
+null, /* key */
+'Tomb Raider', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.bg_priest,
+  setup.trait.per_brave,
+  setup.trait.per_attentive,
+  setup.trait.per_stubborn,
+  setup.trait.skill_flight,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cautious,
+  setup.trait.per_dreamy,
+  setup.trait.per_curious,
+  setup.trait.per_masochistic,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  intrigue: 1,
+  aid: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'tomb_raider', /* key */
+"Tomb Raider", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'unknown',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'smart': [ setup.qu.explorer, 1],
+  'raider1': [ _criteriaraider1, 1],
+  'raider2': [ _criteriaraider2, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_tomb_raider',
+setup.qdiff.hardest37, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_tomb_raiderCrit',
+    [
+      setup.qc.Item(setup.item.f_foodtray_good, 1),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_tomb_raiderCrit',
+    [
+      setup.qc.MoneyCustom(6500),
+    ],
+  ],
+  [
+    'Quest_tomb_raiderCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_tomb_raiderCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.Leave('raider1', "a|is seeking treatment for Ghoul Fever", 6),
+setup.qc.Leave('raider2', "a|is seeking treatment for Ghoul Fever", 6),
+setup.qc.Leave('smart', "a|is seeking treatment for Ghoul Fever", 6)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.uncommon],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_tomb_raider [nobr]
+<p>
+    The <<lore region_deep>> is chokeful with secret, danger, and horrors. But it is also laden with treasure and ancient knowledge.
+</p>
+
+<p>
+    Recently, you have received information that an ancient crypt has just been accidentally unearthed within one of the many highways in the realm. You can try to send a group of slavers to try and raid the crypt before the underground cities send their own expedition crew. An explorer to identify the valuables, and two experienced tomb raiders that would be capable to handle whatever dangers your slavers will no doubt face inside the crypt...
+</p>
+
+
+
+
+:: Quest_tomb_raiderCrit [nobr]
+
+
+<p>
+    After trekking in the <<lore region_deep>> for a few days, your slavers finally arrived at the entrance of the crypt. <<Yourrep $g.raider1>> kicked down the stone door to reveal a long and dark corridor, leading into the crypt.
+    <<set _unit1 = setup.selectUnit([$g.smart, $g.raider1, $g.raider2], {trait: 'magic_fire'})>>
+    <<set _unit2 = setup.selectUnit([$g.smart, $g.raider1, $g.raider2], {trait: 'magic_light'})>>
+    <<if _unit1>>
+        <<Rep _unit1>> flicked <<their _unit1>> fingers to summon magical fire that lights up the corridor.
+
+    <<elseif _unit2>>
+        <<Rep _unit2>> flicked <<their _unit2>> fingers to summon a small magical ball of light that illuminates the corridor.
+
+    <<else>>
+        <<rep $g.raider2>> lighted up <<their $g.raider2>> torch to illuminate the corridor.
+
+    <</if>>
+    Led by <<yourrep $g.smart>>, your trio of slavers proceed
+    <<uadv $g.smart>>
+    deeper into the crypt.
+</p>
+
+<p>
+    Dangerous traps littered the corridors from one end to the other.
+    <<set _unit = setup.selectUnit([$g.smart, $g.raider1, $g.raider2], {trait: 'per_attentive'})>>
+    <<if _unit>>
+        <<Reps _unit>> attentively spotted many of the traps, saving your slavers from suffering some injuries.
+    <<else>>
+        Nobody in the team was attentive enough to notice all the traps, and your slavers suffered some injuries along the way.
+        <<run setup.qc.Injury('smart', 1).apply($gQuest)>>
+        <<run setup.qc.Injury('raider1', 1).apply($gQuest)>>
+        <<run setup.qc.Injury('raider2', 1).apply($gQuest)>>
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.smart, $g.raider1, $g.raider2], {trait: 'per_dreamy'})>>
+    <<if _unit>>
+        <<Rep _unit>> carelessly stepped into some of the more obvious traps.
+        <<run setup.qc.Injury('unit', 1).apply(setup.costUnitHelper(_unit))>>
+    <</if>>
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+    <p>
+        Unfortunately, your slavers got entirely lost in the vast crypt labyrinth. They luckily made it back into the entrance, but they decided it would be far too risky to re-enter the tomb. Who knows what might had happened to your slavers were they unable to find their way back into the entrance...
+    </p>
+
+<<else>>
+
+    <p>
+        The trek lasted several more hours, and your slavers finally arrived at the final corridor
+        that lead into the main crypt chamber.
+        <<if $gQuest.getSeed() % 3 == 0>>
+
+            But the corridor has a large pit in the middle, with only a very small thin pathway leading into the other side.
+
+            <<set _unit = setup.selectUnit([$g.smart, $g.raider1, $g.raider2], {trait: 'skill_flight'})>>
+            <<if _unit>>
+                It was not a problem for <<rep _unit>>, however, since <<they _unit>> could simply fly to the other side to secure a rope to guide the rest of the team.
+            <<else>>
+                Your slavers did manage to get to the other side, but not without sustaining some injuries along the treacherous bridge.
+                <<run setup.qc.Injury('smart', 2).apply($gQuest)>>
+                <<run setup.qc.Injury('raider1', 2).apply($gQuest)>>
+                <<run setup.qc.Injury('raider2', 2).apply($gQuest)>>
+            <</if>>
+
+        <<elseif $gQuest.getSeed() % 3 == 1>>
+
+            But the corridor was infested with crypt scarabs, hissing maddeningly at your slavers.
+
+            <<set _unit = setup.selectUnit([$g.smart, $g.raider1, $g.raider2], {trait: 'skill_animal'})>>
+            <<if _unit>>
+                Thankfully, <<reps _unit>> connection with animals extends even to scarabs, and <<they _unit>> shooed away the scarabs without too much trouble.
+            <<else>>
+                Your slavers had to fight their way across the scarabs, sustaining minor injuries.
+                <<run setup.qc.Injury('smart', 2).apply($gQuest)>>
+                <<run setup.qc.Injury('raider1', 2).apply($gQuest)>>
+                <<run setup.qc.Injury('raider2', 2).apply($gQuest)>>
+            <</if>>
+
+        <<elseif $gQuest.getSeed() % 3 == 2>>
+
+            And like any self-respecting crypt, the final door was locked with some kind of obscure puzzle.
+            <<set _unit = setup.selectUnit([$g.smart, $g.raider1, $g.raider2], {trait: 'per_smart'})>>
+            <<if _unit>>
+                It was not a problem for <<rep _unit>>, however, and the smart <<urace _unit>> solved the puzzle without too much trouble.
+            <<else>>
+                Unfortunately, none of your slavers were smart enough to solve the problem, and they had to resort to using brute force to force open the door. While this worked, the door sprung some additional traps and injured your slavers.
+                <<run setup.qc.Injury('smart', 2).apply($gQuest)>>
+                <<run setup.qc.Injury('raider1', 2).apply($gQuest)>>
+                <<run setup.qc.Injury('raider2', 2).apply($gQuest)>>
+            <</if>>
+
+        <</if>>
+    </p>
+
+    <<questimage "tomb_raider.jpg">>
+
+    <p>
+        The main chamber was a large room containing many sarcophagus neatly lining up the walls.
+        But what interested your slavers were the pile of offering treasure lying in the center of the room.
+        As your slavers <<uadv $g.smart>> approached the treasure, they heard ominous cracking sounds from the sarcophagus. Their lids were opening, and their inhabitants came into unlife. It seemed these sarcophagus were hosting a group of undead, and your slavers intrusion into their resting place had angered them. Your slavers had no choice but to fight for their lives.
+    </p>
+
+    <p>
+        Raising <<their $g.raider1>> <<uweapon $g.raider1>>, <<rep $g.raider1>> bellowed a battle cry and charged, followed closely by <<rep $g.raider2>>.
+        <<set _unit = setup.selectUnit([$g.raider1, $g.raider2], {trait: 'magic_fire'})>>
+        <<if _unit>>
+            <<Reps _unit>> fire magic was particularly effective against these undead.
+
+        <</if>>
+
+        <<set _unit = setup.selectUnit([$g.raider1, $g.raider2], {trait: 'magic_water'})>>
+        <<if _unit>>
+            Unfortunately, the undead were immune to cold, and <<reps _unit>> water magic was less effective than other forms of magic.
+
+        <</if>>
+
+        <<set _unit = setup.selectUnit([$g.raider1, $g.raider2], {trait: 'magic_light'})>>
+        <<if _unit>>
+            <<Reps _unit>> light magic blinded those undead who had been living in darkness for so long.
+
+        <</if>>
+
+        <<set _unit = setup.selectUnit([$g.raider1, $g.raider2], {trait: 'magic_dark'})>>
+        <<if _unit>>
+            <<Reps _unit>> dark magic had no effect on dead creatures, including these undead.
+
+        <</if>>
+    </p>
+
+    <<if $gOutcome == 'disaster'>>
+        <p>
+
+            <<if $gQuest.getSeed() % 3 == 0>>
+                <<set _v = $g.raider1>>
+            <<elseif $gQuest.getSeed() % 3 == 1>>
+                <<set _v = $g.raider2>>
+            <<elseif $gQuest.getSeed() % 3 == 2>>
+                <<set _v = $g.smart>>
+            <</if>>
+
+            Unfortunately, an errant movement impaired <<reps _v>> movement, and in a moment of weakness, one of the undead bit <<their _v>> <<unipples _v>>. Undead bite is extremely deadly, and soon enough <<rep _v>> showed signs of ghoul fever. Your other slavers had no other choice but to rush to the exit, ignoring all the treasure inside of the crypt, in order to get treatment for <<rep _v>>. Thankfully, they managed to reach the surface in time, and <<rep _v>> received <<their _v>> treatment. It will take some time before <<rep _v>> could be back in action, however.
+        </p>
+    <<else>>
+        <p>
+            One undead was fallen by <<reps $g.raider2>> <<uweapon $g.raider2>>, another by the masterful strike of <<reps $g.raider1>> <<uweapon $g.raider1>>, and another, and another. After a long and gruesome fight, all the undead were laid to rest, and the crypt retured to its eerie silence.
+        </p>
+        <<if $gOutcome == 'crit'>>
+            <p>
+                There were still many sarcophagus left unopened, and <<rep $g.smart>> <<uadv $g.smart>> pointed out that it would not be wise for them to overstay their welcome. Your slavers gathered the valuables quickly, including a rare and ancient <<rep setup.item.f_drinktray_good>>, and made their way outside and back into the comfort of your fort.
+            </p>
+        <<else>>
+            <p>
+                Not wanting to awaken the rest of the sarcophagus, your slavers gathered the most obvious valuables they could spot in the crypt and get the hell out of the accursed place. They pawned most of the valuables before going home carrying a large bag of coin for your company.
+            </p>
+        <</if>>
+
+    <</if>>
+
+<</if>>

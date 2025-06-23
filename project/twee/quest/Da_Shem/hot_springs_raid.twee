@@ -1,0 +1,210 @@
+:: QuestSetup_hot_springs_raid [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"hot_springs_raid0",
+"Elf: Female",
+'subrace_elf_female', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Trait('unit', setup.trait.face_beautiful),
+],
+)>>
+
+<<set _criteriafakemaiden = new setup.UnitCriteria(
+null, /* key */
+'Fake Maiden', /* name */
+[
+  setup.trait.skill_hypnotic,
+  setup.trait.race_elf,
+  setup.trait.breast_large,
+  setup.trait.breast_huge,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+],
+[
+  setup.trait.race_human,
+  setup.trait.race_wolfkin,
+  setup.trait.race_catkin,
+  setup.trait.race_greenskin,
+  setup.trait.race_lizardkin,
+  setup.trait.race_demon,
+  setup.trait.breast_tiny,
+  setup.trait.breast_titanic,
+  setup.trait.per_sexaddict,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Trait(setup.trait.gender_female),
+],
+{
+  survival: 1,
+  intrigue: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'hot_springs_raid', /* key */
+"Hot Springs Raid", /* Title */
+{  /* Author */
+  name: "Da_Shem",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/l3atev/new_forest_quest_first_quest/',
+},
+[ /* tags */
+  'forest',
+  'unit',
+  'femaleonly',
+  'ire',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'raider1': [ setup.qu.raider, 1],
+  'raider2': [ setup.qu.raider, 1],
+  'fakemaiden': [ _criteriafakemaiden, 1],
+},
+{ /* actors */
+  'elves': 'subrace_elf',
+  'elfmaid': 'hot_springs_raid0',
+},
+[ /* costs */
+],
+'Quest_hot_springs_raid',
+setup.qdiff.normal30, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_hot_springs_raidCrit',
+    [
+      setup.qc.Slave('elfmaid', "a|was an elven maid who put a|their trust on the wrong person", undefined),
+      setup.qc.Ire('elf', 4),
+    ],
+  ],
+  [
+    'Quest_hot_springs_raidSuccess',
+    [
+      setup.qc.Slave('elves', "a|was a servant whose mistress put a|their trust on the wrong person", undefined),
+      setup.qc.Ire('elf', 2),
+    ],
+  ],
+  [
+    'Quest_hot_springs_raidSuccess',
+    [
+      setup.qc.Injury('raider1', 1),
+      setup.qc.Injury('raider2', 1),
+    ],
+  ],
+  [
+    'Quest_hot_springs_raidDisaster',
+    [
+      setup.qc.MissingUnitRecapture('fakemaiden', 'capturedeasy'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.HasSlaverWithTraits([setup.trait.gender_female]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_hot_springs_raid [nobr]
+
+<p>
+The elves of the <<lore region_forest>> have a very close bond with nature.
+One of the ways they maintain this bond is by having their maidens bathe naked in the moonlight in hidden hot springs. If one of your female slavers managed to infiltrate a party travelling to the hot springs they might be able to leave clues for an armed party to follow after, and obtain these tantalizing ladies as a reward...
+</p>
+
+
+:: Quest_hot_springs_raidCrit [nobr]
+
+<p>
+<<Rep $g.fakemaiden>> met up with a party who were on their way to bathe naked under
+one of the forest springs right outside of their village. 
+<<Yourrep $g.fakemaiden>> proceeded to ask to accompany them.
+
+<<if $g.fakemaiden.isHasTrait('race_elf')>>
+As a fellow elf, the maiden quickly gained trust on your disguised slaver. In fact,
+<<else>>
+Despite <<rep $g.fakemaiden>> obviously not being an elf,
+<<they $g.fakemaiden>> exuded such an aura of trustworthiness that
+<</if>>
+
+the elf maiden <<name $g.elfmaid>> elfmaid|was immediately charmed and
+<<their $g.elfmaid>> eyes barely left <<them $g.fakemaiden>> long enough for <<therace $g.fakemaiden>> to leave signs for the others to follow.
+Once at the hot springs, it didn't take long until <<rep $g.fakemaiden>> and <<name $g.elfmaid>> were entwined in the water, <<rep $g.fakemaiden>> letting <<their $g.fakemaiden>> <<uhands $g.fakemaiden>> caressed <<rep $g.elfmaid>>'s <<ubreasts $g.elfmaid>>,
+
+<<if $g.fakemaiden.isHasTrait('per_playful')>>
+playfully rubbing the breasts up and down.
+<<elseif $g.fakemaiden.isHasTrait('per_lustful')>>
+unable to fully conceal <<their $g.fakemaiden>> lust.
+<<elseif $g.fakemaiden.isHasTrait('per_chaste')>>
+leaving only a tease and nothing inappropriate.
+<<elseif $g.fakemaiden.isHasTrait('per_cruel')>>
+molesting the elf without <<them $g.elfmaid>> noticing.
+<<else>>
+eliciting a moan from the damsel.
+<</if>>
+
+They were interupted however by a sudden uproar and <<name $g.elfmaid>> yanked <<rep $g.fakemaiden>> out of the water and into a hidden hideout. There, they stayed naked and shivering until the rest of your slavers called out for their comrade and <<name $g.elfmaid>> discovered who exactly <<they $g.fakemaiden>> had taken into <<their $g.elfmaid>> confidence...
+</p>
+
+
+:: Quest_hot_springs_raidSuccess [nobr]
+
+<p>
+<<Rep $g.fakemaiden>> met up with a party who were on their way to bathe naked under
+one of the forest springs right outside of their village. 
+<<Yourrep $g.fakemaiden>> proceeded to ask to accompany them.
+
+<<if $g.fakemaiden.isHasTrait('race_elf')>>
+Since <<rep $g.fakemaiden>> fakemaiden|is a fellow elf,
+<<else>>
+Despite <<rep $g.fakemaiden>> not being an elf,
+<</if>>
+
+the maiden <<name $g.elfmaid>> allowed it easily enough and <<rep $g.fakemaiden>> had no trouble leaving signs for the others to follow.
+</p>
+
+<<if $gOutcome == 'success'>>
+
+<p>
+Once at the hot springs however, <<yourrep $g.fakemaiden>> fakemaiden|was directed to a different pool from where <<rep $g.elfmaid>> elfmaid|was to bathe.
+A servant was directed to help <<yourrep $g.fakemaiden>> however <<they $g.fakemaiden>> wished and soon <<rep $g.fakemaiden>> had the servant underwater <<uadv $g.elves>> lapping at
+<<their $g.fakemaiden>> <<ugenital $g.fakemaiden>>.
+In fact the servant spent so much time either gasping for breath or underwater that the <<uadjphys $g.elves>> elf didn't even realize there had been an attack until <<rep $g.raider1>> and <<rep $g.raider2>> jumped into the pool to join the party.
+</p>
+
+<p>
+Of the maiden's whereabouts, however, no trace remained...
+</p>
+
+<<else>>
+
+<p>
+Once at the hot springs however <<yourrep $g.fakemaiden>> fakemaiden|was directed to a different pool from where <<rep $g.elfmaid>> elfmaid|was to bathe.
+A servant was directed to help <<rep $g.fakemaiden>> however <<they $g.fakemaiden>> wished and soon <<rep $g.fakemaiden>> had the servant underwater lapping at <<their $g.fakemaiden>> <<ugenital $g.fakemaiden>>.
+In fact <<rep $g.fakemaiden>> was so distracted that <<theslaver $g.fakemaiden>> didn't even realize there had been an attack until <<rep $g.elfmaid>> asked them if <<they $g.fakemaiden>> fakemaiden|was ready to go back, but at least someone had a good time.
+</p>
+
+<</if>>
+
+:: Quest_hot_springs_raidDisaster [nobr]
+
+<p>
+<<Rep $g.fakemaiden>> met up with a party right outside their village and <<uadv $g.fakemaiden>> asked to accompany them.
+The maiden elfmaid|was immediately charmed and <<their $g.elfmaid>> eyes barely left
+<<them $g.fakemaiden>> long enough for <<therace $g.fakemaiden>> to leave signs for the others to follow.
+</p>
+
+<p>
+Once at the hot springs, it didn't take long until <<rep $g.fakemaiden>> and the maiden were entwined in the water,
+<<rep $g.fakemaiden>> letting <<their $g.fakemaiden>> <<uhands $g.fakemaiden>> caress <<rep $g.elfmaid>>'s <<ubreasts $g.elfmaid>>.
+Their copulation was interupted however by a sudden uproar and the resourceful maiden yanked <<rep $g.fakemaiden>> out of the water and into a hidden hideout. There they stayed shivering and naked until the servants called the all clear. After they emerged, <<rep $g.fakemaiden>> was going to make <<their $g.fakemaiden>> excuses and leave when <<they $g.fakemaiden>> felt a steely grip on <<their $g.fakemaiden>> arm. The jig was apparently up and if the maiden's lustful gaze was anything to go by, <<they $g.elfmaid>> had no intention of letting <<reps $g.fakemaiden>> <<umouth $g.fakemaiden>> go to waste.
+<<urescuenow $g.fakemaiden>>, before too much of whatever innocence still remain in <<them $g.fakemaiden>> is taken...
+</p>

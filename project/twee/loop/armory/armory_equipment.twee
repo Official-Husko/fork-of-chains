@@ -1,0 +1,31 @@
+:: ArmoryEquipment [nobr]
+
+<<set $gMenuVisible = true>>
+
+<h3>Equipments List</h3>
+
+<p>
+  You check the list of all equipments that are not currently being attached
+  to any of the sets:
+</p>
+
+<<focmove "Go back" "Armory">>
+<br/>
+
+<<set _display = $armory.getEquipments()>>
+<<set _forfilter = _display.map(a => a[0])>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'equipment',
+  filter_objects: _forfilter,
+  display_objects: _display,
+  display_callback: equipment_obj => {
+    if ($menufilter.get('equipment', 'display') == 'compact') {
+      return setup.DOM.Card.equipmentcompact(equipment_obj[0]);
+    } else {
+      return setup.DOM.Card.equipment(equipment_obj[0]);
+    }
+  },
+})>>
+<<attach _dom>>
+

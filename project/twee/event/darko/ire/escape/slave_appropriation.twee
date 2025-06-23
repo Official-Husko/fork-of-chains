@@ -1,0 +1,53 @@
+:: EventSetup_slave_appropriation [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'slave_appropriation', /* key */
+"Slave Appropriation", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_slave_appropriation',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.value_high2),
+setup.qres.Available(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('drow', -20),
+setup.qc.MissingUnitRecapture('victim', 'escapehard'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('drow', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_slave_appropriation [nobr]
+
+<p>
+Today, you woke up with the news that one of your slaves,
+<<rep $g.victim>>, has escaped from your fort.
+Or so you thought.
+Looking around the cell, you clearly noticed that something, or someone,
+opened the lock from the outside.
+</p>
+
+<p>
+After rounding up your slavers in fort and questioning them,
+you feel reasonably confident that none of them were the culprit.
+This leave only the possibility that an outside intruder has infiltrated your
+fort and stole a particularly valuable slave under your care.
+Looking at your list of "potential enemies", the most likely culprit
+has to be those sneaky drows, who has no trouble whatsoever blending in with
+the darkness and sneak into your dungeons.
+</p>
+
+<p>
+Perhaps this is the result of your recent actions that may have angered the drows.
+In either case, it is too late for regret, and should you wish to see <<rep $g.victim>>
+return to your dungeons, you should act fast and now.
+</p>

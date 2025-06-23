@@ -1,0 +1,124 @@
+:: OpportunitySetup_domestic_rewards [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'domestic_rewards', /* key */
+"Domestic Rewards", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'city',
+  'upgrade',
+  'item',
+],
+1, /* expiration weeks */
+'Opportunity_domestic_rewards',
+setup.qdiff.hardest48, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_domestic_rewards_0',
+    'Opportunity_domestic_rewards_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.NoItem(setup.item.technology_domesticmaster),
+    ],
+    [ /* outcomes */
+      setup.qc.Item(setup.item.technology_domesticmaster),
+    ],
+  ],
+  [
+    'Opportunity_domestic_rewards_1',
+    'Opportunity_domestic_rewards_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Equipment(setup.equipmentpool.maid),
+      setup.qc.Equipment(setup.equipmentpool.maid),
+      setup.qc.Equipment(setup.equipmentpool.maid),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'master': [
+  ],
+  'maid': [
+  ],
+  'rich': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_domestic_rewards [nobr]
+<p>
+It turns out that your client is not a free <<woman $g.maid>>. <<They $g.maid>> maid|turn out to be an extremely well-trained domestic slave belonging to <<their $g.maid>> <<master $g.master>>, who finally meet with your slavers to finalize the exchange.
+</p>
+
+<p>
+In exchange for the noble and the two maid slaves your slavers have brought along, the <<master $g.master>> master|is offering your slavers a choice of two rewards.
+First, <<they $g.master>> master|is offering three pieces from <<their $g.master>> very rare magical maid outfit collection. While these clothes are a little bit slutty, it is said that wearing them will make the wearer heals better. Alternatively, the <<master $g.master>> is willing to each your slavers the secret behind training masterful domestic slavers.
+<<if $inventory.isHasItem('technology_domesticmaster')>>
+But since you already know the secret from before, this option is no longer available to you, and there's only really one option for you to take here...
+<<else>>
+This is also a very lucrative offer, which may finally allow you to mold that perfectly submissive maids and butlers you have been always been dreaming of...
+<</if>>
+</p>
+
+
+
+
+:: Opportunity_domestic_rewards_0 [nobr]
+The secret knowledge
+
+
+:: Opportunity_domestic_rewards_0_flavor [nobr]
+<p>
+Your slavers watched as the <<master $g.master>> proceeded to command <<their
+$g.master>> masterful slave to demonstrate what <<they $g.maid>> could do. The
+<<maid $g.maid>> slave immediately stripped <<their $g.maid>> clothes, and wore a nearby
+apron. With the apron covering <<their $g.maid>> front but leaving <<their
+$g.maid>> back completely exposed, the <<maid $g.maid>> got down on all
+fours, before using <<their $g.maid>> tongue to lick and clean the floor
+while wiggling <<their $g.maid>> exposed buttchecks invitingly.
+</p>
+
+<p>
+Wasting no time, the <<master $g.master>> unbuckled <<their $g.master>> pants before
+<<if !$g.master.isHasDick()>>donning a strap-on an forcing it<<else>>forcing <<their $g.master>> erection<</if>> roughly into the open ass.
+Your slavers as well as your sold slaves watched as the slave gasped, before
+<<if $g.maid.isHasTail()>>
+continuing to scrub the floor by using <<their $g.maid>> still available tail.
+<<elseif $g.maid.isHasDick()>>
+scrubbing the floor, cleaning whatever little <<they $g.maid>> can using <<their $g.maid>> own erection.
+<<else>>
+pressing <<their $g.maid>> boobs together before sliding them on the floor, trying to clean whatever little <<they $g.maid>> can.
+<</if>>
+This is what a true domestic slut would be — their passion for sex and cleaning unrivaled to the point where they have an intense strong desire to clean while being fucked, as the <<master $g.master>> and <<their $g.master>> slave had demonstrated to your slavers.
+</p>
+
+<p>
+After a few more days of further demonstration, your slavers felt they had understood what is required to train a slave to be the ultimate domestic slut.
+</p>
+
+
+:: Opportunity_domestic_rewards_1 [nobr]
+The pieces of maid outfit
+
+
+:: Opportunity_domestic_rewards_1_flavor [nobr]
+<p>
+The exchange was done. The two (three) slaves changed <<uhands $unit.player>> — they now belong to the <<master $g.master>>, while you are now in possession of three new rare maid equipments. While these equipments look just like regular slave gears, you can feel power from within them, which will improve the healing ability of whoever wear them. They are a bit slutty however...
+</p>

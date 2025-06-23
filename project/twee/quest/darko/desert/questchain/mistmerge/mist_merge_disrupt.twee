@@ -1,0 +1,177 @@
+:: QuestSetup_mist_merge_disrupt2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_mist_merge_disrupt21',
+'wizardcorrupted',
+'desert_all',  /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_mystic),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.TraitReplace('unit', setup.trait.per_sexaddict), ],
+)>>
+<<run new setup.UnitGroup(
+'quest_mist_merge_disrupt23',
+'mindbroken',
+'desert_all',  /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_mystic),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Mindbreak('unit'),
+],
+)>>
+
+
+
+
+
+<<run new setup.QuestTemplate(
+'mist_merge_disrupt2', /* key */
+'Mist Merge: Disrupt', /* Title */
+'darko', /* Author */
+[ 'desert', 'unknown', 'favor',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'purifier1': setup.qu.purifier,
+'purifier2': setup.qu.purifier,
+'warrior': setup.qu.light_warrior, },
+{ /* actors */
+'corrupted': 'quest_mist_merge_disrupt21',
+'mindbroken': 'quest_mist_merge_disrupt23', },
+[ /* costs */
+],
+'Quest_mist_merge_disrupt2',
+setup.qdiff.hard45, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mist_merge_disrupt2Crit',
+[
+setup.qc.Slave('corrupted', 'a|was a wizard attempting to summon a demon but a|was subdued by your company'),
+setup.qc.MoneyNormal(),
+setup.qc.Favor('humandesert', 100),
+],
+], [
+'Quest_mist_merge_disrupt2Success',
+[
+setup.qc.MoneyNormal(),
+setup.qc.Favor('humandesert', 50), ],
+], [
+'Quest_mist_merge_disrupt2Success',
+[
+setup.qc.Injury('warrior', 2),
+setup.qc.Corrupt('purifier1'),
+setup.qc.Corrupt('purifier2'), ],
+], [
+'Quest_mist_merge_disrupt2Success',
+[
+setup.qc.Corrupt('purifier1'),
+setup.qc.Corrupt('purifier2'),
+setup.qc.Corrupt('warrior'),
+setup.qc.Corrupt('purifier1'),
+setup.qc.Corrupt('purifier2'),
+setup.qc.Corrupt('warrior'),
+setup.qc.Injury('purifier1', 2),
+setup.qc.Injury('purifier2', 2),
+setup.qc.Injury('warrior', 2), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+setup.qres.QuestUnique(), ], /* restrictions to generate */
+)>>
+
+:: Quest_mist_merge_disrupt2 [nobr]
+
+<<include 'Opportunity_mist_merge'>>
+
+<p>
+You have chosen to disrupt the ritual and make the world a slightly better place.
+</p>
+
+
+:: Quest_mist_merge_disrupt2Crit [nobr]
+
+<<if $g.corrupted.isMale()>>
+  <<questimage 'mist_merge_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+Your slavers arrived at the nick of time as the victim's body was just about
+to get ravaged by the demonic magic.
+Armed with <<their $g.warrior>> trusty <<uweapon $g.warrior>>,
+<<yourrep $g.warrior>> <<uadv $g.warrior>> subdued the wizard while <<rep $g.purifier1>>
+and <<rep $g.purifier2>> <<uadv $g.purifier1>>
+got to work and attempted to undo the corruption.
+
+<<set _kind = setup.selectUnit([$g.purifier1, $g.purifier2], {trait: 'per_kind'})>>
+<<set _honorable = setup.selectUnit([$g.purifier1, $g.purifier2], {trait: 'per_honorable'})>>
+<<set _priest = setup.selectUnit([$g.purifier1, $g.purifier2], {trait: 'bg_priest'})>>
+<<if _priest>>
+<<Rep _priest>> recalled <<their _priest>> past as a priest and gave the prayer <<their _priest>> all,
+<<elseif _kind>>
+<<Reps _kind>> sincere prayers was answered
+<<elseif _honorable>>
+<<Reps _honorable>> honorable prayers was answered
+<<else>>
+The higher powers
+answered to their prayers
+<</if>>
+and the corruptions somehow were all
+transferred back into the wizard.
+With the victim released from the spell, your
+slavers breathed a sigh of relief as the ritual was completely disrupted,
+leaving only the corrupted body of the wizard as proof that it ever took
+place.
+After looting the tower clean, your slavers <<uadv $g.purifier1>> took <<rep
+$g.corrupted>> as a trophy home of their succesful purification attempt.
+</p>
+
+
+:: Quest_mist_merge_disrupt2Success [nobr]
+
+<<if $gOutcome != 'success'>>
+<<if $g.corrupted.isMale()>>
+  <<questimage 'mist_merge_disrupt_male_failure.jpg'>>
+<<else>>
+<</if>>
+<</if>>
+
+<p>
+By the time your slavers arrived, the ritual had already been completed.
+Your slavers watched as the wizard finished conversing with what appeared to be a demon.
+<<if $gOutcome == 'success'>>
+Seeing your slavers, the demon disappeared into bats while the wizard, using their newly acquired
+knowledge, teleported away. Your slavers were disappointed in the failure, but
+at least they were free to <<uadv $g.purifier1>>
+loot the place. They could only pray that the demon would not cause too much havoc in the vicinity.
+<<else>>
+
+Noticing your slavers, the demon went on the offensive charged at them.
+<<Yourrep $g.warrior>> did <<their $g.warrior>> best protecting your other
+slavers as <<rep $g.purifier1>> and <<rep $g.purifier2>> attempted to cast
+whatever purification magic they could muster.
+But the demon was too powerful for your slavers, and <<they $g.corrupted>>
+injured <<rep $g.warrior>>,
+<<if $gOutcome == 'failure'>>
+before proceeding to corrupt your purifiers.
+Your slavers managed to return home, but suffering from injuries and corruptions.
+<<else>>
+before proceeding to ravage all of your slavers. By the end of
+the debauchery, your slavers had been completely corrupted,
+but if there was any consolation, at least their personalities remain
+intact.
+<</if>>
+<</if>>
+</p>
+

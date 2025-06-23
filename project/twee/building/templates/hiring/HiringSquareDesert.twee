@@ -1,0 +1,45 @@
+:: InitBuildingHiringSquareDesert [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'hiringsquaredesert',
+  tags: [],
+  width: 2,
+  height: 2,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'hiringsquaredesert',
+  name: 'Recruitment Booth: Desert',
+  tags: ['hiring', ],
+  description_passage: 'BuildingHiringSquareDesert',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('hiringsquare'),
+      setup.qres.Building('scoutcarriage'),
+    ],
+  ],
+  on_build: [
+    [setup.qc.Contact(setup.contacttemplate.recruiterdesert),]
+  ],
+  main_room_template_key: 'hiringsquaredesert',
+})>>
+
+
+:: BuildingHiringSquareDesert [nobr]
+
+<p>
+A booth in the <<rep setup.buildingtemplate.hiringsquare>> where you can attempt
+to recruit the people and orcs living on the <<lore region_desert>> into your company.
+Unlocks a contact which gives you a quest for hiring new slavers from the <<lore region_desert>>.
+
+</p>
+

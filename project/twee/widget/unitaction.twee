@@ -1,0 +1,58 @@
+:: LoadUnitActionCard [nobr widget]
+
+<<focwidget 'unitactioncard'>>
+  <<set _dom = setup.DOM.Card.unitaction($args[0], $args[1], $args[2])>>
+  <<attach _dom>>
+<</focwidget>>
+
+
+<<focwidget 'unitactioncardcompact'>>
+  <<set _dom = setup.DOM.Card.unitactioncompact($args[0], $args[1], $args[2])>>
+  <<attach _dom>>
+<</focwidget>>
+
+
+<<focwidget 'unitactioncardkey'>>
+  <<unitactioncard setup.unitaction[$args[0]] $unit[$args[1]] $args[2]>>
+<</focwidget>>
+
+
+<<focwidget 'unitactionlist'>>
+
+<<focreturn '(Cancel)'>>
+
+<<message '(Help)'>>
+  Choosing one of the following actions will generate their corresponding quest in your office.
+  <<dangertext 'You must assign a team'>> to the generated
+  quest in order to actually perform the action.
+<</message>>
+
+
+<<set _tofilter = []>>
+<<for _unitaction range $args[0]>>
+  <<if !_unitaction.isHidden($args[1]) && _unitaction.isCanTrain($args[1])>>
+    <<run _tofilter.push(_unitaction)>>
+  <</if>>
+<</for>>
+<<for _unitaction range $args[0]>>
+  <<if !_unitaction.isHidden($args[1]) && !_unitaction.isCanTrain($args[1])>>
+    <<run _tofilter.push(_unitaction)>>
+  <</if>>
+<</for>>
+
+<<set _unitaction_unit = $args[1]>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'unitaction',
+  filter_objects: _tofilter,
+  display_callback: unitaction => {
+    if ($menufilter.get('unitaction', 'display') == 'compact') {
+      return setup.DOM.Card.unitactioncompact(unitaction, $args[1]);
+    } else {
+      return setup.DOM.Card.unitaction(unitaction, $args[1]);
+    }
+  },
+})>>
+<<attach _dom>>
+
+<</focwidget>>

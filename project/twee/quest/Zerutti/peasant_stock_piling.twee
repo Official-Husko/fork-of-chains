@@ -1,0 +1,187 @@
+:: QuestSetup_peasant_stock_piling_ [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"peasant_stock_piling_0",
+"Dishonest Guard",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_soldier),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_sly]),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'peasant_stock_piling_', /* key */
+"Peasant Stock(piling)", /* Title */
+{  /* Author */
+  name: "Zerutti",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/kk9fhu/food_for_the_pack_test_quest/gh3tqrz/',
+},
+[ /* tags */
+  'furry',
+  'vale',
+  'money',
+  'ire',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'negotiator': [ setup.qu.conartist, 1],
+  'merc1': [ setup.qu.raider, 1],
+  'merc2': [ setup.qu.slavecapturer, 1],
+},
+{ /* actors */
+  'victim': 'peasant_stock_piling_0',
+},
+[ /* costs */
+],
+'Quest_peasant_stock_piling_',
+setup.qdiff.easy6, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_peasant_stock_piling_Crit',
+    [
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Favor('werewolf', 50),
+      setup.qc.Ire('humanvale', 1),
+      setup.qc.Slave('victim', "a|was an irresponsible guard who told a|their village\'s secret to the slavers", undefined),
+    ],
+  ],
+  [
+    'Quest_peasant_stock_piling_Success',
+    [
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Favor('werewolf', 50),
+      setup.qc.Ire('humanvale', 1),
+    ],
+  ],
+  [
+    'Quest_peasant_stock_piling_Success',
+    [
+      setup.qc.Injury('negotiator', 1),
+      setup.qc.Injury('merc1', 2),
+    ],
+  ],
+  [
+    'Quest_peasant_stock_piling_Disaster',
+    [
+      setup.qc.Injury('negotiator', 3),
+      setup.qc.Injury('merc1', 4),
+      setup.qc.Injury('merc2', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+ 
+],
+)>>
+ 
+:: Quest_peasant_stock_piling_ [nobr]
+
+<p>
+An offer has arrived on your table from one of the more militant werewolf clans.
+From what you have gathered, this particular clan does not grow their numbers in the 'traditional' way of breeding. Instead use their special gift of lycanthropy to infect other humans.
+Once infected, these humans are no longer able to return back to their old ways of life and can only fall in with the tribe that has turned them. In time, they will begin to adapt themselves to the tribe's culture, and become a staunch member of the pack.
+</p>
+ 
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+As you are in the slaving business, you can't really argue with the method.
+In fact, you wonder what are their methods for disciplining disloyal clan members.
+Maybe you can exchange notes.
+You can see <<yourrep _u>> 
+<<if _u.getSpeech() == setup.speech.kind>>
+scowling at the thought.
+<<else>>
+nodding in appreciation.
+<</if>>
+</p>
+ 
+<p>
+That time of the year has come again, and the clan is eager for another raid
+into one of the human settlements. The clan is requesting your assistance in raiding a
+village and capturing some of the peasants.
+</p>
+ 
+ 
+:: Quest_peasant_stock_piling_Crit [nobr]
+<p>
+<<Yourrep $g.negotiator>> played the role of a great con artist,
+and their exemplary skill had the militia guard near-singing the protocols in place of
+what the village was supposed to do in times of attack.
+</p>
+ 
+<p>
+With that information on hand, it was simple for <<rep $g.merc1>> to plan the distraction for the militia while <<rep $g.merc2>> <<uadv $g.merc2>> led the majority of the werewolves to capture the surprised defenseless non-fighters of the villagers in their predesignated hiding space.
+</p>
+ 
+<p>
+As the raiding party slipped away, <<rep $g.merc1>> and <<utheirrel $g.merc1 $g.merc2>>
+<<rep $g.merc2>> merc2|was surprised to see an extra listless face among the new captures.
+When pressed for information, <<rep $g.negotiator>> just <<uadv $g.negotiator>> smirked and said that <<they $g.negotiator>> negotiator|was not done with the guard just yet.
+</p>
+ 
+ 
+:: Quest_peasant_stock_piling_Success [nobr]
+
+<p>
+As far as plans go, it wasn't the worst.
+<<Rep $g.merc1>> <<uadv $g.merc1>> led the raiders in a
+frontal assault against the village in the dead of night.
+They had captured a good number of villagers before the militia showed up.
+<<Rep $g.negotiator>> had <<uadv $g.negotiator>> pointed out that the fires they had started won't put themselves out and the militia should be more worried to save the people that they can
+instead of worrying about the slavers and the werewolves.
+</p>
+
+<<if $gOutcome == 'success'>>
+ 
+<p>
+After a moment of hesitation, but finding sense in <<reps $g.negotiator>> words, the militia pulled back giving the raiding party time to escape.
+</p>
+ 
+<<else>> 
+
+<p>
+After a moment of hesitation, the militia decided that putting an end to your company's evil
+career was worth more than the lives of few peasants.
+They attacked <<rep $g.negotiator>>, but luckily,
+<<utheirrel $g.negotiator $g.merc1>> <<rep $g.merc1>>
+<<if $g.merc1.isHasTrait('tough_nimble')>>
+swiftly acted
+<<else>>
+took the blunt of the blows
+<</if>>
+and managed to pull <<yourrep $g.negotiator>> out of danger.
+However, the raiding was forced to end quicker than expected, and was a failure overall.
+The number of werewolves lost in the raid exceeded the number of captured peasants.
+Your slavers had to decline payment in order to keep the clan from unleashing their wrath upon
+your company.
+</p>
+ 
+<</if>> 
+
+ 
+:: Quest_peasant_stock_piling_Disaster [nobr]
+<p>
+All it took was the first scream.
+</p>
+ 
+<p>
+The militia mobilized faster than expected and the whole raid was botched. To make up for the failure, your slavers offered to take up the rear-guard to give time for the wolves to retreat. As a result, they took up the brunt of the aggression from the chasing militia, leaving many of them injured.
+</p>
+ 
+<p>
+While it had stymied the werewolves' anger at your slavers,
+it also meant that your slavers would be spending the next few weeks recovering from their wounds.
+</p>
+ 
+ 

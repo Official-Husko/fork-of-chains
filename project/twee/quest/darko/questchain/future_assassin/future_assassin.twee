@@ -1,0 +1,195 @@
+:: QuestSetup_future_assassin [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+  setup.trait.per_sly,
+  setup.trait.per_cruel,
+],
+[
+  setup.trait.per_direct,
+  setup.trait.per_kind,
+],
+[
+  setup.qres.You(),
+],
+{
+  combat: 0.3,
+  brawn: 0.3,
+  survival: 0.3,
+  intrigue: 0.3,
+  slaving: 0.3,
+  knowledge: 0.3,
+  social: 0.3,
+  aid: 0.3,
+  arcane: 0.3,
+  sex: 0.3,
+}
+)>>
+
+<<set _criteriavictim = new setup.UnitCriteria(
+null, /* key */
+'Victim', /* name */
+[
+  setup.trait.bg_artist,
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_masochistic,
+  setup.trait.skill_entertain,
+],
+[
+  setup.trait.tough_nimble,
+  setup.trait.per_cautious,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTag('future_assassin_parent'),
+],
+{
+  intrigue: 1.5,
+  social: 1.5,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'future_assassin', /* key */
+"Future Assassin", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'special',
+  'prep',
+  'unknown',
+],
+4, /* weeks */
+20, /* expiration weeks */
+{ /* roles */
+  'you': _criteriayou,
+  'victim': [ _criteriavictim, 1],
+  'crier': [ setup.qu.attentionseeker, 1],
+},
+{ /* actors */
+  'child': [
+  ],
+},
+[ /* costs */
+],
+'Quest_future_assassin',
+setup.qdiff.hard46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_future_assassinCrit',
+    [
+      setup.qc.Opportunity('branching_timeline__decision', {
+child: "child",
+parent: "victim",
+}),
+      setup.qc.Injury('victim', 1),
+      setup.qc.Equipment(setup.equipmentpool.intrigue_good),
+    ],
+  ],
+  [
+    'Quest_future_assassinCrit',
+    [
+      setup.qc.Opportunity('branching_timeline__decision', {
+child: "child",
+parent: "victim",
+}),
+      setup.qc.Injury('victim', 1),
+    ],
+  ],
+  [
+    'Quest_future_assassinFailure',
+    [
+      setup.qc.Injury('victim', 4),
+      setup.qc.QuestDirect('future_assassin', {child: "child"}),
+    ],
+  ],
+  [
+    'Quest_future_assassinFailure',
+    [
+      setup.qc.Injury('victim', 8),
+      setup.qc.QuestDirect('future_assassin', {child: "child"}),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('future_assassin_parent'),
+  setup.qc.VarRemove('future_assassin_progress'),
+  setup.qc.VarSet('future_assassin_cooldown', '1', 100),
+
+],
+)>>
+
+:: Quest_future_assassin [nobr]
+<<set _u = setup.getUnit({tag: "future_assassin_parent"})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<p>
+Armed with the expensive knowledge you bought from the wizard of the south, you have setup a plan.
+You will denounce <<yourrep _u>> for insubordination, and will ship <<them
+_u>> off as a slave to some faraway land, to never been seen again in <<lore
+geo_mestia>>. A slaver will then be sent to spread the word out, while
+you and <<rep _u>> will try your best to make the ruse convincing.
+</p>
+
+<p>
+With luck, your little future assassin will have no choice but attempt a rescue for <<their $g.child>> <<mother _u>>, which will present an opportunity for you to finally end this nuisance once and for all.
+</p>
+<</if>>
+
+
+:: Quest_future_assassinCrit [nobr]
+
+<p>
+You bought as many tomatoes as possible from nearby villages before putting
+<<yourrep $g.victim>> on a the most comfortable pillory you've ever made,
+and squashing as many tomatoes as possible around the area. As long as they
+don't come too close, the scene
+looked gory and scary, just as you wanted. <<Rep $g.victim>> will just
+have to bear staying in the awkward position for a little while. In the
+meantime, <<yourrep $g.crier>> <<uadv $g.crier>> spread the word around
+nearby settlements, hopefully reaching the ears of your future assassin.
+</p>
+
+<p>
+Sure enough, the trap worked. After a few weeks, a shuffling noise could be
+heard from the courtyard, followed by an abrupt scream. Looking outside, you
+were satisfied to see that someone had apparently fallen into the pit trap you
+set under the pillory.
+After waking <<yourrep $g.victim>> up (since it was night and the pillory was actually
+substituted with a straw man at night),
+you head together to the courtyard, and, lo and behold, an unconscious <<girl $g.child>>
+was stuck deep down within the pit trap.
+There was no mistaking it, <<their $g.child>> face really did resemble yours
+and <<reps $g.victim>> face.
+</p>
+
+<p>
+But now, the final warning of the wizard rings in your head. You have to make a decision.
+<<set _lover = $unit.player.getLover()>>
+<<if _lover && _lover != $g.victim>>
+If you continue to love <<rep _lover>>, and not <<rep $g.victim>>, then the child will disappear...
+<</if>>
+Would you love a stranger, just to save a life?
+</p>
+
+
+:: Quest_future_assassinFailure [nobr]
+
+<p>
+Unfortunately, even after few weeks of waiting, your assailant was nowhere to
+be seen. After four weeks of nothing, you gave up on this, with nothing but
+aches on <<reps $g.victim>> entire body to show for your efforts.
+Perhaps you can try again once <<yourrep $g.victim>> recovers.
+</p>

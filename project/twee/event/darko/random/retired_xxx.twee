@@ -1,0 +1,505 @@
+:: EventSetup_retired_xxx [nobr event]
+
+<<set _old_thres = 60>>
+<<set _new_thres = 0.3>>
+<<set _cooldown = 2 * setup.EVENT_DEFAULT_COOLDOWN>>
+<<set _allcooldown = Math.round(0.5 * setup.EVENT_DEFAULT_COOLDOWN)>>
+
+<<run new setup.Event(
+'retired_fighter', /* key */
+"Retired Fighter", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_fighter',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.combat, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.combat, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.traininggrounds),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_brawler', /* key */
+"Retired Brawler", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_brawler',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.brawn, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.brawn, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.gym),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_scout', /* key */
+"Retired Scout", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_scout',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.survival, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.survival, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.scouttower),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_thief', /* key */
+"Retired Thief", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_thief',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.intrigue, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.intrigue, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.market),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_slaver', /* key */
+"Retired Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.slaving, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.slaving, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.trainingchamber),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_scholar', /* key */
+"Retired Scholar", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_scholar',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.knowledge, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.knowledge, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.library),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_trader', /* key */
+"Retired Trader", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_trader',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.social, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.social, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.market),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_healer', /* key */
+"Retired Healer", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_healer',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.aid, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.aid, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.hospital),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_wizard', /* key */
+"Retired Wizard", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_wizard',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.arcane, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.arcane, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.library),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'retired_whore', /* key */
+"Retired Whore", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_retired_whore',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'old': [
+    setup.qres.Job(setup.job.retired),
+    setup.qres.SkillAtLeast(setup.skill.sex, _old_thres),
+  ],
+  'new': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.AllTraits([setup.trait.join_junior], true),
+    setup.qres.SkillModifierAtLeast(setup.skill.sex, _new_thres),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('event_retired_training', '1', _allcooldown),
+],
+[ /* restrictions */
+  setup.qres.VarNull('event_retired_training'),
+  setup.qres.Building(setup.buildingtemplate.recreationwing),
+],
+_cooldown, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_retiredCommon [nobr]
+
+<<capture _skill, _fighter, _fighting, _sparring, _building>>
+
+<p>
+<<Rep $g.old>> used to be one of your slavers, but <<they $g.old>> had retired from slaving and is now
+mostly busy
+<<if $g.old.isRetired()>>
+<<= $g.old.getLiving().repBusiness($g.old)>>.
+<<= setup.DOM.Card.livingvisitdescription($g.old, $g.old.getLiving())>>
+<</if>>
+And today, <<they $g.old>> has decided to visit your quaint little fort.
+</p>
+
+<p>
+As you recall, <<they $g.old>> used to be one of the better <<= _fighter>>s under your employ, and although a little rusty, <<they $g.old>> is still better than most other <<urace $g.old>> at <<= _fighting>>.
+When looking around your new recruits, <<they $g.old>> saw a potential <<= _fighter>> among your new recruits, <<rep $g.new>>. <<Rep $g.old>> old|is <<uadv $g.old>> offering to train <<rep $g.new>> for a while, and making <<them $g.new>> grow somewhat closer to mastering the art of <<name _skill>>.
+</p>
+
+<<choose>>
+<<opt "Give <<them $g.old>> your blessings">>
+
+<p>
+The two of them spend the day <<= _sparring>> in your <<rep _building>>. By the end of the day, <<rep $g.new>> has learned a useful trick or two about <<= _fighting>>.
+</p>
+
+<<run setup.qc.SkillBoost('new', _skill).apply($gQuest)>>
+
+<<opt "You have other plans for <<name $g.new>>">>
+
+<p>
+<<They $g.old>> looks slightly dejected at your refusal, but understands. Instead, <<they $g.old>> just <<uadv $g.old>> share <<their $g.old>> many experiences with the recruit, which should help <<them $g.new>> mature a little.
+</p>
+
+<<run setup.qc.ExpUnit('new', 1).apply($gQuest)>>
+
+<</choose>>
+
+<</capture>>
+
+:: Event_retired_fighter [nobr]
+
+<<set _skill = setup.skill.combat>>
+<<set _fighter = 'fighter'>>
+<<set _fighting = 'fighting other people'>>
+<<set _sparring = 'sparring with each other'>>
+<<set _building = setup.buildingtemplate.traininggrounds>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_brawler [nobr]
+
+<<set _skill = setup.skill.brawn>>
+<<set _fighter = 'brawler'>>
+<<set _fighting = 'brawling'>>
+<<set _sparring = 'brawling with each other'>>
+<<set _building = setup.buildingtemplate.gym>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_scout [nobr]
+
+<<set _skill = setup.skill.survival>>
+<<set _fighter = 'scout'>>
+<<set _fighting = 'scouting for leads'>>
+<<set _sparring = 'keeping watch from atop the tower'>>
+<<set _building = setup.buildingtemplate.scouttower>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_thief [nobr]
+
+<<set _skill = setup.skill.intrigue >>
+<<set _fighter = 'thief'>>
+<<set _fighting = 'sneaking without being detected'>>
+<<set _sparring = 'skulking around the market'>>
+<<set _building = setup.buildingtemplate.market>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_slaver [nobr]
+
+<<set _skill = setup.skill.slaving >>
+<<set _fighter = 'slaver'>>
+<<set _fighting = 'breaking slaves'>>
+<<set _sparring = "breaking a slave's will">>
+<<set _building = setup.buildingtemplate.trainingchamber>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_scholar [nobr]
+
+<<set _skill = setup.skill.knowledge >>
+<<set _fighter = 'scholar'>>
+<<set _fighting = 'learning new knowledge'>>
+<<set _sparring = "browsing through the library's books">>
+<<set _building = setup.buildingtemplate.library>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_trader [nobr]
+
+<<set _skill = setup.skill.social >>
+<<set _fighter = 'trader'>>
+<<set _fighting = 'making profit'>>
+<<set _sparring = 'browsing through the market wares'>>
+<<set _building = setup.buildingtemplate.market>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_healer [nobr]
+
+<<set _skill = setup.skill.aid >>
+<<set _fighter = 'healer'>>
+<<set _fighting = 'healing the wounded'>>
+<<set _sparring = 'practicing closing wounds'>>
+<<set _building = setup.buildingtemplate.hospital>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_wizard [nobr]
+
+<<set _skill = setup.skill.arcane >>
+<<set _fighter = 'wizard'>>
+<<set _fighting = 'casting destructive spells'>>
+<<set _sparring = 'chanting difficult spells'>>
+<<set _building = setup.buildingtemplate.library>>
+<<include 'Event_retiredCommon'>>
+
+
+:: Event_retired_whore [nobr]
+
+<<set _skill = setup.skill.sex >>
+<<set _fighter = 'whore'>>
+<<set _fighting = 'seducing others'>>
+<<set _sparring = 'attracting passerbies to their bodies'>>
+<<set _building = setup.buildingtemplate.recreationwing>>
+<<include 'Event_retiredCommon'>>

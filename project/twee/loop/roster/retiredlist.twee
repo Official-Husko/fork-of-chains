@@ -1,0 +1,47 @@
+:: RetiredList [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.inn)>>
+<<set _unitlist = $retiredlist.getUnits()>>
+<<set _maxretired = $retiredlist.getMaxTrackedUnits()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You leave the outer wall of your fort and visit the inn rooms.
+You can host your guests here, including
+<<if _unitlist.length > 1>>
+your former slavers when they decide to revisit your fort.
+<<elseif _unitlist.length == 1>>
+<<yourrep _unitlist[0]>>.
+<<else>>
+slavers that you may retire in the future.
+<</if>>
+<<if _room && _room.getLevel() > 1>>
+It has been extended with <<= _room.getLevel() - 1>> additional rooms.
+<</if>>
+<<if _unitlist.length>>
+Currently, you have <<successtext _unitlist.length>>
+retired slaver<<if _unitlist.length > 1>>s<</if>>
+that you are keeping contacts with, out of a maximum of
+<<= _maxretired>> retired slavers.
+<</if>>
+<<if _unitlist.length >= _maxslavers>>
+If you want to keep track of more, consider
+furnishing more rooms by upgrading
+your <<rep _room>>, or by removing contact with some of your retired slavers.
+<</if>>
+<<message '(?)'>>
+  <div class='helpcard'>
+    Once your slaver has stayed with you for long enough time and obtained the
+    <<rep setup.trait.join_senior>> trait, instead of dismissing them,
+    you can also end their services by retiring them instead.
+    You will continue to keep in touch with retired slavers, and they
+    can be viewed in this menu.
+  </div>
+<</message>>
+</p>
+
+<<set _dom = setup.DOM.Roster.rosterlist(_unitlist, 'unitretired')>>
+<<attach _dom>>

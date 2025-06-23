@@ -1,0 +1,180 @@
+:: OpportunitySetup_infiltration_of_the_soul [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'infiltration_of_the_soul', /* key */
+"Infiltration of the Soul", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[
+  'city',
+  'breeding',
+  'special',
+  'veteran',
+  'trait',
+], /* tags */
+4, /* opportunity expiration weeks */
+'Opportunity_infiltration_of_the_soul___prelude',
+setup.qdiff.normal50, /* difficulty */
+[ /* options */
+[
+'Opportunity_infiltration_of_the_soul___prelude_0',
+'Opportunity_infiltration_of_the_soul___prelude_0_flavor',
+[ /* costs */
+setup.qc.Money(-50000),
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.TraitReplace('pupil', setup.trait.magic_light_master),
+setup.qc.RemoveTitleGlobal('quest_enlightenment_2_graduate_1'),
+setup.qc.SetCooldownQuest('infiltration_of_the_mind', 200),
+setup.qc.SetCooldownQuest('enlightenment_of_the_mind', 200),
+],
+],
+[
+'Opportunity_infiltration_of_the_soul___prelude_2',
+'Opportunity_infiltration_of_the_soul___prelude_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.SetCooldownQuest(null, 50),
+],
+],
+[
+'Opportunity_infiltration_of_the_soul___prelude_3',
+'Opportunity_infiltration_of_the_soul___prelude_3_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.RemoveTitleGlobal('quest_enlightenment_2_graduate_1'),
+setup.qc.SetCooldownQuest('infiltration_of_the_mind', 100),
+setup.qc.SetCooldownQuest('enlightenment_of_the_mind', 100),
+],
+],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoOpportunity('enlightenment_of_the_soul___prelude'),
+],
+{ /* actors */
+'master': 'quest_enlightenment_of_the_mind1',
+'pupil': [
+  setup.qres.Trait('gender_male'),
+  setup.qres.HasTitle('quest_enlightenment_2_graduate_1'),
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Available(),
+],
+},
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_infiltration_of_the_soul___prelude [nobr]
+
+<div class='lettercard'>
+<p>
+Honored <b>Guardian</b> of an Esteemed Student of Light,
+</p>
+
+<p>
+It has come to our attention that a ward of yours, <<rep $g.pupil>>, has
+passed through the first two
+Gates of Enlightenment. While "her" wits and diligence have brought the Enlightenment
+of the Mind and the Enlightenment of the Heart, the final part, 
+Enlightenment of the Soul, is unofortunately out of reach for "her" and "her"
+unique biology.
+</p>
+</div>
+
+<p>
+Biology? Did the master...
+</p>
+
+<div class='lettercard'>
+
+<p>
+While we have appreciated greatly "her", or should we say his diligence and
+dedication for the Light, the final step is simply not possible for a man,
+no matter how prettily disguised he is.
+</p>
+
+</div>
+
+<p>
+...The master knew about this all the time. What happens now? Does that mean you've been paying
+all those tuition for nothing?
+</p>
+
+<div class='lettercard'>
+<p>
+Now I know what you think, if we know about the ward's gender, we should have refused the student
+from the start. But alas, his dedication to the craft blinded us all, and we were unable to muster
+the courage to expel the student.
+</p>
+
+<p>
+Fortunately, we have a solution should you wish to advance the mastery.
+</p>
+</div>
+
+<p>
+You scowl your face, knowing what's coming next.
+</p>
+
+<div class='lettercard'>
+<p>
+A meager sum of <<money 50000>> should be enough to buy one of our spellbooks,
+which could grant the tutee the knowledge they seek...
+</p>
+</div>
+
+<p>
+You almost want to throw the letter outside of your window, but this could be <<reps $g.pupil>>
+only chance to master <<rep setup.trait.magic_light_master>>...
+</p>
+
+
+:: Opportunity_infiltration_of_the_soul___prelude_0 [nobr]
+Pay the outrageous fee
+
+
+:: Opportunity_infiltration_of_the_soul___prelude_0_flavor [nobr]
+
+<p>
+Sighing to yourself, you pay the outrageous fee and receive the book.
+If only your slaver should just blow somebody and get the damn spellbook...
+</p>
+
+<p>
+It only took <<yourrep $g.pupil>> a day to master the craft by using the spellbook.
+You are unsuer if this was the fruit of <<their $g.pupil>> previous classes,
+or whether the book was all that was needed to master the craft...
+</p>
+
+
+:: Opportunity_infiltration_of_the_soul___prelude_2 [nobr]
+Delay answering by a year.
+
+
+:: Opportunity_infiltration_of_the_soul___prelude_2_flavor [nobr]
+You will not receive the same letter until at least next year.
+
+
+:: Opportunity_infiltration_of_the_soul___prelude_3 [nobr]
+Tear this stupid letter to shreds
+
+
+:: Opportunity_infiltration_of_the_soul___prelude_3_flavor [nobr]
+Enough is enough! You will not be scammed any longer!

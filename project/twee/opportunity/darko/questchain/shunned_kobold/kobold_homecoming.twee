@@ -1,0 +1,98 @@
+:: OpportunitySetup_kobold_homecoming [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'kobold_homecoming', /* key */
+"Kobold Homecoming", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'prep',
+  'unit',
+  'favor',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_kobold_homecoming',
+setup.qdiff.hard45, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_kobold_homecoming_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 100),
+      setup.qc.QuestDirect('revenge_of_the_kobold2', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_kobold_homecoming_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 100),
+      setup.qc.QuestDirect('savior_kobold', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_shunned_kobold_progress', '45'),
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoQuest('revenge_of_the_kobold2'),
+  setup.qres.NoQuest('savior_kobold'),
+],
+{ /* actors */
+  'kobold': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+    setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_kobold_homecoming [nobr]
+<p>
+    You receive many requests from the <<lore region_deep>>. There's the occassional bounty hunting, treasure hunting, or even opportunities to get yourself a new slave.
+    One such requests have arrived today: a horde of giant spiders is apparently on the way to some goblin village, and they have urgently requested assistance to repel the invasion.
+</p>
+
+<p>
+    It all sounds very mundane, until you hear a loud knock on your office door. It's <<rep $g.kobold>>, looking extremely nervous.
+    "The village in question was my hometown," <<they $g.kobold>> said, "I heard from the messenger. They're requesting our aid.".
+</p>
+
+<p>
+    That makes it slightly more complicated. As you recall, the reason why <<rep $g.kobold>> is here to begin with was that the <<urace $g.kobold>> could no longer stand being bullied in that particular village for being different than ordinary kobolds. While you could just save the village — you could alternatively help <<rep $g.kobold>> exact revenge by instead ignoring their pleas, and enslave the village survivors instead. But is this what <<rep $g.kobold>> wants to do?
+</p>
+
+
+
+
+:: Opportunity_kobold_homecoming_0 [nobr]
+Get yourself some kobold slaves
+
+
+
+:: Opportunity_kobold_homecoming_1 [nobr]
+Save the kobolds
+
+

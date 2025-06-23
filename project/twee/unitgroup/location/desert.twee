@@ -1,0 +1,38 @@
+:: InitUnitGroupDesert [nobr]
+
+<<set _males = [
+  [setup.unitpool.subrace_orc_male, 15],
+  [setup.unitpool.subrace_humandesert_male, 15],
+  [setup.unitpool.subrace_demonkin_male, 1],
+]>>
+
+<<set _females = [
+  [setup.unitpool.subrace_orc_female, 15],
+  [setup.unitpool.subrace_humandesert_female, 15],
+  [setup.unitpool.subrace_demonkin_female, 1],
+]>>
+
+<<run new setup.UnitGroup(
+  'desert_all',
+  'Residents of the Eastern Deserts: All gender',
+  setup.ALLUNITGROUPS.concat(_males).concat(_females),
+  0,
+  []
+)>>
+
+<<run new setup.UnitGroup(
+  'desert_allmale',
+  'Residents of the Eastern Deserts: Male',
+  setup.ALLUNITGROUPSMALE.concat(_males),
+  0,
+  []
+)>>
+
+<<run new setup.UnitGroup(
+  'desert_allfemale',
+  'Residents of the Eastern Deserts: Female',
+  setup.ALLUNITGROUPSFEMALE.concat(_females),
+  0,
+  []
+)>>
+

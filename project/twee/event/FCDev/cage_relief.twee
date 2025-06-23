@@ -1,0 +1,126 @@
+:: EventSetup_cage_relief [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'cage_relief', /* key */
+"Cage Relief", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_cage_relief',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.eq_chastity], true),
+    setup.qres.AnyTrait([setup.trait.dick_tiny, setup.trait.dick_small, setup.trait.dick_medium, setup.trait.dick_large, setup.trait.dick_huge, setup.trait.dick_titanic], true),
+    setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master, setup.trait.training_obedience_basic], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_cage_relief [nobr]
+<p>
+You come face to face with <<yourrep $g.slave>> in a hallway of your
+bedchamber wing, entirely by happenstance.
+<<if $g.slave.isCanSee()>><<Their $g.slave>> <<ueyes $g.slave>> lock with yours, and <<they $g.slave>> stares at you dumbly for a long moment<<else>>Once <<they $g.slave>> regains <<their $g.slave>> footing after bumping into you, <<they $g.slave>> gazes towards you dumbly for a long moment<</if>>.
+Then <<they $g.slave>> squares <<their $g.slave>> <<if $g.slave.isHasTrait('muscle_strong')>>broad<</if>> shoulders and bites <<their $g.slave>> lower lip, obviously doing <<their $g.slave>> best to think quickly. Right when you're about to reprimand <<their $g.slave>> for not greeting you properly, <<they $g.slave>> surprises you by throwing <<themself $g.slave>> abjectly on the ground in front of you.
+</p>
+
+<p>
+
+<<if !$g.slave.isCanTalk()>>
+
+<<They $g.slave>> uses gestures to apologize for <<their $g.slave>> rudeness, and then gets to <<their $g.slave>> knees so <<they $g.slave>> can use <<their $g.slave>> <<uhands $g.slave>> to gesture more clearly. <<Their $g.slave>> <<uhands $g.slave>> are shaky as <<they $g.slave>> begs, making two false starts before unmistakably gesturing to ask you to remove <<their $g.slave>> <<ucgenital $g.slave>>. Once <<they $g.slave>> sees that you understand, <<they $g.slave>> begins to <<if $g.slave.isFemale()>>cry<<else>>beg<</if>> openly.
+<<They $g.slave>> gestures that <<they $g.slave>> can barely get off wearing <<their $g.slave>> chastity cage, that it hurts when <<they $g.slave>> does, and that <<they $g.slave>>'s constantly oppressed by the need for release. <<They $g.slave>> begs hard, and promises to remain a good little bitch.
+
+<<else>>
+
+"Please, <<Master $unit.player>>," the prostrate slave says shakily, sounding like <<they $g.slave>>'s on the verge of tears.
+"P-please remove my chastity cage."
+Hearing <<themself $g.slave>> say it, <<they $g.slave>> begins to cry openly.
+"I c-can't t-take it anymore. I can b-barely get off wearing this cage on my dick, and when I d-do, it h-hurts," <<they $g.slave>> sobs. "I need to g-g-get off s-so bad. Please, please!" <<They $g.slave>> looks up at you in supplication, tears streaking <<their $g.slave>> face. "Please, <<Master $unit.player>>! I'll continue being s-such a good little bitch, I promise!"
+
+<</if>>
+
+</p>
+
+<<choose>>
+
+<<opt "Help <<them $g.slave>> get off">>
+
+<p>
+You take <<them $g.slave>> by the <<uhand $g.slave>> and pull <<them $g.slave>> to <<their $g.slave>> <<ufeet $g.slave>>, and then kiss <<them $g.slave>>.
+<<They $g.slave>> knows that this means no, but melts into you anyway, accepting the comforting gesture for what it is. <<They $g.slave>>'s surprised when you do not break the kiss, but continues to make out with you compliantly. You take <<them $g.slave>> by the <<uhands $g.slave>>,
+intertwining your fingers with <<theirs $g.slave>> and holding them down at your sides for a while before wrapping <<their $g.slave>> <<uarms $g.slave>> around you at your <<uwaist $unit.player>><<if $g.slave.isHasTail()>>,
+before feeling up <<their $g.slave>> <<utail $g.slave>><</if>>.
+Your <<uhands $unit.player>>, thus freed to grope <<them $g.slave>>, tenderly hold <<their $g.slave>> head and neck instead, cupping <<their $g.slave>> <<if $g.slave.isHasTrait('face_beautiful')>>gorgeous<<elseif $g.slave.isHasTrait('face_attractive')>>pretty<<else>>homely<</if>> jawline and making <<them $g.slave>> moan at the intimacy.
+</p>
+
+<p>
+<<They $g.slave>>'s completely forgotten <<their $g.slave>> troubles,
+and you see that it stays that way.
+Whenever <<they $g.slave>>'s in danger of achieving an erection, which would remind <<them $g.slave>> of <<their $g.slave>> chastity cage with a twinge of discomfort, you cool your makeout session off slightly, massaging <<them $g.slave>> capably instead of kissing <<them $g.slave>> deeply. After some time, <<they $g.slave>> shudders, to <<their $g.slave>> own complete surprise and to your unsurprised satisfaction.
+<<They $g.slave>>'s just done what in a normal sexual encounter would be considered premature ejaculation, since you wrought <<them $g.slave>> to such a subtle state of arousal that <<they $g.slave>> got off without really getting hard, <<their $g.slave>> ejaculate leaking down <<their $g.slave>> cage.
+<<They $g.slave>> can muster no coherent response, but hugs you convulsively,
+sobbing into your <<if $unit.player.isHasBreasts()>>boobs<<else>><<if $unit.player.isHasTrait('muscle_strong')>>strong<</if>> shoulder<</if>> with gratitude and release.
+</p>
+
+<p>
+The discomfort returns in less than half an hour.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Remove <<their $g.slave>> chastity cage for a while">>
+
+<p>
+You agree to remove the cage for a while, on the condition that <<they $g.slave>> be a good little bitch like <<they $g.slave>> promised.
+<<They $g.slave>> thanks you frantically, watching with mixed relief and gratitude as you unlock <<their $g.slave>> <<ucgenital $g.slave>>.
+Freed from the cage after a long while, <<their $g.slave>> <<udick $g.slave>> immediately reaches an incredible erection. It only took a couple of strokes to make the overfull <<uballs $g.slave>> spurt their content into your <<uhand $g.slave>>, to the great joy and gratitude from the slave. You place your cum-soaked <<uhand $unit.player>> in front of <<their $g.slave>> face, for <<them $g.slave>> to lick clean enthusiastically while your other <<uhand $unit.player>> locks <<their $g.slave>> <<ucgenital $g.slave>> back onto <<their $g.slave>> now flaccid dick.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Use <<their $g.slave>> cage to torture <<them $g.slave>>">>
+
+<p>
+You make no reply at all, but walk around to stand behind the slave.
+<<They $g.slave>> knows <<they $g.slave>>'s fucked, and starts to shake with fear. You put a <<ufoot $unit.player>> on <<their $g.slave>> ass and shove <<them $g.slave>> down to lie flat on the <<utile $g.slave>>,
+and then straddle <<them $g.slave>>, shoving <<if $unit.player.isHasDick()>>your cock up <<their $g.slave>> butt<<else>>one more finger than <<they $g.slave>> can comfortably take up <<their $g.slave>> butt<</if>>.
+<<They $g.slave>> tries to beg some more, but you give <<them $g.slave>> a warning slap, and <<they $g.slave>> shuts up. Despite your roughness, <<they $g.slave>>'s so horny that <<they $g.slave>> starts to get hard. You can't see or feel this directly, of course, but it's easy to tell from <<their $g.slave>> desperate sobbing and involuntary writhing, and the lovely spasming of <<their $g.slave>> anal sphincter. <<Their $g.slave>> tears dry up as <<they $g.slave>> builds towards a climax; orgasm might be an uncomfortable experience for <<them $g.slave>>, but it will buy <<them $g.slave>> a few minutes free of discomfort.
+</p>
+
+<p>
+But <<they $g.slave>>'s to be disappointed. You
+<<if $unit.player.isHasDick()>>worm a <<uhand $unit.player>> down between <<their $g.slave>> ass and your stomach, and shove a finger up inside <<their $g.slave>>, alongside your dick<<else>>use the <<uhand $unit.player>> that isn't fucking <<them $g.slave>> to pull one of <<their $g.slave>> <<uarms $g.slave>> around behind <<them $g.slave>> into a painful joint lock<</if>>.
+<<if $g.slave.isMasochistic()>>
+You intended to use the sudden pain to ruin <<their $g.slave>> building orgasm,
+but it backfired spectacularly when you remember the masochistic nature of this slave.
+The pain only amplifies <<their $g.slave>> pleasure, and <<they $g.slave>> cums painfully, strings of ejaculate dripping down <<their $g.slave>> tortured and caged cock.
+<<else>>
+The pain ruins <<their $g.slave>> building orgasm, and <<they $g.slave>> begs with frustration and despair as <<they $g.slave>> realizes that <<they $g.slave>> won't be getting off today. You force <<them $g.slave>> to experience this horrible near-release twice more, bringing <<them $g.slave>> to a terribly uncomfortable state of arousal and then using sudden pain to destroy any chance <<they $g.slave>> has of getting relief. All the wriggling and jerking around is good for you, though.
+<</if>>
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<</choose>>

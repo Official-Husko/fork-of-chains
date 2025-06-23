@@ -1,0 +1,124 @@
+:: QuestSetupUnitTrainingBrainwashing [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _removeall = []>>
+<<for _itrait, _trait range setup.TraitHelper.TRAINING_ALL>>
+  <<run _removeall.push(setup.qc.TraitRemove('trainee', _trait))>>
+<</for>>
+
+<<run new setup.QuestTemplate(
+'training_brainwash', /* key */
+"Slaver Training - Advanced", /* Title */
+"darko", /* Author */
+[ 'fort', 'trait'
+], /* tags */
+2, /* weeks */
+1, /* quest expiration weeks */
+{ /* roles */
+'head': setup.qu.training_head,
+'convincer2': setup.qu.convincer,
+'convincer1': setup.qu.convincer, },
+{ /* actors */
+'trainee': null, },
+[ /* costs */
+  setup.qc.LoseItem(setup.item.potion_slavertraining),
+],
+'Quest_slaver_training',
+setup.qdiff.normal54, /* difficulty */
+[ /* outcomes */
+[
+'Quest_slaver_trainingCrit',
+[
+setup.qc.MissingUnitOpposite('trainee'),
+setup.qc.MoneyNormal(), ].concat(_removeall),
+], [
+'Quest_slaver_trainingCrit',
+[
+setup.qc.MissingUnitOpposite('trainee'),
+].concat(_removeall),
+], [
+'Quest_slaver_trainingFailure',
+[
+],
+], [
+'Quest_slaver_trainingFailure',
+[
+setup.qc.TraumatizeRandom('convincer1', 20),
+setup.qc.TraumatizeRandom('convincer2', 20),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_slaver_training [nobr]
+<p>
+While there has been several occurrences of a former slave becoming a slaver, it is still relatively rare.
+For one, the slave owners are usually reluctant to give up a perfectly good slave.
+More importantly, the slave, having experienced what it felt under the whip, is usually averse to having to inflict their suffering on another.
+</p>
+
+<p>
+With a highly skilled slaver, however,
+it might be possible to actually convince a slave to become a slaver.
+It will be extremely difficult, however, and requires a specific team of slavers to do so.
+Normally, this delicate procedure will leave the former slave traumatized upon joining your team,
+as well as requiring a completely untrained slave.
+But with the aid of your
+<<rep setup.item.brainwash_technology>>,
+these side effects could be completely removed.
+Just make sure to keep your slavers far, far away from its mind-numbing effects.
+</p>
+
+
+:: Quest_slaver_trainingCrit [nobr]
+
+<p>
+Over the past two weeks, your slavers <<uadv $g.convincer1>> convinced —
+with the subconcious help of <<rep setup.item.brainwash_technology>>,
+your now former-slave <<rep $g.trainee>> the benefits of becoming a slaver.
+<<Rep $g.convincer1>> <<uadv $g.convincer1>> sneaked in a drink or two for
+the slave infused liberally
+with <<rep setup.item.potion_slavertraining>>.
+After long days of convincing, <<rep $g.trainee>> finally saw the light, and
+agreed to become one of your slavers. <<Rep $g.trainee>> trainee|is now
+waiting in the <<rep setup.buildingtemplate.prospectshall>> for you to
+officially take in as a proper slaver.
+</p>
+
+<p>
+The <<rep setup.item.brainwash_technology>> helped <<rep $g.trainee>> overcome
+<<their $g.trainee>> experiences as a slave and come back a better stronger <<man $g.trainee>> than before.
+</p>
+
+<<if $gOutcome == 'crit'>>
+  <p>
+  Seeing <<their $g.trainee>> future secure as a slaver, <<rep $g.trainee>> gave to <<yourrep $g.head>> the location of <<their $g.trainee>> secret stash that was originally planned as <<their $g.trainee>> lifeline upon escaping from your fort.
+  </p>
+<</if>>
+
+<<if $g.trainee.getWeeksWithCompany() >= 53>>
+  <p>
+    Despite having been a slave for quite some time, thanks to the masterful use of
+    <<rep setup.item.potion_slavertraining>>, there does not seem to be any adverse
+    effects on <<rep $g.trainee>>.
+  </p>
+<</if>>
+
+
+:: Quest_slaver_trainingFailure [nobr]
+
+<p>
+Unfortunately, <<rep $g.trainee>> managed to stubbornly resist all your slavers arguments, and ultimately preferred being whipped to whipping others.
+The training failed, and must be repeated if you really want the slave as a slaver.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+During the training, some of your slavers were unfortunately affected by
+their severe misuse of <<rep setup.item.brainwash_technology>>...
+</p>
+<</if>>

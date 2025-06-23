@@ -1,0 +1,110 @@
+:: OpportunitySetup_branching_timeline [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_time_traveler_0", /* key */
+"Time Traveler", /* name */
+"Did not come from this timeline", /* description */
+"did not originate from this timeline", /* unit text */
+10000, /* slave value */
+{ /* skill additives */
+arcane: 4,},
+)
+>>
+
+<<run new setup.OpportunityTemplate(
+'branching_timeline', /* key */
+"Branching Timeline", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'unit',
+  'special',
+  'fort',
+],
+1, /* expiration weeks */
+'Opportunity_branching_timeline',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_branching_timeline_0',
+    'Opportunity_branching_timeline_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.AddTitle('child', 'quest_time_traveler_0'),
+      setup.qc.Slaver('child', "a|was your child who got pulled from the future in an errant ritual", undefined),
+      setup.qc.VarRemove('future_assassin_progress'),
+      setup.qc.VarSet('future_assassin_cooldown', '1', 1000),
+      setup.qc.RemoveTagGlobal('future_assassin_parent'),
+    ],
+  ],
+  [
+    'Opportunity_branching_timeline_1',
+    'Opportunity_branching_timeline_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.AddTitle('child', 'quest_time_traveler_0'),
+      setup.qc.Slave('child', "a|was your child who got pulled from the future in an errant ritual", undefined),
+      setup.qc.VarRemove('future_assassin_progress'),
+      setup.qc.VarSet('future_assassin_cooldown', '1', 1000),
+      setup.qc.RemoveTagGlobal('future_assassin_parent'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'child': 'all',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_branching_timeline [nobr]
+<p>
+Finally, you have to decide what to do with <<rep $g.child>>, your future
+<<daughter $g.child>> from an alternate timeline...
+</p>
+
+<<unitcard $g.child 1>>
+
+:: Opportunity_branching_timeline_0 [nobr]
+Recruit
+
+
+:: Opportunity_branching_timeline_0_flavor [nobr]
+
+<p>
+And so it ends.
+You welcome your surprise <<daughter $g.child>> into your <<uarms
+$unit.player>>. <<They $g.child>> child|is your <<daughter $g.child>> now,
+and despite not hailing from this timeline,
+you will cherish <<them $g.child>> all the same.
+</p>
+
+<p>
+With you and your <<daughter $g.child>> in the company, nothing could stand
+in its way!
+</p>
+
+
+:: Opportunity_branching_timeline_1 [nobr]
+Enslave
+
+
+:: Opportunity_branching_timeline_1_flavor [nobr]
+<p>
+And so it ends. Your <<daughter $g.child>> (but not really) child|is gagged and
+sent over to the slave pens, for you to decide what to do with later. A time traveler
+will surely fetch a nice price in the market, if anything.
+</p>

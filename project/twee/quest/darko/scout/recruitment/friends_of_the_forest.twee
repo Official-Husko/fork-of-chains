@@ -1,0 +1,120 @@
+:: QuestSetup_friendsofthe_forest [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'friendsofthe_forest', /* key */
+'Recruitment: Forest', /* Title */
+'darko', /* Author */
+[ 'forest', 'unit'
+], /* tags */
+1, /* weeks */
+setup.INFINITY, /* quest expiration weeks */
+{ /* roles */
+'recruiter1': setup.qu.recruiter,
+'recruiter2': setup.qu.recruiter,
+'scout': setup.qu.scout_forest, },
+{ /* actors */
+'recruit1': 'forest_all',
+'recruit2': 'forest_all',
+'recruit3': 'forest_all',
+'recruit4': 'forest_all',
+'recruit5': 'forest_all',
+'recruit6': 'forest_all',
+'recruit7': 'forest_all',
+},
+[ /* costs */
+],
+'Quest_friendsofthe_forest',
+setup.qdiff.easy20, /* difficulty */
+[ /* outcomes */
+[
+'Quest_friendsofthe_forestCrit',
+[
+setup.qc.Slaver('recruit1', "", true),
+setup.qc.Slaver('recruit2', "", true),
+setup.qc.Slaver('recruit3', "", true),
+setup.qc.Slaver('recruit4', "", true),
+setup.qc.Slaver('recruit5', "", true),
+setup.qc.Slaver('recruit6', "", true),
+setup.qc.Slaver('recruit7', "", true), ],
+], [
+'Quest_friendsofthe_forestSuccess',
+[
+setup.qc.Slaver('recruit1', "", true),
+setup.qc.Slaver('recruit2', "", true),
+setup.qc.Slaver('recruit3', "", true),
+setup.qc.Slaver('recruit4', "", true), ],
+], [
+'Quest_friendsofthe_forestFailure',
+[
+setup.qc.Slaver('recruit1', "", true), ],
+], [
+'Quest_friendsofthe_forestDisaster',
+[
+],
+], ],
+[
+  [setup.questpool.recruitmentforest, setup.rarity.common],
+], /* quest pool and rarity */
+[
+  setup.qres.QuestAvailableUnique(),
+], /* restrictions to generate */
+)>>
+
+:: Quest_friendsofthe_forest [nobr]
+
+<p>
+The <<lore region_forest>> are inhabited by both <<rep setup.trait.subrace_elf>> and
+<<rep setup.trait.subrace_neko>>. People of these races have
+the potential to make an excellent slavers: Neko often make great
+entertainers, making them suitable for negotiation missions, while elves
+are often gifted in the art of healing, making them excellent as support.
+</p>
+
+<p>
+Both of these races have practiced slavery for a long time, and it would not
+be too difficult to send a group of slavers to recruit some of these people into your
+company. Your slavers need to bring a little incentive though in order to
+entice the candidates into your fort.
+</p>
+
+<p>
+This quest is available thanks to your <<rep setup.buildingtemplate.hiringsquareforest>>.
+</p>
+
+
+:: Quest_friendsofthe_forestCrit [nobr]
+
+<p>
+The team's recruiters: <<rep $g.recruiter1>> and <<rep $g.recruiter2>>, told
+a great many raunchy stories about their exciting journey as slavers,
+together with the benefits of having a slave, and managed to entice seven
+potential slavers to come to your fort. They are now awaiting your decision
+in the <<rep setup.buildingtemplate.prospectshall>>.
+</p>
+
+
+:: Quest_friendsofthe_forestSuccess [nobr]
+
+<p>
+The team's recruiters: <<rep $g.recruiter1>> and <<rep $g.recruiter2>>,
+scoured through the forest looking for specific types of people they believed would
+make great slavers. Your slavers promised them bountiful flesh in addition to
+gold if they join, which resulted in 4 potential slavers now patiently waiting
+your decision in the <<rep setup.buildingtemplate.prospectshall>>.
+</p>
+
+
+:: Quest_friendsofthe_forestFailure [nobr]
+<p>
+Your slavers stopped by in the first tavern they found and spent almost all of
+their time getting drunk. Still, they managed to convince a random drink-mate
+they befriended in the tavern to join them back home.
+</p>
+
+
+:: Quest_friendsofthe_forestDisaster [nobr]
+<p>
+It seems you have chosen the wrong unit for the mission, as neither <<rep $g.recruiter1>> nor <<rep $g.recruiter2>> were able to convince anyone of the benefits of being a slaver. Nobody joined them on their trip back home.
+</p>

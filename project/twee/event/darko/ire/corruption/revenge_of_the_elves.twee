@@ -1,0 +1,51 @@
+:: EventSetup_revenge_of_the_elves [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'revenge_of_the_elves', /* key */
+"Revenge of the Elves", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_revenge_of_the_elves',
+{ /* roles */
+},
+{ /* actors */
+  'elf': 'subrace_elf',
+},
+[ /* outcomes */
+setup.qc.Ire('elf', -20),
+/* elven corruption is slightly weaker, only 5 corruption vs 6 */
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+setup.qc.CorruptRandomUnitHome(),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('elf', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_revenge_of_the_elves [nobr]
+<p>
+A strange visitor has come to your fort, a <<male $g.elf>> of unknown origin.
+<<They $g.elf>> elf|come seeking shelter for the harsh night, which you grant while
+eyeing specifically whether the elf would make a great slave.
+</p>
+
+<p>
+Later that night, your generosity was punished as the elf reveals <<themself $g.elf>>
+to be an emissary of a certain wizarding circle in <<rep $company.elf>>, whom you have angered recently.
+As the elf chants an unknown language, the sky turns dark and soon enough,
+you can hear writhing sounds coming from all over your fort.
+You too get affected soonafter, and the moments passed in a blur of pain and ecstacy for both you
+and your slavers.
+</p>
+
+<p>
+When you awake next day, the elf is nowhere to be seen. Fortunately it
+seems that no damage was done to your fort, but its residents have noticably
+been corrupted by the turn of events.
+</p>

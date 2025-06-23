@@ -1,0 +1,36 @@
+:: LIVINGSETUP_fisherman [nobr living]
+
+<<run new setup.Living({
+  key: 'fisherman',
+  name: 'Fisherman',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_seaman: setup.LIVING_COMMON_PREFERENCE,
+    bg_pirate: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_calm: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_aggressive: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'fishing',
+    'catching fish and other strange sea creatures',
+    'sailing into the seas',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_fisherman [nobr]
+
+<p>
+The a|race returned to the sea,
+<<if $g.a.isHasTrait('bg_pirate') || $g.a.isHasTrait('bg_seaman')>>
+a place the <<man $g.a>> dearly calls home,
+<<else>>
+a place a|they becomes quite fond of,
+<</if>>
+and decided to pursue honest work in fishing.
+Using the money a|they saved up, a|they built a small hut next to the <<lore region_sea>>,
+and spend most of a|their time away at the sea, catching the various sea creatures living there.
+The job might be boring to most people, but the a|race loves every moment of it.
+</p>

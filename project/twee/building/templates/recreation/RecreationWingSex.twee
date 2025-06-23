@@ -1,0 +1,61 @@
+:: InitBuildingRecreationWingSex [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'recreationwingsex',
+  tags: [],
+  width: 4,
+  height: 4,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "sex",
+      room_keys: [
+        'analfuckhole',
+        'oralfuckhole',
+        'sissybooth',
+        'stage',
+        'vaginafuckhole',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'recreationwingsex',
+  name: 'Recreation wing: Sex',
+  tags: ['recreation',  'unlocker', ],
+  description_passage: 'BuildingRecreationWingSex',
+  costs: [
+    [setup.qc.Money(-5000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('recreationwing'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('sexpimp'),
+    ],
+  ],
+  main_room_template_key: 'recreationwingsex',
+})>>
+
+:: BuildingRecreationWingSex [nobr]
+
+<p>
+Designate a part of your <<rep setup.buildingtemplate.recreationwing>> for placing your
+fuckholes and making them available for paying customers.
+Unlocks the Fuckhole Pimp duty, who can earn money from fuckhole slaves that can be unlocked
+by further building the
+<<rep setup.buildingtemplate.analfuckhole>>, the
+<<rep setup.buildingtemplate.oralfuckhole>>, the
+<<rep setup.buildingtemplate.sissybooth>>, the
+<<rep setup.buildingtemplate.stage>>, and the
+<<rep setup.buildingtemplate.vaginafuckhole>> improvements.
+</p>

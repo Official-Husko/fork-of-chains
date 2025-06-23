@@ -1,0 +1,84 @@
+:: QuestSetupFleshShapeDickGrow [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'fleshshape_dick_grow',  /* id */
+  'Flesh Shaping: Dick Growth',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.fleshshape_head,
+    'assistant1': setup.qu.fleshshape_assistant,
+    'assistant2': setup.qu.fleshshape_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'FleshShapeDickGrow',  /* description */
+  setup.qdiff.normal42,
+  [
+    [
+      'FleshShapeDickGrowCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.dick_large),
+        
+      ]
+    ],
+    [
+      'FleshShapeDickGrowSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.dick_large),
+        
+      ],
+    ],
+    [
+      'FleshShapeDickGrowFailure',
+      [],
+    ],
+    [
+      'FleshShapeDickGrowDisaster',
+      [
+        setup.qc.Injury('head', 2),
+        setup.qc.Injury('assistant1', 1),
+        setup.qc.Injury('assistant2', 1),
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: FleshShapeDickGrow [nobr]
+<p>
+Grows both the length and girth of the slave's dick.
+</p>
+
+:: FleshShapeDickGrowCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage "fleshshape_dick_grow_male.jpg">>
+<<else>>
+<</if>>
+
+<p>
+The flesh shaping went off without a hitch.
+</p>
+
+:: FleshShapeDickGrowSuccess [nobr]
+<p>
+The flesh shaping was successful.
+</p>
+
+:: FleshShapeDickGrowFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: FleshShapeDickGrowDisaster [nobr]
+<p>
+There was an accident during the process which causes some of the alchemical ingredients
+to combust, injuring all parties involved.
+</p>

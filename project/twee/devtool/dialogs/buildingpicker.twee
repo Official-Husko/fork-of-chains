@@ -1,0 +1,23 @@
+:: BuildingPickerDialog [nobr]
+
+<<unset _selbuilding>>
+
+<div>
+  <<button 'Cancel'>>
+    <<run Dialog.close()>>
+  <</button>>
+</div>
+
+<div>
+  <<for _building range Object.values(setup.buildingtemplate)>>
+    <<capture _building>>
+      <div>
+      <<set _text = _building.rep()>>
+      <<button _text>>
+        <<set _selbuilding = _building>>
+        <<run Dialog.close()>>
+      <</button>>
+      </div>
+    <</capture>>
+  <</for>>
+</div>

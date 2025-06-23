@@ -1,0 +1,209 @@
+:: LoadSelectTrait [nobr]
+
+<<focwidget 'selecttrait'>>
+  <<set _targetpassage = $args[0]>>
+  <<set _traitpool = $args[1]>>
+  <<if !_traitpool>> <<set _traitpool = Object.values(setup.trait)>> <</if>>
+
+  <<run _dom = setup.DOM.Menu.traitpickersingle({raw_traits: _traitpool, finish_callback: (trait) => {
+    State.variables.rTrait = trait;
+    setup.runSugarCubeCommand('<<include "' + State.temporary.targetpassage + '">>');
+  }})>>
+  <<attach _dom>>
+
+<</focwidget>>
+
+:: ChooseTraits [nobr]
+
+<<set _chosentraits = []>>
+
+<<set _traitlist = Object.values(setup.trait)>>
+<<if _choose_traits_attachable>>
+  <<set _traitlist = setup.TraitHelper.getAttachableTraitsInContentCreator()>>
+<</if>>
+
+<div class='traitlistcard card'>
+  <<run _dom = setup.DOM.Menu.traitpickermulti({raw_traits: _traitlist, init_selected: _chosentraits})>>
+  <<attach _dom>>
+</div>
+
+
+:: RestrictionTrait [nobr]
+
+<<include LoadSelectTrait>>
+
+<p>Unit must have the following trait:
+<<message '(?)'>>
+  Note that a stronger trait will "dominate" the lower trait. Hence, if a unit has
+  a large dick, it will count as having a tiny dick as well.
+  (You can see it by the "number" on the top right of the icon.)
+<</message>>
+</p>
+
+<<selecttrait 'RestrictionTraitDo'>>
+
+
+:: RestrictionTraitDo [nobr]
+
+<<set $qrestriction = setup.qres.Trait($rTrait)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionNoTrait [nobr]
+
+<<include LoadSelectTrait>>
+
+<p>Unit must <<dangertext 'NOT'>> have the following trait:
+<<message '(?)'>>
+  Note that a stronger trait will "dominate" the lower trait. Hence, if a unit has
+  a large dick, it will count as having a tiny dick as well.
+<</message>></p>
+
+<<selecttrait 'RestrictionNoTraitDo'>>
+
+
+:: RestrictionNoTraitDo [nobr]
+
+<<set $qrestriction = setup.qres.NoTrait($rTrait)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionAnyTrait [nobr]
+
+<p>Unit must have <<dangertext 'at least one'>> of the following traits:
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.AnyTrait(_chosentraits)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+:: RestrictionAnyTraitExact [nobr]
+
+<p>Unit must have <<dangertext 'at least one'>> of the following traits:
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.AnyTrait(_chosentraits, true)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+:: RestrictionXTraits [nobr]
+
+<p>Unit must have <<dangertext 'AT LEAST'>> <<numberbox "_minimum" 2>> of the following traits:
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.XTraits(_chosentraits, _minimum)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+:: RestrictionTraitExact [nobr]
+
+<<include LoadSelectTrait>>
+
+<p>Unit must have the following trait EXACTLY:
+<<message '(?)'>>
+  This is exact trait --- e.g., if you choose muscle_strong,
+  then muscle_verystrong is not counted.
+<</message>>
+</p>
+
+<<selecttrait 'RestrictionTraitExactDo'>>
+
+
+:: RestrictionTraitExactDo [nobr]
+
+<<set $qrestriction = setup.qres.TraitExact($rTrait)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+
+:: RestrictionNoTraitsExact [nobr]
+
+<p>Unit must have <<dangertext 'NONE'>> of the following traits:
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.NoTraits(_chosentraits, true)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+:: RestrictionAllTraits [nobr]
+
+<p>Unit must have <<successtext 'ALL'>> of the following traits:
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.AllTraits(_chosentraits, false)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+:: RestrictionAllTraitsExact [nobr]
+
+<p>Unit must have <<successtext 'ALL'>> of the following traits:
+
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.AllTraits(_chosentraits, true)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+:: RestrictionInnateTrait [nobr]
+
+<<include LoadSelectTrait>>
+
+<p>Unit must have the following trait as an INNATE trait:
+<<message '(?)'>>
+  Innate trait is the traits that the unit should have when fully purified.
+<</message>>
+</p>
+
+<<selecttrait 'RestrictionInnateTraitDo' setup.TraitHelper.getAllTraitsOfTags(['skin'])>>
+
+
+:: RestrictionInnateTraitDo [nobr]
+
+<<set $qrestriction = setup.qres.InnateTrait($rTrait)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionHasPerkChoice [nobr]
+
+<<include LoadSelectTrait>>
+
+<p>
+Unit must be able to learn the following perk (they don't have to learn it):
+</p>
+
+<<selecttrait 'RestrictionHasPerkChoiceDo' setup.TraitHelper.getAllTraitsOfTags(['perkspecial'])>>
+
+
+:: RestrictionHasPerkChoiceDo [nobr]
+
+<<set $qrestriction = setup.qres.HasPerkChoice($rTrait)>>
+<<gotowipehistory 'QGRestrictionDone'>>

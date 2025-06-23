@@ -1,0 +1,33 @@
+:: EventSetup_fort_restoration_awards [nobr event]
+
+<<run new setup.Event(
+'fort_restoration_awards', /* key */
+"Fort Restoration Awards", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "darko",
+},
+[ /* tags */
+  'fort',
+],
+'Event_fort_restoration_awards',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'inspector': 'all',
+},
+[ /* outcomes */
+  setup.qc.SetCooldownEvent(null, 50),
+  setup.qc.Opportunity('fort_restoration_awards', {
+inspector: "inspector",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_fort_restoration_progress', '2'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_fort_restoration_awards [nobr]
+<<include "Opportunity_fort_restoration_awards">>

@@ -1,0 +1,34 @@
+:: InitCompanyLizardkin [nobr company]
+
+<<set _scout = setup.qc.OneRandom([
+  setup.qc.DoAll([]),
+  setup.qc.QuestDelay('veteran', 1),
+])>>
+
+<<run new setup.CompanyTemplate(
+  'lizardkin',
+  'Lizardkin',
+  'CompanyTemplateLizardkin',
+  [ /* favor effects */
+    [
+      _scout,
+    ],
+    [
+      setup.qc.QuestDelay('veteran', 1),
+    ],
+    [
+      setup.qc.QuestDelay('veteran', 1),
+      _scout,
+    ],
+  ],
+)>>
+
+:: CompanyTemplateLizardkin [nobr]
+
+A group of people with scaley skin and enormous tails living
+across the <<lore region_sea>>.
+Unlike the purebred dragonkin, these people lack wings, but they make up for it
+in grit and combat ferocity.
+These people are not usually welcoming to outsiders, but for those who managed
+to secure their trust, they will find that lizardkin scouts are one of the best
+scouts for finding rare quests in the world...

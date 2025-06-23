@@ -1,0 +1,260 @@
+:: QuestSetup_be_cleansed_in_fire [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriastudent = new setup.UnitCriteria(
+null, /* key */
+'Student of Fire', /* name */
+[
+  setup.trait.per_slow,
+  setup.trait.per_smart,
+  setup.trait.per_gregarious,
+  setup.trait.per_loner,
+  setup.trait.per_chaste,
+  setup.trait.per_lustful,
+  setup.trait.per_curious,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.per_lavish,
+  setup.trait.per_submissive,
+  setup.trait.per_frugal,
+  setup.trait.per_logical,
+  setup.trait.per_proud,
+  setup.trait.per_empath,
+  setup.trait.per_humble,
+  setup.trait.per_honorable,
+  setup.trait.per_brave,
+  setup.trait.per_evil,
+  setup.trait.per_cautious,
+  setup.trait.per_attentive,
+  setup.trait.per_kind,
+  setup.trait.per_dreamy,
+  setup.trait.per_cruel,
+  setup.trait.per_aggressive,
+  setup.trait.per_lunatic,
+  setup.trait.per_calm,
+  setup.trait.per_masochistic,
+  setup.trait.per_playful,
+  setup.trait.per_serious,
+  setup.trait.per_independent,
+  setup.trait.per_loyal,
+  setup.trait.per_studious,
+  setup.trait.per_active,
+  setup.trait.per_direct,
+  setup.trait.per_sly,
+  setup.trait.per_stubborn,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_intimidating,
+  setup.trait.magic_light_master,
+  setup.trait.magic_light,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_water_master,
+  setup.trait.magic_water,
+  setup.trait.skill_animal,
+  setup.trait.skill_alchemy,
+  setup.trait.skill_entertain,
+  setup.trait.skill_creative,
+  setup.trait.skill_hypnotic,
+  setup.trait.skill_connected,
+  setup.trait.skill_flight,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  arcane: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'be_cleansed_in_fire', /* key */
+"Be Cleansed in Fire", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'veteran',
+  'prep',
+  'trait',
+  'danger',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'student': [ _criteriastudent, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_be_cleansed_in_fire',
+setup.qdiff.death1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_be_cleansed_in_fireCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_be_cleansed_in_fireCrit',
+    [
+      setup.qc.IfThenElse(
+        setup.qres.Actor('student', setup.qres.HasTitle('quest_consumed_by_fire_0')),
+        setup.qc.DoAll([]),
+        setup.qc.QuestDirectForceAssign('be_cleansed_in_fire', {student: 'student'}),
+      )
+    ],
+  ],
+  [
+    'Quest_be_cleansed_in_fireCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_be_cleansed_in_fireCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_be_cleansed_in_fire [nobr]
+<p>
+Alone but yet not alone, lost but yet not lost, suffering but yet at peace,
+confused and yet focused, empty and yet so very full...
+</p>
+<<if $g.student>>
+<p>
+<<Rep $g.student>> continues on in <<their $g.student>> lonesome journey to
+master <<their $g.student>> magic in the deserts...
+</p>
+<</if>>
+
+
+:: Quest_be_cleansed_in_fireCrit [nobr]
+<p>
+<<if $gQuest.getSeed() % 5 == 0>>
+<<rep $g.student>> continued to wonder in the vast desert with nothing but
+<<their $g.student>> <<lore magic_fire>> by <<their $g.student>> side, losing
+more and more of <<themself $g.student>> in order to obtain mastery over
+it...
+<<elseif $gQuest.getSeed() % 5 == 1>>
+The intense heat of the desert only served to amplify the effects of <<rep
+$g.student>> losing their own self little by little, all to master that
+damned <<lore magic_fire>>...
+<<elseif $gQuest.getSeed() % 5 == 2>>
+<<lore magic_fire>> is not a forgiving mistress, taking more and more of
+<<reps $g.student>> very core self if <<they $g.student>> ever want to have
+mastery over it...
+<<elseif $gQuest.getSeed() % 5 == 3>>
+<<rep $g.student>> had to lose every single bit of <<themself
+$g.student>>, if <<they $g.student>> ever want to gain mastery over the vast
+magic of <<lore magic_fire>>...
+<<elseif $gQuest.getSeed() % 5 == 4>>
+Every passing day drained more and more of <<rep $g.student>> self, be it
+<<their $g.student>> history, personality, and skills, and <<rep $g.student>>
+could feel <<themself $g.student>> becoming more empty, all to let <<lore
+magic_fire>> enter them...
+<</if>>
+</p>
+
+<p>
+<<run _cancleanse = $g.student.getRemovableTraits().filter(
+trait => trait.getTags().includes("per") ||
+trait.getTags().includes('skill') ||
+trait.getTags().includes("bg")).filter(
+  trait => !trait.getTags().includes('magic')
+)>>
+<<run _cancleanse = _cancleanse.filter(trait => trait != setup.trait.magic_fire)>>
+
+<<if _cancleanse.length>>
+<<set _tocleanse = setup.rng.choice(_cancleanse)>>
+<<set _s = setup.Text.Hobby.verb($g.student, _tocleanse)>>
+
+<<if $gQuest.getSeed() % 6 == 0>>
+The times <<rep $g.student>> used to spent enjoying <<= _s>> seems to be such
+a distant memory now, and it does not seem to hold much appeal anymore for
+<<therace $g.student>>.
+<<elseif $gQuest.getSeed() % 6 == 1>>
+<<rep $g.student>> can vaguely remember why <<they $g.student>> used to enjoy <<= _s>> so much...
+<<elseif $gQuest.getSeed() % 6 == 2>>
+For the current <<rep $g.student>>, <<= _s>> seems so pointless, and <<they
+$g.student>> student|wonder why <<they $g.student>> used to like doing it so
+much...
+<<elseif $gQuest.getSeed() % 6 == 3>>
+The prospect of <<= _s>> no longer excites <<rep $g.student>>...
+<<elseif $gQuest.getSeed() % 6 == 4>>
+As <<rep $g.student>> grew closer to closer to nothingness, not even <<= _s>>
+will be able to bring joy to <<therace $g.student>> anymore...
+<<elseif $gQuest.getSeed() % 6 == 5>>
+The cleansing fire purifies all, and <<rep $g.student>> will find no more joy in <<= _s>>.
+<</if>>
+
+<<run setup.qc.TraitRemove('student', _tocleanse).apply($gQuest)>>
+
+<<set _vs = $varstore.get('be_cleansed_in_fire_traits')>>
+<<if !_vs>>
+<<set _vs = []>>
+<<run $varstore.set('be_cleansed_in_fire_traits', _vs, -1)>>
+<</if>>
+
+<<run _vs.push(_tocleanse.key)>>
+<<run $varstore.set('be_cleansed_in_fire_traits', _vs, -1)>>
+
+<</if>>
+</p>
+
+<<if !_cancleanse.length>>
+<p>
+As <<their $g.student>> mind finished emptying completely, <<yourrep
+$g.student>> was ready to receive the blessings of fire. Alone, <<they
+$g.student>> wandered aimlessly within the desert, guided vaguely by a distant
+fire <<they $g.student>> and only <<they $g.student>> could see. Arriving at
+the destination, <<they $g.student>> student|was greeted with an empty altar,
+with nothing but a statue of a goddess looking down on <<them $g.student>>.
+</p>
+
+<p>
+The now-empty husk of <<rep $g.student>> had been deemed
+suitable, and <<rep $g.student>> could feel a growing heat throughout <<their
+$g.student>> entire body. Magical power swirled from the statue down into
+all around <<them $g.student>>, before leaping straight into <<their
+$g.student>> <<umouth $g.student>> and inside <<their $g.student>> body.
+The sensation was strange —
+a combination of warmth and pain, but the now completely empty slaver spared
+no more detail in retelling the story to anyone.
+</p>
+
+<p>
+The deed was done. Back at your fort, even you can sense a powerful magic
+brimming from within <<rep $g.student>>. The <<rep
+setup.trait.magic_fire_master>> is now within <<reps $g.student>> grasp. But
+looking at blank expression of <<theslaver $g.student>>, you started to wonder at yourself
+if it was worth it to sacrifice all of your very self for power...
+</p>
+
+<<run setup.qc.TraitReplace('student', setup.trait.magic_fire_master).apply($gQuest)>>
+
+<<if $varstore.get('be_cleansed_in_fire_traits') && 
+     $varstore.get('be_cleansed_in_fire_traits').length>>
+  <<run setup.qc.AddHistory('student', "lost all a|their personality in exchange for mastery over fire").apply($gQuest)>>
+  <<run setup.qc.AddTitle('student', 'quest_consumed_by_fire_0').apply($gQuest)>>
+  <<run setup.qc.VarSet('be_cleansed_in_fire_event_timeout', 1, 2).apply($gQuest)>>
+<</if>>
+
+<</if>>

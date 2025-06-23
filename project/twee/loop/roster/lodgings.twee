@@ -1,0 +1,52 @@
+:: Lodgings [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.lodgings)>>
+<<set _unitlist = State.variables.company.player.getUnits({job: setup.job.slaver})>>
+<<set _maxslavers = State.variables.company.player.getMaxUnitOfJob(setup.job.slaver)>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+You enter the area of your fort which has been designated as the de facto lodgings area of your fort.
+<<if _room && _room.getLevel() > 1>>
+It has been extended with <<= _room.getLevel() - 1>> additional rooms.
+<</if>>
+There are currently <<successtext _unitlist.length>> slavers residing here out of 
+a maximum of <<= _maxslavers>> slavers.
+<<if _unitlist.length >= _maxslavers>>
+If you want to hire more slavers, consider furnishing more rooms by upgrading
+your <<rep setup.buildingtemplate.lodgings>>.
+<</if>>
+You remember that you can interact with your slavers if you ever want to change their skill focuses,
+which determines which skill they gain on level up.
+</p>
+
+<<if $fort.player.isHasBuilding('warroom')>>
+  <<set _need = _unitlist.filter(unit => unit.isCanLearnNewPerk())>>
+  <<if _need.length>>
+    <p>
+      There are <<dangertext _need.length>> slavers who <<successtext 'can learn a new perk'>>.
+      You should assign new perks to them, or you can
+      <<foclink '(Auto Assign)'>>
+        <<run setup.Unit.autoAssignPerks()>>
+        <<focgoto>>
+      <</foclink>>.
+    </p>
+  <</if>>
+<</if>>
+
+<<if $calendar.getWeek() == 2>>
+  <div class='helpcard'>
+    <p>
+      Welcome to the roster screen. You can interact and customize with your slavers here.
+      The most important menu that you need to learn is perhaps the <<successtext "Skill focus">>
+      menu. Using this menu, you can change how the units will progress their skills as they level up.
+      Click on any of the Skill Focus menu to try it out!
+    </p>
+  </div>
+<</if>>
+
+<<set _dom = setup.DOM.Roster.rosterlist(_unitlist, 'unitslaver')>>
+<<attach _dom>>

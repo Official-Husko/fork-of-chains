@@ -1,0 +1,200 @@
+:: QuestSetup_attitude_adjustment [nobr quest]
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Non-Dominant Slave', /* name */
+[
+  setup.trait.bg_courtesan,
+  setup.trait.bg_maid,
+  setup.trait.bg_whore,
+  setup.trait.bg_slave,
+  setup.trait.per_calm,
+  setup.trait.per_loyal,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.training_obedience_master,
+],
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_boss,
+  setup.trait.bg_noble,
+  setup.trait.bg_slaver,
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_independent,
+  setup.trait.per_stubborn,
+  setup.trait.per_chaste,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.NoTraits([setup.trait.training_mindbreak, setup.trait.per_dominant, setup.trait.per_submissive, setup.trait.training_dominance_master], true),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'attitude_adjustment', /* key */
+"Attitude Adjustment", /* Title */
+{ /* Author */
+  name: "Choker Guy",
+  url: "https://tfgames.site/phpbb3/memberlist.php?mode=viewprofile&u=41811",
+},
+[ /* tags */
+  'city',
+  'trait',
+  'rare',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'neg1': [ setup.qu.negotiator, 1],
+  'neg2': [ setup.qu.negotiator, 1],
+  'tra': [ setup.qu.slavetrainer, 1],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'dom': 'subrace_humankingdom',
+},
+[ /* costs */
+  setup.qc.Money(-10000),
+],
+'Quest_attitude_adjustment',
+setup.qdiff.normal45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_attitude_adjustmentCrit',
+    [
+      setup.qc.SlaverMarker('dom'),
+      setup.qc.Outcomes("success"),
+      setup.qc.Money(5000),
+    ],
+  ],
+  [
+    'Quest_attitude_adjustmentSuccess',
+    [
+      setup.qc.Trait('slave', setup.trait.per_submissive),
+    ],
+  ],
+  [
+    'Quest_undefinedFailure',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Money(-10000),
+    ],
+  ],
+  [
+    'Quest_attitude_adjustmentDisaster',
+    [
+      setup.qc.TraumatizeRandom('tra', 6),
+      setup.qc.Injury('slave', 3),
+      setup.qc.Money(-10000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_attitude_adjustment [nobr]
+<p>
+    Tales of an adept domme have reached your party's ears. <<Their $g.dom>> lair, the stories say, is located deep within the <<lore region_city>>. On a tour of the city, your company stumbles upon a suspicious-looking pet store. The various slaves do not rouse suspicion, ubiquitous as they are in central Lucgate. But who buys their slave gear <i>used</i>?
+</p>
+
+<p>
+    Curiosity piqued, you're keen to send a party — along with a slave — to test the rumours surrounding this domme for accuracy. Supposedly, in exchange with a suitably sizable bag of gold, <<they $g.dom>> can make a submissive out of any slave of sound mind, an appealing prize. <<They $g.dom>> will not put up with those already firmly on one end of the Dom/sub spectrum, from what you've heard, so don't even try. Let's see if <<their $g.dom>> skills measure up to <<their $g.dom>> reputation.
+</p>
+
+
+:: Quest_attitude_adjustmentCrit [nobr]
+
+<<if $g.slave.isMale()>>
+<<else>>
+<<questimage 'attitude_adjustment_female.jpg'>>
+<</if>>
+
+<p>
+    The domme was beside <<themselves $g.dom>>. <<They $g.dom>> had a trio of slaves come out to give your band a royal reception. The wait passed in a blur of inhumanly flexible slave tongues. When it was over, all non-slave gazes turned towards the domme, with <<rep $g.slave>> in tow. <<They $g.slave>> was moving on all fours, despite not being on a leash or having received an observable command to do so.
+</p>
+
+<p>
+    "Friends!" the domme greeted your slavers. "I'm proud to announce your property took to <<their $g.slave>> place like a fish to water. Huh, that's a good idea, actually. Hold your breath."
+</p>
+
+<p>
+    The order was addressed to nobody in particular, but it looked like <<rep $g.slave>> was following it. <<They $g.slave>> held out for a full-minute completely motionless. <<Their $g.slave>> body started twitching then, but <<their $g.slave>> eyes remained perfectly still.
+</p>
+
+<p>
+    "Alright, alright, that's enough," the domme relented, and the slave gasped momentarily. "As you can see, <<they $g.slave>>'s the perfect subordinate in every way. Treat <<them $g.slave>> well — or don't — and you'll get exactly what you ask for."
+</p>
+
+<p>
+    The domme could hardly stop, but eventually did. Apparently, <<rep $g.slave>> did such an excellent job during training, <<they $g.dom>> was happy to refund part of your payment, claiming the place was in such a good state, <<they $g.dom>> easily made the rest of the money back.
+</p>
+
+<p>
+    <<Rep $g.tra>> wasn't looking too shabby either. From <<their $g.tra>> expression, it looks like <<their $g.tra>> stay here was marked by a never-ending sequence of orgasms. Even now, <<they $g.tra>> struggles to shake loose the dozen or so slaves hanging off <<their $g.tra>> every limb. Weren't these slaves supposed to be submissive?
+</p>
+
+
+
+
+:: Quest_attitude_adjustmentSuccess [nobr]
+
+<<if $g.slave.isMale()>>
+<<else>>
+<<questimage 'attitude_adjustment_female.jpg'>>
+<</if>>
+
+<p>
+    At first, there was little fanfare. Your slavers started getting impatient, even, sitting in the room, waiting for seemingly no reason. Finally, the domme showed up, and <<they $g.dom>> had <<rep $g.slave>> in tow.
+</p>
+
+<p>
+    Only your slave was walking on all fours, unprompted. The domme had a smug look on <<their $g.dom>> face. So this was the extent of <<their $g.dom>> abilities. Not long ago, your slave was like any other. Now, <<they $g.slave>> seemed to struggle thinking for <<themselves $g.slave>>. When the domme stopped momentarily, <<rep $g.slave>> followed suit immediately, scared to approach your slavers, who were obviously going to call <<them $g.slave>> over in a second.
+</p>
+
+<p>
+    With payment having been sorted out beforehand, there was nothing left to do but to collect the newly submissive slave, <<rep $g.tra>>, and head back to the fort.
+</p>
+
+
+
+:: Quest_undefinedFailure [nobr]
+<p>
+    Your slavers were made to wait for a long time. Half an hour passed, then a full one. Inquiries were stonewalled by the nearby attendant slaves. Five hours into this existential nightmare, the domme finally deigned to show <<their $g.dom>> face. Behind <<them $g.dom>> trailed <<rep $g.slave>>, inching towards your slavers on all fours, looking somewhere between concerned and aroused.
+</p>
+
+<p>
+    The domme was furious. Apparently, your slave didn't take too well to the training, at least not immediately. There was a lot of slurred shouting about incurred damages and the domme's reputation. <<They $g.dom>> delivered a simple ultimatum: Either you pay the fee once over, or the slave stays here, as collateral.
+</p>
+
+<p>
+    The choice was an easy one. <<dangertextlite "10,000g">> shouldn't make too much of a dent, or at least that's what <<yourrep $g.neg1>> thought. It's an expense you were willing to part with initially, now you wouldn't give up the slave you already invested in so easily. <<rep $g.tra>> is looking a bit sheepish at the obvious failure. At least the training seemed to take, you tell yourself, as your slave enters the fort still on all fours.
+</p>
+
+
+
+:: Quest_attitude_adjustmentDisaster [nobr]
+<p>
+    The domme's entrance was explosive, and immediate. <<rep $g.slave>> was pushed towards your band, falling pitifully to the ground. Judging by the marks all over <<their $g.slave>> body, this latest fall seemed to be little more than an inconvenience.
+</p>
+
+<p>
+    There's hardly a coherent sentence that can be discerned from the supposedly masterful dominant. Most of it seemed to be conspiracy theories about the true nature of your slave. Apparently, <<they $g.dom>> suspected foul play, magic, a curse, anything that could justify this abhorrent failure. Because clearly, <<their $g.dom>> mastery could not be at fault. No, your slave must have been tampered with, to prevent this flawless process from taking its natural course.
+</p>
+
+<p>
+    The wild rambling finally came to a point. Either leave your slave as collateral, or pay twice the original fee to compensate the domme for the damaged property — which nobody has seen — and of course the damaged reputation that <<they $g.dom>> held so dear. Wanting to be done with it, your band paid the incompetent trainer to close the matter. It's just a shame it was all for naught, coming with a <<dangertextlite "10,000g">> pricetag.
+</p>
+
+<p>
+    And speaking of trainers, <<rep $g.tra>> was looking in bad shape. Back at the fort, your medically inclined slavers deduce <<they $g.tra>> should be fine within a month or two, but <<they $g.tra>>'ll be out of sorts until then.
+</p>

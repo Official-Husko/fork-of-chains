@@ -1,0 +1,72 @@
+:: MultiTraining [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _traits = setup.UnitActionHelper.getTraitChoices($unit[$gUnitMultiTraining_key])>>
+
+<<if !_traits.length>>
+<p>
+  There are no available alteration for <<rep $unit[$gUnitMultiTraining_key]>>.
+</p>
+
+<div>
+  <<focreturn '(Return)'>>
+</div>
+
+<<else>>
+
+<p>
+  Choose which traits you want to have on <<rep $unit[$gUnitMultiTraining_key]>>.
+</p>
+
+<<if _chosentraits>>
+  <<set _chosentraits = _chosentraits.filter(trait => _traits.includes(trait))>>
+<<elseif $gMultiTrainingTraitKeys>>
+  <<set _chosentraits = $gMultiTrainingTraitKeys.map(key => setup.trait[key]).filter(trait => _traits.includes(trait))>>
+<<else>>
+  <<set _chosentraits = []>>
+<</if>>
+
+<<run setup.UnitActionHelper.populateTraits($unit[$gUnitMultiTraining_key], _chosentraits)>>
+
+<div>
+  <<focbutton 'Begin'>>
+    <<if _chosentraits.length>>
+      <<set $gMultiTrainingTraitKeys = _chosentraits.map(trait => trait.key)>>
+      <<run setup.UnitActionHelper.generateQuest($unit[$gUnitMultiTraining_key], _chosentraits)>>
+      <<focgoto 'QuestHub'>>
+    <<else>>
+      <<run setup.notify('Please select at least one trait')>>
+      <<focgoto>>
+    <</if>>
+  <</focbutton>>
+  <<focreturn '(Cancel)'>>
+</div>
+
+<div class='traitlistcard card'>
+  <<run _dom = setup.DOM.Menu.traitpickermulti({
+    raw_traits: _traits,
+    init_selected: _chosentraits,
+    no_overlap: true,
+    on_change_callback: traits => setup.UnitActionHelper.populateTraits($unit[$gUnitMultiTraining_key], traits),
+  })>>
+  <<attach _dom>>
+</div>
+
+<div class='slaveordercard card'>
+
+<div>
+  <b>Your slave orders</b>
+</div>
+
+<<filterall 'slaveorder' $slaveorderlist.getSlaveOrders()>>
+  <<if $menufilter.get('slaveorder', 'display') == 'compact'>>
+    <<slaveordercardcompact _displayobj 1>>
+  <<else>>
+    <<slaveordercard _displayobj 1>>
+  <</if>>
+<</filterall>>
+
+</div>
+
+<</if>>

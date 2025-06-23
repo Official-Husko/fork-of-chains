@@ -1,0 +1,126 @@
+:: QuestSetup_the_seven_deadly_transformations__sloth [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'seven_deadly_transformation',  /* key */
+  "Chosen One",   /* name */
+  'A self-proclaimed chosen one preordained to fulfilling an important destiny',   /* name */
+  'a|is the chosen one preordained to fulfill an important destiny',
+  0,   /* slave value */
+  {
+  },
+)>>
+
+<<run new setup.UnitGroup(
+'quest_the_seven_deadly_transformations__sloth2',
+"Fated One",
+[
+[setup.unitpool.subrace_humanvale_male, 0.16666666666666666],
+[setup.unitpool.subrace_humanvale_female, 0.16666666666666666],
+[setup.unitpool.subrace_humankingdom_male, 0.16666666666666666],
+[setup.unitpool.subrace_humankingdom_female, 0.16666666666666666],
+[setup.unitpool.subrace_humandesert_male, 0.16666666666666666],
+[setup.unitpool.subrace_humandesert_female, 0.16666666666666666], ],
+0, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_adventurer),
+setup.qc.TraitReplace('unit', setup.trait.per_honorable),
+setup.qc.AddTitle('unit', 'seven_deadly_transformation'),
+setup.qc.AddHistory('unit', "received a premonition about a great fate awaiting a|them and embarked on a journey."), ],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformations__sloth', /* key */
+"The Seven Deadly Transformations: Sloth", /* Title */
+"darko", /* Author */
+[ 'vale',
+'transformation',
+'unit'
+], /* tags */
+1, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+'tank': setup.qu.tank,
+'dps': setup.qu.dps,
+'healer': setup.qu.healer, },
+{ /* actors */
+'fated': 'quest_the_seven_deadly_transformations__sloth2', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformations__sloth',
+setup.qdiff.hard7, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformations__slothCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.MoneyNormal(),
+],
+], [
+'Quest_the_seven_deadly_transformations__slothCrit',
+[
+setup.qc.Slave('fated', "a|was trying to fulfill a|their destiny but would have failed miserably without your company's intervention", undefined), ],
+], [
+'Quest_the_seven_deadly_transformations__slothFailure',
+[
+],
+], [
+'Quest_the_seven_deadly_transformations__slothFailure',
+[
+setup.qc.Injury('tank', 1),
+setup.qc.Injury('dps', 1),
+setup.qc.Injury('healer', 1), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoUnitWithTitle('seven_deadly_transformation'),
+],
+)>>
+
+:: Quest_the_seven_deadly_transformations__sloth [nobr]
+
+<p>
+A new adventurer has arrived at the <<lore region_vale>>, and claimed to various taverns that <<they $g.fated>>  had been preordained to fulfill a great destiny.
+Only, the adventurer seems to spend most of <<their $g.fated>> time in various taverns, cluelessly looking for a way to advance their quest without really knowing how.
+<<Their $g.fated>> behaviors are so un-herolike that even the tavern wenches refuse to touch the alcohol-ridden adventurer.
+</p>
+
+<p>
+You could send a group of slavers to help these taverns and capture the adventurer as a slave. Perhaps your company can even help <<them $g.fated>> fulfill their destiny — although most likely <<they $g.fated>>'s just drunk and the destiny thing turns out to be nothing but nonsense.
+</p>
+
+
+:: Quest_the_seven_deadly_transformations__slothCrit [nobr]
+
+<p>
+Your slavers found <<rep $g.fated>> lazily drinking in one of the taverns in a neighboring village.
+They <<uadv $g.tank>> waited until the adventurer left the village — still drunk and swaying —
+which made <<them $g.fated>> an easy prey for your slavers.
+After a brief struggle, <<yourrep $g.tank>> had the adventurer-turned-slave tied and secured,
+to be brought home after pawning most of <<their $g.fated>> belongings.
+</p>
+
+<p>
+Perhaps this isn't the end of <<their $g.fated>> adventure, and you'll hear more as long as <<rep $g.fated>>  fated|remain your slave.
+</p>
+
+
+:: Quest_the_seven_deadly_transformations__slothFailure [nobr]
+
+<p>
+Your slavers were unfortunate for by the time they reached the tavern,
+the adventurer was already nowhere to be seen.
+But adventurers such as these are dimes in a dozen,
+and there are no doubt you'll see more of them coming up in the vale.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Oh the way back, your slavers were ambushed by road bandits and suffered minor injuries.
+</p>
+<</if>>

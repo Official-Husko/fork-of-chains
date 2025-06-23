@@ -1,0 +1,125 @@
+:: QuestSetup_raid__beyond_the_southern_seas [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'raidbeyond_the_southern_seas', /* key */
+"Raid: Beyond the Southern Seas", /* Title */
+"darko", /* Author */
+[ 'sea', 'money', 'ire',
+], /* tags */
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'raider1': setup.qu.raider,
+'raider2': setup.qu.raider,
+'support': setup.qu.raidersupport, },
+{ /* actors */
+'villager': 'subrace_humansea', },
+[ /* costs */
+],
+'Quest_raid__beyond_the_southern_seas',
+setup.qdiff.hard50, /* difficulty */
+[ /* outcomes */
+[
+'Quest_raid__beyond_the_southern_seasCrit',
+[
+setup.qc.Slave('villager', "a|was a simple villager living on one of the many settlements beyond the southern seas", false),
+setup.qc.Ire('humansea', 2),
+setup.qc.MoneyCrit(0.75), ],
+], [
+'Quest_raid__beyond_the_southern_seasSuccess',
+[
+setup.qc.Ire('humansea', 2),
+setup.qc.MoneyCustom(1000),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_raid__beyond_the_southern_seasFailure',
+[
+setup.qc.Injury('raider1', 4),
+setup.qc.Injury('raider2', 3),
+setup.qc.Injury('support', 2), ],
+], [
+'Quest_raid__beyond_the_southern_seasDisaster',
+[
+setup.qc.TraumatizeRandom('raider1', setup.TRAUMA_LONG),
+setup.qc.TraumatizeRandom('raider2', setup.TRAUMA_LONG),
+setup.qc.Injury('raider1', 6),
+setup.qc.Injury('raider2', 6),
+setup.qc.MissingUnitRecapture('support', 'capturedmedium'),
+],
+], ],
+[
+[setup.questpool.sea, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_raid__beyond_the_southern_seas [nobr]
+
+<p>
+There are several remote settlements on the <<lore region_sea>> —- these
+settlements are rarely well-defended and hence make prime target for raiders
+such as yourself. You could try to send a group of slavers to raid one such
+settlement, but beware — like everything else in the <<lore region_sea>>, this
+innocuous looking mission is sure to hide some unknown dangers...
+</p>
+
+
+:: Quest_raid__beyond_the_southern_seasCrit [nobr]
+
+<p>
+Your slavers, led by <<rep $g.raider1>>, were met with little resistance as
+they raided their houses and raped the villagers.
+
+<<set _raider = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'bg_raider'})>>
+<<if _raider>>
+  The raiding reminded <<rep _raider>> of <<their _raider>> past as a raider in the
+  <<uhomeland _raider>>.
+<</if>>
+
+<<set _evil = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_evil'})>>
+<<if _evil>>
+  Seeing the devastation, <<rep _evil>> could not help but grin evilly.
+<</if>>
+
+<<set _cruel = setup.selectUnit([$g.raider1, $g.raider2, $g.support], {trait: 'per_cruel'})>>
+<<if _cruel>>
+  The cruelty satisfied <<reps _cruel>> sadistic tendencies.
+<</if>>
+
+In the end, they managed to
+<<uadv $g.raider1>> plundered much of the village as well as kidnapped one particularly
+valuable slave to bring home.
+</p>
+
+
+:: Quest_raid__beyond_the_southern_seasSuccess [nobr]
+
+<p>
+Your slavers, led by <<rep $g.raider1>>, managed to raid a remote part of a
+remote village, meaning that there was really nobody who could have stopped
+them. They <<uadv $g.raider1>> looted valuable jars and exotic rugs from the
+warehouse and returned back to the ship before reinforcements come.
+</p>
+
+
+:: Quest_raid__beyond_the_southern_seasFailure [nobr]
+
+<p>
+Unfortunately, your slaver chose the wrong target as the warehouse they
+targeted was apparently guarded by veteran mercenaries, who were able to
+repel your slaver's assault with ease.
+</p>
+
+
+:: Quest_raid__beyond_the_southern_seasDisaster [nobr]
+
+<p>
+Your slavers were gravely injured as they foolishly attacked headlong into
+a village square, which was obviously well defended by the fierce locals.
+Worse, <<rep $g.support>> support|was captured by the locals, no doubt going to be made
+example for your atrocities.
+<<urescuenow $g.support>>.
+</p>

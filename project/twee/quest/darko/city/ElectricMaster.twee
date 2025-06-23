@@ -1,0 +1,390 @@
+:: QuestSetupElectricMaster [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'quest_electricmaster_the_electrician',   /* key */
+  'Electrician',   /* name */
+  'An infamous slave master from the city gifted with control over electricity',   /* name */
+  'used a|their control over electricity to train a|their slaves',  /* unit description */
+  5000,   /* slave value */
+  {
+    slaving: 4,
+    knowledge: 1,
+    arcane: 2,
+  },
+)>>
+
+<<run new setup.UnitGroup(
+  'quest_electricmaster_electrician',
+  'The Electrician',
+  'city_all',
+  1,
+  [
+    setup.qc.BgTraitReset('unit', setup.trait.bg_slaver),
+    setup.qc.Trait('unit', setup.trait.bg_engineer),
+    setup.qc.TraitReplace('unit', setup.trait.per_dominant),
+    setup.qc.TraitReplace('unit', setup.trait.magic_wind_master),
+    setup.qc.Nickname('unit', 'The Electrician'),
+  ],
+)>>
+
+<<run new setup.UnitGroup(
+  'quest_electricmaster_slave',
+  'Slaves of the Electrician',
+  'city_all',
+  1,
+  [
+    setup.qc.TraitReplace('unit', setup.trait.per_submissive),
+    setup.qc.TraitReplace('unit', setup.trait.training_obedience_advanced),
+  ],
+)>>
+
+<<set _electrician = new setup.UnitCriteria(
+  null, /* key */
+  'Electrician', /* title */
+  [
+    setup.trait.bg_engineer,
+    setup.trait.height_short,
+    setup.trait.tough_nimble,
+    setup.trait.per_cautious,
+    setup.trait.per_attentive,
+    setup.trait.per_curious,
+    setup.trait.per_serious,
+    setup.trait.per_lunatic,
+    setup.trait.per_evil,
+    setup.trait.skill_creative,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+    setup.trait.magic_earth_master,
+  ], /* critical traits */
+  [
+    setup.trait.bg_slave,
+    setup.trait.dick_large,
+    setup.trait.balls_large,
+    setup.trait.breast_large,
+    setup.trait.muscle_strong,
+    setup.trait.tough_tough,
+    setup.trait.face_attractive,
+    setup.trait.face_beautiful,
+    setup.trait.per_brave,
+    setup.trait.per_dreamy,
+    setup.trait.per_stubborn,
+    setup.trait.per_cruel,
+    setup.trait.per_playful,
+    setup.trait.per_chaste,
+    setup.trait.per_dominant,
+    setup.trait.per_masochistic,
+    setup.trait.per_honorable,
+    setup.trait.skill_entertain,
+  ].concat(setup.TraitHelper.EQUIPMENT_SLUTTY), /* disaster traits */
+  [
+    setup.qres.Job(setup.job.slaver),
+  ], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    knowledge: 1.0,
+    intrigue: 1.0,
+    slaving: 1.0,
+  }
+)>>
+
+<<set _infiltrator = setup.CriteriaHelper.Restrictions(
+  [
+    setup.qres.NoTitle('quest_electricmaster_the_electrician'),
+  ],
+  setup.qu.infiltrator,
+)>>
+
+<<set _electrician2 = setup.CriteriaHelper.Restrictions(
+  [
+    setup.qres.NoTitle('quest_electricmaster_the_electrician'),
+  ],
+  _electrician,
+)>>
+
+
+<<set _desc1 = 'a|was a master of <<lore magic_wind>> known to most circles simply as "The Electrician"'>>
+<<set _desc2 = 'a|was one of the slaves fully broken by "The Electrician" who you stole from their mansion'>>
+
+
+/* version before clearing crit */
+<<run new setup.QuestTemplate(
+  'electric_master', /* key */
+  'Electric Master', /* Title */
+  'darko',   /* author */
+  ['city', 'money', 'unit', 'rare',],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'electrician': [_electrician, 2],
+    'infiltrator1': [setup.qu.infiltrator, 0.5],
+    'infiltrator2': [setup.qu.infiltrator, 0.5],
+  },
+  { /* actors */
+    'lord': 'quest_electricmaster_electrician',
+    'slave': 'quest_electricmaster_slave',
+  },
+  [ /* costs */
+  ],
+  'QuestElectricMaster', /* passage description */
+  setup.qdiff.extreme39, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestElectricMasterCrit',
+      [
+        setup.qc.AddTitle('lord', 'quest_electricmaster_the_electrician'),
+        setup.qc.Slaver('lord', _desc1),
+        setup.qc.RemoveFromUnitGroup('lord'),
+      ],
+    ],
+    [
+      'QuestElectricMasterSuccess',
+      [
+        setup.qc.Slave('slave', _desc2),
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestElectricMasterFailure',
+      [
+        setup.qc.Injury('electrician', 4),
+      ],
+    ],
+    [
+      'QuestElectricMasterDisaster',
+      [
+        setup.qc.MissingUnit('electrician'),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.epic],], /* quest pool and rarity */
+  [
+    setup.qres.Building(setup.buildingtemplate.prospectshall),
+    setup.qres.NoUnitWithTitle('quest_electricmaster_the_electrician'),
+    setup.qres.NoQuest('electric_master_clearcrit'),
+    setup.qres.QuestUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+/* version after clearing crit */
+<<run new setup.QuestTemplate(
+  'electric_master_clearcrit', /* key */
+  'Electric Master', /* Title */
+  'darko',   /* author */
+  ['city', 'money', 'unit', 'rare',],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'electrician': [_electrician2, 2],
+    'infiltrator1': [_infiltrator, 0.5],
+    'infiltrator2': [_infiltrator, 0.5],
+  },
+  { /* actors */
+    'slave': 'quest_electricmaster_slave',
+  },
+  [ /* costs */
+  ],
+  'QuestElectricMaster', /* passage description */
+  setup.qdiff.hardest39, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestElectricMasterCrit',
+      [
+        setup.qc.MoneyCrit(1.2),
+        
+      ],
+    ],
+    [
+      'QuestElectricMasterSuccess',
+      [
+        setup.qc.Slave('slave', _desc2),
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestElectricMasterFailure',
+      [
+        setup.qc.Injury('electrician', 4),
+      ],
+    ],
+    [
+      'QuestElectricMasterDisaster',
+      [
+        setup.qc.MissingUnit('electrician'),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.epic],], /* quest pool and rarity */
+  [
+    setup.qres.HasUnitWithTitle('quest_electricmaster_the_electrician', {job_key: 'slaver'}),
+    setup.qres.NoQuest('electric_master'),
+    setup.qres.QuestUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+
+
+:: QuestElectricMaster [nobr]
+
+<<set _repeat = ($gQuest.getTemplate().key == 'electric_master_clearcrit')>>
+
+<p>
+The <<lore race_humankingdom>> are known for their affinity to <<lore magic_wind>>.
+These masters of wind magic are capable more than just altering
+the wind -- they could shape the wind and alter electricity from their fingertips,
+zapping anyone they deem fit for punishment.
+While electric magic can certainly be certainly be put to good use during combat,
+it is also remarkably effective as a tool for breaking slaves.
+</p>
+
+<<if !_repeat>>
+
+<p>
+In the more expensive area of the <<lore region_city>>, resides an infamouse rich lord that people
+colloqually refer to as "The Electrician".
+The lord is apparently gifted with <<rep setup.trait.magic_wind_master>>,
+and has been using it liberally to train his staffs into fully servile servants.
+It is said that the mansions hold great riches, as well as obedient "slaves", which
+often tempts foolish people to try and break inside.
+They never come back.
+Rumors has it that the Electrician takes delight in breaking the most defiant of people,
+and actually invited people to rob their mansion as to obtain even more victims to break.
+</p>
+
+<<else>>
+
+<<set _lord = setup.getUnit({job: setup.job.slaver, title:'quest_electricmaster_the_electrician'})>>
+
+<p>
+<<if _lord>>
+  While you have recruited <<rep _lord>> into your company, <<they _lord>>
+  gives <<their _lord>> consent should you still wish to raid the mansion.
+<<else>>
+  You recall that your slavers has been there before.
+<</if>>
+But even so, all the automated defenses of the mansion are still active, but so does
+the prizes that await your slavers there.
+</p>
+
+<</if>>
+
+
+:: QuestElectricMasterCrit [nobr]
+
+<<set _repeat = ($gQuest.getTemplate().key == 'electric_master_clearcrit')>>
+
+<p>
+Given the strange layout of the mansion, there was only one possible option for a potential
+thief to break in -- have
+<<yourrep $g.electrician>> <<uadv $g.electrician>> lead the charge
+while <<rep $g.infiltrator1>> and <<rep $g.infiltrator2>> trail from behind.
+The rumors proved true: as soon as they broke into the mansion, they discovered
+that it was indeed fully booby-trapped. Various traps were scattered throughout the
+mansion, each one electrifying, and it was entirely up to your slavers to try
+to disarm and navigate through the confusing maze.
+Given the amount of electric torture devices scattered along the walkway alone, your slavers
+could only imagine what kind of depravity could be found behind the closed doors.
+</p>
+
+<p>
+Fortunately, <<rep $g.electrician>> electrician|was more than adept at
+<<their $g.electrician>> job.
+<<They $g.electrician>> managed to find and disarm the traps one by one, and your slavers
+made steady progress as they
+climbed the mansion little by little, doing their best to ignore all the various naked
+"guards" being "posted" in the various
+locations and under many daunting poses, as well as the occasional screams that would
+suddenly come from the lower floors.
+</p>
+
+<<if !_repeat>>
+
+<p>
+Eventually, they arrived at the topmost floor.
+The last obstacle before them was a door made of strong oaken wood,
+which your slavers proceeded to open carefully.
+In the small room behind the door, sat a <<man $g.lord>> with <<their $g.lord>> back facing your slavers.
+The <<man $g.lord>> slowly turned to face your slavers, -- this must be the <<man $g.lord>>
+known as "The Electrician".
+Suddenly, an electric cage dropped onto your slavers from the ceiling, trapping them inside.
+But "The Electrician" was quite impressed by your slavers' prowess to reach this room.
+Citing boredom, <<they $g.lord>> asked to join your company for a
+change of scenery, and arranged for <<their $g.lord>> mansion to
+be attended to by <<their $g.lord>> numerous "employees" for the time being.
+</p>
+
+<<else>>
+
+<p>
+Eventually, they arrived at the basement, where they found a stash of treasure
+hidden inside one of the rooms.
+They took the treasure out and sold them for quite a large profit, which perhaps could
+be even larger were your slavers not steal one or two trinkets from the treasures.
+</p>
+
+<</if>>
+
+
+:: QuestElectricMasterSuccess [nobr]
+
+<p>
+The mansion were so littered by traps that
+your slavers had to move very, very slowly to make progress forwards.
+Eventually, they spotted a suspicious looking door, and decided to open it.
+Behind the door, they found a slave whose nipples and <<ugenital $g.slave>>
+were all hooked to a strange looking device.
+As your slavers pondered what the device did,
+it suddenly came alive, sending an electric jolt into the slave elicting a moan from both pain and ecstacy.
+Upon closer inspection, the slave was not actually bound,
+so this must be highly trained slave to be able to withstand and endure such a brutal shock
+without trying to run away.
+Your slavers decided that the slave would make a decent enough prize for the trip, and decided
+to end their adventure with the room.
+Perhaps next time your slavers would be able to go even further.
+</p>
+
+
+:: QuestElectricMasterFailure [nobr]
+
+<p>
+Unfortunately, <<rep $g.electrician>> electrician|was sloppy in <<their $g.electrician>> job and
+managed to trigger one of the traps.
+<<Rep $g.electrician>> electrician|was zapped, which caused <<them
+$g.electrician>> to stumble and fall butt-first into another dildo-shaped trap that
+zapped <<them $g.electrician>> directly in <<their $g.electrician>> ass.
+The combination of sudden pain and pleasure caused <<rep $g.electrician>> to fall unconscious,
+and your slavers had no choice but to retreat from this foolish endeavor.
+</p>
+
+
+:: QuestElectricMasterDisaster [nobr]
+
+<p>
+Your slavers managed to make a progress until they reached the dining room.
+Then suddenly, an unnoticed trap unleashed an electric dildo up
+<<reps $g.electrician>> ass, and impaled <<them $g.electrician>> upwards painfully.
+As <<therace $g.electrician>> continued to scream in pain,
+the dining room's door closed, trapping your slavers inside.
+</p>
+
+<p>
+One of the guards then appeared, slowly descended down the staircase before greeting them
+as "The Electrician"'s head guard.
+<<They $g.slave>> proceeded to <<man $g.slave>>handle <<yourrep $g.electrician>>,
+fondling <<their $g.electrician>> <<ugenital $g.electrician>>
+and <<ubody $g.electrician>> to make sure they were up to their lord's specifications
+for the new "guard" opening.
+Satisfied, <<they $g.slave>> ordered your other slavers to leave, which your
+other slavers had no choice but to meekly agree.
+</p>
+
+<p>
+<<Rep $g.electrician>> did not return to your fort, and <<their
+$g.electrician>> fate remains unknown.
+Perhaps <<they $g.electrician>> would live a life as one of the many toys in
+the Electrician's mansion, or perhaps you'll see <<them $g.electrician>> again one day.
+</p>

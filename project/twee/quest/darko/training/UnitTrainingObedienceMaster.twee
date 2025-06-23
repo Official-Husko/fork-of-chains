@@ -1,0 +1,127 @@
+:: QuestSetupUnitTrainingObedienceMaster [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_obedience_master',  /* id */
+  'Obedience Training: Master',  /* Title */
+  'FCdev and darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingObedienceMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingObedienceMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_obedience_master),
+        setup.qc.Trait('trainee', setup.trait.per_submissive),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingObedienceMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_obedience_master),
+        setup.qc.TraitRemove('trainee', setup.trait.per_dominant),
+      ],
+    ],
+    [
+      'QuestUnitTrainingObedienceMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingObedienceMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_obedience_master.getTraitGroup()),
+        setup.qc.TraitRemove('trainee', setup.trait.per_submissive),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingObedienceMaster [nobr]
+
+<p>
+This training will transform the slave from a free-willed humanlike
+into a slave whose only purpose in life is to obey its betters without
+any second thought.
+Such absolute obedience can only be obtained through intense unintterupted
+training, peppered with generous shocks of electricity whenever they show
+any form of resistance.
+This requires a slaver proficient in <<rep setup.trait.magic_wind_master>>, and
+furthermore the slaver themself must be sufficiently skilled.
+</p>
+
+<p>
+  Succeeding this training will remove <<rep setup.trait.per_dominant>> from the slave, if any.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingObedienceMasterCrit [nobr]
+
+<p>
+In one of the training sessions,
+<<rep $g.head>> snapped <<their $g.head>> fingers at <<rep $g.trainee>> and point commandingly
+at the floor in the dungeons.
+<<They $g.head>> told <<them $g.trainee>> that a proper slave does whatever
+<<their $g.trainee>> dom wants, always, and without question, or <<they $g.trainee>>
+will be punished. <<Rep $g.head>> left <<rep $g.trainee>> kneeling obediently beside <<them $g.head>> for some time.
+Then, without preamble, <<rep $g.head>> stood up again and
+<<if (!$g.head.isHasDick())>>rode <<their $g.trainee>> face
+<<else>>throatfucked <<them $g.trainee>><</if>>,
+intentionally ensuring that <<they $g.trainee>> gagged and struggled.
+<<Rep $g.trainee>> spent almost all <<their $g.trainee>> sexual experiences as a sub for the rest of the training,
+their life reduced to an endless cycle of phallus of every kind being inserted into <<their $g.trainee>>
+various orifices, with no regard whatsoever to <<their $g.trainee>> own pleasure.
+Whenever <<they $g.trainee>> showed any sign of discomfort, a jolt of electricity
+from <<reps $g.head>> mastery over <<rep setup.trait.magic_wind_master>> came to shock
+<<their $g.trainee>> nethers.
+This is what a slave must do, and it is <<their $g.trainee>> fate to become one.
+Even other slaves who happen to be allowed to have sex with <<them $g.trainee>> were required to use
+<<them $g.trainee>>, not make love to <<them $g.trainee>>.
+</p>
+
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into a completely submissive
+slave had been completed, and is now ready to comply to any order
+imaginable, and will always do it no matter how degrading or humiliating
+it is, and do it with a smile on <<their $g.trainee>> face.
+</p>
+
+:: QuestUnitTrainingObedienceMasterFailure [nobr]
+
+<p>
+While <<rep $g.trainee>> tried <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<reps $g.head>> lack of skill,
+the training was not able to wipe out all sense of free will
+from the slave.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingObedienceMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

@@ -1,0 +1,58 @@
+:: EventSetup_kobold_magic [nobr event]
+
+
+
+
+<<run new setup.Event(
+'kobold_magic', /* key */
+"Kobold Magic", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+'Event_kobold_magic',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'kobold': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+    setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_shunned_kobold_progress', '30', -1),
+  setup.qc.SetCooldownEvent('kobold_advice_3', 8),
+  setup.qc.OneRandomSeed([
+setup.qc.Trait('kobold', setup.trait.magic_fire_master),
+setup.qc.Trait('kobold', setup.trait.magic_light_master)
+]),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_shunned_kobold_progress', '25'),
+],
+0, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_kobold_magic [nobr]
+<p>
+    You have a mountain of paperwork today. It was incredibly boring, so you sneak a glance outside from your office window. <<Rep $g.kobold>> is busy training, which isn't out of the ordinary. Well, at least you think so, until <<rep $g.kobold>> decided to practice <<their $g.kobold>> kobold breath technique. Kobold breath? You never know <<they $g.kobold>> is able to do that before...
+</p>
+
+<p>
+    <<Rep $g.kobold>> took a deep breath, before blowing
+    <<if $gQuest.getSeed() % 2 == 0>>
+        a hot-looking firebreath from <<their $g.kobold>> mouth.
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        a breath of pure energy from <<their $g.kobold>> mouth.
+    <</if>>
+    Huh, since when <<rep $g.kobold>> is able to use magic?
+</p>
+
+

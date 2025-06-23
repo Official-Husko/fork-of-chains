@@ -1,0 +1,70 @@
+:: EventSetup_defiant_slave [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'defiant_slave', /* key */
+"Defiant Slave", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+],
+'Event_defiant_slave',
+{ /* roles */
+},
+{ /* actors */
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AllowDefiant(),
+    setup.qres.Trait(setup.trait.will_defiant),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.technology_research),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.technology_research),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_defiant_slave [nobr]
+
+<p>
+After a few days, it becomes clear that your newly acquired slave, <<rep
+$g.slave>>, slave|is rather special. Unlike most of your other slaves, <<they
+$g.slave>> slave|is not reduced to begging and crying after the first few
+training sessions, and still remains as defiant as ever. It seems the usual
+training regime you have for your normal slaves will not work for this
+particularly strong-willed <<urace $g.slave>>.
+</p>
+
+<p>
+Thankfully, <<yourrep $g.slaver>> slaver|have came up with a plan, which
+<<they $g.slaver>> slaver|hands over to you in the form of <<rep
+setup.item.technology_research>>. Reading the plan, you would first have to
+build the <<rep setup.buildingtemplate.researchroom>>. Having that built, you
+can then assign a few of your slavers to research <<yourrep $g.slave>>,
+figuring out how to break the resistant slave, possibly with outside help. It
+should not be too hard to find such ways, but there is no doubt that each
+would require extreme measures and will be very difficult to actually
+complete.
+<<if $unit.player.isHasTrait('per_dominant')>>
+You can't help but let out a dominant grin as you imagine the once resistant
+slave being broken to the point of compliance.
+<<elseif $unit.player.isHasTrait('per_submissive')>>
+Your submissive mind starts to conjure various images of you being put in the
+slave's no doubt extensive training, but realizing that <<rep $g.slaver>>
+slaver|is still in the room you quickly shoo the thoughts away.
+<</if>>
+</p>
+
+<p>
+You thank <<yourrep $g.slaver>> before sitting on your desk alone with the
+<<rep setup.item.technology_research>> on your desk, staring back at you.
+</p>

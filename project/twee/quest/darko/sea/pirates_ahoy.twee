@@ -1,0 +1,127 @@
+:: QuestSetup_pirates_ahoy [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'pirates_ahoy', /* key */
+"Pirates Ahoy", /* Title */
+"darko", /* Author */
+[ 'sea', 'unit', 'money', 'ire',
+], /* tags */
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'navigator': setup.qu.navigator,
+'pirate2': setup.qu.pirate,
+'pirate1': setup.qu.pirate, },
+{ /* actors */
+'victim': 'subrace_humansea', },
+[ /* costs */
+],
+'Quest_pirates_ahoy',
+setup.qdiff.hard47, /* difficulty */
+[ /* outcomes */
+[
+'Quest_pirates_ahoyCrit',
+[
+setup.qc.MoneyCrit(0.7),
+setup.qc.Ire('humansea', 2),
+setup.qc.Slave('victim', "a|was a seafarer aboard an unfortunate ship that was attacked by your company", false), ],
+], [
+'Quest_pirates_ahoySuccess',
+[
+setup.qc.Slave('victim', "a|was a seafarer aboard an unfortunate ship that was attacked by your company", false),
+setup.qc.Ire('humansea', 1),
+setup.qc.MoneyNormal(0.7), ],
+], [
+'Quest_pirates_ahoyFailure',
+[
+setup.qc.Injury('pirate2', 2),
+setup.qc.Injury('pirate1', 2), ],
+], [
+'Quest_pirates_ahoyDisaster',
+[
+setup.qc.MissingUnitRecapture('pirate1', 'capturedmedium'),
+setup.qc.Injury('navigator', 4),
+setup.qc.Injury('pirate2', 4), ],
+], ],
+[
+[setup.questpool.sea, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_pirates_ahoy [nobr]
+
+<p>
+Pirates, Ahoy! If you ever wants to be a pirate, the <<lore region_sea>> might just
+be the place you have been looking for. Raging water, hidden treasures, and
+bountiful booties are abound as travelers from afar voyage often across the seas.
+You can send a group of wannabe-pirates into the sea and pray they meet a
+great ship to plunder, which can yield a lot of money as well as rare slaves
+if done right.
+</p>
+
+
+:: Quest_pirates_ahoyCrit [nobr]
+
+<<if $g.victim.isMale()>>
+<<else>>
+<<questimage 'pirates_ahoy_female.jpg'>>
+<</if>>
+
+<p>
+Your slavers encountered a trading ship, who offered no resistance as your
+slavers, led by <<rep $g.pirate1>>, <<uadv $g.pirate1>>
+boarded and raided the entire ship.
+They plundered the many valuables on the
+ship as well as perusing the available booties before returning back to their
+ship with a new slave <<rep $g.victim>>
+
+<<set _att = setup.selectUnit([$g.pirate1, $g.pirate2, $g.navigator], {trait: 'per_attentive'})>>
+<<if _att>>
+  that <<rep _att>> had picked out of
+<<else>>
+  carefully chosen among
+<</if>>
+
+the many residents of the ship.
+</p>
+
+
+:: Quest_pirates_ahoySuccess [nobr]
+
+<p>
+Your slavers encountered a ship with only one passenger on tow.
+<<They $g.victim>> offered no resistance as your slavers
+<<uadv $g.pirate1>>
+boarded and raided the ship, taking all the valuables on board as well as
+the sole passenger <<themself $g.victim>> to be trained as a new slave back at the fort.
+</p>
+
+
+:: Quest_pirates_ahoyFailure [nobr]
+
+<p>
+Unfortunately, the <<lore region_sea>> are not for the faint-hearted pirates. Your
+slavers were harried by a raging storm as soon as they departed, which
+damaged most of their ship and forced them to retreat back into your fort
+before even managing to venture deep into the waters.
+</p>
+
+
+:: Quest_pirates_ahoyDisaster [nobr]
+
+<p>
+Your slavers learned the hard way that it requires more than just brawn to be a good pirate.
+They were assaulted by real pirates, and there was no chance that your slavers could defeat them.
+Ultimately, your slavers surrendered to the pirates. The pirates proceeded to make use
+of them for entertainment (being "bootified", as they put it)
+before mercifully returning back to their ship after much debauchery,
+but not before taking <<yourrep $g.pirate1>> as a prize.
+</p>
+
+<p>
+<<Rep $g.pirate1>> will probably appear later in a slave auction on some land afar. You may be able to see <<them $g.pirate1>> again, if you're lucky.
+</p>

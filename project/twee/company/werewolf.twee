@@ -1,0 +1,45 @@
+:: InitCompanyWerewolf [nobr company]
+
+<<set _item = setup.qc.ItemForSale(
+  'itemmarket',
+  'furniture_normal',
+  /* amount = */ 1,
+)>>
+
+<<set _rare = setup.qc.ItemForSaleSingle(
+  'itemmarket',
+  'f_slaverbed_master',
+)>>
+
+<<run new setup.CompanyTemplate(
+  'werewolf',
+  'Werewolves of the Northern Vale',
+  'CompanyTemplateWerewolf',
+  [ /* favor effects */
+    [
+      _item,
+      _item,
+      _item,
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_MEDIUM),
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_HIGH),
+    ],
+  ],
+)>>
+
+
+:: CompanyTemplateWerewolf [nobr]
+
+The furry tribes of the <<lore region_vale>>.
+Many are excellent carpenters, and when befriended, these people
+might just be willing to sell their most luxurious
+furniture at your fort...

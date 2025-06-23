@@ -1,0 +1,122 @@
+:: OpportunitySetup_brothel_expansion [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'brothel_expansion', /* key */
+"Brothel Expansion", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_expansion',
+setup.qdiff.normal49, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_expansion_0',
+    'Opportunity_brothel_expansion_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarAdd('quest_brothel_class', 10, -1),
+      setup.qc.VarSet('quest_brothel_progress', '76', -1),
+      setup.qc.VarSet('quest_brothel_facility', 'rooms', -1),
+    ],
+  ],
+  [
+    'Opportunity_brothel_expansion_1',
+    'Opportunity_brothel_expansion_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarAdd('quest_brothel_class', -10, -1),
+      setup.qc.VarSet('quest_brothel_progress', '76', -1),
+      setup.qc.VarSet('quest_brothel_facility', 'dungeons', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_expansion [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+You have expanded <<attach _describe>>, but there is still space for one more facility in the brothel. You have a choice between building a set of private rooms, or a full-blown sex dungegons.
+</p>
+
+<p>
+The private rooms would allow guests and the whore of their choice some much-needed privacy, and they can engage in an even more intimate and raunchy actions, including
+<<if _sub == 'sub'>>
+dominating the whores to their heart content.
+<<else>>
+allowing themself to be dominated by their chosen whores without anybody knowing.
+<</if>>
+Having a luxurious rooms such as this will no doubt increase your revenue, and may also increase the classiness of your fine establishment.
+</p>
+
+<p>
+Meanwhile, a sex dungeons is made for bondage, and each room will be fully furnished with manacles and other bondage devices.
+<<if _sub == 'sub'>>
+Paying customers would be able to punish their chosen whores as they see fit — no permanent damage of course.
+<<else>>
+Your dominant whores would be able to satisfy the darkest desires of the more submissive clients — no permanent damage of course.
+<</if>>
+Having such an option will no doubt increase your revenue, and also make your brothel appear raunchier than ever...
+</p>
+
+
+
+
+:: Opportunity_brothel_expansion_0 [nobr]
+Private rooms
+
+
+:: Opportunity_brothel_expansion_0_flavor [nobr]
+<p>
+It is done. Several rows of high-quality luxury rooms have been furnished within your brothel. They are available for paying customers to peruse, no doubt increasing the brothel's revenue.
+</p>
+
+
+:: Opportunity_brothel_expansion_1 [nobr]
+Sex dungeons
+
+
+:: Opportunity_brothel_expansion_1_flavor [nobr]
+<p>
+It is done. Several dungeon cells have been constructed, complete with manacles in various positions. These can be rented by paying customers, no doubt increasing the brothel's revenue.
+</p>

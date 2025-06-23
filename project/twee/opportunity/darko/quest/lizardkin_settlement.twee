@@ -1,0 +1,88 @@
+:: OpportunitySetup_lizardkin_settlement [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'lizardkin_settlement', /* key */
+"Lizardkin Settlement", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'unit',
+  'danger',
+  'favor',
+  'sea',
+  'scaley',
+  'veteran',
+],
+1, /* expiration weeks */
+'Opportunity_lizardkin_settlement',
+setup.qdiff.hardest54, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_lizardkin_settlement_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('stand_with_the_lizardkins', null),
+    ],
+  ],
+  [
+    'Opportunity_lizardkin_settlement_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('betray_the_lizardkins', null),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoQuest('stand_with_the_lizardkins'),
+  setup.qres.NoQuest('betray_the_lizardkins'),
+  setup.qres.Cooldown(10),
+],
+{ /* actors */
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_lizardkin_settlement [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+You have just received the news that a ferocious pirating company is planning
+an assault on a small lizardkin settlement in the <<lore region_sea>>.
+Normally, this would not be yours or your company's problem, but <<yourrep
+_u>> suggests that this might be a rare opportunity for to gain the trust of
+these scaled people. You could try to send a group of able fighters
+to help out fend the pirates away.
+</p>
+
+<p>
+However, you have a brighter idea. The battle between the pirates and the
+lizardkin will surely be intense, so that means you can send a group of
+slavers "pretending" to help out, and kidnap a downed lizardkin or two in the
+heat of battle. No doubt this will be incredibly dangerous, as well as
+earning you a lot of ire from these folks. But such is the price you have
+to pay for a lizardkin slave...
+</p>
+
+
+:: Opportunity_lizardkin_settlement_0 [nobr]
+Stand with the lizardkin
+
+
+:: Opportunity_lizardkin_settlement_1 [nobr]
+Betray the lizardkin

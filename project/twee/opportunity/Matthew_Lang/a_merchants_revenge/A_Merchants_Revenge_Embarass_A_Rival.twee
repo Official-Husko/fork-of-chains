@@ -1,0 +1,185 @@
+:: OpportunitySetup_a_merchant_s_revenge_embarrass_a_rival [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'a_merchant_s_revenge_embarrass_a_rival', /* key */
+"A Merchant\'s Revenge: Embarrass a Rival", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'rare',
+  'money',
+  'ire',
+  'unit',
+],
+1, /* expiration weeks */
+'Opportunity_a_merchant_s_revenge_embarrass_a_rival',
+setup.qdiff.hard38, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_embarrass_a_rival_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('a_merchant_s_revenge_embarrass_a_rival_kidnap', {merchant: 'merchant'}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_embarrass_a_rival_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('a_merchant_s_revenge_embarrass_a_rival_potion_of_lust', {merchant: 'merchant'}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_embarrass_a_rival_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.TagNotBanned('watersport'),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('a_merchant_s_revenge_embarrass_a_rival_piss_slut', {merchant: 'merchant'}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_embarrass_a_rival_3',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarSet('mlang_merchantrevenge_caravancount', '0', -1),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+[
+  setup.questpool.city, setup.rarity.uncommon
+],
+],
+[ /* restrictions */
+  setup.qres.VarGte('mlang_merchantrevenge_caravancount', 12),
+  setup.qres.VarLte('mlang_merchantrevenge_wrongcaravancount', 5),
+  setup.qres.VarEqual('mlangmerchantprincequest', '5'),
+  setup.qres.OpportunityUnique(),
+  setup.qres.UnitGroupNotBusy('a_merchant_s_revenge1'),
+],
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_a_merchant_s_revenge_embarrass_a_rival [nobr]
+/* mlangmerchantprincequest 2 = Cipher Found
+mlangmerchantprincequest 5 = Caravan Raid tips incoming
+mlangmerchantprincequest 10 = Minor Revenge Taken
+mlangmerchantprinceflowers 1 = Merchant has given PC a bouquet
+mlangmerchantprinceflowers 5 = PC understands the meaning of the bouquet */
+
+/*Set Player Drink*/
+<<if $unit.player.isHasAnyTraitExact(['bg_farmer','bg_mercenary','bg_pirate','bg_seaman', 'bg_soldier', 'bg_thug', 'bg_unemployed', 'bg_wildman', 'bg_woodsman'])>>
+    <<set _pdrink = 'tankard of mead'>>
+<<elseif $unit.player.isHasAnyTraitExact(['bg_monk', 'bg_priest'])>>
+    <<set _pdrink = 'cup of tea'>>
+<<else>>
+    <<set _pdrink = 'glass of wine'>>
+<</if>>
+<<dialogue $g.merchant>>
+    Hello again <<name $unit.player>>. I have a potentially lucrative opportunity for you. Yes it benefits me, and yes it's time sensitive.
+<</dialogue>>
+
+<<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+    Sitting down at <<lore location_princeofcups>> after such a long time feels a bit like coming back to a very luxurious home, and the smile <<name $g.merchant>> gives you when you join <<them $g.merchant>> at <<their $g.merchant>> table.
+<<else>>
+    Sitting down at <<lore location_princeofcups>> still feels awkward, but you have to admit the drinks are worth it.
+<</if>>
+<br>
+"So what have you got for me?" you ask <<name $g.merchant>>
+<<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+    <<run setup.qc.VarSet("mlangmerchantprinceflowers", "1").apply($gQuest)>>
+    with a smile.<br>
+    "An opportunity <<they $g.merchant>> says with a smile. "And a bouquet of flowers."<br>
+    <<if $unit.player.isHasAnyTraitExact(["bg_royal", "bg_noble", "bg_scholar",])>>
+        <<run setup.qc.VarSet("mlangmerchantprinceflowers", "5").apply($gQuest)>>
+        "Gardenias, jonquils, rosemary and ferns. Thank you. It's nice to know how you feel."<br>
+        "I'm glad you understand," <<name $g.merchant>> says. "Anyway, about the opportunity..."<br>
+    <<else>>
+        "I recognise the jonquils, and ferns, and... is this rosemary?"<br>
+        <<name $g.merchant>> seems to deflate a little. "Well, they make me think of you."<br>
+        "Look, I know there's meanings behind the choices," you say, sipping your _pdrink. "I just don't know what they are...yet."<br>
+        "Well, I look forward to hearing—or seeing your response. Now, about the opportunity..."<br>
+    <</if>>
+<<else>>
+    Sitting down at <<lore location_princeofcups>> still feels awkward, but you have to admit the drinks are worth it.<br>
+    "Glad you could join me," <<name $g.merchant>> says as you slide into the now familiar leather booth.<br>
+    "As if I ever refuse your invitations...or should I say summons?"<br>
+    <<name $g.merchant>>'s eyebrows raise. "You're free to decline my requests."<br>
+    "When there's the potential for payment? I don't think so."<br>
+    "Well, since we're on the topic and I don't have much time, let me tell you about the job."<br>
+<</if>>
+"I'm listening," you say, taking a sip from your _pdrink.<br>
+<<dialogue $g.merchant>>
+    I know which of my rivals has been putting bounties on my caravans. And thanks to your inventions, I've been able to create an opening for a strike.
+<</dialogue>>
+"I've managed to isolate an individual my rival is...attached to. They won't be completely alone, but they'll only have a couple of guards."<br>
+"And what do you want done with this individual?"<br>
+<<name $g.merchant>> shrugs "Something that hurts. I have some suggestions, but the choice is ultimately up to you. Firstly, you could just kidnap them. Bring them to your fort, and turn them into a plaything—or sell them. Whatever you like. Alternatively you can...present them at an upcoming Merchant's luncheon. It's 4 weeks away and I think a bound naked slut on the dining table would make quite the statement."<br>
+"And I assume you have some ideas on how I can accomplish that?"<br>
+"Your target has...some very specific fetishes. Most of the Toran nobility do, even if we indulge behind closed doors. I've managed to... have most of their guard deployed elsewhere, and I also know that they tend to get horny when they're stressed. So I can guarantee they'll request a high class escort from one of the premium services. And I can intercept the order and send it to you. I've heard alchemists talk about brewing a lust potion from ingredients in the western forests. Maybe that's something you can do or buy? Failing that you'd need to distract them with whatever kink they want to indulge in. Most likely pissplay."<br>
+"Where are they?" you ask.<br>
+"Cloud district."<br>
+You nearly choke on your drink. "The Cloud District? You want me to infiltrate the Cloud District?"<br>
+"That's the opportunity," <<name $g.merchant>> says blithely. "But I understand your concern. If you don't think you can do this, it's best that you don't. You might have to raid more caravans, but they'll be other opportunities. If you think you shouldn't send your people in. Don't."<br>
+
+
+
+
+
+
+
+:: Opportunity_a_merchant_s_revenge_embarrass_a_rival_0 [nobr]
+Kidnap the target
+
+
+
+:: Opportunity_a_merchant_s_revenge_embarrass_a_rival_1 [nobr]
+Display a Lustful slut at the Luncheon (Will require a potion of Lust)
+
+
+
+:: Opportunity_a_merchant_s_revenge_embarrass_a_rival_2 [nobr]
+Display a Piss Slut at the Luncheon
+
+
+
+:: Opportunity_a_merchant_s_revenge_embarrass_a_rival_3 [nobr]
+You're not ready - pass for now
+
+

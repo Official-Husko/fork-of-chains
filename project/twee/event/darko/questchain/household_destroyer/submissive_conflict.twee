@@ -1,0 +1,117 @@
+:: EventSetup_submissive_conflict [nobr event]
+
+
+<<run new setup.UnitGroup(
+"submissive_conflict1",
+"Subbed Villager",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitsReplace('unit', [setup.trait.per_submissive, setup.trait.training_obedience_basic]),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+  setup.qc.TraitRemove('unit', setup.trait.bg_royal),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.bg_metalworker, setup.trait.bg_engineer, setup.trait.bg_scholar, setup.trait.bg_noble, setup.trait.bg_healer, setup.trait.bg_mystic], 1, false, false),
+],
+)>>
+
+<<run new setup.Event(
+'submissive_conflict', /* key */
+"Submissive Conflict", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+],
+'Event_submissive_conflict',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slave': 'submissive_conflict1',
+  'drow': setup.contacttemplate.quest_household_destroyer_nearby,
+  'chief': 'subrace_humanvale',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_household_destroyer', '210', -1),
+  setup.qc.Ire('humanvale', 4),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_submissive_conflict [nobr]
+<<dialogue $g.slave>>
+    I'll do whatever you want! Please, I beg you, make me your slave!
+<</dialogue>>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    Another villager has come to your fort, begging for your to enslave <<them $g.slave>>. As expected, it's from the same village as before — the very village where the overly dominant drow <<rep $g.drow>> currently resides. But before you again gladly accept a new slave under your care, <<yourrep _u>> noticed that the slave looked a bit familiar.
+    Indeed, it's the village's very own
+    <<set _job = 'blacksmith'>>
+    <<if $g.slave.isHasTrait('bg_metalworker')>>
+        blacksmith! <<They $g.drow>> still have <<their $g.drow>> working attire too with some soot to boot.
+    <<elseif $g.slave.isHasTrait('bg_engineer')>>
+        engineer! <<They $g.drow>> must have been responsible for most construction projects in the village.
+    <<elseif $g.slave.isHasTrait('bg_scholar')>>
+        scholar! <<They $g.drow>> must have been employed by the village's rulers and acted as the village's wise<<woman $g.slave>>.
+    <<elseif $g.slave.isHasTrait('bg_noble')>>
+        noble! <<They $g.drow>> must have overseen the entire village.
+    <<elseif $g.slave.isHasTrait('bg_healer')>>
+        healer! <<They $g.drow>> might even be the village's only healer.
+    <<elseif $g.slave.isHasTrait('bg_mystic')>>
+        mystic! <<They $g.drow>> might even be the village's only magician!
+    <</if>>
+    Enslaving such an important person for the village will surely not bode well for your
+    reputation among the valefolk.
+</p>
+
+<p>
+    Words had already spread of your company's infamy enslaving important people from the surrounding village, and your reputation with them has already decreased.
+    Thankfully, the village's chief is a wise <<man $g.chief>>, and according to <<rep _u>>, the chief had understood the dangers that <<rep $g.drow>> pose, and had taken precaution to prevent further people from being subbed.
+    Still, you know "accidents" will still happen, and there might be new opportunities for you
+    in the village, if you send scouts there to search for quests.
+</p>
+
+
+<p>
+    You also have to decide what to do with this slave wanna-be.
+</p>
+
+<<unitcard $g.slave 1>>
+
+<<choose>>
+<<opt "Enslave <<them $g.slave>>
+    , which will surely anger the village">>
+
+    <<set _job = $g.slave.getTraitWithTag('bg').getName()>>
+
+
+    <p>
+        Not wanting to pass on a free slave, and a valuable one too to boot, you've decided to screw away with the repercussions and made <<them $g.slave>> a proper slave. After all, its <<their $g.slave>> own wish, and you are doing <<them $g.slave>> a favor for making <<them $g.slave>> lick your <<ucfeet $unit.player>>
+        Your devilish action did not go unnoticed, however. Rumors of you capturing the village's resident <<= _job>> soon spread, and your reputation with the valefolk has taken a turn for the worse.
+    </p>
+
+    <<run setup.qc.Slave('slave', 'a|was a village ' + _job + ' who had the misfortune of encountering a certain dominant drow and became a total submissive, craving enslavement above all').apply($gQuest)>>
+
+    <<run setup.qc.Ire('humanvale', 10).apply($gQuest)>>
+
+<<opt "Send <<them $g.slave>>
+    back to the village's chief">>
+
+    <p>
+        Not wanting to risk the valefolk's ire any further, you decided to send the potential slave back to the village. You even asked <<rep _u>> to escort <<them _u>> back, lest <<they $g.slave>> run away and try to enslave <<themself $g.slave>> to some other slaving company in the region. The chief was grateful to you, although it did not nullify the damage that had been done.
+    </p>
+
+    <<if _u.isHasTrait('per_attentive')>>
+        <p>
+            Since <<rep _u>> was an attentive slaver, <<they _u>> managed to pick up the chief's ulteriot motive. It seems that <<they $g.chief>> had always wanted to have a personal slave, and what would be better than a willing villager?
+        </p>
+    <</if>>
+
+    <<run setup.qc.Favor('humanvale', 100).apply($gQuest)>>
+
+<</choose>>

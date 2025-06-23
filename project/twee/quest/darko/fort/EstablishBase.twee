@@ -1,0 +1,98 @@
+:: QuestSetupEstablishBase [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'establish_base', /* key */
+  'Establish Base', /* Title */
+  'darko',   /* author */
+  [  /* tags */
+    'fort',
+    'upgrade'
+  ],
+  1,  /* weeks */
+  setup.INFINITY,  /* quest expiration weeks */
+  { /* roles */
+    'planner': setup.qu.planner,
+    'builder1': setup.qu.builder,
+    'builder2': setup.qu.builder,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestEstablishBase', /* passage description */
+  setup.qdiff.easiest1, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestEstablishBaseAll',
+      [
+        setup.qc.Money(150),
+        setup.qc.Function(() => {
+          setup.initEstablishBase()
+        }),
+      ],
+    ],
+    [
+      'QuestEstablishBaseAll',
+      [
+        setup.qc.Outcomes('crit'),
+      ],
+    ],
+    [
+      'QuestEstablishBaseAll',
+      [
+        setup.qc.Outcomes('crit'),
+      ],
+    ],
+    [
+      'QuestEstablishBaseAll',
+      [
+        setup.qc.Outcomes('crit'),
+      ],
+    ],
+  ],
+  [], /* quest pool, rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestEstablishBase [nobr]
+
+<p>
+To establish your company properly,
+the first order of business is to restore a semblance of the fort
+that you will call your new home.
+There are several crucial facilities that is desperately needed.
+First, you and your slavers need somewhere to sleep.
+In addition, you also need to build an office where you can plan
+further improvements to the fort.
+Building these two facilities takes top priority, and is the goal of this assignment.
+</p>
+
+<p>
+<<successtext 'Hint:'>>
+This game revolves around assigning units (i.e., you and your slavers) to go on quests.
+Use the "Assign Units" button to get started.
+Click the contextual "(?)" at the top of this screen for more help.
+</p>
+
+
+:: QuestEstablishBaseAll [nobr]
+
+<p>
+It was hard work, but through <<reps $g.planner>> careful planning and
+the hard work of both <<rep $g.builder1>> and <<rep $g.builder2>>,
+some part of the fort had been made habitable
+and turned into the <<rep setup.buildingtemplate.lodgings>> area.
+Here, you can <<successtext "change yours or your slaver's skill focuses">>,
+and hence this is a very important improvement.
+You also had established
+a small office just outside the fort for storing
+blueprints for future improvements to your fort.
+</p>
+
+<p>
+With this in mind, the next step is for you to build a <<rep setup.buildingtemplate.scouthut>>,
+which allows you and your slavers to take on various quests to earn money.
+</p>

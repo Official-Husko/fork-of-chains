@@ -1,0 +1,36 @@
+:: InitUnitGroupVale [nobr]
+
+<<set _males = [
+  [setup.unitpool.subrace_humanvale_male, 24],
+  [setup.unitpool.subrace_werewolf_male, 6],
+]>>
+
+<<set _females = [
+  [setup.unitpool.subrace_humanvale_female, 24],
+  [setup.unitpool.subrace_werewolf_female, 6],
+]>>
+
+<<run new setup.UnitGroup(
+  'vale_all',
+  'Residents of the Northern Vale: All gender',
+  setup.ALLUNITGROUPS.concat(_males).concat(_females),
+  0,
+  []
+)>>
+
+<<run new setup.UnitGroup(
+  'vale_allmale',
+  'Residents of the Northern Vale: Male',
+  setup.ALLUNITGROUPSMALE.concat(_males),
+  0,
+  []
+)>>
+
+<<run new setup.UnitGroup(
+  'vale_allfemale',
+  'Residents of the Northern Vale: Female',
+  setup.ALLUNITGROUPSFEMALE.concat(_females),
+  0,
+  []
+)>>
+

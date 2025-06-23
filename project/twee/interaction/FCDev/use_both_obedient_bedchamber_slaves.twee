@@ -1,0 +1,252 @@
+:: InteractionSetup_use_both_obedient_bedchamber_slaves [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'use_both_obedient_bedchamber_slaves', /* key */
+"Use both obedient bedchamber slaves", /* Title */
+"FCdev", /* Author */
+[ ], /* tags */
+'Interaction_use_both_obedient_bedchamber_slaves',
+[ /* costs */
+],
+[ /* prerequisites */
+],
+[ /* unit requirements */
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_advanced),
+setup.qres.BedchamberOtherSlave(setup.qres.Trait(setup.trait.training_obedience_advanced)),
+setup.qres.SlaveBedchamberFullUsableByYou(), ],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_use_both_obedient_bedchamber_slaves [nobr]
+<<set $i1 = {}>>
+<<set $i2 = {}>>
+<<set $i = {}>>
+<<set _bedchamber = $g.target.getBedchamber()>>
+<<set _u = $g.target>>
+<<if _u == _bedchamber.getSlaves()[0]>>
+<<set _v = _bedchamber.getSlaves()[1]>>
+<<else>>
+<<set _v = _bedchamber.getSlaves()[0]>>
+<</if>>
+
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+
+<<pronounload $i1 _u>>
+<<pronounload $i2 _v>>
+
+<<set _uchastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _vchastity = _v.isHasTrait(setup.trait.eq_chastity)>>
+<<set _umouthequip = setup.Text.Unit.Equipment.getEquipmentAt(_v, setup.equipmentslot.mouth)>>
+<<set _gagged = _v.isHasTrait(setup.trait.eq_gagged)>>
+
+<<set _uadvanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _vadvanced = _v.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _ubasic = _u.isHasTrait(setup.trait.training_obedience_basic)>>
+<<set _vbasic = _v.isHasTrait(setup.trait.training_obedience_basic)>>
+<<set _udick = _u.isHasDick()>>
+<<set _vdick = _v.isHasDick()>>
+<<set _us = $family.getRelation(_v, _u)>>
+<<set _vs = $family.getRelation(_u, _v)>>
+
+<<set _uf = $friendship.getFriendship($unit.player, _u)>>
+<<set _vf = $friendship.getFriendship($unit.player, _v)>>
+
+<<loadinteractioncommon _u>>
+
+The two slaves assigned to $i.location have been highly trained to be obedient.
+With a quick flick of your fingers, 
+<<rep _u>> and <<utheirrel _u _v>> <<rep _v>>
+scampers quickly to your side.
+<<if _hasdick>>
+A simple pointing at your <<udick $unit.player>>is all it takes for the slaves to start
+sucking on your cock.
+<<ustripmouth _u>>
+<<ustripmouth _v>>
+<<name _u>>
+<<if setup.UnitTitle.getMainTraining(_u).getTags().includes('troral')>>
+rapturously<<else>>industriously<</if>>
+sucking your dick as it rapidly hardens in $i1.his mouth.
+Meanwhile, <<name _v>> is
+<<if setup.UnitTitle.getMainTraining(_v).getTags().includes('troral')>>
+hungrily<<else>>gently<</if>> sucking your nuts.
+The two slaves have crowded close together,
+and not just so they can both have access to your cock and balls. They're
+<<if _u.isHasDick() && _v.isHasDick()>>jerking each other off<<else>>manually
+stimulating each other<</if>> as they work.
+<<else>>
+A simple pointing at your <<ubreast $unit.player>>is all it takes for the slave to come over
+to you.
+Each slave is gently sucking one of your hardening nipples,
+and one hand from each slave is moving delicately across your womanhood,
+kindling a fire in your lower belly.
+They're cuddled up closely under your <<uarms _u>>,
+with a warm body pressed against each side of you.
+You can feel their <<ubreast _u>> against your ribcage and the heat between their legs
+against your thighs. You feel absolutely buried in the attentive slaves.
+<</if>>
+
+<br/>
+<br/>
+
+<<if $unit.player.getSpeech() != setup.speech.debauched && ($unit.player.getSpeech() == setup.speech.friendly || Math.random() < 0.5)>>
+
+<<if _hasdick>>
+You begin to thrust gently into <<name _u>>'s <<umouth _u>>.
+The slaves moan into you and
+<<if _u.isHasDick() && _v.isHasDick()>>
+start jerking each other off harder, making lewd noises and humping each other's hands
+<<else>>
+really start giving each other proper handjobs, jerking around lewdly as their arousal builds<</if>>.
+When you climax, they do, too, one after the other.
+They quickly switch mouth positions and suck you back to full mast.
+<<else>>
+You reach down and run a possessive <<uhand $unit.player>> across each slave's scalp, neck, and back,
+eliciting shivers. Then, you gently hook them under the armpits and
+pull them up a bit, without breaking their lip locks with your nipples,
+or forcing them to stop playing with your cunt.
+Each slave ends curled up, mostly facedown, with their mouths still sucking on your
+<<ubreasts $unit.player>>
+and their free hands trapped between their legs.
+They get the message and begin to look after themselves, too;
+their resultant moaning against your nipples grows when you reach down
+and start teasing their butts.
+The three of you climax more or less together,
+and you bounce up with undiminished arousal.
+<</if>>
+
+<br/>
+<br/>
+You order the slaves to present their buttholes for you.
+The slaves comply, bent over the $i.bed with their buttocks spread.
+<<if _hasdick>>
+  You select <<name _v>> and slide your <<udick $unit.player>> up $i2.his
+  <<if _v.isHasTrait('anus_gape')>>
+  welcoming asspussy
+  <<elseif _v.isHasTrait('anus_loose')>>
+  soft butthole
+  <<else>>
+  tight anus
+  <</if>>,
+  sodomizing $i2.him.
+  You later push <<name _u>> down next to <<utheirrel _u _v>> <<name _v>> and switch assholes.
+<<else>>
+  You select <<name _v>> ame and straddle $i2.his <<uface _v>>,
+  letting $i2.him eat you out, before taking $i2.his face in your <<uhands $unit.player>> and kiss $i2.him deeply,
+  favoring $i2.him with the sensation of kissing $i2.his <<master $unit.player>>
+  <<if _v.isCanOrgasm()>>while $i2.she orgasm<</if>>.
+<</if>>
+  The fucktoys are left satisfied as
+	you finally leave the $i.room.
+
+<<else>>
+
+<<if _hasdick>>
+<<name _u>> feels a <<uhand $unit.player>> snake
+behind $i1.his <<uhead _u>> and relaxes $i1.his throat,
+knowing what's coming.
+You fuck the bitch's <<umouth _u>> hard,
+and since the pounding pulls your balls out of <<name _v>>'s mouth,
+you yank $i2.him up towards you so you can maul $i2.his <<ubreasts _v>>.
+The compliant slave thrusts out $i2.his chest,
+presenting $i2.his
+<<if _v.isHasBreasts()>>
+tits
+<<else>>
+nipples
+<</if>>
+for use as toys, and then gasps as you pinch, squeeze, and twist.
+You blow your load down <<name _u>>'s throat
+<<else>>
+You shove <<name _u>> down towards your pussy and grab $i1.his hair.
+$i1.He takes a deep breath, knowing what's coming.
+You grind your cunt against the bitch's mouth hard,
+and since there's no room for <<name _v>>'s <<uhand _v>> there any more,
+you yank $i2.him up towards you so you can maul $i2.his <<ubreasts _v>>.
+The compliant slave thrusts out $i2.his chest,
+presenting $i2.his
+<<if _v.isHasBreasts()>>
+tits
+<<else>>
+nipples
+<</if>>
+for use as toys, and then gasps as you pinch, squeeze, and twist.
+You climax against <<name _u>>'s face
+<</if>>
+and bounce up to fuck the slaves.
+<br><br>
+<<if _hasdick>>
+You grab <<name _u>> and shove $i1.him into a corner of the room
+<<if _u.isHasTrait('breast_huge')>>
+$i1.his huge tits slapping painfully against the walls<</if>>.
+<<if _hasdick>>
+$i1.He does $i1.his best to angle $i1.his hips for you as you push your cock up $i1.his ass and
+give $i1.him a good hard reaming.
+<<name _v>> soon
+finds $i2.himself taking <<name _u>>'s place,
+smashed into the corner with your dick pistoning in and out of $i2.his rectum.
+<<else>>
+$i1.He does $i1.his best to angle $i1.his hips for you as you fingerfuck $i1.his butthole,
+forcing complete submission out of the compliant <<girl _u>>.
+<<name _v>> soon
+finds $i2.himself taking <<name _u>>'s place,
+smashed into the corner with your fingers pistoning in and out of $i2.his rectum.
+<</if>>
+After a while, you drop both slaves on the $i.floor, and order them to present
+their buttholes to you.
+
+<br/>
+<br/>
+<<if !_hasdick>>
+<<name _u>> gets to $i1.his feet and helpfully holds up a strap-on questioningly;
+you shake your head and point to another, larger one.
+<<name _u>> helps you into it, and you ram it up $i1.his <<uanus _u>> experimentally,
+nodding in satisfaction when the big phallus forces a pained gasp out of $i1.him.
+<</if>>
+After a short while, the two used slaves are bent over the $i.bed with their buttocks spread.
+They're perfectly still, awaiting your pleasure.
+You select <<name _v>> and ram your dick up $i2.his
+<<if _v.isHasTrait('anus_gape')>>
+welcoming asspussy
+<<elseif _v.isHasTrait('anus_loose')>>
+soft butthole
+<<else>>
+tight anus
+<</if>>,
+assraping $i2.him without mercy.
+You later push <<name _u>> down next to <<name _v>> and switch assholes.
+When <<name _u>> has been buttfucked into helplessness,
+you throw $i1.him away like <<therace _u>> sex toy $i1.he is and pound
+<<name _v>> senseless,
+careful to frequently pull far enough out that the slaves have to take the pain of initial penetration again.
+<<else>>
+After a short while, the two used slaves are bent over the bed with their buttocks spread.
+They're perfectly still, awaiting your pleasure.
+You select <<name _v>> and ram your strap-on up $i2.his
+<<if _v.isHasTrait('anus_gape')>>
+welcoming asspussy
+<<elseif _v.isHasTrait('anus_loose')>>
+soft butthole
+<<else>>
+tight anus
+<</if>>,
+assraping $i2.him without mercy.
+You later push <<name _u>> down next to <<name _v>> and switch assholes.
+When <<name _u>> has been buttfucked into helplessness,
+you throw $i1.him away like <<therace _u>> sex toy $i1.he is and pound
+<<name _v>> senseless,
+careful to frequently pull far enough out that the slaves have to take the pain of initial penetration again.
+<</if>>
+When you finally leave the $i.room,
+both slaves are lying like discarded tissues on the $i.bed,
+facedown with their buttocks spread to relieve their sore assholes.
+This will surely remind the fucktoys of who they are.
+<</if>>
+
+

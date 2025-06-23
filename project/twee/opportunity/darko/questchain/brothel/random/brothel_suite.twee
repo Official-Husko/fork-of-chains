@@ -1,0 +1,138 @@
+:: OpportunitySetup_brothel_suite [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'brothel_suite', /* key */
+"Brothel Suite", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_suite',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_suite_0',
+    'Opportunity_brothel_suite_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+    ],
+  ],
+  [
+    'Opportunity_brothel_suite_1',
+    'Opportunity_brothel_suite_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+    ],
+  ],
+  [
+    'Opportunity_brothel_suite_2',
+    'Opportunity_brothel_suite_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_suite [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _dom = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+Your brothel <<attach _describe>> is housed within
+<<if _class >= 20>>
+a grand palace complex,
+<<elseif _class <= -20>>
+an intimidating demonic palace complex,
+<<else>>
+an exotic palace complex,
+<</if>>
+standing out from the rest of the buildings in the area.
+You have your own personal suite inside too, which
+<<if _class >= 20>>
+is luxuriously furnished with furniture made with highest grade wood.
+<<elseif _class <= -20>>
+is fully equipped with all sort of bondage equipments.
+<<else>>
+is complete with an indoor garden.
+<</if>>
+Whenever you decide to visit or stay in your brothel, you stay there, and sometimes you get one of the two lucky courtesans to join you as well.
+</p>
+
+<p>
+<<successtext "This is a rare opportunity for you to have sex with these people.">> But there are no other effects.
+</p>
+
+
+:: Opportunity_brothel_suite_0 [nobr]
+Have sex with your ex-whore <<name $g.head>>
+
+
+:: Opportunity_brothel_suite_0_flavor [nobr]
+<<set $gInteractiveSexUnitIds = [$unit.player.key, $g.head.key]>>
+<<set $gInteractiveSexLocation_key = 'brothelsuite'>>
+<<include "SexSetup">>
+
+
+
+:: Opportunity_brothel_suite_1 [nobr]
+Have sex with the head courtesan <<name $g.slave>>
+
+
+:: Opportunity_brothel_suite_1_flavor [nobr]
+<<set $gInteractiveSexUnitIds = [$unit.player.key, $g.slave.key]>>
+<<set $gInteractiveSexLocation_key = 'brothelsuite'>>
+<<include "SexSetup">>
+
+
+:: Opportunity_brothel_suite_2 [nobr]
+Have sex with <<yourrep $g.owner>>
+
+
+:: Opportunity_brothel_suite_2_flavor [nobr]
+<<set $gInteractiveSexUnitIds = [$unit.player.key, $g.owner.key]>>
+<<set $gInteractiveSexLocation_key = 'brothelsuite'>>
+<<include "SexSetup">>

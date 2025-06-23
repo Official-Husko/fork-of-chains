@@ -1,0 +1,574 @@
+:: QuestSetup_seaborne_rescue___it_has_to_be_you [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayourself = new setup.UnitCriteria(
+null, /* key */
+'Yourself', /* name */
+[
+setup.trait.bg_pirate,
+setup.trait.bg_seaman,
+setup.trait.bg_merchant,
+setup.trait.bg_slave,
+setup.trait.per_loyal,
+setup.trait.per_aggressive,
+setup.trait.per_honorable,
+setup.trait.per_stubborn,
+],
+[
+setup.trait.per_cautious,
+setup.trait.per_humble,
+],
+[
+setup.qres.You(),
+],
+{
+survival: 1,
+knowledge: 1,
+social: 1,
+}
+)>>
+
+<<set _criterianavigator = new setup.UnitCriteria(
+null, /* key */
+'Navigator', /* name */
+[
+setup.trait.per_attentive,
+setup.trait.per_smart,
+setup.trait.per_cautious,
+setup.trait.bg_pirate,
+setup.trait.bg_seaman,
+setup.trait.per_calm,
+setup.trait.per_studious,
+setup.trait.subrace_humansea,
+],
+[
+setup.trait.per_dreamy,
+setup.trait.subrace_humandesert,
+setup.trait.race_greenskin,
+setup.trait.per_lunatic,
+setup.trait.per_slow,
+setup.trait.race_catkin,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+survival: 1,
+knowledge: 2,
+}
+)>>
+
+<<set _criteriaseafighter = new setup.UnitCriteria(
+null, /* key */
+'Sea Fighter', /* name */
+[
+setup.trait.subrace_humansea,
+setup.trait.race_lizardkin,
+setup.trait.bg_pirate,
+setup.trait.bg_seaman,
+setup.trait.per_active,
+setup.trait.per_aggressive,
+setup.trait.per_brave,
+setup.trait.per_lunatic,
+setup.trait.tough_nimble,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+],
+[
+setup.trait.race_catkin,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_thin,
+setup.trait.per_slow,
+setup.trait.per_humble,
+setup.trait.per_cautious,
+setup.trait.per_submissive,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 2,
+brawn: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'seaborne_rescue___it_has_to_be_you', /* key */
+"Seaborne Rescue - It Has to Be You", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/joyyfi/v100_is_here_submit_all_your_stories_bug_reports/gcl0rho/',
+},
+[ 'special',
+'sea',
+'veteran',
+'unit',
+'prep'
+], /* tags */
+6, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'yourself': _criteriayourself,
+'navigator': _criterianavigator,
+'seafighter': _criteriaseafighter, },
+{ /* actors */
+'slaver': 'missingslavers',
+'captain': 'sea_allmale', },
+[ /* costs */
+setup.qc.MoneyCustom(-15000),
+],
+'Quest_seaborne_rescue___it_has_to_be_you',
+setup.qdiff.hardest45, /* difficulty */
+[ /* outcomes */
+[
+'Quest_seaborne_rescue___it_has_to_be_youCrit',
+[
+setup.qc.Slaver('slaver', "", false),
+setup.qc.RemoveFromUnitGroup('slaver'),
+setup.qc.Trait('slaver', setup.trait.bg_pirate),
+setup.qc.Trait('slaver', setup.trait.bg_seaman),
+setup.qc.AddHistory('slaver', "took over and commands a band of pirates."),
+setup.qc.SlaveOrderSeaborneRescueItHasToBeYouNouveauRichePirate(),
+setup.qc.SlaveOrderSeaborneRescueItHasToBeYouNouveauRichePirate(),
+setup.qc.SlaveOrderSeaborneRescueItHasToBeYouEasyToPleasePirate(),
+setup.qc.SlaveOrderSeaborneRescueItHasToBeYouAssPirate(),
+],
+], [
+'Quest_seaborne_rescue___it_has_to_be_youSuccess',
+[
+setup.qc.Slaver('slaver', "", false),
+setup.qc.RemoveFromUnitGroup('slaver'),
+setup.qc.Trait('slaver', setup.trait.vagina_loose),
+setup.qc.Trait('slaver', setup.trait.anus_loose),
+setup.qc.SlaveOrderSeaborneRescueItHasToBeYouDemon(),
+setup.qc.SlaveOrderSeaborneRescueItHasToBeYouSlave(),
+],
+], [
+'Quest_seaborne_rescue___it_has_to_be_youFailure',
+[
+setup.qc.Injury('yourself', 2), ],
+], [
+'Quest_seaborne_rescue___it_has_to_be_youDisaster',
+[
+setup.qc.Injury('yourself', 4),
+setup.qc.Injury('seafighter', 4),
+setup.qc.MissingUnit('navigator'),
+setup.qc.Trait('navigator', setup.trait.bg_seaman),
+setup.qc.AddHistory('navigator', "got shanghaied to serve as navigator aboard a pirate vessel."),
+],
+], ],
+[ /* quest pool and rarity */
+  [setup.questpool.rescue, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.UnitGroupHasUnit(setup.unitgroup.missingslavers),
+setup.qres.QuestUnique(), ],
+)>>
+
+:: Quest_seaborne_rescue___it_has_to_be_you [nobr]
+<p>
+<<set _rescuer = $dutylist.getUnitIfAvailable('rescuer')>>
+The destinies of missing slavers are eccentric and unpredictable. The slaver
+you lost while exploring the deep seas might turn up beyond the mists;
+the slaver you lost to guardsmen in the Kingdom of Tor might turn up in the slave
+pens of one of your rivals.
+<<if _rescuer>>
+Your Rescuer, <<rep _rescuer>>,
+<<else>>
+Your former rescuer
+<</if>>
+has to watch for leads from every quarter. It's tedious, often frustrating work, but it's important.
+</p>
+<p>
+Now
+<<if _rescuer>>
+<<rep _rescuer>>
+<<else>>
+your former rescuer
+<</if>>
+has picked up a firm rumor from the low-lives in the seaside taverns: A notorious pirate captain in the far south seas has taken to capturing slavers, and turning them into cabin boys or other members of his crew. A less firm rumor suggest that one of <i>your</i> missing slavers is now among them!
+</p>
+<p>
+It's a long, dangerous, and expensive voyage, but perhaps you can set your underling free. You'll need to charter a ship and a band of cutthroats, and that'll cost you, but perhaps it's worth it to show how far you'll go to get a good slaver back. And as a practiced dealer in the flesh of your fellow-beings, you just might turn a profit on this job anyway.
+</p>
+<p>
+Oh yes, “you” means “you.” You've got to carry enough funds to charter the ship and hire the cutthroats. You don't know why those thieving good-for-nothings under your command haven't retired yet on all the gold they've embezzled from you on past missions, but there's no way you're letting them that far off the leash with a treasury this size. Besides, this job requires some hiring decisions that you don't trust others to make. And sometimes it's good to set an example. When you've faced down pirates in the <<lore region_sea>>, those mollycoddles on your staff will have to stop complaining about having to chase down werewolves in the <<lore region_vale>> or dodge a few guards in Lucgate.
+</p>
+<p>
+Besides yourself, you'll need a navigator with all the information
+<<if _rescuer>>
+<<rep _rescuer>>
+<<else>>
+your former rescuer
+<</if>>
+could scrounge—you can't trust a hireling with that—and a good fighter with sea legs for the rough stuff.
+</p>
+
+
+
+:: Quest_seaborne_rescue___it_has_to_be_youCrit [nobr]
+<p>You reach the Southern Isles without incident, charter the ship, and crawl through waterfront dives looking for a crew and for word of your target—the notorious Captain <<rep $g.captain>>. You strike it lucky. One of your new hires used to sail with Captain <<rep $g.captain>>, and knows what waters he'll frequent this time of year, harrying merchants who follow the prevailing winds. If you trick your new ship out like a merchantman, you'll be a likely target, and meet Captain <<rep $g.captain>> for sure. Then it's up to <<rep $g.seafighter>> and your new crew of cutthroats to persuade him to back off and return your slaver—or else attack him and take your slaver back by force.
+<<if $g.seafighter.isHasTrait(setup.trait.per_lunatic)>> <<reps $g.seafighter>> eyes light up insanely at the thought. <</if>>
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> <<rep $g.seafighter>> clenches <<their $g.seafighter>> fist in anticipation. <</if>>
+</p>
+<p>
+You set sail <<uadv $unit.player>> with a strong gale behind you. <<Rep $g.navigator>> expertly guides you into Captain <<reps $g.captain>> preferred waters.
+<<if $g.navigator.isHasTrait('race_catkin')>> The salt spray irritates your Neko navigator <<rep $g.navigator>> (you know how cats hate getting wet). <</if>>
+<<rep $g.seafighter>> passes the time training and drilling the cutthroats, preparing them for the worst.
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> They soon learn to fear <<their $g.seafighter>> wrath more than any enemy they might face. <</if>>
+The search is long and tedious.
+<<if $unit.player.isHasTrait(setup.trait.per_loyal)>> But your loyalty to your missing underling drives you on. <</if>>
+<<if $unit.player.isHasTrait('per_stubborn')>> Sheer stubbornness keeps you going. You aren't giving up! <</if>>
+And eventually you strike luck. </p>
+<p>
+What you find is not the infamous ship of Captain <<rep $g.captain>>, but a mostly-wrecked ship fighting its way desperately back to port. It seems they've been attacked and thoroughly plundered by pirates, and from the description of the enemy's ship, their attacker must have been Captain <<rep $g.captain>> himself! Exhausted from the ordeal, the surviving merchant sailors have no strength to resist your questioning. No, they didn't take note of which way he was sailing.
+</p>
+<p>
+<<if $g.navigator.isHasTrait('per_smart')>> <<rep $g.navigator>> navigator|is sharp enough to ask <<else>> You ask>> <</if>>
+what cargo they lost. And there, at long last, you get the lead you need. Amidst their other odds and ends, the crew of this derelict had the only true map to the treasure of <i>another</i> infamous pirate. They were hoping to sell it to treasure hunters, but now it's in the hands of Captain <<rep $g.captain>>, and there can be no doubt what he'll do. One of the crew remembers the name of the island, and
+<<if $g.navigator.isHasTrait('per_smart')>> <<rep $g.navigator>>, with <<their $g.navigator>> excellent memory, recalls <<else>> questioning among your own crew reveals <</if>>
+its location.
+<<if $unit.player.isHasTrait(setup.trait.per_kind)>> You are nice enough to reward this helpful crew with provisions and repairs. <</if>>
+</p>
+<p>
+Leaving the derelict to its fate, you set sail for the island, and over a headland you see the topsails of Captain <<reps $g.captain>> infamous ship. You find a suitable anchorage and disembark with your own crew of cutthroats.
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> <<rep $g.seafighter>> exhorts them to be ready to kill if they dare to resist your demands, and you'll sail off with two ships instead of one.
+<</if>>
+</p>
+<p>
+The island jungle is hot and the march is hard.
+<<if $unit.player.isHasTrait('per_stubborn')>> But you are relentless, and infuse the rest of the crew with your relentlessness. <</if>>
+<<if $g.navigator.isHasTrait('per_attentive')>> Your sharp-eyed navigator, <<rep $g.navigator>>, lights upon signs of Captain <<reps $g.captain>> progress across the island, and leads the way as you follow his track.
+<<elseif $unit.player.isHasTrait('per_attentive')>> Your sharp eyes light upon signs of Captain <<reps $g.captain>> progress across the island, and you lead the way yourself as you follow his track
+<<else>> Eventually, you find Captain <<reps $g.captain>> track, and follow it to his destination. <</if>>
+</p>
+<p>
+Near nightfall, you hear raucous, bawdy singing in triumph, and think Captain <<rep $g.captain>> must have found his treasure after all. You send navigator out to scout, but the pirates' sharp-eyed sentry spots your scout, and surprise is out of the question. You and your cutthroats come storming out of the trees to see the other crew forming up in a defensive ring. The moment of truth has come. The forces look evenly matched. Captain <<rep $g.captain>> captain|have a fearsome reputation.
+</p>
+<p>
+“Ahoy!” you call out. “My name is <<= $unit.player.rep()>> from <<rep $company.player>>, the most fearsome slavers afloat, and you've got someone of mine! I want <<rep $g.slaver>> back and I'm ready to deal or to fight for <<them $g.slaver>>. Your choice! I'll only deal with your captain, so let him stand forth and face me!”
+</p>
+<p>
+“Oh, is that so?” says a voice from inside the pirates' ring.
+<<if $g.slaver.isHasTrait(setup.trait.gender_female)>> A <i>female</i> voice. But that can't be— Captain <<rep $g.captain>> captain|is definitely male, according to those oh-so-accurate rumors you've been following. The voice continues. <</if>>
+“Stand aside boys, and let's see what we're dealing with.” The pirates make a hole, and their leader steps forth—not the notorious Captain <<rep $g.captain>> at all, but <<rep $g.slaver>> <<themself $g.slaver>>!
+</p>
+<p>
+You and your associates go bug-eyed. The meeting turns friendly, and in less than an hour, the two crews are carousing and drinking on the beach, while you, <<rep $g.navigator>>,<<rep $g.seafighter>>, and <<rep $g.slaver>> are sitting around a fire and catching up. How did <<rep $g.slaver>> get where <<they $g.seafighter>> is?
+</p>
+<p>
+“Well,” <<they $g.slaver>> says, “you remember when you lost me, right? You don't want to know what happened after that, and you <i>really</i> don't want to know what happened after that. You probably <i>do</i> want to know what happened next, 'cause it's really naughty, but it's not your business. And before you know it, I was on the waterfront being shanghaied by these animals. Well, Captain <<rep $g.captain>> died of eating bad fish a few weeks later, and it's their custom to elect the next captain out of the crew. And, not to put too fine a point on it, I won!”
+</p>
+<p>
+“How?”
+</p>
+<p>
+“Well, I mean <I>look</i> at me!
+<<if $g.slaver.isHasTrait('race_wolfkin')>>I growled at 'em, in my wolfish way. <i>Grrr!</i> <</if>>
+<<if $g.slaver.isHasTrait('race_demon')>>People don't like to say “no” to a demon. <</if>>
+<<if $g.slaver.isHasTrait('race_lizardkin')>>People don't like to say “no” to a dragon. Or meddle in their affairs, if you know what I mean. <</if>>
+<<if $g.slaver.isHasTrait('race_greenskin')>>I gave 'em a traditional glare of orc-ugly. That's very persuasive, among my people. <</if>>
+<<if $g.slaver.isHasTrait('face_attractive')>>I was too cute to refuse. <</if>>
+<<if $g.slaver.isHasTrait('face_beautiful')>>I was too <i>gorgeous</i> to refuse. <</if>>
+“
+</p>
+<p>
+“Anything else?”
+</p>
+<p>
+“Well, you have to consider my abilities. I mean, <i>you</i> know how valuable I am, seeing how you came to rescue me and all.
+<<if $g.slaver.isHasTrait('bg_pirate')>>I knew as much about the pirates' life as any of 'em. <</if>>
+<<if $g.slaver.isHasTrait('bg_seaman')>>I could handle a ship as well with the best of 'em. <</if>>
+<<if $g.slaver.isHasTrait('magic_wind')>> And, well, you know, if you have a wind wizard on a sailing ship, give <<them $g.slaver>> what <<they $g.slaver>>  slaver|want and you've got an edge in battle. <<elseif $g.slaver.isHasTrait('magic_fire')>> And, well, you know, if you have a flame wizard on a wooden sailing ship…you either make <<them $g.slaver>> captain or get rid of <<them $g.slaver>> quick. <</if>>
+<<if $g.slaver.isHasTrait('per_smart')>>I'd already shown I was sharp on tactics. <</if>>
+<<if $g.slaver.isHasTrait('per_attentive')>>On our last raid, I'd found loot that everyone else missed. <</if>>
+<<if $g.slaver.isHasTrait('per_gregarious')>>I was pretty popular with the guys. <</if>>
+<<if $g.slaver.isHasTrait('per_loyal')>>I'd shown I was a team player. <</if>>
+<<if $g.slaver.isHasTrait('per_empath')>> And I showed I had a good sense of the crew's moods. <</if>>
+<<if $g.slaver.isHasTrait('per_studious')>> My diligence won me some support—a captain can't be lazy, not if he wants to last long. <</if>>
+<<if $g.slaver.isHasTrait('tough_nimble')>> I'd shown that I could am quick in the heat of battle. <</if>>
+<<if $g.slaver.isHasTrait('per_lavish')>> I promised to be free-handed with the booty when it came time to split. <</if>>
+<<if $g.slaver.isHasTrait('per_dominant')>> They could see I'd have a firm hand with discipline, which you need on a crew like this. <<elseif $g.slaver.isHasTrait('bg_slaver')>> They could see I had a firm whip hand, if you know what I mean, and you need that to keep a crew like this in line. <</if>>
+<<if $g.slaver.isHasTrait('per_aggressive')>> They liked my aggressiveness. <</if>>
+<<if $g.slaver.isHasTrait('per_brave')>> Also, I'd been kind of reckless in our last couple of fights, so they figured either I'd lead them on to victory, or else get myself killed and leave that much bigger a share for them. <</if>>
+“
+</p>
+<p>
+“I can see that'd matter, but anything else?”
+</p>
+<p>
+“
+<<if $g.slaver.isHasTrait('muscle_strong')>>I challenged the other contenders to arm wrestle, and won that handily. <</if>>
+<<if $g.slaver.isHasTrait('dick_large')>>I challenged the other contenders to a dick-measuring contest, and won <i>that</i> handily. These pirates are superstitious about things like that. <</if>>
+<<if $g.slaver.isHasTrait('per_lustful')>> I was the first to mate with the first mate, so I had an extra voice on my side.
+<<elseif $g.slaver.isHasTrait('bg_courtesan') || $g.slaver.isHasTrait('bg_whore')>> I wasn't afraid to sleep my way to the top, or at least to a few extra votes. <</if>>
+<<if $g.slaver.isHasTrait('per_sly')>> And I suppose you could say I did spread a few stories about my likely opponents…one or two of them ended up marooned, but it was all in a good cause, really. <</if>>
+<<if $g.slaver.isHasTrait('per_evil')>> And I <i>suppose</i> it's just as well no one knows <I>how</i> Captain <<reps $g.captain>> bad fish got so bad, after all. Rest his soul! <</if>>
+Why would you need anything more?” That's all you're getting out of <<rep $g.slaver>>.
+</p>
+<p>
+“So what's next for you?”
+</p>
+<p>
+“Oh,” says <<rep $g.slaver>>, “my pirate days are over. This treasure's enough to put these fish-fuckers on a yearlong drunk, so we're breaking up the crew. As captain I only get a double share, but for me there's more to life than hangovers. So….got room for a slaver?”
+It's clear enough you won't be getting any share of the pirates' treasure. But they won't all be spending it on rum. Some of them appreciate the finer things in life, like housemaids and human footstools and catamites and concubines. So you might be getting an order or two out of this after all.</p>
+
+
+
+:: Quest_seaborne_rescue___it_has_to_be_youSuccess [nobr]
+<p>You reach the Southern Isles without incident, charter the ship, and crawl through waterfront dives looking for a crew and for word of your target—the notorious Captain <<rep $g.captain>>. You strike it lucky. One of your new hires used to sail with Captain <<rep $g.captain>>, and knows what waters he'll frequent this time of year, harrying merchants who follow the prevailing winds. If you trick your new ship out like a merchantman, you'll be a likely target, and meet Captain <<rep $g.captain>> for sure. Then it's up to <<rep $g.seafighter>> and your new crew of cutthroats to persuade him to back off and return your slaver—or else attack him and take your slaver back by force.
+<<if $g.seafighter.isHasTrait(setup.trait.per_lunatic)>> <<reps $g.seafighter>> eyes light up insanely at the thought. <</if>>
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> <<rep $g.seafighter>> clenches <<their $g.seafighter>> fist in anticipation. <</if>>
+</p>
+<p>
+You set sail <<uadv $unit.player>> with a strong gale behind you. <<Rep $g.navigator>> expertly guides you into Captain <<reps $g.captain>> preferred waters.
+<<if $g.navigator.isHasTrait('race_catkin')>> The salt spray irritates your Neko navigator <<rep $g.navigator>> (you know how cats hate getting wet). <</if>>
+<<rep $g.seafighter>> passes the time training and drilling the cutthroats, preparing them for the worst.
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> They soon learn to fear <<their $g.seafighter>> wrath more than any enemy they might face. <</if>>
+The search is long and tedious.
+<<if $unit.player.isHasTrait(setup.trait.per_loyal)>> But your loyalty to your missing underling drives you on. <</if>>
+<<if $unit.player.isHasTrait('per_stubborn')>> Sheer stubbornness keeps you going. You aren't giving up! <</if>>
+And eventually you strike luck.
+</p>
+<p>
+
+As you round a headland near a hidden cove, you see another ship bearing down on you with the wind at its back, flying the notorious flag of Captain <<rep $g.captain>> himself! You, your slaver, and your cutthroats prepare to take the fight to them. Your ships crash together, they grapple you, and soon swarm over the side and into the fray. It's cutlass to cutlass and cutthroat to cutthroat.
+</p>
+<p>
+<<Rep $g.seafighter>> leads your band <<if $g.seafighter.isHasTrait('tough_nimble')>>, leaping acrobatically from your ship to the enemy's,<</if>> and cuts through two of the enemy before meeting a fearsome sight: Captain <<reps $g.captain>> dragonkin first mate.
+<<if $g.seafighter.isHasTrait('per_brave')>>Most warriors would be daunted at <<their $g.seafighter>> awful visage, but <<rep $g.seafighter>> steels <<their $g.seafighter>> nerves and moves steadily forward <<elseif $g.seafighter.isHasTrait('per_lunatic')>> Heedless of the dreadful prospect, <<rep $g.seafighter>> charges forward like a berserker. <</if>>.
+<<if $g.seafighter.isHasTrait('race_catkin')>> With a pointy-toothed grin, the dragonkin kicks a swab-bucket at the Neko warrior, splashing <<them $g.seafighter>> with soapy water and causing <<them $g.seafighter>> to yowl with rage at getting so wet. <</if>>
+</p>
+<p>
+
+The monstrous pirate spreads his wings and takes to the air, hoping to gain the advantage.
+
+<<if $g.seafighter.isHasTrait('magic_wind')>> But <<rep $g.seafighter>> makes a mystic sign, inhales hard, and literally sucks out the wind from beneath the mate's wings! He crashes back to the deck, to the wind-wizard's grim satisfaction. <<elseif $g.seafighter.isHasTrait('tough_nimble') and $g.seafighter.isHasTrait('bg_seaman')>> But <<rep $g.seafighter>> performs an amazing feat of sailorcraft, leaping nimbly into the rigging, seizing a cable, wrapping it around the dragonkin's wings, and tying them together with a perfect clove hitch! <<else>> But <<rep $g.seafighter>> wounds the mate's left wing before he has time to accomplish this. <</if>> They will fight on even ground.
+
+<<if $g.seafighter.isHasTrait('muscle_verystrong')>> They rush together and <<rep $g.seafighter>> seafighter|is disarmed immediately, but <<they $g.seafighter>> performs a feat very few would dare: <<they $g.seafighter>> seizes the dragonkin's arms and wrestles it to the ground. The mate submits. <<else>> In the clash of weapons and the snapping of teeth, for all the dragonkin's ferocity, it is <<rep $g.seafighter>> who prevails. The mate's down, badly wounded. <</if>>
+
+</p>
+
+<p>
+
+You yourself have no time to cheer this on, for you find yourself facing Captain <<reps $g.captain>> demon boatswain. And there's no one to help you but you yourself.
+<<if $unit.player.isHasTrait('magic_light')>>Raising a hand and calling out a word of command, you overcome the fiend's power of darkness with your own magic light, and blind him. <<elseif $unit.player.isHasTrait('bg_priest')>> You sing the first line of a holy hymn that you remember from your priestly background—now who'd've thought you'd ever find <i>that</i> handy?—and he clutches both hands over his ears. <<else>> Wielding a whip, you curl it around the monster's throat as if you were training him in autoerotic asphyxiation for a “specialty” buyer.<</if>>.
+Taking advantage of his momentary discomfiture, you chain him like a slave, and
+<<if $unit.player.isHasTrait('per_cruel')>> subject him to sexual torture. <<elseif $unit.player.isHasTrait('dick_huge')>> bugger him with a dick so large it makes even <i>him</i> scream. <<else>> subject him to the first phase of Obedience Training: Basic. <</if>>.
+</p>
+<p>
+With his two most fearsome servants down, Captain <<rep $g.captain>> bellows out an order – “Halt! Hold hard! BELAY!” That roar is hard to ignore. The fighters on both sides back off, and you find yourself facing Captain <<rep $g.captain>> himself across the deck. He's drawn a flaming sword—a dangerous thing on wooden ships—and is livid with rage and consternation.
+</p>
+<p>
+“I can burn us both to the waterline, and I have the explosives to blow us both to pieces,” says Captain <<rep $g.captain>>. “But I don't comprehend you. You're not a merchant, you're not a pirate, and you're not a pirate hunter. I know them all. So what in the seven deeps of Hell are we fighting about?”
+</p>
+<p>
+“You've got something of mine,” you reply. “In your crew. I want <<rep $g.slaver>>.”
+</p>
+<p>
+“Is <i>that</i> all?” he roars. “That good-for-nothing
+<<if $g.slaver.isHasTrait('gender_male')>>cabin boy <<else>> piratical maid-of-all-work<</if>>?
+Take <<them $g.slaver>>. <i>Take</i> <<them $g.slaver>>! Only go!”
+</p>
+<p>
+He roars orders, and your former slaver is soon hauled up…looking somewhat the worse for wear from the last time you saw <<them $g.slaver>>, but well-exercised and ready to return to a life of slaving. “It's back to slaving for you,” you say. <<Rep $g.slaver>> saunters over to your side of the deck as if <<they $g.slaver>> knew all along you'd have to come for <<them $g.slaver>>.
+</p>
+<p>
+“Hold on,” says Captain <<rep $g.captain>>. “You're slavers?”
+</p>
+<p>
+“Yes,” you reply. “I'm from the ancient and honorable company of <<rep $company.player>>.”
+</p>
+<p>
+“Well,” he says, looking disgustedly over the remains of his crew, “we might have an order or two for you.” He sends for ink and paper. “In particular, I could use an untamed demon to make up for the one you just tamed.”
+</p>
+<p>
+As you sail away, over a glass of spirits you <<uadv $unit.player>> ask slaver how <<they $g.slaver>> came to be where <<they $g.slaver>> slaver|was. “Well,” <<they $g.slaver>> says, “you remember when you lost me, right? You don't want to know what happened after that, and you <i>really</i> don't want to know what happened after that. You probably <i>do</i> want to know what happened next, 'cause it's really naughty, but it's not your business. And before you know it, I was on the waterfront being shanghaied by these animals. And soon enough they were using me for every little thing on board—washing dishes, serving out the grub, sewing on buttons, that sort of thing.”
+</p>
+<p>
+<<Rep $g.slaver>> doesn't admit to any lewd services, and you don't see a reason to press.
+<<set _doctor = $dutylist.getUnitIfAvailable('doctor')>>
+<<if _doctor and $g.slaver.isHasTrait(setup.trait.gender_male)>> But later, at <<reps $g.slaver>> next physical, <<rep _doctor>> notices that his rear orifice looks more well-used now. <<elseif _doctor and $g.slaver.isHasTrait(setup.trait.gender_female)>> But later, at <<reps $g.slaver>> next physical, <<rep _doctor>> notices that her orifices looks more well-used now.<</if>>
+The destinies of missing slavers are eccentric and unpredictable.
+</p>
+<p>
+What matters now is that you're back together, and you an order or two that might help defray the cost of the voyage. It's time to steer homewards! </p>
+
+
+
+:: Quest_seaborne_rescue___it_has_to_be_youFailure [nobr]
+<p>You reach the Southern Isles without incident, charter the ship, and crawl through waterfront dives looking for a crew and for word of your target—the notorious Captain <<rep $g.captain>>. You strike it lucky. One of your new hires used to sail with Captain <<rep $g.captain>>, and knows what waters he'll frequent this time of year, harrying merchants who follow the prevailing winds. If you trick your new ship out like a merchantman, you'll be a likely target, and meet Captain <<rep $g.captain>> for sure. Then it's up to <<rep $g.seafighter>> and your new crew of cutthroats to persuade him to back off and return your slaver—or else attack him and take your slaver back by force.
+<<if $g.seafighter.isHasTrait(setup.trait.per_lunatic)>> <<reps $g.seafighter>> eyes light up insanely at the thought. <</if>>
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> <<rep $g.seafighter>> clenches <<their $g.seafighter>> fist in anticipation. <</if>>
+</p>
+<p>
+You set sail <<uadv $unit.player>> with a strong gale behind you. <<Rep $g.navigator>> expertly guides you into Captain <<reps $g.captain>> preferred waters.
+<<if $g.navigator.isHasTrait('race_catkin')>> The salt spray irritates your Neko navigator <<rep $g.navigator>> (you know how cats hate getting wet). <</if>>
+<<rep $g.seafighter>> passes the time training and drilling the cutthroats, preparing them for the worst.
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> They soon learn to fear <<their $g.seafighter>> wrath more than any enemy they might face. <</if>>
+The search is long and tedious.
+<<if $unit.player.isHasTrait(setup.trait.per_loyal)>> But your loyalty to your missing underling drives you on. <</if>>
+<<if $unit.player.isHasTrait('per_stubborn')>> Sheer stubbornness keeps you going. You aren't giving up! <</if>>
+And eventually you strike luck.
+</p>
+<p>
+As you round a headland near a hidden cove, you see another ship bearing down on you with the wind at its back, flying the notorious flag of Captain <<rep $g.captain>> himself! You, your slaver, and your cutthroats prepare to take the fight to them. Your ships crash together, they grapple you, and soon swarm over the side and into the fray. It's cutlass to cutlass and cutthroat to cutthroat.
+</p>
+<p>
+<<Rep $g.seafighter>> leads your band <<if $g.seafighter.isHasTrait('tough_nimble')>>, leaping acrobatically from your ship to the enemy's,<</if>> and cuts through two of the enemy before meeting a fearsome sight: Captain <<reps $g.captain>> dragonkin first mate.
+<<if $g.seafighter.isHasTrait('per_brave')>>Most warriors would be daunted at <<their $g.seafighter>> awful visage, but <<rep $g.seafighter>> steels <<their $g.seafighter>> nerves and moves steadily forward <<elseif $g.seafighter.isHasTrait('per_lunatic')>> Heedless of the dreadful prospect, <<rep $g.seafighter>> charges forward like a berserker. <</if>>.
+<<if $g.seafighter.isHasTrait('race_catkin')>> With a pointy-toothed grin, the dragonkin kicks a swab-bucket at the Neko warrior, splashing <<them $g.seafighter>> with soapy water and causing <<them $g.seafighter>> to yowl with rage at getting so wet. <</if>>
+</p>
+<p>
+The monstrous pirate spreads his wings and takes to the air, hoping to gain the advantage.
+
+<<if $g.seafighter.isHasTrait('magic_wind')>> But <<rep $g.seafighter>> makes a mystic sign, inhales hard, and literally sucks out the wind from beneath the mate's wings! He crashes back to the deck, to the wind-wizard's grim satisfaction. <<elseif $g.seafighter.isHasTrait('tough_nimble') and $g.seafighter.isHasTrait('bg_seaman')>> But <<rep $g.seafighter>> performs an amazing feat of sailorcraft, leaping nimbly into the rigging, seizing a cable, wrapping it around the dragonkin's wings, and tying them together with a perfect clove hitch! <<else>> But <<rep $g.seafighter>> wounds the mate's left wing before he has time to accomplish this. <</if>> They will fight on even ground.
+
+<<if $g.seafighter.isHasTrait('muscle_verystrong')>> They rush together and <<rep $g.seafighter>> seafighter|is disarmed immediately, but <<they $g.seafighter>> performs a feat very few would dare: <<they $g.seafighter>> seizes the dragonkin's arms and wrestles it to the ground. The mate submits. <<else>> In the clash of weapons and the snapping of teeth, for all the dragonkin's ferocity, it is <<rep $g.seafighter>> who prevails. The mate's down, badly wounded. <</if>> <<rep $g.seafighter>> puts <<uaweapon $g.seafighter>> to the throat of the dragonkin. This proves useful, because things have not been going so well for you.
+</p>
+<p>
+The ship-to-ship crossing was harder for you—the gap was wide and the rigging was awkwardly placed. <<if $unit.player.isHasTrait('per_cautious')>> Also, you were a little too cautious in making the leap. Your careful nature has saved your head many a time, but this time it made you hesitate. <<elseif $unit.player.isHasTrait('per_kind')>> And something peaceful within your nature rebelled at the thought of jumping into the carnage and clash of steel, and you hesitated for a vital moment. <</if>>
+When you made it, you were immediately pounced upon by Captain's notorious demon first mate. Both of you lose your weapons and you begin to wrestle.
+</p>
+<p>
+You strive with might and main. <<if $unit.player.isHasTrait('per_stubborn')>>Stubbornly you fight, refusing to yield.<</if>> <<if $unit.player.isHasTrait('muscle_verystrong')>> With your great strength, you actually get on top of the muscular demon and gain the upper hand. <</if>> But then the demon plays a dirty trick. He kicks off his shoes, claws off his trousers with his rear claws, and then proceeds to slash at you with his thorny demon dick! You're badly wounded and the demon puts his natural “weapon” to your throat.
+</p>
+<p>
+Impasse. Captain <<rep $g.captain>> doesn't want to lose his rare dragonkin mate. Your side doesn't want to lose its paymaster. So Captain <<rep $g.captain>> bellows out an order – “Halt! Hold hard! BELAY!”
+</p>
+<p>
+“Good idea!” you gasp out. The fighting stops. Now you can parley.
+</p>
+<p>
+“So,” says Captain <<rep $g.captain>>, “You're not a merchant, you're not a pirate, and you're not a pirate hunter. I know them all. So what in the seven deeps of Hell are we fighting about?”
+</p>
+<p>
+“You've got something of mine,” you reply. “In your crew. I want <<rep $g.slaver>>.”
+</p>
+<p>
+Captain <<rep $g.captain>> turns purple and rends the air with oaths. “That bastard! That sea urchin fucking sea slug licker! That catamite to a dolphin! That snot-sucking minnow bait! I'll put my anchor up his ass and get him a blowjob from a moray!” There's a great deal more in this vein. For your own part, you are puzzled. <<if $g.slaver.isHasTrait(setup.trait.gender_female)>> <<rep $g.slaver>> slaver|is not a “he.” <<else>> Sure, you're convinced <<rep $g.slaver>> slaver|is another sticky-fingered embezzler just like the rest of them, and you'd've given up this wicked slaving life by now if you had half the gold those thieving ingrates had stolen from you, but he isn't <i>that</i> bad. <</if>> Seeing your look of genuine and extreme puzzlement, Captain <<rep $g.captain>> calms himself and proceeds to explain.
+</p>
+<p>
+“A few months ago,” he said, “one of those slug-sucking nobles of Tor had a dinner service shipped to him by sea. And I stole it. Because that's what I do! Wouldn't pay a decent ransom, but he wouldn't shut up about it, either. His gold-chased dinner plates. His soup spoons engraved with the family crest. And above all, his chased platinum salvers. Oh, how much he hated losing those salvers. Engravings by the leading artisans of Krell. Each one chronicled a noble deed of his ancestors, or the history of Tor. His initials in the ancient calligraphy of the capital. He. Wouldn't. Shut. Up. About. His. Fucking. <i>Salvers!</i> And oh-how-terrible it was that dirty old Captain <i>Me</i> had captured 'em, and how the King should be mobilizing his whole navy to get them back!”
+</p>
+<p>
+You look quizzically at this ranting performance.
+</p>
+<p>
+“<i>So</i>, continues Captain <<rep $g.captain>>, “some groggy dumbshit in a two-copper dockside whorehouse starts a rumor that I've been capturing <I>slavers</i>! And now every flesh-peddler from here to the Eastern Wastes is looking for me, trying to get back some good-for-nothing ass-beater that <i>I</i> wouldn't use for ballast!”
+</p>
+<p>
+An hour later, you are sailing away <<uadv $unit.player>>, perhaps a little sadder and a little wiser.
+<<set _rescuer = $dutylist.getUnitIfAvailable('rescuer')>>
+But when you get back to <<rep $company.player>>,
+<<if _rescuer>>
+<<rep _rescuer>>
+<<else>>
+your former rescuer
+<</if>>
+is going start vetting the rumors a little better. Or
+<<if _rescuer>>
+<<they _rescuer>>
+<<else>>
+the former rescuer
+<</if>>
+is going to be a <i>lot</i> sadder and a <i>lot</i> wiser. Teaching lessons is a specialty in your trade.
+</p>
+
+
+
+:: Quest_seaborne_rescue___it_has_to_be_youDisaster [nobr]
+<p>You reach the Southern Isles without incident, charter the ship, and crawl through waterfront dives looking for a crew and for word of your target—the notorious Captain <<rep $g.captain>>. You strike it lucky. One of your new hires used to sail with Captain <<rep $g.captain>>, and knows what waters he'll frequent this time of year, harrying merchants who follow the prevailing winds. If you trick your new ship out like a merchantman, you'll be a likely target, and meet Captain <<rep $g.captain>> for sure. Then it's up to <<rep $g.seafighter>> and your new crew of cutthroats to persuade him to back off and return your slaver—or else attack him and take your slaver back by force.
+<<if $g.seafighter.isHasTrait(setup.trait.per_lunatic)>> <<reps $g.seafighter>> eyes light up insanely at the thought. <</if>>
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> <<rep $g.seafighter>> clenches <<their $g.seafighter>> fist in anticipation. <</if>>
+</p>
+<p>
+You set sail <<uadv $unit.player>> with a strong gale behind you. <<Rep $g.navigator>> expertly guides you into Captain <<reps $g.captain>> preferred waters.
+<<if $g.navigator.isHasTrait('race_catkin')>> The salt spray irritates your Neko navigator <<rep $g.navigator>> (you know how cats hate getting wet). <</if>>
+<<rep $g.seafighter>> passes the time training and drilling the cutthroats, preparing them for the worst.
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> They soon learn to fear <<their $g.seafighter>> wrath more than any enemy they might face. <</if>>
+The search is long and tedious.
+<<if $unit.player.isHasTrait(setup.trait.per_loyal)>> But your loyalty to your missing underling drives you on. <</if>>
+<<if $unit.player.isHasTrait('per_stubborn')>> Sheer stubbornness keeps you going. You aren't giving up! <</if>>
+And eventually you strike luck. </p>
+<p>
+What you find is not the infamous ship of Captain <<rep $g.captain>>, but a mostly-wrecked ship fighting its way desperately back to port. It seems they've been attacked and thoroughly plundered by pirates, and from the description of the enemy's ship, their attacker must have been Captain <<rep $g.captain>> himself! Exhausted from the ordeal, the surviving merchant sailors have no strength to resist your questioning. No, they didn't take note of which way he was sailing.
+</p>
+<p>
+<<if $g.navigator.isHasTrait('per_smart')>> <<rep $g.navigator>> navigator|is sharp enough to ask <<else>> You ask>> <</if>>
+what cargo they lost. And there, at long last, you get the lead you need. Amidst their other odds and ends, the crew of this derelict had the only true map to the treasure of <i>another</i> infamous pirate. They were hoping to sell it to treasure hunters, but now it's in the hands of Captain <<rep $g.captain>>, and there can be no doubt what he'll do. One of the crew remembers the name of the island, and
+<<if $g.navigator.isHasTrait('per_smart')>>
+<<rep $g.navigator>>, with
+<<their $g.navigator>> excellent memory, recalls
+<<else>> questioning among your own crew reveals <</if>>
+its location.
+<<if $unit.player.isHasTrait(setup.trait.per_kind)>> You are nice enough to reward this helpful crew with provisions and repairs. <</if>>
+One crewman, a superstitious exotic from the Southern Isles, feels no gratitude to you for sparing his life and leaving him to fight his way back to shore on a still-badly-damaged ship. As you sail off, he draws out a crudely-carved fetish and prays down fearsome curses on your head, and the heads of all your crew.
+</p>
+<p>
+Oblivious to this, you set sail for the island, and over a headland you see the topsails of Captain <<reps $g.captain>> infamous ship. You find a suitable anchorage and disembark with your own crew of cutthroats.
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> <<rep $g.seafighter>> exhorts them to be ready to kill if they dare to resist your demands, and you'll sail off with two ships instead of one. <</if>>
+</p>
+<p>
+The island jungle is hot and the march is hard.
+<<if $unit.player.isHasTrait('per_stubborn')>> But you are relentless, and infuse the rest of the crew with your relentlessness. <</if>>
+<<if $g.navigator.isHasTrait('per_attentive')>> Your sharp-eyed navigator, <<rep $g.navigator>>, lights upon signs of Captain <<reps $g.captain>> progress across the island, and leads the way as you follow his track.
+<<elseif $unit.player.isHasTrait('per_attentive')>> Your sharp eyes light upon signs of Captain <<reps $g.captain>> progress across the island, and you lead the way yourself as you follow his track
+<<else>> Eventually, you find Captain <<reps $g.captain>> track, and follow it to his destination. <</if>>
+</p>
+<p>
+Near nightfall, you hear raucous, bawdy singing in triumph, and think Captain <<rep $g.captain>> must have found his treasure after all. You send navigator out to scout, but the pirates' sharp-eyed sentry spots your scout, and surprise is out of the question. You and your cutthroats come storming out of the trees to see the other crew forming up in a defensive ring. The moment of truth has come. The forces look evenly matched. Captain <<rep $g.captain>> captain|have a fearsome reputation.
+</p>
+<p>
+“Ahoy!” you call out. “My name is <<= $unit.player.rep()>> from <<rep $company.player>>, the most fearsome slavers afloat, and you've got someone of mine! I want <<rep $g.slaver>> back and I'm ready to deal or to fight for <<them $g.slaver>>. Your choice! I'll only deal with your captain, so let him stand forth and face me!”
+</p>
+<p>
+“Oh, is that so?” says a voice from inside the pirates' ring. “Stand aside boys, and let's see what we're dealing with.” The ring breaks open, and Captain <<rep $g.captain>> himself steps out, flanked by his dragonkin first mate and his demon boatswain. “Now, what would you be wanting with <<rep $g.slaver>>?”
+</p>
+<p>
+“He's one of my slavers,” you say, “and I want him back. I can pay you with gold, or with steel.”
+<<if $g.seafighter.isHasTrait(setup.trait.per_aggressive)>> <<rep $g.seafighter>> grips <<their $g.seafighter>> <<uweapon $g.seafighter>> in anticipation. <</if>>
+<<if $g.seafighter.isHasTrait(setup.trait.per_lunatic)>> <<rep $g.seafighter>> seafighter|is practically drooling with insane savagery at the upcoming battle. <</if>>
+</p>
+<p>
+“I don't think so,” says Captain <<rep $g.captain>>, spitting. “I think maybe I'll make some new additions to my crew, or to my stores of shark bait.”
+</p>
+<p>
+It's going to be a fight then. You nod to <<rep $g.seafighter>>. “Right,” <<they $g.seafighter >> says. “To them, lads!”
+</p>
+<p>
+“What lads?” asks Captain <<rep $g.captain>>, cocking an eyebrow innocently.
+</p>
+<p>
+You look behind you. It's too true. A moment ago, there was a line of steely-eyed murder backing you up. Now it's assholes and elbows, all going the wrong way.
+</p>
+<p>
+Grinning <<uadv $g.captain >>, Captain <<rep $g.captain>>  looked over your forlorn trio. “From your look,” he says to <<rep $g.navigator>>, “I'd say you're a navigator. I've got room on my crew for a navigator. Or shark bait. Your choice.” In moments, the deal is sealed, the articles are signed, and Captain <<rep $g.captain>> captain|have a new navigator.
+</p>
+<p>
+“Now,” drawls Captain <<rep $g.captain>>, “seeing as you're so <<uadj $unit.player>> and your friend there's so <<uadj $g.seafighter>>, I think I'll…” But there's no one to continue to. You've heard the old jokes about “death, sodomy, or death-by-sodomy,” and you're not sticking around to hear the options. You and <<rep $g.seafighter>> are pelting away as fast as you can. And here Captain <<reps $g.captain>> success helps you. His pirates have been celebrating their great find with rum and debauchery, and while they wouldn't mind a little close-hand throat-cutting, they're not up to a race. His winged officers take to the skies in pursuit, but their flying is more than a little unsteady. You make the trees and you don't stop.
+</p>
+<p>
+You and <<rep $g.seafighter>> reach the beach where your cutthroats are swarming back onto your chartered ship. Freedom's just in your grasp when Captain <<reps $g.captain>> dragonkin first mate lands feet-first on the sand to cut off your retreat. Snapping his jaws and swinging a cutlass, he prepares to cut you to pieces. You and <<rep $g.seafighter>> are exhausted from your flight, but the mate is woozy with booze and dizzy from a mid-air collision with the demon boatswain. A bleary, staggering melee results, at the end of which both you and seafighter are bleeding out on the sand, and the dragonkin mate's flapping unsteadily away.
+</p>
+<p>
+Your crew has the “decency” to carry your near-lifeless remains back to the ship, on the understanding that you'll keep a few facts to yourself. You'll make it back to <<rep $company.player>> eventually, but will need more time to recuperate. There's only one thought to comfort you:
+</p>
+<p>
+You know what a bunch of thieving, faithless, treacherous embezzlers your slavers have always been. If Captain's really got <i>two</i> of them on his crew, he'll be broke next year for sure. And <i>they'll</i> be anywhere from beyond <<lore concept_mist>> to under the sea to down the tavern to up the Queen of Tor's ass.
+<<set _rescuer = $dutylist.getUnitIfAvailable('rescuer')>>
+<<if _rescuer>>
+<<rep _rescuer>>
+<<else>>
+Your former rescuer
+<</if>>
+will just have to keep
+<<if _rescuer>>
+<<their _rescuer>>
+<<else>>
+their
+<</if>>
+eyes open. The destinies of missing slavers are eccentric and unpredictable. </p>
+

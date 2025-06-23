@@ -1,0 +1,96 @@
+:root {
+  color-scheme: dark;
+}
+
+#story-title {
+  display: none;
+  /* StoryDisplayTitle is used only for titlebar, so hide it in the sidebar */
+}
+
+#topleftnavdiv {
+  font-size: 162.5%;
+  /* make it look like as if it was #story-title */
+  font-weight: bold;
+}
+
+a {
+  user-select: none;
+
+  &.disabled {
+    cursor: inherit;
+    color: #555;
+    &:hover {
+      color: #555;
+      text-decoration: none;
+    }
+  }
+}
+
+.indented {
+  margin-left: 1em;
+}
+
+.center {
+  text-align: center;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.clear-both {
+  /* ensure floating elements don't overflow this */
+  clear: both;
+}
+
+.graytext {
+  color: #555;
+}
+
+.lightgraytext {
+  color: rgb(180, 180, 180);
+}
+
+.worldmap {
+  margin: 1em auto;
+  text-align: center;
+}
+
+button.selected {
+  color: yellow !important;
+}
+
+.overflow-story-container {
+  /* Overflow the "story passage" container
+   *   100vw: 100% of screen width
+   *   100%: actual container width (54 em or less)
+  */
+  --ui-bar-width: 17.5em;
+  --right-ui-bar-width: 17.5em;
+  min-width: calc(100vw - var(--ui-bar-width) - var(--right-ui-bar-width) - 4em);
+  margin-left: calc((100vw - 100% - var(--ui-bar-width) - var(--right-ui-bar-width) - 4em)/-2);
+}
+
+#ui-bar.stowed+#story .overflow-story-container {
+  --ui-bar-width: 2em;
+}
+
+#right-ui-bar.stowed+#story .overflow-story-container {
+  --right-ui-bar-width: 2em;
+}
+
+.button-full-container>button {
+  width: 100%;
+}
+
+.StoryStart-buttons {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+
+  gap: 4px;
+
+  & button {
+    text-align: left;
+  }
+}

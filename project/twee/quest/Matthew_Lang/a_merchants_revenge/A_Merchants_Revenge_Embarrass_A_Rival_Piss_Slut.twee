@@ -1,0 +1,581 @@
+:: QuestSetup_a_merchant_s_revenge_embarrass_a_rival_piss_slut [nobr quest]
+
+
+
+
+
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Roper', /* name */
+[
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_nimble,
+  setup.trait.per_cruel,
+  setup.trait.per_dominant,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1.5,
+  slaving: 1.5,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge_embarrass_a_rival_piss_slut', /* key */
+"A Merchant\'s Revenge: Embarrass a Rival - Piss Slut", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'rare',
+  'money',
+  'ire',
+  'watersport',
+  'city',
+],
+2, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'escort': [ setup.qu.highescort, 1],
+  'slaver': [ _criteriaslaver, 1],
+  'lookout': [ setup.qu.spotter, 1],
+},
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+  'target': 'a_merchant_s_revenge_embarrass_a_rival_potion_of_lust0',
+  'artist': 'a_merchant_s_revenge_embarrass_a_rival_potion_of_lust0',
+},
+[ /* costs */
+],
+'Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slut',
+setup.qdiff.hard41, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slutCrit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_person_leopold),
+      setup.qc.Outcomes('success'),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slutCrit',
+    [
+      setup.qc.ItemIfNew(setup.item.lorebook_person_leopold),
+      setup.qc.VarSet('mlangmerchantprincequest', '10', -1),
+      setup.qc.MoneyCustom(1000),
+      setup.qc.Item('f_wall_good_merchant_revenge_watersport'),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slutFailure',
+    [
+      setup.qc.VarSet('mlang_merchantrevenge_caravancount', '0', -1),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slutDisaster',
+    [
+      setup.qc.Ire('royal', 1),
+      setup.qc.Ire('humankingdom', 1),
+      setup.qc.Favor('humankingdom', -200),
+      setup.qc.Outcomes("failure"),
+      setup.qc.MoneyCustom(500),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('mlang_merchantrevenge_caravancount', '0', -1),
+],
+)>>
+
+:: Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slut [nobr]
+/* Set target relation to rival */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<if $g.target.isHasTrait('gender_male')>>
+        <<set _role = "brother">>
+    <<else>>
+        <<set _role = "sister">>
+    <</if>>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _role = "cousin">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _role = "lackey">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _role = "favoured underling">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _role = "enforcer">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _role = "spymaster">>
+<</if>>
+
+<p>
+    After a lot of time and effort, <<name $g.merchant>> has uncovered the identity of <<their $g.merchant>> rival behind the attacks on <<their $g.merchant>> caravans, and has found a window of opportunity to strike back—and has asked to enlist your aid in doing so.
+</p>
+<p>
+    You have decided to publicly humiliate <<name $g.merchant>>'s rival by exposing the depravity of their friends and family.
+</p>
+<p>
+    <<name $g.merchant>> has pointed you to a wealthy, guarded compound in the cloud district of Lucgate.
+    <<dialogue $g.merchant>>
+        <<name $g.target>> will be alone with only a light guard presence due to...reasons. <<They $g.target>> is our primary target's _role and have a penchant for high class prostitutes. <<They $g.target>>'re also providing the wine for an upcoming luncheon, if that gives you any ideas.
+    <</dialogue>>
+    <<name $g.merchant>> has intercepted <<name $g.target>>'s most recent 'order' from <<their $g.target>> favourite brothel, and you have the opportunity to send a slaver at the appointed day and time instead. They'd then need to find a way to let the rest of the team into the manor to enact the rest of the plan. As long as they can avoid detection by the guards still on the grounds. Given <<name $g.target>>'s submissive tendencies, a blindfold might be a good start.
+</p>
+<p>
+    This is a rare opportunity, and it may be a while before another one presents itself. Of course, if you or your slavers are identified, you will raise the ire of the Merchants of Tor. Best not be identified if at all possible.
+</p>
+
+
+:: Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slutCrit [nobr]
+/* Set target relation to rival */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<if $g.target.isHasTrait('gender_male')>>
+        <<set _role = "distant nephew">>
+    <<else>>
+        <<set _role = "distant neice">>
+    <</if>>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _role = "distant cousin">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _role = "lackey">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _role = "favoured underling">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _role = "enforcer">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _role = "spymaster">>
+<</if>>
+
+<<if $g.escort.isYou() or $g.slaver.isYou() or $g.lookout.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.escort.isYou()>>
+        <<run _notyou.push($g.escort)>>
+    <</if>>
+    <<if !$g.slaver.isYou()>>
+        <<run _notyou.push($g.slaver)>>
+    <</if>>
+    <<if !$g.lookout.isYou()>>
+        <<run _notyou.push($g.lookout)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    <<if $g.escort.isYou()>>
+        /* PC is on the quest and is the escort */
+        <p>
+            Walking up the path between the leering guards dressed in suggestive, yet tasteful clothing was
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                enough to make your skin crawl,
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                really too conservative for your tastes,
+            <<else>>
+                slightly chilly in the cool night air,
+            <</if>>
+            but it did the trick, and you soon found yourself having an extravagant but light meal while <<name $g.target>> spoke, in great detail, of the very kinky things <<they $g.target>> wanted you to do to <<them $g.target>>. In a sense, it's a pity you can't take <<them $g.target>> as a slave. <<They $g.target>>'d make you a lot of money in
+            <<if $fort.player.isHasBuilding("recreationwing")>>
+                your recreation wing.
+            <<else>>
+                a recreation wing.
+            <</if>>
+            Pulling a strip of thick black fabric from your belt you covered <<name $g.target>>'s eyes.<br>
+            "Are we taking your clothes off first?" you asked.
+            <<name $g.target>> shook <<their $g.target>> head rapidly. "No, I want to feel it soaking into me."<br>
+            <<if $unit.player.isHasTrait('gender_male')>>
+                Shrugging, you pulled your <<udick $unit.player>> out of your trousers and slipped your tip between <<their $g.target>> lips. Closing your eyes, you relaxed, letting your piss flow as <<they $g.target>> gulped it down greedily, before pulling back and letting it wash all over <<their $g.target>> face and hair and run down to soak into <<their $g.target>> top.
+            <<else>>
+                Shrugging, you lifted the hem of your dress, and brought your pussy lips to <<their $g.target>> mouth and let go, piss washing over <<their $g.target>> face and upper body.
+            <</if>>
+        </p>
+        <p>
+            When your stream ebbed, <<name $g.target>> licked <<their $g.target>> lips. "More," <<they $g.target>> demanded.
+            "I'll have to reload," you say. "You're going to stay down like a good little piss slut you are?"<br>
+            "Yes <<mistress $unit.player>>."<br>
+            "Good. Now where's the bar with my refills to top me up?"
+        </p>
+        <p>
+            On the way to the bar you unlocked the door to the inner courtyard, covering the nose by pouring a cup of wine from a skin. Returning to your obedient piss slut, you once again
+            <<if $unit.player.isHasTrait('gender_male')>>
+                slipped your dick into <<their $g.target>> mouth.
+            <<else>>
+                bought your vagina up to <<their $g.target>> lips.
+            <</if>>
+            <br>
+            "Well, I think I've got some more for you. Now open wide and I want to hear you gargling."
+        </p>
+        <p>
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                You stayed in place as long as you needed to, distracting <<name $g.target>> and blocking <<their $g.target>> view while <<rep _o1>> and <<rep _o2>> entered in quietly through the unlocked door. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                You happily
+                <<if $g.target.isHasTrait('gender_male')>>
+                    fucked <<their $g.target>> mouth and throat as
+                <<else>>
+                    ground against <<their $g.target>> face as
+                <</if>>
+                <<rep _o1>> and <<rep _o2>> entered in quietly through the unlocked door. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+            <<else>>
+                You
+                <<if $g.target.isHasTrait('gender_male')>>
+                    fucked <<their $g.target>> mouth and throat as
+                <<else>>
+                    ground against <<their $g.target>> face as
+                <</if>>
+                <<rep _o1>> and <<rep _o2>> entered in quietly through the unlocked door. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+            <</if>>
+        </p>
+        <p>
+            When <<name $g.lookout>> returned with the wine cask lid, embossed with "Abbot Forio's Winery" that was the last piece.
+
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                <<rep _o1>> and <<rep _o2>> were still going when you pulled your clothing back on and
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                You probably spent longer than you should filling all of <<name $g.target>>'s holes over and over until your
+                <<if $g.target.isHasTrait('gender_male')>>
+                    balls
+                <<else>>
+                    twat
+                <</if>>
+                ached and you reluctantly pulled your clothes back on and
+            <<else>>
+                You enjoyed yourself for a while, coating <<their $g.target>> face with two loads of cum and feeding <<them $g.target>> a few more loads of piss before you pulled your clothes back on and
+            <</if>>
+            left the same way you entered, out past the guards and with
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                nowhere near enough gold for that experience in a pouch at your belt.
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                more gold than a prostitute would get paid for a job like this. But honestly, you'd have done it just for the sex.
+            <<else>>
+                more gold than a prostitute would get paid for a job like this.
+            <</if>>
+        </p>
+        <p>
+            When <<rep _o1>> and <<rep _o2>> arrived back at the fort, they nodded. Everything was in place. When word reached you later of the outrage when a powerful merchant's lunch party was derailed by the discovery of the merchant's _role, kneeling bound in piss sodden clothing and with a funnel gag reaching halfway down <<their $g.target>> throat. "All loads taken" was inked across <<their $g.target>> forehead in smeared but legible letters.
+        </p>
+        <<if $fort.player.isHasBuilding("bath")>>
+            <p>
+                When the poor, delirious <<woman $g.target>> had been released from their bondage and taken swiftly away, the host attempted to recover the situation with some of Forio's Famous Moscato, only for the guests to spit it out in disgust. Apparently, the pervert had filled the celebratory wine casks with piss. It definitely wasn't you draining the piss tub from your <<rep setup.buildingtemplate.bath>> and changing the cask lid and having that delivered on the morning of the luncheon. It was completely the fault of that pervert <<name $g.target>>.
+            </p>
+        <</if>>
+
+    <<else>>
+        /* PC is on the quest and is not the escort */
+        <p>
+            You loitered in the shadows while <<name $g.escort>> headed up the path to the door, passing two guards at the gate who eyed <<them $g.target>> up and down but let <<them $g.escort>> pass unobstructed. It was easy enough to sneak over the wall. Then it was just a matter of staying out of sight while <<name $g.escort>> flirted with, blindfolded and finally fed <<name $g.target>> the piss <<they $g.target>>'d been craving. While <<name $g.escort>>kept <<name $g.target>>'s head locked to <<their $g.escort>> <<ugenital $g.escort>>, <<rep $g.lookout>> picked the lock on the garden door to gain access to the building.
+            <<dialogue $g.merchant>>
+                <<They $g.target>> likes to keep <<their $g.target>>...indulgences secret. Most of the kinky fuckers do.
+            <</dialogue>>
+            <<name $g.merchant>> proved to be correct and the house was even empty of staff. When you finally made it to the main room, you found <<name $g.escort>> had cuffed <<name $g.target>>'s hands behind <<their $g.target>> head and was
+            <<if $g.escort.isHasTrait('gender_male')>>
+                thrusting his cock
+            <<else>>
+                grinding her pussy
+            <</if>>
+            into <<name $g.target>>'s face, and the smell of fresh urine wafted through the air—probably from <<name $g.target>>'s sodden clothing. <br>
+            The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+        </p>
+        <p>
+            When <<name $g.lookout>> returned with the wine cask lid, embossed with "Abbot Forio's Winery" that was the last piece.
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                You bound <<name $g.target>> while your slavers kept the lust addled slut busy, and then <<name $g.escort>> dressed and left, while you prepped <<name $g.target>> for <<their $g.target>> big reveal.
+            <<else>>
+                You enjoyed yourself for a while, coating <<their $g.target>> face with two loads of cum and feeding <<them $g.target>> a few more loads of piss before <<name $g.escort>> dressed and left, while you prepped <<name $g.target>> for <<their $g.target>> big reveal.
+            <</if>>
+        </p>
+
+    <</if>>
+    <p>
+        When word reached you later of the outrage when a powerful merchant's lunch party was derailed by the discovery of the merchant's _role, kneeling bound in piss sodden clothing and with a funnel gag reaching halfway down <<their $g.target>> throat. "All loads taken" was inked across <<their $g.target>> forehead in smeared but legible letters.
+    </p>
+    <<if $fort.player.isHasBuilding("bath")>>
+        <p>
+            When the poor, delirious <<woman $g.target>> had been released from their bondage and taken swiftly away, the host attempted to recover the situation with some of Forio's Famous Moscato, only for the guests to spit it out in disgust. Apparently, the pervert had filled the celebratory wine casks with piss. It definitely wasn't you draining the piss tub from your <<rep setup.buildingtemplate.bath>> and changing the cask lid and having that delivered on the morning of the luncheon. It was completely the fault of that pervert <<name $g.target>>.
+        </p>
+    <</if>>
+
+
+<<else>>
+    /* PC is not on the quest */
+    <p>
+        <<rep $g.slaver>> and <<Rep $g.lookout>> scaled the compound wall and hid in the garden while <<name $g.escort>> headed up the path to the door, passing two guards at the gate who eyed <<them $g.target>> up and down but let <<them $g.escort>> pass unobstructed. Once alone with <<name $g.target>>, <<they $g.escort>> flirted with, blindfolded and finally fed <<name $g.target>> the piss <<they $g.target>>'d been craving. While <<name $g.escort>>kept <<name $g.target>>'s head locked to <<their $g.escort>> <<ugenital $g.escort>>, <<rep $g.lookout>> picked the lock on the garden door to gain access to the building. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter. When <<name $g.lookout>> returned with the wine cask lid, embossed with "Abbot Forio's Winery" that was the last piece.
+    </p>
+    <p>
+        When word reached you later of the outrage when a powerful merchant's lunch party was derailed by the discovery of the merchant's _role, kneeling bound in piss sodden clothing and with a funnel gag reaching halfway down <<their $g.target>> throat. "All loads taken" was inked across <<their $g.target>> forehead in smeared but legible letters.
+    </p>
+    <<if $fort.player.isHasBuilding("bath")>>
+        <p>
+            When the poor, delirious <<woman $g.target>> had been released from their bondage and taken swiftly away, the host attempted to recover the situation with some of Forio's Famous Moscato, only for the guests to spit it out in disgust. Apparently, the pervert had filled the celebratory wine casks with piss. It definitely wasn't you draining the piss tub from your <<rep setup.buildingtemplate.bath>> and changing the cask lid and having that delivered on the morning of the luncheon. It was completely the fault of that pervert <<name $g.target>>.
+        </p>
+    <</if>>
+<</if>>
+
+A few days later, a large package came to the fort, along with a note.
+
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        Your strike was masterful. I saw everything first hand, as of course, in polite society, one must gloat over one's rivals in public. Please find an artist's commemoration of the fruits of your labour. It's amazing how they've spread so quickly throughout the city. I suppose it's just lucky for <<name $g.artist>> that I'd invited <<them $g.artist>> to the luncheon. Even if I had to warn <<them $g.artist>> against drinking the wine.
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            Maybe you can accompany me to another event in the future if you're interested.
+        <<else>>
+        <</if>>
+
+    </p>
+    <p>
+        With thanks and appreciation.
+    </p>
+</div>
+
+
+:: Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slutFailure [nobr]
+<p>
+    Dressed in expensive but suggestive clothing, <<rep $g.escort>> walked nervously toward the gated compound.<br>
+    "Hey, where do you think you're going, slut?" the guard on the right asked, leering at <<them $g.escort>><br>
+    "Uh, I'm here to see <<name $g.target>>. <<They $g.target>>'s expecting me."<br>
+    The guards eyed <<rep $g.escort>> up and down carefully. "<<<<They $g.target>>'s expecting a
+    <<if $g.escort.isHasTrait('gender_male')>>
+        big breasted whore, not you pretty boy.
+    <<else>>
+        big dicked stud, not you little girl.
+    <</if>>
+    So why don't you come over her and spread your legs for me and my mate here?"<br>
+    The guards grabbed <<rep $g.escort>>, but <<rep $g.slaver>> came to <<their $g.escort>> defense and the team legged it from the manse. At least everyone escaped without injury.
+</p>
+
+
+
+:: Quest_a_merchant_s_revenge_embarrass_a_rival_piss_slutDisaster [nobr]
+/* Set target relation to rival */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<if $g.target.isHasTrait('gender_male')>>
+        <<set _role = "distant nephew">>
+    <<else>>
+        <<set _role = "distant neice">>
+    <</if>>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _role = "distant cousin">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _role = "lackey">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _role = "favoured underling">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _role = "enforcer">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _role = "spymaster">>
+<</if>>
+
+<<if $g.escort.isYou() or $g.slaver.isYou() or $g.lookout.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.escort.isYou()>>
+        <<run _notyou.push($g.escort)>>
+    <</if>>
+    <<if !$g.slaver.isYou()>>
+        <<run _notyou.push($g.slaver)>>
+    <</if>>
+    <<if !$g.lookout.isYou()>>
+        <<run _notyou.push($g.lookout)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    <<if $g.escort.isYou()>>
+        /* PC is on the quest and is the escort */
+        <p>
+            Walking up the path between the leering guards dressed in suggestive, yet tasteful clothing was
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                enough to make your skin crawl,
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                really too conservative for your tastes,
+            <<else>>
+                slightly chilly in the cool night air,
+            <</if>>
+            but it did the trick, and you soon found yourself having an extravagant but light meal while <<name $g.target>> spoke, in great detail, of the very kinky things <<they $g.target>> wanted you to do to <<them $g.target>>. In a sense, it's a pity you can't take <<them $g.target>> as a slave. <<They $g.target>>'d make you a lot of money in
+            <<if $fort.player.isHasBuilding("recreationwing")>>
+                your recreation wing.
+            <<else>>
+                a recreation wing.
+            <</if>>
+            Pulling a strip of thick black fabric from your belt you covered <<name $g.target>>'s eyes.<br>
+            "Are we taking your clothes off first?" you asked.
+            <<name $g.target>> shook <<their $g.target>> head rapidly. "No, I want to feel it soaking into me."<br>
+            <<if $unit.player.isHasTrait('gender_male')>>
+                Shrugging, you pulled your <<udick $unit.player>> out of your trousers and slipped your tip between <<their $g.target>> lips. Closing your eyes, you relaxed, letting your piss flow as <<they $g.target>> gulped it down greedily, before pulling back and letting it wash all over <<their $g.target>> face and hair and run down to soak into <<their $g.target>> top.
+            <<else>>
+                Shrugging, you lifted the hem of your dress, and brought your pussy lips to <<their $g.target>> mouth and let go, piss washing over <<their $g.target>> face and upper body.
+            <</if>>
+        </p>
+        <p>
+            When your stream ebbed, <<name $g.target>> licked <<their $g.target>> lips. "More," <<they $g.target>> demanded.
+            "I'll have to reload," you say. "You're going to stay down like a good little piss slut you are?"<br>
+            "Yes <<mistress $unit.player>>."<br>
+            "Good. Now where's the bar with my refills to top me up?"
+        </p>
+        <p>
+            On the way to the bar you unlocked the door to the inner courtyard, covering the nose by pouring a cup of wine from a skin. Returning to your obedient piss slut, you once again
+            <<if $unit.player.isHasTrait('gender_male')>>
+                slipped your dick into <<their $g.target>> mouth.
+            <<else>>
+                bought your vagina up to <<their $g.target>> lips.
+            <</if>>
+            <br>
+            "Well, I think I've got some more for you. Now open wide and I want to hear you gargling."
+        </p>
+        <p>
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                You stayed in place as long as you needed to, distracting <<name $g.target>> and blocking <<their $g.target>> view while <<rep _o1>> and <<rep _o2>> entered in quietly through the unlocked door. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                You happily
+                <<if $g.target.isHasTrait('gender_male')>>
+                    fucked <<their $g.target>> mouth and throat as
+                <<else>>
+                    ground against <<their $g.target>> face as
+                <</if>>
+                <<rep _o1>> and <<rep _o2>> entered in quietly through the unlocked door. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+            <<else>>
+                You
+                <<if $g.target.isHasTrait('gender_male')>>
+                    fucked <<their $g.target>> mouth and throat as
+                <<else>>
+                    ground against <<their $g.target>> face as
+                <</if>>
+                <<rep _o1>> and <<rep _o2>> entered in quietly through the unlocked door. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+            <</if>>
+        </p>
+        <p>
+            When <<name $g.lookout>> returned with the wine cask lid, embossed with "Abbot Forio's Winery" that was the last piece.
+
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                <<rep _o1>> and <<rep _o2>> were still going when you pulled your clothing back on and
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                You probably spent longer than you should filling all of <<name $g.target>>'s holes over and over until your
+                <<if $g.target.isHasTrait('gender_male')>>
+                    balls
+                <<else>>
+                    twat
+                <</if>>
+                ached and you reluctantly pulled your clothes back on and
+            <<else>>
+                You enjoyed yourself for a while, coating <<their $g.target>> face with two loads of cum and feeding <<them $g.target>> a few more loads of piss before you pulled your clothes back on and
+            <</if>>
+            left the same way you entered, out past the guards and with
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                nowhere near enough gold for that experience in a pouch at your belt.
+            <<elseif $unit.player.isHasTrait('per_sexaddict')>>
+                more gold than a prostitute would get paid for a job like this. But honestly, you'd have done it just for the sex.
+            <<else>>
+                more gold than a prostitute would get paid for a job like this.
+            <</if>>
+        </p>
+        <p>
+            When <<rep _o1>> and <<rep _o2>> arrived back at the fort, they nodded. Everything was in place. When word reached you later of the outrage when a powerful merchant's lunch party was derailed by the discovery of the merchant's _role, kneeling bound in piss sodden clothing and with a funnel gag reaching halfway down <<their $g.target>> throat. "All loads taken" was inked across <<their $g.target>> forehead in smeared but legible letters.
+        </p>
+        <<if $fort.player.isHasBuilding("bath")>>
+            <p>
+                When the poor, delirious <<woman $g.target>> had been released from their bondage and taken swiftly away, the host attempted to recover the situation with some of Forio's Famous Moscato, only for the guests to spit it out in disgust. Apparently, some pervert had filled the celebratory wine casks with piss. Possibly from an entertainment place like the <<rep setup.buildingtemplate.bath>> at your fortress.
+            </p>
+        <</if>>
+        <p>
+            The tales contained an unfortunate rider, saying that known slavers from <<rep $company.player>> were seen fleeing <<name $g.target>>'s manse and it looks like the blame for the incident is being placed on your doorstep. Even if the tales are largely popular, there's going to be consequences. Hopefully there won't be reprisals.
+        </p>
+    <<else>>
+        /* PC is on the quest and is not the escort */
+        <p>
+            You loitered in the shadows while <<name $g.escort>> headed up the path to the door, passing two guards at the gate who eyed <<them $g.target>> up and down but let <<them $g.escort>> pass unobstructed. It was easy enough to sneak over the wall. Then it was just a matter of staying out of sight while <<name $g.escort>> flirted with, blindfolded and finally fed <<name $g.target>> the piss <<they $g.target>>'d been craving. While <<name $g.escort>>kept <<name $g.target>>'s head locked to <<their $g.escort>> <<ugenital $g.escort>>, <<rep $g.lookout>> picked the lock on the garden door to gain access to the building.
+            <<dialogue $g.merchant>>
+                <<They $g.target>> likes to keep <<their $g.target>>...indulgences secret. Most of the kinky fuckers do.
+            <</dialogue>>
+            <<name $g.merchant>> proved to be correct and the house was even empty of staff. When you finally made it to the main room, you found <<name $g.escort>> had cuffed <<name $g.target>>'s hands behind <<their $g.target>> head and was
+            <<if $g.escort.isHasTrait('gender_male')>>
+                thrusting his cock
+            <<else>>
+                grinding her pussy
+            <</if>>
+            into <<name $g.target>>'s face, and the smell of fresh urine wafted through the air—probably from <<name $g.target>>'s sodden clothing. <br>
+            The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter.
+        </p>
+        <p>
+            When <<name $g.lookout>> returned with the wine cask lid, embossed with "Abbot Forio's Winery" that was the last piece.
+            <<if $unit.player.isHasTrait('per_chaste')>>
+                You bound <<name $g.target>> while your slavers kept the lust addled slut busy, and then <<name $g.escort>> dressed and left, while you prepped <<name $g.target>> for <<their $g.target>> big reveal.
+            <<else>>
+                You enjoyed yourself for a while, coating <<their $g.target>> face with two loads of cum and feeding <<them $g.target>> a few more loads of piss before <<name $g.escort>> dressed and left, while you prepped <<name $g.target>> for <<their $g.target>> big reveal.
+            <</if>>
+        </p>
+
+    <</if>>
+    <p>
+        When word reached you later of the outrage when a powerful merchant's lunch party was derailed by the discovery of the merchant's _role, kneeling bound in piss sodden clothing and with a funnel gag reaching halfway down <<their $g.target>> throat. "All loads taken" was inked across <<their $g.target>> forehead in smeared but legible letters.
+    </p>
+    <<if $fort.player.isHasBuilding("bath")>>
+        <p>
+            When the poor, delirious <<woman $g.target>> had been released from their bondage and taken swiftly away, the host attempted to recover the situation with some of Forio's Famous Moscato, only for the guests to spit it out in disgust. Apparently, some pervert had filled the celebratory wine casks with piss. Possibly from an entertainment place like the <<rep setup.buildingtemplate.bath>> at your fortress.
+        </p>
+    <</if>>
+    <p>
+        The tales contained an unfortunate rider, saying that known slavers from <<rep $company.player>> were seen fleeing <<name $g.target>>'s manse and it looks like the blame for the incident is being placed on your doorstep. Even if the tales are largely popular, there's going to be consequences. Hopefully there won't be reprisals.
+    </p>
+
+<<else>>
+    /* PC is not on the quest */
+    <p>
+        <<rep $g.slaver>> and <<Rep $g.lookout>> scaled the compound wall and hid in the garden while <<name $g.escort>> headed up the path to the door, passing two guards at the gate who eyed <<them $g.target>> up and down but let <<them $g.escort>> pass unobstructed. Once alone with <<name $g.target>>, <<they $g.escort>> flirted with, blindfolded and finally fed <<name $g.target>> the piss <<they $g.target>>'d been craving. While <<name $g.escort>>kept <<name $g.target>>'s head locked to <<their $g.escort>> <<ugenital $g.escort>>, <<rep $g.lookout>> picked the lock on the garden door to gain access to the building. The slut moaned when more piss rained down upon them, soaking them completely before <<they $g.target>> realised there was more than one stream. But by then <<name $g.slaver>> had <<them $g.target>> cuffed, and at that point, getting <<name $g.target>> trussed and into <<their $g.target>> new headgear was going to be a very simple matter. When <<name $g.lookout>> returned with the wine cask lid, embossed with "Abbot Forio's Winery" that was the last piece.
+    </p>
+    <p>
+        When word reached you later of the outrage when a powerful merchant's lunch party was derailed by the discovery of the merchant's _role, kneeling bound in piss sodden clothing and with a funnel gag reaching halfway down <<their $g.target>> throat. "All loads taken" was inked across <<their $g.target>> forehead in smeared but legible letters.
+    </p>
+    <<if $fort.player.isHasBuilding("bath")>>
+        <p>
+            When the poor, delirious <<woman $g.target>> had been released from their bondage and taken swiftly away, the host attempted to recover the situation with some of Forio's Famous Moscato, only for the guests to spit it out in disgust. Apparently, some pervert had filled the celebratory wine casks with piss. Possibly from an entertainment place like the <<rep setup.buildingtemplate.bath>> at your fortress.
+        </p>
+    <</if>>
+    <p>
+        The tales contained an unfortunate rider, saying that known slavers from <<rep $company.player>> were seen fleeing <<name $g.target>>'s manse and it looks like the blame for the incident is being placed on your doorstep. Even if the tales are largely popular, there's going to be consequences. Hopefully there won't be reprisals.
+    </p>
+<</if>>
+
+A few days later, a message in familiar handwriting arrived in the mail.
+
+<div class='lettercard'>
+    <p>
+        <<name $unit.player>>,
+    </p>
+    <p>
+        I'm sure by now you've heard the stories, and while you've succeeded admirably, I've had to expend some resources mitigating some of the fallout from your actions. Unfortunately this means I'm unable to provide you with more of a reward.
+    </p>
+    <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+        I hope to be able to spend some time with you soon in more relaxed circumstances.
+        <p>
+            With gratitude and anticipation
+        </p>
+    <</if>>
+</div>
+
+
+
+

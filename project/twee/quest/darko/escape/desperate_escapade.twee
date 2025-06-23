@@ -1,0 +1,132 @@
+:: QuestSetup_desperate_escapade [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'desperate_escapade', /* key */
+"Desperate Escapade", /* Title */
+"darko", /* Author */
+[
+  'special', 'unit', 'forest',
+], /* tags */
+1, /* weeks */
+3, /* quest expiration weeks */
+{ /* roles */
+'spotter': setup.qu.spotter,
+'scout': setup.qu.scout_forest,
+'capturer': setup.qu.slavecapturer, },
+{ /* actors */
+'slave': [
+setup.qres.HasTag('escaped_slave'),
+],
+'victim': 'forest_all', },
+[ /* costs */
+],
+'Quest_desperate_escapade',
+setup.qdiff.easy30, /* difficulty */
+[ /* outcomes */
+[
+'Quest_desperate_escapadeCrit',
+[
+setup.qc.Slave('victim', "a|was a villager lost in the western forests", undefined), ],
+], [
+'Quest_desperate_escapadeCrit',
+[
+],
+], [
+'Quest_desperate_escapadeCrit',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapeeasy'), ],
+], [
+'Quest_desperate_escapadeCrit',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapeeasy'),
+setup.qc.Injury('scout', 1),
+setup.qc.Injury('spotter', 1), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.escapeeasy, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTag('escaped_slave'),
+setup.qres.NoTrait(setup.trait.training_mindbreak),
+setup.qres.NoTrait(setup.trait.training_obedience_advanced)
+]), ],
+[ /* expiration outcomes */
+setup.qc.MissingUnitForever('slave'), ],
+)>>
+
+:: Quest_desperate_escapade [nobr]
+
+<p>
+<<Rep $g.slave>> slave|have escaped from your fort!
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+It seems despite the training <<they $g.slave>> had undergone <<they
+$g.slave>> remained a defiant slave.
+<<else>>
+Given <<their $g.slave>> lack of training it is not surprising <<they
+$g.slave>> attempted the escape.
+<</if>>
+Fortunately, <<rep $g.slave>> escaped in a rush leaving a clear trail for
+your slavers to pursue and recapture.
+The trail leads to the <<lore region_forest>>, where the slave is surely going to
+look for a place to hide. It will not be easy however — a good spotter, a
+good scout, and a good slave capturer will be required to have a good chance
+of finding the slave amidst the vast forests.
+</p>
+
+<p>
+<<dangertext 'Warning'>>: If you let this quest expire or if you remove the
+quest, <<rep $g.slave>> will be gone forever...
+</p>
+
+
+
+:: Quest_desperate_escapadeCrit [nobr]
+
+<p>
+<<Yourrep $g.scout>> <<uadv $g.scout>> led the team through the thickness of the
+forest until <<rep $g.spotter>> spotted what appears to be the remnant of a
+campfire. Sure enough they found signs of <<rep $g.slave>> in the encampment,
+and your slavers waited in ambush until the slave came back to <<their
+$g.slave>> little alcove.
+</p>
+
+<<if $gOutcome == 'success' or $gOutcome == 'crit'>>
+
+<p>
+Soon after, <<rep $g.slave>> came alone after gathering some fruits from the
+forest. <<Rep $g.slave>> had no chance to
+retaliate as your slavers' launched a surprised attack on the slave.
+In no time at all, the former slave was back being a
+slave — all tied up ready to go for the long trip home.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers also managed to nab an unsuspecting villager who was lost in
+the forest as a bonus hazard pay.
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+But after they waited and waited, <<rep $g.slave>> never came back to the
+encampment. Your slavers started to think that <<rep $g.slave>> laid a decoy
+camp for your slavers<<if $g.slave.isHasTrait('per_slow')>>, although on a second
+thought maybe the slave was not smart enough to do that.<<else>>.<</if>>
+Fortunately, <<rep $g.capturer>> managed to pick up another lead in the
+surrounding villages for another capture attempt.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Your slavers were slightly injured as they were bruised and scratched by the
+vicious brambles and vegetations littering the forest.
+</p>
+<</if>>
+
+<</if>>

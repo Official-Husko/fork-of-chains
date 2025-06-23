@@ -1,0 +1,65 @@
+:: EventSetup_a_gift_from_faraway_land [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'a_gift_from_faraway_land', /* key */
+"A Gift from Faraway Land", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'item',
+  'sea',
+],
+'Event_a_gift_from_faraway_land',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.sexmanual_tease),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.sexmanual_tease),
+  setup.qres.FavorAtLeast('humansea', 800),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_a_gift_from_faraway_land [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Some culture in the faraway land beyond the <<lore region_sea>> consider sex
+as a form of art. They have developed numerous sex techniques to support this, the
+infamous of them being their teasing techniques. Even when
+fully clothed, you can never know when one of these people would suddenly
+approach you, and tease
+<<if $unit.player.isHasDick()>>
+your dick over their asses,
+<<else>>
+their dick over your pussy,
+<</if>>
+forcing an
+<<if $unit.player.isHasDick()>>
+erection
+<<else>>
+arousal
+<</if>>.
+</p>
+
+<p>
+Thanks to your incredible relationship with the <<rep $company.humansea>>,
+however, now you are in possession of the rare and ancient tome: the <<rep
+setup.item.sexmanual_tease>>. From inside the book you can sense unimaginable
+power — the power of teasing genitals without actually doing the penetration.
+You can already imagine the many uses of such knowledge, and frankly
+speaking, you can't wait to try it out. Grinning to yourself, you decide to
+visit
+<<set _l = $unit.player.getLover()>>
+<<if _l>>
+your lover <<rep _l>> later during work for some mid-work teasing.
+<<else>>
+your dungeons later for some fun.
+<</if>>
+</p>

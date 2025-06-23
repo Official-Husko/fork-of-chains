@@ -1,0 +1,148 @@
+:: QuestSetup_mist_apprentice_payment_the_first [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Wonderfully Medium', /* name */
+[
+],
+[
+],
+[
+  setup.qres.IsCanBeSold(),
+  setup.qres.Job(setup.job.slave),
+  setup.qres.NoTraits([setup.trait.vagina_gape, setup.trait.anus_gape, setup.trait.per_lustful, setup.trait.per_sexaddict, setup.trait.per_dominant, setup.trait.per_submissive, setup.trait.per_lunatic, setup.trait.per_masochistic, setup.trait.corrupted, setup.trait.corruptedfull, setup.trait.breast_small, setup.trait.breast_tiny, setup.trait.breast_titanic, setup.trait.breast_huge, setup.trait.muscle_extremelythin, setup.trait.muscle_verythin, setup.trait.muscle_extremelystrong, setup.trait.muscle_verystrong, setup.trait.dick_tiny, setup.trait.dick_small, setup.trait.dick_titanic, setup.trait.dick_huge, setup.trait.balls_tiny, setup.trait.balls_small, setup.trait.balls_huge, setup.trait.balls_titanic, setup.trait.face_hideous, setup.trait.face_beautiful, setup.trait.height_dwarf, setup.trait.height_giant, setup.trait.training_mindbreak, setup.trait.race_demon], true),
+],
+{
+}
+)>>
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'slaver', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+],
+{
+  slaving: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'mist_apprentice_payment_the_first', /* key */
+"Mist Apprentice: Payment the First", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'prep',
+  'danger',
+  'trait',
+],
+1, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'escort': [ _criteriaslaver, 3],
+},
+{ /* actors */
+  'master': 'mist_apprenticeship0',
+  'slaver': [],
+  'demonkin': 'subrace_demonkin',
+},
+[ /* costs */
+],
+'Quest_mist_apprentice_payment_the_first',
+setup.qdiff.hell1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.MissingUnitForever('slave'),
+      setup.qc.AddTag('escort', 'mist_apprentice_victim'),
+      setup.qc.Leave('escort', "went missing in The Mist", undefined),
+      setup.qc.Event('mist_apprentice_second_payment', 4, {
+        master: "master",
+        slaver: "slaver",
+      }),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_mist_apprentice_payment_the_firstCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('return_shipping', 0, {master: 'master', slaver: 'slaver', }),
+],
+)>>
+
+:: Quest_mist_apprentice_commonWarning [nobr]
+
+<p>
+<<dangertext "Warning:">> the slave you sent on this quest will likely
+forever become a demonic toy — a property of their new overlord... And you
+can't shake the feeling you won't be seeing whichever slaver unlucky enough to deliver
+the slave to <<lore concept_mist>> for a couple of weeks either...
+</p>
+
+<p>
+Alternatively, you can cancel this quest if you'd like to give up on <<reps $g.slaver>> trainings.
+You'll probably get all your slavers back, but at what cost?
+</p>
+
+
+:: Quest_mist_apprentice_payment_the_first [nobr]
+
+<p>
+As part of <<reps $g.slaver>> continued training in the field of dark magic,
+you are to supply the demonic teacher with a "wonderfully medium" slave. A slave that
+excels in nothing, having medium assets in everything, and having no personality that stands out too much.
+The cruel demons delights in transforming a mortal's personality
+from that of a commonfolk to a depraved <<if
+$g.slaver.isMale()>>slut<<else>>bimbo<</if>>.
+The further it is from whatever
+personality they used to have, the more exciting it becomes for the demon.
+And what better material to start with other
+than a perfectly blank and malleable slate?
+</p>
+
+<<include 'Quest_mist_apprentice_commonWarning'>>
+
+
+:: Quest_mist_apprentice_payment_the_firstCrit [nobr]
+<p>
+You've sent <<yourrep $g.escort>> over to deliver your
+slave <<rep $g.slave>> to the demon. The last message you received from
+your slaver was <<them $g.escort>> getting ready for the final stretch to the
+oasis. While you never heard back from <<therace $g.escort>>, you're
+fairly confident <<they $g.escort>> escort|is now residing as the demon's
+esteemed guest. ...or the demon's plaything to be more realistic.
+</p>
+
+<p>
+Either way, that is one payment down the drain for <<reps $g.slaver>> tuition
+costs. Easy enough, maybe two more could not be so bad after all!
+</p>

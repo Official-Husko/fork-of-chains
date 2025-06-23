@@ -1,0 +1,106 @@
+:: QuestSetup_capital_of_slaves__sell_wares [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'capital_of_slaves__sell_wares', /* key */
+"Capital of Slaves: Sell Wares", /* Title */
+"darko", /* Author */
+[ 'desert', 'order'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'trader1': setup.qu.slavetrader,
+'trader2': setup.qu.slavetrader, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_capital_of_slaves__sell_wares',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_capital_of_slaves__sell_waresCrit',
+[
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+],
+], [
+'Quest_capital_of_slaves__sell_waresCrit',
+[
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+],
+], [
+'Quest_capital_of_slaves__sell_waresCrit',
+[
+  setup.qc.SlaveOrderCapitalOfSlaves(),
+],
+], [
+'Quest_capital_of_slaves__sell_waresDisaster',
+[
+setup.qc.Injury('trainer', 2),
+setup.qc.Injury('trader1', 2),
+setup.qc.Injury('trader2', 2), ],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_capital_of_slaves__sell_wares [nobr]
+
+<<include 'Opportunity_capital_of_slaves'>>
+
+<p>
+You have chosen to sell your stock in the market.
+</p>
+
+
+:: Quest_capital_of_slaves__sell_waresCrit [nobr]
+
+<p>
+The slave market of Qarma was truly a sight to behold. Naked slaves were on
+full display everywhere — from a broad-shouldered ex-soldier who was held hogtied
+and hanged to be sold as a human chandelier decoration,
+to a lady with a vagina so cavernous it could probably fit two arms at once.
+
+<<set _cur = setup.selectUnit([$g.trader1, $g.trader2, $g.trainer], {trait: 'per_curious'})>>
+<<if _cur>>
+The various strange merchandise on display was very interesting for the curious <<rep _cur>>.
+<</if>>
+
+<<if $gOutcome == 'failure'>>
+
+Unfortunately, your slavers were too
+engaged in window-shopping and almost completely forgot to do their job to
+find slave orders, which resulted in only one slave order returned to
+you.
+
+<<else>>
+
+<<Rep $g.trader1>> and <<rep $g.trader2>> managed to <<uadv $g.trader1>>
+secured
+<<if $gOutcome == 'crit'>>
+several
+<<else>>
+two
+<</if>>
+deals with some of the traders who are looking for new wares
+to spice up their stalls.
+The slaves are preferred to be pre-trained, however, and the trader would dock
+some pay if the slave came untrained.
+<</if>>
+</p>
+
+
+:: Quest_capital_of_slaves__sell_waresDisaster [nobr]
+
+<<include 'Quest_capital_of_slaves__browse_waresDisaster'>>

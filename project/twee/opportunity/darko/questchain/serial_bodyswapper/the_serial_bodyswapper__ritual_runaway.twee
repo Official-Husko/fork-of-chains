@@ -1,0 +1,134 @@
+:: OpportunitySetup_the_serial_bodyswapper__ritual_runaway [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'the_serial_bodyswapper__ritual_runaway', /* key */
+"The Serial Bodyswapper: Choose Slave", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'desert',
+'trait',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_the_serial_bodyswapper__ritual_runaway',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+[
+'Opportunity_the_serial_bodyswapper__ritual_runaway_0',
+'Opportunity_the_serial_bodyswapper__ritual_runaway_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+  setup.qres.SameGender('target', 'shifter1'),
+],
+[ /* outcomes */
+  setup.qc.Bodyswap('target', 'shifter1'),
+],
+], [
+'Opportunity_the_serial_bodyswapper__ritual_runaway_1',
+'Opportunity_the_serial_bodyswapper__ritual_runaway_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+  setup.qres.SameGender('target', 'shifter2'),
+],
+[ /* outcomes */
+  setup.qc.Bodyswap('target', 'shifter2'),
+],
+],
+[
+'Opportunity_the_serial_bodyswapper__ritual_runaway_2',
+'Opportunity_the_serial_bodyswapper__ritual_runaway_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+  setup.qres.SameGender('target', 'shifter3'),
+],
+[ /* outcomes */
+  setup.qc.Bodyswap('target', 'shifter3'),
+],
+],
+[
+'Opportunity_the_serial_bodyswapper__ritual_runaway_3',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.Slave('shifter1', 'a|was a living body storage of the serial bodyswapper'),
+  setup.qc.Slave('shifter2', 'a|was a living body storage of the serial bodyswapper'),
+  setup.qc.Slave('shifter3', 'a|was a living body storage of the serial bodyswapper'),
+],
+],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+  'target': [],
+  'shifter1': [],
+  'shifter2': [],
+  'shifter3': [],
+},
+)>>
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway [nobr]
+<p>
+<<Yourrep $g.target>> can swap bodies with one of the bodyswapper's slaves:
+<<rep $g.shifter1>>,
+<<rep $g.shifter2>>, or
+<<rep $g.shifter3>>.
+</p>
+
+<<unitcard $g.shifter1 1>>
+<<unitcard $g.shifter2 1>>
+<<unitcard $g.shifter3 1>>
+
+:: Opportunity_the_serial_bodyswapper__ritual_runawayCommon [nobr]
+
+<p>
+The preparations ready, <<yourrep $g.target>> moved into the bodyswapping
+circle. Familiar arcane energy envelops <<theslaver $g.target>> who physically transformed
+before your other slavers' eyes.
+<<ubodyswap $g.target _slave>>
+The bodyswapping complete, your slavers escaped from the place before the
+ritual attracted unwanted attention.
+</p>
+
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway_0 [nobr]
+Choose <<rep $g.shifter1>>
+
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway_0_flavor [nobr]
+<<set _slave = $g.shifter1>>
+
+<<include 'Opportunity_the_serial_bodyswapper__ritual_runawayCommon'>>
+
+
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway_1 [nobr]
+Choose <<rep $g.shifter2>>
+
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway_1_flavor [nobr]
+<<set _slave = $g.shifter2>>
+
+<<include 'Opportunity_the_serial_bodyswapper__ritual_runawayCommon'>>
+
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway_2 [nobr]
+Choose <<rep $g.shifter3>>
+
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway_2_flavor [nobr]
+<<set _slave = $g.shifter3>>
+
+<<include 'Opportunity_the_serial_bodyswapper__ritual_runawayCommon'>>
+
+:: Opportunity_the_serial_bodyswapper__ritual_runaway_3 [nobr]
+Change your mind and just take the slaves
+

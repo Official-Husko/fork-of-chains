@@ -1,0 +1,81 @@
+:: EventSetup_vocal_disobedience [nobr event]
+
+<<run new setup.Event(
+'vocal_disobedience', /* key */
+"Vocal Disobedience", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_vocal_disobedience',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.training_none, setup.trait.training_obedience_basic], true),
+    setup.qres.IsCanPhysicallyTalk(),
+    setup.qres.Not(setup.qres.IsCanTalk()),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_vocal_disobedience [nobr]
+<p>
+One morning, despite the fact that <<they $g.slave>> slave|is
+<<if $g.slave.getSpeechRule() == 'animal'>>
+only allowed to make animal-like noises,
+<<else>>
+not allowed to speak without being spoken to,
+<</if>>
+<<rep $g.slave>>
+<<if $g.slave.isCanSee()>>
+looks at you directly in the eye
+<<else>>
+faces you
+<</if>>
+and asks <<uadv $g.slave>>,
+"I'm tired, can I have the day off?"
+<<They $g.slave>> didn't even call you <<Master $unit.player>>.
+</p>
+
+<<choose>>
+
+<<opt "Give <<them $g.slave>> a rough spanking">>
+
+<p>
+You tie the protesting slave to your <<uslaverbed $g.slave>>
+so that <<their $g.slave>> chest is against the top of the <<uslaverbed $g.slave>>
+and <<they $g.slave>>'s standing upright with <<their $g.slave>> ass in the air.
+You spank <<them $g.slave>> severely, leaving <<their $g.slave>> buttocks bright pink. <<They $g.slave>> must count the strokes or have <<their $g.slave>> punishment start over.
+Sobbing, <<they $g.slave>> counts "Six, AAGHHH, Seven, AAGHHH, Seven"
+and then realizes <<their $g.slave>> mistake and begs for mercy - in vain, of course.
+You finish <<them $g.slave>> off with a rough fuck, with <<them $g.slave>> jerking against <<their $g.slave>> restraints every time you stroke into <<their $g.slave>> sore buttocks.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<<opt "Give <<them $g.slave>> the day off">>
+
+<p>
+<<They $g.slave>> skips away happily and spends the rest of the day lounging around.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<</choose>>

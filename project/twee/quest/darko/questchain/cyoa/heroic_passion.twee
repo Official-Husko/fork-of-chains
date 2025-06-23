@@ -1,0 +1,255 @@
+:: QuestSetup_heroic_passion [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _ifthenelse = setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_lovers', 'lovers'),
+  setup.qc.DoAll([
+    setup.qc.Friendship('hero1', 'hero2', 1000),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero1', setup.trait.per_lustful),
+      setup.qc.TraitReplace('hero1', setup.trait.per_active),
+    ]),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero1', setup.trait.per_playful),
+      setup.qc.TraitReplace('hero1', setup.trait.per_gregarious),
+    ]),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero2', setup.trait.per_lustful),
+      setup.qc.TraitReplace('hero2', setup.trait.per_active),
+    ]),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('hero2', setup.trait.per_playful),
+      setup.qc.TraitReplace('hero2', setup.trait.per_gregarious),
+    ]),
+  ]),
+  setup.qc.IfThenElse(
+    setup.qres.VarEqual('choose_your_own_adventure_lovers', 'rivals'),
+    setup.qc.DoAll([
+      setup.qc.Friendship('hero1', 'hero2', -1000),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero1', setup.trait.per_chaste),
+        setup.qc.TraitReplace('hero1', setup.trait.per_loner),
+      ]),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero1', setup.trait.per_serious),
+        setup.qc.TraitReplace('hero1', setup.trait.per_independent),
+      ]),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero2', setup.trait.per_chaste),
+        setup.qc.TraitReplace('hero2', setup.trait.per_loner),
+      ]),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero2', setup.trait.per_serious),
+        setup.qc.TraitReplace('hero2', setup.trait.per_independent),
+      ]),
+    ]),
+    setup.qc.DoAll([
+      setup.qc.Friendship('hero1', 'hero2', 1000),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero1', setup.trait.per_loyal),
+        setup.qc.TraitReplace('hero1', setup.trait.per_kind),
+      ]),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero1', setup.trait.per_honorable),
+        setup.qc.TraitReplace('hero1', setup.trait.per_direct),
+      ]),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero2', setup.trait.per_loyal),
+        setup.qc.TraitReplace('hero2', setup.trait.per_kind),
+      ]),
+      setup.qc.OneRandom([
+        setup.qc.TraitReplace('hero2', setup.trait.per_honorable),
+        setup.qc.TraitReplace('hero2', setup.trait.per_direct),
+      ]),
+    ]),
+  ),
+)>>
+
+
+<<run new setup.QuestTemplate(
+'heroic_passion', /* key */
+"Heroic Passion", /* Title */
+"darko", /* Author */
+[ 'city', 'money', 'unknown'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'appraiser1': setup.qu.appraiser,
+'appraiser2': setup.qu.appraiser,
+'negotiator': setup.qu.negotiator, },
+{ /* actors */
+'hero1': 'quest_choose_your_own_adventure_hero1',
+'hero2': 'quest_choose_your_own_adventure_hero2',
+},
+[ /* costs */
+],
+'Quest_heroic_passion',
+setup.qdiff.normal29, /* difficulty */
+[ /* outcomes */
+[
+'Quest_heroic_passionCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyNormal(),
+],
+], [
+'Quest_heroic_passionCrit',
+[
+_ifthenelse,
+setup.qc.MoneyNormal(),
+setup.qc.VarSet('choose_your_own_adventure_progress', '6', -1),
+setup.qc.Equipment(setup.equipmentpool.all_combat),
+setup.qc.SetCooldownEvent('choose_your_own_adventure_chapter_4', 5),
+],
+], [
+'Quest_heroic_passionFailure',
+[
+  setup.qc.SetCooldownQuest(null, 10),
+],
+], [
+'Quest_heroic_passionDisaster',
+[
+  setup.qc.SetCooldownQuest(null, 10),
+  setup.qc.MoneyCustom(-1500),
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarEqual('choose_your_own_adventure_progress', '5'), ],
+[ /* expired outcomes */
+setup.qc.SetCooldownQuest(null, 20),
+],
+)>>
+
+:: Quest_heroic_passion [nobr]
+
+<p>
+Having seemingly finished with their training in the forests,
+the pair of
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+<<name $g.hero1>> and <<name $g.hero2>>
+once again arrives at your fort's doorsteps. During their training, they
+managed to find the source of their village's demise — a demonic lord
+who loves nothing but to toy with humans. To
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+exact their revenge,
+<<else>>
+make sure the tragedy never happen again to anyone,
+<</if>>
+they are planning to brave the dangers of the <<lore region_desert>>. But first,
+they need good equipments from the <<lore region_city>>.
+</p>
+
+<p>
+They are hoping to borrow a couple of your people to help them find and
+appraise the various equipments on sale in the city.
+Again, your slavers are promised rewards for helping them.
+</p>
+
+<p>
+After appearing three times in a row,
+this cannot be coincidence yet again. To make absolutely sure that this
+is related to that "Choose Your Own Adventure" magical book you've been perusing of late,
+you should ask the slavers you send on this quest to also check whether the pair of <<=
+$varstore.get('choose_your_own_adventure_siblings')>>
+<<if $varstore.get('choose_your_own_adventure_lovers') == 'lovers'>>
+are actually lovers now.
+<<elseif $varstore.get('choose_your_own_adventure_lovers') == 'rivals'>>
+are actually rivals now.
+<<else>>
+have formed deep friendship with each other.
+<</if>>
+</p>
+
+
+:: Quest_heroic_passionCrit [nobr]
+
+<p>
+Your slavers met the
+<<= $varstore.get('choose_your_own_adventure_siblings')>> at the outskirts of the village.
+They looked quite different now that they have finished their training ---
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+with muscles around their body
+<<else>>
+with a magical aura surrounding their body
+<</if>>
+and a matching pendant -- a gift from the sage to watch over them.
+Your slavers and the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+spent days in the city, browsing through the various equipments on sale.
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+Swords, axes, lances, plate armors, all sort of equipment to protect a fighter's body.
+<<else>>
+Wands, robes, hats, all sort of equipments to enhance one's mind.
+<</if>>
+Amidst the slew of low-quality items, <<rep $g.appraiser1>> <<uadv
+$g.appraiser1>> found good quality items hidden
+beneath the sea of junk.
+Your slavers even got something for your own company.
+In the end, your slavers were paid the money they were promised by the
+ecstatic
+<<= $varstore.get('choose_your_own_adventure_siblings')>>.
+</p>
+
+<p>
+Per your order, during the time they spend in the city inn, they often sneaked into the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>'s
+room and tried to see what raunchy things was happening inside.
+<<if $varstore.get('choose_your_own_adventure_lovers') == 'lovers'>>
+Indeed, they often saw the two
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+compassionately kissing each other with abandon.
+Over the next few days, your slaver continued "per your orders" to watch over them,
+enjoying the sight of the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+exploring the world of sex with the help of each other's naked body.
+<<elseif $varstore.get('choose_your_own_adventure_lovers') == 'rivals'>>
+Whenever they peeked inside, they often see the two arguing against each
+other, and trying to prove to each other that they was the better
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+fighter.
+<<else>>
+wizard.
+<</if>>
+Over the time they spent in the city, your slavers were convinced that the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+have now considered each other their true rivals, just like you predicted.
+<<else>>
+Whenever they peeked inside, they see the two
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+compassionately talking with each
+other, just like best friends.
+Over the time they spent in the city, your slavers were convinced that the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+have gained each other's full trust, just like you predicted.
+<</if>>
+</p>
+
+
+:: Quest_heroic_passionFailure [nobr]
+<p>
+The market was flooded with junk of various kinds, and your slavers were
+unable to find any equipment worth using in the sea of junk. They were too
+busy searching for wares to check whether the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+were actually
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+now.
+</p>
+
+
+:: Quest_heroic_passionDisaster [nobr]
+<p>
+Your slavers got scammed by an unscrupulous merchant who sold fake weapons
+that were repainted to look brand new.
+They paid a great sum of money for the fake weapons, and only after they were
+outside the city did they realized their mistake.
+The
+<<= $varstore.get('choose_your_own_adventure_siblings')>>
+understandably demanded their money back for such a sloppy job.
+</p>

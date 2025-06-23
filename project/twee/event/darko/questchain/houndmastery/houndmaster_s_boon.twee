@@ -1,0 +1,36 @@
+:: EventSetup_houndmaster_s_boon [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'houndmaster_s_boon', /* key */
+"Houndmaster\'s Boon", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+],
+'Event_houndmaster_s_boon',
+{ /* roles */
+},
+{ /* actors */
+  'master': 'the_dog_whisperer0',
+},
+[ /* outcomes */
+  setup.qc.VarRemove('houndmaster_pets_delivered'),
+  setup.qc.Opportunity('houndmastery', null),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('houndmaster_pets_delivered', '2'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_houndmaster_s_boon [nobr]
+<p>
+You've received a letter from the hound<<master $g.master>>, who has received
+both of your slaves in good condition. The letter describes the new puppies playing in
+their kennel in great details, but that's of no interest to you. What
+interest you is the promise of rewards, and the letter does not disappoint.
+You set the letter on your desk, for reading later.
+</p>

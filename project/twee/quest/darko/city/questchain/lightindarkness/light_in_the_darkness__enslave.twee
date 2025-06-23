@@ -1,0 +1,145 @@
+:: QuestSetup_light_in_the_darkness__enslave [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'light_in_the_darkness__enslave', /* key */
+"Light in Darkness: Enslave", /* Title */
+"darko", /* Author */
+[ 'city', 'unit', 'ire',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'infiltrator1': setup.qu.infiltrator,
+'infiltrator2': setup.qu.infiltrator,
+'trainer': setup.qu.slavetrainer, },
+{ /* actors */
+'light': 'quest_light_in_the_darkness__recruit1', },
+[ /* costs */
+],
+'Quest_light_in_the_darkness__enslave',
+setup.qdiff.hard35, /* difficulty */
+[ /* outcomes */
+[
+'Quest_light_in_the_darkness__enslaveCrit',
+[
+setup.qc.Slave('light', "a|was a captured traveler from the south who is gifted in healing", false),
+],
+], [
+'Quest_light_in_the_darkness__enslaveCrit',
+[
+  setup.qc.Ire('outlaws', 5),
+  setup.qc.Outcomes('crit'),
+],
+], [
+'Quest_light_in_the_darkness__enslaveFailure',
+[
+],
+], [
+'Quest_light_in_the_darkness__enslaveDisaster',
+[
+  setup.qc.MissingUnitRebuy('infiltrator1', 1),
+  setup.qc.MissingUnitRebuy('infiltrator2', 1),
+],
+], ],
+[
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_light_in_the_darkness__enslave [nobr]
+
+<<include 'Opportunity_light_in_darkness'>>
+
+<p>
+You have decided to enslave <<them $g.light>>.
+</p>
+
+
+:: Quest_light_in_the_darkness__enslaveCrit [nobr]
+
+<<set _recruit = ($gQuest.getTemplate().key == 'light_in_the_darkness__recruit')>>
+
+<p>
+<<Yourrep $g.infiltrator1>> and <<utheirrel $g.infiltrator1 $g.infiltrator2>> <<rep $g.infiltrator2>>
+<<uadv $g.infiltrator1>>
+infiltrated the warehouse of the auction lot successfully.
+
+<<set _nimble = setup.selectUnit([$g.infiltrator1, $g.infiltrator2], {trait: 'tough_nimble'})>>
+<<set _dark = setup.selectUnit([$g.infiltrator1, $g.infiltrator2], {trait: 'magic_dark'})>>
+
+<<if _dark>>
+  The dark shroud spell cast by <<rep _dark>> certainly helped.
+<<elseif _nimble>>
+  <<Reps _nimble>> nimble feet certainly helped.
+<</if>>
+
+Inside, multiple cages
+containing various human cargos all in full bondage were stacked on top of each
+other, and the place was eerily quiet except for several moaning sounds. After
+scouring through the naked bodies plugged in all their orifices, they finally found
+what they were looking for: an exotic-looking slave who must be the slave they
+were looking for.
+<<if $gOutcome == 'crit'>>
+With their prize in tow, your slavers made for the exit before any of the
+guards came in to check.
+<<else>>
+But they managed to attract the attention of a guard, and your slavers had to
+hastily rush to the exit with the slave in tow.
+But the outlaws running the auction know of your company's treachery,
+and now views your company with some disdain.
+<</if>>
+</p>
+
+<<if _recruit>>
+
+<p>
+<<Yourrep $g.recruiter>> managed to succesfully convince the newly rescued
+<<rep $g.light>> to join your company as a slaver.
+<<Therace $g.light>> light|is now awaiting your final decision in the prospects hall.
+</p>
+
+<<else>>
+
+<p>
+Later, you have heard about the auction being cancelled due to "security
+reasons". Satisfied, you pet the head of your new slave <<rep $g.light>> who
+glared at you in defiance, before
+planning <<their $g.light>> future as a slave.
+</p>
+
+<</if>>
+
+
+:: Quest_light_in_the_darkness__enslaveFailure [nobr]
+
+<p>
+<<Yourrep $g.infiltrator1>> and <<utheirrel $g.infiltrator1 $g.infiltrator2>> <<rep $g.infiltrator2>>
+<<uadv $g.infiltrator1>>
+infiltrated the warehouse of the auction lot successfully. Multiple cages
+containing various human cargos all in full bondage were stacked on top of each
+other, and the place was eerily quiet except for several moaning sounds.
+But even after scouring through naked bodies stored in various ways, they
+were not able to find any slave matching the description you were looking for.
+Instead, they managed to attract the attention of a guard,
+and your slavers had to hastily make for the exit with nothing to steal.
+</p>
+
+<p>
+Later, you heard about the slave ended up being purchased at an exorbitant prize
+in the auction, to serve as a trophy for some very rich noble of the east.
+</p>
+
+
+:: Quest_light_in_the_darkness__enslaveDisaster [nobr]
+
+<p>
+Unfortunately,
+<<rep $g.infiltrator1>> and <<rep $g.infiltrator2>> were captured during
+their infiltration mission in the warehouse. Ironically, they ended up being one of
+the merchandise for sale in the auction and you now have the option to repurchase them if you wish
+to get them back.
+</p>
+

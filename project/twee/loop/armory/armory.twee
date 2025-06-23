@@ -1,0 +1,64 @@
+:: Armory [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.armory)>>
+<<if _room>>
+  <<set _storage = _room.getLevel() - 1>>
+<<else>>
+  <<set _storage = 0>>
+<</if>>
+<<set _max = $armory.getMaxEquipmentSets()>>
+<<set _sets = $armory.getEquipmentSets()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+You enter the armory.
+<<if _storage>>
+  It has been expanded with <<= _storage>> storages.
+<</if>>
+Currently, you have <<successtext _sets.length>>
+equipment sets, out of a maximum of
+<<= _max>> sets.
+<<if _sets.length >= _max>>
+  It might be a good idea to keep a few vacant spots, in case you obtain
+  some new equipment sets from quests.
+  You can obtain more slots by upgrading your <<rep _room>>.
+<</if>>
+You remember that your slavers 
+<<message 'refuse to wear slutty clothings'>>
+  <div class='helpcard'>
+    Most slavers will refuse to wear clothes whose Sluttiness
+    rating is <<= setup.EQUIPMENT_SLAVER_SLUTTY_LIMIT_NORMAL >> or higher.
+    On top of this,
+    <<rep setup.trait.per_chaste>> slavers will refuse to wear
+    even slightly slutty clothings, while
+    <<rep setup.trait.per_lustful>> or <<rep setup.trait.per_sexaddict>> might
+    be willing to wear sluttier clothings.
+  </div>
+<</message>>, but there are no such
+restriction for your slaves or even you, if you are willing.
+Some equipments also have restrictions on who can possibly use them.
+<br/>
+
+<<focmove "(See spare equipment list)" "ArmoryEquipment">>
+
+<<if $armory.isCanAddNewEquipmentSet()>>
+  <<link '(Add new equipment set)'>>
+    <<run $armory.newEquipmentSet()>>
+    <<focgoto 'Armory'>>
+  <</link>>
+<</if>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'equipmentset',
+  filter_objects: _sets,
+  display_callback: equipment_set => {
+    if ($menufilter.get('equipmentset', 'display') == 'compact') {
+      return setup.DOM.Card.equipmentsetcompact(equipment_set);
+    } else {
+      return setup.DOM.Card.equipmentset(equipment_set);
+    }
+  },
+})>>
+<<attach _dom>>

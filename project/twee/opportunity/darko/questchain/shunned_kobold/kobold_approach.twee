@@ -1,0 +1,93 @@
+:: OpportunitySetup_kobold_approach [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'kobold_approach', /* key */
+"Kobold Approach", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_kobold_approach',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_kobold_approach_0',
+    outcome_passage: 'Opportunity_kobold_approach_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_sly),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_kobold_approach_1',
+    outcome_passage: 'Opportunity_kobold_approach_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_direct),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'kobold': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_kobold_approach [nobr]
+<p>
+    <<Rep $g.kobold>> asks for your advise on the best combat style. Sneaky-sneak like a ninja-thief? Or brash-assault like a barbarian-warrior?
+</p>
+
+
+:: Opportunity_kobold_approach_0 [nobr]
+Stealth is best
+
+
+:: Opportunity_kobold_approach_0_flavor [nobr]
+<p>
+    Dirty tricks win fights.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> has become more cunning overall, and would not hesitate employing dirty tricks to win sparring fights.
+</p>
+
+
+:: Opportunity_kobold_approach_1 [nobr]
+Head-on assault is best
+
+
+:: Opportunity_kobold_approach_1_flavor [nobr]
+<p>
+    Strength is power.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> has become a much more straight-forward fighter, and would sometimes even act first before thinking.
+</p>
+

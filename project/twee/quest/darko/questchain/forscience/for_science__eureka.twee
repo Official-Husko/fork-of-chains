@@ -1,0 +1,172 @@
+:: QuestSetup_for_science__eureka_ [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'for_science__eureka_', /* key */
+"For Science: Eureka!", /* Title */
+"darko", /* Author */
+[
+  'city',
+  'veteran',
+  'special',
+  'item'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'scientist': setup.qu.scientist,
+'crafter': setup.qu.crafter,
+'wizard': setup.qu.arcanewindveteran, },
+{ /* actors */
+'inventor': 'quest_for_science1', },
+[ /* costs */
+],
+'Quest_for_science__eureka_',
+setup.qdiff.harder54, /* difficulty */
+[ /* outcomes */
+[
+'Quest_for_science__eureka_Crit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.BoonizeRandom('scientist', 30),
+setup.qc.BoonizeRandom('crafter', 15),
+setup.qc.BoonizeRandom('wizard', 15), ],
+], [
+'Quest_for_science__eureka_Crit',
+[
+setup.qc.LoseItem(setup.item.quest_for_science_list),
+setup.qc.LoseItem(setup.item.quest_for_science_box),
+setup.qc.LoseItem(setup.item.quest_for_science_fruit),
+setup.qc.LoseItem(setup.item.quest_for_science_stick),
+setup.qc.Opportunity('for_science__mad_science'), ],
+], [
+'Quest_for_science__eureka_Failure',
+[
+setup.qc.OneRandom([
+setup.qc.LoseItem(setup.item.quest_for_science_box),
+setup.qc.LoseItem(setup.item.quest_for_science_fruit),
+setup.qc.LoseItem(setup.item.quest_for_science_stick)
+]),
+setup.qc.Injury('scientist', 2),
+setup.qc.Injury('crafter', 3),
+setup.qc.Injury('wizard', 1), ],
+], [
+'Quest_for_science__eureka_Failure',
+[
+setup.qc.Injury('scientist', 3),
+setup.qc.Injury('crafter', 1),
+setup.qc.Injury('wizard', 2),
+setup.qc.OneRandom([
+setup.qc.DoAll([
+setup.qc.LoseItem(setup.item.quest_for_science_box),
+setup.qc.LoseItem(setup.item.quest_for_science_fruit)
+]),
+setup.qc.DoAll([
+setup.qc.LoseItem(setup.item.quest_for_science_box),
+setup.qc.LoseItem(setup.item.quest_for_science_stick)
+]),
+setup.qc.DoAll([
+setup.qc.LoseItem(setup.item.quest_for_science_fruit),
+setup.qc.LoseItem(setup.item.quest_for_science_stick)
+])
+]), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoOpportunity('for_science__mad_science'),
+setup.qres.HasItem(setup.item.quest_for_science_box),
+setup.qres.HasItem(setup.item.quest_for_science_fruit),
+setup.qres.HasItem(setup.item.quest_for_science_stick), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_for_science__eureka_ [nobr]
+
+<p>
+After a long and exhausting process, you have completed collecting all the items
+requested by the inventor <<rep $g.inventor>>:
+A sturdy <<rep setup.item.quest_for_science_box>>,
+A hard and rubbery <<rep setup.item.quest_for_science_fruit>>, and
+<<rep setup.item.quest_for_science_stick>>.
+It is now time to return to the inventor <<rep $g.inventor>> and claim your
+well deserved reward, although seeing these items makes you think, what kind of invention
+inventor|is <<they $g.inventor>> creating with these?
+Not to mention the inventor had specifically asked you to bring along a slaver
+gifted in <<rep setup.trait.magic_wind>>.
+</p>
+
+
+:: Quest_for_science__eureka_Crit [nobr]
+
+<p>
+<<Rep $g.scientist>> watched as the inventor assembled the items into a
+contraption. First, the thick, hard, and rubbery
+<<rep setup.item.quest_for_science_fruit>> was affixed to one end of the
+stick, forming a spear with a dildo as its tiphead.
+The other end of the stick was then inserted into the
+<<rep setup.item.quest_for_science_box>>, making the entire thing look like
+a dildo post.
+The finished product was then brought to another room, where to your slavers'
+surprise, was covered by magical circle.
+</p>
+
+<p>
+Apparently, the inventor is a powerful wizard, gifted in <<rep
+setup.trait.magic_wind_master>>.
+<<if $g.wizard.isHasTrait('magic_wind_master')>>
+Assisted by your similarly-gifted slaver <<rep $g.wizard>>,
+<<else>>
+Assisted by your slightly-less-gifted slaver <<rep $g.wizard>>,
+<</if>>
+they imbued magic into the previously unliving box, trapping great amount of
+energy inside the sturdy little box. With a good supply of energy, your
+slavers finally understood the purpose of the machine as the thick long pole
+started to magically move on its own, up and down, up and down, as if it was
+fucking an invisible <<man $g.inventor>>. The aptly named <<rep
+setup.item.f_object_master_fuckmachine>> was complete, and was ready for further
+"studies" in the coming weeks.
+</p>
+
+<p>
+The weeks passed in a blur as your slavers <<uadv $g.scientist>> helped the
+inventor study the strange machinery as much as they could — asking questions
+such as "How much does the power last?", "Does it have any military uses?",
+"Can the pole conduct electricity?", and so on.
+After four long weeks, the inventor had completed <<their $g.inventor>>
+research on the fascinating little object, and gifted your slavers with the
+<<rep setup.item.f_object_master_fuckmachine>> itself as a reward.
+</p>
+
+<p>
+You are left with a choice — you can of course keep the <<rep
+setup.item.f_object_master_fuckmachine>> for yourself.
+But there are surely plenty others who would be willing to part with a
+ridiculous amount of money for such a strange and mysterious contraption.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Having worked so closely with a renowned inventor greatly inspired your
+slavers in the coming weeks.
+</p>
+<</if>>
+
+
+:: Quest_for_science__eureka_Failure [nobr]
+<p>
+The inventor <<rep $g.inventor>> pointed out that
+<<if $gOutcome == 'failure'>>
+one
+<<else>>
+two
+<</if>>
+of the items your slavers had collected was defective. Your slavers couldn't
+remember exactly if it was the not-so-sturdy box, the half rotten fruit, or
+the pole with visible crack, but either way they'd have to gather the item
+again to finish the task.
+</p>

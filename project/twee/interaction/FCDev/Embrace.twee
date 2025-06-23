@@ -1,0 +1,230 @@
+:: InteractionEmbraceSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_embrace',
+  'Embrace',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionEmbrace',
+  [],  /* Cost */
+  [],  /* Requirements */
+  [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveUsableByYou(),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionEmbrace [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<set _hasbreasts = $unit.player.isHasBreasts()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+
+<<set _umouthequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.mouth)>>
+<<set _friendship = $friendship.getFriendship(_u, $unit.player)>>
+
+<<set _mindbroken = _u.isMindbroken()>>
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+<<set _gagged = _u.isHasTrait(setup.trait.eq_gagged)>>
+
+<<loadinteractioncommon _u>>
+
+You descend into your $i.locgeneral and command
+your <<titlefull _u>>
+<<= _u.getName()>>
+to approach you.
+
+<<include 'InteractionKissApproach'>>
+
+You walk around $i.him and put your <<uhands $unit.player>> around $i.his <<ubody _u>>,
+to gently pull $i.him close towards you
+and then wrap your arms around $i.his shoulders.
+When you press your hips against <<theirs _u>>,
+<<if _basic>>letting $i.him lean while taking the weight of $i.him against you<<else>>
+$i.he tries to lean away from you, pushing against your <<uarms _u>><</if>>.
+You lovingly squeeze $i.him in your <<ubody $unit.player>> within the long, cradling embrace of your <<uarms _u>>.
+
+<<if _u.isHasTrait(setup.trait.breast_tiny)>>
+  You feel $i.his erect nipples against your
+  <<uarms $unit.player>>
+  as you move your arms down around $i.his <<ubreast _u>>.
+<<else>>
+  You move your arms down around $i.his <<ubreast _u>>
+  <<if _u.isHasTrait(setup.trait.muscle_strong)>> and feel $i.his rippling muscles<</if>>.
+<</if>>
+<<if _basic>>
+  You take your time to stay in this position, feeling $i.his
+  heart beat against you.
+  $i.He starts to breathe faster before you keep one arm wrapped around
+  $i.him as you move to $i.his front.
+<<else>>
+  As you move to $i.his front, with one arm still around $i.him,
+  $i.he again tries to break away but you keep $i.him held tightly and
+  you whisper the alternatives to $i.him, reminding $i.him.
+<</if>>
+You wrap your arms around $i.his back
+as you press $i.his <<ubreast _u>> against your
+<<ubreast $unit.player>>.
+
+<<if _mindbroken>>
+	$i.His posture doesn't change.
+  $i.He initially only reacts slightly to your physical touch but eventually
+  $i.he relaxes in the warmth of the your embrace against $i.him.
+  You know that this may only be a physiological reaction,
+  nothing more. For a brief moment you think you
+  detect a spark of life in $i.his dull eyes
+  but just as quickly, it is gone.
+  When you stop, $i.his <<ueyes _u>> track the movements of your <<uhands $unit.player>>
+  briefly but then $i.he stares blankly ahead of $i.him,
+  not understanding what is happening.
+<<elseif _friendship >= 800>>
+	In the warmth of your embrace,
+  $i.he turns towards you,
+  $i.his passionate <<ueyes _u>> staring intently at your <<uface $unit.player>>.
+  $i.He leans closer to you and kisses you as you hold $i.him.
+  $i.His heart beats faster and then gradually slows as $i.he grows accustomed
+  to your <<ubody $unit.player>> against $i.his <<ubody _u>>.
+  Eventually, $i.he relaxes totally and $i.his eyes gradually close,
+  melting in your <<uarms $unit.player>>.
+  When you finally stop and relax your embrace,
+  $i.his eyes remain closed and $i.his <<umouth _u>> still in a
+  rapturous shape for a moment before $i.he slowly opens
+  $i.his eyes and smiles at you with a blissful look on $i.him <<uface _u>>.
+  $i.His <<uhand _u>> reaches to your <<uarms $unit.player>> and $i.he strokes them longingly.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    "I love you", $i.he says dreamily.
+  <</if>>
+  $i.He looks at you,
+  almost begging you with $i.him eyes that $i.he wants much more than a mere embrace.
+<<elseif _u.isHasTrait(setup.trait.training_dominance_advanced) && _maintraining.getTags().includes('trdominance')>>
+	In your soft, warm embrace,
+  $i.he tries hard to stop $i.himself from losing $i.himself in your arms.
+  $i.He starts to embracing you in $i.him <<uarms _u>> as well.
+  When you gently squeeze $i.him in your <<uarms $unit.player>>,
+  $i.he breathes more heavily and starts to lovingly squeeze you as well,
+  $i.his tendency towards sexual dominance encouraging $i.him to
+  compete with you in embraces against each other.
+  When you finally stop and relax your embrace, $i.his
+  eyes are closed and $i.he's smiling blissfully.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    "That was fun", $i.he says cheerfully.
+  <</if>>
+  $i.He eagerly looks at you, $i.his eyes almost seem to say that
+  $i.he wants you to give $i.him more than a mere hug.
+<<elseif _friendship >= 500>>
+	$i.He sighs devotedly in your <<uarms $unit.player>>
+  and slowly relaxes.
+  $i.He turns towards you, $i.his doting <<ueyes _u>>
+  staring intently at your <<uface $unit.player>>.
+  You feel $i.his heart beating faster against your <<ubreast $unit.player>>
+  as you softly squeeze your arms tighter.
+  $i.His <<uhands _u>> reach to your <<uarms $unit.player>>
+  and $i.he strokes them longingly as you squeeze.
+  $i.He gradually closes $i.his eyes as $i.he leans $i.his <<ubody _u>> against yours,
+  melting in your warm embrace,
+  and you feel the intense heat from $i.his <<ubody _u>> against your <<ubreast $unit.player>>.
+  When you finally stop, $i.he reaches to your <<uface $unit.player>>
+  with $i.his <<uhand _u>> and gently strokes your cheek, a euphoric
+  look on $i.his <<uface _u>>.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    "I love you", $i.he says elatedly.
+  <</if>>
+  $i.He looks at you longingly, almost as if $i.he's bursting to say
+  that $i.he wants more than a mere embrace.
+<<elseif _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+	$i.He willingly gives $i.himself up to
+  your embracing arms.
+  As you are so close to $i.him,
+  you sense considerable uneasiness in the $i.man;
+  $i.he's doing $i.him duty as a slave by complying with your wishes,
+  and is probably struggling with the mixture of resistance, obedience and perhaps
+  even devotion forced to the forefront of $i.his mind by your
+  soft embrace against $i.his <<ubody _u>>.
+  $i.He gradually closes $i.his eyes in the feeling of your gentle <<uarms $unit.player>>.
+  When you finally stop and relax your embrace,
+  $i.his <<ueyes _u>> open to gaze puzzlingly at you.
+  Even though $i.he has accepted life as a sex slave,
+  $i.he looks as though $i.he is unsure of what to make of
+  this non-sexual physical contact.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    $i.He asks hesitantly, "I-is that it?".
+  <</if>>
+<<elseif _u.isHasTrait(setup.trait.training_obedience_basic)>>
+	$i.He shakes at your touch fearfully.
+  As you softly press $i.his trembling body against you,
+  $i.his eagerness to avoid punishment leads $i.him
+  to stiffen in your <<uarms $unit.player>>.
+  While $i.he continues to shudder,
+  you continue embracing $i.him,
+  enjoying $i.his fear, and the physical intimacy slowly does its work.
+  $i.He starts to relax, $i.his resistance easing and $i.his eyes start to close.
+  When you relax your arms for a moment,
+  $i.he opens $i.him eyes to look at you for a long moment,
+  $i.him eyes darting up to your <<uface $unit.player>>,
+  before visibly catching $i.himself with a reminder that $i.he's a slave and you're $i.him owner.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    He asks hesitantly, "I-is that it?".
+  <</if>>
+<<elseif _friendship <= -100>>
+	$i.He is nearly frozen with fear,
+  and does not resist as you start to squeeze your <<uarms $unit.player>>
+  around $i.him.
+  In fact, $i.he barely reacts at all.
+  $i.He stares at your arms as they continue squeezing, but
+  it's like touching a statue.
+  $i.He is so filled with terror that $i.he
+  remains stiff even as it becomes clear to $i.him
+  you're not going to hurt $i.him.
+  When you bore of embracing the still
+  $i.man
+  and release $i.him,
+  $i.he stares at you in utter incomprehension.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    He asks nervously, "I-is that it?".
+  <</if>>
+  Then $i.he cringes, unsure of what you are going to do next.
+<<else>>
+	$i.He reflexively tries to break free from your <<uarms $unit.player>>,
+  but you keep $i.him wrapped in them.
+  Shuddering, $i.he desperately leans away from you,
+  but you tip forward with $i.him and pin $i.him against the walls of the $i.locgeneral,
+  continuing your hold on $i.him.
+  $i.He tries to wriggle out of your grasp desperately, but
+  $i.his struggles slowly subside as $i.he
+  realizes that you're not taking this any farther.
+  When you bore of it and release $i.him,
+  $i.he stares at you in utter incomprehension.
+  <<if _gagged>>
+    It looks as if $i.he has something to say, but $i.his gag prevents $i.him from saying it.
+  <<else>>
+    He splutters, "Is that it?".
+  <</if>>
+  $i.He shakes uncontrollably, apprehensive at what you are going to do next.
+<</if>>
+
+<<unset $i>>

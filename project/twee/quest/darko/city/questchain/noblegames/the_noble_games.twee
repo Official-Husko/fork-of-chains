@@ -1,0 +1,196 @@
+:: QuestSetup_the_noble_games [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'the_noble_games',  /* key */
+  "The Noble Games Participant",   /* name */
+  'Currently participating in the Noble Games',   /* name */
+  'a|is a current participant of the Noble Games',
+  0,   /* slave value */
+  {},
+)>>
+
+
+<<run new setup.QuestTemplate(
+'the_noble_games', /* key */
+"The Noble Games: Subterfuge", /* Title */
+"darko", /* Author */
+[ 'city', 'money'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'thief': setup.qu.thief,
+'planner': setup.qu.planner,
+'slave': setup.qu.slaveobedient,
+'briber': setup.qu.briber, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_noble_games',
+setup.qdiff.hard34, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_noble_gamesCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_the_noble_gamesCrit',
+[
+setup.qc.VarSet('the_noble_games_progress', '1', -1),
+setup.qc.AddTitle('thief', 'the_noble_games'),
+setup.qc.AddTitle('planner', 'the_noble_games'),
+setup.qc.AddTitle('slave', 'the_noble_games'),
+setup.qc.AddTitle('briber', 'the_noble_games'),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_the_noble_gamesFailure',
+[
+setup.qc.Injury('thief', 2),
+setup.qc.Injury('planner', 1),
+setup.qc.Injury('briber', 2), ],
+], [
+'Quest_the_noble_gamesFailure',
+[
+setup.qc.MissingUnit('slave'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarNull('the_noble_games_progress'),
+],
+[ /* expiration outcomes */
+setup.qc.RemoveTitleGlobal('the_noble_games'),
+],
+)>>
+
+:: Quest_the_noble_games [nobr]
+
+<p>
+Among the degenerate rich living in the <<lore region_city>>, there is an
+infamous games played among them dubbed "The Noble Games". This is a series
+of games hosted by a high noble, where the participants must demonstrate their
+prowess in various disciplines, rather unorthodoxly. The winners are promised a
+most salivating reward: a personal furniture directly from the noble's
+bedchamber itself. Even if you don't plan to decorate your room, it will still
+fetch for quite a large sum of money.
+</p>
+
+<p>
+A new game has just started, and somehow you were able to gather information
+about it. Apparently, the first game in this competition will test the
+participant's wits — in order to win the first game, participants must
+smuggle something interesting into a particular address in the city. It is up
+to the participant's imagination what kind of contraband they want to smuggle
+in, but whatever the contraband is, it will be returned to the participant at the conclusion
+of the games.
+</p>
+
+<p>
+Being a slaver company, there is only one contraband that you can reasonably
+put in: a highly trained slave. Smuggling a slave into a slaver-averse city
+full of guards will be a challenge though, let alone smuggling the slave
+directly into the address in the center of the city.
+Still, if you are willing to risk it, it's best to
+send a team of three: a briber to make the guards look the other way, a
+planner to plan your slavers' way in, and finally a thief to infiltrate the
+mansion and drop the package in.
+</p>
+
+<p>
+<<dangertextlite 'Warning'>>: This is a special challenge that will pit the
+same team of slavers across multiple challenges. Make sure to send a
+well-rounded team! Note that the slave you send on this mission will not be
+gone... probably.
+</p>
+
+
+:: Quest_the_noble_gamesCrit [nobr]
+
+<<if $g.slave.isMale()>>
+  <<questimage 'the_noble_games_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+With <<their $g.planner>> preparations ready, your slavers
+executed the plan drawn <<uadv $g.planner>> by <<rep $g.planner>>. <<Rep
+$g.briber>> bribed your slavers' way into the mansion, with the guards
+having to awkwardly look to the other way as your slavers brought in a cart
+containing an totally normal sack of "grains". Eventually, your slavers
+arrived safely at the address, on which a grand mansion stood.
+</p>
+
+<p>
+<<Rep $g.thief>> got to work by
+<<if $g.thief.isHasTrait('bg_assassin')>>
+<<if $g.thief.isHasTrait('subrace_humansea')>>
+using <<their $g.thief>> ninja technique and threw a grappling shuriken
+<<else>>
+recalling <<their $g.thief>> past as an assassin and
+<<uadv $g.thief>> throwing a grappling hook
+<</if>>
+<<elseif $g.thief.isHasTrait('bg_thief')>>
+recalling <<their $g.thief>> past as a common thief and
+<<uadv $g.thief>> throwing a grappling hook
+<<else>>
+<<uadv $g.thief>> throwing a grappling hook
+<</if>>
+over to the open window on the second floor.
+With the help of your other
+slavers, <<rep $g.thief>> managed to transport the
+<<if
+$g.slave.isHasTraitExact('training_obedience_basic')>>struggling<<else>>compliant<</if>>
+slave into the mansion. <<Rep $g.thief>> proceeded to dodge the various traps
+and contraptions blocking <<their $g.thief>> way up and <<they $g.thief>>
+made it to the innermost chambers.
+</p>
+
+<p>
+<<if $gOutcome == 'crit'>>
+From the pristine look of the chamber, it seemed that your slavers were the
+first one to arrive. Your slavers gagged and bound the poor slave <<rep
+$g.slave>>, making sure <<they $g.slave>> couldn't produce any meaningful sound
+to alert the guards. Once they did, they helped themselves to the valuables in
+the room, which was understood as the extra prize for being the first to
+complete the first bout of The Noble Games.
+<<else>>
+Apparently your slavers were not the first to complete this game, as several
+out of place objects and slaves were already placed eye-catchingly in the room. It
+seemed some other participants also have the same idea of smuggling in a
+slave. Still, your slavers were confident that the quality of <<yourrep $g.slave>>
+would carry them through.
+<</if>>
+</p>
+
+<p>
+A few days later, you receive a congratulary mail somehow delivered directly into your
+fort, together with <<yourrep $g.slave>> nicely packaged with a ribbon. It seems
+your slavers were successful in completing the first bout of The Noble Games.
+</p>
+
+
+:: Quest_the_noble_gamesFailure [nobr]
+
+<p>
+<<Rep $g.briber>> put <<their $g.briber>> trust in the wrong guards as one of
+the guards pretended to accept the bribe, only to chase after the slavers
+later down in the city.
+<<if $gOutcome == 'failure'>>
+Your slavers had to risk going a dangerous alley to
+escape from the chase, getting injured in the process.
+<<else>>
+Your slavers had no choice but to leave their cargo
+in the city as they escape the city.
+<</if>>
+</p>
+
+<p>
+Perhaps there will be another opportunity for another series of The Noble Games.
+</p>
+

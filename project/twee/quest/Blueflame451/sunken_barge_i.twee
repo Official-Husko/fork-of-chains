@@ -1,0 +1,157 @@
+:: QuestSetup_sunken_barge_i [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'sunken_barge_i', /* key */
+"Sunken Barge I", /* Title */
+"Blueflame451", /* Author */
+[ /* tags */
+  'vale',
+  'money',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'explorer': [ setup.qu.explorer, 1],
+  'spotter': [ setup.qu.spotter, 1],
+  'support': [ setup.qu.support, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_sunken_barge_i',
+setup.qdiff.normal11, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_sunken_barge_iCrit',
+    [
+      setup.qc.MoneyCustom(1500),
+      setup.qc.QuestDirect('sunken_barge_ii', null),
+    ],
+  ],
+  [
+    'Quest_sunken_barge_iCrit',
+    [
+      setup.qc.QuestDirect('sunken_barge_ii', null),
+    ],
+  ],
+  [
+    'Quest_sunken_barge_iFailure',
+    [
+      setup.qc.QuestDirect('sunken_barge_i', null),
+    ],
+  ],
+  [
+    'Quest_sunken_barge_iDisaster',
+    [
+      setup.qc.Injury('explorer', 1),
+      setup.qc.Injury('support', 1),
+      setup.qc.QuestDirect('sunken_barge_i', null),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_sunken_barge_i [nobr]
+
+<p>
+Your slavers efforts have finally paid off.
+Somehow, they actually found an actual lead, which might lead to an actual treasure.
+</p>
+
+<p>
+The northerners of old hated the <<lore race_humankingdom>>s, and it showed in their tales.
+According to the tale,
+some years ago a lavish pleasure barge belonging to a princeling from Lucgate was meandering up the river in the <<lore region_vale>> when disaster struck and the barge was sunk.
+The story then told in great raunchy details what happened to the survivors, but that's
+not the part of the tale that interests you.
+What you are interested in is the sunken vessel, no doubt brimming with lost treasure.
+</p>
+
+<p>
+It might still be a while until you can get your grubby <<uhands $unit.player>> on the treasure.
+You'd still need to locate the sunken vessel. This would no doubt require a strong swimmer, and you
+probably should select one among your slavers, unless you're up for the job yourself.
+</p>
+
+
+:: Quest_sunken_barge_iCrit [nobr]
+
+<p>
+The days were long -- your slavers scoured the riverbanks daily and swam in the icy river water,
+seeking the sunken barge.
+Fortunately, the hard cold work paid off when <<rep $g.spotter>> spotted something on the river bottom that looks very much like two halves of a large boat.
+</p>
+
+<p>
+It's up to <<yourrep $g.explorer>> to verify that the sighting is true.
+<<if $g.explorer.isNaked()>>
+Not wearing any clothings from the beginning,
+<<else>>
+So after stripping out of <<their $g.explorer>> <<uequipment $g.explorer>>,
+<</if>>
+<<they $g.explorer>> took a deep breath before diving into the river,
+leaving <<rep $g.spotter>> and <<rep $g.support>> to watch expectedly from the riverbank.
+</p>
+
+<p>
+After a few suspenseful moments
+<<if $g.explorer.isHasTrait('race_lizardkin')>>
+<<reps $g.explorer>> <<ueyes $g.explorer>> breached the river's' surface,
+before <<their $g.explorer>> <<therace $g.explorer>> <<uadjphys $g.explorer>> form exited from the water to rejoin <<their $g.explorer>> companions.
+<<else>>
+<<rep $g.explorer>> emerged from the river gasping for breath before swimming back into the riverbank where <<their $g.explorer>> companions were waiting.
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+A fine prize were held in <<their $g.explorer>> <<uhand $g.explorer>> --
+an elegantly wrought fragments of a silver ship's lantern, a clear proof of the barge's value.
+<</if>>
+<<if $g.explorer.getSpeech() == setup.speech.friendly>>
+"We've found it friends, a barge full of treasure for no one else but us to loot!," <<rep $g.explorer>> announced with a smile!
+<<elseif $g.explorer.getSpeech() == setup.speech.bold>>
+"That barge is right down there, full of treasure for the taking," <<rep $g.explorer>> announced boldly!
+<<elseif $g.explorer.getSpeech() == setup.speech.cool>>
+"Looks like we have a barge to loot," <<rep $g.explorer>> informed them.
+<<elseif $g.explorer.getSpeech() == setup.speech.witty>>
+"It's down there alright, the snails kept the jewelries clean too, if you know what I mean," <<rep $g.explorer>> announced with a grin.
+<<elseif $g.explorer.getSpeech() == setup.speech.debauched>>
+"We've found the barge, no lusty river naiads in attendance, but plenty of booty," <<rep $g.explorer>> announced!
+<</if>>
+</p>
+
+<p>
+It seemed your slavers had found the sunken barge!
+The only task remaining is to properly loot the ship,
+and a final mission has been prepared for you to follow it up.
+</p>
+
+
+:: Quest_sunken_barge_iFailure [nobr]
+<p>
+Led by <<rep $g.spotter>>, your slavers spent the week scouring through the riverbanks with eyes peeled for any sign of the barge and the rich treasure it may hold.
+Yet day after day pass, and the only thing <<rep $g.explorer>> received for the trouble of diving into the chilly river were the wet and cold it brought.
+While your slavers had no success in their mission, there was still much of the river to explore and they may yet find the sunken barge in another attempt.
+</p>
+
+
+
+:: Quest_sunken_barge_iDisaster [nobr]
+
+<p>
+Initially excited, after days scouring the riverbanks without any clue, your slavers became
+more and more desperate.
+After spotting a shadowy form in the cold river, <<rep $g.explorer>> immediately dived in to investigate only to discover a fierce river beast that was none too happy to receive a visitor.
+<<rep $g.support>> support|was able to pull <<therace $g.explorer>> to safety, but not without them both suffering some bites from the unpleasant beast.
+The search will have to continue later, after they recover or with another team.
+</p>
+

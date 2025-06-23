@@ -1,0 +1,127 @@
+:: EventSetup_meek_slaver [nobr event]
+
+<<run new setup.Event(
+'meek_slaver', /* key */
+"Meek Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_meek_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.bg_unemployed, setup.trait.bg_slave], true),
+    setup.qres.NoTraits([setup.trait.per_dominant], true),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+  ],
+  'other': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_meek_slaver [nobr]
+<p>
+<<Yourrep $g.slaver>> came from a rather unflattering background.
+Prior to becoming your slaver, <<they $g.slaver>> slaver|was
+<<if $g.slaver.isHasTrait('bg_unemployed')>>
+unemployed, living on the streets.
+<<else>>
+a lowly slave.
+<</if>>
+<<if $g.you.isHasAnyTraitExact(['bg_unemployed', 'bg_slave'])>>
+You grimaced a little at the thought that you too once shared a similar fate in the past,
+but you quickly put the thoughts on the back of your mind.
+<</if>>
+As a result, <<theslaver $g.slaver>> slaver|is awkwardly meek, and some would even go as far to say that <<they $g.slaver>> slaver|is not suitable as slaver.
+<<if $g.slaver.isHasTrait('per_aggressive')>>
+Nobody dares to say it out loud in front of the aggressive <<urace $g.slave>> though.
+<<elseif $g.slaver.isHasTrait('face_scary') or $g.slaver.isHasTrait('skill_intimidating')>>
+Nobody dares to say it out loud in front of the intimidating <<urace $g.slave>> though.
+<<elseif $g.slaver.isHasTrait('muscle_verystrong')>>
+Nobody dares to say it out loud in front of the hulkingly muscular <<urace $g.slave>> though.
+<<elseif $g.slaver.isHasTrait('height_giant')>>
+Nobody dares to say it out loud in front of the gigantic <<urace $g.slave>> though.
+<</if>>
+</p>
+
+<p>
+<<Their $g.slaver>> meekness makes for an awkward scene today. <<Yourrep $g.other>> is in the middle of playing with a slave <<rep $g.slave>> in the dungeons, and when <<therace $g.other>> other|shout a degrading command, <<rep $g.slaver>> goes perfectly stiff, <<their $g.slaver>>
+<<if $g.slaver.isHasTrait('bg_unemployed')>>
+prior life living on the streets makes them extra sensitive to any and all potential source of "income".
+<<else>>
+prior life as a slave making them involuntarily pay more attention to dominant commands.
+<</if>>
+Not wanting <<rep $g.other>> to realize what has happened, <<rep $g.slaver>> quietly exits the place, not realizing that you were watching all the time.
+</p>
+
+<<choose>>
+
+<<opt "Try to address this issue">>
+
+<p>
+This is a concerning behavior as slaver, so you approach <<therace $g.slaver>> some time later when <<they $g.slaver>> slaver|is alone. <<They $g.slaver>> slaver|try to feign ignorance, but when switch to a more commanding tone, <<their $g.slaver>> stiffness returned.
+You tell <<them $g.slaver>> that this won't do, and you spend the next couple of days trying to train the habit out of the slaver.
+</p>
+
+<p>
+Unfortunately, days of specialized training are not sufficient to remove the years-induced habit. Despite this, the slaver seems to appreciate your concern, and the two of you grow closer throughout the attempt.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', 200).apply($gQuest)>>
+
+<<opt "Take advantage of the issue">>
+
+<p>
+Deciding for some fun, you approach <<therace $g.slaver>> before using your most commanding tone to order the slaver to kneel before you. <<They $g.slaver>> reflexively does so, and before <<they $g.slaver>> slaver|realize what's happening you
+<<ustrippantsand $g.you>>
+shove your
+<<udickorstrap $g.you>> down <<reps $g.slaver>> throat.
+<<They $g.slaver>> slaver|gag at the feeling of your shaft lodged inside slaver|their throat, but before slaver|they slaver|was able to protest, you again use your commanding tone to order slaver|them to take it all in.
+Eventually, slaver|their
+<<if $g.slaver.isHasTrait('bg_slave')>>
+slave
+<<else>>
+beggar
+<</if>>
+mentality takes over, and slaver|they helplessly serve you all night long.
+</p>
+
+<p>
+<<if $g.slaver.isSubmissive()>>
+Surprisingly, the submissive slut quite like the rough treatment, and your relationship somehow grow as a result.
+<<run setup.qc.FriendshipWithYou('slaver', 200).apply($gQuest)>>
+
+<<else>>
+Understandably, <<they $g.slaver>> slaver|like you less now.
+<<run setup.qc.FriendshipWithYou('slaver', -200).apply($gQuest)>>
+
+<</if>>
+</p>
+
+
+<</choose>>

@@ -1,0 +1,130 @@
+:: EventSetup_heavenly_recruit [nobr event]
+
+<<run new setup.Title(
+"quest_archangel_of_knowledge_0", /* key */
+"Archangel of Knowledge", /* name */
+"An angel envoy from the heavens who obliviouslyl came to your fort in hopes of enlisting your skilled slavers in the war against the demons", /* description */
+"a|was an envoy from the heavens who obliviouslyl came to your fort in hopes of enlisting your skilled slavers in the war against the demons, but ended up locked behind your bars", /* unit text */
+100000, /* slave value */
+{ /* skill additives */
+knowledge: 5,aid: 5,},
+)
+>>
+<<run new setup.Title(
+"quest_angel_touched_1", /* key */
+"Angel-Touched", /* name */
+"Was head-hunted by an angel to participate in the battle against the demons", /* description */
+"a|was head-hunted by an angel to participate in the battle against the demons, but turned the tables on the angel instead", /* unit text */
+3000, /* slave value */
+{ /* skill additives */
+combat: 1,brawn: 1,survival: 1,intrigue: 1,slaving: 1,knowledge: 1,social: 1,aid: 1,arcane: 1,sex: 1,},
+)
+>>
+<<run new setup.UnitGroup(
+"heavenly_recruit1",
+"Angel of Knowledge",
+'subrace_angel', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTitle('unit', 'quest_archangel_of_knowledge_0'),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_smart]),
+],
+)>>
+
+<<run new setup.Event(
+'heavenly_recruit', /* key */
+"Heavenly Recruit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'unit',
+],
+'Event_heavenly_recruit',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'angel': 'heavenly_recruit1',
+},
+[ /* outcomes */
+  setup.qc.Slave('angel', "a|was an envoy from the skies who came to your fort, lured by skilled slavers, but ended up enslaved", undefined),
+  setup.qc.AllUnitSatisfyDo([setup.qres.Or([
+setup.qres.HasTitle('quest_master_of_aid_0'),
+setup.qres.HasTitle('quest_master_of_arcane_0'),
+setup.qres.HasTitle('quest_master_of_brawn_0'),
+setup.qres.HasTitle('quest_master_of_combat_0'),
+setup.qres.HasTitle('quest_master_of_intrigue_0'),
+setup.qres.HasTitle('quest_master_of_knowledge_0'),
+setup.qres.HasTitle('quest_master_of_sex_0'),
+setup.qres.HasTitle('quest_master_of_slaving_0'),
+setup.qres.HasTitle('quest_master_of_social_0'),
+setup.qres.HasTitle('quest_master_of_survival_0')
+])],
+[setup.qc.AddTitle('unit', 'quest_angel_touched_1')],
+),
+],
+[ /* restrictions */
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_aid_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_arcane_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_brawn_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_combat_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_intrigue_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_knowledge_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_sex_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_slaving_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_social_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+  setup.qres.ExistUnit([
+    setup.qres.HasTitle('quest_master_of_survival_0'),
+    setup.qres.NoTitle('quest_angel_touched_1')
+  ], 1),
+],
+100, /* Cooldown */
+setup.rarity.legendary, /* Rarity */
+)>>
+
+:: Event_heavenly_recruit [nobr]
+<p>
+    By this point, within your motley band of slavers are slavers of different skills and backgrounds, each with their own specialities that are known far and wide.
+    A master of combat, a master of brawn, a master of intrigue, even a master of sex, your company has it all. Your fame has grown widely as a result, and many would come to your fort to seek expert knowledge, which they sometimes get, and sometimes don't.
+</p>
+
+<p>
+    And apparently, it has transcend mortal plane too, as you learned today. An errant real-life angel has apparently made an appearance at your fort, seemingly oblivious to your actual business of slaving, and thought that your fort is some kind of academy for the most talented. <<They $g.angel>> angel|was seen talking around with your slavers, trying to talk them into joining the angel's plight in their eternal war against the demons. It's quite irritating, really.
+</p>
+
+<p>
+    Seeing the completely naive angel gave you a different idea, however, and before long you've ordered your slavers to bring a large net from your basement, and set up a trap for the cute little bird. Before long, the oblivious bird was trapped, and <<they $g.angel>> only realized <<their $g.angel>> mistake when you personally came and secured a sturdy slave collar around <<their $g.angel>> neck. Ahh, nothing like a free slave to begin your day.
+</p>
+
+<p>
+    The heavens will surely know of this, and while they are unlikely to retaliate, you just know that all of your current slavers has been marked as "not-recruitable". It might be possible to attract yet another foolish angel to your fort — just not with your current set of slavers.
+</p>
+

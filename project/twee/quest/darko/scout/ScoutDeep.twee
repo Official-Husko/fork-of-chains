@@ -1,0 +1,105 @@
+:: QuestSetupScoutDeep [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'scout_deep',  /* id */
+  'Scout: Deeprealm',  /* Title */
+  'darko',   /* author */
+  ['deep', 'quest'],  /* tags */
+  2, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_deep,
+    'scout2': setup.qu.scout_deep,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestScoutDeep',  /* description */
+  setup.qdiff.normal30,
+  [
+    [
+      'QuestScoutDeepCrit',
+      [
+        setup.qc.QuestDelay(setup.questpool.deep, 11),
+        
+      ]
+    ],
+    [
+      'QuestScoutDeepSuccess',
+      [
+        setup.qc.QuestDelay(setup.questpool.deep, 7),
+        
+      ],
+    ],
+    [
+      'QuestScoutDeepFailure',
+      [
+        setup.qc.Injury('scout1', 1),
+        setup.qc.Injury('scout2', 1),
+        setup.qc.Injury('guard', 1),
+      ],
+    ],
+    [
+      'QuestScoutDeepFailure',
+      [
+        setup.qc.Injury('scout1', 2),
+        setup.qc.Injury('scout2', 2),
+        setup.qc.Injury('guard', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.scoutdeep, setup.rarity.common],],
+  [setup.qres.QuestAvailableUnique()],
+)>>
+
+:: QuestScoutDeep [nobr]
+
+<p>
+Your settlement contact within the <<lore region_deep>> has sent you several potential
+leads for jobs your company could take down there.
+Your slavers would need two weeks to follow up on these leads, should you wish to pursue them.
+As <<lore region_deep>> is infested with monsters, you'd best ensure that even your scouts
+know how to fight.
+</p>
+
+:: QuestScoutDeepCrit [nobr]
+
+<p>
+The scouting mission was a complete success, with your team returning with more
+quest options than expected.
+</p>
+
+:: QuestScoutDeepSuccess [nobr]
+
+<p>
+The scouting mission went about as well as expected, and your team returned with
+several quest options.
+</p>
+
+:: QuestScoutDeepFailure [nobr]
+
+<p>
+Your slavers were overwhelmed by a group of
+<<if $gQuest.getSeed() % 5 == 0>>
+giant spiders,
+<<elseif $gQuest.getSeed() % 5 == 1>>
+basilisks,
+<<elseif $gQuest.getSeed() % 5 == 2>>
+dark slimes,
+<<elseif $gQuest.getSeed() % 5 == 3>>
+giant rats,
+<<elseif $gQuest.getSeed() % 5 == 4>>
+bloodworms,
+<</if>>
+and
+<<if $gOutcome == 'failure'>>
+suffered minor injuries.
+<<else>>
+suffered injuries.
+<</if>>
+They wisely decided to return back, although that also means they were unable to pursue
+any of the quest leads.
+</p>

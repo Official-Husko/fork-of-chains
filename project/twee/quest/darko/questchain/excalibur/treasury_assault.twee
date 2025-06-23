@@ -1,0 +1,222 @@
+:: QuestSetup_treasury_assault [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_treasury_assault1',
+"Vault Treasure",
+'subrace_humansea', /* pools */
+0, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_slave),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.anus_gape),
+setup.qc.TraitsReplace('unit', [setup.trait.training_obedience_advanced, setup.trait.training_endurance_advanced]), ],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'treasury_assault', /* key */
+"Treasury Assault", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'city',
+'money',
+'item',
+'ire',
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'disarmer': setup.qu.trapper,
+'thief': setup.qu.thief,
+'seducer': setup.qu.seducer, },
+{ /* actors */
+'treasure': 'quest_treasury_assault1', },
+[ /* costs */
+],
+'Quest_treasury_assault',
+setup.qdiff.hardest42, /* difficulty */
+[ /* outcomes */
+[
+'Quest_treasury_assaultCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.Slave('treasure', "a|was a living treasure in the vaults of Lucgate", undefined),
+setup.qc.Equipment(setup.equipmentpool.all_nonsex_good),
+],
+], [
+'Quest_treasury_assaultCrit',
+[
+setup.qc.Ire('humankingdom', 2),
+setup.qc.Event('excalibur_missing_sword', 3),
+setup.qc.Equipment(setup.equipmentpool.all_nonsex_good),
+setup.qc.VarSet('quest_excalibur', '1', -1),
+setup.qc.MoneyCustom(3000), ],
+], [
+'Quest_treasury_assaultFailure',
+[
+setup.qc.Ire('humankingdom', 2),
+setup.qc.VarSet('quest_excalibur', '-1', 4),
+setup.qc.MissingUnitRecapture('disarmer', 'capturedmedium'), ],
+], [
+'Quest_treasury_assaultFailure',
+[
+setup.qc.Ire('humankingdom', 2),
+setup.qc.VarSet('quest_excalibur', '-1', 4),
+setup.qc.MissingUnitRecapture('disarmer', 'capturedmedium'),
+setup.qc.MissingUnitRecapture('thief', 'capturedmedium'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(),
+setup.qres.VarNull('quest_excalibur'), ],
+[ /* expiration outcomes */
+setup.qc.VarSet('quest_excalibur', '-1', 4), ],
+)>>
+
+:: Quest_treasury_assault [nobr]
+
+<p>
+The Castle of Lucgate stands in the center of the magnificent city, towering
+over all the other structures. While the castle itself is a magnificent
+building, you are most interested in its treasury. It is said that great
+riches and valuable treasures are kept there, although it is surely going to
+be heavily guarded.
+</p>
+
+<p>
+It would normally be impossible for your slavers to infiltrate the heavily
+guarded treasury.
+<<set _u = setup.getAnySlaver()>>
+However, <<yourrep _u>>
+<<uadv _u>> informed you that an unknown master thief is going to attempt a
+heist soon. It might then be possible for your slavers to steal some of the
+treasury items while the guards are distracted by the master thief, if the
+rumors prove true...
+</p>
+
+<p>
+You will need to send a seducer, to keep the remaining guards distracted, and two infiltrators to
+sneak into the treasure and steal whatever nearby items they could get their
+grubby hands on. Rumors said that the treasury is abound with traps, so
+better make sure one of them is adept at disarming traps. Truly a by-the-book
+approach to thievery!
+</p>
+
+
+:: Quest_treasury_assaultCrit [nobr]
+
+<p>
+At the supposed date of the heist, donning their best camouflage, your
+slavers waited near one of the palisades of the castle.
+After hours of waiting, a shouting was heard from the other side of the
+castle. It seemed your slaver picked the right position, as guards from the
+area they were in rushed to reinforce the other side of the castle. <<Rep
+$g.seducer>> swayed their <<ubody $g.seducer>> sensuously towards the
+few remaining guards, confusing the poor soldiers who are sure to get their pay
+deducted once the rest of your slavers finished their business here.
+</p>
+
+<p>
+Using the distraction and the commotion, <<rep $g.thief>> and <<utheirrel
+$g.thief $g.disarmer>> <<rep $g.disarmer>> sneaked into the treasury.
+<<if $g.disarmer.isHasTrait('per_attentive')>>
+Using their perceptiveness,
+<<else>>
+Slowly,
+<</if>>
+<<rep $g.disarmer>> spotted and disarmed the numerous traps littering the place one by
+one as they advanced slowly within the treasury.
+
+<<if $gOutcome == 'crit'>>
+<<Yourrep $g.thief>> <<uadv $g.thief>> spotted a hidden door in one of the
+corridors, which your slavers proceeded to enter.
+Behind the door, a wealth of rare equipments were scattered on the ground,
+but that's not what was grabbing your slaver's attention.
+Suspended in the air in the middle of a room was a naked slave, fully bound
+and hung like a chandelier.
+<<if $g.treasure.isHasDick()>>
+<<Their $g.treasure>> dick was forced continuously hard by the tight cock ring <<they
+$g.treasure>> treasure|was forced to wear, while
+<<else>>
+<<Their $g.treasure>> breasts were pointing downwards, weighted by heavy-looking balls attached to the nipples, while
+<</if>>
+<<their $g.treasure>> <<umouth $g.treasure>> was forced open with a ring gag, in
+which was inserted a formidable-looking inwards-facing dildo.
+But what was most impressive of all was that your slavers could see that the slave
+remained sane despite all these torture — truly a remarkable species of a
+properly-trained furniture slave. After grabbing a few of the scattered
+equipments, <<rep $g.thief>> undid the slave's binding just enough to get
+<<them $g.treasure>> off the ceiling, but not enough to let <<them
+$g.treasure>> do any meaningful struggles.
+<<if $g.treasure.isHasDick()>>
+<<Rep $g.disarmer>> playfully teased the slave's hard <<udick $g.treasure>>
+while they escaped from the treasury with their treasures.
+<<else>>
+According to <<rep $g.disarmer>>, there was no time to undo the slave's
+nipple weights and so the slave had to endure the weights bouncing left and
+right, pulling <<their $g.treasure>> nipples painfully as your slavers escaped
+the treasury with their treasures.
+<</if>>
+<<else>>
+Not wanting to take any risks, your slavers entered the first room they
+encountered. A host of equipments laid in the room for your slavers' taking.
+Choosing the best ones, your slavers escaped the treasury quickly before the
+rest of the guards were alarmed by their presence.
+<</if>>
+</p>
+
+<p>
+Once outside, <<rep $g.thief>> <<uadv $g.thief>> signaled the completion of the heist to <<rep
+$g.seducer>>, who was still busy distracting the guards by seductively pointing to <<their
+$g.seducer>> <<ugenital $g.seducer>>. Safe and sound, your slavers returned
+back home with their treasures.
+</p>
+
+<p>
+Rumors said that the master thief's heist was successful, although the
+<<rep $company.humankingdom>> denies all accounts of a breach to their most guarded treasury...
+</p>
+
+
+:: Quest_treasury_assaultFailure [nobr]
+
+<p>
+At the supposed date of the heist, donning their best camouflage, your
+slavers waited near one of the palisades of the castle.
+After hours and hours of waiting, the supposed heist never seemed to occur.
+Tired of waiting, <<rep $g.disarmer>> <<uadv $g.disarmer>>
+<<if $g.disarmer.getSpeech() != setup.speech.friendly>>
+asked
+<<else>>
+ordered
+<</if>>
+<<rep $g.seducer>> to distract the guards.
+<<Rep $g.seducer>> did <<their $g.seducer>> best to distract the guards, but
+there were just too many of them.
+</p>
+
+<p>
+<<if $gOutcome == 'failure'>>
+<<Reps $g.disarmer>> sneaking attempt were unsuccessful as a guard was apparently not
+seduced and was alarmed by <<their $g.disarmer>> presence.
+While attempting to escape, <<rep $g.disarmer>> triggered one of the
+treasury's traps and a hornet nest fell straight on <<their $g.disarmer>> head,
+covering <<their $g.disarmer>> head and stopping <<them $g.disarmer>> dead in <<their $g.disarmer>> tracks.
+With no way to help <<therace $g.disarmer>>,
+the other slavers decided to escape the place without the reckless slaver.
+<<urescuenow $g.disarmer>>.
+<<else>>
+<<Rep $g.disarmer>> and <<rep $g.thief>> managed to sneak into the treasury by using the distraction,
+but <<rep $g.seducer>> seducer|was simply unable to seduce all one hundred plus of the
+guards guarding the treasury. <<Rep $g.disarmer>> and <<rep $g.thief>> were
+trapped inside the vaults, with no way to escape as the guards continued their patrol around
+the area. There was no other choice but for <<rep $g.seducer>> to reluctantly
+abandon <<their $g.seducer>> teammates and returned to your fort alone.
+Still, <<rep $g.seducer>> managed to find some information should you with to rescue your reckless slavers.
+<</if>>
+</p>

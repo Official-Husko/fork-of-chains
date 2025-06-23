@@ -1,0 +1,310 @@
+:: QuestSetup_kobold_benevolent_agency [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"kobold_benevolent_agency1",
+"Kobold Victim",
+'subrace_kobold', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.OneRandom([
+setup.qc.BgTraitReset('unit', setup.trait.bg_unemployed),
+setup.qc.TraitReplace('unit', setup.trait.per_slow),
+setup.qc.TraitReplace('unit', setup.trait.per_sexaddict)
+]),
+],
+)>>
+
+
+<<set _criteriaintern1 = new setup.UnitCriteria(
+null, /* key */
+'Kobold Benevolent Agency Intern', /* name */
+[
+  setup.trait.subrace_kobold,
+  setup.trait.height_dwarf,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_gregarious,
+  setup.trait.per_attentive,
+  setup.trait.skill_hypnotic,
+],
+[
+  setup.trait.subrace_kobold,
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_loner,
+  setup.trait.per_dreamy,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  social: 2,
+}
+)>>
+
+<<set _criteriaintern2 = new setup.UnitCriteria(
+null, /* key */
+'Kobold Benevolent Agency Intern', /* name */
+[
+  setup.trait.subrace_kobold,
+  setup.trait.height_dwarf,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_gregarious,
+  setup.trait.per_attentive,
+  setup.trait.skill_hypnotic,
+],
+[
+  setup.trait.subrace_kobold,
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_loner,
+  setup.trait.per_dreamy,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  social: 2,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'kobold_benevolent_agency', /* key */
+"Kobold Benevolent Agency", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'scaley',
+  'deep',
+  'unknown',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'intern1': [ _criteriaintern1, 1],
+  'intern2': [ _criteriaintern2, 1],
+  'thug': [ setup.qu.thug, 1],
+},
+{ /* actors */
+  'kobold1': 'kobold_benevolent_agency1',
+  'kobold2': 'kobold_benevolent_agency1',
+},
+[ /* costs */
+],
+'Quest_kobold_benevolent_agency',
+setup.qdiff.normal38, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_kobold_benevolent_agencyCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.OneRandomSeed([
+setup.qc.Slave('kobold2', "a|was a kobold looking lured by a certain agency into being enslaved", undefined),
+setup.qc.MoneyCustom(3000),
+setup.qc.EquipmentDirect('dwarf_armor_arms'),
+setup.qc.Favor('kobold', 50)
+]),
+    ],
+  ],
+  [
+    'Quest_kobold_benevolent_agencyCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.Slave('kobold1', "a|was a kobold looking lured by a certain agency into being enslaved", undefined),
+setup.qc.MoneyCustom(3000),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.f_slavebed_normal, 1),
+setup.qc.EquipmentDirect('manacles_up')
+], undefined),
+setup.qc.Favor('kobold', 50)
+]),
+    ],
+  ],
+  [
+    'Quest_kobold_benevolent_agencyCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_kobold_benevolent_agencyCrit',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.uncommon],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_kobold_benevolent_agency [nobr]
+<p>
+    Your company has received an unusual job offer. The so-called "Kobold Benevolent Agency" is looking for interns, to help out with the sudden surge of demand for their services. They provide relief for the downtrodden and poor kobolds of <<rep $company.kobold>>, helping them and guiding them back to their feet. And all the services are free too!
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    You raised your eyebrow at this — a benevolent charity agency looking for the services of a slaving company?
+    <<if $unit.player.isHasTrait('per_slow')>>
+        Whatever the real intention is, you are too dumb to read between the lines. If you want to find out, you'll just have to send a group of slavers. Sending kobolds to be interns could be rewarding, but you get the feeling that <<dangertextlite "it could also backfire...">>
+    <<else>>
+        You are not that dumb. Reading between the lines, you get a feeling that there might be something more to this "agency". Sending your slavers, particularly kobolds, on this mission might just give you something nice in return, but <<dangertextlite "it could also backfire...">>
+    <</if>>
+</p>
+
+
+
+
+:: Quest_kobold_benevolent_agencyCrit [nobr]
+<p>
+    After some training from the "Kobold Benevolent Agency", your slavers were set out to the city of <<rep $company.kobold>> to search for those kobolds who are in need of the agency's help. Your slavers tried to convince many kobolds on the benefits of coming: promising a job and a hot meal. They scoured the city, looking for those kobolds that seems to be already at their wits end.
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'subrace_kobold'})>>
+    <<if _unit>>
+        Being a kobold <<themself _unit>> made it easier to convince other kobolds of the "charity efforts".
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'height_dwarf'})>>
+    <<if _unit>>
+        Being very short made it easier for <<rep _unit>> to convince the kobolds of their "good intentions".
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'height_tall'})>>
+    <<if _unit>>
+        <<Rep _unit>>
+        <<if _unit.isYou()>>
+            are
+        <<else>>
+            is
+        <</if>>
+        far too tall for the kobolds, making the invitation harder to accept.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'face_scary'})>>
+    <<if _unit>>
+        <<Reps _unit>> face was a bit too scary for some of the cowardly kobolds.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'face_attractive'})>>
+    <<if _unit>>
+        <<Reps _unit>> gorgeous face helped sway some of the less pure kobolds.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'skill_hypnotic'})>>
+    <<if _unit>>
+        <<Rep _unit>> might have used some of <<their _unit>> hypnotic skills to guide the conversation in the desirable direction.
+
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'per_loner'})>>
+    <<if _unit>>
+        <<Rep _unit>>
+        <<if _unit.isYou()>>
+            are
+        <<else>>
+            is
+        <</if>>
+        not the most eloquent speaker, making the entire package a harder sell.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.intern1, $g.intern2], {trait: 'per_gregarious'})>>
+    <<if _unit>>
+        <<Rep _unit>> used <<their _unit>> gift in eloquence to sway the desperate kobolds.
+    <</if>>
+</p>
+
+
+<<if $gOutcome == 'failure' || $gOutcome == 'disaster'>>
+    <p>
+        Unfortunately, none of the kobolds were convinced by your slaver's pleas.
+        <<if $gOutcome == 'failure'>>
+            Your slavers chose to go back straight to the fort without reporting back — something that might just have saved their lives...
+        <<else>>
+
+            <<set _unit = setup.selectUnit([$g.intern1, $g.intern2, $g.thug], {trait: 'subrace_kobold'})>>
+            <<if _unit>>
+                <<set $g.o = _unit>>
+            <<else>>
+                <<set _unit = setup.selectUnit([$g.intern1, $g.intern2, $g.thug], {random: true})>>
+                <<set $g.o = _unit>>
+            <</if>>
+
+            The failure weighted on <<reps $g.o>> mind quite a bit, and eventually <<therace $g.o>> felt that <<they $g.o>> <<themself $g.o>> might actually need the services of the
+            Kobold Benevolent Agency.
+            <<if $g.o.isHasTrait('subrace_kobold')>>
+                After all <<rep $g.o>> is a kobold, a potential customer for the agency.
+            <</if>>
+            The agency was very happy to find one of your slavers
+            <<if $g.o.isHasTrait('subrace_kobold')>>
+                (a kobold, no less!)
+            <</if>>
+            as their client. They almost shooed your other two slavers as <<rep $g.o>> would go inside to undergo some kind of "therapy".
+            The other two slavers did not come back with <<rep $g.o>>...
+
+            <<run setup.qc.MissingUnit('unit').apply(setup.costUnitHelper($g.o))>>
+
+        <</if>>
+    </p>
+<<else>>
+
+    <p>
+        Your slavers managed to convince several desperate slavers into the benevolent agency.
+    </p>
+
+    <<if $gQuest.getSeed() % 4 == 3>>
+        <p>
+            To their complete surprise, the agency was sincere in their mission. The kobolds were given the help they needed, before being signed up with a kobold mining company in need of new workers.
+            Your slavers did not get paid a single penny for their charitable efforts, but words quickly spread about the good deeds in the city of <<lore location_drak_xoth>>.
+            Still, it's nowhere near enough to compensate for the time lost, but good deed is its own reward no?
+        </p>
+    <<else>>
+        <p>
+            As expected, the agency is a complete scam, designed to lure desperate kobolds to be converted to slaves.
+            Once the kobolds are inside and secure, all pretense were dropped. The kobolds were knocked out, before being stripped and measured for their values.
+            Meanwhile, your slavers were rewarded for a job well done with
+
+            <<if $gQuest.getSeed() % 4 == 0>>
+                <<if $gOutcome == 'crit'>>
+                    two of the kobolds.
+                <<else>>
+                    one of the kobolds.
+                <</if>>
+                <<Rep $g.intern1>> picked
+                <<if $g.kobold1.isHasTrait('per_slow')>>
+                    a kobold whose mind isn't particularly bright, perfect as a slave.
+                <<elseif $g.kobold1.isHasTrait('per_sexaddict')>>
+                    a kobold that got way too addicted to sex.
+                <<else>>
+                    a kobold who was just looking for a job.
+                <</if>>
+            <<elseif $gQuest.getSeed() % 4 == 1>>
+                <<if $gOutcome == 'crit'>>
+                    a large bag of gold.
+                <<else>>
+                    a bag of gold.
+                <</if>>
+            <<elseif $gQuest.getSeed() % 4 == 2>>
+                <<if $gOutcome == 'crit'>>
+                    a couple of slaving apparatus, as well as a piece of dwarven equipment found in one of the victim kobolds.
+                <<else>>
+                    a couple of slaving apparatus.
+                <</if>>
+            <</if>>
+        </p>
+    <</if>>
+
+<</if>>

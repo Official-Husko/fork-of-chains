@@ -1,0 +1,248 @@
+:: QuestSetup_test_of_knowledge [nobr quest]
+
+
+<<run new setup.Title(
+"quest_master_of_knowledge_0", /* key */
+"Master of Knowledge", /* name */
+"A true master of knowledge", /* description */
+"a|have proven a|themself to be a master of knowledge by completing a challenge in the city", /* unit text */
+7599, /* slave value */
+{ /* skill additives */
+knowledge: 4,},
+)
+>>
+
+
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Master Sage', /* name */
+[
+  setup.trait.bg_scholar,
+  setup.trait.per_smart,
+  setup.trait.per_studious,
+  setup.trait.per_curious,
+  setup.trait.per_masochistic,
+  setup.trait.skill_creative,
+],
+[
+  setup.trait.muscle_extremelystrong,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_slow,
+  setup.trait.per_active,
+  setup.trait.per_stubborn,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.SkillAtLeast(setup.skill.knowledge, 150),
+  setup.qres.Through(setup.qres.And([
+setup.qres.NoTitle('quest_master_of_knowledge_0')
+]), 'Have not yet mastered the art of knowledge'),
+],
+{
+  knowledge: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'test_of_knowledge', /* key */
+"Test of Knowledge", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'item',
+  'city',
+  'veteran',
+  'legendary',
+],
+10, /* weeks */
+24, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 3],
+},
+{ /* actors */
+  'enemy': 'all',
+},
+[ /* costs */
+],
+'Quest_test_of_knowledge',
+setup.qdiff.hardest100, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_test_of_knowledgeCrit',
+    [
+      setup.qc.AddTitle('a', 'quest_master_of_knowledge_0'),
+      setup.qc.EquipmentDirect('knowledge_legs_master'),
+    ],
+  ],
+  [
+    'Quest_test_of_knowledgeCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.QuestDirectSelf(null),
+      setup.qc.MoneyCustom(5000),
+    ],
+  ],
+  [
+    'Quest_test_of_knowledgeCrit',
+    [
+      setup.qc.Trauma('a', setup.trait.boon_knowledge, 20),
+      setup.qc.TraumatizeRandom('a', 54),
+    ],
+  ],
+  [
+    'Quest_test_of_knowledgeDisaster',
+    [
+      setup.qc.MissingUnitRecapture('a', 'capturedhard'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.NoTitle('quest_master_of_knowledge_0'),
+setup.qres.SkillAtLeast(setup.skill.knowledge, 100)
+], 1),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_test_of_knowledge [nobr]
+<<set _slavers = $company.player.getUnits({job: setup.job.slaver})>>
+<<run _slavers.sort((a, b) => b.getSkill(setup.skill.knowledge) - a.getSkill(setup.skill.knowledge))>>
+<<set _smart = _slavers[0]>>
+
+<p>
+<<set $g.smart = _smart>>
+<<Yourrep $g.smart>> smart|is really knowledgeable.
+Smarter than the average rock, smarter than the average person, and some even say <<they $g.smart>> smart|is smarter than the smartest of dragonkin.
+<<if !$g.smart.isYou()>>
+<<They $g.smart>> might even be smarter than you!
+<</if>>
+</p>
+
+<p>
+Thanks to this,
+you had received an invitation to participate in the rare and elusive secret quiz event being held every now and then in the <<lore region_city>>. The reward is absolutely tantalizing: an extremely rare piece of clothing fit for the smartest person on <<lore geo_mestia>>.
+But winning is going to be incredibly tough, and whoever you send on this mission would need to defeat the incredibly knowledgeable savant in a deadly quiz.
+<<if $statistics.isHasSuccess('test_of_knowledge')>>
+One of your slavers had won the event before, but the outcome might just be completely different this time around.
+<</if>>
+</p>
+
+
+
+
+
+
+:: Quest_test_of_knowledgeCrit [nobr]
+<p>
+The quiz event is held deep down under the City of Lucgate, and in its dark and damp undercity. Several other contestants were there too alongside <<yourrep $g.a>>, and the event began soon after.
+</p>
+
+<p>
+To prepare for the quiz, all the contestants were given access to a vast underground library you never know existed under the city for three full weeks.
+The questions will be from some books in the library, and the contestants were free to prepare as much as they'd like. Some decided to spend the weeks away scouring throught the rarest of tomes there, while others instead decided to rest and rely on the knowledge they already had to begin with.
+<<Yourrep $g.a>> a|is already incredibly knowledgeable, but <<they $g.a>> knew that the library would hold a secret to winning the contest.
+<<if $g.a.isHasTrait('bg_scholar')>>
+<<Yourrep $g.a>> used to be a scholar, and <<they $g.a>> a|was quite fascinated by some of the rarer books in the library.
+<</if>>
+<<if $g.a.isHasTrait('per_smart')>>
+<<Rep $g.a>> a|was smart enough to be able to digest a lot of books within a short period.
+<</if>>
+<<if $g.a.isHasTrait('per_slow')>>
+<<Rep $g.a>> took longer than most people to digest the books.
+<</if>>
+<<if $g.a.isHasTrait('muscle_extremelystrong')>>
+<<Reps $g.a>> completely undelicate muscles made it awkwardly difficult to turn the pages.
+<</if>>
+<<if $g.a.isHasTrait('per_active')>>
+<<Rep $g.a>> quite dislikes studying, and took frequent naps and breaks.
+<</if>>
+<<if $g.a.isHasTrait('per_studious')>>
+<<Their $g.a>> studious nature was a boon to this task.
+<</if>>
+<<if $g.a.isHasTrait('per_stubborn')>>
+<<They $g.a>> stubbornly sticked with the books on the bookshelves.
+<</if>>
+<<if $g.a.isHasTrait('per_curious')>>
+<<Their $g.a>> curiosity motivated <<them $g.a>> to read the books.
+<</if>>
+<<if $g.a.isHasTrait('per_masochistic')>>
+<<They $g.a>> took masochistic delight in torturing <<themself $g.a>> with reading non-stop.
+<</if>>
+<<if $g.a.isHasTrait('corrupted')>>
+<<Their $g.a>> corrupted body sometimes interferes with the task, projecting lewd and time-inappropriate things into <<their $g.a>> thoughts.
+<</if>>
+<<if $g.a.isHasTrait('skill_creative')>>
+<<They $g.a>> a|was creative enough to devise some mnemonics to help remember the more intricate details.
+<</if>>
+</p>
+
+<p>
+Once the three weeks passed, the contest then began.
+Given how knowledgeable <<therace $g.a>> a|is, it was not a surprise that <<they $g.a>> remained undefeated until the final round, where <<they $g.a>> came face-to-face with the legendary savant <<themself $g.a>>. The questions then began, and even before the judge finished saying the entire sentence, the savant already knew and answered. It seemed that <<they $g.enemy>> had actually memorized all the questions present in all the books in the library, and know exactly what the question that was going to be asked was about.
+</p>
+
+
+<<if $gOutcome == 'crit'>>
+<p>
+But <<yourrep $g.a>> a|was way ahead of <<them $g.enemy>>. They noticed that the questions were following a particular pattern — the first question of the second book in the first shelf of the library, followed by the third question of the third book in the third shelf of the library, and so on.
+While the savant was happily answering the first few questions, <<rep $g.a>> <<uadv $g.a>> schemed, until <<they $g.a>> made sure <<they $g.a>> knew exactly what was the pattern that was being used. Once <<they $g.a>> confirmed, <<they $g.a>> a|was able to answer the rest of the questions without even hearing what was the question, surprising the savant, although the judge kept a stoic face. In the end, <<therace $g.a>> a|was able to answer a majority of the questions correctly, and won the quiz event!
+</p>
+
+<p>
+Both the savant and <<rep $g.a>> entered the podium as runner-up and winners, and while the savant was given a sizable sum of money as a prize,
+<<rep $g.a>> received the grand prize: a <<rep setup.equipment.knowledge_legs_master>> fit for the wisest of sages, as well as the grand and truly fitting title of "Master of Knowledge".
+</p>
+
+<p>
+Oddly enough, except for the runner-up, <<they $g.a>> never saw any of the other contestants ever again throughout the event...
+</p>
+
+<<else>>
+
+<<if $gOutcome == 'success'>>
+<p>
+But <<yourrep $g.a>> had the same idea, and a|was able to answer some of the questions too. But the savant had the advantage of time, having participated in the event longer, and ultimately <<yourrep $g.a>> lost by a couple of questions.
+</p>
+<<else>>
+<p>
+<<Yourrep $g.a>> a|was unprepared for such strategy, and eventually <<they $g.a>> resorted to blindly guessing the answer. That of course, did not bode well, and <<they $g.a>> lost horribly. Having <<their $g.a>> most prized ability in <<their $g.a>> knowledge shattered so much traumatized <<therace $g.a>> for a good while.
+</p>
+<</if>>
+
+<p>
+Both the savant and <<rep $g.a>> entered the podium as winners and runner-up, and both were given a sizable sum of money as a prize.
+As the winner, however, the savant received the grand prize: a <<rep setup.equipment.knowledge_legs_master>> fit for the wisest of sages, which made you a bit jealous. Perhaps you could try again in the future.
+</p>
+
+<p>
+Oddly enough, except for the winner and <<themself $g.a>>, <<rep $g.a>> never saw any of the other contestants ever again throughout the event...
+</p>
+
+<</if>>
+
+
+
+
+
+:: Quest_test_of_knowledgeDisaster [nobr]
+<p>
+After being sent to the mission, you never heard back from <<yourrep $g.a>>. Instead, a letter arrived at your fort, telling you that <<rep $g.a>> had lost horribly in the contest, not even reaching second prize, and had been reappropriated as the entry fee for such a prestigious contest.
+</p>
+
+<p>
+You sighed to yourself — perhaps you have overestimated <<their $g.a>> abilities.
+<<urescuenow $g.a>>, and save <<them $g.a>> from this farce of a competition.
+</p>

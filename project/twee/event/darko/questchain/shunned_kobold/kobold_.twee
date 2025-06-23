@@ -1,0 +1,97 @@
+:: EventSetup_kobold_ [nobr event]
+
+
+
+
+<<run new setup.Event(
+'kobold_', /* key */
+"Kobold?", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'unknown',
+],
+'Event_kobold_',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'kobold': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+    setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('kobold_', null),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_shunned_kobold_progress', '35'),
+  setup.qres.HaveMetCompany('dragonkin'),
+  setup.qres.NoQuest('kobold_'),
+],
+100, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_kobold_ [nobr]
+<p>
+    <<Rep $g.kobold>> has changed remarkably since <<therace $g.kobold>> first joined you.
+    You still remember when <<they $g.kobold>> were short and malnourished, as well as green and inexperienced.
+    But looking at <<therace $g.kobold>> now, <<they $g.kobold>> looks much healthier now, as well as pretty tall, uncharacteristic for a kobold.
+    <<if $g.kobold.isHasTrait('per_active')>>
+        <<They $g.kobold>> enjoys the sunlight too, another strange trait.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_studious')>>
+        <<They $g.kobold>> spends a lot of time in the library.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_direct')>>
+        <<They $g.kobold>> doesn't really mince words, and usually go straight to the point now.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_sly')>>
+        <<They $g.kobold>> is becoming sly and cunning too.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_frugal')>>
+        Compared to before, <<rep $g.kobold>> is far more frugal now, saving <<their $g.kobold>> wage for who-knows-what.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_lavish')>>
+        Compared to before, <<rep $g.kobold>> is more lavish now, sometimes spending a little but unnecessarily.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_loner')>>
+        Compared to before, <<rep $g.kobold>> is a bit more aloof.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_gregarious')>>
+        Compared to before, <<rep $g.kobold>> is much better at sweet-talking people, even you sometimes.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_playful')>>
+        <<They $g.kobold>> has become rather playful too, and could be seen drinking the time away in the bar.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_serious')>>
+        <<They $g.kobold>> usually can be seen with a serious face, although you're not sure what exactly is going on in <<their $g.kobold>> head.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_calm')>>
+        <<They $g.kobold>> is usually very calm now.
+    <</if>>
+    <<if $g.kobold.isHasTrait('per_aggressive')>>
+        <<They $g.kobold>> becomes a little brash too, and sometimes hurls particularly rude words to others.
+    <</if>>
+    <<if $g.kobold.isHasTrait('magic_fire') || $g.kobold.isHasTrait('magic_light')>>
+        You can even sense strong magical energy radiating from the kobold.
+    <</if>>
+</p>
+
+<p>
+    Which makes you wonder... is <<rep $g.kobold>> really a kobold at all? <<They $g.kobold>> sure looks like one before, but now, <<they $g.kobold>> looks more dragonkin than kobold.
+    And apparently, you're not the only one who thinks so too.
+    A dragonkin envoy from <<rep $company.dragonkin>> is currently visiting your fort, before casually mistakingly greeting the passing <<rep $g.kobold>> as a fellow dragonkin.
+    Judging from the large pause, it seems <<rep $g.kobold>> <<themself $g.kobold>> has been thinking about it too.
+</p>
+
+<p>
+    Seeing how you have a real dragonkin in front of you, you tell the envoy the full story about <<rep $g.kobold>> — how the once diminutive kobold just somehow grow within a span of months.
+    Could it be that <<rep $g.kobold>> is a dragonkin? But unfortunately, there really is no way to tell that, since tall kobolds do exists (albeit extremely rarely). But they suggested that somewhere within the <<lore region_deep>>, there is an artifact called the Mirror of Desires, who might be able to answer your as well as <<reps $g.kobold>> question...
+</p>
+
+

@@ -1,0 +1,196 @@
+:: QuestSetup_the_seven_deadly_transformation__pride [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__pride', /* key */
+"The Seven Deadly Transformation: Pride", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'sea',
+'trait',
+'prep'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'fated': _criteriafated,
+'trainer': setup.qu.slavetrainer,
+'parader1': setup.qu.tank,
+'parader2': setup.qu.light_warrior, },
+{ /* actors */
+'dragon': 'subrace_dragonkin', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__pride',
+setup.qdiff.hardest51, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__prideCrit',
+[
+  setup.qc.Outcomes('success'),
+setup.qc.Item(setup.item.potion_transformation), ],
+], [
+'Quest_the_seven_deadly_transformation__prideCrit',
+[
+setup.qc.Trait('fated', setup.trait.training_obedience_basic),
+setup.qc.Trait('fated', setup.trait.training_horny_basic),
+setup.qc.TraitReplace('fated', setup.trait.body_dragonkin),
+setup.qc.Item(setup.item.potion_transformation), ],
+], [
+'Quest_the_seven_deadly_transformation__prideFailure',
+[
+setup.qc.Injury('trainer', 8),
+setup.qc.Injury('parader1', 8),
+setup.qc.Injury('parader2', 8), ],
+], [
+'Quest_the_seven_deadly_transformation__prideFailure',
+[
+setup.qc.MissingUnit('trainer'),
+setup.qc.Injury('parader2', 4),
+setup.qc.Injury('parader1', 4), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slave),
+  setup.qres.HasTitle('seven_deadly_transformation'),
+  setup.qres.NoTrait(setup.trait.body_dragonkin),
+]),
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__pride [nobr]
+<<set _headunit = setup.getUnit({job: setup.job.slave, title: "seven_deadly_transformation"})>>
+<<if !_headunit>>
+<<dangertext "Due to your company missing a slave important for this quest, this quest is no longer able to be completed.">>
+<<else>>
+
+<p>
+The dragonkin are proud people, and they showcase their pride quite often. Parades
+are often held within their territory, where their warriors proudly march
+displaying their loots from their most recent skirmishes. Bystanders can
+watch in awe as these powerful and yet sexy warriors marched for days in
+celebration.
+</p>
+
+<p>
+Oddly enough, one of the dragonkin messengers had arrived in your fort,
+inviting a team of slavers to join in the celebrations. They specifically require
+that one of your slaves, <<rep _headunit>>, to join the celebration — an oddly
+specific request that can only means this must be somehow be related with <<their
+_headunit>> quest for fulfilling <<their _headunit>> destiny.
+</p>
+
+<</if>>
+
+
+:: Quest_the_seven_deadly_transformation__prideCrit [nobr]
+
+<p>
+Escorted by the dragonkin messenger, your ship successfully navigated through
+the treacherous seas until the dragonkin's homeland came into view. It was a
+wondrous place — full of dragonkin masters with their slaves going on with
+everyday's duty while a grand palace loomed over the entire place.
+</p>
+
+<p>
+The messenger escorted your slavers to meet with the chief, a
+<<if $g.dragon.isHasDick()>>large muscular dragonkin<<else>>large-breasted
+dragonkin with rippling abs<</if>> sitting on <<their $g.dragon>> throne.
+Your slavers arranged to join the celebratory march tomorrow themed after the
+master-slave relationship, bringing <<rep $g.fated>> along as your slave.
+</p>
+
+<p>
+Your slavers gathered as much information as possible regarding the
+celebration, and from what they gathered, the dragonkin's take on slavery
+was quite different than normal. Here, not only masters were proud of their
+duties — the slaves were too! The march symbolized the pride of both master
+and slave, each doing their best in their lot of life.
+</p>
+
+<p>
+It was incredibly difficult to drill such attitude to the slave within a day,
+so your slaver came up with a different approach to expressing pride:
+stripped naked of all clothes, your slavers concocted various drugs together
+with some last-minute training to ensure that <<reps $g.fated>>
+<<if $g.fated.isHasDick()>>prick would be able to stay proudly
+erect<<else>>nipples would be able to stay proudly hard<</if>> all day long
+during the march next day.
+</p>
+
+<p>
+Still, achieving that within a day even with the available drugs would have
+been impossible. But during the march, your slavers noticed that the slave's
+<<if $g.fated.isHasDick()>>prick<<else>>nipples<</if>> started to emit a faded white aura,
+which somehow kept it <<if $g.fated.isHasDick()>>erect<<else>>hard<</if>>
+throughout the long brutal march. Even more, scales slowly grew out of their
+entire body and by the end of the march, <<reps $g.fated>> body had been
+fully transformed into that of dragonkin — covered by strong protective
+scales.
+</p>
+
+<p>
+Not wanting to draw unwanted attention, your slavers sailed out in the middle
+of the night, having their goal achieved. But right before they sailed,
+
+<<if $gOutcome == 'crit'>>
+
+the
+dragonkin messenger and the chief appeared and gave much appreciation for
+your slaver's and slaves' attendance in their holy march. <<They $g.dragon>>
+then handed over to your slave a very valuable gift: two <<rep
+setup.item.potion_transformation>>s.
+
+<<else>>
+
+the
+dragonkin messenger appeared to thank them for their attendance. <<They
+$g.dragon>> then handed over to your slave a very valuable gift: a <<rep
+setup.item.potion_transformation>>.
+
+<</if>>
+
+</p>
+
+<p>
+Unknown to your slavers, their safe journey back home were only possible thanks to the dragonkin's blessing.
+</p>
+
+
+:: Quest_the_seven_deadly_transformation__prideFailure [nobr]
+
+<p>
+Unfortunately, a terrible storm raged on in the middle of
+the journey, injuring your slavers.
+<<if $gOutcome == 'disaster'>>
+Even worse, <<rep $g.trainer>> trainer|was nowhere to be seen when the storm
+ended — perhaps <<they $g.trainer>> trainer|was thrown out of the ship in
+the middle of the chaos.
+<</if>>
+Upon seeing
+the grave injuries on your slavers, the messenger wished them the best of luck
+before advising them to go back while <<they $g.dragon>> flew back to
+<<their $g.dragon>> land.
+</p>

@@ -1,0 +1,34 @@
+:: LoadFilterWidgets [nobr widget]
+
+<<focwidgetpayload 'filterall'>>
+  <div>
+    <<set _sucallback = $menufilter.getFilterFunc($args[0], $args[1])>>
+    <<if $fort.player.isHasBuilding('greathall')>>
+      <<if $menufilter.getOption($args[0], 'sticky')>>
+        <<set _class = 'tagtoolbarsticky'>>
+      <<else>>
+        <<set _class = ''>>
+      <</if>>
+
+      <div @class='_class'>
+        <<refreshable id="filtertoolbar">>
+          <<filtertoolbarinternal $args[0] $args[1]>>
+        <</refreshable>>
+      </div>
+    <</if>>
+
+    <<filterable _sucallback "filtercontainer">>
+      <<set _dom = setup.FilterHelper.loadItemsFast($args[1], $args[2], $args.payload)>>
+      <<attach _dom>>
+    <</filterable>>
+
+    <<if _widgetshown != $args[1].length>>
+      <<set _class = 'lightgraytext filterwidgethidden' + $args[0]>>
+      <div @class='_class'>
+      </div>
+    <</if>>
+  </div>
+<</focwidgetpayload>>
+
+<<focwidget 'filtertagtoolbar'>>
+<</focwidget>>

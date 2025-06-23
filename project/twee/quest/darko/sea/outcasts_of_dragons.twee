@@ -1,0 +1,187 @@
+:: QuestSetup_outcasts_of_dragons [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_outcasts_of_dragons1',
+"broken",
+'subrace_dragonkin', /* pools */
+0,
+[
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.BgTraitReset('unit', setup.trait.bg_slave),
+setup.qc.RemoveTraitsWithTag('unit', 'skill'),
+setup.qc.Mindbreak('unit'),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'quest_outcasts_of_dragons2',
+"dragon",
+'subrace_dragonkin', /* pools */
+0,
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_unemployed),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'outcasts_of_dragons', /* key */
+"Outcasts of Dragons", /* Title */
+"darko", /* Author */
+[ 'sea',
+'veteran',
+'scaley',
+'unit',
+'ire',
+'legendary',
+], /* tags */
+10, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'tamer1': setup.qu.dragontamer,
+'tamer2': setup.qu.dragontamer,
+'informer': setup.qu.informer, },
+{ /* actors */
+'dragon': 'quest_outcasts_of_dragons2',
+'broken': 'quest_outcasts_of_dragons1', },
+[ /* costs */
+],
+'Quest_outcasts_of_dragons',
+setup.qdiff.harder79, /* difficulty */
+[ /* outcomes */
+[
+'Quest_outcasts_of_dragonsCrit',
+[
+setup.qc.Ire('dragonkin', 2),
+setup.qc.Slave('dragon', "a|was a dragonkin exiled from a|their tribe for an unspeakable crime", false), ],
+], [
+'Quest_outcasts_of_dragonsSuccess',
+[
+setup.qc.Slave('broken', "a|was a dragonkin exiled from a|their tribe for an unspeakable crime, and whose mind and body were corrupted beyond repair", false), ],
+], [
+'Quest_outcasts_of_dragonsFailure',
+[
+setup.qc.Injury('tamer1', 7),
+setup.qc.Injury('tamer2', 8),
+setup.qc.Ire('dragonkin', 1),
+],
+], [
+'Quest_outcasts_of_dragonsDisaster',
+[
+setup.qc.Injury('tamer1', 8),
+setup.qc.MissingUnitRecapture('tamer2', 'capturedhard'),
+setup.qc.Injury('informer', 5),
+setup.qc.Ire('dragonkin', 1),
+],
+], ],
+[
+[setup.questpool.sea, setup.rarity.legendary],
+], /* quest pool and rarity */
+[
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(), ], /* restrictions to generate */
+)>>
+
+:: Quest_outcasts_of_dragons [nobr]
+
+<p>
+The mysterious dragonkin are said to live somewhere across the southern
+seas. These rare people are very much prized as both a slave and a slaver, for
+they are usually adept in many fields, as well as having the rare ability to take flight.
+While there are instances of dragonkin found in the main continent of
+<<lore geo_mestia>>, they are incredibly rare.
+</p>
+
+<p>
+You have heard rumors that the dragonkin had recently exiled one of their own for
+some unspeakable crime. This makes the exiled extremely vulnerable, and it
+might be a good idea to send a group of slavers to try and capture the
+dragonkin. If done correctly, such slave would make an extremely valuable
+piece of meat, but even when naked, dragonkin are never defenseless. You
+must prepare for the worst if you were to take on this mission.
+</p>
+
+
+:: Quest_outcasts_of_dragonsCrit [nobr]
+<p>
+<<Rep $g.informer>> managed to track the dragonkin to a remote island in the
+<<lore region_sea>>. Once there, <<rep $g.tamer1>> and <<rep $g.tamer2>> fought
+<<uadv $g.tamer1>>
+against the exiled dragonkin.
+
+<<set _fire = setup.selectUnit([$g.tamer1, $g.tamer2], {trait: 'magic_fire'})>>
+<<if _fire>>
+  The dragonkin's fire breath were countered by <<reps _fire>> own fire magic.
+<</if>>
+
+<<set _light = setup.selectUnit([$g.tamer1, $g.tamer2], {trait: 'magic_light'})>>
+<<if _light>>
+  <<Rep _light>> used <<their _light>> mastery over light magic to blind the dragonkin,
+  giving your slavers a slight edge.
+<</if>>
+
+<<set _brave = setup.selectUnit([$g.tamer1, $g.tamer2], {trait: 'per_brave'})>>
+<<if _brave>>
+  When an opening presented itself, <<rep _brave>> led the slavers, charging bravely
+  into the dragonkin.
+<</if>>
+
+<<set _agg = setup.selectUnit([$g.tamer1, $g.tamer2], {trait: 'per_aggressive'})>>
+<<if _agg>>
+  <<Reps _agg>> natural aggression gave <<them _agg>> an edge during the intense fight.
+<</if>>
+
+After an intense fight, <<rep $g.tamer1>> and <<rep $g.tamer2>> emerged victorious.
+Your slavers were not taking any chances and bound the captive dragonkin fully
+from top to bottom to ensure that nothing happened on their trip back
+home.
+</p>
+
+
+:: Quest_outcasts_of_dragonsSuccess [nobr]
+
+<p>
+While <<rep $g.informer>> managed to track the exiled dragonkin, once your
+slavers spotted the dragonkin, they were met with something they did not
+expect. The dragonkin was obviously already broken, either from the torture
+inflicted by <<their $g.broken>> fellow dragonkin, or by the mental pressure
+they must had endured from being exiled so far from home. Either way, your
+slavers <<uadv $g.tamer1>>
+subdued <<rep $g.broken>> to be brought home as a slave. In its current
+state, the slave will not be able to sell for very high, but perhaps you can
+fix that somehow?
+</p>
+
+
+:: Quest_outcasts_of_dragonsFailure [nobr]
+
+<p>
+<<Yourrep $g.informer>> acted on a bad information and instead led your slavers
+into an ambush site. <<Rep $g.tamer1>> and <<utheirrel $g.tamer1 $g.tamer2>>
+<<rep $g.tamer2>> fought for their lives,
+while the ambushers attempted to subdue your slavers in an attempt to capture them to
+be trained as exotic pets. In the end, your slavers managed to escape back to the ship and
+returned home, but after sustaining heavy injuries.
+</p>
+
+
+:: Quest_outcasts_of_dragonsDisaster [nobr]
+
+<p>
+<<Rep $g.informer>> managed to track the dragonkin to a remote island in the
+<<lore region_sea>>. Once there, <<rep $g.tamer1>> and <<utheirrel $g.tamer1 $g.tamer2>>
+<<rep $g.tamer2>> fought <<uadv $g.tamer1>> against the exiled dragonkin.
+But even with the sheer advantage of number, your slavers were
+no match for the mighty dragonkin. They were incinerated by the
+dragonkin's fire breath, and were severely injured.
+<<Yourrep $g.informer>> had to basically beg to allow <<them $g.informer>>
+to take <<their $g.informer>>
+comrades back home and forget that all this humiliation ever happened, which
+the dragonkin allowed with the exception of <<rep $g.tamer2>>, whom <<they $g.dragon>> intended
+to keep as a pet.
+<<urescuenow $g.tamer2>>.
+</p>

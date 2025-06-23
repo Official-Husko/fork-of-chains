@@ -1,0 +1,57 @@
+:: QuestSetupPurifyArms [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'purify_arms',  /* id */
+  'Purify: Arms',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.purify_head_master,
+    'assistant1': setup.qu.purify_assistant,
+    'assistant2': setup.qu.purify_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.MoneyMult(-5),
+  ],  /* costs */
+  'PurifyArms',  /* description */
+  setup.qdiff.hard46,
+  [
+    [
+      'PurifyAllCrit',
+      [
+        setup.qc.Purify('trainee', 'arms'),
+        
+      ]
+    ],
+    [
+      'PurifyAllSuccess',
+      [
+        setup.qc.Purify('trainee', 'arms'),
+        
+      ],
+    ],
+    [
+      'PurifyAllFailure',
+      [
+      ],
+    ],
+    [
+      'PurifyAllDisaster',
+      [
+        setup.qc.Injury('trainee', 4),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: PurifyArms [nobr]
+<p>
+Purify a unit's arms.
+</p>

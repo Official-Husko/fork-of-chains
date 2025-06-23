@@ -1,0 +1,43 @@
+:: LIVINGSETUP_tentacle_savior [nobr living]
+
+<<run new setup.Living({
+  key: 'tentacle_savior',
+  name: 'Tentacle Savior',
+  tags: ['rare', ],
+  unit_restrictions: [
+    setup.qres.HasTitle('quest_tentacle_attuned_0'),
+    setup.qres.AnyTrait([setup.trait.per_kind, setup.trait.per_honorable]),
+  ],
+  default_preference: setup.LIVING_RARE_PREFERENCE,
+  trait_preferences: {
+    per_kind: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_honorable: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_evil: -setup.LIVING_UNCOMMON_PREFERENCE,
+    per_cruel: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'saving poor travelers from the tentacle monster',
+    "taking care of the tentacle monster's many victims",
+    'bonding with the tentacle monster',
+  ],
+  location: 'house',
+})>>
+
+:: LIVING_tentacle_savior [nobr]
+
+<p>
+<<Reps $g.a>> bond with the tentacle monster of the <<lore region_desert>> developed into
+something else entirely.
+<<if $g.a.isHasTrait('per_kind')>>
+<<Rep $g.a>> a|have always been known to be a kind <<urace $g.a>>,
+<<else>>
+<<Rep $g.a>> a|have always been known to be an honorable <<urace $g.a>>,
+<</if>>
+and it drove them to pity the victims of the monster instead.
+<<They $g.a>> would often go visit the monster and rescue the slaves inside that
+can still be rescued.
+Over time, the monster learned to only trap those lunatic souls who would enjoy
+being fucked all day long.
+Slowly but surely, the constant moaning that can be found deep inside the creature's
+body is shifting from pained moan to moans of pleasure...
+</p>

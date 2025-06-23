@@ -1,0 +1,133 @@
+:: QuestSetup_living_god [nobr quest]
+
+<<set _criteriagod = new setup.UnitCriteria(
+null, /* key */
+'God', /* name */
+[
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.bg_mythical], true),
+  setup.qres.HasTitle('quest_living_god'),
+],
+{
+  intrigue: 1,
+  social: 1,
+  aid: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'living_god', /* key */
+"Living God", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'money',
+  'prep',
+],
+2, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'god': [ _criteriagod, 1],
+  'builder1': [ setup.qu.builder, 1],
+  'builder2': [ setup.qu.builder, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-5000),
+],
+'Quest_living_god',
+setup.qdiff.normal43, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_living_godCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('humanvale', 150),
+    ],
+  ],
+  [
+    'Quest_living_godCrit',
+    [
+      setup.qc.Opportunity('living_god', {
+god: "god",
+}),
+    ],
+  ],
+  [
+    'Quest_living_godCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(-5000),
+    ],
+  ],
+  [
+    'Quest_living_godCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(-10000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTitleGlobal('quest_living_god'),
+  setup.qc.VarRemove('quest_living_god_active'),
+],
+)>>
+
+:: Quest_living_god [nobr]
+<<set _u = setup.getUnit({title: 'quest_living_god'})>>
+<<if !_u>>
+<<missingunitquest>>
+<<else>>
+
+<<set $g.slaver = _u>>
+
+<<include 'Event_living_god'>>
+
+<</if>>
+
+
+
+:: Quest_living_godCrit [nobr]
+<p>
+
+The small shrine has finally been erected.
+<<if $gOutcome == 'failure'>>
+Your slavers may have chosen a more expensive material than needed (costing you a fair amount of gold, by the way), but it's done.
+<<elseif $gOutcome == 'disaster'>>
+Your slavers may have been too inspired with the task, and chose the rarest of materials to construct the shrine (costing you a ludicrous amount of gold, by the way), but it's all done.
+<</if>>
+The shrine is quite eye-catching — visible directly from the bustling <<rep
+setup.buildingtemplate.market>> of your fort.
+Within its sanctum, lies a statue much like <<yourrep $g.god>>,
+posed in a
+<<uadjgood $g.god>> pose.
+The shrine soonafter attracts many people from <<rep $g.god.getHomeCompany()>>, who comes to worship your slaver.
+<<if $gOutcome == 'crit'>>
+In fact, some nearby villagers from the <<lore region_vale>> already come to visit, and they were much impressed by <<reps $g.god>> heavenly <<ubody $g.god>>.
+<</if>>
+</p>
+
+<p>
+Before <<they $g.god>> god|begin the "sermons", however, perhaps you could direct <<them $g.god>> to hold them in a particular direction...
+</p>
+

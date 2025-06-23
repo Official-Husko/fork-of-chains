@@ -1,0 +1,181 @@
+:: QuestSetup_snake_oil_salesman [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'snake_oil_salesman', /* key */
+"Snake Oil Salesman", /* Title */
+"darko", /* Author */
+[ 'city', 'money'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'salesman': setup.qu.salesman,
+'conner': setup.qu.conartist,
+'crier': setup.qu.attentionseeker,
+'cow': setup.qu.slavecow, },
+{ /* actors */
+'alchemist': 'all', },
+[ /* costs */
+],
+'Quest_snake_oil_salesman',
+setup.qdiff.normal29, /* difficulty */
+[ /* outcomes */
+[
+'Quest_snake_oil_salesmanCrit',
+[
+setup.qc.IfThenElse(
+  setup.qres.Actor('cow', setup.qres.AnyTrait([setup.trait.balls_huge, setup.trait.breast_huge])),
+  setup.qc.Money(3500),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('cow', setup.qres.NoTraits([
+      setup.trait.balls_large, setup.trait.balls_medium, setup.trait.breast_large, setup.trait.breast_medium
+    ])),
+    setup.qc.Money(2500),
+    setup.qc.Money(3000),
+  ),
+),
+setup.qc.ItemPool(setup.itempool.all_normal),
+],
+], [
+'Quest_snake_oil_salesmanCrit',
+[
+setup.qc.IfThenElse(
+  setup.qres.Actor('cow', setup.qres.AnyTrait([setup.trait.balls_huge, setup.trait.breast_huge])),
+  setup.qc.Money(2000),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('cow', setup.qres.NoTraits([
+      setup.trait.balls_large, setup.trait.balls_medium, setup.trait.breast_large, setup.trait.breast_medium
+    ])),
+    setup.qc.Money(1000),
+    setup.qc.Money(1500),
+  ),
+),
+setup.qc.Item(setup.item.healing_potion), ],
+], [
+'Quest_snake_oil_salesmanCrit',
+[
+],
+], [
+'Quest_snake_oil_salesmanDisaster',
+[
+setup.qc.Injury('salesman', 2),
+setup.qc.Injury('conner', 2),
+setup.qc.Injury('crier', 2),
+setup.qc.Ire('humankingdom', 2),
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_snake_oil_salesman [nobr]
+
+<p>
+Like many living in <<lore geo_mestia>>,
+the cityfolks too are rather superstitious folks — a trait many immoral merchants have
+taken advantage off. Trinkets and hogwashes from land afar would often sell for very high prices in
+the city, promising eternal youth, beauty, or even a personal harem in the afterlife.
+</p>
+
+<p>
+Your slavers have an idea to bring one of your "milk"-producing slaves and
+attempt to sell the fresh produce as a miracle elixir. They will first need
+to craft themselves a large empty barrel to bind the slave within, and connect
+their dick or breast into a pump directly fed into the tap attached to the
+barrel. To motivate the slave, a dildo or two will be stuffed into their
+unused holes — and certain hidden locations in the barrel will be made
+hollow to allow punishing an unruly slave. Once the barrel is crafted, all
+your slavers need to do it to stuff a slave in, carry everything to the city
+in the cover of the night, and open an unofficial stall somewhere in a hidden
+corner in the city.
+</p>
+
+<p>
+Of course, since slavery is banned in the city, your slavers must be
+absolutely careful not to spoil the secret ingredient of the elixir.
+</p>
+
+
+:: Quest_snake_oil_salesmanCrit [nobr]
+
+<p>
+<<Rep $g.conner>> managed to <<uadv $g.conner>> demonstrated the effectiveness
+of your <<titlefull $g.cow>> <<reps $g.cow>>
+<<if $g.cow.isHasDick()>>cum<<else>>milk<</if>>, disguised as a "purified
+milk", for curing various ailments such as minor injuries to even huffing
+cough in front of a crowd gathered by <<yourrep $g.crier>>.
+<<if $g.cow.isHasDick()>>
+<<if $g.cow.isHasTrait('balls_huge')>>
+  <<Reps $g.cow>> <<uballs $g.cow>> were mass producer of cum, increasing
+  the amount of profits.
+<<elseif $g.cow.isHasTrait('balls_medium')>>
+<<else>>
+  <<Reps $g.cow>> <<uballs $g.cow>> were very small, and were only able to produce
+  a few droplets of cum at a time, slightly decreasing profits.
+<</if>>
+<<else>>
+<<if $g.cow.isHasTrait('breast_huge')>>
+  <<Reps $g.cow>> <<ubreasts $g.cow>> were mass producer of milk, increasing
+  the amount of profits.
+<<elseif $g.cow.isHasTrait('breast_medium')>>
+<<else>>
+  <<Reps $g.cow>> <<uballs $g.cow>> were very small, and were only able to produce
+  a few drops of milk at a time, slightly decreasing profits.
+<</if>>
+
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+The cityfolks all
+rushed in to purchase the magical elixir from <<rep $g.salesman>> before it quickly
+ran out — they even attracted the city's alchemist who was interested in the
+concoction, and traded <<their $g.alchemist>> own (actual working) potion for the miracle
+elixir.
+<<elseif $gOutcome == 'success'>>
+It was not the best
+performance, but apparently it was enough to draw a sufficient number of
+cityfolks to buy the hard-earned produce of <<reps $g.cow>> well abused
+<<if $g.cow.isHasBalls()>><<uballs $g.cow>><<else>><<ubreast $g.cow>><</if>>.
+One customer even traded their own <<rep setup.item.healing_potion>> for your
+special elixir.
+<<else>>
+Unfortunately,
+the royal alchemist happened to be in the vicinity, and declared your stand as
+a complete hogwash. With the declaration, nobody gave patronage to your slavers, and
+they were unable to sell a single drop of
+<<if $g.cow.isHasDick()>>cum<<else>>milk<</if>>
+from <<reps $g.cow>> overfull
+<<if $g.cow.isHasBalls()>><<uballs $g.cow>><<else>><<ubreast $g.cow>><</if>>.
+<</if>>
+</p>
+
+<<if $gOutcome == 'success' or $gOutcome == 'crit'>>
+<p>
+At the end of the day, your slavers closed shop not forgetting to take <<rep
+$g.cow>> out of <<their $g.cow>> barrel for a well deserved rest.
+<<if $gOutcome == 'crit'>>
+<<Rep $g.conner>> conner|was perhaps too successful in <<their $g.conner>> job that
+<<rep $g.salesman>> and <<rep $g.crier>> couldn't resist to make <<rep $g.cow>>
+produce one more agonizing round of <<if $g.cow.isHasDick()>>cum from <<their $g.cow>>
+well-abused <<udick $g.cow>><<else>>milk from their well abused <<ubreast
+$g.cow>><</if>>, this time for their own consumption.
+<<else>>
+<<Rep $g.crier>> <<uadv $g.crier>> petted <<reps $g.cow>> head while <<rep
+$g.salesman>> <<uadv $g.salesman>> counted their sizable profits.
+<</if>>
+</p>
+<</if>>
+
+
+:: Quest_snake_oil_salesmanDisaster [nobr]
+<p>
+Unfortunately, the barrel was not designed sturdily and it broke into
+two in the middle of the sales. The slave was revealed and guards were subsequently
+called. Your slavers had to risk their limbs in order to escape from the city guards with the slave
+in tow.
+</p>

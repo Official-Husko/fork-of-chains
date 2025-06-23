@@ -1,0 +1,194 @@
+:: QuestSetup_trading_mission_drak_xoth [nobr quest]
+
+
+
+
+
+
+<<set _criteriatrader1 = new setup.UnitCriteria(
+null, /* key */
+'Kobold Trader', /* name */
+[
+  setup.trait.bg_merchant,
+  setup.trait.height_dwarf,
+  setup.trait.height_short,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_frugal,
+  setup.trait.per_dominant,
+  setup.trait.skill_connected,
+],
+[
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_lavish,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 2,
+  social: 1,
+}
+)>>
+
+<<set _criteriatrader2 = new setup.UnitCriteria(
+null, /* key */
+'Kobold Trader', /* name */
+[
+  setup.trait.bg_merchant,
+  setup.trait.height_dwarf,
+  setup.trait.height_short,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_frugal,
+  setup.trait.per_dominant,
+  setup.trait.skill_connected,
+],
+[
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_lavish,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 2,
+  social: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'trading_mission_drak_xoth', /* key */
+"Trading Mission: Drak Xoth", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'money',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'guard': [ setup.qu.guard, 1],
+  'trader1': [ _criteriatrader1, 1],
+  'trader2': [ _criteriatrader2, 1],
+},
+{ /* actors */
+  'kobold': 'subrace_kobold',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-2500),
+],
+'Quest_trading_mission_drak_xoth',
+setup.qdiff.normal31, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_trading_mission_drak_xothCrit',
+    [
+      setup.qc.MoneyCustom(5000),
+      setup.qc.Favor('kobold', 60),
+    ],
+  ],
+  [
+    'Quest_trading_mission_drak_xothCrit',
+    [
+      setup.qc.MoneyCustom(3500),
+      setup.qc.Favor('kobold', 50),
+    ],
+  ],
+  [
+    'Quest_trading_mission_drak_xothCrit',
+    [
+      setup.qc.MoneyCustom(500),
+    ],
+  ],
+  [
+    'Quest_trading_mission_drak_xothCrit',
+    [
+      setup.qc.MoneyCustom(500),
+      setup.qc.Ire('kobold', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_trading_mission_drak_xoth [nobr]
+<p>
+    The kobolds are gifted miners.
+    The <<lore region_deep>> is full with valuable metals, making mining a lucrative trade for the kobolds. These metals are rather rare on the surface, attracting traders from the surface into the city of <<rep $company.kobold>>. The traders must brave through the many dangers of the <<lore region_deep>>, lured by the glint of profit.
+</p>
+
+<p>
+    Given your own private access to the <<lore region_deep>> via your <<rep setup.buildingtemplate.scouttunnel>>, you too can try to make a lot of profit trading with the kobolds. You'll need slavers who could negotiate a good deal with the kobolds, preferably those who see on the same eye level with them. You also need a reasonably skilled fighter to defend against whatever monsters your slavers might encounter along the way.
+</p>
+
+
+
+
+:: Quest_trading_mission_drak_xothCrit [nobr]
+<p>
+    Your slavers arrived at the city of <<rep $company.kobold>>.
+    After spending much time "working" on the other parts of the city, your slavers made their way towards the market district. They started to haggle with the kobold merchants, trying to get a good price for the metals.
+    <<set _unit = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'height_dwarf'})>>
+    <<if _unit>>
+        Being short as a dwarf meant that <<rep _unit>> could see eye to eye with the kobold, helping the negotiation.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.trader1, $g.trader2], {trait: 'height_tall'})>>
+    <<if _unit>>
+        <<Rep _unit>> towers over the tiny kobold, making discussion awkward.
+    <</if>>
+
+
+    <<set _unit = setup.selectUnit([$g.guard, $g.trader1, $g.trader2], {trait: 'per_gregarious'})>>
+    <<if _unit>>
+        <<Rep _unit>> used fancy surface words to impress the kobolds, swaying the deal in your slavers' favor.
+
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.guard, $g.trader1, $g.trader2], {trait: 'per_frugal'})>>
+    <<if _unit>>
+        <<Rep _unit>> made sure your slavers was not spared every bit of coin.
+    <</if>>
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+    <p>
+        Your slavers and the kobolds agreed to settle on
+        <<if $gOutcome == 'crit'>>
+            a terrific price for you. Your slavers returned to the surface with a carriage full of rare metals of every sort, which they promptly sold for a great sum of money.
+        <<else>>
+            a good price for you. Your slavers returned to the surface with a carriage replete with rare metals of every sort, which they promptly sold for a good sum of money.
+        <</if>>
+        Your slavers had also impressed the kobolds, and their opinion of your company has improved as a result.
+    </p>
+<<else>>
+    <p>
+        Unfortunately, <<reps $g.guard>> <<upunishreason $g.guard>> at the wrong time, and the negotiations went sour. Your slavers were effectively robbed out of their goods, and only able to recuperate very little of the expedition costs.
+        <<if $gOutcome == 'disaster'>>
+            Worse, they managed to anger the kobolds, and your reputation with them suffer as a result.
+        <</if>>
+    </p>
+<</if>>
+
+
+
+
+

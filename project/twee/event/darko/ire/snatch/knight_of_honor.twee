@@ -1,0 +1,61 @@
+:: EventSetup_knight_of_honor [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'knight_of_honor', /* key */
+"Knight of Honor", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_knight_of_honor',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+'knight': 'all', },
+[ /* outcomes */
+setup.qc.Ire('royal', -20),
+setup.qc.MissingUnitRecapture('victim', 'capturedhard'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('royal', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_knight_of_honor [nobr]
+
+<p>
+<<Rep $g.victim>> would often to go the surrounding taverns, be it to engage in a drunken
+brawl, or simply to waste the time away.
+But <<they $g.victim>> always come back to the fort one day or two after.
+Not this time, however, and after the fourth day you're starting to suspect that something went horribly wrong.
+</p>
+
+<p>
+Going to the tavern yourself and asking the wenches, you've learned that a challenger
+has challenged <<therace $g.victim>> to a duel.
+<<if $g.victim.isHasTrait('per_cautious')>>
+The cautious fool refuses, of course, but one way or another your slaver departed together
+with the challenger from the tavern.
+<<elseif $g.victim.isHasTrait('per_brave')>>
+The brave fool accepted, of course, and departed with the challenger from the tavern.
+<<else>>
+After the promise of money, your slaver accepted and departed the tavern together with the challenger.
+<</if>>
+When you press a little harder, the wench indicated something was completely off
+about the challenger -- the manner of speaking was too high classed,
+the posture too proud, and most importantly she could hear the clink of armor or two
+underneath.
+</p>
+
+<p>
+It seemed that a knight, no doubt sent by someone within the <<rep $company.royal>>,
+has come to retaliate against your recent actions by kidnapping one of your trusted slavers.
+You sighed to yourself, and reminds yourself not to mess with the <<rep $company.royal>>
+too much. But that's been done, and you'll just have to rescue <<rep $g.victim>> now, although
+it sure as hell won't be easy.
+</p>

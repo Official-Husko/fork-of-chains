@@ -1,0 +1,162 @@
+:: QuestSetup_food_for_the_pack [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"food_for_the_pack0",
+"Werewolf: All Gender",
+'subrace_werewolf', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'food_for_the_pack', /* key */
+"Food for the Pack", /* Title */
+{ /* Author */
+  name: "Zerutti (edited by Matthew Lang)",
+  url: "https://www.reddit.com/r/FortOfChains/comments/kk9fhu/food_for_the_pack_test_quest/",
+},
+[ /* tags */
+  'furry',
+  'vale',
+  'money',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'tracker': [ setup.qu.trapper, 1],
+  'hunter1': [ setup.qu.hunter, 1],
+  'hunter2': [ setup.qu.hunter, 1],
+},
+{ /* actors */
+  'werewolf': 'food_for_the_pack0',
+},
+[ /* costs */
+],
+'Quest_food_for_the_pack',
+setup.qdiff.easier2, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_food_for_the_packCrit',
+    [
+      setup.qc.MoneyCustom(2400),
+      setup.qc.Favor('werewolf', 30),
+      setup.qc.SlaveMarker('werewolf'),
+    ],
+  ],
+  [
+    'Quest_food_for_the_packCrit',
+    [
+      setup.qc.MoneyCustom(1200),
+      setup.qc.Favor('werewolf', 15),
+    ],
+  ],
+  [
+    'Quest_food_for_the_packCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_food_for_the_packCrit',
+    [
+      setup.qc.Injury('tracker', 1),
+      setup.qc.Injury('hunter1', 1),
+      setup.qc.Injury('hunter2', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_food_for_the_pack [nobr]
+<p>
+    Werewolf clans have lived in the harsh terrain of the <<lore region_vale>> long before there were permanent human settlements, and indeed, many of the Northerner heroes were probably werewolves, if their supernaturally keen senses and penchant for turning into wolves in the stories is anything to go by. The clans are territorial by nature, like the wolves they resemble, but share the northerner traits of familial loyalty, self sufficiency, and a respect for a warrior's strength. They also have the same blunt honestly often lacking in more 'civilised' areas. You always know where you stand with a northerner. Or a werewolf.
+</p>
+
+<p>
+    By playing into that respect for strength and brutal honesty, you've built some friendships amongst the northern clans, and a representative often visits your fort, both for entertainment, and to trade stories—or hire your services.
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<dialogue $g.werewolf>>
+            The Northerners are baiting us. The Chief thinks they want to provoke us into a raid—and then take us as 'pets'. We aren't pets...
+        <</dialogue>>
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<dialogue $g.werewolf>>
+            The Northerners are baiting us. The Chief thinks they want to provoke us into a raid, whittle down our numbers, and then take our land...
+        <</dialogue>>
+    <</if>>
+    Most of the clan, <<they $g.werewolf>> tells you, are occupied with guarding against incursions by the northerners, meaning they've had less hunters to send out and lay down stores for the winter.<br>
+    "Your people are strong. Would you lend your arms to our hunt? We can pay."
+</p>
+
+<p>
+    It's not exactly a difficult request. Your wouldn't expect your slavers to have a problem with hunting, even if animals aren't their usual quarry. On the other hand, if they do prove inept, maybe you should look for some new recruits.
+</p>
+
+
+:: Quest_food_for_the_packCrit [nobr]
+<p>
+    <<if $g.hunter1.isHasTrait('bg_hunter')>>
+        Recalling <<reps $g.hunter1>> prowess with the bow and spear, you decided to send <<them $g.hunter1>> on a working holiday. <<Therace $g.hunter1>> relished the chance of putting <<their $g.hunter1>> hunting skills to use.
+        <<run setup.qc.MoneyCustom(500).apply($gQuest)>>
+        On the other hand, while
+    <<elseif $g.hunter1.isHasTrait('per_proud')>>
+        <<Reps $g.hunter1>> pride was insulted at the idea of such a menial job and while
+        <<run setup.qc.TraumatizeRandom('hunter1', 2).apply($gQuest)>>
+    <<elseif $g.hunter1.isHasTrait('per_humble')>>
+        <<Rep $g.hunter1>> humbly accepted the unglamourous job, but <<their $g.hunter1>> teammates were less happy to be sent into the wilds in search of deer and boar.
+        While
+    <<elseif $g.hunter1.isHasTrait('per_calm')>>
+        <<Rep $g.hunter1>> stoically accepted your orders, and while
+    <<elseif $g.hunter1.isHasTrait('per_kind')>>
+        <<Rep $g.hunter1>> looked a little uncomfortable at causing animals pain, and while
+        <<run setup.qc.TraumatizeRandom('hunter1', 4).apply($gQuest)>>
+    <<else>>
+        <<Rep $g.hunter1>> grumbled <<uadv $g.hunter1>> at being assigned such a menial and while
+    <</if>>
+    <<rep $g.hunter2>> and <<utheirrel $g.hunter2 $g.tracker>> <<rep $g.tracker>> did not outwardly protest,
+    the looks on their faces spoke volumes.
+</p>
+
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        Still, it looked like they made the best of their situation. When they returned, they were talking up a storm with the rest of the hunting party, trading stories, crude jokes, and hunting tips. They had exceeded their quota twofold and had attended a celebratory feast afterward as a result. <<name $g.werewolf>> sent in a bonus in addition to the promised payment, as well a heroic poem of your hunters' exploits that was already making the rounds through many other clans of the north.
+    </p>
+
+<<elseif $gOutcome == 'success'>>
+    <p>
+        Still, they did the job as requested. When they returned, <<rep $g.hunter1>> and <<rep $g.hunter2>> made a beeline for the nearest tavern, leaving <<rep $g.tracker>> to report back, and deliver the payment from the clan. <<They $g.tracker>> was clearly impatient, but held it together while you checked the payment and the note from <<name $g.werewolf>>, thanking you for the assistance.
+    </p>
+
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        The hunting trip itself, was a complete a failure. <<Rep $g.tracker>> got the hunting party lost, resulting in them walking in circles through snowy forests for days. While they were able to catch some smaller game, it was not enough to meet the clan's contract.
+    </p>
+
+    <p>
+        <<reps $g.werewolf>> chief refused to pay your hunters for their lack of results and you could only grimace at the waste of time and effort. Maybe next time you should send an accomplished hunter.
+    </p>
+<<else>>
+
+    <p>
+        When your slavers returned, they were bloody and battered. <<rep $g.hunter1>> hunter1|was overly reckless in following a game trail. <<They $g.hunter1>> ran into a grizzly bear who turned on the hunting party, and mauled <<rep $g.hunter1>> badly before the rest of the team arrived to fight it off, and your slavers retreated back to the clan stronghold to nurse their wounds.
+    </p>
+
+    <p>
+        While the clan chief didn't blame <<rep $g.hunter1>> for the botched job, he didn't pay as you hadn't delivered on your end of the contract. Maybe next time you should send an accomplished hunter.
+    </p>
+<</if>>
+
+
+

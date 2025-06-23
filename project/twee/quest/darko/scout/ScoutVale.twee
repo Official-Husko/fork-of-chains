@@ -1,0 +1,90 @@
+:: QuestSetupScoutVale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'scout_vale',  /* id */
+  'Scout: Northern Vales',  /* Title */
+  'darko',   /* author */
+  ['vale', 'quest'],  /* tags */
+  1, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_vale,
+    'scout2': setup.qu.scout_vale,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestScoutVale',  /* description */
+  setup.qdiff.easy1,
+  [
+    [
+      'QuestScoutValeCrit',
+      [
+        setup.qc.QuestDelay(setup.questpool.vale, 9),
+        
+      ]
+    ],
+    [
+      'QuestScoutValeSuccess',
+      [
+        setup.qc.QuestDelay(setup.questpool.vale, 6),
+        
+      ],
+    ],
+    [
+      'QuestScoutValeFailure',
+      [
+        setup.qc.QuestDelay(setup.questpool.vale, 3),
+      ],
+    ],
+    [
+      'QuestScoutValeDisaster',
+      [
+        setup.qc.QuestDelay(setup.questpool.vale, 1),
+      ],
+    ],
+  ],
+  [[setup.questpool.scoutvale, setup.rarity.common],],
+  [setup.qres.QuestAvailableUnique()],
+)>>
+
+:: QuestScoutVale [nobr]
+
+<p>
+Your contact -- the tavern owner in the <<lore region_vale>> --
+has sent you several rumors that may lead to quests in the <<lore region_vale>>.
+You can follow up on those leads by sending a team for a full week into the
+<<lore region_vale>>.
+</p>
+
+:: QuestScoutValeCrit [nobr]
+
+<p>
+The scouting mission was a complete success, with your team returning with more
+quest options than expected.
+</p>
+
+:: QuestScoutValeSuccess [nobr]
+
+<p>
+The scouting mission went about as well as expected, and your team returned with
+several quest options.
+</p>
+
+:: QuestScoutValeFailure [nobr]
+
+<p>
+Unfortunately, the vast majority of the rumors led to a dead end.
+Still, the team managed to found at least a few quest leads.
+</p>
+
+:: QuestScoutValeDisaster [nobr]
+
+<p>
+Unfortunately, during their journey north your team was ambushed some locals who
+disapproved of your company's morality.
+They were forced to retreat earlier than what they would have wanted to.
+</p>

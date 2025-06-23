@@ -1,0 +1,102 @@
+:: EventSetup_painting_of_your_company [nobr event]
+
+<<run new setup.Event(
+'painting_of_your_company', /* key */
+"Painting of Your Company", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_painting_of_your_company',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_artist, setup.trait.join_senior], true),
+  ],
+  'slaver2': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+  ],
+  'slaver3': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.f_wall_good_slaver),
+  setup.qc.BoonizeRandom('slaver', 5),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.AnyTrait([setup.trait.bg_artist])),
+    setup.qc.DoAll([
+      setup.qc.Item(setup.item.f_wall_good_slaver),
+      setup.qc.Item(setup.item.f_wall_good_slaver),
+      setup.qc.Item(setup.item.f_wall_good_slaver),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.museum),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_painting_of_your_company [nobr]
+<p>
+<<Yourrep $g.slaver>> slaver|have been with you for a long time now, and you know <<therace $g.slaver>> to be a good painter.
+<<if $g.you.isHasTrait('bg_artist')>>
+Almost as good as you, perhaps.
+The two of you share interest in art, and both of you had been frequenting the
+<<rep setup.buildingtemplate.museum>>,
+spending much free time painting a large project together with you.
+<<else>>
+Ever since you've built the <<rep setup.buildingtemplate.museum>>, <<they $g.slaver>> slaver|have often be seen spending <<their $g.slaver>> free time inside, doing something you're not sure what exactly it is.
+<</if>>
+</p>
+
+<<if $g.you.isHasTrait('bg_artist')>>
+
+<p>
+And today, finally, the project has been completed.
+A grand painting depicting your company in all its goreous glory.
+It is split into multiple canvas, due to how big it is, each one beautiful on its own right.
+There are
+<<yourrep $g.slaver2>> <<uhobbyverb $g.slaver2>>, and also
+<<yourrep $g.slaver3>> standing next to <<them $g.slaver2>> in the drawing.
+And in the middle of the painting, there is a <<uadjphys $g.you>> <<man $g.you>> — a painting of your own liking.
+Some of your favorite slaves are also drawn in the painting. Overall, the painting is a fitting one for a slaving company such as yourself, and will sure raise the attractiveness of whichever place
+you deign fit to display such a work of art.
+</p>
+
+<<else>>
+
+<p>
+Today, you finally know what <<theslaver $g.slaver>> slaver|have been doing all the time inside: apparently drawing. The slaver
+<<if $g.slaver.isHasTrait('per_proud')>>
+pridefully
+<<else>>
+humbly
+<</if>>
+slaver|present the finished painting to you. It is a beautiful painting of your company, including many slavers within. You can see a drawing of
+<<yourrep $g.slaver2>> <<uhobbyverb $g.slaver2>>, and also
+<<yourrep $g.slaver3>> standing next to <<them $g.slaver2>>.
+In the middle of the painting, there is a <<uadjphys $g.you>> <<man $g.you>> — a painting of your own liking.
+Some of your favorite slaves are also drawn in the painting. Overall, the painting is a fitting one for a slaving company such as yourself, and <<yourrep $g.slaver>> slaver|have gifted the painting to you, to do with as you see fit.
+</p>
+
+<</if>>

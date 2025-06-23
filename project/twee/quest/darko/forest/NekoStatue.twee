@@ -1,0 +1,235 @@
+:: QuestSetupNekoStatue [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _cursebreaker = new setup.UnitCriteria(
+  null, /* key */
+  'Cursebreaker', /* title */
+  [  /* critical traits */
+    setup.trait.per_humble,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+    setup.trait.magic_dark_master,
+    setup.trait.magic_light_master,
+  ],
+  [  /* disaster traits */
+    setup.trait.per_proud,
+    setup.trait.per_lustful,
+    setup.trait.per_masochistic,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+  ],
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    arcane: 3.0,
+  }
+)>>
+
+<<run new setup.UnitGroup(
+  'quest_nekostatue',
+  'neko statue',
+  'subrace_neko',  /* pools */
+  0,
+  [
+    setup.qc.TraitReplace('unit', setup.trait.muscle_strong),
+    setup.qc.TraitReplace('unit', setup.trait.anus_gape),
+    setup.qc.Mindbreak('unit'),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('unit', setup.trait.mouth_neko),
+      setup.qc.TraitReplace('unit', setup.trait.arms_neko),
+      setup.qc.TraitReplace('unit', setup.trait.legs_neko),
+      setup.qc.TraitReplace('unit', setup.trait.body_neko),
+    ]),
+    setup.qc.ResetInnateTraits('unit'),
+  ]
+)>>
+
+<<run new setup.UnitGroup(
+  'quest_nekostatueleader',
+  'neko statue leader',
+  'subrace_neko',  /* pools */
+  0,
+  [
+    setup.qc.TraitReplace('unit', setup.trait.muscle_verystrong),
+    setup.qc.TraitReplace('unit', setup.trait.anus_gape),
+    setup.qc.BgTraitReset('unit', setup.trait.bg_soldier),
+    setup.qc.Mindbreak('unit'),
+    setup.qc.OneRandom([
+      setup.qc.TraitReplace('unit', setup.trait.mouth_neko),
+      setup.qc.TraitReplace('unit', setup.trait.arms_neko),
+      setup.qc.TraitReplace('unit', setup.trait.legs_neko),
+      setup.qc.TraitReplace('unit', setup.trait.body_neko),
+    ]),
+    setup.qc.ResetInnateTraits('unit'),
+  ]
+)>>
+
+<<run new setup.QuestTemplate(
+  'neko_statue', /* key */
+  'Moai Field', /* Title */
+  'darko',   /* author */
+  ['forest', 'furry', 'unit'],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'cursebreaker1': _cursebreaker,
+    'cursebreaker2': _cursebreaker,
+    'scout': setup.qu.scout_forest,
+  },
+  { /* actors */
+    'statue': 'quest_nekostatue',
+    'statueleader': 'quest_nekostatueleader',
+  },
+  [ /* costs */
+  ],
+  'QuestNekoStatue', /* passage description */
+  setup.qdiff.hard19, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestNekoStatueCrit',
+      [
+        setup.qc.RemoveTagGlobal('quest_neko_statue_marker'),
+        setup.qc.AddTag('statueleader', 'quest_neko_statue_marker'),
+        setup.qc.Slave(
+          'statueleader',
+          'a|was a neko soldier in ancient times who a|was captured and turned into a living fuckable statue.'),
+        
+      ],
+    ],
+    [
+      'QuestNekoStatueCrit',
+      [
+        setup.qc.RemoveTagGlobal('quest_neko_statue_marker'),
+        setup.qc.AddTag('statue', 'quest_neko_statue_marker'),
+        setup.qc.Slave(
+          'statue',
+          'a|was a neko of ancient times whose army lost the war, captured, then turned into a living fuckable statue.'),
+        setup.qc.MoneySmall(),
+        
+      ],
+    ],
+    [
+      'QuestNekoStatueFailure',
+      [
+      ],
+    ],
+    [
+      'QuestNekoStatueDisaster',
+      [
+        setup.qc.Injury('cursebreaker1', 4),
+        setup.qc.Injury('cursebreaker2', 3),
+      ],
+    ],
+  ],
+  [[setup.questpool.forest, setup.rarity.rare],], /* quest pool and rarity */
+  [ /* prerequisites to generate */
+    setup.qres.QuestUnique(),
+  ],
+)>>
+
+
+:: QuestNekoStatue [nobr]
+
+<p>
+In ancient times, the elves and the neko were engaged in a lengthy war.
+While those empires has long gone by now, the remnants of this war are still abundantly present
+in the <<lore region_forest>>.
+One of the most famous ones is the so-called moai filled, where statues
+of ancient neko soldiers were posed and displayed in various positions
+on an empty meadow.
+While the ancient elves look quite similar with the modern elves,
+ancient neko often still retain strong heritage to their <<lore race_tigerkin>> ancestors.
+They often look quite different than modern neko, with some sporting a full furry body or just furry limbs.
+</p>
+
+<p>
+One of your contacts has informed you that those statues were supposedly
+a living breathing neko once. They were in fact (if the rumors were to be believed)
+neko soldiers who were defeated by the elven army, and turned into a living statue
+by the elven petrification magic.
+All the statues without exception are held upright with a pole seemingly shoved deep
+within their asses --
+Rumors said these poles ended with
+a huge dildo which are stuck and lodged within their anus.
+</p>
+
+<p>
+You have heard that there might still be some elven camps out there who are privy
+of the rituals required to undo these spells.
+While having a neko as a slave is always a good thing, and you do wonder if it is worth
+risking your slavers to go on such a weird mission.
+</p>
+
+
+:: QuestNekoStatueCrit [nobr]
+
+<p>
+After successfully learning the rituals required to undo the spells,
+<<yourrep $g.scout>> proceeded to
+<<uadv $g.scout>> scour the forest for one of these moai fields.
+<<if $gOutcome == 'success'>>
+Upon finding one, they searched for a relatively unscathed statue.
+After finding one,
+<<else>>
+Upon finding one, they found a magnificent specimen of a neko there,
+with muscle covering every inch of <<their $g.statueleader>> statuesque body.
+Your
+<</if>>
+slavers inspected the statue closer, and found the pole inserted right
+up the statue's ass, just like the rumors said.
+</p>
+
+<p>
+According to the information they received, the dildo is the key to undo the spell.
+In order to break the spell, one must overwhelm the spell by making the dildo
+far too wide to contain the spell. The easiest way is to insert another dildo into the
+statue's already ravaged hole, or in some case, your slaver's dick -- effectively
+double penetrating the statue.
+</p>
+
+<p>
+<<Yourrep $g.cursebreaker1>>
+<<if $g.cursebreaker1.isHasTrait('per_chaste')>>
+reluctantly
+<</if>>
+volunteered for the task and used <<their $g.cursebreaker1>>
+<<if $g.cursebreaker1.isHasTrait(setup.trait.dick_tiny)>>
+  dick
+<<else>>
+  arms
+<</if>>
+to double penetrate the statue. 
+Within seconds, the statue's outward ceramic shattered revealing
+<<if $gOutcome == 'crit'>>
+the magnificent specimen of a neko,
+<<else>>
+the neko inside,
+<</if>>
+who immediately collapsed unconscious, but breathing.
+Who knows how long such a neko had been living as a statue like this, but the experience
+had drained both their hole's tightness and their mind, leaving them useful
+for nothing but a broken, unresponsive sex toy.
+Your slavers gathered the new slave as well as the valuables around to bring back to your fort.
+</p>
+
+
+:: QuestNekoStatueFailure [nobr]
+
+<p>
+Even though your slavers managed to
+learn the rituals required to undo the spells, your
+scout <<rep $g.scout>> scout|was not able to find any of the moai statue fields.
+</p>
+
+
+
+:: QuestNekoStatueDisaster [nobr]
+
+<p>
+Your slavers were too aggressive trying to learn how to undo the spell,
+which drew the ire of one particularly sadistic elf.
+She tricked your slavers, pretending to teach them how to undo the spell,
+while in reality casting the petrification spell directly on your slavers.
+Fortunately, the spell's power had been lost over time, and the partly
+petrified dicks and breasts of your slavers will return to normal in time.
+</p>

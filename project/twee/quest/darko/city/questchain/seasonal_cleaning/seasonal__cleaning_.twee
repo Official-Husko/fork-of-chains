@@ -1,0 +1,202 @@
+:: QuestSetup_seasonal__cleaning_ [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriahead = new setup.UnitCriteria(
+null, /* key */
+'Head Maid / Butler', /* name */
+[
+setup.trait.dick_large,
+setup.trait.breast_large,
+setup.trait.muscle_strong,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_proud,
+setup.trait.per_playful,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.skill_hypnotic,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+setup.trait.eq_slutty,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.muscle_thin,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.per_humble,
+setup.trait.per_serious,
+setup.trait.per_chaste,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.skill_flight,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('seasonal_cleaning_head'),
+],
+{
+social: 1,
+sex: 1,
+aid: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'seasonalcleaning_', /* key */
+'Seasonal "Cleaning"', /* Title */
+"darko", /* Author */
+[ 'city', 'money', 'prep'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'head': [_criteriahead, 1],
+'maid1': [setup.qu.maid, 1],
+'maid2': [setup.qu.maid, 1], },
+{ /* actors */
+'rich': 'quest_seasonal_cleaning1', },
+[ /* costs */
+],
+'Quest_seasonal__cleaning_',
+setup.qdiff.hard38, /* difficulty */
+[ /* outcomes */
+[
+'Quest_seasonal__cleaning_Crit',
+[
+setup.qc.MoneyCrit(),
+setup.qc.VarRemove('quest_seasonal_training_success'),
+setup.qc.AddTitle('head', 'seasonal_cleaning_head_full'),
+setup.qc.RemoveTitle('head', 'seasonal_cleaning_head'), ],
+], [
+'Quest_seasonal__cleaning_Success',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_seasonal__cleaning_Failure',
+[
+setup.qc.MoneyNormal(),
+setup.qc.TraumatizeRandom('head', 5),
+setup.qc.TraumatizeRandom('maid1', 5),
+setup.qc.TraumatizeRandom('maid2', 5), ],
+], [
+'Quest_seasonal__cleaning_Disaster',
+[
+setup.qc.SlaveMarker('rich'),
+setup.qc.RemoveTitle('head', 'seasonal_cleaning_head'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.NoUnitWithTitle('seasonal_cleaning_head_full'),
+setup.qres.HasUnitWithTitle('seasonal_cleaning_head', {job_key: 'slaver'}), ],
+)>>
+
+:: Quest_seasonal__cleaning_ [nobr]
+<<set _headunit = $company.player.getUnits({title: "seasonal_cleaning_head"})>>
+<<if !_headunit.length>>
+<<dangertext "Due to your company missing a slaver important for this quest, this job is no longer able to be completed.">>
+<<else>>
+<<set _headunit = _headunit[0]>>
+<p>
+Some time ago, your company took a domestic job from a well known noble in
+the city, <<rep $g.rich>>. According to the letter you have just received, the noble was
+apparently very happy with the overall job last time, and asks for another round of
+seasonal cleaning. <<They $g.rich>> promises to pay even more this time, but
+under the condition that the exemplary <<maid _headunit>> <<rep _headunit>>
+would join the team.
+</p>
+
+<p>
+It seems particularly odd and dangerous that such a noble would request one
+of your slavers by name, but when asked about it,
+<<yourrep _headunit>> actually seems eager to go and "finish what <<they
+_headunit>> have started". Still, the noble promises great amount of reward
+and it would be remiss to miss out on such an easy opportunity.
+</p>
+<</if>>
+
+
+:: Quest_seasonal__cleaning_Crit [nobr]
+
+<<if $g.rich.isMale()>>
+<<else>>
+  <<questimage 'seasonal__cleaning_female.jpg'>>
+<</if>>
+
+<p>
+Just like before, the noble asked <<rep $g.head>> for <<their $g.head>>
+personal attention in the bedchamber.
+Your other slavers never noticed the lusty and needy face that the noble
+made whenever <<they $g.rich>> was near <<rep $g.head>> —
+or was it never there before? 
+This time, <<rep $g.head>> instead
+<<if $g.head.isHasTrait('per_submissive')>>
+did <<their $g.head>> best (despite <<their $g.head>> submissive nature) to take
+control and demand
+<<else>>
+took control and demanded
+<</if>>
+various
+increasingly degenerate things from the noble in order, promising that
+if the noble continued to be a good <<boy $g.rich>>, <<they $g.rich>> will be
+"rewarded" with a private session in the bedchamber.
+By the end of the seasonal job,
+<<yourrep $g.head>> had fully trained the noble in various degenerate acts, be it
+to present <<themself $g.rich>> at command, or even to lick <<reps $g.head>>
+<<ucfeet $g.head>>, all for a chance to get rewarded by being allowed to <<if $g.head.isHasDick()>>blow
+<<their $g.rich>> <<master $g.head>>'s dick<<else>>lick <<their $g.rich>>
+<<master $g.head>>'s pussy<</if>>
+</p>
+
+<p>
+<<Rep $g.head>> <<uadv $g.head>> extorted a huge sum of money from the noble,
+before leaving the noble to clean up after the new mess. You get
+the feeling that you'll hear back from the noble again.
+</p>
+
+
+:: Quest_seasonal__cleaning_Success [nobr]
+
+<p>
+While <<rep $g.maid1>> and <<rep $g.maid2>> <<uadv $g.maid1>> cleaned the
+mansion,
+just like before, <<yourrep $g.rich>> often went missing during their stay in the
+mansion. Only it was more obvious this time where <<they $g.rich>> had went,
+what's with the occasional humping and moaning noises coming up from the bedchamber.
+There was still a great deal of mess to clean, however, so your other slavers decided not to dwell
+too much on it and just try to finish the somewhat mundane job and get the promised reward.
+</p>
+
+
+:: Quest_seasonal__cleaning_Failure [nobr]
+
+<p>
+The amount of work in the mansion were so much more than your slavers had
+anticipated, and <<yourrep $g.head>> had no time to advance their "intimacy" with
+the <<lord $g.rich>> of the mansion. Numerous questionable stains emitting various
+stench littered the entire mansion, be it on the sofas in the living room, the
+piano, or even from inside the extinguished fireplace.
+</p>
+
+<p>
+Your slavers managed to finish the job, but they were clearly shaken by the experience.
+</p>
+
+
+:: Quest_seasonal__cleaning_Disaster [nobr]
+
+<p>
+Unfortunately, <<yourrep $g.head>> tried to take it too far with the noble.
+When <<therace $g.head>> attempted to make the noble lick <<their $g.head>>
+<<ucfeet $g.head>>, something in the noble snapped and immediately ordered all your slavers
+to get out of the vicinity. Although no immediate harm befall your slavers, it is unlikely
+that the noble would request specifically for <<rep $g.head>> again in the future, and
+whatever it was that <<theslaver $g.head>> had schemed must restart from the beginning.
+</p>

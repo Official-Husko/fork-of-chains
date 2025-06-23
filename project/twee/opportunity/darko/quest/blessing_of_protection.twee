@@ -1,0 +1,86 @@
+:: OpportunitySetup_blessing_of_protection [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'blessing_of_protection', /* key */
+"Blessing of Protection", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'unit',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_blessing_of_protection',
+setup.qdiff.harder48, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_blessing_of_protection_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('prayer_of_protection', null),
+    ],
+  ],
+  [
+    'Opportunity_blessing_of_protection_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('protection_abduction', null),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoQuest('prayer_of_protection'),
+  setup.qres.NoQuest('protection_abduction'),
+],
+{ /* actors */
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_blessing_of_protection [nobr]
+<p>
+Many <<rep setup.trait.subrace_humansea>> are keen healers and priests. People suffering from grievous injuries or ravaging disease often brave the <<lore region_sea>> in search for these people, whose mastery over their craft is said to be so vast that they can do more than just heal. Indeed, particularly gifted ones are capable of bestowing the Blessing of Protection upon others, which can prevent such injuries from happening altogether in the first place.
+</p>
+
+<p>
+A particular monastery exists in the <<lore region_sea>>, which specializes in bestowing such a blessing. The monastery opens its doors to pilgrims of all sorts who are looking for protective enlightenment. This presents an opportunity for you.
+</p>
+
+<p>
+You can try to send a group of slavers into the monastery to patron them and ask for the blessings — surely your infamy won't be able to reach such an isolated place, and they would not know at all that your slavers are in fact, bad people.
+</p>
+
+<p>
+An alternative, but far more dangerous option is to send a group of slavers pretending to be patrons, but whose real goal is to kidnap one of these priests. These priests are often gifted in <<rep setup.trait.magic_light>>, making them a potentially high-valued slaves. Kidnapping a magic user of any kind is sure going to be a dangerous affair, however. The monastery will also probably close its door for a good long while after such an incident...
+</p>
+
+
+
+
+:: Opportunity_blessing_of_protection_0 [nobr]
+Patron
+
+
+
+:: Opportunity_blessing_of_protection_1 [nobr]
+Abduct
+
+

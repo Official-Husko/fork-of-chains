@@ -1,0 +1,129 @@
+:: QuestSetup_dungeon_rescue [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'dungeon_rescue', /* key */
+"Dungeon Rescue", /* Title */
+"darko", /* Author */
+[
+  'special', 'unit', 'desert',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'thief': setup.qu.thief,
+'infiltrator': setup.qu.infiltrator,
+'seducer': setup.qu.seducer, },
+{ /* actors */
+'target': [
+setup.qres.HasTag('captured_slaver'),
+], },
+[ /* costs */
+],
+'Quest_dungeon_rescue',
+setup.qdiff.hard45, /* difficulty */
+[ /* outcomes */
+[
+'Quest_dungeon_rescueCrit',
+[
+],
+], [
+'Quest_dungeon_rescueCrit',
+[
+setup.qc.Injury('target', 2),
+setup.qc.TraumatizeRandom('target', 8), ],
+], [
+'Quest_dungeon_rescueCrit',
+[
+setup.qc.Injury('target', 7),
+setup.qc.TraumatizeRandom('target', 10), ],
+], [
+'Quest_dungeon_rescueDisaster',
+[
+setup.qc.MissingUnitRecapture('target', 'capturedhard'),
+setup.qc.MissingUnitRecapture('thief', 'capturedeasy'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.capturedmedium, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTag('captured_slaver')
+]), ],
+[ /* expiration outcomes */
+setup.qc.MissingUnitForever('target'), ],
+)>>
+
+:: Quest_dungeon_rescue [nobr]
+<p>
+You have successfully tracked 
+<<yourrep $g.target>>, who very recently went missing during one of your quests.
+That's good, but the problem is that you tracked <<them $g.target>> down to a
+remote dungeon complex in the desert.
+Getting <<them $g.target>> out of the prison complex will pose a problem, and
+you'd need a specialized team for that.
+</p>
+
+<p>
+First of all, the dungeons will be guarded, so a skilled seducer is needed to
+distract the guards. This gives a small opening for your other slavers to
+sneak past — an infiltrator would be ideal. Finally, a thief should be
+brought along to pick the cell doors, finally allowing <<rep $g.target>> to
+hopefully escape unscathed.
+</p>
+
+<p>
+  <<dangertext 'Warning'>>: Ignoring this quest will ensure that you will
+  never see <<rep $g.target>> ever again...
+</p>
+
+
+:: Quest_dungeon_rescueCrit [nobr]
+<p>
+<<Rep $g.seducer>> did <<their $g.seducer>> best trying to appear as
+seductive as possible to distract the guards. Using the slight opening, <<rep
+$g.infiltrator>> led <<utheirrel $g.infiltrator $g.thief>> <<rep $g.thief>>
+down the dungeons. They passed through many cells containing a variety of
+slaves — mostly broken and trained. The conditions of these slaves
+worried them as what might have been inflicted upon <<rep $g.target>>, so
+they increased their pace until finally, they arrived at the newcomer cell block.
+</p>
+
+<p>
+<<if $gOutcome == 'crit'>>
+There, on the corner of the block lied <<rep $g.target>> unconscious body —
+it looked like <<they $g.target>> had just arrived to the dungeons. Relieved
+that no harm had befallen into <<rep $g.target>>,
+<<elseif $gOutcome == 'success'>>
+There, on the corner of the block lies <<rep $g.target>> unconscious body —
+judging from the injuries sustained, it seemed that <<rep $g.target>> had been
+here for a couple of days and had undergone the initial stages of slave
+breaking. Fortunately, the wounds can be healed, although it will take some
+time.
+<<else>>
+There, on the corner of the block lied <<rep $g.target>> unconscious and
+badly wounded body — it seemed that <<rep $g.target>> had just undergone some
+punishment, probably due to disobedience. Fortunately, the wounds can be
+healed, although it will take quite a while.
+<</if>>
+
+<<rep $g.thief>> <<uadv $g.thief>> picked the cell door and together with
+<<utheirrel $g.thief $g.infiltrator>> <<rep $g.infiltrator>> smuggled <<rep
+$g.target>> out from the dungeons.
+</p>
+
+
+:: Quest_dungeon_rescueDisaster [nobr]
+<p>
+Your slavers managed to infiltrate the dungeons without failure, but
+they were unable to locate <<yourrep $g.target>>.
+<<Rep $g.thief>> <<uadv $g.thief>> refused to give up the search — and your
+slavers never heard back from <<rep $g.thief>> after <<they $g.thief>> tried
+to enter the deeper cells in the dungeons complex...
+</p>
+
+<p>
+It seems you have two slavers to rescue now.
+</p>

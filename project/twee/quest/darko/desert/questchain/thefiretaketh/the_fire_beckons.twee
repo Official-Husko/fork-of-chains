@@ -1,0 +1,246 @@
+:: QuestSetup_the_fire_beckons [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriastudent = new setup.UnitCriteria(
+null, /* key */
+'Student of Fire', /* name */
+[
+  setup.trait.per_gregarious,
+  setup.trait.per_slow,
+  setup.trait.per_smart,
+  setup.trait.per_chaste,
+  setup.trait.per_sly,
+  setup.trait.per_stubborn,
+  setup.trait.per_loner,
+  setup.trait.per_direct,
+  setup.trait.per_active,
+  setup.trait.per_studious,
+  setup.trait.per_independent,
+  setup.trait.per_loyal,
+  setup.trait.per_serious,
+  setup.trait.per_playful,
+  setup.trait.per_masochistic,
+  setup.trait.per_calm,
+  setup.trait.per_lunatic,
+  setup.trait.per_aggressive,
+  setup.trait.per_cruel,
+  setup.trait.per_dreamy,
+  setup.trait.per_kind,
+  setup.trait.per_attentive,
+  setup.trait.per_cautious,
+  setup.trait.per_evil,
+  setup.trait.per_brave,
+  setup.trait.per_honorable,
+  setup.trait.per_humble,
+  setup.trait.per_empath,
+  setup.trait.per_proud,
+  setup.trait.per_logical,
+  setup.trait.per_frugal,
+  setup.trait.per_submissive,
+  setup.trait.per_lavish,
+  setup.trait.per_dominant,
+  setup.trait.per_sexaddict,
+  setup.trait.per_curious,
+  setup.trait.per_lustful,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.TraitExact(setup.trait.magic_fire),
+  setup.qres.NotYou(),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<set _criteriascout1 = new setup.UnitCriteria(
+null, /* key */
+'Scout (Desert)', /* name */
+[
+  setup.trait.bg_nomad,
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.tough_tough,
+  setup.trait.per_calm,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.subrace_humanvale,
+  setup.trait.race_wolfkin,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.per_aggressive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTraits([setup.trait.magic_fire, setup.trait.magic_fire_master], true),
+],
+{
+  brawn: 1,
+  survival: 2,
+}
+)>>
+
+<<set _criteriascout2 = new setup.UnitCriteria(
+null, /* key */
+'Scout (Desert)', /* name */
+[
+  setup.trait.bg_nomad,
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.tough_tough,
+  setup.trait.per_calm,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.subrace_humanvale,
+  setup.trait.race_wolfkin,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.per_aggressive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTraits([setup.trait.magic_fire, setup.trait.magic_fire_master], true),
+],
+{
+  brawn: 1,
+  survival: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_fire_beckons', /* key */
+"The Fire Beckons", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'prep',
+  'trait',
+  'unknown',
+  'danger',
+  'desert',
+  'rare',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'student': [ _criteriastudent, 1],
+  'scout1': [ _criteriascout1, 1],
+  'scout2': [ _criteriascout2, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_fire_beckons',
+setup.qdiff.hell30, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_fire_beckonsCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_the_fire_beckonsCrit',
+    [
+      setup.qc.QuestDirectForceAssign('be_cleansed_in_fire', {
+student: "student",
+}),
+    ],
+  ],
+  [
+    'Quest_the_fire_beckonsFailure',
+    [
+      setup.qc.Injury('student', 2),
+      setup.qc.Injury('scout1', 2),
+      setup.qc.Injury('scout2', 2),
+    ],
+  ],
+  [
+    'Quest_the_fire_beckonsFailure',
+    [
+      setup.qc.Injury('scout2', 5),
+      setup.qc.Injury('student', 5),
+      setup.qc.Injury('scout1', 6),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('be_cleansed_in_fire'),
+  setup.qres.NoUnitWithTitle('quest_consumed_by_fire_0', {
+}),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.TraitExact(setup.trait.magic_fire)
+]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_fire_beckons [nobr]
+
+<p>
+The <<lore magic_fire>> governs fire, and hence is one of the favorite
+domains of wizards. Hurling large fireballs is always an effective tool for
+both actual combat, and for party tricks too.
+But mastery over flame is
+something else entirely — instead of focusing more on destruction, it 
+focuses instead on purifying the flame, summoning white flames that can repel demons
+and corruptions alike.
+</p>
+
+<p>
+It is said that hidden somewhere within the <<lore region_desert>> is a hidden
+Temple of Fire, inviting anyone who wants to hone their mastery over fire into its
+purest form. Locating it will not be easy, and you will need two experienced
+scouts to accompany the prospective student.
+</p>
+
+<p>
+However, if what rumors you have heard has some truth in them, then mastering
+<<rep setup.trait.magic_fire_master>> bears <<dangertext 'terrible consequences'>>
+for their bearer. Their mind and spirit will have to be cleansed to make way for the
+purifying flame. Whatever this means, it does not sound good, and you best
+prepare yourself for whatever is to come were you to send a slaver on this
+journey...
+</p>
+
+<p>
+<<dangertext 'Be warned'>>: The duration of this quest is highly variable, and it may incur some irreversible effects on its participants...
+</p>
+
+
+:: Quest_the_fire_beckonsCrit [nobr]
+
+<p>
+<<Rep $g.scout1>> and <<utheirrel $g.scout1 $g.scout2>> trudged through the
+desert settlements, searching for information. Meanwhile, <<yourrep
+$g.student>> <<uadv $g.student>> prepare <<themself $g.student>> for the
+surely challenging tasks <<they $g.student>> will need to overcome. Week
+scouring the scorching deserts proved fruitful as your slavers were able to
+locate the hidden Temple of Flames from the information.
+</p>
+
+<p>
+The ritual now needs to commence, and <<rep $g.scout1>> as well as <<rep
+$g.scout2>> will have to return back to the fort first. Whatever challenges
+<<rep $g.student>> will have to face, <<they $g.student>> must face
+them alone...
+</p>
+
+
+:: Quest_the_fire_beckonsFailure [nobr]
+<p>
+Unfortunately, your slavers were unable to locate the exact location of the hidden Temple of Fire. They will just have to try again, after nursing the wounds they suffer from the nasty weather in the deserts.
+</p>

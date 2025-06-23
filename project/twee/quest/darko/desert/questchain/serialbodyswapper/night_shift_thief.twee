@@ -1,0 +1,138 @@
+:: QuestSetup_night_shift [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'night_shift', /* key */
+"Night Shift", /* Title */
+"darko", /* Author */
+[ 'desert', 'transformation', 'money',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'defender': setup.qu.defender,
+'trapper': setup.qu.trapper,
+'shadow': setup.qu.shadow_fighter, },
+{ /* actors */
+'slave': 'all', },
+[ /* costs */
+],
+'Quest_night_shift',
+setup.qdiff.hard41, /* difficulty */
+[ /* outcomes */
+[
+'Quest_night_shiftCrit',
+[
+setup.qc.MoneyCrit(), ],
+], [
+'Quest_night_shiftCrit',
+[
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_night_shiftFailure',
+[
+setup.qc.MoneyCustom(-1500), ],
+], [
+'Quest_night_shiftFailure',
+[
+setup.qc.MoneyCustom(-3000),
+setup.qc.SlaveMarker('slave'),
+setup.qc.TraumatizeRandom('defender', 4),
+setup.qc.TraumatizeRandom('trapper', 4),
+setup.qc.TraumatizeRandom('shadow', 4), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions to generate */
+setup.qres.VarLte('nightshifter', 2),
+setup.qres.NoQuest('night_shift'),
+setup.qres.NoQuest('night_shift2'),
+setup.qres.NoQuest('night_shift23'),
+],
+)>>
+
+:: Quest_night_shift [nobr]
+
+<<include 'Quest_night_shift2'>>
+
+
+:: Quest_night_shiftCrit [nobr]
+
+<p>
+Simple problem requires simple solution: <<Yourrep $g.defender>> will <<uadv
+$g.defender>> keep watch over the <<daughter $g.slave>> while <<rep
+$g.trapper>> and <<rep $g.shadow>> secured the house, blocking all possible
+entrances and reinforcing the all the weakest points of the house.
+Once the preparations were complete, they waited for the attack...
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+A few days later, during one of their night shifts, your slavers heard a loud crashing
+sound coming from the second floor. <<Yourrep $g.trapper>> rushed upstairs and saw a
+dark shade apparently kneeling in pain from their own entry into the mansion.
+<<Rep $g.defender>> easily subdued the inexperienced thief with a
+painful-looking headlock. The crash woke up all the residents of the
+mansions, including the head of the mansion. Seeing the thief securely
+bound within the painful embrace of <<therace $g.defender>>,
+the head of the mansion lavished praises upon your
+slavers before sending them back to your fort with plenty of money in a hurry
+— no doubt in order to punish the wannabe thief in unspeakable ways...
+</p>
+
+<p>
+Your slavers wandered whether this was the same thief as the rumored one, or
+it was just a plain coincidence that the thief decided to rob this very mansion.
+Either way, the thief got what <<they $g.slave>> deserve, trying to rob a mansion on high-alert.
+</p>
+
+<<else>>
+
+<p>
+After a couple of days, your slavers were woken up in the middle of the night
+by a loud thud. Led by <<yourrep $g.trapper>>, your slavers rushed upstairs and
+saw one of the other mercenaries securing what seemed to be a wannabe-thief to
+the ground. The thud woke up all the residents of the mansion — seeing the
+thief captured by the mercenary, the head of the mansion lavished praises
+upon the mercenary. Your slavers' services were deemed no longer necessary.
+Your slavers were hurriedly sent back to your fort with plenty of money --
+— no doubt so that <<they $g.slave>> can punish the wannabe thief in unspeakable ways...
+</p>
+
+<</if>>
+
+<p>
+Another unfortunate household received another calling card in the next few days.
+</p>
+
+
+:: Quest_night_shiftFailure [nobr]
+
+<p>
+Your slavers were somewhat clueless in this kind of mission where they have
+to protect instead of steal. None of your slavers, especially not <<yourrep
+$g.shadow>>, managed to noticed when a thief broke in in the dead of the
+night and stole one of the paintings off the second floor.
+<<if $gOutcome == 'failure'>>
+The head of the mansion was understandably furious with the mercenaries they hired, and
+ordered all of them to reimburse the losses.
+Your slavers were not given much choice in the matter and had to contribute
+some money for the damages.
+<<else>>
+Worse, the painting was in the very same room that your slavers were supposed to guard that night.
+With no excuses to be had, the slavers were forced to pay an exorbitant amount for the damages.
+<</if>>
+
+</p>
+
+
+<<if $gOutcome == 'disaster'>>
+<p>
+You have a sneaking suspicion that your slavers <<uadv $g.shadow>> slept
+through the night they were supposed to watch over. You remind yourself to
+deliver a strongly-put speech with them later.
+</p>
+<</if>>

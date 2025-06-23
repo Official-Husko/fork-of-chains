@@ -1,0 +1,99 @@
+:: OpportunitySetup_dungeons_and_dragons_lair_of_evil_captive [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'dungeons_and_dragons_lair_of_evil_captive', /* key */
+"Dungeons and Dragons: Lair of Evil: Captive", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'prep',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_dungeons_and_dragons_lair_of_evil_captive',
+setup.qdiff.harder45, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_dungeons_and_dragons_lair_of_evil_captive_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Opportunity('dungeons_and_dragons_lair_of_evil_final_boss', {
+prince: "prince",
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Opportunity_dungeons_and_dragons_lair_of_evil_captive_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Opportunity('dungeons_and_dragons_lair_of_evil_final_boss', {
+slaver: "slaver",
+prince: "princess",
+}),
+    ],
+  ],
+  [
+    'Opportunity_dungeons_and_dragons_lair_of_evil_captive_2',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.AllUnitSatisfyDo([setup.qres.HasTitle('quest_heroic_withdrawal_0')],
+    [setup.qc.TraumatizeRandom('unit', 100)],
+    ),
+      setup.qc.RemoveTitleGlobal('quest_heroic_withdrawal_0'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+  'prince': 'sea_allmale',
+  'princess': 'sea_allfemale',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_dungeons_and_dragons_lair_of_evil_captive [nobr]
+
+<<include "Event_dungeons_and_dragons_lair_of_evil">>
+
+<p>
+Should you decide to write one, you already have an idea for the possible "quest": a classic story where an evil entity stole a well-beloved royalty, and a hero is needed to rescue them. But first, what kind of royalty should you write about?
+</p>
+
+
+:: Opportunity_dungeons_and_dragons_lair_of_evil_captive_0 [nobr]
+A prince
+
+
+
+:: Opportunity_dungeons_and_dragons_lair_of_evil_captive_1 [nobr]
+A princess
+
+
+:: Opportunity_dungeons_and_dragons_lair_of_evil_captive_2 [nobr]
+Enough is enough! Ignore <<their $g.slaver>> request and move on with your day
+

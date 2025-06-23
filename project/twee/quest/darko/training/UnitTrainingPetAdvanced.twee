@@ -1,0 +1,103 @@
+:: QuestSetupUnitTrainingPetAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_pet_advanced',  /* id */
+  'Pet Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingPetAdvanced',  /* description */
+  setup.qdiff.harder44,
+  [
+    [
+      'QuestUnitTrainingPetAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pet_advanced),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingPetAdvancedSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pet_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingPetAdvancedFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingPetAdvancedDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_pet_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingPetAdvanced [nobr]
+<p>
+The next step to take after a slave learn the basics of being a pet
+is to immerse them in the role. This means that the slave must learn how
+to maximize pleasure of their master by proper attitude. Begging, wagging
+their plugged tail, and the ability to play fetch are just some examples of
+the mental skills they need to acquire. Their physical attributes will also
+need to be trained further, for example by a long day of walking on four
+legs while having their rear constantly plugged with a large tailplug.
+</p>
+
+:: QuestUnitTrainingPetAdvancedCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_pet_advanced_male.jpg'>>
+<<else>>
+  <<questimage 'unit_training_pet_advanced_female.jpg'>>
+<</if>>
+
+<p>
+<<Rep $g.trainee>> turned out to be a natural pet.
+The training went so smoothly that
+<<rep $g.head>> and your slavers managed to study other things
+and gain a lot of experience from their spare time during the training.
+</p>
+
+:: QuestUnitTrainingPetAdvancedSuccess [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_pet_advanced_male.jpg'>>
+<<else>>
+  <<questimage 'unit_training_pet_advanced_female.jpg'>>
+<</if>>
+
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to acquire all the necessary skils to graduate from this
+training.
+</p>
+
+:: QuestUnitTrainingPetAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccessful, and the lessons were
+lost in <<reps $g.trainee>> thick skull.
+</p>
+
+:: QuestUnitTrainingPetAdvancedDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+It is clear that <<reps $g.trainee>> prior training must be
+repeated before another attempt at this training.
+</p>

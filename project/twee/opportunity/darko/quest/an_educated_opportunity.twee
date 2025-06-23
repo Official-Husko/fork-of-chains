@@ -1,0 +1,110 @@
+:: OpportunitySetup_an_educated_opportunity [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'an_educated_opportunity', /* key */
+"An Educated Opportunity", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'unknown',
+  'fort',
+],
+1, /* expiration weeks */
+'Opportunity_an_educated_opportunity',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_an_educated_opportunity_0',
+    'Opportunity_an_educated_opportunity_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Leave('slaver', "a|is writing a book", undefined),
+      setup.qc.Event('teachings_of_obedience', 10, {
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Opportunity_an_educated_opportunity_1',
+    'Opportunity_an_educated_opportunity_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.TraumatizeRandom('slaver', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_an_educated_opportunity [nobr]
+<p>
+<<Yourrep $g.slaver>> slaver|have asked for a short break from <<their
+$g.slaver>> slaving duties. That isn't too surprising, but you are caught
+completely off guard when you asked <<them $g.slaver>> for the reason: <<theslaver $g.slaver>>
+wants to a write a book.
+</p>
+
+<p>
+As you recall, <<rep $g.slaver>> slaver|have indeed been certified and would be a
+qualified instructor in the <<lore location_institute_of_higher_learning>>.
+It seems <<they $g.slaver>> slaver|want to write down the teachings <<they
+$g.slaver>> slaver|have learned from the course, and slaver|spread the knowledge around.
+<<if $g.slaver.isHasTrait('per_active')>>
+Given that <<rep $g.slaver>> slaver|have never been known as a studious
+slaver, you have your doubts, and in all likelihood
+<<else>>
+<<Yourrep $g.slaver>> slaver|is reasonably studious, so <<they $g.slaver>> might
+be telling the truth, or
+<</if>>
+<<they $g.slaver>> just give you the excuse because it sounds pretty cool.
+But ultimately the decision is yours, should you wish to grant <<theslaver $g.slaver>> a few months break...
+</p>
+
+
+:: Opportunity_an_educated_opportunity_0 [nobr]
+Give <<them $g.slaver>> your blessing
+
+
+:: Opportunity_an_educated_opportunity_0_flavor [nobr]
+<p>
+<<Reps $g.slaver>> <<uears $g.slaver>> perk up hearing your reply, and
+without saying any other work <<they $g.slaver>> slaver|decide to get to work
+immediately and <<uadv $g.slaver>> slaver|head to <<their $g.slaver>> room.
+</p>
+
+
+
+:: Opportunity_an_educated_opportunity_1 [nobr]
+Delay it
+
+
+:: Opportunity_an_educated_opportunity_1_flavor [nobr]
+
+<p>
+<<Rep $g.slaver>> slaver|look slightly dejected hearing your refusal, but you're
+sure <<they $g.slaver>> will be back to <<their $g.slaver>> normal <<uadjgood
+$g.slaver>> self in a gusto.
+</p>
+
+<p>
+You have no doubt <<theslaver $g.slaver>> will ask you for another opportunity sooner or
+later, and maybe you'll grant it next time.
+</p>

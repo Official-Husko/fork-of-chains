@@ -1,0 +1,124 @@
+:: OpportunitySetup_doppelganger_epilogue [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'doppelganger_epilogue', /* key */
+"Doppelganger Epilogue", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+  'money',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_doppelganger_epilogue',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_doppelganger_epilogue_0',
+    'Opportunity_doppelganger_epilogue_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.MoneyCustom(50000),
+      setup.qc.TraumatizeRandom('slaver', 30),
+      setup.qc.ContactLose(setup.contacttemplate.quest_doppelganger),
+      setup.qc.VarRemove('quest_doppelganger_progress'),
+      setup.qc.SetCooldownQuest('the_virgin_raider', 200),
+      setup.qc.RemoveTitleGlobal('quest_doppelganged'),
+      setup.qc.RemoveTitleGlobal('quest_doppelganger'),
+    ],
+  ],
+  [
+    'Opportunity_doppelganger_epilogue_1',
+    'Opportunity_doppelganger_epilogue_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.PerkChoice('slaver', 'perk_doppelganged'),
+      setup.qc.VarRemove('quest_doppelganger_progress'),
+      setup.qc.VarSet('quest_doppelganger_event_cooldown', '1', 100),
+    ],
+  ],
+  [
+    'Opportunity_doppelganger_epilogue_2',
+    'Opportunity_doppelganger_epilogue_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarRemove('quest_doppelganger_progress'),
+      setup.qc.ContactLose(setup.contacttemplate.quest_doppelganger),
+      setup.qc.PerkChoice('dop', 'perk_doppelganger'),
+      setup.qc.Slaver('dop', "a|is a doppelganger who copied one of your slavers and ended up hired by you", undefined),
+      setup.qc.VarSet('quest_doppelganger_event_cooldown', '1', 100),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+  'dop': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_doppelganger_epilogue [nobr]
+<p>
+Having healed the trauma that your doppelganger <<rep $g.dop>> had from being violated by a desert pirate, <<they $g.dop>> had finally stopped involuntarily transforming every night. You made sure of this by watching <<them $g.dop>> for a week, and indeed, the <<rep $g.slaver>> lookalike now slept peacefully every such night.
+</p>
+
+<p>
+With the threat over, it's time to decide what to do with the doppelganger for good. You can of course, reclaim the bounty placed on <<their $g.dop>> head, although this will for sure make <<rep $g.slaver>> a little grumpy. Alternatively, you could let <<them $g.dop>> keep staying at your fort as your guest, as if nothing changed. Finally, now that <<their $g.dop>> mind is no longer switching every now and then, you could try to recruit <<them $g.dop>> into being one of your slavers. Having a perfect clone of <<rep $g.slaver>> would surely be beneficial for your company, no?
+</p>
+
+
+
+
+:: Opportunity_doppelganger_epilogue_0 [nobr]
+Fulfill bounty
+
+
+:: Opportunity_doppelganger_epilogue_0_flavor [nobr]
+<p>
+Money is the most important thing for you, and you made the decision to sell the doppelganger away and fulfill <<their $g.dop>> bounty. <<Rep $g.slaver>> slaver|is a little saddened at the departure of <<their $g.slaver>> friend, but you have no doubt <<they $g.slaver>> will quickly get over it with a couple of drinks or two.
+</p>
+
+
+:: Opportunity_doppelganger_epilogue_1 [nobr]
+Let <<them $g.dop>> stay
+
+
+:: Opportunity_doppelganger_epilogue_1_flavor [nobr]
+<p>
+With the threat over, there is no reason for you to not let <<them $g.dop>> continue to stay at your fort. This has a positive effect on <<rep $g.slaver>> — somehow, having a doppelganger of yourself around seems to make <<them $g.slaver>> recover more quickly from injuries, as if any injury they suffer is divided into two.
+</p>
+
+
+
+
+:: Opportunity_doppelganger_epilogue_2 [nobr]
+Recruit <<them $g.dop>>
+
+
+:: Opportunity_doppelganger_epilogue_2_flavor [nobr]
+<p>
+In your infinite wisdom, you've decided to recruit a doppelganger into your employ. <<They $g.dop>> will take up the form of <<rep $g.slaver>>, and unfortunately, <<they $g.dop>> might not be able to change <<their $g.dop>> form at will, given <<their $g.dop>> circumstances. Still, when properly trained, <<they $g.dop>> may be able to relearn a trick or two that would allow them to morph back into the exact likeliness of <<rep $g.slaver>> every few weeks, reverting all corruptions in the process.
+</p>
+

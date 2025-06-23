@@ -1,0 +1,123 @@
+:: QuestSetupUnitTrainingObedienceBasic [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_obedience_basic',  /* id */
+  'Obedience Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingObedienceBasic',  /* description */
+  setup.qdiff.easy10,
+  [
+    [
+      'QuestUnitTrainingObedienceBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_obedience_basic),
+      ]
+    ],
+    [
+      'QuestUnitTrainingObedienceBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_obedience_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingObedienceBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingObedienceBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingObedienceBasic [nobr]
+<p>
+Basic obedience is the first skill that any slave must learn.
+Through this lesson, they will learn that
+disobeying means punishment, while obeying will let
+them serve their betters in peace.
+</p>
+
+:: QuestUnitTrainingObedienceBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<if $gQuest.getSeed() % 2 == 0>>
+    <<questimage 'unit_training_obedience_basic_male.jpg'>>
+  <<elseif $gQuest.getSeed() % 2 == 1>>
+    <<questimage 'unit_training_obedience_basic_male2.jpg'>>
+  <</if>>
+<<else>>
+  <<questimage 'unit_training_obedience_basic_female.jpg'>>
+<</if>>
+
+<p>
+<<Rep $g.trainee>> started out a disobedient little <<urace $g.trainee>>, and <<rep $g.head>>
+<<if $g.head.isHasTrait('per_cruel')>>
+  cruelly licked <<their $g.head>> lips in anticipation breaking the slut-to-be.
+<<elseif $g.head.isHasTrait('per_kind')>>
+  let out a sigh, having no choice but to go against <<their $g.head>> kind nature and donned the slaver mask.
+<<else>>
+  head|was ready to tackle the task of breaking the slave down.
+<</if>>
+<<rep $g.trainee>> was confined in <<their $g.trainee>> small cell
+between trainings. <<Rep $g.head>> kept the trainings varied and unpredictable.
+In one session, <<they $g.head>> demanded obedience.
+In another session, <<they $g.head>> stroke the slave when it wasn't given.
+The next, <<they $g.head>> <<uadv $g.head>> beat the initially resisting slave.
+By the end of the training, <<rep $g.trainee>> trainee|have been broken out, and would
+obey most orders out of fear for punishment.
+While this isn't what the ideal slave should think, it's the right start,
+and with further training may be improved to that of blind obedience.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The training was a complete success. <<Rep $g.head>>
+instilled some basic submissiveness into
+<<reps $g.trainee>> thick skull.
+</p>
+
+<<else>>
+
+<p>
+It was difficult, but <<rep $g.trainee>> trainee|is finally starting
+to obey orders at the end of the training.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingObedienceBasicFailure [nobr]
+
+<p>
+Unfortunately, <<rep $g.trainee>> trainee|continue to defy all
+the orders given to <<them $g.trainee>>. At the end of the week,
+<<rep $g.head>> head|was basically defeated, but at least
+no harm is done.
+</p>
+
+:: QuestUnitTrainingObedienceBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

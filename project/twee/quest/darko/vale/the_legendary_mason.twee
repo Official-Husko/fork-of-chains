@@ -1,0 +1,138 @@
+/* THIS QUEST IS CURRENTLY NOT IN GAME DUE TO THE FORT BEING REWORKED */
+
+:: QuestSetup_the_legendary_mason [nobr]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'the_legendary_mason', /* key */
+"The Legendary Mason", /* Title */
+"darko", /* Author */
+[ 'vale',
+'veteran',
+'upgrade',
+'rare',
+], /* tags */
+4, /* weeks */
+10, /* quest expiration weeks */
+{ /* roles */
+'builder1': setup.qu.builder,
+'builder2': setup.qu.builder,
+'planner': setup.qu.planner, },
+{ /* actors */
+'master': 'all', },
+[ /* costs */
+],
+'Quest_the_legendary_mason',
+setup.qdiff.hardest52, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_legendary_masonCrit',
+[
+],
+], [
+'Quest_the_legendary_masonCrit',
+[
+],
+], [
+'Quest_the_legendary_masonCrit',
+[
+],
+], [
+'Quest_the_legendary_masonCrit',
+[
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.legendary],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.Cooldown(100), ],
+)>>
+
+:: Quest_the_legendary_mason [nobr]
+<p>
+You have heard that a master mason lives somewhere on the <<lore region_vale>>. The mason is rumored to have an unmatched skill at building —- they say that the mason guided the construction of several forts which was completed all in record time.
+</p>
+
+<p>
+Your fort could use some upgrading. Perhaps you can find and invite the mason to help you fix up your fort for less money than usual? You will still need to provide the labor, however — so make sure they are suitable for the job!
+</p>
+
+<p>
+<<successtext 'This is a very rare quest'>>. <<dangertext 'Be warned'>> that this quest can drain your treasury extremely fast without warning!
+</p>
+
+
+
+:: Quest_the_legendary_masonCrit [nobr]
+<p>
+The mason is a <<uadj $g.master>> <<man $g.master>> — Upon seeing <<reps $g.builder1>> experienced <<ubody $g.builder1>>, the mason was intrigued and agreed to come over to your fort and see what magic <<they $g.builder1>> could work on.
+</p>
+
+<<set _fort = $fort.player.getBuilding(setup.buildingtemplate.xxx)>>
+
+<<if _fort.getLevel() == _fort.getTemplate().getMaxLevel()>>
+<p>
+The mason was in awe of your magnificent, and
+<<successtext 'fully upgraded'>> fort.
+But that meant there was nothing for the mason to improve on,
+and after taking notes <<they $g.master>> left your fort without any fanfare.
+</p>
+<<else>>
+
+<p>
+As <<they $g.master>> walked around, the mason commented numerous places inside your fort that could be easily improved upon. <<They $g.master>> moved around the battlements of your fort with inhuman speed, and your slavers struggled to catch up. Along the way the mason made many comments on possible improvements
+<<if $gOutcome == 'crit'>>
+which <<rep $g.planner>> deftly take note of.
+<<elseif $gOutcome == 'success'>>
+which <<rep $g.planner>> took note of.
+<<elseif $gOutcome == 'failure'>>
+which <<rep $g.planner>> struggled to take note of.
+<<elseif $gOutcome == 'disaster'>>
+which <<rep $g.planner>> failed to take note of.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+At the end of the day, <<reps $g.planner>> notes were full with possible improvements. Over the next few weeks, with the mason's guidance your able slavers <<rep $g.builder1>> and <<rep $g.builder2>> were able to made major improvements to your fort, improving it greatly at only a third of the usual cost.
+</p>
+<<elseif $gOutcome == 'success'>>
+<p>
+At the end of the day, <<reps $g.planner>> notes were full of scribbles — some unreadable — of the possible improvements. Over the next few weeks, with the mason's guidance your able slavers <<rep $g.builder1>> and <<rep $g.builder2>> were able to significantly improve your fort at only half of the usual cost.
+</p>
+<<elseif $gOutcome == 'failure'>>
+<p>
+At the end of the day, <<rep $g.planner>> planner|was unable to learn much from the mason. Over the next few weeks, the mason single-handed guided your slavers, who struggled to follow <<their $g.master>> orders. Still, the mason is a master of <<their $g.master>> job and <<rep $g.builder1>> and <<rep $g.builder2>> were still able to improve your fort at only three quarters the usual cost.
+</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>
+At the end of the day, <<rep $g.planner>> planner|was unable to learn much from the mason. Disappointed at your slavers' lack of enthusiasm, the mason left your fort the same night. Over the next few weeks, your slavers tried to fix your fort as best as they can, but instead their sloppy work caused much damage to the fort, destroying a significant chunk of it. You will need to have your fort repaired and your slavers reprimanded later.
+</p>
+<</if>>
+
+/* This quest has a special reward that's given here instead */
+
+<<if $gOutcome == 'disaster'>>
+<<if _fort.getLevel() > 1>>
+  <<run _fort.downgrade()>>
+<</if>>
+<<else>>
+<<set _oldmoney = $company.player.getMoney()>>
+<<run _fort.upgrade()>>
+<<set _cost = _oldmoney -$company.player.getMoney()>>
+<<if $gOutcome == 'crit'>>
+<<run $company.player.addMoney(Math.round(_cost * 2 / 3))>>
+<<elseif $gOutcome == 'success'>>
+<<run $company.player.addMoney(Math.round(_cost / 2))>>
+<<elseif $gOutcome == 'failure'>>
+<<run $company.player.addMoney(Math.round(_cost / 4))>>
+<</if>>
+<</if>>
+
+<</if>>
+
+

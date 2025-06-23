@@ -1,0 +1,153 @@
+:: OpportunitySetup_job_change [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'job_change', /* key */
+"Job Change", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'favor',
+  'money',
+],
+1, /* expiration weeks */
+'Opportunity_job_change',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_job_change_0',
+    'Opportunity_job_change_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+    ],
+  ],
+  [
+    'Opportunity_job_change_1',
+    'Opportunity_job_change_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.SetCooldownEvent('job_change', setup.INFINITY),
+    ],
+  ],
+  [
+    'Opportunity_job_change_2',
+    'Opportunity_job_change_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.IfThenElse(
+setup.qres.VarEqual('quest_brothel_promotion', 'money'),
+setup.qc.DoAll([
+setup.qc.VarSet('quest_brothel_promotion', 'favor', -1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.VarSet('quest_brothel_promotion', 'money', -1)
+], undefined)),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_job_change [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+The former head whore of <<attach _describe>>, that is <<rep $g.head>>, is currently working as the brothel's
+<<if _promotion == 'money'>>
+business manager. <<They $g.head>> dutifully makes sure that the brothel's financials remains in the green, and ensure that there are no excess expenses leaking from the daily operations. This indirectly increases the brothel's operating profit.
+<<else>>
+customer relations officer. <<They $g.head>> dutifully makes sure that the customers leave the brothel satisfied. Your company's popularity among the residents of the <<lore location_npc>> increases week by week as a result.
+<</if>>
+</p>
+
+<p>
+While <<they $g.head>> head|have been doing a very good job so far, <<yourrep $g.owner>> owner|suggest that it may be time to let <<them $g.head>> switch job.
+<<if _promotion == 'money'>>
+Instead of a business manager, <<they $g.head>> could be reassigned as the customer relations officer. As a customer relations officer, <<they $g.head>> would then be responsible to ensure that all your customers leave your venue satisfied. In turn, this can increase your company's popularity among the neko, but in exchange for lowered profit.
+<<else>>
+Instead of a customer relations officer, <<they $g.head>> could be reassigned as the business manager. <<They $g.head>> would be responsible to ensure that the brothel remains profitable, which directly increases the operating profit. Without a customer relations officer, however, your favor with the neko will no longer increase week by week.
+<</if>>
+</p>
+
+
+
+:: Opportunity_job_change_0 [nobr]
+Stay as <<if setup.dutytemplate.questbrothelmanager.promotion() == 'money'>>business manager<<else>>customer relations officer<</if>>
+
+
+:: Opportunity_job_change_0_flavor [nobr]
+<p>
+<<They $g.head>> head|have been doing a great job so far, and you have decided that there are no reason to change <<their $g.head>> occupation.
+</p>
+
+
+:: Opportunity_job_change_1 [nobr]
+Stay as <<if setup.dutytemplate.questbrothelmanager.promotion() == 'money'>>business manager<<else>>customer relations officer<</if>> and never ask again
+
+
+:: Opportunity_job_change_1_flavor [nobr]
+<p>
+<<They $g.head>> head|have been doing a great job so far, and you have decided that there are no reason to change <<their $g.head>> occupation.
+</p>
+
+<p>
+You've instructed <<yourrep $g.owner>> to never bother with this issue again in the future.
+</p>
+
+
+:: Opportunity_job_change_2 [nobr]
+Change to <<if setup.dutytemplate.questbrothelmanager.promotion() == 'favor'>>business manager<<else>>customer relations officer<</if>>
+
+
+:: Opportunity_job_change_2_flavor [nobr]
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+After a simple ceremony, <<yourrep $g.head>> head|is now the brothel's new
+<<if _promotion == 'money'>>
+customer relations officer.
+<<They $g.head>> will work hard ensuring that your courtesans have satisfied the visiting customers, either with words or with a complimentary blowjob. While your brothel's profit will decline, expect your relations with the neko to improve in the future.
+<<else>>
+business manager. <<They $g.head>> will work hard ensuring that your brothel's expenses remain manageable from now on. Expect your brothel's profit to increase in the future, but your relations with the neko will no longer improve week by week.
+<</if>>
+</p>

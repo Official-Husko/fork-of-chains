@@ -1,0 +1,191 @@
+:: EventSetup_innocent_tourist [nobr event]
+
+
+<<run new setup.UnitGroup(
+"innocent_tourist1",
+"Tourist",
+'subrace_humankingdom', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_merchant),
+  setup.qc.TraitReplace('unit', setup.trait.per_chaste),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_tight),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_tight),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.breast_huge),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.dick_huge),
+],
+)>>
+
+<<run new setup.Event(
+'innocent_tourist', /* key */
+"Innocent Tourist", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_innocent_tourist',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.OnDuty('entertainmentslave'),
+    setup.qres.Home(),
+  ],
+  'slave2': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.OnDuty('oralfuckholeslave'),
+  ],
+  'pimp': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.OnDuty('entertainmentpimp'),
+  ],
+  'tourist': 'innocent_tourist1',
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_innocent_tourist [nobr]
+<p>
+Today, <<yourrep $g.pimp>> comes to your office with a news.
+"Something unusual for you, <<name $unit.player>>," <<they $g.pimp>> says. "
+<<Rep $g.slave>> is selling <<their $g.slave>> <<ubody $g.slave>> out in the <<rep setup.buildingtemplate.recreationwing>> when a tourist from the more reserved strata of <<lore region_city>> accosted <<them $g.slave>>.
+<<Rep $g.slave>> thought <<they $g.tourist>> was a rich citizen of the city who wanted to fuck <<them $g.slave>>, but it turns out <<they $g.slave>> just wanted a tour guide. It was a reasonable mistake; <<they $g.slave>> seems wealthy enough. <<Rep $g.slave>> has been showing <<them $g.slave>> around your fort for the last half hour.
+Now <<they $g.slave>>'s asked <<rep $g.slave>> if <<they $g.slave>> can meet you, which <<they $g.slave>> then relayed to <<their $g.pimp>> handler — me."
+</p>
+
+<p>
+Looking out from your window, you could actually see
+<<rep $g.slave>> standing with the tourist in question out on the main plaza.
+<<They $g.tourist>>'s wearing
+<<if $g.tourist.isFemale()>>
+luxurious pants over <<their $g.tourist>> hips and a sweater that understates <<their $g.tourist>> generous bust.
+<<else>>
+luxurious jacket over <<their $g.tourist>> <<ubody $g.tourist>> and a pair of loose pants that understates <<their $g.tourist>> generous bulge.
+<</if>>
+<<They $g.tourist>>'s blushing as <<they $g.tourist>> asks <<rep $g.slave>> a discreet question about public sex in the fort, brought on by the sight of a couple of visitors spitroasting <<yourrep $g.slave2>>.
+</p>
+
+<<choose>>
+
+<<opt "Decline politely">>
+
+<p>
+You have <<yourrep $g.pimp>> instruct <<rep $g.slave>> to pass on your regrets, and add a message for <<them $g.slave>> expressing confidence in <<them $g.slave>> to represent you and your company perfectly well without you or <<rep $g.pimp>>.
+<<They $g.slave>>'s affirmed by your trust in <<them $g.slave>>.
+"<<Master $unit.player>>," <<they $g.slave>> reports the next time you see <<them $g.slave>>, "that tourist was really nice. Also, I got <<them $g.slave>> to have sex with me, after all. <<They $g.tourist>> was all hesitant and shy about doing it in public, but <<they $g.slave>> got better after the first time I
+<<if $g.tourist.isFemale()>>
+ate <<their $g.slave>> out."
+<<else>>
+suck <<them $g.slave>> off."
+<</if>>
+<<They $g.slave>> looks pleased with <<themself $g.slave>>. "<<They $g.tourist>> paid quite well too, and here it is."
+</p>
+
+<<run setup.qc.Money(1500).apply($gQuest)>>
+
+<<opt "Accept and have <<rep $g.slave>> service the tourist in your office">>
+
+<p>
+You have <<rep $g.slave>> bring the tourist up to meet you. <<They $g.slave>>'s full of questions about what it's like to be living in such a carnal place, and you finally tell <<them $g.tourist>> that you can give <<them $g.tourist>> a pretty good idea. Eagerly, <<they $g.tourist>> asks you how, and you point at <<yourrep $g.slave>>, telling the tourist <<they $g.tourist>> ought to bend the slave over the desk if <<they $g.tourist>> wants to know what life here really is like.
+<<if $g.tourist.isFemale() && $g.slave.isFemale()>>
+"I'm, um, not really a lesbian,"
+<<elseif $g.tourist.isMale() && $g.slave.isMale()>>
+"I'm, um, not really a gay,"
+<<else>>
+"I'm, um, not really into <<girl $g.slave>>s,"
+<</if>>
+the tourist responds hesitantly.
+</p>
+
+<p>
+"Having sex with slaves
+<<if $g.tourist.isFemale() && $g.slave.isFemale()>>
+does not make you a lesbian,"
+<<elseif $g.tourist.isMale() && $g.slave.isMale()>>
+does not make you gay,"
+<<else>>
+is different,"
+<</if>>
+<<rep $g.slave>> purrs. "It's different here. Please,
+fuck me. It'll be fun!"
+The tourist turns to stare at <<them $g.slave>>, and <<they $g.tourist>> offers just the right kind of plaintive expression. "O-okay," the tourist says in a tiny voice, and <<rep $g.slave>> giggles, hugging <<them $g.tourist>> from behind. <<They $g.slave>>
+<<if $g.tourist.isFemale()>>
+cups one of the tourist's breasts, and snakes <<their $g.slave>> other <<uhand $g.slave>> down the front of <<their $g.slave>> pants.
+<<else>>
+traces the tourist's chest, and snakes <<their $g.slave>> other <<uhand $g.slave>> down the front of <<their $g.slave>> pants.
+<</if>>
+"Here!?" the tourist gasps, staring straight at you and blushing even harder. You tell <<them $g.tourist>> that that's how you do things in the company: enjoying a slave is nothing to be ashamed of. <<They $g.tourist>> looks doubtful, but <<they $g.tourist>> doesn't try to escape from <<reps $g.slave>> roving <<uhands $g.slave>>, either. Your presence continues to bother <<them $g.tourist>> until <<rep $g.slave>> distracts <<them $g.tourist>> by getting <<them $g.tourist>> to cuddle on the desk and make out, providing enough of a distraction that <<they $g.tourist>> gets over <<their $g.tourist>> inhibitions and orgasms rather immodestly.
+</p>
+
+<p>
+You offer <<them $g.tourist>> some liquid courage as <<they $g.tourist>> recovers, but <<they $g.tourist>>'s rapidly getting over <<their $g.tourist>> hesitation. As the alcohol suffuses <<them $g.tourist>>, <<they $g.tourist>> starts stealing glances at <<rep $g.slave>>, who for <<their $g.slave>> part is being as seductive as <<urace $g.slave>>ly possible. Finally, the tourist mouths 'fuck it' silently, reaches over, and openly gropes the slave's ass. <<Rep $g.slave>>
+<<if $g.slave.isFemale()>>
+giggles and
+<</if>>
+shifts lewdly, ensuring that the tourist's <<uhand $g.tourist>> makes a thorough tour of everything the slave has. The tourist tentatively sinks a couple of fingers into <<rep $g.slave>>, and the slave shamelessly slides <<themself $g.slave>> onto the invading digits, begging to be fucked. You make a party of it, with the various slavers who come and go over the course of the evening treated to the sight of <<rep $g.slave>> getting fucked by the tourist. <<They $g.tourist>> drunkenly promises you to tell all <<their $g.tourist>> friends how awesome your fort is at one point, though <<they $g.tourist>> has to take <<their $g.tourist>> <<umouth $g.tourist>> off one of <<reps $g.slave>> nipples to do so.
+</p>
+
+<<run setup.qc.Favor('humankingdom', 75).apply($gQuest)>>
+
+<<opt "Accept and encourage <<them $g.tourist>> to enjoy the slave with your compliments">>
+
+<p>
+You have <<rep $g.slave>> bring the tourist up to meet you, and exchange some minor pleasantries. You tell <<them $g.tourist>> that if <<they $g.tourist>> really wants to experience the life outside the gates of <<lore region_city>>, though, <<they $g.tourist>> really should enjoy <<rep $g.slave>>, pointing at the slave hovering behind <<them $g.tourist>>. <<They $g.tourist>> blushes furiously, but before <<they $g.tourist>> can stammer a refusal, the slave whispers something into <<their $g.tourist>> ear.
+</p>
+
+<p>
+"Having sex with slaves
+<<if $g.tourist.isFemale() && $g.slave.isFemale()>>
+does not make you a lesbian,"
+<<elseif $g.tourist.isMale() && $g.slave.isMale()>>
+does not make you gay,"
+<<else>>
+is different,"
+<</if>>
+<<rep $g.slave>> purrs. "It's different here. Please,
+give me a try."
+The tourist turns to stare at <<them $g.slave>>, and <<they $g.tourist>> offers just the right kind of plaintive expression. "O-okay," the tourist says in a tiny voice, and <<rep $g.slave>>
+<<if $g.slave.isFemale()>>
+giggles,
+<<else>>
+grins,
+<</if>>
+hugging <<them $g.tourist>> from behind. <<They $g.slave>> takes the tourist's <<uhand $g.tourist>>, and they leave your office together.
+
+"<<Master $unit.player>>," <<rep $g.slave>> reports the next time you see <<them $g.slave>>, "that tourist was really nice. Also, I got <<them $g.tourist>> to have sex with me, after all. <<They $g.tourist>> was going to take me back to <<their $g.tourist>> rented room first, but I got <<them $g.tourist>> to do me on the way. <<They $g.tourist>> was all hesitant <<if $g.tourist.isFemale()>>and blushy<</if>> about doing it in public, but <<they $g.tourist>> got better after the first time I
+<<if $g.tourist.isFemale()>>
+ate <<their $g.tourist>> out."
+<<else>>
+suck <<them $g.tourist>> off."
+<</if>>
+<<They $g.slave>> looks pleased with <<themself $g.slave>>. "<<They $g.tourist>> paid a little for my services, and I bet <<they $g.tourist>> also tells all <<their $g.tourist>> friends back at <<lore region_city>> how much fun it is here."
+</p>
+
+<<run setup.qc.Money(750).apply($gQuest)>>
+<<run setup.qc.Favor('humankingdom', 40).apply($gQuest)>>
+
+<<opt "Enslave <<them $g.tourist>> (WARNING: This will have dire consequences)">>
+
+<p>
+When your new slave comes to, <<their $g.tourist>> weight is hanging from <<their $g.tourist>> wrists, bound over <<their $g.tourist>> head. <<They $g.tourist>>'s nursing a tremendous hangover, and though <<they $g.tourist>> does not realize it, <<they $g.tourist>>'s drugged. You're present, though not visible, witnessing <<their $g.tourist>> first conscious moment of slavery from your desk. Realization is slow. <<They $g.tourist>>'s no innocent, so <<they $g.tourist>> recognizes the sensations of waking up the morning after a night of drinking interspersed with vigorous
+<<if $g.tourist.isFemale()>>vaginal,<</if>> oral and anal intercourse, but <<they $g.tourist>> does not remember the specifics. After a few minutes, <<they $g.tourist>> understands that no one is coming, and speaks up hesitantly: "Is anyone there?" Getting no immediate answer, <<they $g.tourist>> slumps against <<their $g.tourist>> wrist restraints again, and begins to cry to <<themself $g.tourist>>. "W-why would a-anyone do this."
+</p>
+
+<<run setup.qc.Slave('tourist', 'was a simple tourist who chose the wrong fort to sightsee at').apply($gQuest)>>
+<<run setup.qc.Ire('humankingdom', 20).apply($gQuest)>>
+<<run setup.qc.Ire('humanvale', 10).apply($gQuest)>>
+
+<</choose>>

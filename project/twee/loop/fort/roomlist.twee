@@ -1,0 +1,35 @@
+:: RoomList [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<focbutton 'Fort' 'FortGrid'>>
+<</focbutton>>
+
+<<set _dom = setup.DOM.Menu.roomlist()>>
+<<attach _dom>>
+
+
+:: RoomListPlace [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<run setup.DOM.Nav.topLeftNavigation(
+  setup.DOM.Nav.link(
+    'Back',
+    () => {
+      State.variables.gFortGridControl.mode = 'edit';
+    },
+    'FortGridRenovate',
+  )
+)>>
+
+<div>
+  Select room to build:
+  <<foclink '(back)' 'FortGridRenovate'>>
+    <<set State.variables.gFortGridControl.mode = 'edit'>>
+  <</foclink>>
+</div>
+
+<<set _dom = setup.DOM.Menu.roomlist()>>
+<<attach _dom>>
+

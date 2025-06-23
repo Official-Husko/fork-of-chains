@@ -1,0 +1,93 @@
+:: CostMoneyCommon [nobr]
+
+<<set _moneymulti = 0>>
+<<MoneyDone>>
+<<gotowipehistory 'QGCostDone'>>
+
+:: CostMoneyNormal [nobr]
+
+<<focwidget 'MoneyDone'>>
+  <<set $qcost = setup.qc.MoneyNormal(_moneymulti)>>
+<</focwidget>>
+<<include 'CostMoneyCommon'>>
+
+
+:: CostMoneyCrit [nobr]
+
+<<focwidget 'MoneyDone'>>
+  <<set $qcost = setup.qc.MoneyCrit(_moneymulti)>>
+<</focwidget>>
+<<include 'CostMoneyCommon'>>
+
+
+:: CostMoneySmall [nobr]
+
+<<focwidget 'MoneyDone'>>
+  <<set $qcost = setup.qc.MoneySmall(_moneymulti)>>
+<</focwidget>>
+<<include 'CostMoneyCommon'>>
+
+
+:: CostMoneyCustom [nobr]
+
+<p>
+Gain
+<<numberbox '_money' 1500>>
+money.<<message '(?)'>>This is the amount of money that the quest should give on
+a Lv. 40 quest. The amount will be scaled down automatically if the quest level is lower.<</message>>
+</p>
+
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MoneyCustom(_money)>>
+<</link>>
+
+
+:: CostMoneyLoseCustom [nobr]
+
+<p>
+Lose
+<<numberbox '_money' 1500>>
+money.<<message '(?)'>>This is the amount of money that the quest should take on
+a Lv. 40 quest. The amount will be scaled down automatically if the quest level is lower.<</message>>
+</p>
+
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MoneyLoseCustom(_money)>>
+<</link>>
+
+
+:: CostMoneyCustomFixed [nobr]
+
+<p>
+Gain a FIXED amount of money:
+<<numberbox '_money' 1500>>g.
+<<message '(?)'>>
+Unlike all other money options, this amount will not be scaled depending on the level.
+<</message>>
+</p>
+
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Money(_money)>>
+<</link>>
+
+
+:: CostMoneyLoseCustomFixed [nobr]
+
+<p>
+Lose a FIXED amount of money:
+<<numberbox '_money' 1500>>g.
+<<message '(?)'>>
+Unlike all other money options, this amount will not be scaled depending on the level.
+<</message>>
+</p>
+
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Money(-_money)>>
+<</link>>
+
+
+

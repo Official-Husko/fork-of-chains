@@ -1,0 +1,327 @@
+:: QuestSetup_southern_isle_pit_fights [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"southern_isle_pit_fights_qualifications0",
+"Poor Gladiator",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slave),
+  setup.qc.TraitReplace('unit', setup.trait.training_obedience_advanced),
+  setup.qc.OneRandom([
+setup.qc.DoAll([
+setup.qc.TraitReplaceExisting('unit', setup.trait.breast_huge),
+setup.qc.TraitReplaceExisting('unit', setup.trait.balls_huge)
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraitsReplace('unit', [setup.trait.muscle_verythin])
+], undefined),
+setup.qc.DoAll([
+setup.qc.TraitsReplace('unit', [setup.trait.per_masochistic])
+], undefined)
+]),
+],
+)>>
+
+
+<<set _criteriahandler = new setup.UnitCriteria(
+null, /* key */
+'Gladiator Handler', /* name */
+[
+  setup.trait.bg_mercenary,
+  setup.trait.bg_thug,
+  setup.trait.per_smart,
+  setup.trait.per_attentive,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.skill_creative,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_dreamy,
+  setup.trait.per_kind,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1.5,
+  slaving: 1.5,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Gladiator', /* name */
+[
+  setup.trait.bg_knight,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_soldier,
+  setup.trait.bg_thug,
+  setup.trait.bg_raider,
+  setup.trait.height_giant,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_stubborn,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.skill_ambidextrous,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.height_dwarf,
+  setup.trait.height_short,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.tough_nimble,
+  setup.trait.per_curious,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'southern_isle_pit_fights', /* key */
+"Southern Isle Pit Fights", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'gore',
+  'sea',
+  'prep',
+  'money',
+  'item',
+  'trait',
+  'rare',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'handler': [ _criteriahandler, 3],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'enemy': 'southern_isle_pit_fights_qualifications0',
+},
+[ /* costs */
+],
+'Quest_southern_isle_pit_fights',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_southern_isle_pit_fightsCrit',
+    [
+      setup.qc.IfThenElse(
+setup.qres.VarEqual('pit_fight_result', 'win'),
+setup.qc.DoAll([
+setup.qc.EmptyUnitGroup('pit_fight_sale0'),
+setup.qc.AddTag('enemy', 'pit_fight_qual'),
+setup.qc.AddUnitToUnitGroup('enemy', 'pit_fight_sale0'),
+setup.qc.VarSet('pit_fight_progress', '1', -1),
+setup.qc.Money(1000),
+setup.qc.SetCooldownQuest('southern_isle_pit_fights_semi_final', 10),
+setup.qc.AddTitle('slave', 'quest_southern_isle_pit_fights_contestant_2')
+], undefined),
+setup.qc.DoAll([
+setup.qc.Injury('slave', 5),
+setup.qc.Item(setup.item.f_drinktray_normal_pitfight)
+], undefined)),
+      setup.qc.VarRemove('pit_fight_result'),
+      setup.qc.SetCooldownQuest(null, 100),
+    ],
+  ],
+  [
+    'Quest_southern_isle_pit_fightsCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_southern_isle_pit_fightsCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_southern_isle_pit_fightsCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.SlaveMarker('enemy'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.VarNull('pit_fight_result'),
+  setup.qres.NoUnitWithTitle('quest_southern_isle_pit_fights_contestant_2', {
+}),
+],
+[ /* expiration outcomes */
+  setup.qc.SetCooldownQuest(null, 10),
+
+],
+)>>
+
+:: Quest_southern_isle_pit_fights [nobr]
+<p>
+The land beyond the <<lore region_sea>> holds many culture strange and unusual compared those found in <<lore geo_mestia>>. Among the many traditions hold there is the annual Southern Isle Pit Fights festival. The festival is a celebration for the bountiful service slaves have rendered towards their owners, and the pinnacle of the festival is the pit fighting competition.
+</p>
+
+<p>
+Slaveowners can bring their sturdiest and scariest, but obedient slave into the fights, and they can enjoy the entertainment provided by slaves duking it out againt other slaves within the arena. The fight is non-lethal, of course, and it is decided by whichever slave raping the other first. The competition is quite fierce, and it's all thanks to the lucrative reward promised by winning the competition: an equipment found nowhere else.
+</p>
+
+<p>
+You can try to enter a slave too into this competition, if you think you have a sufficiently good fighter among your broken slaves. You'd also need to send a slaver to accompany the slave, as well as giving the slave instructions before the actual fight. Who knows, with a sufficiently good combination of slave and slaver, you might just take it all.
+</p>
+
+<p>
+<<successtext 'Important:'>> This quest is special. The outcome of this quests does not depend on the displayed success chances, but rather, it is computed directly from the participant's traits. Match traits to get the best outcome!
+</p>
+
+
+
+
+
+:: Quest_southern_isle_pit_fightsCrit [nobr]
+<<set _criterias = $gQuest.getTemplate().getUnitCriterias()>>
+<<set _handler = _criterias['handler'].criteria.computeSuccessModifiers($g.handler, true)>>
+<<set _slave = _criterias['slave'].criteria.computeSuccessModifiers($g.slave, true)>>
+
+<<set _crit = _handler.crit + _slave.crit>>
+<<set _dis = _handler.disaster + _slave.disaster>>
+<<set _score = _crit - _dis>>
+
+<p>
+<<Yourrep $g.handler>> reviewed the rules - the combatants are wearing light gloves but otherwise completely naked, and the fight will be nonlethal. The winner is decided once they face-fuck the loser.
+</p>
+
+<p>
+To your slaver surprise, the opponent is nowhere near capable of fighting. In fact, somehow <<rep $g.slave>> had been matched with
+<<if $g.enemy.isHasTrait('per_masochistic')>>
+a complete masochist,
+<<if $g.enemy.isHasDick()>>
+<<their $g.enemy>> dick already hard
+<<else>>
+<<their $g.enemy>> cunt already leaking
+<</if>>
+from the prospect of upcoming pain and <<their $g.enemy>> gaze completely unfocused for the fight.
+<<elseif $g.enemy.isHasTrait('muscle_verythin')>>
+the skinniest <<urace $g.enemy>> your slaver had ever seen — there would just be no way <<they $g.enemy>> could let out a meaningful punch, let alone winning the contest.
+<<elseif $g.enemy.isHasTrait('balls_huge')>>
+a <<urace $g.enemy>> with an extraordinarily large balls, enough to hinder <<their $g.enemy>> fighting.
+<<elseif $g.enemy.isHasTrait('breast_huge')>>
+a <<urace $g.enemy>> with an extraordinarily large boobs, enough to hinder <<their $g.enemy>> fighting.
+<</if>>
+Looking at <<their $g.enemy>> owner, it seemed that the owner enjoyed the perversity of watching their own slave lose and humiliated. Truly, a <<man $unit.player>> after yourself.
+</p>
+
+<<set _win = (_score >= -4)>>
+
+<<if _win>>
+
+<<run setup.qc.VarSet('pit_fight_result', 'win', -1).apply($gQuest)>>
+
+<<if $g.enemy.isHasTrait('per_masochistic')>>
+
+<p>
+It was utterly trivial for <<yourrep $g.slave>> to defeat the masochistic enemy.
+<<if $g.slave.isMasochistic()>>
+Sure, <<rep $g.slave>> is also similarly masochistic-minded, but <<their $g.slave>> slave training holds.
+<</if>>
+By the end of the fight, the enemy was down on the floor in ecstacy from all the pain inflicted upon <<them $g.enemy>>.
+</p>
+
+<<elseif $g.enemy.isHasTrait('muscle_verythin')>>
+
+<p>
+With the enemy's complete lack of muscles, it was trivial for <<yourrep $g.slave>> to win. For every punch <<they $g.enemy>> weakly deliver, your slave was able to return the favor twice, and before long the enemy was down on the floor.
+</p>
+
+<<elseif $g.enemy.isHasTrait('balls_huge')>>
+<p>
+Given the apparent massive pair of balls the enemy possessed, <<rep $g.slave>> took an extremely simple shortcut to victory. The instant the fight started, she hit the enemy right in <<their $g.enemy>> huge balls, as hard as <<they $g.slave>> can. This was a sucker punch of the worst kind; the enemy's balls were so big that <<they $g.enemy>> had no real chance of defending them. <<They $g.enemy>> gasped with pain and wrapped <<their $g.enemy>> <<uarms $g.enemy>> around <<their $g.enemy>> aching balls, giving <<rep $g.slave>> a clear opening to deliver a free and easy blow to the jaw that sends the poor slave to the ground.
+</p>
+<<elseif $g.enemy.isHasTrait('breast_huge')>>
+<p>
+Given the apparent massive flesh of boobs the enemy possessed, <<rep $g.slave>> took an extremely simple shortcut to victory. The instant the fight started, she hit the enemy right in <<their $g.enemy>> huge tits, as hard as <<they $g.slave>> can. This was a sucker punch of the worst kind; the enemy's boobs were so big that <<they $g.enemy>> had no real chance of defending them. <<They $g.enemy>> gasped with pain and wrapped <<their $g.enemy>> <<uarms $g.enemy>> around <<their $g.enemy>> aching bosom, giving <<rep $g.slave>> a clear opening to deliver a free and easy blow to the jaw that sends the poor top-heavy slave to the ground. Any chance of <<them $g.enemy>> rising was extinguished by <<their $g.enemy>> breasts; it would took <<them $g.enemy>> so long to muster an attempt to get up that <<rep $g.slave>> could rain hits on <<them $g.enemy>> while <<they $g.enemy>> did.
+</p>
+
+<</if>>
+
+
+<p>
+<<if !$g.slave.isCanPhysicallyCum()>>
+
+A strap-on was thrown down to your slave,
+<<if $g.slave.isHasDick()>>
+since <<their $g.slave>> dick was caged.
+<<else>>
+since <<they $g.slave>> lacked a dick.
+<</if>>
+
+
+<<else>>
+
+<<Rep $g.slave>> only took a few strokes of <<their $g.slave>> <<uhand $g.slave>> to bring <<their $g.slave>> <<udick $g.slave>> to full mast.
+
+<</if>>
+<<They $g.slave>> proceeded to grab the head of the downed enemy and shove it into <<their $g.slave>> mast, face-fucking <<them $g.enemy>> and asserting <<their $g.slave>> victory.
+</p>
+
+<p>
+Despite the extremely easy victory, it was still a victory, and <<yourrep $g.slave>> had advanced to the next bout of the fight. You will receive another invitation for the fight in the future, as long as you keep your slave around.
+</p>
+
+<<else>>
+
+<<run setup.qc.VarSet('pit_fight_result', 'lose', -1).apply($gQuest)>>
+
+<p>
+Even more surprisingly, however, is that your slave is equally incapable.
+Despite fighting against such a handicapped enemy, <<yourrep $g.slave>>'s
+<<if $g.slave.isMasochistic()>>
+masochistic tendencies
+<<elseif $g.slave.isHasTrait('muscle_verythin')>>
+complete lack of musculature
+<<elseif $g.slave.isHasTrait('breast_huge')>>
+<<ubreasts $g.slave>>
+<<elseif $g.slave.isHasTrait('balls_huge')>>
+<<uballs $g.slave>>
+<<elseif $g.slave.isHasTrait('dick_huge')>>
+<<udick $g.slave>>
+<<else>>
+<<uinsultnoun $g.slave>>
+<</if>>
+evened out the fight.
+In the end, both slaves were disqualified from the fight for the disgrace they had brought into the arena.
+</p>
+
+<p>
+Still, the owner of the enemy's team was suitable impressed by your degeneracy of sending such a slave into the competition, and gifted you a little something extra for your efforts.
+</p>
+
+<</if>>

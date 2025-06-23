@@ -1,0 +1,79 @@
+:: InitBuildingFarm [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'pottedplant',
+  tags: ['hidename', 'hideskill', ],
+  description_passage: 'RoomPottedPlant',
+  name: 'Potted plant',
+  width: 1,
+  height: 1,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "survival",
+      bonus_amount: setup.ROOM_DECORATION_BONUS,
+    },
+    {
+      type: 'always',
+      skill_key: "social",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'farm',
+  tags: [],
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "survival",
+      bonus_amount: setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+    {
+      type: 'always',
+      skill_key: "social",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'farm',
+  name: 'Farm',
+  tags: ['decoration'],
+  description_passage: 'BuildingFarm',
+  costs: setup.BuildingTemplate.getDecorationCosts(),
+  restrictions: setup.BuildingTemplate.getDecorationRestrictions(),
+  main_room_template_key: 'farm',
+  sub_room_template_key: 'pottedplant',
+})>>
+
+
+:: BuildingFarm [nobr]
+
+<p>
+A lush and well-planted patch of land, ensuring your fort has some access to food
+in emergencies.
+When placed at your fort, will increase
+<<rep setup.skill.survival>> in exchange for <<rep setup.skill.social>>.
+</p>
+
+:: RoomPottedPlant [nobr]
+
+<p>
+A small plant growing happily in its pot.
+</p>

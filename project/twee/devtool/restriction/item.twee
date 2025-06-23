@@ -1,0 +1,51 @@
+:: RestrictionHasItem [nobr]
+
+Must have the following item: <br/>
+
+<<for _ibt, _bt range setup.item>>
+  <<rep _bt>>
+  <<capture _bt>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.HasItem(_bt)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+
+:: RestrictionNoItem [nobr]
+
+Must <<dangertext 'NOT'>> have the following item: <br/>
+
+<<for _ibt, _bt range setup.item>>
+  <<rep _bt>>
+  <<capture _bt>>
+    <<link '(select this)' 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.NoItem(_bt)>>
+    <</link>>
+  <</capture>>
+  <br/>
+<</for>>
+
+
+:: RestrictionSlaveBedchamberHasFurniture [nobr]
+
+Slave must be in a bedchamber containing the following furniture: <br/>
+
+<<for _ibt, _bt range setup.item>>
+  <<if _bt.getItemClass() == setup.itemclass.furniture>>
+    <<rep _bt>>
+    <<capture _bt>>
+      <<link '(select this)' 'QGRestrictionDone'>>
+        <<set $qrestriction = setup.qres.SlaveBedchamberHasFurniture(_bt)>>
+      <</link>>
+    <</capture>>
+    <br/>
+  <</if>>
+<</for>>
+
+
+
+
+
+

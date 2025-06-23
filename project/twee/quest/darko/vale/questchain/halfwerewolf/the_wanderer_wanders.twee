@@ -1,0 +1,152 @@
+:: QuestSetup_the_wanderer_wanders [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'the_wanderer_wanders', /* key */
+"The Wanderer Wanders", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'special',
+  'transformation',
+  'vale',
+],
+1, /* weeks */
+1, /* expiration weeks */
+{ /* roles */
+  'scout': [ setup.qu.scout_vale, 1],
+  'spotter': [ setup.qu.spotter, 1],
+  'spy': [ setup.qu.infiltrator, 1],
+},
+{ /* actors */
+  'wanderer': [
+  ],
+},
+[ /* costs */
+],
+'Quest_the_wanderer_wanders',
+setup.qdiff.normal30, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_wanderer_wandersCrit',
+    [
+      setup.qc.VarRemove('wanderer_joins_missing'),
+      setup.qc.Opportunity('the_half_werewolf', {
+wanderer: "wanderer",
+}),
+    ],
+  ],
+  [
+    'Quest_the_wanderer_wandersCrit',
+    [
+      setup.qc.VarRemove('wanderer_joins_missing'),
+      setup.qc.Opportunity('the_half_werewolf', {
+wanderer: "wanderer",
+}),
+    ],
+  ],
+  [
+    'Quest_the_wanderer_wandersFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_the_wanderer_wandersFailure',
+    [
+      setup.qc.Injury('scout', 3),
+      setup.qc.Injury('spy', 3),
+      setup.qc.Injury('spotter', 3),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_wanderer_wanders [nobr]
+<p>
+<<Rep $g.wanderer>> wanderer|have once again disappeared without a trace from
+your fort. By now, you're already accustomed to the pattern, and you know
+that the <<uadjgood $g.wanderer>> slaver will surely be back by next week.
+But perhaps this is a chance for you to get to the bottom of this once and
+for all.
+</p>
+
+<p>
+You can send a group of slavers to try and track <<theslaver $g.wanderer>> down. A scout
+familiar with the terrain, as well as a spotter should do the trick. Once
+your slavers located the slaver, they still need to tail <<them
+$g.wanderer>>, and a spy would do wonder for the success chance of this
+mission.
+</p>
+
+
+
+:: Quest_the_wanderer_wandersCrit [nobr]
+
+<p>
+With some difficulty, <<rep $g.scout>> and <<utheirrel $g.scout $g.spotter>>
+<<rep $g.spotter>> were able to pick up <<reps $g.wanderer>> worn-down trail.
+They tracked <<theslaver $g.wanderer>> to a small thicket in the vale, far away from
+civilization. It took them several days of tracking, but during one dawn they
+finally found <<rep $g.wanderer>> alone under a pristine waterfall. But
+something was wrong with the <<man $g.wanderer>>.
+</p>
+
+<p>
+The <<man $g.wanderer>>'s back was... furry, to say the least. Your slavers
+even spotted a pair of pointed ears sticking out from the slaver's head, as well as what
+resembled a wolf tail. But there was no mistaking from the face and the trail
+that this <<man $g.wanderer>> could only be <<yourrep $g.wanderer>>.
+</p>
+
+<p>
+Before your slaver figured out what happened, the sun rose and a most
+unbelievable occurrence happened before your slavers. <<Rep $g.wanderer>>
+visibly transformed before your slavers' eyes, reverting all their furry bits
+and went back into full human form.
+</p>
+
+<p>
+Armed with this information, they came back to your fort and delivered their
+full report to you.
+You waited until <<yourrep $g.wanderer>> eventually came back to your
+fort, and confronted <<theslaver $g.wanderer>> about this.
+</p>
+
+<p>
+<<Reps $g.wanderer>> usually <<uadjgood $g.wanderer>> face immediately turned
+sour, and then to what seemed to be despair. With no other way to wiggle
+<<their $g.wanderer>> way out of this, <<they $g.wanderer>> revealed that
+<<they $g.wanderer>> wanderer|is the <<daughter $g.wanderer>> of a werewolf
+father and a northerner mother. This gives <<them $g.wanderer>> a unique
+curse, in that <<they $g.wanderer>> can and must transform between <<their
+$g.wanderer>> human form and <<their $g.wanderer>> werewolf form every now
+and then. Given the animosity between the werewolves and the northerner, it
+is no surprise that neither camp was willing to accept <<them $g.wanderer>> as
+<<they $g.wanderer>> is. This was the real reason why <<they $g.wanderer>>
+approached your company.
+</p>
+
+<p>
+You should decide what to do with <<them $g.wanderer>>.
+</p>
+
+
+:: Quest_the_wanderer_wandersFailure [nobr]
+<p>
+It seemed <<rep $g.wanderer>> covered up <<their $g.wanderer>> trail pretty
+well. Your slavers had no clue where <<rep $g.wanderer>> went, and spent most
+of the week aimlessly wandering across the vale.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+They were accosted by bandits along the way, and was injured during the ensuing fight.
+</p>
+<</if>>

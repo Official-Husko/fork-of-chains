@@ -1,0 +1,131 @@
+:: CostQuestDirect [nobr]
+
+Gain the following chosen quest.
+<br/>
+
+<<devchoosequest 'CostQuestDirectDo'>>
+
+
+:: CostQuestDirectDo [nobr]
+
+<<set $qcost = setup.qc.QuestDirect(_questchosen)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostQuestDirectRoles [nobr]
+
+First, choose the quest:
+
+<<devchoosequest 'CostQuestDirectRolesDo'>>
+
+
+:: CostQuestDirectRolesDo [nobr]
+
+<<set $qquestchosen = _questchosen>>
+<<gotowipehistory 'CostQuestDirectRolesImplement'>>
+
+:: CostQuestDirectRolesImplement [nobr]
+
+
+<p>
+Select the roles in <<rep $qquestchosen>> that you want to assign with roles
+in the current thing you are making:
+</p>
+
+<p>
+<<devquestroles $qquestchosen>>
+</p>
+
+<<link '(Done)' 'QGCostDone'>>
+  <<set $qcost = setup.qc.QuestDirect($qquestchosen, setup.deepCopy($qdevquestroles))>>
+  <<unset $qdevquestroles>>
+<</link>>
+
+
+
+:: CostQuestDirectForceAssign [nobr]
+
+First, choose the quest:
+
+<<devchoosequest 'CostQuestDirectForceAssignDo'>>
+
+
+:: CostQuestDirectForceAssignDo [nobr]
+
+<<set $qquestchosen = _questchosen>>
+<<gotowipehistory 'CostQuestDirectForceAssignImplement'>>
+
+:: CostQuestDirectForceAssignImplement [nobr]
+
+
+<p>
+Match the roles in <<rep $qquestchosen>> that you want to assign with units going on in this quest.
+Note that all roles must be matched.
+</p>
+
+<p>
+<<devquestroles $qquestchosen>>
+</p>
+
+<<link '(Done)'>>
+  /* sanity checks */
+  <<set _error = setup.qcImpl.QuestDirectForceAssign.sanityCheckDevTool($qquestchosen, $qdevquestroles)>>
+  <<if _error>>
+    <<warning _error>>
+  <<else>>
+    <<set $qcost = setup.qc.QuestDirectForceAssign($qquestchosen, setup.deepCopy($qdevquestroles))>>
+    <<unset $qdevquestroles>>
+    <<goto 'QGCostDone'>>
+  <</if>>
+<</link>>
+
+
+:: CostSetCooldownQuest [nobr]
+
+<p>
+The following quest cannot be generated in the next
+<<numberbox "_cooldown" 200>> weeks:
+</p>
+
+<<devchoosequest 'CostSetCooldownQuestDo'>>
+
+
+:: CostSetCooldownQuestDo [nobr]
+
+<<set $qcost = setup.qc.SetCooldownQuest(_questchosen, _cooldown)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostSetCooldownQuestSelf [nobr]
+
+This quest cannot be generated in the next <<numberbox '_cooldown' 200>> weeks.
+
+<<link 'Add cost' 'QGCostDone'>>
+  <<set $qcost = setup.qc.SetCooldownQuest(null, _cooldown)>>
+<</link>>
+
+
+:: CostQuestDirectSelf [nobr]
+
+<<set $qcost = setup.qc.QuestDirectSelf()>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostQuestDirectSelfRoles [nobr]
+
+<p>
+Select the roles in the newly generated quest that you want to assign with roles
+in the current quest:
+</p>
+
+<p>
+<<devquestroles $dtquest>>
+</p>
+
+<<link '(Done)' 'QGCostDone'>>
+  <<set $qcost = setup.qc.QuestDirectSelf(setup.deepCopy($qdevquestroles))>>
+  <<unset $qdevquestroles>>
+<</link>>
+
+
+

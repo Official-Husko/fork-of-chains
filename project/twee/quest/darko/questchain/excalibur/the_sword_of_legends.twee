@@ -1,0 +1,297 @@
+:: QuestSetup_the_sword_of_legends [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_corrupted_wielder_of_the_excalibur_0", /* key */
+"Corrupted Wielder of the Excalibur", /* name */
+"The chosen host of Excalibur who you corrupted in order to regain their sense of self", /* description */
+"a|was a knight chosen to be the wielder of Excalibur. You freed a|them from the sword\'s control by corrupting both the sword and the wielder", /* unit text */
+5000, /* slave value */
+{ /* skill additives */
+combat: 2,slaving: 4,arcane: 3,sex: 1,},
+)
+>><<run new setup.Title(
+"quest_excalibur_chosen_1", /* key */
+"Excalibur Chosen", /* name */
+"Chosen host of the divine and brain-controlling sword Excalibur", /* description */
+"a|was the knight chosen to host the Excalibur sword. Should be kept as far as possible from the Excalibur lest a|they a|get re-possessed by the sword", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+combat: 4,brawn: 1,knowledge: 2,aid: 3,},
+)
+>> 
+<<set _criteriaknight = new setup.UnitCriteria(
+null, /* key */
+'Knight', /* name */
+[
+setup.trait.race_human, 
+setup.trait.bg_knight, 
+setup.trait.per_brave, 
+setup.trait.per_loyal, 
+setup.trait.per_serious, 
+setup.trait.per_chaste, 
+setup.trait.per_honorable, 
+setup.trait.skill_ambidextrous, 
+setup.trait.magic_light, 
+setup.trait.magic_light_master, 
+],
+[
+    setup.trait.corrupted,
+    setup.trait.corruptedfull,
+    setup.trait.per_cautious,
+    setup.trait.per_sly,
+    setup.trait.per_independent,
+    setup.trait.per_curious,
+    setup.trait.per_cruel,
+    setup.trait.per_playful,
+    setup.trait.per_lustful,
+    setup.trait.per_sexaddict,
+    setup.trait.per_lunatic,
+    setup.trait.per_masochistic,
+    setup.trait.per_evil,
+    setup.trait.skill_flight,
+    setup.trait.magic_fire,
+    setup.trait.magic_fire_master,
+    setup.trait.magic_water,
+    setup.trait.magic_water_master,
+    setup.trait.magic_earth,
+    setup.trait.magic_earth_master,
+    setup.trait.magic_wind,
+    setup.trait.magic_wind_master,
+    setup.trait.magic_dark,
+    setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slaver), 
+setup.qres.HasTitle('aspect_of_chivalry'), 
+setup.qres.HasTitle('aspect_of_experience'), 
+setup.qres.HasTitle('aspect_of_wisdom'), 
+],
+{ 
+combat: 1, 
+brawn: 1, 
+aid: 1, 
+}
+)>> 
+
+
+<<run new setup.QuestTemplate(
+'the_sword_of_legends', /* key */
+"The Sword of Legends", /* Title */
+"darko", /* Author */
+[
+  'veteran',
+  'sea',
+  'prep',
+  'unknown'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'knight': _criteriaknight, 
+'navigator': setup.qu.navigator, 
+'diviner': setup.qu.arcanelight, },
+{ /* actors */
+'merlin': 'city_all', },
+[ /* costs */
+],
+'Quest_the_sword_of_legends',
+setup.qdiff.harder61, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_sword_of_legendsCrit',
+[
+setup.qc.RemoveTitle('knight', 'aspect_of_chivalry'), 
+setup.qc.RemoveTitle('knight', 'aspect_of_experience'), 
+setup.qc.RemoveTitle('knight', 'aspect_of_wisdom'), 
+setup.qc.AddTitle('knight', 'quest_excalibur_chosen_1'),
+setup.qc.QuestDirect('excalibur_crusade', {'knight': 'knight'}),
+setup.qc.VarSet('quest_excalibur', '3', -1),
+],
+], [
+'Quest_the_sword_of_legendsCrit',
+[
+  setup.qc.Outcomes('crit'),
+setup.qc.Injury('navigator', 4), 
+setup.qc.Injury('diviner', 4), 
+],
+], [
+'Quest_the_sword_of_legendsCrit',
+[
+setup.qc.Injury('knight', 3), 
+setup.qc.OneRandom([
+setup.qc.RemoveTitle('knight', 'aspect_of_chivalry'),
+setup.qc.RemoveTitle('knight', 'aspect_of_experience'),
+setup.qc.RemoveTitle('knight', 'aspect_of_wisdom')
+]), ],
+], [
+'Quest_the_sword_of_legendsDisaster',
+[
+setup.qc.OneRandom([
+setup.qc.RemoveTitle('knight', 'aspect_of_chivalry'),
+setup.qc.RemoveTitle('knight', 'aspect_of_experience'),
+setup.qc.RemoveTitle('knight', 'aspect_of_wisdom')
+]), 
+setup.qc.Injury('knight', 6), 
+setup.qc.Injury('navigator', 5), 
+setup.qc.Injury('diviner', 7), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(), 
+setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('aspect_of_chivalry'),
+setup.qres.HasTitle('aspect_of_experience'),
+setup.qres.HasTitle('aspect_of_wisdom'),
+setup.qres.NoTitle('quest_corrupted_wielder_of_the_excalibur_0'),
+setup.qres.NoTitle('quest_excalibur_chosen_1')
+]), 
+setup.qres.VarEqual('quest_excalibur', '2'),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_the_sword_of_legends [nobr]
+<p>
+The Excalibur sword went missing from the coffers of <<lore region_city>>
+some time ago. As the rumors said, the sword tend to show itself to a worthy
+swordsman who had proven their chivalry, experience, and wisdom. Up until
+now, single <<man $unit.player>> is capable of having all three, and you
+dismissed the tale as a dumb tale... until now.
+</p>
+
+<p>
+One of your slavers seem to somehow, either through pure luck or careful
+strategizing on your side, managed to acquire all three aspects:
+<<rep setup.title.aspect_of_chivalry>>
+<<rep setup.title.aspect_of_wisdom>>
+<<rep setup.title.aspect_of_experience>>.
+If the legends are believed to be even remotely true, it might be possible to
+retrieve the sword, either for your own perusal or to be returned to the
+kingdom in exchange for surely a great amount of wealth...
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The journey south will be long and difficult, and <<yourrep _u>> suggested to
+bring along the following team.
+You will need a good navigator to navigate through the treacherous waters,
+and a diviner to help divine the location of the sword. If your slavers
+somehow managed to arrive at the supposed location, the knight must then show
+their worth and pick up the sword, who will then judge whether the knight is
+worthy.
+</p>
+
+
+:: Quest_the_sword_of_legendsCrit [nobr]
+
+<<questimage 'the_sword_of_legends.jpg'>>
+
+<p>
+<<Yourrep $g.navigator>> skillfully navigated the ship through the
+treacherous waters, following <<reps $g.diviner>> <<uadv $g.diviner>>-delivered
+divinations on the supposed location of the sword.
+<<if $g.diviner.isHasTrait('magic_light_master')>>
+Thankfully, <<reps $g.diviner>> mastery of <<rep setup.trait.magic_light_master>>
+was enough to guide the ship safely until they arrive at
+<<else>>
+<<rep $g.diviner>> only had basic mastery of the domain of light, and the
+ship was rocked quite severely throughout the journey, lightly injuring her
+passengers. Thankfully, your slavers still managed to finally arrive at
+<<run $hospital.injureUnit($g.diviner, 3)>>
+<<run $hospital.injureUnit($g.navigator, 3)>>
+<</if>>
+an uncharted island, the supposed destination of their journey.
+</p>
+
+<p>
+The island itself proved to be a challenge — filled to the brim with monsters,
+<<yourrep $g.knight>> had to fight like a champion of legend through the
+horde of monsters, while <<rep $g.diviner>> did <<their $g.diviner>> best
+supporting with <<their $g.diviner>> <<lore magic_light>>. Finally, your
+slavers arrived at the center of the island.
+</p>
+
+<p>
+Therein lied a single sword shining so brightly stabbed deep down into the earth.
+The light blinded both <<rep $g.diviner>> and <<rep $g.navigator>>, for it
+judged them unworthy of the simple act of laying their eyes upon the divine sword Excalibur.
+But it seemingly had no effect on <<yourrep $g.knight>>, who walked calmly towards the sword
+before <<uadv $g.knight>> gripping it.
+With a <<uadjper $g.knight>> roar, <<rep $g.knight>> attempted to hoist the sword to the sky.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<p>
+The sword of legends, Excalibur, gently lifted from the earth and comfortably
+settled in <<reps $g.knight>> <<uhands $g.knight>>.
+The blinding light ended too, and as <<rep $g.navigator>> about to <<uadv
+$g.navigator>> congratulate <<rep $g.knight>>, <<therace $g.knight>>
+suddenly pointed the sword against <<their $g.knight>> former allies.
+Denouncing all sorts of evils your company had done, <<rep $g.knight>>
+suddenly attacked the rest of your slavers, eventually forcing them to
+retreat back to the ship with neither <<rep $g.knight>> nor the sword in tow.
+<<if $gOutcome == 'success'>>
+They suffered several gashes from the skillful assault from <<rep $g.knight>>.
+<</if>>
+</p>
+
+<p>
+Out in the sea, your slavers were finally safe from whatever possessed <<rep
+$g.knight>>. But you just know that this will not be the last time you hear of <<rep
+$g.knight>>, the current divine wielder of Excalibur...
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+But the sword refused to move. No matter from which angle <<rep $g.knight>>
+tried to lift the sword, <<they $g.knight>> felt as if the sword and the earth fused into
+one. Frustrated, <<rep $g.knight>> vented their anger by slamming the sword
+with their fists — a grave mistake as the sword absorbed one of the three
+aspects of chivalry from <<rep $g.knight>> into the sword. Without all three
+aspects of chivalries, <<rep $g.knight>> knight|was no longer immune to the
+blinding light of the sword, and together with the rest of your slavers were
+forced to retreat from the abode.
+</p>
+
+<p>
+Perhaps you can try again if you have the chance.
+</p>
+<</if>>
+
+
+:: Quest_the_sword_of_legendsDisaster [nobr]
+
+<p>
+<<Yourrep $g.navigator>> skillfully navigated the ship through the
+treacherous waters, following <<reps $g.diviner>> <<uadv $g.diviner>>-delivered
+divinations on the supposed location of the sword.
+</p>
+
+<p>
+But their journey was not meant to be completed, as they were ambushed midway
+by pirates. While normally these pirates were no match for your slavers' prowess,
+especially <<yourrep $g.knight>>, somehow the nature itself was fighting
+against you. The wind blew against your slaver's directions, and just when
+your slavers seemingly about to deliver an important strike, lightning
+appeared out of nowhere zapping the tip of
+<<reps $g.knight>> <<uweapon $g.knight>>, shocking <<theslaver $g.knight>> to the core.
+While your slavers managed to get away from the engagement intact, they
+suffered great injuries as a result.
+</p>
+
+<p>
+Having <<their $g.knight>> destiny stolen from right before <<their
+$g.knight>> nose, <<rep $g.knight>> <<uadv $g.knight>> vented <<their
+$g.knight>> anger on <<rep $g.diviner>>. But such a behavior was unsuitable
+for the future wielder of Excalibur, and when your slavers returned, you can
+feel that <<rep $g.knight>> knight|is no longer suitable for the task.
+</p>

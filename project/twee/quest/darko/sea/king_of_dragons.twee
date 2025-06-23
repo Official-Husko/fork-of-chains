@@ -1,0 +1,277 @@
+:: QuestSetup_king_of_dragons [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaknight1 = new setup.UnitCriteria(
+null, /* key */
+'Dragon Knight', /* name */
+[
+setup.trait.subrace_dragonkin,
+setup.trait.bg_knight,
+setup.trait.per_brave,
+setup.trait.per_aggressive,
+setup.trait.per_dominant,
+setup.trait.per_honorable,
+setup.trait.skill_ambidextrous,
+setup.trait.magic_fire,
+setup.trait.magic_fire_master,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+setup.trait.eq_veryvaluable,
+],
+[
+setup.trait.race_demon,
+setup.trait.per_cautious,
+setup.trait.per_calm,
+setup.trait.per_submissive,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.magic_water,
+setup.trait.magic_water_master,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+setup.trait.eq_slutty,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+combat: 1,
+brawn: 1,
+arcane: 1,
+}
+)>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'SLAVE', /* name */
+[
+setup.trait.training_obedience_master,
+setup.trait.training_oral_master,
+setup.trait.training_anal_master,
+setup.trait.training_sissy_master,
+setup.trait.training_pet_master,
+setup.trait.training_pony_master,
+setup.trait.training_dominance_master,
+setup.trait.training_masochist_master,
+setup.trait.training_toilet_master,
+setup.trait.training_endurance_master,
+setup.trait.training_vagina_master,
+setup.trait.training_horny_master,
+setup.trait.training_roleplay_master,
+setup.trait.training_domestic_master,
+setup.trait.magic_water_master,
+setup.trait.magic_wind_master,
+setup.trait.magic_earth_master,
+setup.trait.magic_dark_master,
+setup.trait.race_demon,
+],
+[
+setup.trait.subrace_dragonkin,
+setup.trait.magic_light,
+setup.trait.magic_fire,
+],
+[
+setup.qres.IsCanBeSold(),
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.value_high6),
+],
+{
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'king_of_dragons', /* key */
+"King of Dragons", /* Title */
+"darko", /* Author */
+[
+  'sea',
+  'veteran',
+  'order',
+  'upgrade',
+  'favor',
+  'legendary',
+], /* tags */
+4, /* weeks */
+16,  /* expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'knight2': _criteriaknight1,
+'knight1': _criteriaknight1,
+'slave': _criteriaslave, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_king_of_dragons',
+setup.qdiff.extreme75, /* difficulty */
+[ /* outcomes */
+[
+'Quest_king_of_dragonsCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.MoneyUnitValue('slave', 0.5, 100000),
+],
+], [
+'Quest_king_of_dragonsCrit',
+[
+  setup.qc.MissingUnitForever('slave'),
+  setup.qc.IfThenElse(
+    setup.qres.HasItem(setup.item.wings_technology),
+    setup.qc.Favor('dragonkin', 500),
+    setup.qc.Item(setup.item.wings_technology),
+  ),
+  setup.qc.SetCooldownQuest(null, 50),
+],
+], [
+'Quest_king_of_dragonsCrit',
+[
+  setup.qc.MissingUnit('trainer'),
+],
+], [
+'Quest_king_of_dragonsCrit',
+[
+setup.qc.MissingUnitRecapture('knight1', 'capturedhard'), ],
+], ],
+[
+[setup.questpool.sea, setup.rarity.legendary],
+], /* quest pool and rarity */
+[
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+], /* restrictions to generate */
+)>>
+
+:: Quest_king_of_dragons [nobr]
+
+<p>
+The king of dragons — the title only one dragonkin in the entire world holds.
+It is said that the king of dragons lives in a castle with a vast dungeon
+complex full of both hoards of treasures and legions of slaves. Legends say
+that not even the bravest raiders dare to attack the fortress, for it is
+circled by flying dragon guards at all times who were more than prepared
+to breathe scorching fire on any unlucky interlopers.
+</p>
+
+<<if $inventory.isHasItem('wings_technology')>>
+<p>
+You've been there before, making a dangerous deal with the king of dragons.
+He offered to buy more slaves from you, and you can follow up on this offer.
+While you already have the <<rep setup.item.wings_technology>>,
+this could prove to be a way to get in the dragonkin's good graces,
+which is all things considered, very difficult to do.
+</p>
+<<else>>
+<p>
+You are not crazy enough to actually assault the fort, but deep within the
+king's vault lies a treasure that you have been eyeing for: the <<rep
+setup.item.wings_technology>>. This technology would finally allow you to
+focus your corruptions on, among other things, the wings of your units,
+allowing you to grow them wings if you choose.
+</p>
+
+<p>
+It might be possible for the king to share this secret technology with you, if you have an extremely valuable slave that you are willing to trade. The slave will of course be gone forever should the deal go through, but it will be worth the exchange.
+</p>
+<</if>>
+
+<p>
+<<dangertext 'Warning'>>: The slave will likely be gone forever, becoming a nameless plaything for the dragon king...
+</p>
+
+
+:: Quest_king_of_dragonsCrit [nobr]
+
+<p>
+Upon arriving at the king's domains, your slavers were immediately greeted by
+his guards, who recognized your company.
+Upon seeing the worthy slave <<rep
+$g.slave>>, your slavers were granted audience with the king. The king of
+dragons sat upon his gilded throne, surrounded by multiple varieties of slaves who
+were all too busy either servicing him or impaling themselves on the various sex
+toys spread around the room.
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+The king was rather indifferent by the quality of <<rep $g.slave>>, as he
+already has too many slaves. But <<reps $g.trainer>> insistence during the
+negotiation raised the king's ire, and instead he decided to enslave <<yourrep
+$g.trainer>> as punishment for the insolence. Your slavers were not given any
+opportunity to react as his guards seized <<rep $g.trainer>> away deep into
+the dungeons while <<rep $g.knight1>> and <<rep $g.knight2>> were escorted
+outside of the castle.
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+
+<p>
+The king was rather indifferent by the quality of <<rep $g.slave>>, as he
+already has too many slaves. During the negotiations, <<rep $g.knight1>>
+accidentally insulted the king, which immediately raised his ire. <<Yourrep
+$g.knight1>> knight1|was swiftly subdued, to be taken into his dungeons
+and began training as a slave. Your other slavers were escorted outside as they tried
+their best not to think too much of what fate awaits their former comrade.
+</p>
+
+<<else>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The king were impressed by the quality of <<yourrep $g.slave>> and the presentation of the slave given
+<<uadv $g.trainer>> by your slavers.
+
+<<set _greg = setup.selectUnit([$g.knight1, $g.knight2, $g.trainer], {trait: 'per_gregarious'})>>
+<<if _greg>>
+  <<Reps _greg>> eloquence certainly helped.
+<</if>>
+
+<<set _sly = setup.selectUnit([$g.knight1, $g.knight2, $g.trainer], {trait: 'per_sly'})>>
+<<if _sly>>
+  <<Reps _sly>> silver tongue certainly helped.
+<</if>>
+
+Your slavers did not even need to negotiate that hard for the king to agree
+to
+<<if $inventory.isHasItem('wings_technology')>>
+put out good words about your company to his fellow dragonkin in exchange for the slave
+<<else>>
+exchange the slave with a copy of the artifact <<rep
+setup.item.wings_technology>>
+<</if>>
+— in fact, the king was so impressed that he
+decided to pay your slavers some of the slave's worth of value in hard coins.
+</p>
+
+<<else>>
+
+<p>
+The king was rather indifferent by the quality of <<yourrep $g.slave>>, as he
+already has too many slaves.
+But your slavers managed to <<uadv $g.trainer>>
+convinced him and presented the slave in such an alluring way that king
+finally agreed on the exchange. <<Rep $g.slave>> will forever serve the king,
+in exchange for
+<<if $inventory.isHasItem('wings_technology')>>
+putting out good words about your company to the rest of the dragonkin.
+<<else>>
+a copy of <<rep setup.item.wings_technology>>.
+<</if>>
+</p>
+
+<</if>>
+
+<p>
+Once the audience is over, your slavers were escorted out of the castle. They
+were able finally breathe a sigh of relief once they arrive back at the boat,
+for the air was simultaneously both tense and arousing throughout castle the
+compound.
+Throughout the journey back home, they tried not to think too hard what fate
+awaits <<rep $g.slave>>, but one thing for sure —- they wouldn't want to be in
+<<their $g.slave>> manacles!
+</p>
+
+<</if>>

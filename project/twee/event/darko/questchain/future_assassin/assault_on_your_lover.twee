@@ -1,0 +1,53 @@
+:: EventSetup_assault_on_your_lover [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'assault_on_your_lover', /* key */
+"Assault on Your Lover", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Event_assault_on_your_lover',
+{ /* roles */
+},
+{ /* actors */
+  'victim': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTag('future_assassin_parent'),
+    setup.qres.YourLover(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('future_assassin_progress', '1', -1),
+  setup.qc.VarSet('future_assassin_cooldown', '1', 4),
+],
+[ /* restrictions */
+  setup.qres.VarNull('future_assassin_progress'),
+  setup.qres.VarNull('future_assassin_cooldown'),
+  setup.qres.HasUnitWithTagAndJob('future_assassin_parent', setup.job.slaver),
+],
+0, /* Cooldown */
+setup.rarity.common,  /* Rarity */
+)>>
+
+:: Event_assault_on_your_lover [nobr]
+<<set _u = setup.getAnySlaver([$g.victim])>>
+
+<p>
+Today, you receive a most dreadful news.
+Your lover <<rep $g.victim>> victim|was apparently assaulted in <<their $g.victim>>
+room last night by a mysterious assailant. Luckily, <<yourrep _u>> happened
+to be nearby, and together they managed to repel the assailant. But damn, it
+did make your heart skip a beat at the thought of losing your <<uadjgood
+$g.victim>> <<urace $g.victim>> lover. You make notes to yourself to force
+<<them $g.victim>> to sleep in your room tonight.
+</p>
+
+<p>
+Maybe you'll hear more about this assailant, and you have
+<<if !$unit.player.isHasTrait('per_honorable')>>evil<</if>>
+plans on what to do
+with them once you get your <<uhands $unit.player>> on them. But in the meantime, maybe you
+should reward <<yourrep _u>> for <<their _u>> great service.
+</p>

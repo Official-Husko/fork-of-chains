@@ -1,0 +1,73 @@
+:: QuestSetupValeContact [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'vale_contact',  /* id */
+  'Establish Contact: Northern Vale',  /* Title */
+  'darko',   /* author */
+  ['vale', 'special', 'quest'],  /* tags */
+  1, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_vale,
+    'scout2': setup.qu.scout_vale,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestValeContact',  /* description */
+  setup.qdiff.easy1,
+  [
+    [
+      'QuestValeContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.valelead),
+        setup.qc.QuestDelay(setup.questpool.vale, 10),
+        
+      ]
+    ],
+    [
+      'QuestValeContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.valelead),
+        setup.qc.QuestDelay(setup.questpool.vale, 6),
+        
+      ],
+    ],
+    [
+      'QuestValeContactFailure',
+      [
+        setup.qc.QuestDirect('vale_contact'),
+      ],
+    ],
+    [
+      'QuestValeContactFailure',
+      [
+        setup.qc.QuestDirect('vale_contact'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestValeContact [nobr]
+<p>
+Now that you have a <<rep setup.buildingtemplate.scouthut>>, you should
+find some contact in the <<lore region_vale>> who would be able to supply your
+company with leads for quests.
+</p>
+
+:: QuestValeContactCrit [nobr]
+<p>
+After a week searching through several northern settlements,
+your slavers managed to find one particularly crowded tavern whose owner
+is more than happy to supply you with rumors.
+</p>
+
+:: QuestValeContactFailure [nobr]
+<p>
+Unfortunately, you failed to find any such contact. You should try again.
+</p>

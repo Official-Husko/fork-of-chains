@@ -1,0 +1,85 @@
+:: OpportunitySetup_the_quest_for_excalibur [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'the_quest_for_excalibur', /* key */
+"The Quest for Excalibur", /* Title */
+"darko", /* Author */
+[ 'veteran', 'fort', 'special', 'unknown',
+], /* tags */
+setup.INFINITY, /* opportunity expiration weeks */
+'Opportunity_the_quest_for_excalibur',
+setup.qdiff.extreme69, /* difficulty */
+[ /* options */
+[
+'Opportunity_the_quest_for_excalibur_0', 
+'Opportunity_the_quest_for_excalibur_0_flavor', 
+[ /* costs */
+], 
+[ /* restrictions */
+], 
+[ /* outcomes */
+setup.qc.QuestDirect('treasury_assault_finale', {'knight': 'knight'},), 
+],
+],
+[
+'Opportunity_the_quest_for_excalibur_1', 
+'Opportunity_the_quest_for_excalibur_1_flavor', 
+[ /* costs */
+], 
+[ /* restrictions */
+], 
+[ /* outcomes */
+setup.qc.QuestDirect('dark_excalibur', {'knight': 'knight'}), 
+],
+],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'knight': [
+], },
+[ /* expiration outcomes */
+],
+)>>
+
+:: Opportunity_the_quest_for_excalibur [nobr]
+<p>
+The Excalibur sword lies on your desk, while <<yourrep $g.knight>> knight|is
+currently staying fully bound in one of the nicer dungeon cells. You need to make a
+decision how to save <<therace $g.knight>> from the influence of
+the sword.
+</p>
+
+<<set _u = setup.getDutySlaver('viceleader', 'rescuer')>>
+
+<p>
+You can try to return the sword back to the vaults — with the sword far, far away
+from its wielder, hopefully <<yourrep $g.knight>> will return back to <<their
+$g.knight>> <<uadjgood $g.knight>> self. Alternatively, <<yourrep _u>>
+suggested a very different idea: corrupt the sword entirely until it becomes
+nothing but an instrument for
+evil. Surely it will then align with your company's adventures, and will no
+longer cause problems with <<rep $g.knight>>, although corrupting such a
+powerful artifact will surely be <<dangertext 'extremely'>> dangerous...
+</p>
+
+
+:: Opportunity_the_quest_for_excalibur_0 [nobr]
+Return Excalibur to the treasuries
+
+
+:: Opportunity_the_quest_for_excalibur_0_flavor [nobr]
+<<include 'Quest_treasury_assault_finale'>>
+
+
+:: Opportunity_the_quest_for_excalibur_1 [nobr]
+Corrupt the sword
+
+
+:: Opportunity_the_quest_for_excalibur_1_flavor [nobr]
+<<include 'Quest_dark_excalibur'>>
+

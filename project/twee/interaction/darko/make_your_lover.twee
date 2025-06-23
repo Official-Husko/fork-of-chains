@@ -1,0 +1,46 @@
+:: InteractionSetup_make_your_lover [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'make_your_lover', /* key */
+"Make your lover", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Interaction_make_your_lover',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* unit requirements */
+  setup.qres.CanBeLoverWithYou(),
+],
+[ /* outcomes */
+  setup.qc.HookupWithYou('target'),
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_make_your_lover [nobr]
+<p>
+You <<uadv $unit.player>> approach <<rep $g.target>> with the singular goal
+of making <<them $g.target>> into your lover.
+You have been eyeing the <<uadjgood $g.target>> <<urace $g.target>> for a
+while now, lusting over <<their $g.target>> <<ubody $g.target>>, and you are
+unable to resist your impulses any longer. It is now or never!
+</p>
+
+<p>
+To your great relief, <<they $g.target>> target|accept your proposal! The two of
+you are lovers now, and this fact shall soon be known throughout the entire
+fort. But for now, you can't wait to retreat back to
+<<set _bc = $unit.player.getOwnedBedchambers()>>
+<<if _bc.length>>
+your <<rep _bc[0]>>
+<<else>>
+your bedroom
+<</if>>
+for some loving with your one and only <<rep $g.target>>...
+</p>

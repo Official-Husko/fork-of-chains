@@ -1,0 +1,535 @@
+:: ProloguePlayerGen [nobr]
+
+<p>
+You will be playing as a head slaver, managing a slaving company.
+You should give both the player character a name, as well as the slaving company they will be managing.
+From now on, the player character will simply be referred to as "you".
+</p>
+
+<div>
+Your company name is <<textbox "$company.player.name" $company.player.getName()>>
+</div>
+
+<<set $i = {}>>
+
+<div>
+Your first name is <<textbox "$i.firstname" "Robin">>
+</div>
+
+<div>
+Your last name is <<textbox "$i.lastname" "Doe">>
+</div>
+
+<<set $i.trait_keys = []>>
+
+<<set _preferenceoption = {}>>
+<<for _keypref, _pref range setup.SETTINGS_GENDER_PREFERENCE>>
+  <<set _preferenceoption[_pref.name] = _keypref>>
+<</for>>
+
+<p>
+Unit gender preferences (click to change, can also be changed later in the game):
+<<message '(?)'>>
+  <div class='helpcard'>
+    You can use this option to adjust the how often units of certain gender will be encountered in the game.
+  </div>
+<</message>>
+<ul style="margin-top: 0">
+<li>
+Slave: <<cycle '$settings.gender_preference.slave' autoselect>><<optionsfrom _preferenceoption>><</cycle>>
+</li>
+<li>
+Slaver: <<cycle '$settings.gender_preference.slaver' autoselect>><<optionsfrom _preferenceoption>><</cycle>>
+</li>
+<li>
+Other: <<cycle '$settings.other_gender_preference' autoselect>><<optionsfrom _preferenceoption>><</cycle>>
+</li>
+</ul>
+</p>
+
+<p>
+Check all the tags that you want to <<dangertext 'ban'>> (hover each for details):
+<<message '(?)'>>
+  <div class='helpcard'>
+    Banning a tag means that content involving them will not be generated in your playthrough.
+    For example, banning furry will prevent most quests dealing specifically with furries
+    to be hidden from you.
+  </div>
+<</message>>
+
+<<include 'ShowBannedTags'>>
+</p>
+
+<p>
+You can <<message 'change other game settings too.'>>
+<div class='helpcard'>
+  <<include 'SettingsBase'>>
+  </div>
+<</message>>
+</p>
+
+<p>
+To proceed, choose your player character's gender:
+</p>
+
+<div>
+<<focbutton 'Male' 'PrologueImagePack'>>
+  <<set $i.gender_key = setup.trait.gender_male.key>>
+<</focbutton>>
+
+<<focbutton 'Female' 'PrologueImagePack'>>
+  <<set $i.gender_key = setup.trait.gender_female.key>>
+<</focbutton>>
+</div>
+
+:: PrologueImagePack [nobr]
+
+<p>
+Select the image packs you wish to use.
+If this is the first time you are playing this game, you can simply
+click "Continue" below.
+</p>
+
+<<attach setup.DOM.Menu.Settings.imagepacks()>>
+
+<p>
+<<button 'Continue' 'PrologueChoose'>>
+<</button>>
+</p>
+
+:: PrologueChoose [nobr]
+
+<p>
+You can either fully customize your player character:
+<<message '(?)'>>
+  <div class='helpcard'>
+    Should you decide to fully customize your character, you will be asked to select
+    what traits your character should have amongst the myriads of traits in the game.
+    While these traits all have some in-game effects, they are all beneficial one way or another,
+    and it is recommended to pick the set of traits that you simply like to roleplay as best.
+  </div>
+<</message>>
+</p>
+
+<p>
+[[I want to fully customize myself!|PrologueRace]]
+</p>
+
+<p>
+or start with a preset one:
+</p>
+
+<<rep setup.skill.combat>>-oriented
+<<link 'brave desertfolk knight capable of using both arms equally well' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_humandesert'>>
+  <<set $i.trait_keys = [
+    'bg_knight',
+    'per_brave',
+    'skill_ambidextrous',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.brawn>>-oriented
+<<link 'blunt orc blacksmith with an intimidating posture' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_orc'>>
+  <<set $i.trait_keys = [
+    'bg_metalworker',
+    'per_direct',
+    'skill_intimidating',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.survival>>-oriented
+<<link 'loner dragonkin wildman capable of flight' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_dragonkin'>>
+  <<set $i.trait_keys = [
+    'bg_wildman',
+    'per_loner',
+    'wings_dragonkin',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.intrigue>>-oriented
+<<link 'sly human assassin with many connections' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_humankingdom'>>
+  <<set $i.trait_keys = [
+    'bg_assassin',
+    'per_sly',
+    'skill_connected',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.slaving>>-oriented
+<<link 'cruel engineer from a faraway land beyond the southern seas with a hypnotizing gaze' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_humansea'>>
+  <<set $i.trait_keys = [
+    'bg_engineer',
+    'per_cruel',
+    'skill_hypnotic',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.knowledge>>-oriented
+<<link 'studious northerner scholar with a creative mind' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_humanvale'>>
+  <<set $i.trait_keys = [
+    'bg_scholar',
+    'per_studious',
+    'skill_creative',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.social>>-oriented
+<<link 'silver-tongued neko noble with a divine voice' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_neko'>>
+  <<set $i.trait_keys = [
+    'bg_noble',
+    'per_gregarious',
+    'skill_entertain',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.aid>>-oriented
+<<link 'kind elven healer with vast knowledge on how to mix potions' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_elf'>>
+  <<set $i.trait_keys = [
+    'bg_healer',
+    'per_kind',
+    'skill_alchemy',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.arcane>>-oriented
+<<link 'lavish demonkin mystic gifted in the domain of the dark magic' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_demonkin'>>
+  <<set $i.trait_keys = [
+    'bg_mystic',
+    'per_lavish',
+    'magic_dark',
+  ]>>
+<</link>>
+<br/>
+<<rep setup.skill.sex>>-oriented
+<<link 'playful werewolf courtesan capable of communicating with animals' 'PrologueGenerateChar'>>
+  <<set $i.race_key = 'subrace_werewolf'>>
+  <<set $i.trait_keys = [
+    'bg_courtesan',
+    'per_playful',
+    'skill_animal',
+  ]>>
+<</link>>
+
+:: ProloguePicked [nobr]
+
+<<message '(click to see your choices so far)'>>
+  <<rep setup.trait[$i.gender_key]>>
+  <<if $i.race_key>> <<rep setup.trait[$i.race_key]>> <</if>>
+  <<for _itrait, _trait range $i.trait_keys>> <<rep setup.trait[_trait]>> <</for>>
+<</message>>
+
+:: PrologueRace [nobr]
+
+You are:
+<<include 'ProloguePicked'>>
+
+<<for _irace, _race range setup.TraitHelper.getAllTraitsOfTags(['subrace'])>>
+  <<set _ban = [
+    setup.trait.subrace_demon,
+    setup.trait.subrace_fairy,
+    setup.trait.subrace_angel,
+    setup.trait.subrace_tigerkin,
+    setup.trait.subrace_dragonkin,
+  ]>>
+  <<if !_ban.includes(_race)>>
+    <<capture _race>>
+      <br/>
+      <<set _text = `${setup.Article(_race.getName(), true)}`>>
+      <<rep _race>>
+      <<link _text 'PrologueGenitals1'>>
+        <<run $i.race_key = _race.key>>
+      <</link>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+:: PrologueGenitals1 [nobr]
+
+You have:
+<<include 'ProloguePicked'>>
+
+<<if $i.gender_key == 'gender_female'>>
+<<set _tag = 'breast'>>
+<<else>>
+<<set _tag = 'dick'>>
+<</if>>
+
+<<for _igenital, _genital range setup.TraitHelper.getAllTraitsOfTags([_tag])>>
+  <<if _genital.getTags().includes('rare') || _genital.getTags().includes('medium') || _genital.getTags().includes('common')>>
+    <<capture _genital>>
+      <br/>
+      <<set _text = `${setup.Article(_genital.getName(), true)}`>>
+      <<rep _genital>>
+      <<link _text 'PrologueGenitals2'>>
+        <<run $i.trait_keys.push(_genital.key)>>
+      <</link>>:
+      <<= _genital.getDescriptionDisplay()>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+
+:: PrologueGenitals2 [nobr]
+
+You have:
+<<include 'ProloguePicked'>>
+
+<<if $i.gender_key == 'gender_female'>>
+<<set _tag = 'vagina'>>
+<<else>>
+<<set _tag = 'balls'>>
+<</if>>
+
+<<for _igenital, _genital range setup.TraitHelper.getAllTraitsOfTags([_tag])>>
+  <<if _genital.getTags().includes('rare') || _genital.getTags().includes('medium') || _genital.getTags().includes('common')>>
+    <<capture _genital>>
+      <br/>
+      <<set _text = `${setup.Article(_genital.getName(), true)}`>>
+      <<rep _genital>>
+      <<link _text 'PrologueGenitals3'>>
+        <<run $i.trait_keys.push(_genital.key)>>
+      <</link>>:
+      <<= _genital.getDescriptionDisplay()>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+
+:: PrologueGenitals3 [nobr]
+
+You have:
+<<include 'ProloguePicked'>>
+
+<<for _igenital, _genital range setup.TraitHelper.getAllTraitsOfTags(['anus'])>>
+  <<if _genital.getTags().includes('rare') || _genital.getTags().includes('medium') || _genital.getTags().includes('common')>>
+    <<capture _genital>>
+      <br/>
+      <<set _text = `${setup.Article(_genital.getName(), true)}`>>
+      <<rep _genital>>
+      <<link _text 'PrologueBg'>>
+        <<run $i.trait_keys.push(_genital.key)>>
+      <</link>>:
+      <<= _genital.getDescriptionDisplay()>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+
+:: PrologueBg [nobr]
+
+Before being the leader of a slaving company, you were:
+<<message '(Help)'>>
+  <div class='helpcard'>
+    If you are confused by the number of options available, it is suggested
+    to pick the background in which you are most comfortably roleplaying at.
+    While background has effect on skills, it is ultimately minor and the game
+    is designed to be playable with any combination of starting decisions.
+  </div>
+<</message>>
+<<include 'ProloguePicked'>>
+
+<<for _ibackground, _background range setup.TraitHelper.getAllTraitsOfTags(['bg'])>>
+  <<if _background.getTags().includes('common') ||
+       _background.getTags().includes('medium') ||
+       _background.getTags().includes('rare')>>
+    <<capture _background>>
+      <br/>
+      <<set _text = `${setup.Article(_background.getName(), true)}`>>
+      <<rep _background>>
+      <<link _text 'PrologueTrait'>>
+        <<run $i.trait_keys.push(_background.key)>>
+      <</link>>:
+      <<= _background.getDescriptionDisplay()>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+:: PrologueTrait [nobr]
+
+Your most defining trait is that you are
+(Choose one.):
+<<include 'ProloguePicked'>>
+
+<<for _itrait, _trait range setup.TraitHelper.getAllTraitsOfTags(['per'])>>
+  <<if _trait.getTags().includes('common') ||
+       _trait.getTags().includes('medium') ||
+       _trait.getTags().includes('rare')>>
+    <<if _trait != setup.trait.per_slow && _trait != setup.trait.per_smart>>
+      <<capture _trait>>
+        <br/>
+        <<set _text = `${_trait.getName()}`>>
+        <<rep _trait>>
+        <<link _text 'PrologueSkill'>>
+          <<run $i.trait_keys.push(_trait.key)>>
+        <</link>>:
+        <<= _trait.getDescriptionDisplay()>>
+      <</capture>>
+    <</if>>
+  <</if>>
+<</for>>
+
+:: PrologueSkill [nobr]
+
+Your are skilled in:
+(Note: If you choose the
+<<rep setup.trait.magic_fire>><<rep setup.trait.magic_water>><<rep setup.trait.magic_wind>><<rep setup.trait.magic_earth>><<rep setup.trait.magic_light>><<rep setup.trait.magic_dark>>
+traits, they can be upgraded to a stronger version later in the game.)
+<<include 'ProloguePicked'>>
+
+<<for _itrait, _trait range setup.TraitHelper.getAllTraitsOfTags(['skill'])>>
+  <<if _trait.getTags().includes('common') ||
+       _trait.getTags().includes('medium') ||
+       _trait.getTags().includes('rare')>>
+    <<capture _trait>>
+      <br/>
+      <<set _text = `${_trait.getName()}`>>
+      <<rep _trait>>
+      <<link _text 'PrologueGenerateChar'>>
+        <<run $i.trait_keys.push(_trait.key)>>
+        <<if _trait == setup.trait.skill_ambidextrous && $i.race_key == 'subrace_neko'>>
+          <<set $i.race_key = 'subrace_tigerkin'>>
+        <</if>>
+      <</link>>:
+      <<= _trait.getDescriptionDisplay()>>
+
+      <<if _trait == setup.trait.skill_ambidextrous && $i.race_key == 'subrace_neko'>>
+        (Choosing this option will change your race from
+        <<rep setup.trait[$i.race_key]>> to <<rep setup.trait.subrace_tigerkin>>)
+      <</if>>
+    <</capture>>
+  <</if>>
+<</for>>
+
+<<if ['subrace_elf',
+      'subrace_lizardkin',
+      'subrace_demonkin',
+      'subrace_humankingdom',
+      'subrace_kobold',].includes($i.race_key)>>
+  <br/>
+  <<set _text = `${setup.trait.skill_flight.getName()}`>>
+  <<rep setup.trait.skill_flight>>
+
+  <<set _target_race = $i.race_key>>
+
+  <<switch $i.race_key>>
+  <<case 'subrace_elf'>>
+    <<set _target_race = 'subrace_fairy'>>
+  <<case 'subrace_lizardkin'>>
+    <<set _target_race = 'subrace_dragonkin'>>
+  <<case 'subrace_humankingdom'>>
+    <<set _target_race = 'subrace_angel'>>
+  <<case 'subrace_demonkin'>>
+    <<set _target_race = 'subrace_demon'>>
+  <</switch>>
+
+  <<capture _target_race>>
+    <<link _text 'PrologueGenerateChar'>>
+      <<if $i.race_key == 'subrace_kobold'>>
+        <<run $i.trait_keys.push('wings_dragonkin')>>
+      <<else>>
+        <<set $i.race_key = _target_race>>
+      <</if>>
+    <</link>>:
+  <</capture>>
+  <<= setup.trait.skill_flight.getDescriptionDisplay()>>
+  <<if _target_race != $i.race_key>>
+    (Choosing this option will change your race from
+    <<rep setup.trait[$i.race_key]>> to <<rep setup.trait[_target_race]>>)
+  <</if>>
+<</if>>
+
+
+
+:: PrologueGenerateChar [nobr]
+
+<<set _unitgroup = setup.unitgroup[$i.race_key]>>
+
+This is your unit:
+/*
+(Note that the skill focuses i.e., the three icons next to your name
+like
+<<rep setup.skill.combat>><<rep setup.skill.brawn>><<rep setup.skill.intrigue>>
+can be changed anytime later in the game. You can also change your player's portrait later.):
+*/
+
+<<focwidget 'generatechar'>>
+  <<set _unit = _unitgroup.getUnit({trait_key: $i.gender_key, retries: 1000})>>
+
+  /* remove background and skills */
+  <<run _unit.removeTraitsWithTag('bg')>>
+  <<run _unit.removeTraitsWithTag('skill')>>
+
+  <<if _unit.isHasTrait('subrace_kobold')>>
+    <<run _unit.removeTraitsWithTag('wings')>>
+  <</if>>
+
+  /* add traits */
+  <<for _itraitkey, _traitkey range $i.trait_keys>>
+    <<run _unit.addTrait(setup.trait[_traitkey], /* trait group = */ null, /* is replace = */ true)>>
+  <</for>>
+
+  /* reset innate traits */
+  <<run _unit.resetInnateTraits()>>
+
+  /* set name */
+  <<run _unit.setName($i.firstname, $i.lastname)>>
+
+  <<replace '#genunitdiv'>>
+    <<unitcard _unit>>
+  <</replace>>
+<</focwidget>>
+
+<div id='genunitdiv'></div>
+
+<<focwidget 'refreshgenerate'>>
+  <<run _unit.delete()>>
+  <<generatechar>>
+<</focwidget>>
+
+<<link '(regenerate unit)'>>
+  <<refreshgenerate>>
+<</link>>
+
+<<link "(randomize portrait)">>
+  <<run $unitimage.resetImage(_unit, true)>>
+  <<replace '#genunitdiv'>>
+    <<unitcard _unit>>
+  <</replace>>
+<</link>>
+
+<<message '(custom portrait)'>>
+  Put your image in the
+  <<successtext "dist/img/customunit">> folder.
+  Then, enter the filename in the text box following this.
+  For example, if you put in
+  <<successtextlite 'dist/img/customunit/girl.png'>> file,
+  then enter in the following <<successtextlite 'girl.png'>>.
+  Leave blank to use the default automatically-generated image.
+  <br/>
+  <<textbox "_unit.custom_image_name" _unit.custom_image_name>>
+  <<link 'Apply'>>
+    <<replace '#genunitdiv'>>
+      <<unitcard _unit>>
+    <</replace>>
+  <</link>>
+<</message>>
+
+<<foctimed 0s>>
+  <<generatechar>>
+<</foctimed>>
+
+<br/>
+<br/>
+<<button 'Proceed with this unit as your avatar' 'PrologueCompanyGenIntro'>>
+  <<unset $i>>
+  <<run setup.DOM.Menu.prologueMakePlayer(_unit)>>
+<</button>>

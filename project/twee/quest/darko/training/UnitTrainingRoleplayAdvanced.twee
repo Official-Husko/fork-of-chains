@@ -1,0 +1,100 @@
+:: QuestSetupUnitTrainingRoleplayAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_roleplay_advanced',  /* id */
+  'Roleplay Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingRoleplayAdvanced',  /* description */
+  setup.qdiff.harder39,
+  [
+    [
+      'QuestUnitTrainingRoleplayAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_roleplay_advanced),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingRoleplayAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_roleplay_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingRoleplayAdvancedFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingRoleplayAdvancedDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_roleplay_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingRoleplayAdvanced [nobr]
+
+<p>
+Once a slave learn the power of words during sex, the next step is to
+teach them how to string them coherently into a new experience for their owners.
+This training will teach the slaves how to act believably, to enact
+whatever fantasies their owner might have in store.
+They must learn to behave believably, to put a convincing show for
+their owners, for otherwise it would have the opposite effect instead.
+</p>
+
+:: QuestUnitTrainingRoleplayAdvancedCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+<<else>>
+  <<questimage 'unit_training_roleplay_advanced_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Rep $g.trainee>> turned out to be natural at acting.
+The training went so smoothly that
+<<rep $g.head>> and your slavers managed to study other things
+and gain a lot of experience from their spare time during the training.
+</p>
+
+<<else>>
+
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to acquire all the necessary skills to graduate from this
+training.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingRoleplayAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccessful, and the lessons were
+lost in <<reps $g.trainee>> thick skull.
+</p>
+
+:: QuestUnitTrainingRoleplayAdvancedDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+It is clear that <<reps $g.trainee>> prior training must be
+repeated before another attempt at this training.
+</p>

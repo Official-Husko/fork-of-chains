@@ -1,0 +1,182 @@
+:: QuestSetup_the_slave_merchant [nobr quest]
+
+<<set _order_low =
+      setup.qc.SlaveOrderFlex(
+'Slave Merchant Order - Low Quality', /* name */
+'independent', /* company */
+12, /* expires in */
+200, /* base price */
+300, /* trait multi */
+0.5, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom(setup.TraitHelper.getAllTraitsOfTags(['bg']).filter(trait => !trait.getTags().includes('unicorn') && !trait.getTags().includes('rare')), 3, 2, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'the_slave_merchant', /* key */
+"The Slave Merchant", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'order',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'trainer': [ setup.qu.slavetrainer, 1],
+  'trader': [ setup.qu.slavetrader, 1],
+  'negotiator': [ setup.qu.negotiator, 1],
+},
+{ /* actors */
+  'merchant': 'vale_all',
+},
+[ /* costs */
+],
+'Quest_the_slave_merchant',
+setup.qdiff.normal20, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_slave_merchantCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 12),
+      setup.qc.Opportunity('slave_merchant_high_level', null),
+    ],
+  ],
+  [
+    'Quest_the_slave_merchantCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 12),
+      setup.qc.Opportunity('slave_merchant_low_level', null),
+    ],
+  ],
+  [
+    'Quest_the_slave_merchantCrit',
+    [
+      _order_low,
+      _order_low,
+      setup.qc.SetCooldownQuest(null, 6),
+    ],
+  ],
+  [
+    'Quest_the_slave_merchantCrit',
+    [
+      setup.qc.Ire('humanvale', 2),
+      setup.qc.Ire('outlaws', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.marketingoffice),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave)
+], 5),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_slave_merchant [nobr]
+<p>
+Your company has accumulated quite a large stable of slaves. While having a large number of slaves is always good, you might find it somewhat difficult to find potential buyers for them, outside of the pittance you would normally get from selling them off as menial labor slaves.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+<p>
+As luck would have it, <<yourrep _u>> informs you that a rather reputable wholesale slave merchant is in the area. You could try to invite the merchant over to your fort, and <<they $g.merchant>> will surely be glad to purchase most of your excess slaves. The merchant is a re-seller at heart, however, and would only buy slaves for cheap to make profit of selling them later, so at best you would just get an adequate deal out of this, nothing outlandishly good.
+</p>
+
+
+
+:: Quest_the_slave_merchantCrit [nobr]
+
+<<if $g.merchant.isMale()>>
+<<else>>
+  <<questimage 'the_slave_merchant_female.jpg'>>
+<</if>>
+
+<p>
+Bring your carefully written invitation, the merchant finally arrived at your fort's gate. Per your instructions, <<yourrep $g.trainer>>, <<rep $g.trader>> and <<rep $g.negotiator>> kept the merchant company throughout <<their $g.merchant>> stay within your fort, with the singular goal of impressing the merchant enough to offer you a series of good deals.
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'per_gregarious'})>>
+<<if _unit>>
+<<Reps _unit>> eloquence won the merchant's attention.
+<</if>>
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'per_cruel'})>>
+<<if _unit>>
+<<Rep _unit>> happily showed off many of your slaves that were currently being trained with pain, showcasing just how capable your company is.
+<</if>>
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'skill_hypnotic'})>>
+<<if _unit>>
+<<Rep _unit>> planted some subconscious hypnotic suggestions into the merchant's head, making <<them $g.merchant>> see your company in a better light.
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'per_lustful'})>>
+<<if _unit>>
+<<Rep _unit>> would ensure that the merchant knows exactly just how familiar your slavers are with their lewd work.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'per_loner'})>>
+<<if _unit>>
+<<Rep _unit>> <<if _unit.isYou()>>aren't<<else>>isn't<</if>> the most sociable <<urace _unit>>, and the discomfort is apparent to the merchant.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'per_submissive'})>>
+<<if _unit>>
+Seeing such a highly dominant slave trader kept
+<<rep _unit>> submissively aroused, sometimes all too obvious for the merchant.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'per_frugal'})>>
+<<if _unit>>
+<<Rep _unit>> ensured your company would not be offered a less than stellar deal.
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.trainer, $g.trader, $g.negotiator], {trait: 'per_lavish'})>>
+<<if _unit>>
+<<Rep _unit>> <<if _unit.isYou()>>are<<else>>is<</if>> far too generous, and you worry that you might end up with a subpar deal as a result.
+<</if>>
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Unfortunately, your hospitality as well as your slaver's less than thuggish behavior failed to convince the merchant that your company knows what it is doing. The merchant disappeared later the night, no doubt suspecting that you were trying to enslave <<them $g.merchant>>. Whether or not that was your intention, rumors has spread around that your company was a den of scums, which you can't really deny even if you want to.
+</p>
+<<elseif $gOutcome == 'failure'>>
+<p>
+In the end, your meager hospitality won you two very subpar offers from the merchant.
+With the merchant long gone, you glared at the slavers you've assigned to the task, who no doubt must have spent way too much time drinking and lazing around instead of properly impressing the merchant...
+</p>
+<<else>>
+<p>
+Thankfully, your slavers prove competent for once and the merchant offered you a plethora of options for selling your slaves to <<them $g.merchant>>. The merchant specializes in "wholesale slave distribution", however, and hence all the deals you receive would be a little subpar compared to most deals you find anywhere else. Still, it's probably much better than selling your more valuable slaves off as simple laborers.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The merchant was so impressed that <<they $g.merchant>> had decided to offer your company a somewhat better deals than <<they $g.merchant>> usually offer to companies in your region.
+</p>
+<</if>>
+<</if>>
+

@@ -1,0 +1,103 @@
+:: InteractionSetup_play_with_the_slave [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'play_with_the_slave', /* key */
+"Play with the slave", /* Title */
+"FCdev", /* Author */
+[ ], /* tags */
+'Interaction_play_with_the_slave',
+[ /* costs */
+],
+[ /* prerequisites */
+],
+[ /* unit requirements */
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_advanced),
+setup.qres.SlaveUsableByYou(),
+],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_play_with_the_slave [nobr]
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _blind = _u.isHasTrait(setup.trait.eq_blind)>>
+
+<<set _utorsoequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.torso)>>
+<<set _ulegsequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.legs)>>
+
+<<set _unaked = setup.Text.Unit.Equipment.isNaked(_u)>>
+<<set _verymaso = (_u.isHasTrait(setup.trait.training_masochist_advanced) && _maintraining.getTags().includes('trmasochist'))>>
+<<set _maso = (_u.isHasTrait(setup.trait.training_masochist_basic) && _maintraining.getTags().includes('trmasochist'))>>
+
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+
+<<loadinteractioncommon _u>>
+
+Entering the $i.room, you see the slave <<rep _u>>
+resting obediently at the $i.slavebed.
+You get into the $i.bed and crook a finger, silently ordering $i.him to join you.
+<<ustriptorso _u>>
+<<ustriplegs _u>>
+$i.He then bounces over,
+<<if _chastity>>
+$i.his posture communicating the arousal that $i.his caged cock cannot
+<<elseif _u.isHasTrait('dick_huge')>>$i.his massive cock rock hard
+<<elseif _u.isHasTrait('dick_medium')>>$i.his erection standing out stiffly
+<<elseif _u.isHasDick()>>$i.his tiny little dick poking out stiffly
+<<else>>
+$i.his pussylips shining with arousal
+<</if>>.
+As $i.he climbs into the $i.bed you take
+$i.his <<uhand _u>> and guide $i.him into your lap,
+facing away from you.
+$i.He sighs happily and snuggles $.his
+<<uback _u>>
+into your <<ubreast $unit.player>>.
+You
+<<if _u.isHasTrait('breast_huge')>>
+run your hands across $i.his massive chest
+<<elseif _u.isHasTrait('breast_large')>>
+heft $i.his heavy breasts<<elseif _u.isHasBreasts()>>
+massage $i.his pretty chest
+<<else>>
+fondle $i.his <<ubreast _u>>
+<</if>> and tease $i.his
+<<unipples _u>>,
+as $i.he shimmies $i.himself back
+<<if !_hasdick>>
+so $i.his warmth is against yours, your <<ulegs $unit.player>> spreading $i.his<<else>>
+onto you so your cock is lodged between $i.his<</if>>
+buttocks.
+When $i.he's close to orgasm from all the stimulation,
+$i.he reflexively squeezes
+<<if !_hasdick>>
+your thighs between $i.his <<ulegs _u>> like a pincer, not letting them go until
+$i.his climax finishes. Feeling $i.his juices squired all over your lap,
+<<else>>
+your <<udick $unit.player>> between $i.his asscheeks,
+bringing you to climax.
+At the feeling of your warm cum
+between $i.his thighs,
+<</if>>
+$i.he tips over the edge and
+<<if _chastity>>
+shivers with orgasm, ejaculate dribbling out of $i.his chastity cage
+<<elseif _u.isHasTrait('balls_huge')>>
+making a massive mess all over $i.himself from $i.his own <<uballs _u>>
+<<elseif _u.isHasTrait('balls_medium')>>adding $i.his own load to the mess
+<<elseif _u.isHasBalls()>>adding $i.his own pathetic load to the mess
+<<else>>quivers in your grasp, gasping, before relaxing back into you in a puddle of satisfaction<</if>>.

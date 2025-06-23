@@ -1,0 +1,326 @@
+:: QuestSetup_mutual_loyalty [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'Yourself', /* name */
+[
+setup.trait.per_smart,
+setup.trait.per_sly,
+setup.trait.skill_hypnotic,
+setup.trait.skill_creative,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.trait.per_slow,
+setup.trait.per_direct,
+setup.trait.per_lunatic,
+setup.trait.per_masochistic,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+],
+[
+setup.qres.You(),
+],
+{
+intrigue: 1.5,
+slaving: 1.5,
+}
+)>>
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Skill Learner', /* name */
+[
+setup.trait.per_smart,
+setup.trait.per_studious,
+setup.trait.per_curious,
+setup.trait.per_loyal,
+setup.trait.join_senior,
+],
+[
+setup.trait.per_slow,
+setup.trait.per_active,
+setup.trait.per_stubborn,
+setup.trait.per_independent,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('loyalty_reward'),
+],
+{
+intrigue: 1.5,
+slaving: 1.5,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'mutual_loyalty', /* key */
+"Mutual Loyalty", /* Title */
+"darko", /* Author */
+[ 'desert', 'money', 'prep'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'you': _criteriayou,
+'slaver': _criteriaslaver,
+'negotiator': setup.qu.negotiator, },
+{ /* actors */
+'target': 'subrace_humandesert', },
+[ /* costs */
+],
+'Quest_mutual_loyalty',
+setup.qdiff.normal36, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mutual_loyaltyCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.Slave('target', "a|was the child of a leader of a certain desert settlement", undefined),
+],
+], [
+'Quest_mutual_loyaltyCrit',
+[
+setup.qc.RemoveTitleGlobal('loyalty_reward'),
+setup.qc.RemoveTagGlobal('loyalty_reward_final'),
+setup.qc.MoneyNormal(),
+setup.qc.BoonizeRandom('you', 10),
+setup.qc.BoonizeRandom('slaver', 30), ],
+], [
+'Quest_mutual_loyaltyFailure',
+[
+setup.qc.VarSet('loyalty_reward_cd', '1', 8), ],
+], [
+'Quest_mutual_loyaltyDisaster',
+[
+setup.qc.RemoveTagGlobal('loyalty_reward_final'),
+setup.qc.VarSet('loyalty_reward_cd', '1', 5),
+setup.qc.TraumatizeRandom('slaver', 15), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarNull('loyalty_reward_cd'),
+setup.qres.HasUnitWithTagAndJob('loyalty_reward_final', setup.job.slaver), ],
+[ /* expiration outcomes */
+setup.qc.VarSet('loyalty_reward_cd', '1', 5), ],
+)>>
+
+:: Quest_mutual_loyalty [nobr]
+<<set _unit = setup.getUnit({job: setup.job.slaver, title: 'loyalty_reward'})>>
+<<if !_unit>>
+<<dangertext 'This quest is no longer able to be completed.'>>
+<<else>>
+
+<p>
+You have received a quest from one of the numerous desert settlements.
+Apparently, two neighboring settlements were having a dispute and it's almost
+reaching breaking point.
+The less scrupulous of the settlements offered your company
+great rewards, in exchange for stealthily kidnapping the <<daughter $g.target>> of the
+other chieftain. The poor <<daughter $g.target>> is going to be used as a
+bargaining chip, to end the dispute in their favor.
+</p>
+
+<p>
+This kind of task is best done with a small team. A negotiator for
+ensuring that your company get paid well, and two slavers who will be responsible for
+infiltrating the other settlement, and kidnap the
+unsuspecting <<daughter $g.target>>.
+</p>
+
+<p>
+Hearing of this opportunity, one of your slavers <<rep _unit>> is offering to go
+on the mission, and also asking you to go along as well. <<Yourrep _unit>> has
+been with you for quite a while now, and by now you're already very familiar
+with <<theslaver _unit>> — while <<they _unit>> can sometimes be a little bit
+<<uadjbad _unit>>, <<they _unit>> is also <<uadjgood _unit>>. It is quite odd
+though for <<them _unit>> to offer <<themself _unit>> personally for this mission, and
+even odder that <<they _unit>> asked you personally to accompany <<them _unit>>.
+</p>
+
+<p>
+For all you know this could be a trap to your leadership. But knowing <<rep _unit>>,
+would you think so?
+</p>
+
+<</if>>
+
+
+:: Quest_mutual_loyaltyCrit [nobr]
+
+/* Calculate which skill to get */
+<<set _modifiers = $g.slaver.getSkillModifiers(true)>>
+<<set _modlist = []>>
+<<for _imodifier, _modifier range _modifiers>>
+<<run _modlist.push([_imodifier, _modifier])>>
+<</for>>
+<<run _modlist.sort((a, b) => b[1] - a[1])>>
+<<set _skill = _modlist[1][0]>>
+<<if _skill == setup.skill.survival.key || _skill == setup.skill.arcane.key>>
+<<set _skill = _modlist[2][0]>>
+<</if>>
+<<if _skill == setup.skill.survival.key || _skill == setup.skill.arcane.key>>
+<<set _skill = _modlist[0][0]>>
+<</if>>
+<<set _skill = setup.skill[_skill]>>
+
+<<if _skill == setup.skill.combat>>
+<<set _trait = setup.trait.skill_ambidextrous>>
+<<elseif _skill == setup.skill.brawn>>
+<<set _trait = setup.trait.skill_intimidating>>
+<<elseif _skill == setup.skill.survival>>
+<<run alert('??? survival skill is not obtainable. Please report bug with your save')>>
+<<elseif _skill == setup.skill.intrigue>>
+<<set _trait = setup.trait.skill_connected>>
+<<elseif _skill == setup.skill.slaving>>
+<<set _trait = setup.trait.skill_hypnotic>>
+<<elseif _skill == setup.skill.knowledge>>
+<<set _trait = setup.trait.skill_creative>>
+<<elseif _skill == setup.skill.social>>
+<<set _trait = setup.trait.skill_entertain>>
+<<elseif _skill == setup.skill.aid>>
+<<set _trait = setup.trait.skill_alchemy>>
+<<elseif _skill == setup.skill.arcane>>
+<<run alert('??? arcane skill is not obtainable. Please report bug with your save')>>
+<<elseif _skill == setup.skill.sex>>
+<<set _trait = setup.trait.skill_animal>>
+<<else>>
+<<run alert('unknown skill')>>
+<</if>>
+
+<p>
+The <<daughter $g.target>> of the chieftain is holed up deep inside the city,
+in the main tent of the encampment. Infiltrating it will not be easy.
+</p>
+
+<p>
+First, you need to distract the guards watching over the main tent.
+As you contemplate your options, <<yourrep $g.slaver>>
+tapped you on your shoulders. <<They $g.slaver>> slaver|ask you
+to leave the problem to <<them $g.slaver>>.
+Putting your trust in the
+<<uadjgood $g.slaver>> slaver, you watch as <<they $g.slaver>>
+<<if _trait == setup.trait.skill_ambidextrous>>
+slaver|unsheathe a pair of daggers from <<their $g.slaver>> waist, and slaver|proceed to
+masterfully wield them in both <<uhands $g.slaver>>. In a flash, both guards are knocked
+out — as the dust settles, the shadow of <<yourrep $g.slaver>> appears behind them.
+You never notice <<reps $g.slaver>> talent in dual wielding, slaver|have <<they
+$g.slaver>> always been able to able to do this?
+<<elseif _trait == setup.trait.skill_intimidating>>
+slaver|walk menacingly towards the guards, instilling great fear upon the guards
+who fled in terror. You never note <<rep $g.slaver>> as an intimidating
+slaver — did <<they $g.slaver>> hid this skill all this time?
+<<elseif _trait == setup.trait.skill_connected>>
+slaver|walk calmly towards the guards, who are apparently already bought by the
+connected slaver. You never notice <<rep $g.slaver>> being particularly
+savvy in making connections — did it change somehow?
+<<elseif _trait == setup.trait.skill_hypnotic>>
+slaver|walk towards the guards, who immediately eyed <<therace $g.slaver>> suspiciously.
+But the suspicion is short lived as you visibly see them relaxing in the hypnotic
+slaver's presence. It makes you wonder — slaver|have <<rep $g.slaver>> always been this
+hypnotic?
+<<elseif _trait == setup.trait.skill_creative>>
+slaver|craft a makeshift explosive from nearby materials and placed them just
+on the outskirts of the tent. From a distance, <<rep $g.slaver>> slaver|detonate
+the explosives, distracting the guards for a good while. The creativity makes
+you wonder if <<rep $g.slaver>> slaver|have always been this creative.
+<<elseif _trait == setup.trait.skill_entertain>>
+slaver|retreat to the oasis. Soon after you hear <<reps $g.slaver>> unmistakable
+voice, singing a tune. You never realize how beautiful <<reps $g.slaver>>
+voice is. Actually, has it always been this good?
+<<elseif _trait == setup.trait.skill_alchemy>>
+slaver|concoct a sleeping draught which <<they $g.slaver>> slaver|disguise as booze.
+The guards suspect nothing as <<rep $g.slaver>> slaver|offer the tired guards some
+refreshments. Which makes you think — has <<rep $g.slaver>> always been this
+skilled in alchemy?
+<<elseif _trait == setup.trait.skill_animal>>
+slaver|rouse the settlement's animals to create a commotion. The rampaging animals
+force the guards to abandon their post. You never know that <<rep $g.slaver>> slaver|have a way
+with animals — slaver|have <<they $g.slaver>> always had this skill?
+<<else>>
+<<run alert('unrecognized trait. please report bug to the devs')>>
+<</if>>
+</p>
+
+<p>
+With <<yourrep $g.slaver>> busy distracting the guard, you seize the opportunity
+to personally enter the main tent. You are lucky as you find the <<daughter
+$g.target>> apparently suffering from a massive hangover. You
+easily subdue the dazed <<girl $g.target>> before tying <<them $g.target>>
+up and smuggling <<them $g.target>> out of the encampment.
+</p>
+
+<p>
+After rendezvousing with <<yourrep $g.slaver>>, you deliver the package to your client personally.
+<<if $gOutcome == 'crit'>>
+But it turns out that the client does not need the <<girl $g.target>> anymore
+— you are still getting paid, but you can also take the <<girl $g.target>> home
+as a slave.
+<<else>>
+The man greedily takes possession of the bound <<girl $g.target>>, and hands
+over to your company the promised pay.
+<</if>>
+With the quest payment settled, you cannot help but notice that <<yourrep
+$g.slaver>> slaver|look particularly cheerful after the quest. "How did you like
+it, boss?", slaver|ask the <<uadjper $g.slaver>> slaver, probably about <<their
+$g.slaver>> performance earlier. Apparently, <<they $g.slaver>> somehow
+slaver|have learned (probably from the loose lips of your other slavers!) that you were
+behind <<their $g.slaver>> surprise vacation some time ago.
+The vacation inspired the <<uadjgood $g.slaver>> <<urace $g.slaver>> to learn
+a new skill to be more useful to you and your company — the money <<they
+$g.slaver>> "borrowed" some time ago? It was for buying a manual of <<rep
+_trait>>. Ever since <<theslaver $g.slaver>> had been hard at work studying, and today the
+results speak for themselves. <<Rep $g.slaver>> slaver|have now fully mastered <<rep
+_trait>>.
+</p>
+
+<<run setup.qc.Trait('slaver', _trait).apply($gQuest)>>
+
+<p>
+This occupation of being a slaver is not one that usually bring warmth to
+your heart, but exceptions do occur sometimes.
+</p>
+
+
+:: Quest_mutual_loyaltyFailure [nobr]
+
+<p>
+Unfortunately, you and your <<ufriend $unit.player $g.slaver>> never got the
+chance to do the job as the dispute was somehow already settled by the time
+you and your slavers arrive at the settlement.
+You can hear <<yourrep $g.slaver>> cursing under <<their $g.slaver>> breath as you go back to
+your fort. You reassure <<them $g.slaver>> that another chance will surely
+appear, for whatever it is that <<they $g.slaver>> had obviously planned for
+you.
+</p>
+
+
+:: Quest_mutual_loyaltyDisaster [nobr]
+
+<p>
+The <<daughter $g.target>> of the chieftain is holed up deep inside the city,
+in the main tent of the encampment. Infiltrating it will not be easy.
+</p>
+
+<p>
+First, you need to distract the guards watching over the main tent.
+As you contemplate your options, <<yourrep $g.slaver>>
+tapped you on your shoulders. <<They $g.slaver>> slaver|ask you
+to leave the problem to <<them $g.slaver>>.
+But putting your trust in the <<uadjbad $g.slaver>> slaver turns out to be a
+mistake. Soon enough, the guards appear to have been alerted by your
+presence. You and your slavers have no choice but to escape the encampment
+before you are found.
+</p>
+
+<p>
+<<Rep $g.slaver>> slaver|look particularly dejected after the unfortunate turn of events.
+Whatever <<they $g.slaver>> slaver|was planning on doing seems to have
+failed, which impacted <<theslaver $g.slaver>> greatly.
+</p>

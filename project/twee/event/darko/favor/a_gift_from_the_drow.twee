@@ -1,0 +1,40 @@
+:: EventSetup_a_gift_from_the_drow [nobr event]
+
+<<run new setup.Event(
+'a_gift_from_the_drow', /* key */
+"A Gift from the Drow", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'item',
+  'deep',
+],
+'Event_a_gift_from_the_drow',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'drow': 'subrace_drow',
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.sexmanual_step_on_dick, 1),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.sexmanual_step_on_dick),
+  setup.qres.FavorAtLeast('drow', 800),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_a_gift_from_the_drow [nobr]
+<p>
+    An emissary from the glorious city of <<rep $company.drow>> has ascended to the surface and into your fort, apparently, bringing a gift.
+    Knowing drow politics, you exercise extreme caution receiving the gift, knowing all too well that the drows never give out anything for free.
+    The gift turns out to be a pretty rare sex manual. Unlike most other companies, the drow did not dignify you with a demonstration, but given the content of the book, that's probably a good thing.
+</p>
+
+<p>
+    The book, the <<rep setup.item.sexmanual_step_on_dick>> describes how to assert a slave's place by stepping on their very manhood. A fitting gift, given how cruel drow culture could be. But you get the feeling this might just be a thinly veiled threat that you should never go against the drows...
+</p>

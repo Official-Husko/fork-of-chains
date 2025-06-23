@@ -1,0 +1,126 @@
+:: QuestSetup_daring_escapade [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'daring_escapade', /* key */
+"Daring Escapade", /* Title */
+"darko", /* Author */
+[
+  'special', 'unit', 'sea',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'pirate': setup.qu.pirate,
+'navigator': setup.qu.navigator,
+'capturer': setup.qu.slavecapturer, },
+{ /* actors */
+'slave': [
+setup.qres.HasTag('escaped_slave'),
+],
+'victim': 'subrace_humansea', },
+[ /* costs */
+],
+'Quest_daring_escapade',
+setup.qdiff.harder58, /* difficulty */
+[ /* outcomes */
+[
+'Quest_daring_escapadeCrit',
+[
+setup.qc.Slave('victim', "a|was a runaway slave who grouped up with a slave of yours for an escape attempt", undefined), ],
+], [
+'Quest_daring_escapadeCrit',
+[
+],
+], [
+'Quest_daring_escapadeFailure',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapehard'),
+setup.qc.Injury('pirate', 9),
+setup.qc.Injury('capturer', 11),
+setup.qc.Injury('navigator', 7), ],
+], [
+'Quest_daring_escapadeFailure',
+[
+setup.qc.MissingUnitRecapture('slave', 'escapehard'),
+setup.qc.MissingUnit('capturer'),
+setup.qc.Injury('pirate', 9),
+setup.qc.Injury('navigator', 7), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.escapehard, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTag('escaped_slave'),
+setup.qres.NoTrait(setup.trait.training_mindbreak),
+setup.qres.NoTrait(setup.trait.training_obedience_advanced)
+]), ],
+[ /* expiration outcomes */
+setup.qc.MissingUnitForever('slave'), ],
+)>>
+
+:: Quest_daring_escapade [nobr]
+
+<p>
+A slave of yours, <<rep $g.slave>>, had escaped your fort some time ago.
+Desperate to evade your recapture, <<they $g.slave>> had opted for a very
+dangerous option — into the <<lore region_sea>>. This venture is surely dangerous
+for the slave, but it is sure effective in deterring your chase. Is the slave
+worth the chase, given the dangers posed by the <<lore region_sea>>? It might be wiser to
+just let the slave go at this point...
+</p>
+
+<p>
+If you really want to recapture the slave, however, you will need a ship
+commanded by at least a fighter and a navigator. A slave capturer would also
+be nice for when the slavers finally meet <<rep $g.slave>> again.
+</p>
+
+<p>
+<<dangertext 'Warning'>>: If you let this quest expire or if you remove the
+quest, <<rep $g.slave>> will be gone forever...
+</p>
+
+
+:: Quest_daring_escapadeCrit [nobr]
+<p>
+Braving the <<lore region_sea>>, your slavers <<uadv $g.navigator>> ventured
+south seeking the lost slave <<rep $g.slave>>. They were in luck, as <<rep
+$g.slave>> had not ventured far on the small ship <<they $g.slave>>
+procured. It was an easy affair having <<rep $g.pirate>> and <<rep
+$g.capturer>> board the slave's ship, securing the protesting slave back into
+your ship and on way to your fort.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Apparently <<rep $g.slave>> slave|was not the only inhabitant in their ship,
+as your slaver found another passenger. There were only one possible outcome
+here as your slavers collared the other passenger to begin <<their
+$g.victim>> new life serving <<their $g.victim>> betters.
+</p>
+<</if>>
+
+
+:: Quest_daring_escapadeFailure [nobr]
+<p>
+The <<lore region_sea>> prove too challenging for your slavers as their ship
+were rocked by the heavy waves into one of the reefs.
+With the crew injured, your slavers had no choice but to went back to the fort,
+but at least they managed to pick up the lead on where <<rep $g.slave>> could possibly go.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Rep $g.capturer>> went missing during the chaos.
+<<set _rescuer = $dutylist.getUnitIfAvailable('rescuer')>>
+<<if _rescuer>>
+Your rescuer <<rep _rescuer>> will have to get to work to rescue <<them $g.capturer>>.
+<<else>>
+Maybe you could appoint a rescuer to get the lost slaver back...
+<</if>>
+</p>
+<</if>>

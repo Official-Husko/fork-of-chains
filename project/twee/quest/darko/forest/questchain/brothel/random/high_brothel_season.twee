@@ -1,0 +1,384 @@
+:: QuestSetup_high_brothel_season_dom_ [nobr quest]
+
+<<set _criteriadom1 = new setup.UnitCriteria(
+null, /* key */
+'Dominant Slaver', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_proud,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.eq_veryslutty,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.dick_tiny,
+  setup.trait.dick_small,
+  setup.trait.breast_tiny,
+  setup.trait.breast_small,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.per_humble,
+  setup.trait.per_chaste,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Through(
+    setup.qres.Or([
+      setup.qres.And([
+        setup.qres.VarEqual('quest_brothel_gender', 'male'),
+        setup.qres.Trait('gender_male'),
+      ]),
+      setup.qres.And([
+        setup.qres.VarEqual('quest_brothel_gender', 'female'),
+        setup.qres.Trait('gender_female'),
+      ]),
+    ]),
+    "Same gender with your brothel's courtesans",
+  ),
+  setup.qres.AllTraits([setup.trait.per_dominant], true),
+],
+{
+  slaving: 1,
+  sex: 2,
+}
+)>>
+
+
+<<set _criteriasub1 = new setup.UnitCriteria(
+null, /* key */
+'Submissive Slaver', /* name */
+[
+  setup.trait.bg_slave,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_humble,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.eq_veryslutty,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.per_proud,
+  setup.trait.per_chaste,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Through(
+    setup.qres.Or([
+      setup.qres.And([
+        setup.qres.VarEqual('quest_brothel_gender', 'male'),
+        setup.qres.Trait('gender_male'),
+      ]),
+      setup.qres.And([
+        setup.qres.VarEqual('quest_brothel_gender', 'female'),
+        setup.qres.Trait('gender_female'),
+      ]),
+    ]),
+    "Same gender with your brothel's courtesans",
+  ),
+  setup.qres.AllTraits([setup.trait.per_submissive], true),
+],
+{
+  slaving: 1,
+  sex: 2,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'high_brothel_season', /* key */
+"High Brothel Season", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+],
+4, /* weeks */
+20, /* expiration weeks */
+{ /* roles */
+  'dom1': [ _criteriasub1, 1],
+  'dom2': [ _criteriadom1, 1],
+  'pimp': [ setup.qu.pimp, 1],
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+],
+'Quest_high_brothel_season_dom_',
+setup.qdiff.normal65, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(6000),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.MoneyCustom(12000),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Injury('dom1', 4),
+      setup.qc.Injury('dom2', 4),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Disaster',
+    [
+      setup.qc.Injury('dom1', 6),
+      setup.qc.Injury('dom2', 6),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'high_brothel_season_sub_', /* key */
+"High Brothel Season (Sub)", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+],
+4, /* weeks */
+20, /* expiration weeks */
+{ /* roles */
+  'dom1': [ _criteriasub1, 1],
+  'dom2': [ _criteriasub1, 1],
+  'pimp': [ setup.qu.pimp, 1],
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+],
+'Quest_high_brothel_season_dom_',
+setup.qdiff.normal65, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(6000),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.MoneyCustom(12000),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Injury('dom1', 4),
+      setup.qc.Injury('dom2', 4),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Disaster',
+    [
+      setup.qc.Injury('dom1', 6),
+      setup.qc.Injury('dom2', 6),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'high_brothel_season_dom_', /* key */
+"High Brothel Season (Dom)", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+],
+4, /* weeks */
+20, /* expiration weeks */
+{ /* roles */
+  'dom1': [ _criteriadom1, 1],
+  'dom2': [ _criteriadom1, 1],
+  'pimp': [ setup.qu.pimp, 1],
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+],
+'Quest_high_brothel_season_dom_',
+setup.qdiff.normal65, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(6000),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.VarSet('quest_brothel_wait', '50', -1),
+      setup.qc.MoneyCustom(12000),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Injury('dom1', 4),
+      setup.qc.Injury('dom2', 4),
+    ],
+  ],
+  [
+    'Quest_high_brothel_season_dom_Disaster',
+    [
+      setup.qc.Injury('dom1', 6),
+      setup.qc.Injury('dom2', 6),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_high_brothel_season_dom_ [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+While <<attach _describe>> is generally busy all year round, some months are generally busier than others. And this month happens to be the busiest time of the year, and your courtesans are unable to cope with the demand.
+<<Yourrep $g.owner>><<if _promotion == 'favor'>>, as well as the customer relations officer <<name $g.head>> were<<else>> was<</if>> forced to turn down some customers due to simply having not enough <<uhands $unit.player>> on deck.
+</p>
+
+<p>
+You can help in the busy season by sending a group of slavers from your company to work as fill-in whores. To maintain the high standards of your brothel, however, whoever you send must be highly skilled in the act of whoring.
+Furthermore,
+<<if _sub == 'sub'>>
+in line with the submissive sluts image your brothel maintains, the slavers you send on this mission must also be perfectly submissive sluts.
+<<elseif _sub == 'dom'>>
+in line with the dominant courtesan image your brothel maintains, any slaver you send on this mission must also be capable of being a perfectly dominant <<master $g.head>>.
+<<else>>
+since your brothel caters to a wide range of customers, you should send one dominant and one submissive slaver on this mission.
+<</if>>
+And most importantly, the
+<<if _sub == 'sub'>>
+sluts
+<<else>>
+slavers
+<</if>>
+you send on this mission must all be good <<girl $g.head>>s.
+</p>
+
+<p>
+The requirements may be stringent, but this quest no doubt promises a wealth of reward should you happen to have slavers that meet the requirements.
+</p>
+
+
+
+:: Quest_high_brothel_season_dom_Crit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+<<Yourrep $g.owner>> owner|was not kidding that the brothel was packed. Your slavers worked very, very hard in the past four months, servicing the many clients that come flocking into your brothels during the neko's apparent mating season. <<if $gOutcome == 'failure'>>A bit too hard, perhaps, as some of your slavers ended up injured.<</if>>
+Still, they reaped so much money from the venture, much more than they would normally make in a regular quest.
+</p>
+
+
+
+
+:: Quest_high_brothel_season_dom_Disaster [nobr]
+<p>
+Unfortunately, your slavers' skills were not enough to satisfy the clients. Worse, early on a sadistic client's play ended up injuring your inexperienced slavers, and they were unable to continue and had to return home injured.
+</p>

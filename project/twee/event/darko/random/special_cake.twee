@@ -1,0 +1,170 @@
+:: EventSetup_special_cake [nobr event]
+
+<<run new setup.Event(
+'special_cake', /* key */
+"Special Cake", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_special_cake',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_foodworker], true),
+    setup.qres.NoTraits([setup.trait.per_chaste], true),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AnyTrait([setup.trait.balls_large, setup.trait.balls_huge, setup.trait.balls_titanic, setup.trait.breast_large, setup.trait.breast_huge, setup.trait.breast_titanic], true),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_special_cake [nobr]
+<p>
+For today's dinner, <<yourrep $g.slaver>> slaver|have whipped up a surprise dessert: a cake, complete with delicious-looking frostings! Everyone in your company cheers at the delicious-looking dessert, and <<rep $g.slaver>>
+<<if $g.slaver.isHasTrait('per_proud')>>
+slaver|beam proudly.
+<<elseif $g.slaver.isHasTrait('per_humble')>>
+slaver|is quite humbled by the reception.
+<<else>>
+slaver|grin happily at the reception.
+<</if>>
+Before long, your other slavers are almost rioting trying to get a slice of the cake before it inevitably run out.
+</p>
+
+<<if $g.you.isHasTrait('bg_foodworker')>>
+<p>
+You were a foodworker once, and it did not escape your eyes that something seems to be 
+incredibly off about the frostings...
+</p>
+<</if>>
+
+<<choose>>
+
+<<opt "Try to get some too">>
+
+<p>
+<<if $g.you.isHasTrait('bg_foodworker')>>
+Despite your suspicion, a cake is a cake, and you do not want to lose out on free desserts.
+You
+<<else>>
+Not wanting to lose out on free cake, you
+<</if>>
+roll up your sleeves and rush into the fray. It was a chaotic affair, with everyone trying to get a slice of the rare dessert, but you managed to get yourself a nice plateful of it. And the cake does not disappoint. The base is already delicious, but it's the topping that brings it to the next level.
+<<if $g.slave.isHasTrait('balls_large')>>
+The combination of sweetness, sourness, and a slight taste of saltiness is
+<<else>>
+The combination of sweetness with a tint of sourness is
+<</if>>
+otherworldly, to put in words.
+Your other slavers agree too, and all of you shower <<rep $g.slaver>> with praises.
+In the coming days, <<therace $g.slaver>> slaver|look quite uplifted by the cake's reception, and <<their $g.slaver>> overall mood increase.
+</p>
+
+<<if $g.you.isHasTrait('bg_foodworker')>>
+
+<p>
+Your suspicion was confirmed with the tasting.
+It was the taste of a slave's bodily fluid. You double confirm your supsicion by sneaking into the
+kitchen and found <<rep $g.slave>> there bound, gagged, and completely milked dry of
+<<their $g.slave>>
+<<if $g.slave.isHasTrait('balls_large')>>
+cockmilk.
+<<else>>
+milk.
+<</if>>
+Still, your other slavers looked so happy enjoying the dessert, and you
+refrain from saying anything.
+From the side of your eyes, you can catch <<rep $g.slaver>> throwing knowing glances at you,
+no doubt happy that you decided to keep the extra information for yourself.
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 25).apply($gQuest)>>
+<<run setup.qc.Injury('slave', 1).apply($gQuest)>>
+
+<<else>>
+
+<p>
+In the same night, one of your slaves <<rep $g.slave>> slave|was injured from too much abuse inflicted upon <<their $g.slave>>
+<<if $g.slave.isHasTrait('balls_large')>>
+dick,
+<<else>>
+breasts,
+<</if>>
+surely a coincidence and nothing more.
+</p>
+
+<<run setup.qc.BoonizeRandom('slaver', 5).apply($gQuest)>>
+<<run setup.qc.Injury('slave', 1).apply($gQuest)>>
+
+<</if>>
+
+<<opt "Sit back and compliment the chef instead">>
+
+<p>
+
+<<if $g.you.isHasTrait('bg_foodworker')>>
+Deciding to get the truth out of the chef, you sit back and approach <<rep $g.slaver>>.
+You first thank <<therace $g.slaver>> for the kind gesture,
+and as suspected, <<therace $g.slaver>> seems to avert <<their $g.slaver>> gaze from you as if hiding something.
+Indeed, after stealing a glance at the kitchen, you can see
+one of your slaves, <<rep $g.slave>>, tied up in the kitchen, naked and seemingly completely exhausted.
+<<if $g.slave.isHasTrait('balls_large')>>
+<<Their $g.slave>> <<udick $g.slave>> is more flaccid than normal, the balls seemingly completely emptied.
+<<else>>
+<<Their $g.slave>> <<ubreasts $g.slave>> are more soggy than normal, seemingly completely drained of its content.
+<</if>>
+
+<<run setup.qc.FriendshipWithYou('slaver', 1000).apply($gQuest)>>
+
+<<else>>
+Deciding your slavers would enjoy it more than you, you simply sit back and relax, while approaching the chef personally. You thank <<therace $g.slaver>> for the kind gesture, but for some reason <<therace $g.slaver>> seems to avert <<their $g.slaver>> gaze from you as if hiding something. Only then you notice that one of your slaves, <<rep $g.slave>>, slave|is tied up in the kitchen, naked and seemingly completely exhausted.
+<<if $g.slave.isHasTrait('balls_large')>>
+<<Their $g.slave>> <<udick $g.slave>> is more flaccid than normal, the balls seemingly completely emptied.
+<<else>>
+<<Their $g.slave>> <<ubreasts $g.slave>> are more soggy than normal, seemingly completely drained of its content.
+<</if>>
+
+<<run setup.qc.FriendshipWithYou('slaver', 50).apply($gQuest)>>
+
+<</if>>
+
+Turning your head to <<rep $g.slaver>>, <<therace $g.slaver>>
+<<if $g.slaver.isHasTrait('per_sly')>>
+acts completely normal, as if nothing was wrong, and the only hint you get is the slight wink from the sly slaver.
+<<else>>
+looks sideways, whistling along pretending nothing had happened in the kitchen.
+<</if>>
+
+</p>
+
+<p>
+Despite the questionable ingredients, your slavers seem to greatly enjoy the treat, and everybody's moods improve as a result. You decided that the benefits outweigh the "costs", and decide to let it slip by.
+</p>
+
+<<run setup.qc.Injury('slave', 1).apply($gQuest)>>
+
+<</choose>>

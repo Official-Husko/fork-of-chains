@@ -1,0 +1,51 @@
+:: EventSetup_kobold_advice_3 [nobr event]
+
+
+
+
+<<run new setup.Event(
+'kobold_advice_3', /* key */
+"Kobold Advice 3", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+'Event_kobold_advice_3',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'kobold': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+    setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_shunned_kobold_progress', '35', -1),
+  setup.qc.SetCooldownEvent('kobold_', 8),
+  setup.qc.OneRandomSeed([
+setup.qc.Opportunity('kobold_hoard', {
+kobold: "kobold",
+}),
+setup.qc.Opportunity('kobold_goals', {
+kobold: "kobold",
+})
+]),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_shunned_kobold_progress', '30'),
+],
+0, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_kobold_advice_3 [nobr]
+<p>
+    <<Rep $g.kobold>> has been with you for a while now, and while <<they $g.kobold>> has adjusted quite well to the surface life, some things still looks quite unfamiliar to <<therace $g.kobold>>. Today, <<they $g.kobold>> asked you for yet another advice.
+</p>
+

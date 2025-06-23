@@ -1,0 +1,49 @@
+:: EventSetup_vacation_over [nobr event]
+
+<<run new setup.Event(
+'vacation_over', /* key */
+"Vacation Over", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_vacation_over',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+  ],
+  'them': [
+  ],
+},
+[ /* outcomes */
+  setup.qc.BoonizeRandom('you', 20),
+  setup.qc.Return('you'),
+  setup.qc.Return('them'),
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_vacation_over [nobr]
+<p>
+After five full weeks, you feel refreshed and ready to go back to your work.
+But that's not all! In your absence, <<yourrep $g.them>> also
+<<if $gQuest.getSeed() % 3 == 0>>
+made a lot of money out of seasonal contracts.
+<<run setup.qc.Money(5000).apply($gQuest)>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+found a particularly rare potion.
+<<run setup.qc.Item(setup.item.potion_luck).apply($gQuest)>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+smoothed things out with the <<rep $g.them.getHomeCompany()>>.
+<<run setup.qc.Favor($g.them.getHomeCompany(), 250).apply($gQuest)>>
+<</if>>
+All in all, it was a good five weeks for you, and you are quite eager to return back to your company, after thanking the experienced <<rep $g.them>> for <<their $g.them>> help, of course.
+</p>
+

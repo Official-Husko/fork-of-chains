@@ -1,0 +1,19 @@
+:: DutyQuestLivingGod [nobr]
+
+<p>
+A slaver under your employ whose job is to be an object of worship from the nearby masses.
+<<if setup.dutytemplate.questlivinggod.isFavor()>>
+Has a chance to inspire their worshippers, increasing your favor
+<<set _company = setup.dutytemplate.questlivinggod.getFavorCompany()>>
+<<if _company>>
+  with the <<rep _company>>
+<</if>>
+by
+<<favor setup.dutytemplate.questlivinggod.favor()>> each week.
+(If the chance is higher than 100%, then there is a chance you will gain even more favor.)
+<<else>>
+Has a chance to grant you <<money setup.dutytemplate.questlivinggod.profit()>>
+each week from the tithe their worshippers donated.
+(If the chance is higher than 100%, then there is a chance you will get even more money.)
+<</if>>
+</p>

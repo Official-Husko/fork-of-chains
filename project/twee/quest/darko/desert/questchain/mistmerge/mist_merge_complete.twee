@@ -1,0 +1,209 @@
+:: QuestSetup_mist_merge_complete23 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_mist_merge_complete232',
+'Half Possessed',
+'subrace_humandesert', /* pools */
+0,
+[
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.TraitReplace('unit', setup.trait.per_lunatic),
+setup.qc.TraitReplace('unit', setup.trait.magic_dark), ],
+)>>
+<<run new setup.UnitGroup(
+'quest_mist_merge_complete233',
+'Full Possession',
+'subrace_humandesert', /* pools */
+0,
+[
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.ResetInnateTraits('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.Corrupt('unit'),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.dick_titanic),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.balls_titanic),
+setup.qc.TraitIncreaseExisting('unit', setup.trait.breast_titanic),
+setup.qc.TraitReplace('unit', setup.trait.magic_dark_master),
+setup.qc.TraitReplace('unit', setup.trait.per_lunatic),
+setup.qc.GenName('unit', [setup.trait.race_demon]), ],
+)>>
+
+
+
+
+
+<<run new setup.QuestTemplate(
+'mist_merge_complete23', /* key */
+'Mist Merge: Complete', /* Title */
+'darko', /* Author */
+[ 'desert', 'unit', 'danger'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'corruptor2': setup.qu.corruption_assistant,
+'corruptor1': setup.qu.corruption_assistant,
+'guard': setup.qu.dark_warrior, },
+{ /* actors */
+'halfpossessed': 'quest_mist_merge_complete232',
+'fullpossess': 'quest_mist_merge_complete233', },
+[ /* costs */
+],
+'Quest_mist_merge_complete23',
+setup.qdiff.extreme45, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mist_merge_complete23Crit',
+[
+setup.qc.Slaver('fullpossess', 'a|was fully possessed by a demon from beyond <<lore concept_mist>>, leaving their original thought locked deep down inside their mind', false),
+setup.qc.MoneyNormal(),
+
+],
+], [
+'Quest_mist_merge_complete23Success',
+[
+setup.qc.Slaver('halfpossessed', 'a|was half-possessed by a demon allowing them control over the mind but erasing all their previous personality', false),
+setup.qc.MoneySmall(),
+
+setup.qc.Corrupt('corruptor1'), ],
+], [
+'Quest_mist_merge_complete23Failure',
+[
+setup.qc.Corrupt('corruptor1'),
+setup.qc.Corrupt('corruptor2'), ],
+], [
+'Quest_mist_merge_complete23Disaster',
+[
+setup.qc.MissingUnit('guard'),
+setup.qc.Corrupt('guard'),
+setup.qc.Corrupt('guard'),
+setup.qc.Corrupt('guard'),
+setup.qc.GenName('guard', [setup.trait.race_demon]),
+],
+], ],
+[
+], /* quest pool and rarity */
+[
+setup.qres.QuestUnique(), ], /* restrictions to generate */
+)>>
+
+:: Quest_mist_merge_complete23 [nobr]
+
+<<include 'Opportunity_mist_merge'>>
+
+<p>
+You have chosen to assist the ritual in hope of recruiting a demon.
+</p>
+
+
+:: Quest_mist_merge_complete23Crit [nobr]
+
+<p>
+With the assistance of your slavers, the dark wizard were able to complete the ritual.
+The possessed slave who now goes by <<name $g.fullpossess>>, greeted the slavers sultry
+and thanked them for summoning <<them $g.fullpossess>> into the mortal plane.
+In front of your slavers' eyes,
+they could see the changes to the once pure <<urace $g.fullpossess>> body —
+in particular, the body "assets" are definitely larger and more demonic in nature.
+</p>
+
+<p>
+After the wizard obtained the knowledge he seeked from the demon, <<name $g.fullpossess>>
+became free to wander the mortal plane, and <<yourrep $g.corruptor1>> <<uadv $g.corruptor1>>
+recruited the curious demon into your company.
+
+<<set _demon = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'subrace_demon'})>>
+<<set _racedemon = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'race_demon'})>>
+<<set _mist = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'bg_mist'})>>
+<<set _sex = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'per_sexaddict'})>>
+<<set _dick = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'dick_huge'})>>
+<<set _breast = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'breast_huge'})>>
+<<set _dom = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'per_dominant'})>>
+<<set _sub = setup.selectUnit([$g.corruptor1, $g.corruptor2, $g.guard], {trait: 'per_submissive'})>>
+
+<<if _demon>>
+The demon took great interest in <<rep _demon>>, a pure-bred demon under your employ.
+<<elseif _racedemon>>
+The demon took interest in <<rep _racedemon>>, who once resided in the land beyond
+<<lore concept_mist>>.
+<<elseif _mist>>
+The demon was apparently familiar with <<rep _mist>>, who used to frequent
+<<lore concept_mist>>.
+<<elseif _sex>>
+The demon was quite intrigued by <<rep _sex>>, and how such a sex-addled <<urace _sex>>
+could still work under your employ.
+<<elseif _dick>>
+The demon was drawn to <<reps _dick>> <<udick _dick>>.
+<<elseif _breast>>
+The demon was drawn to <<reps _breast>> <<ubreasts _breast>>.
+<<elseif _dom>>
+The demon was naturally attracted to <<reps _dom>> dominance tendencies.
+<<elseif _sub>>
+The demon was naturally attracted to <<reps _sub>> submissive tendencies.
+<</if>>
+
+The presence of such powerful
+creature in your company will surely be useful for your slaving career.
+</p>
+
+
+:: Quest_mist_merge_complete23Success [nobr]
+<p>
+Even with the assistance of <<yourrep $g.corruptor1>> and <<rep $g.corruptor2>>,
+there were simply too many factors to consider that the ritual was somehow cut short.
+Only half of the demonic essence managed to get transferred into the sacrificial slave,
+which means that <<they $g.halfpossessed >> still retain control of <<their $g.halfpossessed>> body.
+Their personality, on the other hand, was completely erased and replaced by that of the demon. It
+was then really easy for <<rep $g.corruptor1>> to <<uadv $g.corruptor1>>
+invite <<rep $g.halfpossessed>> to join your company, given <<their $g.halfpossessed>> new
+predisposition towards lunacy.
+</p>
+
+
+:: Quest_mist_merge_complete23Failure [nobr]
+
+<<if $g.fullpossess.isMale()>>
+  <<questimage 'mist_merge_disrupt_male_failure.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+Even with the combined knowledge of both your slavers and the powerful dark wizard,
+the ritual failed, makred with
+the sudden burst of otherworldly tentacles surrounding the ritual chamber.
+They ravaged every orifice the tentacles could catch,
+corrupting both the wizard and your slavers. Fortunately for you, your
+slavers were not deemed the most juicy target in the room, since they were only
+assisting the wizard. While your slavers escaped with only slight corruptions,
+the wizard was twisted beyond recognition. Not
+wanting to anger whatever power was ravaging the wizard, your
+slavers made the wise decision to escape the place in the first opportunity.
+</p>
+
+
+:: Quest_mist_merge_complete23Disaster [nobr]
+<p>
+Despite having the best of intentions, your slavers messed up the
+ritual badly, and somehow switched the corruption target from the sacrificial
+slave into <<yourrep $g.guard>> instead.
+Within moments, <<rep $g.guard>> writhed and moaned in a combination of agony and ecstacy.
+Unable to do anything, your slavers watched as <<their $g.guard>> body twisted, wings
+growing out of <<their $g.guard>> back while
+<<if $g.guard.isHasDick()>>
+demonic scales started to form on <<their $g.guard>> breasts.
+<<else>>
+<<their $g.guard>> dick deformed into those suitable for demons.
+<</if>>
+In the end, <<rep $g.guard>> guard|was completely possessed by the
+demonic creature.
+To make matters worse, the demon refused to join your company, for
+they already have all of <<reps $g.guard>> memory with them and found your
+company's activity to be rather boring.
+</p>

@@ -1,0 +1,182 @@
+:: CRGenInit [nobr]
+
+<<if _qbaserole>>
+  <<set $crname = _qbaserole.getName()>>
+  <<set $crcrit = _qbaserole.getCritTraits()>>
+  <<set $crdisaster = _qbaserole.getDisasterTraits()>>
+  <<set $crrestrictions = _qbaserole.getRestrictions()>>
+  <<set $crskillmultis = _qbaserole.getSkillMultis()>>
+  <<set $crcritmap = {}>>
+  <<set $crdisastermap = {}>>
+  <<for _itrait, _trait range $crcrit>>
+    <<set $crcritmap[_trait.key] = true>>
+  <</for>>
+  <<for _itrait, _trait range $crdisaster>>
+    <<set $crdisastermap[_trait.key] = true>>
+  <</for>>
+<<else>>
+  <<set $crname = "">>
+  <<set $crcrit = []>>
+  <<set $crdisaster = []>>
+  <<set $crcritmap = {}>>
+  <<set $crdisastermap = {}>>
+  <<set $crrestrictions = []>>
+  <<set $crskillmultis = [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  ]>>  /* array of 10 elements */
+<</if>>
+
+<<dtsavepassage 'CriteriaGen'>>
+
+:: CriteriaGen [nobr]
+
+<<run setup.DevToolHelper.restoreScrollPos()>>
+
+<<dtloadpassagelink>>
+<br/>
+
+<p>
+Criteria name:
+<<message '(?)'>>
+  <div class='helpcard'>
+    The criteria's name.
+    <br/>
+    <br/>
+    For example: "Slave Trainer"
+  </div>
+<</message>>
+<<textbox "$crname" $crname>>
+</p>
+
+<div class='equipmentcard'>
+  Unit Restrictions:
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Only units that satisfies these requirements can be assigned to this role.
+      <br/>
+      <br/>
+      The most common requirement is Job: Slaver, which indicates that this is for
+      slavers only.
+    </div>
+  <</message>>
+  <<devlist '$crrestrictions' '(Add new restriction)' 'QGAddRestrictionUnit' 'CriteriaGen'>>
+</div>
+
+<div class='equipmentsetcard card'>
+  Skill weights: (should sum to 3.0)
+  <<message '(?)'>>
+    <div class='helpcard'>
+      How important each skill is for this role.
+      <br/>
+      <br/>
+      If this is a slave role, skills are not used and should be set to all 0.
+      <br/>
+      <br/>
+      The skill weights should sum to 3.0.
+      For example, you can assign 1.5 to <<rep setup.skill.combat>>, 0.5 to <<rep setup.skill.brawn>>,
+      and 1.0 to <<rep setup.skill.knowledge>>.
+    </div>
+  <</message>>
+  <<for _iskill, _skill range setup.skill>>
+    <br/>
+    <<set _varname = `$crskillmultis[${_iskill}]`>>
+    <<capture _varname>>
+      <<rep _skill>>: <<numberbox _varname $crskillmultis[_iskill]>>
+    <</capture>>
+  <</for>>
+</div>
+
+<!--
+Reload crcrit and crdisaster since their trait objects might be already obsolete
+-->
+<<set $crcrit = $crcrit.map(trait => setup.trait[trait.key])>>
+<<set $crdisaster = $crdisaster.map(trait => setup.trait[trait.key])>>
+
+<<focwidget 'loadcatcrit'>>
+  <div class='dutycard'>
+    <<successtext 'CRITICAL'>>:
+    <<message '(?)'>>
+      <div class='helpcard'>
+        Specially beneficial traits for this mission.
+        <br/>
+        <br/>
+        Having these traits increase the chance to get <<successtext 'critical success'>>.
+        Having 5-10 traits is recommended.
+      </div>
+    <</message>>
+
+    <<run _dom = setup.DOM.Menu.traitpickermulti({raw_traits: Object.values(setup.trait), init_selected: $crcrit})>>
+    <<attach _dom>>
+  </div>
+<</focwidget>>
+
+<<focwidget 'loadcatdisaster'>>
+  <div class='contactcard'>
+    <<dangertext 'DISASTER'>>:
+    <<message '(?)'>>
+      <div class='helpcard'>
+        Specially disastrous traits for this mission.
+        <br/>
+        <br/>
+        Having these traits increase the chance to get <<dangertext 'disaster failure'>>.
+        Having 5-10 traits is recommended.
+      </div>
+    <</message>>
+
+    <<run _dom = setup.DOM.Menu.traitpickermulti({raw_traits: Object.values(setup.trait), init_selected: $crdisaster})>>
+    <<attach _dom>>
+  </div>
+<</focwidget>>
+
+<div id='catdivcrit'>
+  <<loadcatcrit>>
+</div>
+
+<<focwidget 'refreshcatcrit'>>
+  <<replace '#catdivcrit'>>
+    <<loadcatcrit>>
+  <</replace>>
+<</focwidget>>
+
+<div id='catdivdisaster'>
+  <<loadcatdisaster>>
+</div>
+
+<<focwidget 'refreshcatdisaster'>>
+  <<replace '#catdivdisaster'>>
+    <<loadcatdisaster>>
+  <</replace>>
+<</focwidget>>
+
+
+<<link 'CREATE CRITERIA' >>
+  <<if !$crname>>
+    <<warning 'Name cannot be empty'>>
+  <<else>>
+    <<set _criteria = new setup.UnitCriteria(
+        null,  /* key */
+        $crname,
+        $crcrit,
+        $crdisaster,
+        $crrestrictions,
+        $crskillmultis,
+      )>>
+    <<set _val = _criteria.validate()>>
+    <<if _val>>
+      <<run alert(_val)>>
+    <<else>>
+      <<run $qcustomcriteria.push(_criteria)>>
+      <<dtloadpassage>>
+      <<goto 'QGAddRole'>>
+    <</if>>
+  <</if>>
+<</link>>

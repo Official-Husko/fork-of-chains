@@ -1,0 +1,14 @@
+:: WikiTrait [nobr]
+
+<<set _forfilter = Object.values(setup.trait)>>
+
+<<set _dom = setup.DOM.Util.filterAll({
+  menu: 'trait',
+  filter_objects: _forfilter,
+  style_override: "display: grid; grid-template-columns: repeat(auto-fill, minmax(34px, 1fr))",
+  display_callback: (trait) => {
+    return trait.rep();
+  },
+})>>
+
+<<attach _dom>>

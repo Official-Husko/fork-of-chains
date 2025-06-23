@@ -1,0 +1,150 @@
+:: EventSetup_defying_odds [nobr event]
+
+<<run new setup.Event(
+'defying_odds', /* key */
+"Defying Odds", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_defying_odds',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.AllTraits([setup.trait.perk_harbinger_of_crow], true),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_harbinger_of_crows_radiant', '1', 250),
+  setup.qc.Blessing('a', 1, null, true),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_harbinger_of_crows_radiant'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_defying_odds [nobr]
+<p>
+<<Yourrep $g.a>> a|is a particularly unlucky slaver, and despite your efforts in the past, the bad luck that haunts <<rep $g.a>> never went away. In fact, you can sense <<they $g.a>> had somehow got cursed yet again. However, <<therace $g.a>> a|have taken it upon <<themself $g.a>> to work harder than most to compensate — they would
+practice longer than your other slavers,
+<<if $g.a.isHasTrait('muscle_strong')>>
+work out longer than your other slavers,
+<</if>>
+<<if $g.a.isHasTrait('per_studious')>>
+spend more time in the library than the rest,
+<</if>>
+<<if $g.a.isHasTrait('per_active')>>
+run laps around the track,
+<</if>>
+<<if $g.a.isHasTrait('skill_ambidextrous')>>
+practice <<their $g.a>> dual wielding abilities,
+<</if>>
+<<if $g.a.isHasTrait('per_gregarious')>>
+practice <<their $g.a>> speech in the mirror,
+<</if>>
+<<if $g.a.isHasTrait('per_lustful')>>
+spend time making sure <<they $g.a>> look presentable,
+<</if>>
+and as a result often wakes up earlier than most.
+They would occasionally get cursed here and there, but it did not stop <<theslaver $g.a>> from moving forwards with <<their $g.a>> life.
+</p>
+
+<p>
+A vendor has come to your office today, offering several heavy-looking tomes for study. It's far too heavy and too time-consuming for your ordinary slavers to even bother looking at it, but perhaps you could make it a suitable gift for <<rep $g.a>>. It costs <<money 5000>> to buy.
+</p>
+
+<<choose>>
+
+<<opt "Purchase: Dual Wielding and Its Applications">>
+<<set _skill = setup.skill.combat>>
+<<set _name = "Dual Wielding and Its Applications">>
+<<set _practicing = "practicing 'dual-wielding' with the kitchen knives">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: Beauty and the Brawn">>
+<<set _skill = setup.skill.brawn>>
+<<set _name = "Beauty and the Brawn">>
+<<set _practicing = "flexing muscles in time with the music">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: A Shot in the Dark">>
+<<set _skill = setup.skill.survival>>
+<<set _name = "A Shot in the Dark">>
+<<set _practicing = "shooting with a blindfold on">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: Ninjas: Real or Fake?">>
+<<set _skill = setup.skill.intrigue>>
+<<set _name = "Ninjas: Real or Fake">>
+<<set _practicing = "sneaking around the fort's rooftops'">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: Badly Breaking">>
+<<set _skill = setup.skill.slaving>>
+<<set _name = "Badly Breaking">>
+<<set _practicing = "breaking a dummy-slave">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: Introduction to Everything">>
+<<set _skill = setup.skill.knowledge>>
+<<set _name = "Introduction to Everything">>
+<<set _practicing = "learning about supposedly everything">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: The Silver Snake">>
+<<set _skill = setup.skill.social>>
+<<set _name = "The Silver Snake">>
+<<set _practicing = "practicing strange and mystical sales speeches">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: Healing Division">>
+<<set _skill = setup.skill.aid>>
+<<set _name = "Healing Division">>
+<<set _practicing = "healing the void">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: Magic 101">>
+<<set _skill = setup.skill.arcane>>
+<<set _name = "Magic 101">>
+<<set _practicing = "casting imaginary spells">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<<opt "Purchase: The Lusty Lizardkin Maid">>
+<<set _skill = setup.skill.sex>>
+<<set _name = "The Lusty Lizardkin Maid">>
+<<set _practicing = "projecting lusty gaze on passerbies">>
+
+<<includereplace 'EventDefyingOddsCommon'>>
+
+<</choose>>
+
+:: EventDefyingOddsCommon [nobr]
+
+<p>
+You paid the money, and the tome of <<= _name >> exchanged <<uhands $unit.player>>. You wrap the expensive book in a nice packaging and leave it in <<reps $g.a>> room for a little surprise.
+</p>
+
+<p>
+<<Yourrep $g.a>> a|is always eager to learn, and <<they $g.a>> absolutely a|adore your present. In the coming days, you can see <<them $g.a>> reading the book and <<= _practicing>>. Judging by what the book instructs <<rep $g.a>> to practice, you have serious doubts about the effectiveness of the book, but practice never lies, and before long <<their $g.a>> skills in <<= _skill.getName()>> have improved.
+</p>
+
+<<run setup.qc.Money(-5000).apply($gQuest)>>
+<<run setup.qc.SkillBoost('a', _skill).apply($gQuest)>>
+

@@ -1,0 +1,112 @@
+:: OpportunitySetup_man_woman_of_the_sea [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'man_woman_of_the_sea', /* key */
+"Man/Woman of the Sea", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_man_woman_of_the_sea',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_man_woman_of_the_sea_0',
+    'Opportunity_man_woman_of_the_sea_0_flavor',
+    [ /* costs */
+      setup.qc.Money(-3000),
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Leave('slaver', "a|is venturing to the Southern Seas to relive a|their past life", undefined),
+      setup.qc.Event('bounties_of_the_sea', 4, {
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Opportunity_man_woman_of_the_sea_1',
+    'Opportunity_man_woman_of_the_sea_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.TraumatizeRandom('slaver', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_man_woman_of_the_sea [nobr]
+<p>
+In the recent days, you've often seen <<yourrep $g.slaver>> gazing at the seas from your <<rep setup.buildingtemplate.scoutharbor>>. You don't need to guess why very hard, since today the
+<<if $g.slaver.isHasTrait('bg_pirate')>>
+ex-pirate
+<<else>>
+ex-<<man $g.slaver>>-of-the-sea
+<</if>>
+comes to your office, and asks to borrow some money from you.
+A sum of <<money 3000>>, to borrow a ship and set sail southwards into the
+<<lore region_sea>>.
+Apparently, <<they $g.slaver>> slaver|have not lost <<their $g.slaver>> love of the sea, and would like to relive it if just for a little while.
+</p>
+
+<p>
+It seems working as your slaver mostly as a landlubber is making the
+<<if $g.slaver.isHasTrait('bg_pirate')>>
+ex-pirate
+<<else>>
+ex-<<man $g.slaver>>-of-the-sea
+<</if>>
+miss the sea.
+<<if $unit.player.isHasAnyTraitExact(['bg_seaman', 'bg_pirate'])>>
+It's something you can relate very much, given that you did spend a good chunk of your
+life yourself in the open seas.
+<</if>>
+You could lend the money to <<therace $g.slaver>>, although who knows if you'll get them back.
+</p>
+
+
+:: Opportunity_man_woman_of_the_sea_0 [nobr]
+Allow
+
+
+:: Opportunity_man_woman_of_the_sea_0_flavor [nobr]
+<p>
+<<if $g.slaver.isHasTrait('bg_pirate')>>
+With the money you lent, <<rep $g.slaver>> slaver|rouse a motley pirating crew before setting sail southwards from
+<<else>>
+With the money you lent, <<rep $g.slaver>> slaver|hire a crew and set sail southwards from
+<</if>>
+your <<rep setup.buildingtemplate.scoutharbor>>.
+You'll probably hear back from <<therace $g.slaver>> in a couple of weeks.
+</p>
+
+
+:: Opportunity_man_woman_of_the_sea_1 [nobr]
+Disallow
+
+
+:: Opportunity_man_woman_of_the_sea_1_flavor [nobr]
+<p>
+<<Rep $g.slaver>> slaver|look a little dejected from the refusal, but <<they $g.slaver>> must understand that <<they $g.slaver>> slaver|is a slaver now, and you have no doubt a future assignment will send <<them $g.slaver>> into the <<lore region_sea>>.
+</p>

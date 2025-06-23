@@ -1,0 +1,78 @@
+:: OpportunitySetupFleshShaperTemple [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+  'flesh_shaper_temple',  /* key */
+  'Flesh Shaper Temple',  /* name */
+  'darko',  /* author */
+  ['vale', 'transformation', 'unit', 'money', ],  /* tags */
+  2,  /* deadline weeks, */
+  'OpportunityFleshShaperTemple',  /* passage */
+  setup.qdiff.hard19, /* difficulty */
+  [  /* choices */ 
+    [
+      'OpportunityFleshShaperTempleOptionRaid',
+      null,
+      [],
+      [],
+      [setup.qc.QuestDirect('flesh_shaper_temple_raid')],
+    ],
+    [
+      'OpportunityFleshShaperTempleOptionKidnap',
+      null,
+      [],
+      [setup.qres.Building(setup.buildingtemplate.slavepens)],
+      [setup.qc.QuestDirect('flesh_shaper_temple_kidnap')],
+    ],
+    [
+      'OpportunityFleshShaperTempleOptionRecruit',
+      null,
+      [],
+      [
+        setup.qres.Building(setup.buildingtemplate.prospectshall),
+        setup.qres.HasSlave(),
+      ],
+      [setup.qc.QuestDirect('flesh_shaper_temple_recruit')],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.rare],],  /* questpool */
+  [  /* requirement */
+    setup.qres.Building(setup.buildingtemplate.prospectshall),
+    setup.qres.Building(setup.buildingtemplate.dungeons),
+    setup.qres.Building(setup.buildingtemplate.trainingchamber),
+  ],
+)>>
+
+:: OpportunityFleshShaperTemple [nobr]
+
+<p>
+The <<lore region_vale>> is infamous for its harsh winters and freezing temperature.
+These lend its inhabitants an affinity for both ice and water domain. Masters of these crafts
+are often called flesh-shapers, and they
+have some control over altering one's body's composition.
+Some of the more superstitious northerners often turn to worshipping the humanlike bodies themselves.
+</p>
+
+<p>
+There are numerous flesh-shaping temples on the <<lore region_vale>>,
+each usually consist of several flesh priests, as well as apprentices, all adept one way or another
+in the art of <<lore magic_water>>.
+Your scouts have recently discovered one such temple, and this opens up several possibilities for you.
+The simplest option is to raid the temple, which should yield you a good amount of gold from
+selling the valuable flesh-shaping tools stored within.
+Alternatively, you could also attempt to kidnap some of these priests, who has the potential to become
+a highly valuable slave once trained properly.
+Finally, these temples often accept humanlike offerings, to flesh-shape as their beliefs require.
+You can attempt to barter one of your slaves in order to recruit one of these priests.
+Surely having a slaver capable of altering flesh at will is going to be useful for your company's future.
+</p>
+
+:: OpportunityFleshShaperTempleOptionRaid [nobr]
+Raid the temple
+
+:: OpportunityFleshShaperTempleOptionKidnap [nobr]
+Kidnap a priest
+
+:: OpportunityFleshShaperTempleOptionRecruit [nobr]
+Recruit a priest

@@ -1,0 +1,92 @@
+:: CostFriendship [nobr]
+
+<p>
+<<devactordefault>> gains <<numberbox '_friendship_amt' 1>> friendship with
+<<devactor '$qgDefaultActorName2'>>
+<<message '(?)'>>
+Put a negative number if you want them to gain rivalry instead.
+Note that this number is 10 times larger than displayed in game. So, if it's displayed
+as 47.2 in game, that actually means it's 472. Maximum friendship is 1000, minimum is -1000.
+<</message>>
+</p>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Friendship($qgDefaultActorName, $qgDefaultActorName2, _friendship_amt)>>
+<</link>>
+
+
+:: CostFriendshipWithYou [nobr]
+
+<p>
+<<devactordefault>> gains <<numberbox '_friendship_amt' 1>> friendship with you.
+<<message '(?)'>>
+Put a negative number if you want them to gain rivalry instead.
+Note that this number is 10 times larger than displayed in game. So, if it's displayed
+as 47.2 in game, that actually means it's 472. Maximum friendship is 1000, minimum is -1000.
+<</message>>
+</p>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.FriendshipWithYou($qgDefaultActorName, _friendship_amt)>>
+<</link>>
+
+
+
+:: CostHookup [nobr]
+
+<p>
+<<devactordefault>> becomes lovers with
+<<devactor '$qgDefaultActorName2'>>
+<<message '(?)'>>
+  <div class='helpcard'>
+    If they had other lovers previously, they will break up first.
+  </div>
+<</message>>
+</p>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Hookup($qgDefaultActorName, $qgDefaultActorName2)>>
+<</link>>
+
+
+:: CostBreakup [nobr]
+
+<p>
+<<devactordefault>> breaks up with
+<<devactor '$qgDefaultActorName2'>>
+</p>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Breakup($qgDefaultActorName, $qgDefaultActorName2)>>
+<</link>>
+
+
+:: CostBreakupWithYou [nobr]
+
+<p>
+<<devactordefault>> breaks up with you
+</p>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.BreakupWithYou($qgDefaultActorName)>>
+<</link>>
+
+
+:: CostHookupWithYou [nobr]
+
+<p>
+<<devactordefault>> hooks up with you
+</p>
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.HookupWithYou($qgDefaultActorName)>>
+<</link>>
+
+
+

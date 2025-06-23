@@ -1,0 +1,107 @@
+:: EventSetup_assassin_benefits [nobr event]
+
+<<run new setup.UnitGroup(
+"assassin_benefits0",
+"Assassin",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_assassin),
+],
+)>>
+
+<<run new setup.Event(
+'assassin_benefits', /* key */
+"Assassin Benefits", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_assassin_benefits',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_assassin], true),
+    setup.qres.AllTraits([setup.trait.join_senior], true),
+  ],
+  'slave': 'assassin_benefits0',
+},
+[ /* outcomes */
+  setup.qc.Slave('slave', "a|was a spy sent over by one of your many enemies", undefined),
+  setup.qc.BoonizeRandom('slaver', 5),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.Trait(setup.trait.bg_assassin)),
+    setup.qc.DoAll([
+      setup.qc.BoonizeRandom('slaver', 25),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_assassin_benefits [nobr]
+<p>
+<<Yourrep $g.slaver>> used to be a master
+<<if $g.slaver.isHasTrait('subrace_humansea')>>ninja<<else>>assassin<</if>>, and is used to doing many espionage mission be it spying, stalking, or even the occasional assassinations.
+<<if $g.slaver.isHasTrait('per_dreamy')>>
+Nobody would have guessed it, looking at the carefree <<man $g.slaver>>, but
+<<elseif $g.slaver.isHasTrait('per_playful')>>
+Nobody would have guessed it, looking at the playful-looking <<man $g.slaver>>, but
+<<else>>
+It's hard to think that the <<uadjper $g.slaver>> <<man $g.slaver>> slaver|possess such as highly-valued skills, but
+<</if>>
+<<their $g.slaver>> skills are for real, as you come to learn today.
+</p>
+
+<p>
+When you enter your office today, <<rep $g.slaver>> is waiting, sitting on your desk while
+a <<urace $g.slave>> is bound and gagged, naked and struggling on the floor.
+The victim's clothes were folded neatly around — the clothes of an assassin, which makes you raise an eyebrow.
+<<if $g.slaver.getSpeech() == setup.speech.friendly>>
+"I've spotted someone stalking you in the last few weeks, and I'd thought I'd do you a favor and capture the <<man $g.slaver>>", <<they $g.slaver>> reports cheerfully.
+<<elseif $g.slaver.getSpeech() == setup.speech.bold>>
+"Found this spy following you in the last week or so. <<They $g.slave>> thought <<they $g.slaver>> could avoid catching my attention. The nerve!", says <<rep $g.slaver>>.
+"I've spotted someone stalking you in the last few weeks, and I'd thought I'd do you a favor and capture the <<man $g.slaver>>", <<they $g.slaver>> reports cheerfully.
+<<elseif $g.slaver.getSpeech() == setup.speech.cool>>
+"Spy. Your enemy.", the stoic <<man $g.slaver>> reports efficiently.
+<<elseif $g.slaver.getSpeech() == setup.speech.witty>>
+"Heya Boss, I caught this snake slithering behind your back in the last few week or so, no doubt being sent over by an enemy of yours. Which dragonkin did you anger again this time?" <<they $g.slaver>> reports cheerfully.
+<<elseif $g.slaver.getSpeech() == setup.speech.debauched>>
+"Heya Boss, got a new slave for you. An former spy who I found trailing you in the last week. Given <<their $g.slave>> skills, the slave would surely make for a fun night or two. Don't forget to invite me for the fun!" <<they $g.slaver>> reports cheerfully.
+<</if>>
+</p>
+
+<p>
+<<if $g.you.isHasTrait('bg_assassin')>>
+Of course, you dabbled in the assassin trade too, once.
+It's still very nice to watch the work of a fellow professional, and even better when said professional
+is loyally serving you and your company.
+Still,
+<<else>>
+Seems like your own spy slaver is quite resourceful. You're quite grateful to have such a slaver under your employ, loyally serving you,  but
+<</if>>
+you have an image to maintain and you can't just say it out loud. So you settled with a grunt and a friendly "good work" towards the slaver, although it seems the slaver already know how much you appreciate their work and looks more cheerful in the days to come.
+you have an image to maintain and you can't just say it out loud. So you settled with a grunt and a friendly "good work" towards the slaver, although it seems the slaver already know how much you appreciate their work and looks more cheerful in the days to come.
+<<if $g.you.isHasTrait('bg_assassin')>>
+Since the acknowledgement came from a fellow assassin (that is, you), <<they $g.slaver>> knows it worths more than normal.
+<</if>>
+</p>

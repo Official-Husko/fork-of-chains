@@ -1,0 +1,147 @@
+:: QuestSetup_under_new_management [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriapimp = new setup.UnitCriteria(
+null, /* key */
+'Pimp', /* name */
+[
+  setup.trait.per_sly,
+  setup.trait.skill_entertain,
+],
+[
+  setup.trait.per_direct,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 1,
+  social: 1,
+  sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'under_new_management', /* key */
+"Under New Management", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+  'rare',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'pimp': [ _criteriapimp, 1],
+  'guard1': [ setup.qu.guard, 1],
+  'guard2': [ setup.qu.guard, 1],
+},
+{ /* actors */
+  'bandit': 'all',
+},
+[ /* costs */
+],
+'Quest_under_new_management',
+setup.qdiff.normal22, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_under_new_managementCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Quest_under_new_managementCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 25),
+      setup.qc.Opportunity('under_new_management2', {
+guard1: "guard1",
+pimp: "pimp",
+guard2: "guard2",
+}),
+    ],
+  ],
+  [
+    'Quest_under_new_managementCrit',
+    [
+      setup.qc.Injury('guard1', 1),
+      setup.qc.Injury('guard2', 2),
+    ],
+  ],
+  [
+    'Quest_under_new_managementCrit',
+    [
+      setup.qc.Injury('guard1', 4),
+      setup.qc.Injury('guard2', 4),
+      setup.qc.TraumatizeRandom('pimp', 8),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_progress'),
+  setup.qres.QuestUnique(),
+  setup.qres.NoOpportunity('under_new_management2'),
+  setup.qres.NoQuest('brothel_takeover'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_under_new_management [nobr]
+<p>
+Today, you have received a desperate plea for help — a brothel in the <<lore location_npc>> has been overrun by bandits, who had been controlling the place and abusing its workers for a few weeks by now. Due to the bandit's violent threats, the whores had been forced to work like slaves, and it was only through sheer ingenuity that they were able to send you this letter.
+</p>
+
+<p>
+These whores must be desperate to come to a slaving company for help. You could try to send a group of slavers to liberate the place. Surely the whores would be grateful for the help, and will lavish rewards upon your slavers.
+</p>
+
+
+:: Quest_under_new_managementCrit [nobr]
+<p>
+The bandits sat like overlords of the brothel, while the whores were overworked for money. The leader of the bandit kept some of the whores for <<themself $g.bandit>>, and these whores' life were reduced to that of slaves, being forced to lick the sole of the bandit's boots and
+<<if $g.bandit.isHasDick()>>
+perform cock-sheath duties.
+<<else>>
+service the bandit's pussy.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<p>
+Fortunately, this caused the bandits to be complacent, and they never saw what were coming when your slavers kicked the door open and charged straight for the bandits.
+<<Yourrep $g.guard1>> <<uadv $g.guard1>> knocked out the bandit one after another — not a difficult task since most are too busy either drinking or using a whore or two.
+</p>
+
+<p>
+Your slavers eventually managed to dispatch all the bandits, including the bandit leader, and handed them over to the city's peacekeepers.
+<<if $gOutcome == 'crit'>>
+<<Rep $g.pimp>> found and collected some of the profits the bandits had apparently been making off these poor whores.
+<</if>>
+And now it is time to get paid.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, despite the bandit being obviously distracted, your slavers were no match for the bandit's sheer numbers.
+<<if $gOutcome == 'failure'>>
+<<Yourrep $g.guard2>> wisely ordered a retreat early, and your slavers only suffered an injury or two.
+<<else>>
+But your slavers did not see that, and charged in. They were defeated soundly, and the bandits delightfully made use of <<yourrep $g.pimp>> before kicking all of your slavers out of the brothel some time later.
+<</if>>
+</p>
+
+<</if>>

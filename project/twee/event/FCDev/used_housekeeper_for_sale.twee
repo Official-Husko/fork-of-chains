@@ -1,0 +1,61 @@
+:: EventSetup_used_housekeeper_for_sale [nobr event]
+
+
+<<run new setup.UnitGroup(
+"used_housekeeper_for_sale0",
+"Unused Housekeeper",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_tight),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_tight),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_maid),
+  setup.qc.TraitReplace('unit', setup.trait.skill_entertain),
+  setup.qc.TraitReplace('unit', setup.trait.per_chaste),
+],
+)>>
+
+<<run new setup.Event(
+'used_housekeeper_for_sale', /* key */
+"Used Housekeeper for Sale", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unit',
+],
+'Event_used_housekeeper_for_sale',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slave': 'used_housekeeper_for_sale0',
+  'man': 'all',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_tiger_bank_repo_resale', '1', 250),
+  setup.qc.Slave('slave', "a|was a slave being used as nothing but a regular maid before being sold to you", true, 0.8),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.greathall),
+  setup.qres.FavorAtLeast('bank', 300),
+  setup.qres.VarNull('quest_tiger_bank_repo_resale'),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_used_housekeeper_for_sale [nobr]
+<<include 'Event_TigerBankRepoCommon'>>
+
+<p>
+The current sale offer by the bank was taken from a business<<man $g.man>>'s house - one of the relatively higher income occupation in <<lore geo_mestia>>. <<They $g.man>>'s recently had fortune turn from <<them $g.man>> due to some unfortunate occurrences outside. The agent selling the slave doesn't say exactly which - some natural catastrophe, raiders, competing business or whatnot - one thing is for sure though, <<they $g.man>>'s in a financial pinch right now. All of which meant that <<their $g.man>> slave housekeeper was fair game to be taken and is now awaiting re-sale. As <<their $g.slave>> <<master $g.man>> never had any sexual interest in the slave, the <<man $g.slave>> is actually virgin-tight and used to the relatively cushy life of just watching the mansion. The fact that all of that ended from one day to the next has made <<them $g.slave>> quite afraid for <<their $g.slave>> future...
+</p>
+
+<p>
+Should you wish to purchase the slave, <<they $g.slave>> slave|have been delivered to your
+<<rep setup.buildingtemplate.slavepens>> for your inspection.
+When you inspect <<them $g.slave>> there,
+<<they $g.slave>> lowers <<their $g.slave>> head obediently and asks, "<<Master $unit.player>>, I - umm... what will be required of me? I'm really good with housework and... and I can sing. Also, I've -" The fearful tremble in <<their $g.slave>> voice tells you that <<they $g.slave>>'s more than a little afraid of what you might have planned for <<them $g.slave>>. Waving off the slave's frightened babbling, you tell <<them $g.slave>> that you'll decide what to do with <<them $g.slave>> should you decide to purchase <<them $g.slave>>.
+</p>

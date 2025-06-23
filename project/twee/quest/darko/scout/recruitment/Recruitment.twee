@@ -1,0 +1,113 @@
+:: QuestSetupRecruitment [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'recruitment', /* key */
+  'Recruitment: All', /* Title */
+  'darko',   /* author */
+  ['city', 'unit'],  /* tags */
+  1,  /* weeks */
+  setup.INFINITY,  /* quest expiration weeks */
+  { /* roles */
+    'recruiter1': setup.qu.recruiter,
+    'recruiter2': setup.qu.recruiter,
+    'guard': setup.qu.guard,
+  },
+  { /* actors */
+    'recruit1': 'city_all',
+    'recruit2': 'city_all',
+    'recruit3': 'city_all',
+    'recruit4': 'city_all',
+    'recruit5': 'city_all',
+    'recruit6': 'city_all',
+    'recruit7': 'city_all',
+  },
+  [ /* costs */
+  ],
+  'QuestRecruitment', /* passage description */
+  setup.qdiff.easy5, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestRecruitmentCrit',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit5', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit6', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit7', "", /* is mercenary = */ true),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentSuccess',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit2', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit3', "", /* is mercenary = */ true),
+        setup.qc.Slaver('recruit4', "", /* is mercenary = */ true),
+        
+      ],
+    ],
+    [
+      'QuestRecruitmentFailure',
+      [
+        setup.qc.Slaver('recruit1', "", /* is mercenary = */ true),
+      ],
+    ],
+    [
+      'QuestRecruitmentDisaster',
+      [
+      ],
+    ],
+  ],
+  [[setup.questpool.recruitment, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.QuestAvailableUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestRecruitment [nobr]
+
+<p>
+With the <<= setup.buildingtemplate.hiringsquare.rep() >> built, you can start your search for potential
+new slavers by posting new job openings and sending a crier to nearby villages, as well as
+to the <<lore region_city>>.
+Unfortunately, your criers won't be able to go too far, and the recruits would most likely be
+the residents of the <<lore region_city>>.
+You'll have to recruit via other means if you want to broaden your recruit options.
+</p>
+
+:: QuestRecruitmentCrit [nobr]
+
+<p>
+<<Rep $g.recruiter1>> recruiter1|was so convincing that seven potential slavers
+signed up for your company.
+They are now waiting in the prospects hall for your
+decision, and would need to be paid if you want to hire them.
+</p>
+
+:: QuestRecruitmentSuccess [nobr]
+
+<p>
+<<Rep $g.recruiter1>> managed to find four potential slavers
+among the rabbles and people living in the vicinity.
+They are now awaiting your decision in the prospects hall.
+</p>
+
+:: QuestRecruitmentFailure [nobr]
+
+<p>
+<<Rep $g.recruiter1>> only managed to find one potential slavers
+among the rabbles and people living in the vicinity.
+<<They $g.recruit1>> recruit1|is now awaiting your decision in the prospects hall.
+</p>
+
+:: QuestRecruitmentDisaster [nobr]
+
+<p>
+Unfortunately, there were nobody who was interested in changing job into a slaver.
+</p>

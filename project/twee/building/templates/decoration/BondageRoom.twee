@@ -1,0 +1,78 @@
+:: InitBuildingBondageRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'rack',
+  tags: ['hidename', 'hideskill', ],
+  description_passage: 'RoomRack',
+  name: 'Rack',
+  width: 1,
+  height: 1,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "slaving",
+      bonus_amount: setup.ROOM_DECORATION_BONUS,
+    },
+    {
+      type: 'always',
+      skill_key: "aid",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'bondageroom',
+  tags: [],
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "slaving",
+      bonus_amount: setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+    {
+      type: 'always',
+      skill_key: "aid",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'bondageroom',
+  name: 'BondageRoom',
+  tags: ['decoration'],
+  description_passage: 'BuildingBondageRoom',
+  costs: setup.BuildingTemplate.getDecorationCosts(),
+  restrictions: setup.BuildingTemplate.getDecorationRestrictions(),
+  main_room_template_key: 'bondageroom',
+  sub_room_template_key: 'rack',
+})>>
+
+
+:: BuildingBondageRoom [nobr]
+
+<p>
+A room filled to the brim with bondage tools, for your more adventurous slavers.
+When placed at your fort, will increase
+<<rep setup.skill.slaving>> in exchange for <<rep setup.skill.aid>>.
+</p>
+
+:: RoomRack [nobr]
+
+<p>
+A bondage rack, empty right now, but still instills great fear into your many slaves.
+</p>

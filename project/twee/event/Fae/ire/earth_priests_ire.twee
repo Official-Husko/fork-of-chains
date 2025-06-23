@@ -1,0 +1,62 @@
+:: EventSetup_earth_priests_ire [nobr event]
+
+<<run new setup.Event(
+'earth_priests_ire', /* key */
+"Earth Priests Ire", /* Title */
+{ /* Author */
+  name: "Fae",
+  url: "",
+},
+[ /* tags */
+],
+'Event_earth_priests_ire',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'tiredone': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+  ],
+  'tiredtwo': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Ire('kobold', -20),
+  setup.qc.Leave('tiredone', "a|is cleaning the growths and debris from your fort ", 5),
+  setup.qc.Leave('tiredtwo', "a|is cleaning the growths and debris from your fort", 5),
+  setup.qc.MoneyCustom(-5000),
+],
+[ /* restrictions */
+  setup.qres.IreAtLeast('kobold', 20),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_earth_priests_ire [nobr]
+
+<p>
+  Your hip is shaking rather wildly today.
+  And no, it's not because you have too much energy today: your coffee mug is shaking too on the table.
+  Apparently, an earthquake has just hit your fort, and you're guessing it is anything but normal.
+  Looking across your fort, your suspicion is confirmed:
+  large swathes of vines, as well as large pillars of earth are spawning from the earth,
+  destroying parts of your fort's exterior.
+</p>
+
+<p>
+  Thankfully, it did not last long.
+  After a few more minutes, the vines and the pillars of earth cease to move,
+  left around at your fort and blocking the paths.
+  The fort structures look undamaged thankfully, but someone will have to work and remove all the
+  debris around.
+  Two of your slavers, <<rep $g.tiredone>> and <<rep $g.tiredtwo>> would (forcefully) be
+  volunteered to clean the vines and the rubbles.
+  They will work overtime as you mull just what in the earth had just happened... perhaps you angered
+  something within the earth itself?
+</p>
+

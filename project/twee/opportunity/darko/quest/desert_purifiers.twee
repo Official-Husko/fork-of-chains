@@ -1,0 +1,87 @@
+:: OpportunitySetup_desert_purifiers [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'desert_purifiers', /* key */
+'Desert Purifiers', /* Title */
+'darko', /* Author */
+[ 'desert', 'trait', 'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_desert_purifiers',
+setup.qdiff.normal41, /* difficulty */
+[ /* options */
+[
+'Opportunity_desert_purifiers_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('desert_purifiers_patron2'), ],
+],
+[
+'Opportunity_desert_purifiers_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.HasSlaverWithTraits([setup.trait.magic_dark]), ],
+[ /* outcomes */
+setup.qc.QuestDirect('desert_purifiers_enslave'), ],
+],
+[
+'Opportunity_desert_purifiers_2',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.HasSlaverWithTraits([setup.trait.magic_dark]), ],
+[ /* outcomes */
+setup.qc.QuestDirect('desert_purifiers_recruit'), ],
+],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.epic],
+],
+[ /* restrictions to generate */
+setup.qres.OpportunityUnique(),
+setup.qres.NoQuest('desert_purifiers_enslave'),
+setup.qres.NoQuest('desert_purifiers_patron2'), ],
+)>>
+
+:: Opportunity_desert_purifiers [nobr]
+<p>
+The denizens of the <<lore region_desert>> are often gifted with the aspect of fire.
+While basic fire mastery lends itself to destruction,
+individuals blessed with advanced fire magic sometimes are able summon purifying
+fire instead, which can cleanse corruptions and demons alike.
+These people are often sought after for their services, and is
+widely considered capable of blessing whoever happened to bathed in their flames.
+</p>
+
+<p>
+You have caught wind of a small group of purifiers that are journeying through the
+<<lore region_desert>>. This is a rare opportunity for you — you can try to either purify some of
+your slavers using their services, or you can
+try to recruit some of these purifiers into your slaving company.
+Alternatively, if you are feeling particularly brave you
+can attempt to try and enslave the lead purifier.
+Such attempt would require you to send a slaver gifted in the dark arts, and
+even then it is surely going to be a dangerous affair.
+</p>
+
+
+:: Opportunity_desert_purifiers_0 [nobr]
+Patron
+
+
+:: Opportunity_desert_purifiers_1 [nobr]
+Enslave
+
+
+:: Opportunity_desert_purifiers_2 [nobr]
+Recruit
+

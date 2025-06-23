@@ -1,0 +1,43 @@
+:: InitBuildingTreatmentRoomBlank [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'treatmentroomblank',
+  tags: [],
+  width: 4,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'treatmentroomblank',
+  name: 'Therapy Room',
+  tags: ['heal'],
+  description_passage: 'BuildingTreatmentRoomBlank',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('treatmentroom'),
+      setup.qres.Building('veteranhall'),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_light_master]),
+      setup.qres.HasItem(setup.item.technology_blank),
+    ],
+  ],
+  main_room_template_key: 'treatmentroomblank',
+})>>
+
+
+:: BuildingTreatmentRoomBlank [nobr]
+
+<p>
+Unlocks a treatment option that can reset a slave's trainings.
+Each treatment will consume a <<rep setup.item.blank_potion>>.
+
+</p>

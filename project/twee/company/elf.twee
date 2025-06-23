@@ -1,0 +1,46 @@
+:: InitCompanyElf [nobr company]
+
+<<set _item = setup.qc.ItemForSale(
+  'itemmarket',
+  'all',
+  /* amount = */ 1,
+)>>
+
+<<set _rare = setup.qc.ItemForSaleSingle(
+  'itemmarket',
+  'mindmend_potion',
+)>>
+
+
+<<run new setup.CompanyTemplate(
+  'elf',
+  'Elven Council',
+  'CompanyTemplateElf',
+  [ /* favor effects */
+    [
+      _item,
+      _item,
+      _item,
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_MEDIUM),
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_HIGH),
+    ],
+  ],
+)>>
+
+:: CompanyTemplateElf [nobr]
+
+Intelligent and smart, these sharp-eared people lives in the <<lore region_forest>>
+together with the neko.
+They are often gifted alchemists, and when befriended might be willing to peddle
+the extremely rare <<rep setup.item.mindmend_potion>> in your fort...
+

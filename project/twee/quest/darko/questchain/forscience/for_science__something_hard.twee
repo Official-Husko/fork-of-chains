@@ -1,0 +1,122 @@
+:: QuestSetup_for_science__something_hard [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'for_science__something_hard', /* key */
+"For Science: Something Hard", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'forest',
+], /* tags */
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'offering': setup.qu.bimbo,
+'wizard': setup.qu.arcaneearth,
+'biologist': setup.qu.biologist, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_for_science__something_hard',
+setup.qdiff.harder46, /* difficulty */
+[ /* outcomes */
+[
+'Quest_for_science__something_hardCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.Equipment(setup.equipmentpool.sex_good), ],
+], [
+'Quest_for_science__something_hardCrit',
+[
+setup.qc.Opportunity('for_science__the_harvest', {
+  offering: 'offering',
+  wizard: 'wizard',
+  biologist: 'biologist',
+}),
+],
+], [
+'Quest_for_science__something_hardFailure',
+[
+setup.qc.Injury('offering', 4), ],
+], [
+'Quest_for_science__something_hardDisaster',
+[
+setup.qc.Injury('offering', 10),
+setup.qc.Injury('wizard', 4),
+setup.qc.Injury('biologist', 4),
+setup.qc.TraitIncreaseExisting('offering', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('offering', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('wizard', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('wizard', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.vagina_gape), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.HasItem(setup.item.quest_for_science_list),
+setup.qres.NoItem(setup.item.quest_for_science_fruit),
+setup.qres.NoOpportunity('for_science__the_harvest'), ],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_for_science__something_hard [nobr]
+
+<p>
+The second item in the <<rep setup.item.quest_for_science_list>>
+is a the "Sine Prelog" fruit, somewhere in the <<lore region_forest>>. From what you
+have gathered, finding the fruit itself is not the challenge of a task — it is the harvesting
+that's problematic. The details are vague, but apparently if you want the
+mission to succeed, you should send a group of slavers — a wizard proficient
+in <<lore magic_earth>>, a biologist to identify the fruit, and most
+importantly a whore. It is unclear why you need to bring a whore, but you can
+try to send a group of slavers to the <<lore region_forest>> if you want to find out
+why.
+</p>
+
+
+:: Quest_for_science__something_hardCrit [nobr]
+
+<p>
+After asking around in the nearby settlements, <<rep $g.wizard>> <<uadv
+$g.wizard>> claimed to the rest of the slavers that <<they $g.wizard>> had
+found a way to harvest the fruit. Several ways, in fact. The ultimate
+decision is yours to make, as to which method you want to use to harvest the
+fruit, but <<rep $g.wizard>> warned you that none of them will be easy.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+On the way back, <<rep $g.biologist>> found several useful plants that they
+managed to sell in the nearby settlements.
+</p>
+<</if>>
+
+
+:: Quest_for_science__something_hardFailure [nobr]
+
+<p>
+During their search for information, your slavers were ambushed by a tentacle
+aberration in the middle of the forests. Fortunately, the aberration seemed to
+be fixated on the whore <<rep $g.offering>>. Using the distraction, <<rep
+$g.wizard>> cast a powerful spell, ending the beast and freeing <<rep
+$g.offering>> from its clutches. <<Rep $g.offering>> suffered some injuries,
+which will take some time to heal.
+</p>
+
+
+:: Quest_for_science__something_hardDisaster [nobr]
+
+<p>
+During their search for information, your slavers were ambushed by a tentacle
+aberration in the middle of the forests. All your slavers were bound by its
+viny tentacles, and the beast took its time to explore your slaver's bodies.
+Days past as your slavers' holes were inserted with larger and larger
+tentacles until they all gape from severe use, before the beast decided to
+discard your slavers in a nearby settlement.
+</p>

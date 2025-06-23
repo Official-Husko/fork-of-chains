@@ -1,0 +1,188 @@
+:: QuestSetup_cow_competition [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_best_in_show_dairy_cow_0", /* key */
+"Best in Show: Dairy Cow", /* name */
+"Won best-in-show as a dairy cow", /* description */
+"a|is remembered for winning best-in-show as a dairy cow", /* unit text */
+3000, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Cow', /* name */
+[
+  setup.trait.breast_titanic,
+  setup.trait.training_mindbreak,
+  setup.trait.per_masochistic,
+  setup.trait.per_sexaddict,
+  setup.trait.skill_animal,
+],
+[
+  setup.trait.per_cautious,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.per_aggressive,
+  setup.trait.per_logical,
+  setup.trait.per_stubborn,
+  setup.trait.per_cruel,
+  setup.trait.per_chaste,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AnyTrait([setup.trait.breast_titanic, setup.trait.breast_huge, ], true),
+  setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master, setup.trait.training_mindbreak], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'cow_competition', /* key */
+"Cow Competition", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'femaleonly',
+  'desert',
+  'money',
+  'trait',
+  'legendary',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'handler': [ setup.qu.slavetrainer, 1.5],
+  'milker': [ setup.qu.milker, 1.5],
+  'slave': _criteriaslave,
+},
+{ /* actors */
+  'judge': 'desert_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-2000),
+],
+'Quest_cow_competition',
+setup.qdiff.hard46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_cow_competitionCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.AddTitle('slave', 'quest_best_in_show_dairy_cow_0'),
+    ],
+  ],
+  [
+    'Quest_cow_competitionCrit',
+    [
+      setup.qc.MoneyCustom(5000),
+      setup.qc.SetCooldownQuest(null, 150),
+    ],
+  ],
+  [
+    'Quest_cow_competitionCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_cow_competitionDisaster',
+    [
+      setup.qc.Injury('handler', 4),
+      setup.qc.Injury('milker', 5),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.legendary],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.pasture),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_cow_competition_common [nobr]
+
+<p>
+The <<lore region_desert>> is mostly barren, and unsuitable for farming.
+Many people there works for a living by growing livestock, moving from one place to another as the vegetations
+run out.
+While some prides themselves in traditional livestock such as goats, cattles, and so on,
+some handles more delicate livestock like neko or humans, which are milked
+for various liquids.
+</p>
+
+:: Quest_cow_competition [nobr]
+
+<<include 'Quest_cow_competition_common'>>
+
+<p>
+A famous dairy producer company in the <<lore region_desert>> is holding a livestock show in the coming weeks.
+They're aware that you keep cows in your <<rep setup.buildingtemplate.pasture>>, they've sent you an invitation to enter stock to be judged, should you wish. A team of handlers should also be sent together, one to keep the slave in line and another to demonstrate the slave's quantity and quality of milk.
+</p>
+
+<p>
+This is a <<dangertext "rare">> opportunity. The idea of human-like dairy is still foreign and understandingly fascinating to many important people, so winning the stock show is likely to bestow some extra value onto the slave. Were your cow to win, they would probably be remembered as a special cow.
+</p>
+
+
+:: Quest_cow_competitionCrit [nobr]
+<p>
+<<Yourrep $g.slave>> slave|was shown in public, closely inspected by the judging committee.
+<<Their $g.slave>> <<ubreasts $g.slave>> were measured for their width, their volume, and even their softness, before they were being milked.
+In the next stage, <<rep $g.milker>> alongside many other slavers demonstrated the lactation quality of the slave by <<uadv $g.milker>> milking the slave, whose milk is finally taste-tested by the judge.
+<<if $g.slave.isHasTrait('breast_titanic')>>
+Your slaver's cow produced the most amount of milk among all the participants, no small thanks to <<their $g.slave>> gigantic, almost unnatural-looking udders.
+<<else>>
+Your slaver's cow produced a great quantity of milk from <<their $g.slave>> bountiful bosoms, filling an entire bucket full with <<their $g.slave>> milk by the end of the day.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+It was likely there was some bribery behind the scenes, but
+<<their $g.slave>> <<ubreasts $g.slave>> and the quality of <<their $g.slave>> milk won the day.
+Against all odds <<rep $g.slave>> slave|was named best in show, and will be remembered as dairy stock of the highest pedigree. Your slavers were also awarded with a great sum of money, as well as samples of milk from all the other cows participating in the competition, including a suspicious-looking purple-colored milk...
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+It was likely there was some bribery behind the scenes, and it was fatal to <<reps $g.slave>> chances of winning.
+<<if $g.slave.isHasTrait('breast_titanic')>>
+Though <<their $g.slave>> tits were easily the most impressive on display,
+<<else>>
+Though <<their $g.slave>> milk was easily the tastiest on display,
+<</if>>
+a stock of another slaver company who was more open-handed with the judges took best in show.
+The judges were impressed with <<reps $g.slave>> tits anyway; and your slavers were awarded the second, still sizable consolation prize.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, the judges chose another cow as best in show.
+<<if $g.slave.isHasTrait('breast_titanic')>>
+Despite having the most impressive tits on display,
+<<else>>
+The winner cow has a much more impressive tits, and also
+<</if>>
+the quality of <<reps $g.slave>> milk left much to be desired, according to the judges.
+Your slavers came back home empty-handed, with no prize in <<uhand $g.handler>>.
+</p>
+
+<</if>>
+
+:: Quest_cow_competitionDisaster [nobr]
+<p>
+Unfortunately, an unscrupulous women-emancipation group assaulted the competition. Many cows were freed from their owners that day, but fortunately your slavers were experienced. <<Rep $g.handler>> managed to fight off the invaders while <<rep $g.milker>> hid your cow away. In the aftermath, your slavers suffered some injuries, but their cow remains safe with them.
+</p>

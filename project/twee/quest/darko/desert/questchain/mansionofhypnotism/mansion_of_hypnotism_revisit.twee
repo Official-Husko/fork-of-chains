@@ -1,0 +1,165 @@
+:: QuestSetup_mansion_of_hypnotism2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaorc = new setup.UnitCriteria(
+null, /* key */
+'Orc Slave', /* name */
+[
+],
+[
+],
+[
+setup.qres.IsCanBeSold(),
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_none),
+setup.qres.Trait(setup.trait.race_greenskin),
+setup.qres.AnyTrait([
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.dick_titanic,
+  setup.trait.balls_titanic,
+  setup.trait.breast_titanic,
+  setup.trait.height_giant,
+], true),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'mansion_of_hypnotism2', /* key */
+"Mansion of Hypnotism", /* Title */
+"darko", /* Author */
+[ 'desert',
+'veteran',
+'item',
+], /* tags */
+4, /* weeks */
+12, /* quest expiration weeks */
+{ /* roles */
+'hypnotist': setup.qu.hypnotist_veteran,
+'assistant': setup.qu.hypnotist,
+'trainer': setup.qu.slavetrainer,
+'orc': _criteriaorc, },
+{ /* actors */
+'master': 'quest_mansion_of_hypnotism_master',
+'slave': 'subrace_orc', },
+[ /* costs */
+],
+'Quest_mansion_of_hypnotism2',
+setup.qdiff.hardest50, /* difficulty */
+[ /* outcomes */
+[
+'Quest_mansion_of_hypnotismCrit2',
+[
+setup.qc.MoneyNormal(),
+setup.qc.Item(setup.item.potion_slavertraining),
+setup.qc.MissingUnitForever('orc'),
+],
+], [
+'Quest_mansion_of_hypnotismCrit2',
+[
+setup.qc.MissingUnitForever('orc'),
+setup.qc.Item(setup.item.potion_slavertraining),
+],
+], [
+'Quest_mansion_of_hypnotismFailure2',
+[
+setup.qc.Mindbreak('orc'),
+setup.qc.TraumatizeRandom('hypnotist', 12),
+setup.qc.TraumatizeRandom('assistant', 8),
+setup.qc.TraumatizeRandom('trainer', 6), ],
+], [
+'Quest_mansion_of_hypnotismFailure2',
+[
+setup.qc.MissingUnitForever('orc'),
+setup.qc.TraumatizeRandom('hypnotist', 18),
+setup.qc.TraumatizeRandom('assistant', 15),
+setup.qc.TraumatizeRandom('trainer', 12),
+setup.qc.SlaverMarker('master'),
+setup.qc.SlaveMarker('slave'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(),
+setup.qres.HasItem(setup.item.brainwash_technology), ],
+)>>
+
+:: Quest_mansion_of_hypnotism2 [nobr]
+
+<p>
+Hypnotism - the act of influencing the subconcious mind. Contrary to
+popular belief, it does not work the way most people think — hypnotism only
+work when the subject has a subconscious desire to get hypnotized. It does
+not work to make others do whatever the hypnotizer desires — there is a very
+strong limit to this ability, rendering it useless for anything but party
+tricks.
+</p>
+
+<p>
+Some time ago, your slavers had somehow befriended a certain <<master $g.master>> living in a secluded
+mansion in the middle of nowhere at the <<lore region_desert>>.
+The grand mansion was staffed entirely with brainwashed orcs.
+While the <<master $g.master>> was kind enough to share <<rep setup.item.brainwash_technology>>
+with your slavers, they still need
+the rare <<rep setup.item.potion_slavertraining>> to actually make use of the knowledge.
+</p>
+
+<p>
+If you run out of <<rep setup.item.potion_slavertraining>>, you can try to again send a slaver
+skilled in <<rep setup.trait.skill_hypnotic>> to keep the lonely <<master $g.master>> company.
+Of course, you also need to bring the same specimen as last time: a completely untrained
+and positively voluptuous <<rep setup.trait.race_greenskin>> slave, for your slaver to demonstrate to the
+<<master $g.master>> their capability of hypnotism.
+</p>
+
+<p>
+<<dangertext 'WARNING:'>> the slave you send on this mission is likely to end up as one of the <<master $g.master>>'s servant and be gone forever from your company...
+</p>
+
+
+:: Quest_mansion_of_hypnotismCrit2 [nobr]
+
+<<if $g.slave.isMale() && $g.orc.isMale()>>
+  <<questimage "mansion_of_hypnotism_male.jpg">>
+<</if>>
+
+<p>
+Same with the last vist, your slavers were greeted by a
+<<if $g.slave.isFemale()>>
+freakishly voluptouous orc dressed in a skimpy maid outfit.
+<<else>>
+freakishly muscular orc dressed in overly tight butler outfit.
+<</if>>
+With none of the usual orcish slang, <<they $g.slave>> escorted your slavers
+to meet the <<master $g.master>> — the <<man $g.master>> radiated mystery
+with <<their $g.master>> every movement.
+When <<they $g.master>> saw your slavers again, <<they $g.master>> visibly relaxed
+and invited your slavers for a pleasant dinner. Over the next few days, the
+<<master $g.master>> of the mansion enjoyed the company of your slavers,
+before finally introducing <<their $g.master>> name: <<rep $g.master>>.
+Of course, 
+the bound and gagged <<rep $g.orc>> orc|was subjected to various acts of hypnotism
+both from <<rep $g.hypnotist>> and the <<master $g.master>>, often during the wonderful tea-time.
+</p>
+
+<p>
+As your slaver's time came to an end,
+the <<master $g.master>> again generously shared a bottle of
+<<rep setup.item.potion_slavertraining>> to aid your slavers in their work home.
+Your former slave <<rep $g.orc>> would receive training from the orc butler slave,
+before eventually
+settling in nicely in the mansion, serving as the <<master $g.master>>'s personal
+<<if $g.master.isFemale()>>rear-eater<<else>>cumdump<</if>>.
+<<if $gOutcome == 'crit'>>
+Before leaving, the master gave your slavers some lavish gifts, which they bring back home.
+<</if>>
+</p>
+
+
+:: Quest_mansion_of_hypnotismFailure2 [nobr]
+
+<<include 'Quest_mansion_of_hypnotismCrit'>>

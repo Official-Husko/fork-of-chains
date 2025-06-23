@@ -1,0 +1,33 @@
+:: LIVINGSETUP_lumberjack [nobr living]
+
+<<run new setup.Living({
+  key: 'lumberjack',
+  name: 'Lumberjack',
+  tags: ['common', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_woodsman: setup.LIVING_COMMON_PREFERENCE,
+    per_direct: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_sly: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'chopping a tree',
+    'hefting a|their heavy axe',
+    'making firewood',
+  ],
+  location: 'hut',
+})>>
+
+:: LIVING_lumberjack [nobr]
+
+<p>
+<<Rep $g.a>> took all a|their money away and build a|themself a wooden hut
+at the outskirts of a forest, as well as purchasing a sturdy wood axe.
+a|They enjoys the simplicity of chopping down trees and cutting wood,
+a refreshing break from having to use a|their a|arms wielding the <<uweapon $g.a>>.
+<<if !$g.a.isHasTrait('per_chaste')>>
+Unknown to most people, a|they did spend quite a fortune building a secret dungeon
+complex underneath the innocent looking hut, housing who-knows-what...
+<</if>>
+</p>

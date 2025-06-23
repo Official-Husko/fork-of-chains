@@ -1,0 +1,168 @@
+:: QuestSetup_tower_of_roses__true_love [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaadmirer = new setup.UnitCriteria(
+null, /* key */
+'admirer', /* name */
+[
+setup.trait.bg_noble,
+setup.trait.bg_knight,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_smart,
+setup.trait.per_lavish,
+setup.trait.per_honorable,
+setup.trait.skill_entertain,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.bg_laborer,
+setup.trait.bg_farmer,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_slow,
+setup.trait.per_frugal,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('tower_of_roses_admirer'),
+],
+{
+knowledge: 1,
+social: 1,
+sex: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'tower_of_roses__true_love', /* key */
+"Tower of Roses: True Love", /* Title */
+"darko", /* Author */
+[
+  'forest',
+  'prep',
+  'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'admirer': _criteriaadmirer,
+'writer': setup.qu.writer,
+'performer': setup.qu.performer,
+},
+{ /* actors */
+'prince': 'quest_tower_of_roses1',
+},
+[ /* costs */
+],
+'Quest_tower_of_roses__true_love',
+setup.qdiff.hard37, /* difficulty */
+[ /* outcomes */
+[
+'Quest_tower_of_roses__true_loveCrit',
+[
+setup.qc.Outcomes('success'),
+setup.qc.Equipment(setup.equipmentpool.knowledge_good),
+setup.qc.BoonizeRandom('admirer', 10),
+],
+], [
+'Quest_tower_of_roses__true_loveCrit',
+[
+setup.qc.Favor('elf', 200),
+setup.qc.VarRemove('tower_of_roses_affection'),
+setup.qc.MoneyCustom(1000),
+setup.qc.Slaver('prince', "a|was a hopeless romantic who found a|their true love among one of your slavers", undefined),
+setup.qc.AddTitle('prince', 'tower_of_roses_obtained'),
+setup.qc.RemoveTitle('admirer', 'tower_of_roses_admirer'),
+setup.qc.AddHistory('admirer', "successfully wooed an elven royalty."),
+setup.qc.BoonizeRandom('admirer', 5),
+setup.qc.RemoveFromUnitGroup('prince'),
+setup.qc.Friendship('admirer', 'prince', 1000),
+setup.qc.Hookup('prince', 'admirer'),
+],
+], [
+'Quest_tower_of_roses__true_loveFailure',
+[
+setup.qc.VarAdd('tower_of_roses_affection', -50, -1), ],
+], [
+'Quest_tower_of_roses__true_loveFailure',
+[
+setup.qc.VarAdd('tower_of_roses_affection', -100, -1),
+setup.qc.TraumatizeRandom('admirer', 10), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_tower_of_roses__true_love [nobr]
+
+<<include 'Opportunity_tower_of_roses__point_of_love'>>
+
+<p>
+You have chosen to complete the <<princess $g.prince>>'s dream and reunite
+<<them $g.prince>> with their beloved.
+</p>
+
+
+:: Quest_tower_of_roses__true_loveCrit [nobr]
+
+<p>
+For one last time, <<yourrep $g.admirer>> <<uadv $g.admirer>>
+delivered a heartstruck love poem towards the <<prince $g.prince>>. When the
+poem ended, before your slavers' eyes the thorny rose surrounding the tower
+all started to withdraw until there was nothing but beautiful rose petals
+scattered around the tower, forming a carpet for <<therace $g.admirer>>.
+Wasting no time, <<rep $g.admirer>> rushed inside the tower and into the
+<<prince $g.prince>>'s chamber, who lied there waiting for your slaver. A
+romantic scene ensued with the two embracing and kissing each other.
+<<if $g.prince.isHasTrait('face_attractive')>>
+  Both lovers are quite attractive, and it made for a fairy-tale-like scene.
+<<elseif $g.prince.isHasTrait('face_scary')>>
+  Despite <<rep $g.prince>> having a face unlike any prince in a story, their love
+  won out and the two made for quite a fairy-tale-like scene.
+<</if>>
+</p>
+
+<p>
+It was not difficult for <<yourrep $g.admirer>> to convince the madly in love
+<<prince $g.prince>> to become one of your slavers.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+To commemorate the occassion, the <<prince $g.prince>> used <<their
+$g.prince>> connections to order an expensive piece of clothes to be made for <<their
+$g.prince>> beloved.
+</p>
+<<else>>
+<p>
+Before going back, your slavers collected whatever valuables remained in the tower.
+</p>
+<</if>>
+
+
+:: Quest_tower_of_roses__true_loveFailure [nobr]
+
+<p>
+In such an important moment, nervousness gripped <<rep $g.admirer>> who
+stuttered and failed to deliver the last and final poem.
+The thorny roses never withdrew from the tower and your slavers will have to
+rebuild some of the <<prince $g.prince>>'s affection to try again.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+The experience traumatized <<rep $g.admirer>> who regretted the turn of events greatly.
+</p>
+<</if>>

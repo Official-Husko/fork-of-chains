@@ -1,0 +1,115 @@
+:: OpportunitySetup_brothel_focus [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'brothel_focus', /* key */
+"Brothel Focus", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_focus',
+setup.qdiff.normal44, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_focus_0',
+    'Opportunity_brothel_focus_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarAdd('quest_brothel_class', 10, -1),
+      setup.qc.VarSet('quest_brothel_progress', '60', -1),
+      setup.qc.VarSet('quest_brothel_sub', 'dom', -1),
+      setup.qc.Trait('head', setup.trait.per_dominant),
+    ],
+  ],
+  [
+    'Opportunity_brothel_focus_1',
+    'Opportunity_brothel_focus_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarAdd('quest_brothel_class', -10, -1),
+      setup.qc.VarSet('quest_brothel_progress', '60', -1),
+      setup.qc.VarSet('quest_brothel_sub', 'sub', -1),
+      setup.qc.Trait('head', setup.trait.per_submissive),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_focus [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+<<Yourrep $g.owner>> spent the last few weeks increasing the skills of the many <<male $g.head>> whores working in <<attach _describe>>. While their general skills have certainly improved, it might be good to let your brothel specialize in a direction.
+</p>
+
+<p>
+The first option is to further direct them to become the perfect submissive sluts, capable of satisfying even the most demanding clients. This will no doubt attract them more dominant or sadistic clients, and your place will surely increase in debauchery.
+</p>
+
+<p>
+Alternatively, you could try to go for style and class instead. Direct your whores to
+take control during sex, guiding their customers along the way. The sex
+direction will be relatively tasteful, and you can even satisfy those
+secretly submissive clients that are abundant throughout the city.
+</p>
+
+
+
+:: Opportunity_brothel_focus_0 [nobr]
+Dominant dominatrix
+
+
+:: Opportunity_brothel_focus_0_flavor [nobr]
+<p>
+You've made up your mind, and the whores have heard about your decision. In the coming weeks, <<yourrep $g.owner>> as well as the head whore <<name $g.head>> will try their best to guide the whores to act more dominant towards their sexual pleasure. They should learn how to guide an inexperienced customer, and teach them that pleasure exists in both being a top and being a bottom. In time, this will hopefully turn your establishment into a somewhat classy one, where the whores are not just simple-minded sluts.
+</p>
+
+
+
+
+:: Opportunity_brothel_focus_1 [nobr]
+Submissive sluts
+
+
+:: Opportunity_brothel_focus_1_flavor [nobr]
+<p>
+You've decided to lead the whores towards a path of complete submission. In the coming weeks, <<yourrep $g.owner>> as well as the head whore <<name $g.head>> will try their best to teach the whores the pleasure of bottoming. They should learn how to offer all their orifices towards their customers, and how to thoroughly enjoy the feeling of being penetrated. In time, this will hopefully turn your establishment into the center of debauchery, where the submissive sluts would beg for nothing more but being dominated by their customers.
+</p>

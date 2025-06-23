@@ -1,0 +1,292 @@
+:: QuestSetup_blacksmith_orders [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"blacksmith_orders0",
+"Desert Blacksmith",
+'subrace_humankingdom', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_metalworker),
+],
+)>>
+
+<<set _criteriataster = new setup.UnitCriteria(
+null, /* key */
+'Sword Taster', /* name */
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_noble,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_nimble,
+  setup.trait.per_gregarious,
+  setup.trait.skill_ambidextrous,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.per_slow,
+  setup.trait.per_direct,
+  setup.trait.per_masochistic,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.join_junior,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  brawn: 1,
+  knowledge: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'blacksmith_orders', /* key */
+"Blacksmith Orders", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'desert',
+  'item',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'apprentice1': [ setup.qu.blacksmith, 1],
+  'apprentice2': [ setup.qu.blacksmith, 1],
+  'taster': [ _criteriataster, 1],
+},
+{ /* actors */
+  'smith': 'blacksmith_orders0',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-2000),
+],
+'Quest_blacksmith_orders',
+setup.qdiff.hard38, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_blacksmith_ordersCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 40),
+      setup.qc.Leave('taster', "a|continue to help out a master blacksmith for a while longer in exchange for a valuable weapon", 3),
+    ],
+  ],
+  [
+    'Quest_blacksmith_ordersCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 40),
+      setup.qc.Injury('taster', 2),
+      setup.qc.Injury('apprentice1', 1),
+    ],
+  ],
+  [
+    'Quest_blacksmith_ordersFailure',
+    [
+      setup.qc.SetCooldownQuest(null, 40),
+      setup.qc.Injury('apprentice1', 3),
+      setup.qc.Injury('apprentice2', 2),
+      setup.qc.Injury('taster', 6),
+    ],
+  ],
+  [
+    'Quest_blacksmith_ordersFailure',
+    [
+      setup.qc.SetCooldownQuest(null, 40),
+      setup.qc.Leave('apprentice1', "a|is working overtime with a certain master blacksmith as recompense for a|their incompetence", 4),
+      setup.qc.Leave('apprentice2', "a|is working overtime with a certain master blacksmith as recompense for a|their incompetence", 4),
+      setup.qc.Leave('taster', "a|is working overtime with a certain master blacksmith as recompense for a|their incompetence", 7),
+      setup.qc.TraumatizeRandom('apprentice1', 20),
+      setup.qc.TraumatizeRandom('apprentice2', 17),
+      setup.qc.TraumatizeRandom('taster', 18),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_blacksmith_orders [nobr]
+<<set _u = setup.getAnySlaver()>>
+<p>
+As you enter your office today, <<yourrep _u>> stood there waiting with a
+letter in <<uhand _u>>. Apparently, a famous blacksmith in the <<lore region_desert>> is
+hiring seasonal apprentices to help with the increased demands for <<their
+$g.smith>> services.
+An opening is posted for two blacksmith apprentices and one "sword taster",
+which is the eastern words for someone who can test out the weapons that
+<<they $g.smith>> forged.
+Of course, for such priviledge of serving a wonderful master in <<themselves
+$g.smith>>, the smith demands the apprentices to pay for actually working
+under <<them $g.smith>>. But <<they $g.smith>> promises to offer <<them
+$g.smith>> one of <<their $g.smith>> famous works.
+</p>
+
+<p>
+You can try to send a group of slavers to help out the haughty blacksmith.
+But you have the feeling that whoever you send as the sword taster must be
+particularly <<successtext "good at something">>, or it would all become a simple waste of
+time...
+</p>
+
+
+:: Quest_blacksmith_ordersCrit [nobr]
+
+<p>
+The weeks were spent with <<rep $g.apprentice1>> and <<utheirrel
+$g.apprentice1 $g.apprentice2>> <<rep $g.apprentice2>> <<uadv
+$g.apprentice1>> toiling away in the forge with the master blacksmith,
+tossing <<yourrep $g.taster>> freshly hammered swords, axes, and various weapons
+to test out. The amount of order were unbelievable, and the occassional order
+for exotic sex toys were a welcome break for your slavers' continuous toil.
+In the end, however, your slavers were able to complete the demanding task.
+</p>
+
+<p>
+While your slavers were exhausted to the brink, the master blacksmith
+<<themself $g.smith>> did not look any worse for wear after the ordeal.
+<<They $g.smith>> commended <<rep $g.apprentice1>> and <<rep $g.apprentice2>>
+for the time they spent working <<uadv $g.apprentice2>> before turning
+<<their $g.smith>> <<ueyes $g.smith>> to <<rep $g.taster>> to discuss the
+rewards.
+</p>
+
+<<set _idiot = false>>
+<<if $g.taster.isHasTrait('skill_ambidextrous')>>
+<p>
+Throughout the week, <<reps $g.taster>> talent in ambidexterity has earned
+many favors from the smith — the talented slaver were able to <<uadv
+$g.taster>> tested multiple weapons at the same time. The master smith gave
+<<rep $g.taster>> a most suitable reward: the <<rep
+setup.equipment.weapon_dualdagger>>, a prized and deadly weapon which can
+only be exclusively wielded by <<rep setup.trait.skill_ambidextrous>>
+slavers.
+</p>
+
+<<set _weapon = setup.equipment.weapon_dualdagger>>
+
+<<elseif $g.taster.isHasTrait('bg_noble') or $g.taster.isHasTrait('bg_royal') or
+$g.taster.isHasTrait('per_gregarious') or $g.taster.isHasTrait('tough_nimble')
+>>
+<p>
+<<if $g.taster.isHasTrait('bg_noble') or $g.taster.isHasTrait('bg_royal')>>
+Given <<their $g.taster>> nobility background,
+<<elseif $g.taster.isHasTrait('per_gregarious')>>
+Given <<their $g.taster>> affinity for rescuing damsels,
+<<else>>
+Given <<their $g.taster>> agility,
+<</if>>
+<<rep $g.taster>> taster|was able to demonstrate masterful use of many
+finesse weapon throughout the apprenticeship. This was apparently a welcome
+change for the smith, who were all too used to work with brutish thugs.
+Apparently impressed by <<therace $g.taster>>'s work, <<they $g.smith>> gave
+<<yourrep $g.taster>> a most suitable weapon in the form of <<rep
+setup.equipment.weapon_rapier>>, which will surely boosts both the combat
+prowess and the social standing of <<theslaver $g.taster>>.
+</p>
+
+<<set _weapon = setup.equipment.weapon_rapier>>
+
+<<elseif $g.taster.isHasTrait('muscle_strong')>>
+<p>
+<<Rep $g.taster>> might not be a finesse fighter, but <<they $g.taster>> made
+it up in strength. Weapons big and large were able to be tested efficiently
+by <<yourrep $g.taster>>. This did not go unnoticed by the masterful smith,
+who gave your slaver a simple weapon suited for the brutish slaver: a <<rep
+setup.equipment.weapon_broadsword>>. A big bad sword to accompany <<theslaver $g.taster>>
+in their future career.
+</p>
+
+<<set _weapon = setup.equipment.weapon_broadsword>>
+<<else>>
+<p>
+<<Rep $g.taster>> tried their hardest, but there wasn't really much that
+stood out from your slaver. In the end, <<rep $g.apprentice1>> and
+<<utheirrel $g.apprentice1 $g.apprentice2>> <<rep $g.apprentice2>> brought
+a... <<Rep setup.equipment.weapon_log>> home?
+It took you few hours arguing with the slavers before you managed to convince
+them that they have been duped by the metalworker, apparently thanks to
+<<their $g.smith>> dissatisfaction with <<rep $g.taster>>.
+Still, the smith did not lie, and the log bore an inscription of <<their
+$g.smith>> work. It could end up worth a good amount of coins for certain
+antiquity collectors.
+</p>
+
+<<set _weapon = setup.equipment.weapon_log>>
+<<set _idiot = true>>
+<</if>>
+
+<<run setup.qc.EquipmentDirect(_weapon).apply()>>
+<<if $gOutcome == 'crit'>>
+<<run setup.qc.EquipmentDirect(_weapon).apply()>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+<<if _idiot>>
+<p>
+As an added embarrassment, they did not bring one, but two of the <<rep
+setup.equipment.weapon_log>>. And that's in exchange for another few weeks of
+<<rep $g.taster>> toiling away under the smith's care. But at this point both
+you and your slavers know it is not for anything related to work anymore...
+</p>
+<<run setup.qc.TraumatizeRandom('unit', 15).apply(setup.costUnitHelper($g.taster))>>
+<<else>>
+<p>
+Thanks to <<reps $g.taster>> superb work (and your other slavers too, you
+suppose), your slavers returned not with one, but with two copies of <<rep
+_weapon>>. But this was in exchange for having <<rep $g.taster>> continue 
+toiling away for a few more weeks under the metalworker's watch. Your slavers took
+the deal, as you would too under the circumstances. Two copies of this
+masterful weapon will surely prove handy for your company.
+</p>
+<</if>>
+<</if>>
+
+
+
+
+
+:: Quest_blacksmith_ordersFailure [nobr]
+
+<p>
+The weeks passed by quickly with <<rep $g.apprentice1>> and <<utheirrel
+$g.apprentice1 $g.apprentice2>> <<rep $g.apprentice2>> <<uadv
+$g.apprentice1>> toiling away in the forge with the master blacksmith,
+who tossed <<rep $g.taster>> freshly hammered swords, axes, and various weapons
+one after another.
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+The amount of order were unbelievable, and unfortunately your
+slavers broke under all the pressure. Their efficiency thus dropped
+significantly, earning the ire of the smith. In the end, your slavers
+returned to your company with nothing but bruises from the work.
+</p>
+
+<<else>>
+
+<p>
+The amount of order were unbelievable, and your slavers were
+unable to cope at all with the pressure. They started to make mistakes —
+costly ones too, which the smith understandably was unhappy about.
+Your slavers did not return by the appointed end of the contract, but you
+receive a letter saying that they will be paying for their debt with their
+bodies and mind in the coming weeks. Whatever that means, it did not sound
+good.
+</p>
+
+<</if>>

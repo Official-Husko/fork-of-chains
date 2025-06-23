@@ -1,0 +1,144 @@
+:: InteractionGenSetup [nobr]
+
+<<set $devtooltype = 'interaction'>>
+
+<<set $qcustomslaveorder = []>>
+<<set $qcustomcriteria = []>>
+<<set $qcustomunitgroup = []>>
+<<set $qcustomtitle = []>>
+
+<<set _ikey = '__devtool_interaction'>>
+<<set _ipassage = 'DummyInteractionPassage'>>
+
+<<set $idesc = "">>
+
+<<if _ikey in setup.interaction>>
+  <<run delete setup.interaction[_ikey]>>
+<</if>>
+
+<<if !_ibase>>
+  <<set $dtquest = new setup.Interaction(
+    _ikey,
+    '',  /* name */
+    {name: '', url: ''},  /* author */
+    [],  /* tags */
+    _ipassage,  /* desc passage */
+    [],  /* costs */
+    [],  /* requirements */
+    [],  /* unit requirements */
+    [],  /* outcomes */
+    0,   /* cooldown */
+    setup.interactionpool.unit,  /* pool */
+  )>>
+
+<<else>>
+  <<set $idesc = Story.get(_ibase.getPassage()).text>>
+
+  <<set $dtquest = new setup.Interaction(
+    _ikey,
+    _ibase.getName(),  /* name */
+    _ibase.getAuthor(),  /* author */
+    _ibase.getTags(),  /* tags */
+    _ipassage,  /* desc passage */
+    _ibase.getCosts(),  /* costs */
+    _ibase.getPrerequisites(),  /* requirements */
+    _ibase.getUnitRequirements(),  /* unit requirements */
+    _ibase.getRewards(),  /* outcomes */
+    _ibase.getCooldown(),   /* cooldown */
+    setup.interactionpool.unit,  /* pool */
+  )>>
+  <<set $dtquest.old_key = _ibase.key>>
+<</if>>
+
+
+
+:: InteractionGen [nobr]
+
+<<run setup.DevToolHelper.restoreScrollPos()>>
+
+<<dtauthor "$dtquest.author" $dtquest.author>>
+
+<<dtname "$dtquest.name" $dtquest.name>>
+
+<p>
+  Interaction cooldown:
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Number of weeks before this interaction can be used again.
+      <br/>
+      <br/>
+      0 means no cooldown, and this interaction can be spammed each week.
+    </div>
+  <</message>>
+  <<numberbox "$dtquest.cooldown" $dtquest.cooldown>> weeks
+</p>
+
+<<dttags $dtquest>>
+
+<div class='marketobjectcard'>
+  <b>Unit requirements</b>:
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Only units that satisfies these requirements can be interacted with.
+      <br/>
+      <br/>
+      The most common requirement is Job: Slave,
+      which indicates that this interaction can only be used on slaves.
+    </div>
+  <</message>>:
+  <<devlist '$dtquest.unit_requirements' '(Add new requirement)' 'QGAddRestrictionUnit' 'InteractionGen'>>
+</div>
+
+<<dtcost '$dtquest.costs'>>
+
+<div class='equipmentcard'>
+  <b>Outcomes</b>:
+  <<message '(?)'>>
+    <div class='helpcard'>
+      What happens afterwards, if any.
+    </div>
+  <</message>>
+  <<devlist '$dtquest.rewards' '(Add new outcome)' 'QGAddCostTarget' 'DevGoToReturn'>>
+</div>
+
+<<dtrestriction "$dtquest.prerequisites">>
+
+<hr/>
+
+<<dtstoryhelp>>
+
+<div class="overflow-story-container">
+
+<hr/>
+
+<p>
+Interaction text:
+<<message '(?)'>>
+  <div class='helpcard'>
+    Describes what happens during the interaction.
+  </div>
+<</message>>
+<br/>
+<<codeeditor '$idesc' $idesc>>
+</p>
+
+<hr/>
+
+<p class="center">
+<br/>
+<<button 'CREATE NEW INTERACTION!'>>
+  <<run setup.DOM.Menu.devtoolverifycreate()>>
+<</button>>
+</p>
+
+<<if $dtquest.old_key>>
+
+<p class='center'>
+<<link 'create interaction (override existing)'>>
+  <<run setup.DOM.Menu.devtoolverifycreate(true)>>
+<</link>>
+</p>
+
+<</if>>
+
+</div>

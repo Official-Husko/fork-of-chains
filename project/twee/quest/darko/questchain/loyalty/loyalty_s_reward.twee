@@ -1,0 +1,221 @@
+:: QuestSetup_loyalty_s_reward [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'loyalty_reward',  /* key */
+  "Vacationeer",   /* name */
+  'Refreshed from a recent vacation on the beaches in the western peninsula',   /* name */
+  'went on a vacation recently, thanks to you',
+  0,   /* slave value */
+  {},
+)>>
+
+<<run new setup.QuestTemplate(
+'loyalty_s_reward', /* key */
+"Loyalty\'s Reward", /* Title */
+"darko", /* Author */
+[ 'forest', 'prep', 'unknown'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'planner': setup.qu.planner,
+'whore': setup.qu.whore,
+'scout': setup.qu.scout_forest, },
+{ /* actors */
+'slaver': [
+setup.qres.NotYou(),
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NoTraits([setup.trait.race_lizardkin, setup.trait.race_demon, setup.trait.bg_boss, setup.trait.bg_royal, setup.trait.bg_mythical, setup.trait.bg_mist, setup.trait.bg_knight, setup.trait.bg_adventurer, setup.trait.muscle_verystrong, setup.trait.muscle_extremelystrong, setup.trait.dick_huge, setup.trait.dick_titanic, setup.trait.balls_huge, setup.trait.balls_titanic, setup.trait.breast_huge, setup.trait.breast_titanic, setup.trait.face_attractive, setup.trait.face_beautiful, setup.trait.height_giant, setup.trait.per_smart, setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_flight, setup.trait.skill_connected, setup.trait.skill_hypnotic, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal, setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master, setup.trait.join_junior, setup.trait.wings_angel, setup.trait.wings_dragonkin, setup.trait.wings_demon, setup.trait.wings_elf], true),
+], },
+[ /* costs */
+setup.qc.MoneyCustom(-500), ],
+'Quest_loyalty_s_reward',
+setup.qdiff.normal20, /* difficulty */
+[ /* outcomes */
+[
+'Quest_loyalty_s_rewardCrit',
+[
+setup.qc.Friendship('whore', 'slaver', 600),
+setup.qc.BoonizeRandom('slaver', 30),
+setup.qc.BoonizeRandom('planner', 15),
+setup.qc.BoonizeRandom('whore', 15),
+setup.qc.AddTitle('slaver', 'loyalty_reward'),
+setup.qc.BoonizeRandom('scout', 15),
+setup.qc.VarSet('loyalty_reward_cd', '1', 5),
+],
+], [
+'Quest_loyalty_s_rewardCrit',
+[
+setup.qc.BoonizeRandom('slaver', 30),
+setup.qc.BoonizeRandom('planner', 10),
+setup.qc.BoonizeRandom('whore', 10),
+setup.qc.AddTitle('slaver', 'loyalty_reward'),
+setup.qc.BoonizeRandom('scout', 10),
+setup.qc.VarSet('loyalty_reward_cd', '1', 5),
+],
+], [
+'Quest_loyalty_s_rewardCrit',
+[
+setup.qc.TraumatizeRandom('slaver', 15), ],
+], [
+'Quest_loyalty_s_rewardCrit',
+[
+setup.qc.TraumatizeRandom('slaver', 30),
+setup.qc.Friendship('whore', 'slaver', -600), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.NoUnitWithTitle('loyalty_reward'),
+setup.qres.QuestUnique(),
+setup.qres.ExistUnit([
+setup.qres.NotYou(),
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NoTraits([setup.trait.join_junior, setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_flight, setup.trait.skill_connected, setup.trait.skill_hypnotic, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal, setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master, setup.trait.per_smart, setup.trait.muscle_extremelystrong, setup.trait.muscle_verystrong, setup.trait.face_attractive, setup.trait.face_beautiful, setup.trait.height_giant, setup.trait.race_lizardkin, setup.trait.race_demon, setup.trait.bg_boss, setup.trait.bg_royal, setup.trait.bg_mythical, setup.trait.bg_mist, setup.trait.bg_knight, setup.trait.bg_adventurer, setup.trait.dick_huge, setup.trait.dick_titanic, setup.trait.balls_huge, setup.trait.balls_titanic, setup.trait.breast_huge, setup.trait.breast_titanic, setup.trait.wings_elf, setup.trait.wings_angel, setup.trait.wings_demon, setup.trait.wings_dragonkin], true)
+]),
+],
+[ /* expiration outcomes */
+setup.qc.TraumatizeRandom('slaver', 5), ],
+)>>
+
+:: Quest_loyalty_s_reward [nobr]
+<p>
+You are blessed with many companions in your endeavors leading a band of slavers. Among the
+friends you have made along the way, there's always
+<<yourrep $g.slaver>>.
+<<set _weeks = $g.slaver.getWeeksWithCompany()>>
+<<They $g.slaver>> slaver|have been with you and your company for
+<<if _weeks > 100>>
+years now,
+<<elseif _weeks > 52>>
+a year now,
+<<else>>
+almost a year now,
+<</if>>
+and you know <<them $g.slaver>> quite well by now.
+<<They $g.slaver>> may be a little <<uadjbad $g.slaver>>, but <<they
+$g.slaver>> slaver|is also <<uadjgood $g.slaver>>. Even though <<theslaver $g.slaver>> slaver|have no
+outstanding skills or capabilities, <<they $g.slaver>> slaver|have served your
+company loyally up to now. You could not ask for a better slaver.
+</p>
+
+<p>
+Recently, you've noticed that <<rep $g.slaver>> looked a little down, as if
+jaded by the overall work of things.
+Perhaps you could arrange the poor slaver a little surprise vacation — there
+are pristine beaches lying on the western peninsula where the <<lore region_forest>> is,
+if one knows where to look. First of all, you'd need a good scout to locate the
+beach. You should then ask one of your slavers to plan a vacation in secret
+for <<rep $g.slaver>>, and ask another to join in as the main entertainment.
+</p>
+
+<p>
+While you probably won't gain anything but gratitude from the slaver, perhaps
+this could inspire <<theslaver $g.slaver>> for greater things in the future. Ahh... the
+things you'd do for your family...
+</p>
+
+
+:: Quest_loyalty_s_rewardCrit [nobr]
+
+<p>
+While <<yourrep $g.scout>> searched for the elusive secret beach, <<yourrep
+$g.planner>> prepared for the vacation. First of all, a strong drink the
+night before, so <<they $g.slaver>> could be smuggled out of the fort in
+the dead of the night. A comfortable bench would also needed, placed next to the
+beach in a comfortable position. Drinks and refreshments would also be good — the
+exotic fruits from nearby forests could probably make for one. Finally, a
+proper whore: <<rep $g.whore>>, which would make a great change from the usual
+slave entertainment. As <<rep $g.planner>> finished making the plan and preparations, <<rep
+$g.scout>> audaciously returned from <<their $g.scout>> scouting mission, and
+with good news too. It seemed the stars had aligned perfectly for the
+vacation.
+</p>
+
+<p>
+The preparations ready, <<rep $g.planner>> <<uadv $g.planner>> goaded <<rep
+$g.slaver>> to drink as much as <<they $g.slaver>> could. The <<uadjgood
+$g.slaver>> slaver obliged, until both slavers were pretty much dead from too much
+drinking. <<Rep $g.scout>> and <<utheirrel $g.scout $g.whore>> <<rep
+$g.whore>> then hauled <<reps $g.slaver>> unconscious body onto the carriage,
+and journeyed to the beach in the dead of night.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<p>
+When <<rep $g.slaver>> woke up, it was both with a hangover and with an
+unfamiliar surroundings. Instead of the usual imposing walls of your fort, it
+was to the empty and pristine beach, with the sunlight strongly shining upon
+<<their $g.slaver>> <<ubody $g.slaver>>.
+<<if $g.slaver.isHasTrait('per_dreamy')>>
+The airheaded <<urace $g.slaver>> assumed it was all a dream, and tried to go
+back to sleep.
+<<else>>
+A sudden sense of panic awashed <<them $g.slaver>>, as <<they $g.slaver>>
+realized that <<they $g.slaver>> had been kidnapped.
+<</if>>
+But then <<rep $g.whore>> <<uadv $g.whore>> came over, bringing exotic fruits
+found by <<yourrep $g.scout>> near the forests.
+<<Rep $g.whore>> explained the whole plan to surprise <<rep $g.slaver>> while
+<<uadv $g.whore>> displaying <<their $g.whore>> <<ubody $g.whore>>
+sensuously.
+<<if $g.slaver.isHasTrait('per_chaste')>>
+Despite being usually prude, the
+<<else>>
+The
+<</if>>
+combination of vacational settings, the exotic fruit, and <<reps $g.whore>>
+ample body overwhelmed <<rep $g.slaver>>, and they made love.
+</p>
+
+<p>
+The next few days passed in a blur as <<rep $g.slaver>> had the best days of
+<<their $g.slaver>> life in the vacation. The days flew by as the slavers
+played on the beach, swam, built sandcastles, ate exotic fruits, all while
+being kept entertained by <<reps $g.whore>> <<uadjgood $g.whore>> care.
+<<if $gOutcome == 'crit'>>
+<<rep $g.slaver>> grew incredibly close with <<rep $g.whore>> throughout.
+<</if>>
+The vacation over,
+<<rep $g.slaver>> came back home refreshed as new. You decided not to tell
+<<them $g.slaver>> about your involvement — seeing <<their $g.slaver>> happy
+face was more than enough as your reward... right? Who knows, perhaps this
+will inspire <<rep $g.slaver>> in the future...
+</p>
+
+<<else>>
+
+<p>
+When <<rep $g.slaver>> woke up, it was both with a hangover and with an
+unfamiliar surrounding. Instead of the usual imposing walls of your fort, it
+was to the empty and pristine beach, with the sunlight strongly shining upon
+<<their $g.slaver>> <<ubody $g.slaver>>.
+A sudden sense of panic awashed <<them $g.slaver>>, as <<they $g.slaver>>
+realized that <<they $g.slaver>> had been kidnapped. This, combined
+with the hangover and their jadedness towards the work made them mistake
+<<rep $g.whore>> for the kidnapper. Grabbing the nearest object as weapon,
+<<rep $g.slaver>> ran away into the forests. The vastness of the forest made
+it difficult for <<rep $g.scout>> and <<utheirrel $g.scout $g.whore>> <<rep
+$g.whore>> to find <<theslaver $g.slaver>> back.
+</p>
+
+<p>
+It took your slavers the entire week to find <<rep $g.slaver>> back, hiding
+in the forests. Finally explaining the situation, there were no more time left to continue the
+the vacation and they headed back home to the fort.
+<<Rep $g.slaver>> looked more stressed than ever, no small part thanks to your ruined plan.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+<<Rep $g.slaver>> greatly disliked <<rep $g.whore>> now because of the misunderstanding.
+</p>
+<</if>>
+
+<</if>>

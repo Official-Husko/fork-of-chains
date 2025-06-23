@@ -1,0 +1,16 @@
+:: WikiSexAction [nobr]
+
+<<set _forfilter = setup.sexaction.filter(action => action.desc())>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'sexaction',
+  filter_objects: _forfilter,
+  display_callback: sexaction => {
+    if ($menufilter.get('sexaction', 'display') == 'compact') {
+      return setup.DOM.Card.sexactioncompact(sexaction, true);
+    } else {
+      return setup.DOM.Card.sexaction(sexaction, true);
+    }
+  },
+})>>
+<<attach _dom>>

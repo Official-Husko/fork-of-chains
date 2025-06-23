@@ -1,0 +1,191 @@
+:: QuestSetupFineDining [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'fine_dining', /* key */
+  'Fine Dining', /* Title */
+  'darko',   /* author */
+  ['city', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'negotiator1': setup.qu.negotiator,
+    'negotiator2': setup.qu.negotiator,
+    'trainer': setup.qu.slavetrainer,
+    'chair': setup.qu.slavefurniture,
+  },
+  { /* actors */
+    'man': 'all',
+  },
+  [ /* costs */
+  ],
+  'QuestFineDining', /* passage description */
+  setup.qdiff.normal38, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestFineDiningCrit',
+      [
+        setup.qc.MoneyCrit(1.4),
+        
+      ],
+    ],
+    [
+      'QuestFineDiningCrit',
+      [
+        setup.qc.MoneyNormal(1.4),
+        
+      ],
+    ],
+    [
+      'QuestFineDiningCrit',
+      [
+      ],
+    ],
+    [
+      'QuestFineDiningCrit',
+      [
+        setup.qc.Injury('chair', 6),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.uncommon],], /* quest pool and rarity */
+  [
+    setup.qres.HasSlaveWithTraits([setup.trait.training_endurance_basic]),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestFineDining [nobr]
+
+<p>
+Even within the undercity of Lucgate, there are rich people and criminals alike.
+There are venus there that cater specifically to these criminal rich.
+Of particular interest is an established high-end dining facility, which is often
+used as a meetingplace to conduct shady business.
+However, the dining facility is unlike any others -- all of its furniture
+are actually slaves who had been trained to live the rest of their lives as furnitures.
+The patrons are encouraged to bring their own furniture to the dining facility to enhance
+the experience.
+</p>
+
+<p>
+An aspiring business<<man $g.man>> has approached your company, asking for an escort to
+guard <<them $g.man>> for one such meeting.
+<<They $g.man>> promises more pay than usual, but you must supply the furniture slave to bring along.
+You can send your slavers are an appropriately trained slave to the meeting, if you choose.
+</p>
+
+
+:: QuestFineDiningCrit [nobr]
+
+<p>
+Your slavers prepared <<rep $g.chair>> as best as they could for the no doubt intense
+use and abuse during the meeting.
+
+<<set _noble = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.trainer], {trait: 'bg_noble'})>>
+<<set _royal = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.trainer], {trait: 'bg_royal'})>>
+<<set _boss = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.trainer], {trait: 'bg_boss'})>>
+<<set _informer = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.trainer], {trait: 'bg_informer'})>>
+
+<<if _royal>>
+  <<Reps _royal>> royal upbringing means <<therace _royal>> looked completely natural in the luxurious place.
+<<elseif _noble>>
+  <<Reps _noble>> noble upbringing means <<therace _noble>> looked completely natural in the luxurious place.
+<<elseif _boss>>
+  <<Rep _boss>> used (and maybe still do) to head a criminal network, and luxurious places like
+  this is not a strange place to <<therace _boss>>.
+<<elseif _informer>>
+  <<Rep _informer>> is used to dressing for the occassion, no small thanks to <<their _informer>>
+  past as an informer.
+<<else>>
+  Even after donning their best outfits, your slavers still looked awkwardly out of place in the
+  very classy restaurant.
+<</if>>
+
+<<if $settings.getGenderPreference(setup.job.slaver).trait_key == 'male'>>
+A naked and muscularly built waiter
+<<else>>
+A naked and hugely endowed milf waiter
+<</if>>
+greeted your slavers as their hostess.
+Your slavers could see the business<<man $g.man>> was slightly flustered by the waiter's apperance --
+it seemed the fine establishment even studied their customers first to pick the best hostess
+that fit their sexual tastes.
+The establishment used slaves liberally as decoration -- one was hanged on a wall fully displaying
+<<their $g.man>> <<ugenital $g.man>> as decorations, while another was serving as a mat,
+busily licking all the boots that stepped on the slave.
+The hostess escorted
+your slavers and their client into the chair-slaves surrounding a round table that had been reserved
+for them.
+They then waited for their business partners to come to the negotiation while
+partaking at the generous sight of the establishment.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+With the help of <<yourrep $g.negotiator1>> and <<rep $g.negotiator2>>, the
+meeting was conducted in a highly satisfactory manner. Throughout the
+negotiation, your slavers were able to concentrate despite the constant
+sucking by the complimentary under-the-table set of oral slaves.
+The meeting conducted, the business<<man $g.man>> promised to send your company
+the promised pay and more for such a splendid escort.
+</p>
+
+<p>
+Once the meeting was over,
+<<yourrep $g.trainer>> beamed <<uadv $g.trainer>> on <<reps $g.chair>>
+mangificent endurance display during the entire commotion, acting as a furniture
+almost flawlessly.
+As a reward, your slavers allowed <<rep $g.chair>> to go under the table to
+suck on some of the willing clients for a while before returning home.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+With the help of <<rep $g.negotiator1>> and <<rep $g.negotiator2>>, the
+meeting was conducted in an alright manner.
+There were few mishaps here and there, but overall your slavers were able to
+guide the exchange to a favorable end.
+When you asked what went wrong, your slavers blamed the overly enthusiastic slaves
+hidden under the table that continuously serviced the customers, making it
+difficult to concentrate.
+Still, the meeting went well enough that the business<<lady $g.man>>
+happily sent the promised pay to your company.
+</p>
+
+<p>
+When the meeting was over,
+<<rep $g.chair>> who chair|was used as a chair throughout the meeting was completely exhausted.
+Petting the slave, your slavers then <<uadv $g.trainer>> rewarded <<them
+$g.chair>> by allowing the pet to
+<<if $g.trainer.isHasDick()>>
+suck on <<their $g.trainer>> dick.
+<<else>>
+eat <<their $g.trainer>> pussy.
+<</if>>
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+Unfortunately, the meeting did not go as planned, and both parties furiously
+exited the establishment earlier than planned.
+The promised reward was never sent, and your slavers had to return back to
+your compound with nothing to show for it. For such a terrible performance your slave
+<<rep $g.chair>> chair|was punished by being edged for more than five hours,
+before finally being allowed to crawl back home.
+</p>
+
+<<else>>
+
+<p>
+In the middle of the meeting, <<yourrep $g.chair>>, who was being used
+as a chair by your slave, collapsed from exhaustion, causing a distraction during the meeting.
+It caused a domino effect which ultimately rendered the negotiation a complete failure.
+The business<<man $g.man>> scoffed at your slavers and exited without paying the promised reward.
+</p>
+
+<</if>>

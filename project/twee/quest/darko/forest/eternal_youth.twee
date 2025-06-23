@@ -1,0 +1,194 @@
+:: QuestSetup_eternal_youth2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'eternal_youth2', /* key */
+'Eternal Youth', /* Title */
+'darko', /* Author */
+[ 'forest',
+'veteran',
+'item'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'biologist': setup.qu.biologist,
+'alchemist': setup.qu.alchemist_veteran,
+'scout': setup.qu.scout_forest, },
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_eternal_youth2',
+setup.qdiff.harder40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_eternal_youth2Crit',
+[
+setup.qc.Item(setup.item.reset_potion),
+setup.qc.Item(setup.item.reset_potion),
+setup.qc.Item(setup.item.reset_potion),
+ ],
+], [
+'Quest_eternal_youth2Success',
+[
+setup.qc.Item(setup.item.reset_potion),
+setup.qc.Item(setup.item.reset_potion),
+setup.qc.Item(setup.item.healing_potion),
+setup.qc.Injury('scout', 1), ],
+], [
+'Quest_eternal_youth2Success',
+[
+setup.qc.Item(setup.item.healing_potion),
+setup.qc.Injury('biologist', 4),
+setup.qc.Injury('alchemist', 4),
+setup.qc.Injury('scout', 4),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('scout', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('scout', setup.trait.anus_gape), ],
+], [
+'Quest_eternal_youth2Disaster',
+[
+setup.qc.MissingUnit('scout'),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('alchemist', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('alchemist', setup.trait.vagina_gape),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('biologist', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('alchemist', setup.trait.anus_gape),
+setup.qc.TraitIncreaseExisting('alchemist', setup.trait.anus_gape),
+setup.qc.Injury('biologist', 6),
+setup.qc.Injury('alchemist', 6), ],
+], ],
+[
+[setup.questpool.forest, setup.rarity.uncommon],
+], /* quest pool and rarity */
+[
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(), ], /* restrictions to generate */
+)>>
+
+:: Quest_eternal_youth2 [nobr]
+<p>
+Deep within the <<lore region_forest>>, there are rumors of an elf community full of
+gorgeous men and women. While enslaving these beauties are certainly a
+profitable endeavor, it is rumored that the source of their beauty is their
+everlasting youth, granted by a certain fruit hidden deep in the forests.
+</p>
+
+<p>
+You could try to send a team of slavers to obtain some of these fruits —
+they will certainly sell for a very high price, but they could also return
+the youth of some of your slavers (or even yourself!). This effectively will
+reset their levels, allowing them to relearn skills as they wish. Still, such
+a fruit must be a highly guarded secret of the elves — finding it will be a
+monumental challenge, let along harvesting the fruit and turning the fruit into a
+potion.
+</p>
+
+
+:: Quest_eternal_youth2Crit [nobr]
+
+<p>
+Deep within the forests, <<rep $g.scout>> managed to locate a pristine grove
+where naked elves flocked in and seemingly played in the water without a care in the
+world.
+Your slavers waited until the elves finished playing, and instead of
+drooling over their youthful bodies, they somehow managed to keep
+their composure and scoured the area for the rumored plant.
+It was then that they found the source — above the water spring leading into the grove, a
+magnificent tree grew overlooking your slavers.
+</p>
+
+<p>
+After taking in the beauty of the tree, <<rep $g.biologist>> managed to
+<<uadv $g.biologist>>
+gather some of the fruits. They brought these fruits home, which <<rep
+$g.alchemist>> alchemist|was able to efficiently use and ultimately produce
+three bottles of <<rep setup.item.reset_potion>>. These rare potions are able
+to restore your slaver's youth, or you could also sell them for a really
+high price.
+</p>
+
+
+:: Quest_eternal_youth2Success [nobr]
+
+<p>
+Deep within the forests, <<rep $g.scout>> managed to locate a pristine grove
+where naked elves flocked and seemingly play in the water without a care in the
+world. Your slavers waited until the elves finished playing — after watching
+the debauchery and the elves finally left the grove, your slavers
+scoured the area for the rumored plant.
+</p>
+
+<<if $gOutcome == 'success'>>
+
+<p>
+They were unable to find the source,
+but from a river leading into the grove floated a single, odd looking fruit.
+<<Rep $g.biologist>> biologist|was
+<<uadv $g.biologist>>
+convinced that this is the fruit they are after —- and <<they $g.biologist>>
+biologist|was right. They brought these fruits home, which <<rep
+$g.alchemist>> alchemist|was able to use and to produce two bottles of <<rep
+setup.item.reset_potion>>. This rare potion is able to restore your slaver's
+youth — or you could also sell this for a really high price.
+</p>
+
+<<else>>
+
+<p>
+Unable to find anything resembling the
+legendary fruit, your slavers were about to give up when <<rep $g.scout>>
+fell into the watery grove. <<Yourrep $g.biologist>> attempted to rescue <<rep
+$g.scout>>, but the attempt proved futile, as something squishy and tangly
+seemed to tie <<reps $g.scout>> <<ufeet $g.scout>> deep within the grove. A sudden thrust into <<reps
+$g.scout>> rear cavity elicited a loud moan from <<them $g.scout>>, and before
+<<rep $g.biologist>> could react, multiple green vines bound them together
+within the grove. <<Rep $g.alchemist>> watched in horror as the vines raped
+both <<rep $g.scout>> and <<rep $g.biologist>>, assaulting all their holes
+with what were effectively green tentacles.
+</p>
+
+<p>
+After few long hours, the plant, seemingly satisfied, finally released your
+slavers. Their holes are completely ruined now, if they were not already ruined before.
+Still, <<rep $g.alchemist>> managed to concoct some healing water to soothe
+<<their $g.alchemist>> comrades pain before going back home with some
+leftover.
+</p>
+
+<</if>>
+
+
+:: Quest_eternal_youth2Disaster [nobr]
+<p>
+Deep within the forests, <<rep $g.scout>> managed to locate a pristine grove
+where naked elves gathered and seemingly played in the water without a care in
+the world.
+Your slavers waited until the elves finished playing, but then
+suddenly, they were assaulted by tentacles and vines coming out of nowhere.
+A
+sudden thrust into <<reps $g.scout>> rear cavity elicited a loud moan from
+<<therace $g.scout>>, followed by muffled noises as another, penis-shaped flower,
+entered <<their $g.scout>> <<umouth $g.scout>> and choked <<them $g.scout>>.
+Your other slavers were no more lucky as they too were prodded and poked by
+various vines, while their limbs were fully bound by the flower. The plants
+continued to do unspeakable things to your slavers, and your slavers were
+helpless to do anything but to just simply enjoy the ride as best as they could.
+</p>
+
+<p>
+The debauchery continues for several days before the flowers, seemingly
+finished with <<rep $g.alchemist>> and <<rep $g.biologist>>, released them
+from its embrace.
+Your slavers coughed and choked as their mouths were empty
+for the first time in days while their rear ached like never before. <<Rep
+$g.scout>> scout|was nowhere to be seen, but your slavers swore that they saw
+something resembling an elf harvesting the plant's victims during one of
+their dazy stupor inside the plant.
+</p>
+

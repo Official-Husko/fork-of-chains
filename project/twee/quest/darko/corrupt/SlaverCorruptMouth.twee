@@ -1,0 +1,64 @@
+:: QuestSetupSlaverCorruptMouth [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'slavercorrupt_mouth',  /* id */
+  'Slaver Corruption: Mouth',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.corruption_head_master,
+    'assistant1': setup.qu.corruption_assistant,
+    'assistant2': setup.qu.corruption_assistant,
+    'offering': setup.qu.offeringslave,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SlaverCorruptMouth',  /* description */
+  setup.qdiff.extreme56,
+  [
+    [
+      'SlaverCorruptAllCrit',
+      [
+        setup.qc.Corrupt('trainee', 'mouth'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ]
+    ],
+    [
+      'SlaverCorruptAllSuccess',
+      [
+        setup.qc.Corrupt('trainee', 'mouth'),
+        
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaverCorruptAllFailure',
+      [
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+    [
+      'SlaverCorruptAllDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+        setup.qc.MissingUnitForever('offering'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SlaverCorruptMouth [nobr]
+<p>
+Corrupt a slaver's mouth.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: the offered slave will be lost forever as they are offered to the powers beyond <<lore concept_mist>>...
+</p>

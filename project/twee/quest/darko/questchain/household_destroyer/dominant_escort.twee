@@ -1,0 +1,251 @@
+:: QuestSetup_dominant_escort [nobr quest]
+
+<<set _criteriaescort = new setup.UnitCriteria(
+null, /* key */
+'Escort', /* name */
+[
+  setup.trait.bg_royal,
+  setup.trait.per_smart,
+  setup.trait.per_proud,
+  setup.trait.per_sly,
+  setup.trait.per_loner,
+  setup.trait.per_stubborn,
+  setup.trait.per_dominant,
+  setup.trait.skill_creative,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.per_slow,
+  setup.trait.per_humble,
+  setup.trait.per_direct,
+  setup.trait.per_gregarious,
+  setup.trait.per_curious,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 3,
+}
+)>>
+
+<<set _criteriaguard1 = new setup.UnitCriteria(
+null, /* key */
+'Guard (Dom)', /* name */
+[
+  setup.trait.bg_soldier,
+  setup.trait.per_brave,
+  setup.trait.per_loyal,
+  setup.trait.per_dominant,
+  setup.trait.per_honorable,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_thug,
+  setup.trait.bg_raider,
+  setup.trait.per_cautious,
+  setup.trait.per_independent,
+  setup.trait.per_submissive,
+  setup.trait.per_evil,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriaguard2 = new setup.UnitCriteria(
+null, /* key */
+'Guard (Dom)', /* name */
+[
+  setup.trait.bg_soldier,
+  setup.trait.per_brave,
+  setup.trait.per_loyal,
+  setup.trait.per_dominant,
+  setup.trait.per_honorable,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_thug,
+  setup.trait.bg_raider,
+  setup.trait.per_cautious,
+  setup.trait.per_independent,
+  setup.trait.per_submissive,
+  setup.trait.per_evil,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'dominant_escort', /* key */
+"Dominant Escort", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'special',
+  'unknown',
+  'trait',
+  'danger',
+  'money',
+  'favor',
+],
+2, /* weeks */
+setup.INFINITY, /* expiration weeks */
+{ /* roles */
+  'escort': [ _criteriaescort, 2],
+  'guard1': [ _criteriaguard1, 0.5],
+  'guard2': [ _criteriaguard2, 0.5],
+},
+{ /* actors */
+  'drow': [
+  ],
+},
+[ /* costs */
+],
+'Quest_dominant_escort',
+setup.qdiff.harder39, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_dominant_escortCrit',
+    [
+      setup.qc.VarSet('quest_household_destroyer', '15', -1),
+      setup.qc.Opportunity('dominant_domicile', {
+drow: "drow",
+}),
+      setup.qc.MoneyCustom(3000),
+      setup.qc.Favor('drow', 100),
+    ],
+  ],
+  [
+    'Quest_dominant_escortCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Sluttify('escort'),
+    ],
+  ],
+  [
+    'Quest_dominant_escortCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Sluttify('escort'),
+      setup.qc.Sluttify('escort'),
+      setup.qc.Sluttify('escort'),
+    ],
+  ],
+  [
+    'Quest_dominant_escortCrit',
+    [
+      setup.qc.Outcomes("crit"),
+      setup.qc.Sluttify('escort'),
+      setup.qc.Sluttify('escort'),
+      setup.qc.Sluttify('escort'),
+      setup.qc.Sluttify('guard1'),
+      setup.qc.Sluttify('guard2'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_dominant_escort [nobr]
+<p>
+    You have accepted a request from <<rep $company.drow>> to escort one of the drow royals into the surface, for a "vacation". But it's not just any haughty drow royal. It is the infamous "household destroyer", the overly dominant drow <<rep $g.drow>> <<themself $g.drow>>.
+</p>
+
+<p>
+    You would need to supply three escorts for this mission. Two will guard the caravan as it makes its way to the surface, braving whatever dangers that lurks deep within the <<lore region_deep>>. However, the most difficult task shall fall to the third escort, who would serve as nothing but conversational partner for the drow royal, to prevent <<them $g.drow>> from being bored. Judging from your past quests, the drow has an uncanny power to sluttify anyone unlucky enough to spend too much time near <<them $g.drow>>. It will take their strongest will to prevent themself from being sluttified, and also to prevent the other slavers from suffering from the same fate.
+</p>
+
+<p>
+    For such a dangerous task, the drow promises you gold and favor...
+</p>
+
+
+:: Quest_dominant_escortCrit [nobr]
+<p>
+    The long journey took ten days, but at long last, the caravan made its way into your fort exiting from the <<rep setup.buildingtemplate.scouttunnel>>. The drow royal <<themself $g.drow>> is completely fine, and is currently enjoying the view and degeneracy of your fort.
+    But what about your escort slavers?
+</p>
+
+<p>
+    Throughout the long journey, <<rep $g.escort>> made <<their $g.escort>> best effort to resist the urge to submit to the drow entirely.
+    <<if $g.escort.isHasTrait('per_slow')>>
+        <<Reps $g.escort>> not-so-bright mind certainly did not help...
+    <</if>>
+    <<if $g.escort.isHasTrait('per_smart')>>
+        <<Reps $g.escort>> bright mind naturally resist the illogical urges.
+    <</if>>
+    <<if $g.escort.isHasTrait('skill_creative')>>
+        <<Their $g.escort>> creativity helped <<them $g.escort>> come up with many excuses to prevent <<them $g.escort>> from engaging in lengthy conversation.
+    <</if>>
+    <<if $g.escort.isHasTrait('per_proud')>>
+        <<Rep $g.escort>> escort|is too proud to submit to others.
+    <</if>>
+    <<if $g.escort.isHasTrait('per_humble')>>
+        <<Rep $g.escort>> might be a little too pliable, being the humble <<urace $g.escort>> that <<they $g.escort>> escort|is, and the idea of submitting to others had certainly crossed <<their $g.escort>> mind.
+    <</if>>
+    <<if $g.escort.isHasTrait('per_loner')>>
+        As a natural loner, <<rep $g.escort>> would reduce the amount of time <<they $g.escort>> would talk to the drow.
+    <</if>>
+    <<if $g.escort.isHasTrait('per_gregarious')>>
+        <<Rep $g.escort>> escort|is a rather gregarious <<urace $g.escort>>, and it was simply in <<their $g.escort>> nature to strike unnecessary conversation with the drow.
+    <</if>>
+    <<if $g.escort.isHasTrait('per_stubborn')>>
+        <<Their $g.escort>> stubbornness prove useful this time.
+    <</if>>
+    <<if $g.escort.isHasTrait('per_curious')>>
+        <<They $g.escort>> might had gotten a little too curious about the workings of the drow's mind...
+    <</if>>
+    <<if $g.escort.isHasTrait('per_dominant')>>
+        <<They $g.escort>> escort|is a natural dom, which surely must have helped?
+    <</if>>
+    <<if $g.escort.isHasTrait('per_submissive')>>
+        <<They $g.escort>> escort|is a natural sub, which makes you question why you sent <<them $g.escort>> for this quest in the first place...
+    <</if>>
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        It turns out that <<rep $g.escort>> managed to <<uadv $g.escort>> resisted all submissive urges and thoughts that must have flooded <<them $g.escort>> constantly throughout the journey, perhaps thanks to <<their $g.escort>> <<upraisenoun $g.escort>>.
+        Your slavers returned home unchanged and unscarred by the escort mission.
+    </p>
+<<elseif $gOutcome == 'success'>>
+    <p>
+        Despite <<their $g.escort>> valiant efforts to resist the urges, the drow's influence were simply too strong, and <<rep $g.escort>> noticably came back sluttier.
+        Thankfully, it did not seem to spread to neither <<rep $g.guard1>> nor <<rep $g.guard2>>.
+    </p>
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        Unfortunately, <<rep $g.escort>> did not "survive" the experience. <<They $g.escort>> now escort|appear much, much sluttier than before, and you even almost did not recognize <<their $g.escort>> behavior as <<they $g.escort>> return home...
+        Thankfully, it did not seem to spread to neither <<rep $g.guard1>> nor <<rep $g.guard2>>.
+    </p>
+<<elseif $gOutcome == 'disaster'>>
+    <p>
+        Unfortunately, <<rep $g.escort>> did such a terrible job at entertaining the drow. Not only did <<they $g.escort>> had succumbed entirely to the submissive urges, <<they $g.escort>> even let <<rep $g.guard1>> and <<rep $g.guard2>> to suffer the same fate.
+        The mission might have succeeded, but at what cost...
+    </p>
+<</if>>
+
+<p>
+    Later, you receive a sum of gold from <<rep $company.drow>> as a token of gratitude, as well as promise to spread good word about your company around. In the meantime, you'll have to decide what to do with the drow, who now reside in the surface...
+</p>

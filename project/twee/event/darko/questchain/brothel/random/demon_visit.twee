@@ -1,0 +1,59 @@
+:: EventSetup_demon_visit [nobr event]
+
+<<run new setup.UnitGroup(
+"demon_visit0",
+"Demon Royal",
+'subrace_demon', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+  setup.qc.TraitsReplace('unit', [setup.trait.magic_dark_master, setup.trait.per_cruel]),
+],
+)>>
+
+<<run new setup.Event(
+'demon_visit', /* key */
+"Demon Visit", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_demon_visit',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+  'target': 'demon_visit0',
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_brothel_wait', '50', -1),
+  setup.qc.SetCooldownEvent(null, 300),
+  setup.qc.QuestDirect('demon_visit', {
+head: "head",
+owner: "owner",
+slave: "slave",
+target: "target",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '500'),
+  setup.qres.VarNull('quest_brothel_royal_visit'),
+  setup.qres.VarLte('quest_brothel_class', -20),
+],
+53, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_demon_visit [nobr]
+<<include "Quest_demon_visit">>

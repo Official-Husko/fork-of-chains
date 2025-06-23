@@ -1,0 +1,23 @@
+:: QuestAdhocNoAssignment [nobr]
+
+<<set $gMenuVisible = false>>
+
+No valid set of units found.
+<<message '(?)'>>
+  Some quests requires a specific slavers to participate in.
+  For example, it may require a slaver with the <<rep setup.trait.skill_flight>> trait.
+  You can check these requirements by clicking the (full unit details) link
+  in the quest.
+<</message>>
+<br/>
+<br/>
+<<focmove 'Go back' 'QuestHub'>>
+
+
+:: QuestAdhocAssign [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _quest = $questinstance[$gAdhocQuest_key]>>
+<<set _dom = setup.DOM.Menu.questassign(_quest)>>
+<<attach _dom>>

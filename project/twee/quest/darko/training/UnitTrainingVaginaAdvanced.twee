@@ -1,0 +1,97 @@
+:: QuestSetupUnitTrainingVaginaAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_vagina_advanced',  /* id */
+  'Vagina Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_dick_normal,
+    'trainer2': setup.qu.training_trainer_dick_normal,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingVaginaAdvanced',  /* description */
+  setup.qdiff.harder36,
+  [
+    [
+      'QuestUnitTrainingVaginaAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_vagina_advanced),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingVaginaAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_vagina_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingVaginaAdvancedFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingVaginaAdvancedDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_vagina_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingVaginaAdvanced [nobr]
+<p>
+A true fuckslut must be able to go beyond giving pleasure through their vagina,
+but also through their entire body, be it from the way they act
+during the intercourse, or the words they need to speak during the act.
+This training will teach slaves advanced whoring techniques that hopefully they
+will graduate from street-whore quality into elite whore quality.
+</p>
+
+:: QuestUnitTrainingVaginaAdvancedCrit [nobr]
+
+<<if $g.trainee.isFemale()>>
+  <<questimage 'unit_training_vagina_advanced_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Rep $g.trainee>> turned out to be a natural fuckslut.
+The training went so smoothly that
+<<rep $g.head>> and your slavers managed to study other things
+and gain a lot of experience from their spare time during the training.
+</p>
+
+<<else>>
+
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to acquire all the necessary skils to graduate from this
+training.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingVaginaAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccessful, and the lessons were
+lost in <<reps $g.trainee>> thick skull.
+</p>
+
+:: QuestUnitTrainingVaginaAdvancedDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+It is clear that <<reps $g.trainee>> prior training must be
+repeated before another attempt at this training.
+</p>

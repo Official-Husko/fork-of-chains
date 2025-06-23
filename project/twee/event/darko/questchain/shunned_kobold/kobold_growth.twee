@@ -1,0 +1,60 @@
+:: EventSetup_kobold_growth [nobr event]
+
+
+
+
+<<run new setup.Event(
+'kobold_growth', /* key */
+"Kobold Growth", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+'Event_kobold_growth',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'kobold': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.HasTitle('quest_the_shunned_kobold_0'),
+    setup.qres.AllTraits([setup.trait.subrace_kobold, setup.trait.wings_dragonkin], true),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarSet('quest_shunned_kobold_progress', '20', -1),
+  setup.qc.SetCooldownEvent('kobold_advice_2', 8),
+  setup.qc.TraitRemove('kobold', setup.trait.height_dwarf),
+  setup.qc.TraitRemove('kobold', setup.trait.height_short),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_shunned_kobold_progress', '15'),
+],
+0, /* Cooldown */
+setup.rarity.uncommon, /* Rarity */
+)>>
+
+:: Event_kobold_growth [nobr]
+<p>
+    Even though <<rep $g.kobold>> kobold|is no longer malnourished, <<they $g.kobold>> still eat a lot, far more than most ordinary kobolds.
+    And something incredibly weird is happening too — <<their $g.kobold>> height has been increasing dramatically. The once stubby kobold is now about an average human height,
+    <<if $unit.player.isHasTrait('height_giant')>>
+        around half of your towering height.
+    <<elseif $unit.player.isHasTrait('height_dwarf')>>
+        making you slightly jealous.
+    <<elseif $unit.player.isHasTrait('height_short')>>
+        and is now taller than you.
+    <<elseif $unit.player.isHasTrait('height_tall')>>
+        although still a bit shorter than you.
+    <<else>>
+        <<they $g.kobold>> now has the same eye level with you.
+    <</if>>
+    The height seems to be stuck here, however, and it no longer increase.
+    While tall kobolds are not unheard of, they are incredibly rare, and even more so about kobolds that suddenly gain height out of nowhere...
+</p>
+
+

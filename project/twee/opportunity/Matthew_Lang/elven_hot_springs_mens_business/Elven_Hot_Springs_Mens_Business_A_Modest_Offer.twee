@@ -1,0 +1,140 @@
+
+:: OpportunitySetup_elven_hot_springs_men_s_business_a_modest_offer [nobr opportunity]
+
+
+<<run new setup.UnitGroup(
+"elven_hot_springs_men_s_business_a_modest_offer0",
+"Elf: Male",
+'subrace_elf_male', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'elven_hot_springs_men_s_business_a_modest_offer', /* key */
+"Elven Hot Springs - Men\'s Business: A Modest Offer", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'order',
+  'forest',
+],
+1, /* expiration weeks */
+'Opportunity_elven_hot_springs_men_s_business_a_modest_offer',
+setup.qdiff.easy21, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_elven_hot_springs_men_s_business_a_modest_offer_0',
+    outcome_passage: 'Opportunity_elven_hot_springs_men_s_business_a_modest_offer_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Actor('slave', setup.qres.IsCanBeSold()),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.MoneyUnitValue("slave", 1.4, 15000),
+      setup.qc.MissingUnitForever('slave'),
+      setup.qc.Favor('elf', 10),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_elven_hot_springs_men_s_business_a_modest_offer_1',
+    outcome_passage: 'Opportunity_elven_hot_springs_men_s_business_a_modest_offer_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slave': [
+    setup.qres.Home(),
+  ],
+  'buyer': 'elven_hot_springs_men_s_business_a_modest_offer0',
+},
+[ /* expiration outcomes */
+
+],
+ /* is must be answered */
+)>>
+
+:: Opportunity_elven_hot_springs_men_s_business_a_modest_offer [nobr]
+<<set _v = Math.min(15000, Math.round($g.slave.getSlaveValue() * 1.4))>>
+<<if $gQuest.getSeed() % 10 == 0>>
+    <<set _surname = 'Elarnin'>>
+<<elseif $gQuest.getSeed() % 10 == 1>>
+    <<set _surname = 'Undoren'>>
+<<elseif $gQuest.getSeed() % 10 == 2>>
+    <<set _surname = 'Falarin'>>
+<<elseif $gQuest.getSeed() % 10 == 3>>
+    <<set _surname = 'Tathval'>>
+<<elseif $gQuest.getSeed() % 10 == 4>>
+    <<set _surname = 'Curanil'>>
+<<elseif $gQuest.getSeed() % 10 == 5>>
+    <<set _surname = 'Laelomyr'>>
+<<elseif $gQuest.getSeed() % 10 == 6>>
+    <<set _surname = 'Nelanthir'>>
+<<elseif $gQuest.getSeed() % 10 == 7>>
+    <<set _surname = 'Aelaron'>>
+<<elseif $gQuest.getSeed() % 10 == 8>>
+    <<set _surname = 'Elanasto'>>
+<<elseif $gQuest.getSeed() % 10 == 9>>
+    <<set _surname = 'Galadar'>>
+<</if>>
+
+As you are sorting out paperwork on your desk you find a note, dropped off by one of slavers from the mail room.
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        I very much enjoyed meeting you at the Hot Springs recently, and hope you'll return next year. I was very taken by the slave you brought and I want to buy him. I'm willing to pay <<money _v>> if you can arrange delivery to my estate in the forests.
+    </p>
+    <p>
+        Warmest Regards,
+    </p>
+    <p>
+        Lord <<name $g.buyer>> _surname
+    </p>
+</div>
+(The price will be slightly lower if your player character's level is low.)
+
+
+
+:: Opportunity_elven_hot_springs_men_s_business_a_modest_offer_0 [nobr]
+Sell the slave
+
+
+:: Opportunity_elven_hot_springs_men_s_business_a_modest_offer_0_flavor [nobr]
+<p>
+    You package up the
+    <<if $g.slave.isHasTrait('training_none')>>
+        disobedient
+    <<else>>
+        meek
+    <</if>>
+    slave and have <<them $g.slave>> delivered to the Lord's estate, your slavers returning with the promised sum of money. All in all, a good sale.
+</p>
+
+
+:: Opportunity_elven_hot_springs_men_s_business_a_modest_offer_1 [nobr]
+Decline the offer
+
+
+:: Opportunity_elven_hot_springs_men_s_business_a_modest_offer_1_flavor [nobr]
+<p>
+    You decide that you're interested in selling <<rep $g.slave>> at that price and send a polite note declining the offer. Still, it's nice to know you made an impression.
+</p>

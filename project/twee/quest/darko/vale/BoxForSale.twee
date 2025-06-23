@@ -1,0 +1,155 @@
+:: QuestSetupBoxForSale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _ordername = `Box Slave Order`>>
+<<set _ordercompany = 'humanvale'>>
+<<set _ordercriteria = setup.qu.slave>>
+<<set _expiresin = 8>>
+<<set _fulfilled = [
+  setup.qc.Favor('humanvale', 20),
+]>>
+<<set _unfulfilled = []>>
+<<set _destination = setup.unitgroup.quest_fuckholeslaves>>
+
+<<run new setup.QuestTemplate(
+  'boxforsale', /* key */
+  'Box for Sale', /* Title */
+  'darko',   /* author */
+  ['vale', 'order'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'trader': setup.qu.slavetrader,
+    'slaver1': setup.qu.slavetrainer,
+    'slaver2': setup.qu.slavetrainer,
+  },
+  { /* actors */
+    'slave': 'all',
+  },
+  [ /* costs */
+  ],
+  'QuestBoxForSale', /* passage description */
+  setup.qdiff.easy7, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestBoxForSaleCrit',
+      [
+        setup.qc.SlaveMarker('slave'),
+        setup.qc.SlaveOrderGeneric(
+          _ordername,
+          _ordercompany,
+          _expiresin,
+          6.0,   /* base price */
+          0,  /* trait multipleir */
+          0.2,  /* value multiplier */
+          _unfulfilled,
+          _destination,
+        ),
+      ],
+    ],
+    [
+      'QuestBoxForSaleCrit',
+      [
+        setup.qc.SlaveOrderGeneric(
+          _ordername,
+          _ordercompany,
+          _expiresin,
+          5.0,   /* base price */
+          0,  /* trait multipleir */
+          0.1,  /* value multiplier */
+          _unfulfilled,
+          _destination,
+        ),
+      ],
+    ],
+    [
+      'QuestBoxForSaleCrit',
+      [
+        setup.qc.SlaveOrderGeneric(
+          _ordername,
+          _ordercompany,
+          _expiresin,
+          3.0,   /* base price */
+          0,  /* trait multipleir */
+          0,  /* value multiplier */
+          _unfulfilled,
+          _destination,
+        ),
+      ],
+    ],
+    [
+      'QuestBoxForSaleDisaster',
+      [
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.Building(setup.buildingtemplate.marketingoffice)
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestBoxForSale [nobr]
+
+<p>
+Slavery is a widespread reality on the lawless lands of the north.
+It has many benefits -- cheap labor, cleaner streets, and even in some cases cheap entertainment.
+Some morally questionable taverns in the <<lore region_vale>> like to spice up their taverns
+with a living entertainment in the form of a
+fuck box.
+It's a cramped box, stuffed full with a slave, and have exactly two openings:
+one around the mouth of the slave and another bigger one for the holes of the slave.
+Curious guests can try out the box by inserting various objects into the holes,
+be it carrots, cucumbers, or even their dicks if they feel particularly horny.
+</p>
+
+<p>
+For such kind of designation, the quality of the slave almost never matters.
+This makes it a perfect way to dispose of your lower quality slaves.
+You can try to find a tavern that needs one of these slaves, and offload
+one of your slaves to them for a good price.
+</p>
+
+
+:: QuestBoxForSaleCrit [nobr]
+
+<<if $g.slave.isMale()>>
+<<else>>
+  <<questimage 'boxforsale_female.jpg'>>
+<</if>>
+
+<p>
+Among the many taverns scattered throughout the region,
+your slavers chose a particularly famous tavern, the "Rusty Hoe".
+To their luck, the tavern just received word that a local army will be passing through the region,
+which mean a lot of patrons for the tavern.
+Given how long the soldiers march, they are usually really, really horny,
+and this made it very easy for
+<<yourrep $g.trader>> to <<uadv $g.trader>> sell the slave box idea to the tavern owner --
+"squeeze the money from their dicks," as <<therace $g.trader>> put it (quite literally in this case).
+</p>
+
+<p>
+The owner happily agreed to the depraved plan<<if $gOutcome == 'crit'>>,
+and <<rep $g.trader>> even managed to <<uadv $g.trader>> negotiate a very good deal for the order
+<<elseif $gOutcome == 'failure'>>,
+but stubbornly refuses to pay much for such a slave, citing an excess of supply in the area.
+Eventually, <<rep $g.trader>> managed to negotiate
+a substandard deal, which all things considered is still better than nothing<</if>>.
+</p>
+
+<p>
+All that's left is for you to choose which poor soul you will send.
+Just don't think too hard what kind of dark, bleak, and cockfull fate awaits the slave within the box.
+</p>
+
+
+:: QuestBoxForSaleDisaster [nobr]
+
+<p>
+Unfortunately, your slavers were not able to find any tavern in need of a slave-in-a-box,
+and were forced to came back empty-handed.
+Better luck next time.
+</p>

@@ -1,0 +1,89 @@
+:: InitBuildingWorkshop [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'workshop',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.UnitGroup(
+'contact_blacksmith',
+'Blacksmith',
+'subrace_orc',
+0,
+[
+  setup.qc.BgTraitReset('unit', setup.trait.bg_metalworker),
+  setup.qc.TraitsReplace('unit', [
+    setup.trait.muscle_verystrong,
+    setup.trait.height_tall,
+    setup.trait.skill_ambidextrous,
+  ]),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'contact_tailor',
+'Tailor',
+'subrace_humankingdom',
+0,
+[
+  setup.qc.BgTraitReset('unit', setup.trait.bg_artisan),
+  setup.qc.TraitsReplace('unit', [
+    setup.trait.per_smart,
+    setup.trait.per_attentive,
+    setup.trait.skill_creative,
+  ]),
+],
+)>>
+
+<<run new setup.UnitGroup(
+'contact_weaver',
+'Weaver',
+'subrace_humansea',
+0,
+[
+  setup.qc.BgTraitReset('unit', setup.trait.bg_artisan),
+  setup.qc.TraitsReplace('unit', [
+    setup.trait.face_beautiful,
+    setup.trait.per_studious,
+    setup.trait.magic_light,
+  ]),
+],
+)>>
+
+<<run new setup.BuildingTemplate({
+  key: 'workshop',
+  name: 'Workshop Area',
+  tags: ['storage', ],
+  description_passage: 'BuildingWorkshop',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUM_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('forge')],
+  ],
+  on_build: [
+    [
+      setup.qc.Contact(setup.contacttemplate.blacksmithpeddler, null, 'contact_blacksmith'),
+      setup.qc.Contact(setup.contacttemplate.tailorpeddler, null, 'contact_tailor'),
+      setup.qc.Contact(setup.contacttemplate.weaverpeddler, null, 'contact_weaver'),
+    ]
+  ],
+  main_room_template_key: 'workshop',
+})>>
+
+
+:: BuildingWorkshop [nobr]
+
+<p>
+Several specialized workshops to attract skilled crafters into your fort.
+Unlocks several contacts including a blacksmith, a tailor, and a weaver who sell various equipment in your fort.
+</p>

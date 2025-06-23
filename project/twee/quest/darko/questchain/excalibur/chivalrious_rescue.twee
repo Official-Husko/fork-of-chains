@@ -1,0 +1,218 @@
+:: QuestSetup_chivalrious_rescue [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_chivalrious_rescue2',
+"Wizard",
+'desert_all',  /* pools */
+0, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_mystic),
+setup.qc.TraitsReplace('unit', [setup.trait.magic_dark]), ],
+)>>
+
+
+<<run new setup.QuestTemplate(
+'chivalrious_rescue', /* key */
+"Chivalrious Rescue", /* Title */
+"darko", /* Author */
+[ 'veteran',
+'desert',
+'unit',
+'danger'
+], /* tags */
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'knight': setup.qu.knight,
+'purifier': setup.qu.purifier,
+'archer': setup.qu.archer, },
+{ /* actors */
+'wizard': 'quest_chivalrious_rescue2',
+'slave': 'opportunity_aspect_of_chivalry1', },
+[ /* costs */
+],
+'Quest_chivalrious_rescue',
+setup.qdiff.extreme53, /* difficulty */
+[ /* outcomes */
+[
+'Quest_chivalrious_rescueCrit',
+[
+setup.qc.Opportunity('aspect_of_chivalry', {'knight': 'knight'}),
+setup.qc.Slave('wizard', "a|was a dark wizard who kidnapped royalties for fun", undefined), ],
+], [
+'Quest_chivalrious_rescueCrit',
+[
+setup.qc.OneRandom([
+setup.qc.Corrupt('knight'),
+setup.qc.Corrupt('purifier'),
+setup.qc.Corrupt('archer')
+]),
+setup.qc.Opportunity('aspect_of_chivalry', {'knight': 'knight'}),
+],
+], [
+'Quest_chivalrious_rescueCrit',
+[
+setup.qc.Favor('humandesert', 100),
+setup.qc.Corrupt('knight'),
+setup.qc.Corrupt('archer'),
+setup.qc.MissingUnit('purifier'),
+setup.qc.Corrupt('purifier'),
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_chivalry1'), ],
+], [
+'Quest_chivalrious_rescueCrit',
+[
+setup.qc.Favor('humandesert', 50),
+setup.qc.MissingUnitRecapture('knight', 'capturedhard'),
+setup.qc.Corrupt('purifier'),
+setup.qc.Corrupt('archer'),
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_chivalry1'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.common],
+],
+[ /* restrictions to generate */
+setup.qres.Building(setup.buildingtemplate.veteranhall),
+setup.qres.QuestUnique(),
+setup.qres.Cooldown(12), ],
+[ /* expiration outcomes */
+setup.qc.EmptyUnitGroup('opportunity_aspect_of_chivalry1'), ],
+)>>
+
+:: Quest_chivalrious_rescue [nobr]
+
+<p>
+A <<princess $g.slave>> of a faraway kingdom has been kidnapped by an evil
+wizard, and held captive in <<their $g.wizard>> tower. The tower is
+conveniently located in the <<lore region_desert>>, which allows you to assault the
+tower and rescue the <<princess $g.slave>>. Of course, "rescuing" in your
+terms mean "taking-<<them $g.slave>>-back-into-your-fort-to-be-trained", and
+a royal slave would certainly fetch a nice price in the slave markets.
+</p>
+
+<p>
+The only complication remaining is the dark wizard who stands
+between you and the <<princess $g.slave>>.
+From your experiences, fighting against dark wizards is always highly dangerous — but
+you have the advantage here. Since you know the enemy, you can send a
+specialized group of slavers to handle the surely powerful wizard. A
+purifier, to counteract all the wizard's spells. A knight, to boldly charge
+and distract the wizard. And finally, an archer, to deliver the finishing
+blow to the wizard.
+</p>
+
+<p>
+You probably need to think hard which of your slavers should fulfill the role
+of the knight. After all, when a princess and a knight is on a quest
+together... magic could happen!
+</p>
+
+
+:: Quest_chivalrious_rescueCrit [nobr]
+
+<p>
+The tower was as foreboding as others tell — a nondescript tower in the
+middle of the desert surrounded by dark chaotic clouds.
+<<if $g.purifier.isHasTrait('magic_fire')>>
+Your <<rep setup.trait.magic_fire>>-attuned purifier could sense evil energies
+swirling from around the tower.
+<<else>>
+Since the team's purifier lacked <<rep setup.trait.magic_fire>>, <<they
+$g.purifier>> couldn't tell how dangerous the clouds are.
+<</if>>
+From the bottom of the floor, they could make a small window on top of the
+tower, and what appeared to be a
+<<if $g.slave.isFemale()>>
+gorgeous
+<<else>>
+dashing
+<</if>>
+young <<woman $g.slave>> — surely the kidnapped <<princess $g.slave>>.
+Cliche, keeping the hostage at top of the tower while the wizard did
+whatever evil work at the bottom.
+</p>
+
+<p>
+Your slavers had a job to do, and they marched towards the tower. Led by
+<<rep $g.knight>>, they <<uadv $g.knight>> charged into the door of the
+tower. <<Rep $g.knight>> had the first strike, but <<their $g.knight>> attack
+was fended off by shadow blades that appeared out of nowhere. Soon enough,
+darkness surrounded the fort as black tendrils sprouted from all over the tower.
+<<if $g.purifier.isHasTrait('magic_fire')>>
+<<rep $g.purifier>> channeled <<their $g.purifier>> <<rep
+setup.trait.magic_fire>> magic in an attempt to cleanse as many of the
+tentacles as <<they $g.purifier>> could.
+<<else>>
+Lacking <<rep setup.trait.magic_fire>>, <<rep $g.purifier>> used the seals
+they purchased earlier to ward off as much corruption as <<they $g.purifier>> could.
+<<run $g.purifier.corrupt()>>
+<</if>>
+Like a knight of legend, <<rep $g.knight>> did not back down and launched
+another attack on the dark wizard.
+</p>
+
+<p>
+With the slavers in a stalemate, none giving each other any opportunity for a
+finishing blow, <<yourrep $g.archer>> quietly waited from afar.
+<<if $g.archer.isHasTrait('per_calm')>>
+<<They $g.archer>> patiently waited until an opening present itself, and
+<<they $g.archer>> walked through the opening into the tower.
+<<else>>
+But patience was not one of <<their $g.archer>> virtues, and eventually
+<<they $g.archer>> charged in into the tendrils, slightly corrupting the
+<<man $g.archer>>.
+<<run $g.archer.corrupt()>>
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+<p>
+Once inside, <<rep $g.archer>> <<uadv $g.archer>> launched a surprise shot at
+the wizard, catching the engaged wizard off guard.
+<<if $gOutcome == 'crit'>>
+<<Rep $g.knight>> seized the opportunity to knock the wizard unconscious.
+<<else>>
+Wounded, the wizard cast an explosion spell blasting away all your slavers
+while <<they $g.wizard>> escaped in a black poof.
+<</if>>
+With the caster gone, the surrounding darkness dissipated, revealing the tower entirely.
+</p>
+
+<p>
+<<if $gOutcome == 'crit'>>
+After securing the wizard to be brought home and trained as a proper slave, your slavers
+<<else>>
+Your slavers
+<</if>>
+must now decide what to do with the <<princess $g.slave>>...
+</p>
+
+<<else>>
+
+<p>
+Once inside, <<rep $g.archer>> <<uadv $g.archer>> launched a surprise shot at
+the wizard. Unfortunately, the shot missed at such a crucial moment. Sensing
+a third party at play, the wizard immediately unleashed a spell <<they
+$g.wizard>> had been preparing.
+<<if $gOutcome == 'failure'>>
+The spell completely engulfed <<yourrep $g.purifier>> in darkness, until <<they $g.purifier>>
+disappeared completely leaving no trace whatsoever.
+Seeing their purifier gone, your slavers made the right but heartless decision to flee.
+<<else>>
+The spell engulfed <<yourrep $g.knight>> in blackness, leaving <<them
+$g.knight>> struggling to free themselves. As the binding kept <<rep
+$g.knight>> in place, your other slavers were blasted away far from the tower
+with another spell.
+<</if>>
+</p>
+
+<p>
+You doubt you'll never see the <<princess $g.slave>> ever again after such a massive failure.
+<<if $gOutcome == 'failure'>>
+<<uneedrescue $g.purifier>> before the darkness fully consumes <<them $g.purifier>>.
+<<else>>
+<<urescuenow $g.knight>> before <<they $g.knight>> knight|is transformed into the wizard's plaything.
+<</if>>
+</p>
+<</if>>

@@ -1,0 +1,74 @@
+:: LoadUnitGroupWidget [nobr widget]
+
+/* Not moved to DOM, because only used in content creator tooltips */
+<<focwidget "unitpoolcard">>
+  <<set _unitpool = $args[0]>>
+  <<capture _unitpool>>
+    <div class='companycard'>
+      <<nameof _unitpool>>
+      <<set _stats = _unitpool.computeStatistics()>>
+      <span class='toprightspan'>
+        <div>Unit value: <<money _stats.min>> - <<money _stats.max>> (avg <<money _stats.mean>>)</div>
+      </span>
+      <br/>
+      <<for _ibsr, _bsr range _unitpool.base_stat_ranges>>
+        <<= _bsr[0]>>-<<= _bsr[1]>> <<= setup.skill[_ibsr].rep()>> |
+      <</for>>
+      <<for _ita, _ta range _unitpool.trait_alloc>>
+        <br/>
+        <<= _ita>>:
+        <<for _iabc, _abc range _ta.chances>>
+          <<= setup.trait[_iabc].rep()>>
+        <</for>>
+      <</for>>
+    </div>
+  <</capture>>
+<</focwidget>>
+
+/* Not moved to DOM, because only used in content creator tooltips */
+<<focwidget "unitpoolcardkey">>
+  <<unitpoolcard setup.unitpool[$args[0]]>>
+<</focwidget>>
+
+/* Not moved to DOM, because only used in content creator tooltips */
+<<focwidget "unitgroupcard">>
+  <<set _unitgroup = $args[0]>>
+  <<capture _unitgroup>>
+    <div class='marketobjectcard'>
+      <<nameof _unitgroup>>
+      <<set _stats = _unitgroup.computeStatistics()>>
+      <span class='toprightspan'>
+        <div>Unit value: <<money _stats.min>> - <<money _stats.max>> (avg <<money _stats.mean>>)</div>
+        <<if _unitgroup.reuse_chance>>
+          <div><b>Persistent</b>
+            <<message '(?)'>>
+              <div class='helpcard'>
+                Units from this unit group will not be removed when they are used.
+                Instead, the same unit will persist until explicitly removed from the unit group.
+                Useful to make quest chains that involve the same set of units.
+              </div>
+            <</message>>
+          </div>
+        <</if>>
+      </span>
+      <<if _unitgroup.unit_post_process.length>>
+        <br/>
+        Post processes:
+        <<costcard _unitgroup.unit_post_process>>
+      <</if>>
+      <br/>
+      Unit pools:
+      <<set _pools = _unitgroup.getUnitPools()>>
+      <<for _ipool, _pool range _pools>>
+        <br/>
+        <<= _pool[1]>>: <<= _pool[0].rep()>>
+      <</for>>
+    </div>
+  <</capture>>
+<</focwidget>>
+
+/* Not moved to DOM, because only used in content creator tooltips */
+<<focwidget "unitgroupcardkey">>
+  <<unitgroupcard setup.unitgroup[$args[0]]>>
+<</focwidget>>
+

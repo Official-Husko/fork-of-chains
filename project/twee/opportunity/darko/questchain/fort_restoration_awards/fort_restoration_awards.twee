@@ -1,0 +1,157 @@
+:: OpportunitySetup_fort_restoration_awards [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'fort_restoration_awards', /* key */
+"Fort Restoration Awards", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'money',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_fort_restoration_awards',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_0',
+    outcome_passage: 'Opportunity_fort_restoration_awards_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.QuestFortRestorationAwards(),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_fort_restoration_progress'),
+      setup.qc.SetCooldownEvent('fort_restoration_awards_preliminaries', 200),
+      setup.qc.IfThenElse(
+setup.qres.HasItem(setup.item.technology_portal),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.potion_portal, 1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Item(setup.item.technology_portal, 1),
+setup.qc.Item(setup.item.potion_portal, 1),
+setup.qc.Item(setup.item.potion_portal, 1)
+], undefined)),
+      setup.qc.VarAdd('quest_fort_restoration_win', 1, -1),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_1',
+    outcome_passage: 'Opportunity_fort_restoration_awards_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_fort_restoration_awards_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_fort_restoration_progress'),
+      setup.qc.SetCooldownEvent('fort_restoration_awards_preliminaries', 200),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'inspector': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+  setup.qc.VarRemove('quest_fort_restoration_room'),
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_fort_restoration_awards [nobr]
+<<set _wins = $varstore.get('quest_fort_restoration_win') || 0>>
+
+<p>
+You have received another somewhat expected visitor, another forst inspector from the so-called "History Preservation" society located in some hidden land in <<lore geo_mestia>>. As you recall, you've been patronizing them for quite some time, even changing your fort layout to fit whatever idealistic ideals they impose upon your fort, all for the sole reason of obtaining the secret technology held by the community.
+</p>
+
+<p>
+The inspector happily begin by showering you with praises, about how much you've contributed to the society by restoring such a magnificent fort. But the most interesting part to you is how this final inspection would be the "final test", which no doubt carry with it a "final reward". And it's exceedingly simple too — all you have to do is just make your fort as beautiful as you can in every single area. That's right, you'll just have to maximize the skill bonuses that your fort gives out. How hard could it be?
+<<if _wins>>
+(Perhaps harder than you thought last time...)
+<</if>>
+</p>
+
+
+
+
+:: Opportunity_fort_restoration_awards_0 [nobr]
+Receive the grant
+
+
+:: Opportunity_fort_restoration_awards_0_flavor [nobr]
+<<set _wins = $varstore.get('quest_fort_restoration_win') || 0>>
+<p>
+You did it, you have successfully somehow beautified your fort enough
+<<if _wins >= 4>>
+to the point of being perhaps one of the few wonders of <<lore continent_mestia>>. The inspector better be satisfied with this pinnacle of engineering.
+<<elseif _wins >= 3>>
+to the point of almost unnatural beauty and cohesiveness.
+That damned inspector has better be satisfied by this.
+<<elseif _wins >= 2>>
+to the point of peak-like effectiveness and beauty.
+The inspector will surely appreciate this efforts.
+<<elseif _wins >= 1>>
+to the point of even more so that last time you did it.
+The inspector is surely happy with this.
+<<else>>
+to the point where everything just looks nice.
+Hopefully the inspector is satisfied with this outcome.
+<</if>>
+And <<they $g.inspector>> does — with the forf "fully restored to its former glory", on behalf of the community of "history preservation", <<they $g.inspector>> bestows upon you
+<<if _wins>>
+another bottle of <<rep setup.item.potion_portal>>,
+which allows you to build another portal within your fort.
+<<else>>
+the elusive technology held secret by the society, the <<rep setup.item.technology_portal>>, as well as two bottles of <<rep setup.item.potion_portal>>. May these aid you to restore even more decrepit and abandoned forts! Or so they hopes.
+<</if>>
+</p>
+
+<<if !_wins>>
+<<set _u = setup.getAnySlaver()>>
+<p>
+Only when the inspector is finally a great distance away that <<yourrep _u>> quips how useful portal technology might be for training slaves. But such a rare potion has much better use for your fort management, to <<their _u>> great dismay.
+</p>
+<</if>>
+
+
+:: Opportunity_fort_restoration_awards_1 [nobr]
+Decline for now
+
+
+:: Opportunity_fort_restoration_awards_1_flavor [nobr]
+<p>
+The inspector tells you that <<they $g.inspector>> will be back in a year or so, should you change your mind by then.
+</p>
+
+
+:: Opportunity_fort_restoration_awards_2 [nobr]
+Decline and drop all connections with the community
+

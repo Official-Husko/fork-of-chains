@@ -1,0 +1,97 @@
+:: QuestSetupTreatmentAlternative [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'treatment_alternative',  /* id */
+  'Treatment: Alternative',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.heal_head_master,
+    'assistant1': setup.qu.heal_assistant,
+    'assistant2': setup.qu.heal_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.potion_alternative),
+  ],  /* costs */
+  'TreatmentAlternative',  /* description */
+  setup.qdiff.extreme70,
+  [
+    [
+      'TreatmentAlternativeCrit',
+      [
+        setup.qc.Alternative('trainee'),
+      ]
+    ],
+    [
+      'TreatmentAlternativeCrit',
+      [
+        setup.qc.Alternative('trainee'),
+        setup.qc.Injury('trainee', 5),
+      ],
+    ],
+    [
+      'TreatmentAlternativeCrit',
+      [
+        setup.qc.Alternative('trainee'),
+        setup.qc.Injury('trainee', 10),
+      ],
+    ],
+    [
+      'TreatmentAlternativeCrit',
+      [
+        setup.qc.Alternative('trainee'),
+        setup.qc.Injury('trainee', 20),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentAlternative [nobr]
+
+<p>
+Reset a unit's skills into the current set of skill focus.
+This is the same with resetting the unit's level to level 1, then re-level
+the unit to its previous level, but with the current set of skill focuses.
+While this procedure always succeeds, it usually cause severe injuries to the patient.
+</p>
+
+:: TreatmentAlternativeCrit [nobr]
+
+<p>
+The potion exposed
+<<yourrep $g.trainee>> to multiple timelines, and allowed <<therace $g.trainee>>
+to choose the version of <<themself $g.trainee>> that <<they $g.trainee>> liked best.
+Eventually, <<they $g.trainee>> settled on one where <<they $g.trainee>> had instead
+decided to focus <<their $g.trainee>> skills in
+<<set _dom = setup.DOM.Card.skillFocus($g.trainee)>>
+<<attach _dom>>.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Rep $g.head>> directed the procedure with such skill that <<rep $g.trainee>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+<<elseif $gOutcome == 'success'>>
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>> will need some time to recover from the procedure.
+</p>
+<<elseif $gOutcome == 'failure'>>
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was severely injured during the procedure.
+</p>
+<<else>>
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>> trainee|was heavily injured during the procedure.
+</p>
+<</if>>

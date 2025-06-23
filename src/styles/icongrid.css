@@ -1,0 +1,33 @@
+/**
+ * Used for unit <<rep>> (to show slavers focuses + idle/busy state)
+ */
+
+.icongrid {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+  justify-items: center;
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+.icongrid>span {
+  line-height: 0.1;
+  padding: 0px !important;
+}
+
+.icongrid img {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.icongrid>*:last-child:nth-child(odd) {
+  grid-column: 1 / span 2;
+  /* if the last row has only 1 item, make it span 2 cols so it can be centered */
+}
+
+.icongrid> :only-child img {
+  /* special case, only one item at grid: show at full size */
+  width: 20px;
+}

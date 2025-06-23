@@ -1,0 +1,96 @@
+:: OpportunitySetup_clerk_exercise [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'clerk_exercise', /* key */
+"Clerk Exercise", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_clerk_exercise',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_clerk_exercise_0',
+    'Opportunity_clerk_exercise_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Leave('slaver', "a|is training to become more fit", undefined),
+      setup.qc.Event('clerk_exercise_outcome', 8, {
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Opportunity_clerk_exercise_1',
+    'Opportunity_clerk_exercise_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.TraumatizeRandom('slaver', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_clerk_exercise [nobr]
+<p>
+Not everyone under your employ comes from a physical background. Take <<yourrep $g.slaver>>, for example. Before joining your company, <<therace $g.slaver>> slaver|was mostly working behind the desk. Given <<their $g.slaver>> previous occupation, it's not really surprising that <<their $g.slaver>> body isn't as well-developed as some of your other slavers, and tire somewhat easily too.
+<<if $unit.player.isHasTrait('bg_clerk')>>
+You understand it too, given that you were also working behind the desk some years past.
+<</if>>
+</p>
+
+<p>
+<<Theslaver $g.slaver>> slaver|think so too. <<They $g.slaver>> apparently slaver|have been eyeing the <<rep setup.buildingtemplate.traininggrounds>>, and thinking to train up <<their $g.slaver>> body and make it fitter there. It'll take a few weeks of intensive training, but <<they $g.slaver>> will come out stronger and better than before.
+</p>
+
+<p>
+<<They $g.slaver>> won't be available for any job at all during the intensive training, however, and hence you should decide whether you'd allow the silly-sounding self-improvement training or not.
+</p>
+
+
+
+
+:: Opportunity_clerk_exercise_0 [nobr]
+Allow
+
+
+:: Opportunity_clerk_exercise_0_flavor [nobr]
+<p>
+Full of enthusiasm, <<yourrep $g.slaver>> makes a beeline for your <<rep setup.buildingtemplate.traininggrounds>>. The training will take quite a toll on <<therace $g.slaver>>, and <<they $g.slaver>> won't be available for any duty for the time being, but you hope that the results would be worth it.
+</p>
+
+
+:: Opportunity_clerk_exercise_1 [nobr]
+Disallow
+
+
+:: Opportunity_clerk_exercise_1_flavor [nobr]
+<p>
+Your company does not always accept physical jobs. There are also jobs where you're supposed to negotiate or even write reports. <<Yourrep $g.slaver>> would not need to be very fit for those, and you feel <<their $g.slaver>> current stature is already fine. <<Theslaver $g.slaver>> slaver|feel a little down from your refusal, however good its intention.
+</p>
+

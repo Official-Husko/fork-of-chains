@@ -1,0 +1,317 @@
+:: QuestSetup_bandits_on_the_roads [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"bandits_on_the_roads0",
+"Residents of the City of Lucgate: All gender",
+'city_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Trait('unit', setup.trait.bg_raider),
+],
+)>>
+
+
+
+<<set _criteriawarrior = new setup.UnitCriteria(
+null, /* key */
+'Fighter', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_hunter,
+  setup.trait.bg_raider,
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.per_proud,
+  setup.trait.per_stubborn,
+  setup.trait.skill_ambidextrous,
+],
+[
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_humble,
+  setup.trait.per_curious,
+  setup.trait.eq_blind,
+  setup.trait.eq_restrained,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriawarrior2 = new setup.UnitCriteria(
+null, /* key */
+'Fighter', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_hunter,
+  setup.trait.bg_raider,
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.per_proud,
+  setup.trait.per_stubborn,
+  setup.trait.skill_ambidextrous,
+],
+[
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_humble,
+  setup.trait.per_curious,
+  setup.trait.eq_blind,
+  setup.trait.eq_restrained,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'bandits_on_the_roads', /* key */
+"Bandits on the Roads", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'vale',
+  'unit',
+  'ire',
+  'rare',
+],
+2, /* weeks */
+8, /* expiration weeks */
+{ /* roles */
+  'scout': [ setup.qu.scout_vale, 1],
+  'warrior': [ _criteriawarrior, 1],
+  'warrior2': [ _criteriawarrior2, 1],
+},
+{ /* actors */
+  'trader': 'vale_all',
+  'capturedraider': 'bandits_on_the_roads0',
+},
+[ /* costs */
+],
+'Quest_bandits_on_the_roads',
+setup.qdiff.hard8, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_bandits_on_the_roadsCrit',
+    [
+      setup.qc.SlaveMarker('trader'),
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('capturedraider', "a|was a bandit", undefined),
+    ],
+  ],
+  [
+    'Quest_bandits_on_the_roadsCrit',
+    [
+      setup.qc.MoneyCustom(500),
+      setup.qc.Equipment(setup.equipmentpool.brawn),
+      setup.qc.DoAll([
+      setup.qc.Equipment(setup.equipmentpool.combat)
+      ], 0.5),
+      setup.qc.ItemPool(setup.itempool.furniture_normal),
+      setup.qc.Favor('humankingdom', 50),
+      setup.qc.Ire('outlaws', 2),
+    ],
+  ],
+  [
+    'Quest_bandits_on_the_roadsFailure',
+    [
+      setup.qc.Injury('scout', 1),
+      setup.qc.Injury('warrior', 1),
+      setup.qc.OneRandom([
+setup.qc.Injury('warrior2', 1),
+setup.qc.Injury('warrior2', 2)
+]),
+      setup.qc.TraumatizeRandom('scout', 5),
+      setup.qc.TraumatizeRandom('warrior', 5),
+      setup.qc.Trauma('warrior2', setup.trait.trauma_sex, 5),
+      setup.qc.Event('banditry_', 7, null),
+    ],
+  ],
+  [
+    'Quest_bandits_on_the_roadsFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.SetCooldownEvent(null, 13),
+      setup.qc.SlaveOrderFlex(
+'Demand from the Outlaws', /* name */
+'outlaws', /* company */
+12, /* expires in */
+200, /* base price */
+50, /* trait multi */
+0.05, /* value multi */
+[ /* crit traits */
+setup.trait.bg_royal,
+setup.trait.bg_knight,
+setup.trait.bg_noble,
+setup.trait.bg_slaver,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.training_obedience_basic,
+setup.trait.training_obedience_advanced,
+setup.trait.training_obedience_master,
+setup.trait.training_toilet_basic,
+setup.trait.training_toilet_advanced,
+setup.trait.training_toilet_master,
+],
+[ /* disaster traits */
+setup.trait.vagina_gape,
+setup.trait.anus_gape,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_thin,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.per_masochistic,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+setup.qc.Favor('outlaws', 200),
+setup.qc.Ire('outlaws', -1),
+],
+[ /* unfulfilled outcomes */
+setup.qc.Ire('outlaws', 1),
+setup.qc.Event('outlaw_raid', 3, null),
+],
+),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoEvent('banditry_'),
+  setup.qres.NoEvent('outlaw_raid'),
+],
+[ /* expiration outcomes */
+  setup.qc.Event('banditry_', 7, null),
+  /* anti-frustration feature */
+  setup.qc.SetCooldownEvent(null, 60),
+],
+)>>
+
+:: Quest_bandits_on_the_roads [nobr]
+<<set _guard = setup.getAnySlaver()>>
+
+<p>The sun is on it's way down towards the western horizon and <<name $g.trader>> is late. The friendly <<urace $g.trader>> was one of the first traders to visit the scary ruined fort full of folk with a reputation for kidnapping people like <<them $g.trader>>, and is
+<<if $unit.player.isHasTrait('per_cruel')>>
+useful in <<their $g.trader>> own way.
+<<elseif $unit.player.isHasTrait('per_kind')>>
+almost a friend, at this point. Enough that you're worried about <<them $g.trader>>, at least.
+<<elseif $unit.player.isHasTrait('per_empath')>>
+almost a friend, at this point. Enough that you're worried about <<them $g.trader>>, at least.
+<<elseif $unit.player.isHasTrait('per_evil')>>
+useful enough in <<their $g.trader>> own way.
+<<elseif $unit.player.isHasTrait('per_lustful')>>
+someone you've shared a blowjob with a time or two.
+<<elseif $unit.player.isHasTrait('per_sexaddict')>>
+some who can almost keep up with you in the bedroom.
+<<else>>
+someone who's worth more as a contact than a slave.
+<</if>>
+It is almost dark when <<they $g.trader>> finally staggers through the gates and into the courtyard, <<name _guard>>'s shouts of alarm alerting you to <<their $g.trader>> arrival.<br>
+"Bandits," <<they $g.trader>> says eventually
+<<if $fort.player.isHasBuilding('hospital')>>
+from their hospital bed, an empty bowl of soup on the table nearby.
+<<else>>
+when <<their $g.trader>> wounds have been tended and they've been given some bread and soup to eat.
+<</if>>
+"The road is lousy with them. If they stick around you're going to have issues with trade. Or travel."
+</p>
+<p>Despite <<their $g.trader>> injuries, <<name $g.trader>> managed to escape with their goods and assure you <<they $g.trader>> will be setting up their stall in your courtyard as normal in the next few days. Of course, there's now the question of those bandits. It's not what you normally deal with, but clearing the roads would mean the safe passage of your slavers in and out of the fort—and could even net you some goodwill with the locals. There's also the outside chance that you might manage to capture a bandit as a new slave, but then again, bandits are probably tougher fighters than your slavers typically go up against.</p>
+<p>On the other hand, this really isn't your problem. The Lords of Lucgate should be dealing with this, by right. They won't. But they should.</p>
+
+
+
+:: Quest_bandits_on_the_roadsCrit [nobr]
+<p>
+<<if $gOutcome == 'crit'>>
+Your slavers strutted home, spirits high with a bound figure in tow.<br>
+<<elseif $gOutcome == 'success'>>
+Your slaves came back in high spirits, with <<name $g.warrior>> whistling a jaunty tune.<br>
+<</if>>
+"Lazy buggers never saw us coming," <<name $g.scout>> says <<uadv $g.scout>>. </p>
+<p>
+With their operation located off in the borderlands, the bandits clearly didn't think that anyone would dare attack them, and their bravado collapsed the moment your slavers started laying into them. They also brought back a wagonload of spoils—including more than a few trade goods
+<<if $unit.player.isHasTrait('per_cruel')>>
+that you gleefully add to your stockpiles.
+<<run setup.qc.Equipment(setup.equipmentpool.brawn).apply($gQuest)>>
+<<if $gQuest.getSeed() % 2 == 0>>
+<<run setup.qc.Item('f_tile_normal').apply($gQuest)>>
+<<elseif $gQuest.getSeed() % 2 == 1>>
+<</if>>
+
+<<elseif $unit.player.isHasTrait('per_kind')>>
+that you give to <<name $g.trader>> to sell on.
+<<run setup.qc.Favor('humankingdom', 50).apply($gQuest)>>
+
+<<elseif $unit.player.isHasTrait('per_evil')>>
+that you gleefully add to your stockpiles.
+<<run setup.qc.Equipment(setup.equipmentpool.brawn).apply($gQuest)>>
+<<if $gQuest.getSeed() % 2 == 0>>
+<<run setup.qc.Item('f_tile_normal').apply($gQuest)>>
+<<elseif $gQuest.getSeed() % 2 == 1>>
+<</if>>
+
+<<elseif $unit.player.isHasTrait('per_honorable')>>
+that you give to <<name $g.trader>>. The poor <<woman $g.trader>> could use the help right now and if nothing else, you do right by your allies.
+<<run setup.qc.Favor('humankingdom', 50).apply($gQuest)>>
+<<else>>
+that will fetch a pretty penny in the marketplace. Or maybe you'll just hand them out to your slavers.
+<</if>>
+</p>
+
+
+
+:: Quest_bandits_on_the_roadsFailure [nobr]
+<p>Your slavers staggered back into the fort, looking worse for wear, and <<name $g.warrior2>> favouring their left leg.<br>
+<<set _unit = setup.selectUnit([$g.scout, $g.warrior, $g.warrior2], {trait: 'per_lustful'})>>
+<<if _unit>>
+"They...were really good fighters," <<name _unit>> says, wincing. "And then as punishment they... well I might have had fun if there had been less pain."<br> <<name _unit>> shudders, "a lot less pain."
+<<else>>
+<<set _unit = setup.selectUnit([$g.scout, $g.warrior, $g.warrior2], {trait: 'per_sexaddict'})>>
+<<if _unit>>
+"They...were really good fighters," <<name _unit>> says, wincing. "And then as punishment they... well I might have had fun if there had been less pain."<br> <<name _unit>> shudders, "a lot less pain."
+<<else>>
+<<set _unit = setup.selectUnit([$g.scout, $g.warrior, $g.warrior2], {trait: 'per_submissive'})>>
+<<if _unit>>
+"They...were really good fighters," <<name _unit>> says, wincing. "And then as punishment they... they treated us like slaves."
+<<else>>
+"I don't want to talk about it," <<name $g.warrior2>> says shortly.
+<</if>>
+<</if>>
+<</if>>
+</p>
+<p>
+As <<name $g.warrior2>> turns to leave, you notice <<their $g.warrior2>> <<uequipslot $g.warrior2 'legs'>> have been torn out at the ass and crotch and there's a wetness dripping from <<their $g.warrior2>> <<if $g.warrior2.isHasDick()>>
+ass
+<<else>>
+vagina
+<</if>>
+that looks suspiciously familiar. Maybe you should have left the bandits to the Lords of Lucgate.</p>
+<<if $gOutcome == 'disaster'>>
+<p>Two days later you find an broken arrow in the fortress courtyard, a missive attached to the shaft. Unrolling it you find a short message, the letters scratchy and disjointed<br>
+Thanks for sending us your whores. Why don't you send one we can keep, or we might have to pay you a visit and take our pick.</p>
+<p>Looks like you have a slave order—or a demand. Sending one might get the bandits off your back for a bit, but it could also just encourage them to make further demands. Either way, you don't expect they're going to be willing to pay a fair price. </p>
+<</if>>

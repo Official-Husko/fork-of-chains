@@ -1,0 +1,56 @@
+:: CostOneRandom [nobr]
+
+<<set $qcost = setup.qc.OneRandom([])>>
+<<gotowipehistory 'QGCostDone'>>
+
+:: CostOneRandomHeader [nobr]
+<b>A random effect out of:</b>
+
+
+:: CostOneRandomSeed [nobr]
+
+<<set $qcost = setup.qc.OneRandomSeed([])>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostSeedHelpText [nobr]
+
+<div class='helpcard'>
+  When seeded, the randomness is determined by the quest's "seed" value.
+  Each quest will be assigned a random seed value at the start, but this value will not
+  change throughout the quest.
+  This seed value is then modulo'd by the number of outcomes, to determine which one to get.
+  <br/>
+  <br/>
+  For example, with three outcomes, then the first outcome will occur when
+
+  """
+  gQuest.getSeed() % 3 == 0,
+  """
+
+  the second outcome will occur when
+
+  """
+  gQuest.getSeed() % 3 == 1,
+  """
+
+  and the third outcome will occur when
+
+  """
+  gQuest.getSeed() % 3 == 2
+  """
+
+  This can then be used during writing, so you can write the quest based on which outcome.
+  <br/>
+  <br/>
+  You can condition upon this in Content Creator, by going to: This, then If... seed.
+</div>
+
+:: CostOneRandomSeedHeader [nobr]
+<b>A SEEDED <<message '(?)'>>
+<<include 'CostSeedHelpText'>>
+<</message>>random effect out of:</b>
+
+
+
+

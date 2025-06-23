@@ -1,0 +1,94 @@
+:: OpportunitySetup_tower_of_roses__point_of_love [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'tower_of_roses__point_of_love', /* key */
+"Tower of Roses: Point of Love", /* Title */
+"darko", /* Author */
+[ 'forest', 'special', 'unit',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_tower_of_roses__point_of_love',
+setup.qdiff.harder37, /* difficulty */
+[ /* options */
+[
+'Opportunity_tower_of_roses__point_of_love_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('tower_of_roses__true_love', {prince: 'prince'}), ],
+], [
+'Opportunity_tower_of_roses__point_of_love_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('tower_of_roses__fatal_attraction', {prince: 'prince'}), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.OpportunityUnique(),
+setup.qres.NoQuest('tower_of_roses__fatal_attraction'),
+setup.qres.NoQuest('tower_of_roses__true_love'),
+setup.qres.HasUnitWithTitle('tower_of_roses_admirer', {job_key: 'slaver'}),
+setup.qres.VarGte('tower_of_roses_affection', 100), ],
+{ /* actors */
+'prince': 'quest_tower_of_roses1',
+},
+[ /* expired outcomes */
+],
+false,  /* must be answered */
+)>>
+
+:: Opportunity_tower_of_roses__point_of_love [nobr]
+<<set _headunit = setup.getUnit({title: "tower_of_roses_admirer", job: setup.job.slaver})>>
+<<if !_headunit>>
+  <<missingunitquest>>
+<<else>>
+
+<p>
+<<Yourrep _headunit>> received a letter from an elven <<prince $g.prince>> in
+the <<lore region_forest>>, asking <<them _headunit>> to come privately on a full
+moon night to <<their $g.prince>> tower. It seems that <<reps _headunit>>
+efforts have borne fruit, and the <<prince $g.prince>> is now deeply infatuated
+with <<yourrep _headunit>>. Now you have to decide what to do.
+</p>
+
+<p>
+The first option is to actually go actually and fulfill the <<prince
+$g.prince>>'s dream and send the <<prince $g.prince>> <<their $g.prince>> 
+<<if _headunit.isHasDick()>>knight in shining armor<<else>>knight in sexy armor<</if>>.
+Of course, your slaver isn't going to leave your company and instead <<rep
+_headunit>> will try to recruit <<them $g.prince>> into the company, which will
+be the difficult part. Still, <<rep _headunit>> looks enthusiastic with this
+option — it seems the love goes both ways.
+</p>
+
+<p>
+Alternatively, you could use <<rep _headunit>> to enslave the poor <<prince $g.prince>>. 
+Of course, <<rep _headunit>> will probably be devastated by this
+turn of events should you go through with it, but it's surely a small price
+for such a valuable slave?
+</p>
+<</if>>
+
+<<unitcard $g.prince 1>>
+
+
+:: Opportunity_tower_of_roses__point_of_love_0 [nobr]
+Love wins
+
+
+
+:: Opportunity_tower_of_roses__point_of_love_1 [nobr]
+Kidnap
+
+

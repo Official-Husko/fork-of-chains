@@ -1,0 +1,457 @@
+:: CostTraitActorCommon [nobr]
+
+<<devactordefault>> gains the following trait:
+<br/>
+
+:: CostTraitReplace [nobr]
+
+<<include LoadSelectTrait>>
+
+<<include CostTraitActorCommon>>
+
+<<selecttrait 'CostTraitReplaceDo' setup.TraitHelper.getAttachableTraitsInContentCreator()>>
+
+:: CostTraitReplaceDo [nobr]
+
+<<set $qcost = setup.qc.TraitReplace($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostTrait [nobr]
+
+
+<<include LoadSelectTrait>>
+
+<<devactordefault>> increases the following trait:
+<<message '(?)'>>
+(Here, increases means that
+the level increase, up to the chosen trait. E.g.,
+a unit with muscle_strong will increase to muscle_verystrong, when the chosen
+trait is muscle_extremelystrong, while a unit with muscle_thin will have the trait disappear.)
+<</message>>
+
+<br/>
+
+<<selecttrait 'CostTraitDo' setup.TraitHelper.getAttachableTraitsInContentCreator()>>
+
+:: CostTraitDo [nobr]
+
+<<set $qcost = setup.qc.Trait($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostTraitRemove [nobr]
+
+
+<<include LoadSelectTrait>>
+
+<<devactordefault>> loses the following exact trait, if they have it:
+
+<br/>
+
+<<selecttrait 'CostTraitRemoveDo' setup.TraitHelper.getAttachableTraits()>>
+
+:: CostTraitRemoveDo [nobr]
+
+<<set $qcost = setup.qc.TraitRemove($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostTraitDecrease [nobr]
+
+
+<<include LoadSelectTrait>>
+
+<<devactordefault>> decreases the following trait up to the given trait:
+<<message '(?)'>>
+For example, if you choose small_dick, then it will change a unit with large dick into
+medium dick, while unit with small dick remain small dick.
+<</message>>
+<br/>
+
+<<selecttrait 'CostTraitDecreaseDo' setup.TraitHelper.getAllTraitsOfTags(['decreasable'])>>
+
+:: CostTraitDecreaseDo [nobr]
+
+<<set $qcost = setup.qc.TraitDecrease($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostTraitIncreaseExisting [nobr]
+
+
+<<include LoadSelectTrait>>
+
+<<devactordefault>> increases the following trait, if they ALREADY have it:
+<<message '(?)'>>
+For example, if you choose large_dick, then it will give it a larger dick ONLY
+if it already have some sort of dick before.
+<</message>>
+<br/>
+
+<<selecttrait 'CostTraitIncreaseExistingDo' setup.TraitHelper.getAllTraitsOfTags(['decreasable'])>>
+
+:: CostTraitIncreaseExistingDo [nobr]
+
+<<set $qcost = setup.qc.TraitIncreaseExisting($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostTraitsReplace [nobr]
+
+
+
+<p>
+Give
+<<devactordefault>>
+<<dangertext 'all'>> of the following traits (replacing conflicting ones):
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.TraitsReplace($qgDefaultActorName, _chosentraits)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = true>>
+<<include 'ChooseTraits'>>
+
+
+:: CostAddRandomPerTrait [nobr]
+
+
+
+<p>
+Gives
+<<devactordefault>>.
+a random trait from:
+<<for _itrait, _trait range setup.TraitHelper.getAllTraitsOfTags(['per'])>><<rep _trait>><</for>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddRandomTraitWithTags($qgDefaultActorName, ['per'])>>
+<</link>>
+
+
+
+:: CostRemoveRandomTraitWithTagPer [nobr]
+
+
+
+<p>
+<<devactordefault>>.
+loses a random trait from:
+<<for _itrait, _trait range setup.TraitHelper.getAllTraitsOfTags(['per'])>><<rep _trait>><</for>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.RemoveRandomTraitWithTag($qgDefaultActorName, 'per')>>
+<</link>>
+
+
+
+:: CostAddRandomSkillTrait [nobr]
+
+
+
+<p>
+Gives
+<<devactordefault>>.
+a random trait from:
+<<for _itrait, _trait range setup.TraitHelper.getAllTraitsOfTags(['skill'])>><<rep _trait>><</for>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddRandomTraitWithTags($qgDefaultActorName, ['skill'])>>
+<</link>>
+
+
+
+:: CostRemoveRandomTraitWithTagSkill [nobr]
+
+
+
+<p>
+<<devactordefault>>.
+loses a random trait from:
+<<for _itrait, _trait range setup.TraitHelper.getAllTraitsOfTags(['skill'])>><<rep _trait>><</for>>.
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.RemoveRandomTraitWithTag($qgDefaultActorName, 'skill')>>
+<</link>>
+
+
+:: CostAddRandomBodypartNonDemonic [nobr]
+
+
+
+<p>
+Gives
+<<devactordefault>>
+a random non-demonic bodypart.
+(Can give rare ones too like <<= setup.trait.wings_angel.rep() >>!)
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddRandomBodypart($qgDefaultActorName, false)>>
+<</link>>
+
+
+:: CostAddRandomBodypartAll [nobr]
+
+
+
+<p>
+Gives
+<<devactordefault>>
+a random bodypart (can include demonic ones).
+(Can give rare ones too like <<= setup.trait.wings_angel.rep() >>!)
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddRandomBodypart($qgDefaultActorName, true)>>
+<</link>>
+
+:: CostAddTraitsGuaranteedCheck [nobr]
+
+<div>
+  <<set _guaranteed = false>>
+  <<checkbox '_guaranteed' false true autocheck>> guaranteed
+  <<message '(?)'>>
+    <div class='helpcard'>
+      If checked, then the unit is guaranteed to get this.
+      <br/>
+      <br/>
+      If checked, then the game will avoid the traits that the unit already have.
+      Otherwise, it is possible that a trait the unit already have will get selected,
+      which will result in the unit not gaining any trait.
+    </div>
+  <</message>>
+</div>
+
+
+:: CostAddTraitsRandom [nobr]
+
+
+
+<p>
+Give
+<<devactordefault>>
+a total of
+<<numberbox '_no_of_traits' 1>>
+random traits out of the following traits.
+The traits are increased,
+<<message '(?)'>>
+  <div class='helpcard'>
+    For example, if a unit has <<rep setup.trait.muscle_verythin>> and gained
+    <<rep setup.trait.muscle_verystrong>>, then the unit will now have
+    <<rep setup.trait.muscle_thin>>.
+    If you want to replace instead, use the other version.
+  </div>
+<</message>>
+not replaced.
+
+<<include 'CostAddTraitsGuaranteedCheck'>>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddTraitsRandom($qgDefaultActorName, _chosentraits, _no_of_traits, false, _guaranteed)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = true>>
+<<include 'ChooseTraits'>>
+
+
+:: CostAddTraitsRandomReplace [nobr]
+
+<p>
+Give
+<<devactordefault>>
+a total of
+<<numberbox '_no_of_traits' 1>>
+random traits out of the following traits.
+The traits are <<dangertextlite 'replaced'>>.
+<<message '(?)'>>
+  <div class='helpcard'>
+    This will first remove any conflicting traits before adding the trait.
+  </div>
+<</message>>
+
+<<include 'CostAddTraitsGuaranteedCheck'>>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.AddTraitsRandom($qgDefaultActorName, _chosentraits, _no_of_traits, true, _guaranteed)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = true>>
+<<include 'ChooseTraits'>>
+
+
+
+:: CostDecreaseTraitsRandom [nobr]
+
+
+
+<p>
+<<devactordefault>>
+loses a total of
+<<numberbox '_no_of_traits' 1>>
+traits out of the following traits.
+The traits are decreased,
+<<message '(?)'>>
+  For example, if a unit has <<rep setup.trait.muscle_verystrong>> and loses
+  it, then it becomes <<rep setup.trait.muscle_strong>>.
+  If you want to remove it completely instead, use the other version.
+<</message>>
+not necessarily removed entirely.
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.DecreaseTraitsRandom($qgDefaultActorName, _chosentraits, _no_of_traits, false)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = true>>
+<<include 'ChooseTraits'>>
+
+
+:: CostDecreaseTraitsRandomReplace [nobr]
+
+
+
+<p>
+<<devactordefault>>
+LOSES a total of
+<<numberbox '_no_of_traits' 1>>
+random traits out of the following traits.
+The traits are <<dangertextlite 'removed'>>.
+<<message '(?)'>>
+  For example, a unit with <<rep setup.trait.muscle_verystrong>> will lost it completely,
+  instead of becoming <<rep setup.trait.muscle_strong>>.
+<</message>>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.DecreaseTraitsRandom($qgDefaultActorName, _chosentraits, _no_of_traits, true)>>
+<</link>>
+
+</p>
+
+<<set _choose_traits_attachable = true>>
+<<include 'ChooseTraits'>>
+
+
+:: CostTraitAndMakeInnate [nobr]
+
+<<include LoadSelectTrait>>
+
+<<devactordefault>> permanently (not purifiable) gain the following trait:
+<br/>
+
+<<selecttrait 'CostTraitAndMakeInnateDo' setup.TraitHelper.getAllTraitsOfTags(['skin'])>>
+
+:: CostTraitAndMakeInnateDo [nobr]
+
+<<set $qcost = setup.qc.TraitAndMakeInnate($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostResetInnateTraits [nobr]
+
+Unit <<devactordefault>> will gain all their current skin traits as their innate traits.
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.ResetInnateTraits($qgDefaultActorName)>>
+<</link>>
+
+
+:: CostRemoveRandomBgTrait[nobr]
+
+Unit <<devactordefault>> will lose a random background.
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.RemoveRandomTraitWithTag($qgDefaultActorName, 'bg')>>
+<</link>>
+
+
+:: CostRemoveRandomPerTrait[nobr]
+
+Unit <<devactordefault>> will lose a random personality.
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.RemoveRandomTraitWithTag($qgDefaultActorName, 'per')>>
+<</link>>
+
+
+:: CostTraitReplaceExisting [nobr]
+
+
+<<include LoadSelectTrait>>
+
+<<devactordefault>> gains the following trait, if they ALREADY have a variation of it:
+<<message '(?)'>>
+  <div class='helpcard'>>
+    For example, if you choose large_dick, then it will give it a large dick ONLY
+    if it already have some sort of dick before.
+  </div>
+<</message>>
+<br/>
+
+<<selecttrait 'CostTraitReplaceExistingDo' setup.TraitHelper.getAllTraitsOfTags(['decreasable'])>>
+
+:: CostTraitReplaceExistingDo [nobr]
+
+<<set $qcost = setup.qc.TraitReplaceExisting($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostPerkChoice [nobr]
+
+<<include LoadSelectTrait>>
+
+<div>
+<<devactordefault>> gain and can learn the following perk:
+</div>
+
+<<set _choices = setup.TraitHelper.getAllTraitsOfTags(['perk']).filter(perk => !perk.getTags().includes('perkbasic'))>>
+<<selecttrait 'CostPerkChoiceDo' _choices>>
+
+:: CostPerkChoiceDo [nobr]
+
+<<set $qcost = setup.qc.PerkChoice($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostRemovePerkChoice [nobr]
+
+<<include LoadSelectTrait>>
+
+<div>
+<<devactordefault>> loses access to the following perk (the perk will also get removed if they happen to already learn it):
+</div>
+
+<<selecttrait 'CostRemovePerkChoiceDo' setup.TraitHelper.getAllTraitsOfTags(['perkspecial'])>>
+
+:: CostRemovePerkChoiceDo [nobr]
+
+<<set $qcost = setup.qc.RemovePerkChoice($qgDefaultActorName, $rTrait)>>
+<<gotowipehistory 'QGCostDone'>>
+
+
+:: CostClearMentalTraits [nobr]
+
+<p>
+Remove all personality, background, skill, training, and perk traits from
+<<devactordefault>>
+</p>
+
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.ClearMentalTraits($qgDefaultActorName)>>
+<</link>>
+
+

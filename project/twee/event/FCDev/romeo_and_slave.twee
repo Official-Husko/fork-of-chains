@@ -1,0 +1,55 @@
+:: EventSetup_romeo_and_slave [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'romeo_and_slave', /* key */
+"Romeo and Slave", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_romeo_and_slave',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.IsCanBeSold(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+    setup.qres.OnDuty('entertainmentslave'),
+  ],
+  'blacksmith': setup.contacttemplate.blacksmithpeddler,
+  'lumberjack': setup.contacttemplate.furniturepeddler,
+  'tailor': setup.contacttemplate.tailorpeddler,
+},
+[ /* outcomes */
+  setup.qc.Opportunity('romeo_and_slave', {
+    you: "you",
+    slave: "slave",
+    blacksmith: 'blacksmith',
+    tailor: 'tailor',
+    lumberjack: 'lumberjack',
+  }),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.Building(setup.buildingtemplate.workshop),
+  setup.qres.Building(setup.buildingtemplate.market),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_romeo_and_slave [nobr]
+<p>
+A tenant in your fort requests an interview. You can check the details in your mail room later...
+</p>

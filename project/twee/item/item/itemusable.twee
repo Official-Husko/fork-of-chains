@@ -1,0 +1,20 @@
+:: InitUsableFreeItem [nobr]
+
+<<run new setup.ItemUsable({
+  key: 'potion_submissive_cure',
+  name: 'Potion of Submissive Cure',
+  description: "A very rare potion, it is said that certain correctional facility uses this potion liberally to alter the prisoner's minds. Gives a quest that can remove the " + setup.trait.per_submissive.rep() + "trait from a slaver",
+  value: Math.round(48 * setup.MONEY_PER_SLAVER_WEEK),   /* value */
+  restrictions: [ /* restrictions */
+    setup.qres.ExistUnit([
+      setup.qres.Job(setup.job.slaver),
+      setup.qres.Trait(setup.trait.per_submissive),
+      setup.qres.NotYou(),
+    ]),
+    setup.qres.NoQuest('slaver_training__submission_cure'),
+  ],
+  effects: [ /* effects */
+    setup.qc.QuestDirect('slaver_training__submission_cure'),
+  ],
+  tags: [],
+})>>

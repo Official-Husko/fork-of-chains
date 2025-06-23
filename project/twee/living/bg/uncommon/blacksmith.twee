@@ -1,0 +1,52 @@
+:: LIVINGSETUP_blacksmith [nobr living]
+
+<<run new setup.Living({
+  key: 'blacksmith',
+  name: 'Blacksmith',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_metalworker: setup.LIVING_COMMON_PREFERENCE,
+    muscle_strong: setup.LIVING_MORECOMMON_PREFERENCE,
+    muscle_verystrong: setup.LIVING_MORECOMMON_PREFERENCE,
+    muscle_extremelystrong: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_fire: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_fire_master: setup.LIVING_MORECOMMON_PREFERENCE,
+    magic_water: -setup.LIVING_COMMON_PREFERENCE,
+    magic_water_master: -setup.LIVING_COMMON_PREFERENCE,
+    muscle_thin: -setup.LIVING_COMMON_PREFERENCE,
+    muscle_verythin: -setup.LIVING_COMMON_PREFERENCE,
+    muscle_extremelythin: -setup.LIVING_COMMON_PREFERENCE,
+  },
+  business: [
+    'working away in the forge',
+    'working the metal',
+    'hammering the anvil',
+  ],
+  location: 'forge',
+})>>
+
+:: LIVING_blacksmith [nobr]
+
+<p>
+With the money a|they saved during a|their slaving tenure,
+<<rep $g.a>> opens a blacksmith shop in one of the nearby villages around your fort.
+a|They becomes famous for
+<<if $g.a.isHasTrait('muscle_verystrong')>>
+a|their
+extremely hardy crafts, a product of a|their bulging muscles.
+<<elseif $g.a.isHasTrait('muscle_strong')>>
+a|their
+hardy crafts, a product of a|their strong a|hands.
+<<elseif $g.a.isHasTrait('magic_fire')>>
+a|their
+use of fire magic in smithing a|their crafts.
+<<elseif $g.a.isHasTrait('per_chaste')>>
+a|their
+more mundane items such as shovels and rakes.
+<<else>>
+crafting
+specifically designed bondage cages.
+<</if>>
+</p>

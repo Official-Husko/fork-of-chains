@@ -1,0 +1,76 @@
+:: EventSetup_paws_from_the_past [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_living_pawst_0", /* key */
+"Living Pawst", /* name */
+"A certain letter has asked you to attempt to restore this slave's mind", /* description */
+"a|have been requested by a certain letter to be cured of a|their mindbroken-ness", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.Event(
+'paws_from_the_past', /* key */
+"Paws from the Past", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_paws_from_the_past',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'neko': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.HasTag('quest_neko_statue_marker'),
+    setup.qres.AllTraits([setup.trait.training_mindbreak], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('paws_from_the_past', {
+neko: "neko",
+}),
+],
+[ /* restrictions */
+  setup.qres.NoOpportunity('paws_from_the_past'),
+  setup.qres.NoUnitWithTitle('quest_living_pawst_0', {
+}),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+0, /* Cooldown */
+setup.rarity.common, /* Rarity */
+)>>
+
+:: Event_paws_from_the_past [nobr]
+<<if !$varstore.get('quest_furging_a_new_path_completed')>>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+As you were reading the reports of what occurred last week,
+(including how <<yourrep _u>> broke a plate, again),
+a strange letter falls
+from between a wage breakdown and an order for more “slave food”.
+The envelope has floral designs on its borders and the handwriting is very elegant; clearly,
+the person who sent it is a very traditional person, old enough to not know how a mail
+room works. Even so, sneaking a letter without being detected hints much about
+their skills and determination, so it may be worth to at least see what they
+want, and in a possible future, teach them how to contact you without resorting to so much
+intrigue.
+</p>
+
+<<else>>
+<p>
+A letter with a familiar envelope is among the mountain of papers on your desk today.
+Seems like the old neko has heard about your activities again and in particular about how you have recently found <<rep $g.neko>>. He wants to
+make another deal with your company.
+</p>
+
+<</if>>

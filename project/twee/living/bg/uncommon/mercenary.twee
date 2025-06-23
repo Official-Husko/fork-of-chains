@@ -1,0 +1,46 @@
+:: LIVINGSETUP_mercenary [nobr living]
+
+<<run new setup.Living({
+  key: 'mercenary',
+  name: 'Mercenary',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: setup.LIVING_VERYCOMMON_PREFERENCE,
+  trait_preferences: {
+    bg_mercenary: setup.LIVING_COMMON_PREFERENCE,
+    bg_soldier: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_frugal: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_lavish: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'taking up mercenary work',
+    'slaying monsters for pay',
+    'haggling reward for a mercenary quest',
+  ],
+  location: 'home',
+})>>
+
+:: LIVING_mercenary [nobr]
+
+<p>
+Despite already having enough money to simply retire, <<rep $g.a>> grew too restless
+and decided to
+<<if $g.a.isHasTrait('bg_mercenary')>>
+once again
+<<else>>
+try a|their a|hands at something new and
+<</if>>
+take up being a mercenary job.
+a|They would spend
+<<if $g.a.isHasTrait('per_frugal')>>
+days haggling the rewards before taking up any quest, making sure to squeeze every potential
+coin out of the contract.
+<<else>>
+hours haggling the rewards for any quest a|they take.
+<</if>>
+<<if !$g.a.isHasTrait('per_kind')>>
+a|Their services would grow quite famous, especially when it comes to recapturing slaves.
+<</if>>
+Occasionally, some quests would bring a|them over to the fort, either to seek help
+or to resupply.
+</p>

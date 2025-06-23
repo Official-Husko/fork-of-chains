@@ -1,0 +1,82 @@
+:: EventSetup_clerk_exercise_outcome [nobr event]
+
+<<run new setup.Event(
+'clerk_exercise_outcome', /* key */
+"Clerk Exercise Outcome", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_clerk_exercise_outcome',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'slaver': [
+  ],
+},
+[ /* outcomes */
+  setup.qc.BoonizeRandom('slaver', 5),
+  setup.qc.OneRandomSeed([
+setup.qc.Trait('slaver', setup.trait.muscle_strong),
+setup.qc.Trait('slaver', setup.trait.tough_tough)
+]),
+  setup.qc.Return('slaver'),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.traininggrounds),
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_clerk_exercise_outcome [nobr]
+<p>
+Two months ago, <<yourrep $g.slaver>> asked to take a short break from <<their $g.slaver>> slaving duties to work on <<their $g.slaver>> physique. And today, the results of <<their $g.slaver>> hard work is finally here.
+The slaver indeed looks better than ever.
+<<if $gQuest.getSeed() % 2 == 0>>
+You can see the obvious muscles on the slaver now, a far cry from <<their $g.slaver>> previously lanky form.
+<<elseif $gQuest.getSeed() % 2 == 1>>
+The slaver is running laps almost effortlessly on the <<rep setup.buildingtemplate.traininggrounds>> now, <<their $g.slaver>> endurance having increased so much from before.
+<</if>>
+And <<therace $g.slaver>> slaver|know it too. <<They $g.slaver>> slaver|is now ready to return to <<their $g.slaver>> slaving duties, and with a good mood too.
+</p>
+
+<<if $unit.player.isHasTrait('bg_clerk')>>
+<<if $unit.player.isHasTrait('muscle_strong')>>
+<p>
+Surprisingly, you are not at all out of shape, even though you were a desk worker once in your past.
+Otherwise, <<yourrep $g.slaver>> would have had some words of advice for you that you could possibly use.
+</p>
+<<else>>
+<p>
+You, on the other hand, are still quite out of shape.
+Like <<rep $g.slaver>>, you were a desk worker once in your past.
+But thankfully, 
+<<yourrep $g.slaver>> gave you quite a bit of pointer of smart exercises you can still do
+while on your desk.
+It's just a matter of choice now whether you'd like comming trying it out or not.
+</p>
+
+<<choose>>
+<<opt "Try it out">>
+<p>
+You listen to what <<yourrep $g.slaver>> had to say, and by the end, you learn that
+there are many ways to exercise even within the confines of your office.
+You can lift your body under the desk, use the chair to do push-ups, and many other
+officey ways to train your body. Within a week, you can already feel the improvements.
+</p>
+
+<<run setup.qc.Trait('you', setup.trait.muscle_strong).apply(setup.costUnitHelper($unit.player))>>
+
+<<opt "Pass">>
+<p>
+There are benefits of not being so bulky, and you'd like to keep your body this way.
+</p>
+<</choose>>
+
+<</if>>
+<</if>>
+

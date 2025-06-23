@@ -1,0 +1,274 @@
+
+:: QuestSetup_potion_of_lust_the_foraging [nobr quest]
+
+
+
+
+
+<<set _criteriaalchemist = new setup.UnitCriteria(
+null, /* key */
+'Alchemist', /* name */
+[
+  setup.trait.race_elf,
+  setup.trait.race_catkin,
+  setup.trait.bg_scholar,
+  setup.trait.per_studious,
+  setup.trait.per_curious,
+  setup.trait.skill_alchemy,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_active,
+  setup.trait.per_stubborn,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.skill_alchemy], true),
+],
+{
+  knowledge: 2,
+  arcane: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'potion_of_lust_the_foraging', /* key */
+"Potion of Lust: The Foraging", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'forest',
+  'rare',
+  'prep',
+  'item',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'alchemist': [ _criteriaalchemist, 1],
+  'guide': [ setup.qu.scout_forest, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_potion_of_lust_the_foraging',
+setup.qdiff.hard35, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_potion_of_lust_the_foragingCrit',
+    [
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_potion_of_lust_the_foragingCrit',
+    [
+      setup.qc.QuestDirect('potion_of_lust_the_brewing', {
+}),
+    ],
+  ],
+  [
+    'Quest_potion_of_lust_the_foragingFailure',
+    [
+      setup.qc.VarSet('mlang_lustpotionquestfail', '1', -1),
+    ],
+  ],
+  [
+    'Quest_potion_of_lust_the_foragingDisaster',
+    [
+      setup.qc.Injury('alchemist', 3),
+      setup.qc.Outcomes("failure"),
+      setup.qc.OneRandom([
+setup.qc.Injury('guide', 2),
+setup.qc.Injury('guard', 2)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.alchemistshop),
+  setup.qres.NoQuest('potion_of_lust_the_brewing'),
+  setup.qres.QuestDone('the_fruit_of_sluttiness'),
+  setup.qres.ExistUnit([
+setup.qres.AllTraits([setup.trait.skill_alchemy], true),
+setup.qres.Job(setup.job.slaver)
+], 1),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_potion_of_lust_the_foraging [nobr]
+<<set _u = setup.getUnit({
+job: 'slaver',
+anytraits: ['skill_alchemy'],
+})>>
+
+<<if _u>>
+
+    <<dialogue _u>>
+        Well I don't see why we shouldn't be able to make better use of them. It's just a matter of figuring out how.
+    <</dialogue>>
+    <p>
+        The Fruit of Sluttiness of the <<lore region_forest>> are, at this point, something your slavers are fairly familiar with, at least, enough to be wary of eating any fresh fruit they find there—or at least, not before feeding it to an unsuspecting local first. The proiblem with them is that they lose their potency very quickly, easily within a day or two of being picked, meaning there's little hope of extending its reach or using it to bring other in other slaves—or make them more slutty. At least, not normally.
+    </p>
+    <<if _u.isYou()>>
+        <p>
+            Recently you've been wondering if it might be possible to distill the essence of 'sluttiness' in the various fruits and combine it with other reagents to make a stable, long lasting potion. It wouldn't have the same effect, but it might do something, whether that's inducing short term arousal, longer term mental change, or both. If you were to take this on though, you'd need a to get some things together - the first would be some fruits of sluttiness. And fresh ones at that. You'd also need something longer lasting to mix it with that had similar effects—like the secretions of the forest aberrations. The rest of the reagents you probably already have in your <<rep setup.buildingtemplate.alchemistshop>>, but you'll still need to set aside several thousand gold for esoteric supplies and specialist equipment.
+        </p>
+        <p>
+            Getting everything together would take multiple weeks, and you'd have to time it perfectly to ensure the fruit is still good when you attempt to craft it into potions. It would have to be you or another trained alchemist heading into the forest, along with a guide to find the aberrations and avoid the other denizens of the forest, and a guard to keep you both safe.
+        </p>
+
+    <<else>>
+        <p>
+            Recently <<name _u>> has been speculating about distilling the essence of 'sluttiness' in the various fruits and combine it with other reagents to make a stable, long lasting potion. It wouldn't have the same effect, but it might do something, whether that's inducing short term arousal, longer term mental change, or both. If <<they _u>> were to take this on though, there's a long list of things <<they _u>>'d need. The first would be some fruits of sluttiness. And fresh ones at that. <<they _u>>'d also need something longer lasting to mix it with that had similar effects—<<name _u>> suggests secretions of the forest aberrations. Most of the other reagents are common enough that there are already stores in the <<rep setup.buildingtemplate.alchemistshop>>, but you'll still need to set aside several thousand gold for esoteric supplies and specialist equipment.
+        </p>
+        <p>
+            Getting everything together would take multiple weeks, and you'd have to time it perfectly to ensure the fruit is still good when <<name _u>> attempts to craft them into potions. It would have to be <<them _u>> or another trained alchemist heading into the forest, along with a guide to find the aberrations and avoid the other denizens of the forest, and a guard to keep them both safe.
+        </p>
+    <</if>>
+
+<<else>>
+
+    <p>
+        You don't have anyone proficient with <<rep setup.trait.skill_alchemy>> right now, so whatever lead
+        this quest might have led to, you cannot follow it.
+    </p>
+
+<</if>>
+
+
+:: Quest_potion_of_lust_the_foragingCrit [nobr]
+<<if $gQuest.getSeed() % 7 == 0>>
+    <<set _fruit = 'a patch of wild strawberries'>>
+<<elseif $gQuest.getSeed() % 7 == 1>>
+    <<set _fruit = 'a dense bramble of blackberries'>>
+<<elseif $gQuest.getSeed() % 7 == 2>>
+    <<set _fruit = 'a dense bramble of raspberries'>>
+<<elseif $gQuest.getSeed() % 7 == 3>>
+    <<set _fruit = 'a small grove of medlar tress, some fruit already beautifully squishy'>>
+<<elseif $gQuest.getSeed() % 7 == 4>>
+    <<set _fruit = 'a thicket of feijoa trees, ripe fruit already fallen to the ground'>>
+<<elseif $gQuest.getSeed() % 7 == 5>>
+    <<set _fruit = 'a thicket of hawthorne, bright red berries ripe for picking'>>
+<<elseif $gQuest.getSeed() % 7 == 6>>
+    <<set _fruit = 'a small grove of wild peach trees, the fruit small, but plump'>>
+<</if>>
+
+<p>
+    After <<rep $g.alchemist>> spent some time working on preserving magics to keep freshly harvested reagents from deteriorating, <<rep $g.guide>> led the way into the forest, heading for areas where your slavers had found aberrations in the past. Avoiding the bigger lairs, your slavers found a smaller aberration apparently alone in a clearing and butchered it, placing four intact and slimy tentacles into a carefully prepared barrel and bringing it back to the fort. Then the party headed back to the forest in search of the Fruit of Sluttiness.
+</p>
+<p>
+    Eventually, <<rep $g.alchemist>> stopped the group at _fruit.<br>
+    "Smell that?" <<rep $g.alchemist>> asked.<br>
+    <<if $g.guard.getHomeland() == setup.Text.Race.REGIONS.sea>>
+        "Yes. Pineapple?" <<rep $g.guard>> asked, sniffing the air. "They don't grow here."<br>
+        "Exactly," <<rep $g.alchemist>> said smugly.
+    <<else>>
+        "Uh, yeah. I've eaten it before. Something... oh gods, what's the name?" <<rep $g.guard>> said, frowning.<br>
+        "Pineapple," <<rep $g.alchemist>> said smugly. "It doesn't grow here."
+    <</if>>
+</p>
+<p>
+    <<Rep $g.alchemist>> handed out gloves to everyone, and using the smell as a guide, they soon had two baskets full of fruit which is now sitting in the fort's <<rep setup.buildingtemplate.alchemistshop>>, ready for the potioh brewing to commence.
+</p>
+
+
+
+:: Quest_potion_of_lust_the_foragingFailure [nobr]
+<<if $gQuest.getSeed() % 7 == 0>>
+    <<set _fruit = 'a patch of wild strawberries'>>
+<<elseif $gQuest.getSeed() % 7 == 1>>
+    <<set _fruit = 'a dense bramble of blackberries'>>
+<<elseif $gQuest.getSeed() % 7 == 2>>
+    <<set _fruit = 'a dense bramble of raspberries'>>
+<<elseif $gQuest.getSeed() % 7 == 3>>
+    <<set _fruit = 'a small grove of medlar tress, some fruit already beautifully squishy'>>
+<<elseif $gQuest.getSeed() % 7 == 4>>
+    <<set _fruit = 'a thicket of feijoa trees, ripe fruit already fallen to the ground'>>
+<<elseif $gQuest.getSeed() % 7 == 5>>
+    <<set _fruit = 'a thicket of hawthorne, bright red berries ripe for picking'>>
+<<elseif $gQuest.getSeed() % 7 == 6>>
+    <<set _fruit = 'a small grove of wild peach trees, the fruit small, but plump'>>
+<</if>>
+
+<p>
+    After <<rep $g.alchemist>> spent some time working on preserving magics to keep freshly harvested reagents from deteriorating, <<rep $g.guide>> led the way into the forest. A few days into the journey, <<rep $g.alchemist>> stopped everyone at _fruit.<br>
+    "Smell that?" <<rep $g.alchemist>> asked.<br>
+    <<if $g.guard.getHomeland() == setup.Text.Race.REGIONS.sea>>
+        "Yes. Pineapple?" <<rep $g.guard>> asked, sniffing the air. "They don't grow here."<br>
+        "Exactly," <<rep $g.alchemist>> said smugly.
+    <<else>>
+        "Uh, yeah. I've eaten it before. Something... oh gods, what's the name?" <<rep $g.guard>> said, frowning.<br>
+        "Pineapple," <<rep $g.alchemist>> said smugly. "It doesn't grow here."
+    <</if>>
+    <br>
+    <<Rep $g.alchemist>> handed out gloves to everyone, and using the smell as a guide, they soon had two baskets full of fruit, and then the party headed back into the forest in search of aberrations. Unfortunately, the fruit was rotten and disgusting by the time
+    <<if $g.alchemist.isYou() or $g.guide.isYou() or $g.guard.isYou()>>
+
+        <<set _notyou = []>>
+        <<if !$g.alchemist.isYou()>>
+            <<run _notyou.push($g.alchemist)>>
+        <</if>>
+        <<if !$g.guide.isYou()>>
+            <<run _notyou.push($g.guide)>>
+        <</if>>
+        <<if !$g.guard.isYou()>>
+            <<run _notyou.push($g.guard)>>
+        <</if>>
+        <<set _o1 = _notyou[0]>>
+        <<set _o2 = _notyou[1]>>
+
+        you
+
+    <<else>>
+        they
+
+    <</if>>
+    returned, and the entire effort is for nothing. At least for now. Maybe there'll be time to try again later.
+</p>
+
+
+
+:: Quest_potion_of_lust_the_foragingDisaster [nobr]
+<p>
+    After <<rep $g.alchemist>> spent some time working on preserving magics to keep freshly harvested reagents from deteriorating, <<rep $g.guide>> led the way into the forest, heading for areas where your slavers had found aberrations in the past. Unfortunately, the party proved too successful, and managed to find a grove was empty of other victims, and were immediately assaulted by several of the plant-like creatures. While
+    <<if $g.alchemist.isYou() or $g.guide.isYou() or $g.guard.isYou()>>
+
+        <<set _notyou = []>>
+        <<if !$g.alchemist.isYou()>>
+            <<run _notyou.push($g.alchemist)>>
+        <</if>>
+        <<if !$g.guide.isYou()>>
+            <<run _notyou.push($g.guide)>>
+        <</if>>
+        <<if !$g.guard.isYou()>>
+            <<run _notyou.push($g.guard)>>
+        <</if>>
+        <<set _o1 = _notyou[0]>>
+        <<set _o2 = _notyou[1]>>
+
+        you eventually managed to fight your way free, but you and your slavers all sustained injuries to both your pride and your bodies that will take some time to heal
+
+    <<else>>
+        they eventually managed to fight their way free, but they all sustained injuries to both pride and body that will take some time to heal.
+    <</if>>
+</p>
+
+
+

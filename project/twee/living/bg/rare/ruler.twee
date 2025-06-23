@@ -1,0 +1,33 @@
+:: LIVINGSETUP_ruler [nobr living]
+
+<<run new setup.Living({
+  key: 'ruler',
+  name: 'Ruler',
+  tags: ['rare', ],
+  unit_restrictions: [
+    setup.qres.Trait(setup.trait.bg_royal),
+  ],
+  default_preference: setup.LIVING_RARE_PREFERENCE,
+  trait_preferences: {
+  },
+  business: [
+    'ruling a|their subjects',
+    'governing a|their lands',
+    'making laws',
+  ],
+  location: 'castle',
+})>>
+
+:: LIVING_ruler [nobr]
+
+<p>
+<<Rep $g.a>> returned to a|their kingdom, and resumed a|their rule.
+<<if $g.a.isHasTrait('per_chaste')>>
+a|They gives little hint that a|they a|was once a slaver, ruling a|their
+kingdom with nothing but temperance and chastity.
+<<else>>
+a|Their experiences as a slaver are reflected in the newly built sex dungeons
+hidden away under a|their castle, where prisoners are trained and secretly
+sold as slaves.
+<</if>>
+</p>

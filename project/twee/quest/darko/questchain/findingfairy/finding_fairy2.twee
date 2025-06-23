@@ -1,0 +1,201 @@
+:: QuestSetup_finding_fairy2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'finding_fairy2', /* key */
+"Finding Fairy", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'danger',
+  'unit',
+  'forest',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'scout1': [ setup.qu.scout_forest, 1],
+  'scout2': [ setup.qu.scout_forest, 1],
+  'historian': [ setup.qu.scholar, 1],
+},
+{ /* actors */
+  'fairy': 'finding_fairy0',
+},
+[ /* costs */
+],
+'Quest_finding_fairy2',
+setup.qdiff.hard45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_finding_fairy2Crit',
+    [
+      setup.qc.Outcomes("disaster"),
+    ],
+  ],
+  [
+    'Quest_finding_fairy2Crit',
+    [
+      setup.qc.Outcomes("disaster"),
+    ],
+  ],
+  [
+    'Quest_finding_fairy2Crit',
+    [
+      setup.qc.Outcomes("disaster"),
+    ],
+  ],
+  [
+    'Quest_finding_fairy2Crit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.AddTitle('scout1', 'quest_bewitched_1'),
+setup.qc.Leave('scout1', "went missing in the Western Forests during a|their search for the mysterious fairy", undefined)
+], undefined),
+setup.qc.DoAll([
+setup.qc.AddTitle('scout2', 'quest_bewitched_1'),
+setup.qc.Leave('scout2', "went missing in the Western Forests during a|their search for the mysterious fairy", undefined)
+], undefined)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building('veteranhall'),
+  setup.qres.VarLte('quest_bewitchment_progress', 11),
+  setup.qres.ExistUnit([
+    setup.qres.Job(setup.job.slaver),
+  ], 18)
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_finding_fairy2 [nobr]
+<p>
+According to rumors, neko and elves are not the only inhabitants of the
+<<lore region_forest>>.
+A rare winged off-shoot of elves, that is, the mysterious <<lore race_fairy>> race, is also said
+to exist somewhere in the forest.
+They are an elusive species however, and their sightings are extremely rare.
+In fact, nobody has actually verified their existence in the world.
+<<if $statistics.isHasSuccess('finding_fairy')>>
+(Before you do, that is!)
+<</if>>
+</p>
+
+<<if $statistics.isHasSuccess('finding_fairy')>>
+<p>
+  Your slavers had already seen the fairy up-close before, so you know that fairies
+  are more than just fairy tale.
+  You could try to send another team of slavers in search of these fairies again.
+  What could possibly go wrong?
+</p>
+<<else>>
+<<set _t = $company.player.getUnits().filter(unit => unit.isHasTitle('quest_bewitched_1'))>>
+<<if _t.length>>
+<p>
+  Having already lose <<if _t.length == 1>>a<<else>>several<</if>> slavers to
+  your past
+  decision to pursue after this fairy tale, there really isn't another way out except
+  by sending more sheep to the slaughter and hope one of them will eventually
+  uncover where your slavers have disappeared into...
+</p>
+<<else>>
+<p>
+  You've always dreamed of having a rare, almost mythically rare slave, and what
+  better idea than to send a team of slavers completely unprepared into the vast <<lore region_forest>>?
+</p>
+<</if>>
+<</if>>
+
+<p>
+  <<dangertext "Warning:">> You have a strange feeling that the slavers you send on this quest
+  will be gone from your company for a very, very long time...
+</p>
+
+
+:: Quest_finding_fairy2Crit [nobr]
+<<if $gOutcome == 'crit'>>
+<<set _a = 5>>
+<<elseif $gOutcome == 'success'>>
+<<set _a = 4>>
+<<elseif $gOutcome == 'failure'>>
+<<set _a = 2>>
+<<elseif $gOutcome == 'disaster'>>
+<<set _a = 1>>
+<</if>>
+
+
+<<run setup.qc.VarAdd('quest_bewitchment_progress', _a, -1).apply($gQuest)>>
+
+<<set _t = $company.player.getUnits().filter(unit => unit.isHasTitle('quest_bewitched_1'))>>
+
+<p>
+When your slavers returned from their scouting mission in the <<lore region_forest>>, only
+<<if $gQuest.getSeed() % 2 == 0>>
+<<rep $g.scout2>>
+<<set _v = $g.scout1>>
+<<elseif $gQuest.getSeed() % 2 == 1>>
+<<rep $g.scout1>>
+<<set _v = $g.scout2>>
+<</if>>
+and <<rep $g.historian>> returned.
+<<if _t.length>>
+Again <<rep _v>> went missing, just like what happened before to <<yourrep setup.rng.choice(_t)>>.
+But given the precedence, your slavers were somewhat more prepared for this,
+and they tried their best to remain
+vigilant throughout the quest.
+<<set _p = $varstore.get('quest_bewitchment_progress')>>
+<<if _p >= 12>>
+The vigilance finally borne fruit: <<rep $g.historian>> managed to see the
+culprit this time — it was very difficult to see, but an almost transparent
+elf-like creature with butterfly wings was visibly lifting <<yourrep _v>>
+away. There is no doubt that this is the elusive fairy that you've been
+hunting all this time. Perhaps this will be enough information to finally corner
+the fairy and rescue all the slavers you've lost along this goose chase...
+<<elseif _p >= 10>>
+The vigilance is rewarded -- your slavers managed to find a trace amount of fairy
+powder on their trail — perhaps a fairy is responsible for the missing case
+of <<rep _v>>?
+<<elseif _p >= 8>>
+Thanks to the constant vigilance, <<rep $g.historian>> managed to observe as
+<<rep _v>> was apparently lifted up into the air by a seemingly invinsible
+force. Finally a concrete clue as to what might have happened.
+<<elseif _p >= 6>>
+Thanks to that, <<rep $g.historian>> historian|was able to pinpoint the exact
+time and location where <<rep _v>> went missing — exactly as they are passing
+through a certain clearing.
+<<elseif _p >= 4>>
+Despite the vigilance, <<rep $g.historian>> remained clueless and was still
+unable to pinpoint exactly how
+<<rep _v>> simply disappear, but <<they $g.historian>> had a rough guess now,
+and looked rather eager to test <<their $g.historian>> hypothesis next time.
+<<elseif _p >= 2>>
+While <<rep $g.historian>> remained confused by the disappearance of their
+team-mate, <<they $g.historian>> noticed that <<rep _v>> disappeared at
+roughly the same location where <<rep _t[0]>> disappeared last time.
+<<else>>
+However, <<rep $g.historian>> remained clueless, and according to <<them
+$g.historian>>, <<yourrep _v>> was simply there and then just... vanished in
+a single moment. Not a very helpful observation.
+<</if>>
+<<else>>
+Your slavers had absolutely no clue what happened to their teammate <<rep
+_v>>. To make matters worse, there was no trace of any fairy whatsoever
+during their search in the forests, making the entire trip appeared pointless.
+An intriguing mystery, surely nothing would go wrong if you send another team
+of slaver on this quest the next time it is available?
+<</if>>
+</p>
+
+<p>
+There is no other way but to keep reattempting this quest in order to get to
+the bottom of this mystery and rescue your missing slaver...
+</p>

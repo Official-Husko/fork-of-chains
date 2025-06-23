@@ -1,0 +1,81 @@
+:: EventSetup_library_inauguration [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'library_inauguration', /* key */
+"Library Inauguration", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+],
+'Event_library_inauguration',
+{ /* roles */
+  'slaver1': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+  'slaver2': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+  'slaver3': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+  'slaver4': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+  ],
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+  ],
+  'gender': 'subrace_humanvale',
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.sexmanual_sixtynine),
+  setup.qc.SlaverMarker('gender'),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.sexmanual_sixtynine),
+  setup.qres.Building(setup.buildingtemplate.library),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_library_inauguration [nobr]
+
+<p>
+Your fort finally has a proper <<rep setup.buildingtemplate.library>> now.
+The grand structure costs you quite a fortune, but you have no doubt it will
+be very useful for you and your career.
+The bookshelves are lined up neatly with books of various origins, be it
+detailing the various lores of this region, or explaining how magic works in
+the world.
+</p>
+
+<p>
+<<Yourrep $g.slaver>> slaver|is here too, seemingly busy reading a book. But
+something is off about the book <<theslaver $g.slaver>> slaver|is reading — it is too colorful,
+and lacking texts, compared to most other books here. Instead it looks like...
+picture book? As you approach closer, <<theslaver $g.slaver>> slaver|notice you and
+
+<<if $g.slaver.isHasTrait('per_chaste')>>
+immediately close the book and straightened up <<their $g.slaver>> posture,
+as if hiding something embarrassing...
+
+<<else>>
+slaver|give you a wily smile before continuing drooling over the book.
+
+<</if>>
+
+Sensing something incredibly wrong, you sneak up behind <<theslaver $g.slaver>> and are greeted
+by explicit images of a <<man $g.gender>> engaging in sex in a rather
+auspicious position. Surprised by your sudden appearance, <<rep $g.slaver>>
+accidentally slaver|drop the book to the floor, which you then pick up and identify as the <<rep
+setup.item.sexmanual_sixtynine>>. Glaring daggers at your slaver, you wonder
+if this is the reason why the library was so expensive to build...
+</p>

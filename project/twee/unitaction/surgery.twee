@@ -1,0 +1,197 @@
+:: InitUnitActionSurgery [nobr]
+
+<<run new setup.UnitAction({
+  key: 'surgery_breast_grow',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_breast_grow,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgerybreast),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTrait(setup.trait.breast_large),
+    setup.qres.Trait(setup.trait.breast_tiny),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.breast_large],
+  prerequisite_traits: [],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'surgery_breast_shrink',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_breast_shrink,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgerybreast),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.breast_small),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.breast_tiny],
+  prerequisite_traits: [],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'surgery_dick_grow',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_dick_grow,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgerydick),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.dick_tiny),
+    setup.qres.NoTrait(setup.trait.dick_large),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.dick_large],
+  prerequisite_traits: [],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'surgery_dick_shrink',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_dick_shrink,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgerydick),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.dick_medium),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.dick_small],
+  prerequisite_traits: [],
+})>>
+
+
+
+
+<<run new setup.UnitAction({
+  key: 'surgery_balls_grow',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_balls_grow,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgeryballs),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.balls_tiny),
+    setup.qres.NoTrait(setup.trait.balls_large),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.balls_large],
+  prerequisite_traits: [],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'surgery_balls_shrink',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_balls_shrink,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgeryballs),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.balls_medium),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.balls_small],
+  prerequisite_traits: [],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'surgery_muscle_grow',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_muscle_grow,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgery),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTrait(setup.trait.muscle_strong),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.muscle_strong],
+  prerequisite_traits: [],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'surgery_muscle_shrink',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_muscle_shrink,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgery),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(null, setup.trait.muscle_strong.getTraitGroup()),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.muscle_thin],
+  prerequisite_traits: [],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'surgery_anus_tighten',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_anus_tighten,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.HasItem(setup.item.potion_tight),
+    setup.qres.Building(setup.buildingtemplate.surgeryanus),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.anus_loose),
+  ],
+  is_decrease: true,
+  is_multitrain: true,
+  result_traits: [setup.trait.anus_tight],
+  prerequisite_traits: [],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'surgery_anus_loosen',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_anus_loosen,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgeryanus),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTrait(setup.trait.anus_gape),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.anus_gape],
+  prerequisite_traits: [],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'surgery_vagina_tighten',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_vagina_tighten,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.HasItem(setup.item.potion_tight),
+    setup.qres.Building(setup.buildingtemplate.surgeryvagina),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Trait(setup.trait.vagina_loose),
+  ],
+  is_decrease: true,
+  is_multitrain: true,
+  result_traits: [setup.trait.vagina_tight],
+  prerequisite_traits: [],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'surgery_vagina_loosen',
+  tags: ['fleshshape', ],
+  quest_template: setup.questtemplate.surgery_vagina_loosen,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.surgeryvagina),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTrait(setup.trait.vagina_gape),
+    setup.qres.Trait(setup.trait.vagina_tight),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.vagina_gape],
+  prerequisite_traits: [],
+})>>

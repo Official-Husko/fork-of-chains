@@ -1,0 +1,46 @@
+:: InitBuildingScoutOutpostDeep [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'scoutoutpostdeep',
+  tags: [],
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'scoutoutpostdeep',
+  name: 'Scout Outpost: Deeprealm',
+  tags: ['scout', ],
+  description_passage: 'BuildingScoutOutpostDeep',
+  costs: [
+    [setup.qc.Money(-5300)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('scouthut'),
+      setup.qres.Building('scouttunnel'),
+      setup.qres.Building('dutyroom'),
+    ],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('scoutdeep')
+    ],
+  ],
+  main_room_template_key: 'scoutoutpostdeep',
+})>>
+
+
+:: BuildingScoutOutpostDeep [nobr]
+
+<p>
+Unlocks the Deeprealm Scout duty, which grants you free quest leads each week from <<lore region_deep>>.
+</p>
+

@@ -1,0 +1,128 @@
+:: OpportunitySetup_brothel_promotion [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'brothel_promotion', /* key */
+"Brothel Promotion", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+  'money',
+  'favor',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_promotion',
+setup.qdiff.normal56, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_promotion_0',
+    'Opportunity_brothel_promotion_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '92', -1),
+      setup.qc.VarSet('quest_brothel_promotion', 'money', -1),
+      setup.qc.Trait('head', setup.trait.skill_connected),
+    ],
+  ],
+  [
+    'Opportunity_brothel_promotion_1',
+    'Opportunity_brothel_promotion_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '92', -1),
+      setup.qc.VarSet('quest_brothel_promotion', 'favor', -1),
+      setup.qc.Trait('head', setup.trait.skill_entertain),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_promotion [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+Since the beginning of your ownership of <<attach _describe>>, the head whore
+<<name $g.head>> had been nothing but a resourceful, helpful <<girl
+$g.head>>. In fact, <<they $g.head>> managed to persuade the
+<<if _class > 0>> noble <<else>> local mafia boss <</if>> to waive their
+<<if _class > 0>> tax <<else>> protection money <</if>> on your establishment
+last time. The manager of your brothel, <<yourrep $g.owner>>,
+owner|think that <<their $g.head>> talents are wasted working as a simple
+whore, and maybe a promotion is appropriate.
+</p>
+
+<p>
+<<Their $g.head>> negotiation talents as well as <<their $g.head>> smarts make them the perfect fit if you are looking for a business manager to help manage the brothel's growing business. <<They $g.head>> should be able to optimize expenses, which in turn saves you some of the operation costs of your brothel each week.
+</p>
+
+<p>
+Alternatively, <<they $g.head>> head|have also shown <<their $g.head>> shrewdness in dealing with other people, and <<they $g.head>> would make an excellent customer relations officer. <<They $g.head>> would ensure that all the brothel's customer leave the establishment satisfied, which should earn you some amount of favor each week from the grateful citizens of <<lore location_npc>>.
+</p>
+
+
+:: Opportunity_brothel_promotion_0 [nobr]
+Business manager
+
+
+:: Opportunity_brothel_promotion_0_flavor [nobr]
+<p>
+The promotion was done in a simple way, within <<reps $g.owner>> office inside the brothel. From now on, <<name $g.head>> is no longer a whore — <<they $g.head>> is the business manager of the brothel now, and <<they $g.head>> is expected to manage the financials of the establishment.
+</p>
+
+<p>
+You seem to have chosen well, as <<they $g.head>> set out to work immediately. <<Their $g.head>> work has been exemplary — while the changes look minimal here and there, it adds up, and eventually quite a lot of unnecessary expenses are cut. The "bring-your-own-lube" may have caused a little scandal within the establishment, but a little application of <<their $g.head>> charm and the incident was soon forgotten. It seems that despite being a business manager, <<they $g.head>> has not lost <<their $g.head>> wits and skills.
+</p>
+
+
+
+
+:: Opportunity_brothel_promotion_1 [nobr]
+Customer relations
+
+
+:: Opportunity_brothel_promotion_1_flavor [nobr]
+<p>
+The promotion was done in a simple way, within <<reps $g.owner>> office inside the brothel. From now on, <<name $g.head>> is no longer a whore — <<they $g.head>> is the customer relations of the brothel now, and <<they $g.head>> is expected to ensure all your customers left the establishment with a smile on their faces.
+</p>
+
+<p>
+You seem to have chosen well, as <<they $g.head>> set out an exemplary work. Whenever a customer looked disappointed, <<they $g.head>> dutifully attend to them, sometimes personally, and made sure their complaints were addressed.
+Sometimes, <<they $g.head>> even gives a complimentary blowjob or two. It seems that despite being a customer relations officer, <<they $g.head>> has not lost <<their $g.head>> sexual skills.
+</p>

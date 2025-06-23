@@ -1,0 +1,258 @@
+:: DevToolLobby [nobr]
+
+<<run Config.history.maxStates = 3>>
+
+<<run Config.saves.autosave = ["autosave"]>>
+
+<<set $qDevTool = true>>
+
+<<include 'DevToolMenu'>>
+
+
+:: DevToolMenu [nobr]
+
+<p>
+  Remember that you can undo your action by clicking on the left arrow on the top left of the screen.
+</p>
+
+<div class='card lorecard'>
+  <div>
+    <b>New Quest</b>
+    <<message '(?)'>>
+      <div class='helpcard'>
+        Create a new quest.
+        <br/>
+        <br/>
+        There are no tutorial for making a new quest, because it is very easy and intuitive
+        to do now! Hop in with the recommended option below to try it out!
+      </div>
+    <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new quest based on existing quest' 'QuestGenSetupExisting'>>
+  <</link>>
+  <b>recommended</b>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Using this option, some of your quest details such as slaver roles and difficulty will be based
+      on an existing quest.
+      They can be changed later, and there is <b>no drawback</b> on selecting this option compared
+      to creating new from scratch. This is the recommended option.
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new from scratch' 'QuestGen'>>
+    <<set _qbase = null>>
+    <<include 'QuestGenSetup'>>
+  <</link>>
+  </div>
+</div>
+
+<div class='opportunitycard'>
+  <div>
+  <b>New Mail / Opportunity</b>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Create a new opportunity.
+      Opportunity and mails are the same thing.
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new opportunity based on existing opportunity' 'OpportunityGenSetupExisting'>>
+  <</link>>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Using this option, some of your opportunity details such as the option rewards and difficulty will be based
+      on an existing opportunity.
+      They can be changed later, and there is <b>no drawback</b> on selecting this option compared
+      to creating new from scratch. This is the recommended option.
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new opportunity from scratch' 'OpportunityGen'>>
+    <<set _obase = null>>
+    <<include 'OpportunityGenSetup'>>
+  <</link>>
+  </div>
+</div>
+
+<div class='equipmentsetcard card'>
+  <div>
+  <b>New Event</b>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Create a new event.
+      Events can either be randomly triggered during the end of week,
+      or can be scheduled to event (e.g., a quest can make a slaver leave your company for a few weeks
+      until an event triggers.
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new event based on existing event' 'EventGenSetupExisting'>>
+  <</link>>
+  </div>
+
+  <div>
+  <<link 'Create new event from scratch' 'EventGen'>>
+    <<set _ebase = null>>
+    <<include 'EventGenSetup'>>
+  <</link>>
+  </div>
+</div>
+
+<div class='companycard'>
+  <div>
+  <b>New Interaction</b>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Create a new interaction, either between you and a slave, or between you and a slaver (or sometimes both).
+      This is rarely used, but can be useful when a unit has a specific interaction you can do with them,
+      e.g., shapeshifters have a specific bodyshift interaction.
+      Previously, this is also used for describing sex, but sex has been moved to its own dedicated
+      game system now (interactive sex).
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new interaction based on existing interaction' 'InteractionGenSetupExisting'>>
+  <</link>>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Using this option, some of your interaction details such as the option rewards and difficulty will be based
+      on an existing interaction.
+      They can be changed later, and there is <b>no drawback</b> on selecting this option compared
+      to creating new from scratch. This is the recommended option.
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new interaction from scratch' 'InteractionGen'>>
+    <<set _ibase = null>>
+    <<include 'InteractionGenSetup'>>
+  <</link>>
+  </div>
+
+</div>
+
+<div class='card livingcard'>
+  <div>
+  <b>New Activity</b>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Create a new activity, which is the random engagement your slavers will do each week on your fort.
+      This has no gameplay effects, and is purely flavor.
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new activity based on existing activity' 'ActivityGenSetupExisting'>>
+  <</link>>
+  <<message '(?)'>>
+    <div class='helpcard'>
+      Using this option, some of your activity details such as the possible rooms and rarity will be based
+      on an existing interaction.
+      They can be changed later, and there is <b>no drawback</b> on selecting this option compared
+      to creating new from scratch. This is the recommended option.
+    </div>
+  <</message>>
+  </div>
+
+  <div>
+  <<link 'Create new activity from scratch' 'ActivityGen'>>
+    <<set _abase = null>>
+    <<include 'ActivityGenSetup'>>
+  <</link>>
+  </div>
+
+</div>
+
+
+:: QuestGenSetupExisting [nobr]
+
+<<include 'LoadDevWidgets'>>
+
+<<devchoosequest 'QuestGenSetupExistingDo'>>
+
+:: QuestGenSetupExistingDo [nobr]
+
+<<set _qbase = _questchosen>>
+<<include 'QuestGenSetup'>>
+<<goto 'QuestGen'>>
+
+
+:: OpportunityGenSetupExisting [nobr]
+
+<<include 'LoadDevWidgets'>>
+
+<<devchooseopportunity 'OpportunityGenSetupExistingDo'>>
+
+
+:: OpportunityGenSetupExistingDo [nobr]
+
+<<set _obase = _opportunitychosen>>
+<<include 'OpportunityGenSetup'>>
+<<goto 'OpportunityGen'>>
+
+
+:: EventGenSetupExisting [nobr]
+
+Choose existing event to base from:
+<br/>
+
+<<for _ievent, _event range setup.event>>
+  <<capture _event>>
+    <<link _event.getName()>>
+      <<set _eventchosen = _event>>
+      <<include 'EventGenSetupExistingDo'>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: EventGenSetupExistingDo [nobr]
+
+<<set _ebase = _eventchosen>>
+<<include 'EventGenSetup'>>
+<<goto 'EventGen'>>
+
+
+:: InteractionGenSetupExisting [nobr]
+
+Choose existing interaction to base from:
+<br/>
+<<for _iinteraction, _interaction range setup.interaction>>
+  <<capture _interaction>>
+    <<link _interaction.getName() 'InteractionGen'>>
+      <<set _ibase = _interaction>>
+      <<include 'InteractionGenSetup'>>
+    <</link>>
+    <br/>
+  <</capture>>
+<</for>>
+
+
+:: ActivityGenSetupExisting [nobr]
+
+<<include 'LoadDevWidgets'>>
+
+<<devchooseactivity 'ActivityGenSetupExistingDo'>>
+
+
+:: ActivityGenSetupExistingDo [nobr]
+
+<<set _abase = _activitychosen>>
+<<include 'ActivityGenSetup'>>
+<<goto 'ActivityGen'>>

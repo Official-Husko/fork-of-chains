@@ -1,0 +1,106 @@
+:: EventSetup_thief_benefits [nobr event]
+
+
+<<run new setup.UnitGroup(
+"thief_benefits0",
+"Thief",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_thief),
+],
+)>>
+
+<<run new setup.Event(
+'thief_benefits', /* key */
+"Thief Benefits", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_thief_benefits',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_thief], true),
+  ],
+  'thief': 'thief_benefits0',
+  'thief2': 'thief_benefits0',
+  'thief3': 'thief_benefits0',
+  'thief4': 'thief_benefits0',
+},
+[ /* outcomes */
+  setup.qc.Slave('thief', "a|was a thief who tried to steal from your market, but a|was deftly caught by a former thief in your employ", undefined),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.AnyTrait([setup.trait.bg_artist])),
+    setup.qc.DoAll([
+      setup.qc.Slave('thief2', "a|was a thief who tried to steal from your market, but a|was deftly caught by a former thief in your employ", undefined),
+      setup.qc.Slave('thief3', "a|was a thief who tried to steal from your market, but a|was deftly caught by a former thief in your employ", undefined),
+      setup.qc.Slave('thief4', "a|was a thief who tried to steal from your market, but a|was deftly caught by a former thief in your employ", undefined),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.market),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_thief_benefits [nobr]
+<p>
+It has been several months since <<yourrep $g.slaver>> joined your company, and the former thief has been quite a boon to your business.
+<<They $g.slaver>> slaver|have nimble fingers, and
+<<if $g.thief.isHasTrait('per_smart')>>
+paired with <<their $g.slaver>> intellect,
+<<elseif $g.thief.isHasTrait('face_attractive')>>
+paired with <<their $g.slaver>> good-looking face,
+<<elseif $g.thief.isHasTrait('muscle_strong')>>
+paired with <<their $g.slaver>> strength,
+<<elseif $g.thief.isHasTrait('tough_nimble')>>
+paired with <<their $g.slaver>> nimble limbs,
+<<else>>
+paired with <<their $g.slaver>> experience,
+<</if>>
+<<they $g.slaver>> slaver|is able to rob people blind in the middle of the day.
+<<if $g.you.isHasTrait('bg_thief')>>
+It does remind you of your old days -- you too were once a master of pickpocketry.
+<</if>>
+But that's not the only benefit to having <<therace $g.slaver>> around.
+</p>
+
+<p>
+Today, <<rep $g.slaver>> slaver|have apparently caught a thief trying to steal from your <<rep setup.buildingtemplate.market>>. As a fellow thief, <<yourrep $g.slaver>> is quite familiar with the mindset of other thieves, and can easily see if an attempt was about to be made, which explains the capture. Nobody will miss a thief, so you've decided to introduce <<therace $g.thief>> to <<their $g.thief>> new occupation as your slave.
+</p>
+
+<<if $g.you.isHasTrait('bg_thief')>>
+<p>
+This jogs something in your mind, as if you were being challenged to capture your own thief.
+Not wanting to back down from such a challenge, you make your way into the market.
+Sure enough, you spot a fellow pickpocketing another potion off the potion stall.
+It would have been unnoticed, but you had a lot of experience in the field.
+You subdued the thief and showed your capture back to <<rep $g.slaver>>.
+Before long, the challenge were repeated back and forth, and you ended your day with a total of
+four new slaves under your company.
+</p>
+<</if>>
+
+<p>
+It sure is good having <<rep $g.slaver>> around.
+</p>

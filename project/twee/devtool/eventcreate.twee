@@ -1,0 +1,55 @@
+:: EGCreate [autosave]
+<<nobr>>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_begin()>>
+<<attach _dom>>
+
+<<link '(Test your event)' 'EventDebugDo'>>
+  <<set setup.event[$dtquest.key] = $dtquest>>
+  <<set $qDebugEventTemplate_key = $dtquest.key>>
+  <<set setup.DEVTOOL_edesc = $edesc>>
+<</link>>
+[[(Back to edit event)|EventGen]]
+
+<br/>
+<br/>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_middle()>>
+<<attach _dom>>
+
+<</nobr>>
+<div id='devtoolcoderesult'  class='companycard'> <code>"""::""" <<= $epassagesetup >> [nobr event]
+
+<<dtprintmeta>>
+"""<<run new setup.Event("""
+  '<<= $ekey>>', """/* key */"""
+  <<dtprinttitle>>
+  <<dtprintauthor>>
+  <<dtprinttags>>
+  '<<= $epassagedesc>>',
+  { """/* roles (LEGACY) */"""
+    <<for _irole, _role range $dtquest.getUnitRestrictions()>> <<nobr>>
+      &nbsp;
+      '<<= _irole>>': [
+        <<for _iccost, _ccost range _role>>
+          <br/>
+          &nbsp;
+          &nbsp;
+          <<= _ccost.text()>>,
+        <</for>>
+      <br/>
+      &nbsp;
+      ],
+    <</nobr>>
+    <</for>> },
+  <<dtprintactors>>
+  <<dtprintoutcomes 'rewards'>>
+  <<dtprintrestrictions 'requirements'>>
+  <<if $dtquest.cooldown == setup.EVENT_DEFAULT_COOLDOWN>>setup.EVENT_DEFAULT_COOLDOWN<<else>><<= $dtquest.cooldown >><</if>>,   """/* Cooldown */"""
+  <<= $dtquest.rarity.text() >>,   """/* Rarity */"""
+)>>
+
+"""::""" <<= $epassagedesc >> [nobr]
+<<= setup.devToolFormat($edesc)>>
+
+</code></div>

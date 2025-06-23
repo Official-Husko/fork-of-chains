@@ -1,0 +1,289 @@
+:: QuestSetup_lost_puppy [nobr quest]
+
+<<set _criteriarestrainer = new setup.UnitCriteria(
+null, /* key */
+'restrainer', /* name */
+[
+  setup.trait.bg_thug,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.arms_werewolf,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.per_cruel,
+  setup.trait.per_submissive,
+  setup.trait.per_lunatic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 2,
+  slaving: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'lost_puppy', /* key */
+"Lost Puppy", /* Title */
+{ /* Author */
+  name: "Hydrys",
+  url: "",
+},
+[ /* tags */
+  'furry',
+  'transformation',
+  'unit',
+  'trait',
+  'forest',
+  'rare',
+],
+2, /* weeks */
+3, /* expiration weeks */
+{ /* roles */
+  'tracker': [ setup.qu.spotter, 1],
+  'soother': [ setup.qu.healer, 1],
+  'restrainer': [ _criteriarestrainer, 1],
+},
+{ /* actors */
+  'puppy': 'all',
+  'target': 'subrace_werewolf',
+},
+[ /* costs */
+],
+'Quest_lost_puppy',
+setup.qdiff.hardest36, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_lost_puppyCrit',
+    [
+      setup.qc.Bodyswap('puppy', 'target', true),
+      setup.qc.Slaver('puppy', "a|was a newly transformed werewolf. Who knows what a|they used to be in the past", undefined),
+      setup.qc.EquipmentDirect('survival_neck'),
+    ],
+  ],
+  [
+    'Quest_lost_puppyCrit',
+    [
+      setup.qc.Bodyswap('puppy', 'target', true),
+      setup.qc.Slave('puppy', "a|was a newly transformed werewolf", undefined),
+    ],
+  ],
+  [
+    'Quest_lost_puppyCrit',
+    [
+      setup.qc.Trauma('tracker', setup.trait.trauma_brawn, 5),
+      setup.qc.Trauma('soother', setup.trait.trauma_brawn, 5),
+      setup.qc.Trauma('restrainer', setup.trait.trauma_brawn, 5),
+    ],
+  ],
+  [
+    'Quest_lost_puppyCrit',
+    [
+      setup.qc.MissingUnit('restrainer'),
+      setup.qc.AddTraitsRandom(
+        'restrainer',
+        setup.TraitHelper.getAllTraitsOfTags(['skin_werewolf']),
+        5,
+        false,
+        false
+      ),
+      setup.qc.Injury('soother', 12),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+  [setup.questpool.forest, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_lost_puppy [nobr]
+
+<p>
+The <<rep setup.trait.subrace_werewolf>> are a group of furry-bodied people usually found
+living across the <<lore region_vale>>. But while all of them are usually called werewolves,
+the species differ wildly from one tribe to another.
+A critical difference is in how they would grow their tribe.
+Some tribes are more traditional, where they copulate and raise their young into a proper adult.
+Some other tribes are gifted in the art of lycantrophy, and they could transform other race
+into a werewolf given enough time and given enough bites.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+<<Yourrep _u>> has heard that a newly bitten former-<<urace $g.puppy>> has escaped
+from one of the lycanthropous werewolves' camp and ran into the forest. If you want to,
+and if someone in your company has the ability to track <<them $g.puppy>> down,
+you could offer them a safe place to get used to their new body and
+add a strong slaver to the crew. Of course new werewolves can be dangerous and
+often exhibit little control over their infection, so if the team is not careful, then they could
+very well end up as part-werewolves themselves. Regardless, if you want to seize
+opportunity, you should decide quickly before the escapee gets inevitably tracked down by
+the werewolf clan otherwise.
+</p>
+
+:: Quest_lost_puppyCrit [nobr]
+
+<p>
+    The team ventures into the woods. <<Rep $g.tracker>> would then have to find the werewolf.
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        Given that
+        <<therace $g.puppy>> puppy was not native to the forest,
+        <<rep $g.tracker>> had an easy time finding <<them $g.puppy>>.
+        Once <<they $g.puppy>> was located, the difficult part started.
+        With sharp fangs and sharp claws, even the newest and most inexperienced werewolf
+        still pose a danger, so <<yourrep $g.restrainer>> had to somehow
+        safely wrestle the werewolf into the ground, making sure <<their $g.puppy>>
+        claws and fangs were far away from them.
+        Once the threat was somewhat neutralized,
+        <<rep $g.soother>> got to work.
+    </p>
+
+    <p>
+        Hidden beneath the poor puppy's furs were numerous bruises and scratches from their
+        predcimate, and <<rep $g.soother>> <<uadvcare $g.soother>> healed those wounds.
+        Only then did <<they $g.puppy>> realize that <<they $g.puppy>> was being healed, and stopped thrashing around.
+        <<They $g.puppy>> listened intently when the team explained that they had heard <<they $g.puppy>> had been clever enough to escape the werewolf camps.
+        When <<rep $g.puppy>> asked why they cared, <<rep $g.soother>> explained that <<their $g.puppy>> cunning and resourcefulness are always sought after in <<their $g.soother>> line of work,
+        and <<rep $unit.player>> were offering a job and a safe place, perhaps to get better acquintanced to <<their $g.puppy>> newly changed body.
+        After giving it some deeper thought, <<they $g.puppy>> agreed.
+        Once able to walk again,
+        <<rep $g.puppy>> grabbed a cloak from a low branch that it had blended in with, and gave it to your slavers.
+    </p>
+
+    <<dialogue $g.puppy>>
+        A down payment for helping me I suppose.
+    <</dialogue>>
+
+    <p>
+        Finally meeting someone without any malicious intent towards them,
+        <<rep $g.puppy>> opened up, and
+        regaled the team with <<their $g.puppy>> story and how <<they $g.puppy>> came to be bitten
+        as your slavers returned home.
+    </p>
+<<elseif $gOutcome == 'success'>>
+    <p>
+        But despite the fact that the missing captive was not native to the forest, <<rep $g.tracker>> had to spend quite a bit of time tracking down <<them $g.puppy>>.
+        Once <<they $g.puppy>> was located it became obvious that there had been a fight
+        between <<them $g.puppy>> and <<their $g.puppy>> former capturers.
+        There were quite a bit of blood spattered over around some of the trees, small tatters of fabric here and there, and when they looked closely on the <<uarms $g.puppy>> and <<uback $g.puppy>>, they bore multiple long wounds.
+        From the way <<they $g.puppy>> was holding <<their $g.puppy>> head, <<rep $g.soother>> suspected that <<rep $g.puppy>> also had a concussion.
+        <<Rep $g.restrainer>> tried to quickly grab the new werewolf and maneuver <<them $g.puppy>> into a position for urgent treatment, but the disoriented <<urace $g.puppy>> panicked and misread it as a hostile maneuver. <<They $g.puppy>> fought harder than <<rep $g.restrainer>> expected, and despite all the precautions, <<rep $g.restrainer>> ended up bitten.
+        Angrily <<rep $g.tracker>> smacked <<their $g.tracker>> <<uweapon $g.tracker>> at <<reps $g.puppy>> head, adding yet another concussion, but finally knocking <<them $g.puppy>> unconscious.
+        Not taking any chances, <<rep $g.restrainer>>
+        subdued and tied the <<uadjphys $g.puppy>> <<urace $g.puppy>>, before <<rep $g.soother>> <<uadvcare $g.soother>> treated both the werewolf and the bitten
+        <<rep $g.restrainer>>.
+    </p>
+
+    <<if $g.restrainer.isHasAnyTraitExact([
+"race_human",
+"race_elf",
+"race_greenskin",
+"race_catkin",
+])>>
+        <p>
+            About two hours past nightfall on the way out of the forest <<rep $g.restrainer>> doubled over with a scream. In front of the alarmed team,
+            <<rep $g.restrainer>> began shaking, <<their $g.restrainer>> body visibly transforming before their eyes.
+            It seems even newly infected werewolf could infect others, and <<rep $g.restrainer>> restrainer|was
+            not spared from the infection.
+        </p>
+
+        <p>
+            <<set _traits = setup.TraitHelper.getAllTraitsOfTags(['skin_werewolf'])>>
+            <<run setup.rng.shuffleArray(_traits)>>
+            <<set _done = 0>>
+            <<for _trait range _traits>>
+            <<if _done < 3 && $g.restrainer.isTraitCompatible(_trait) && !$g.restrainer.isHasTrait(_trait)>>
+                <<set _done = _done + 1>>
+                <<run setup.qc.Trait('restrainer', _trait).apply($gQuest)>>
+                <<if _trait == setup.trait.body_werewolf>>
+                    <<Reps $g.restrainer>> bones and muscles rearranged with sharp cracks and pops.
+                <<elseif _trait == setup.trait.mouth_werewolf>>
+                    <<Reps $g.restrainer>> skull elongated, before ending a long muzzle sharp teeth and a long panting tongue.
+                <<elseif _trait == setup.trait.ears_werewolf>>
+                    Their ears seemed to reabsorb and became two large fluffy werewolf ears
+                    sitting on top of <<their $g.restrainer>> head.
+                <<elseif _trait == setup.trait.arms_werewolf>>
+                    Their hands transformed, becoming wide and claw tipped.
+                <<elseif _trait == setup.trait.legs_werewolf>>
+                    Their feet shifted into something akin to a paw with tough pads and sharp claws.
+                <<elseif _trait == setup.trait.tail_werewolf>>
+                    Moaning, <<rep $g.restrainer>>
+                    arched <<their $g.restrainer>> back as
+                    <<set _cover = $g.restrainer.getGenitalCovering()>>
+                    <<if _cover>>
+                        underneath <<their $g.restrainer>> <<rep _cover>>
+                    <</if>>
+                    a strong fluffy tail grew from <<their $g.restrainer>> spine.
+                <<elseif _trait == setup.trait.dick_werewolf>>
+                    Between <<reps $g.restrainer>> legs <<their $g.restrainer>> <<udick $g.restrainer>> became a deep red, with a thick knot forming at base. Then a furry sheath grew over the new <<udick $g.restrainer>>.
+                <</if>>
+            <</if>>
+            <</for>>
+        </p>
+        <p>
+            Thankfully, it seems the infection was not extremely severe, and perhaps somewhat incomplete.
+            You could purify them in your <<rep setup.buildingtemplate.temple>>, should you have one.
+            <<Rep $g.tracker>> had to half carry the transformed <<rep $g.restrainer>> back home.
+            Given how much trouble the puppy has been causing the team,
+            <<rep $g.tracker>> and <<rep $g.soother>> both agreed <<rep $g.puppy>> is totally unsuitable for being a slaver, and was put into the <<rep setup.buildingtemplate.slavepens>>. It's only fair after all.
+        </p>
+    <<else>>
+        <p>
+            <<if $g.restrainer.isHasTrait('race_wolfkin')>>
+                Despite being bitten, as a fellow wolfkin <<rep $g.restrainer>> restrainer|was unaffected
+                by the lycanthropy curse.
+            <<else>>
+                Thankfully, the bite did not seem to have transformed <<rep $g.restrainer>> as well.
+                <<if $g.restrainer.isHasTrait('race_demon')>>
+                    Perhaps the lycanthropy curse is incompatible with <<their $g.restrainer>> demonic heritage.
+                <<elseif $g.restrainer.isHasTrait('body_dragonkin')>>
+                    Perhaps the bite could not penetrate <<their $g.restrainer>> scaly body.
+                <</if>>
+            <</if>>
+            With a grumble <<rep $g.restrainer>> lifted <<rep $g.puppy>> over <<their $g.restrainer>> shoulder and started heading home. <<They $g.restrainer>> decided that <<they $g.restrainer>> was going to pay the puppy some extra attention for the trouble <<they $g.puppy>> had caused, abandoning all ideas to recruit <<them $g.puppy>> as an equal.
+        </p>
+    <</if>>
+
+
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        <<Rep $g.tracker>> worked hard, <<they $g.tracker>> really did. <<They $g.tracker>> scoured the forest looking for the werewolf for days, but despite <<their $g.tracker>> efforts, the werewolf was nowhere to be found. After tirelessly hunting for the werewolf, <<rep $g.tracker>> finally called it quit and trekked back home, becoming tired and discouraged.
+    </p>
+<<elseif $gOutcome == 'disaster'>>
+    <p>
+        <<Rep $g.tracker>> managed to only find the werewolf tracks after a long period of searching.
+        <<if $g.tracker.isHasTrait('per_calm')>>
+            Uncharacteristically,
+        <<else>>
+            Impatient,
+        <</if>>
+        <<they $g.tracker>> rushed in the hopes of finally catching <<their $g.tracker>> quarry.
+        With their spirits uplifted, <<rep $g.soother>> and <<rep $g.restrainer>> ran to keep up with <<rep $g.tracker>>.
+        Unfortunately in <<reps $g.tracker>> rush, <<they $g.tracker>> missed the four other werewolves that had caught up to their prey as well.
+        With too many enemies to outrun, <<rep $g.restrainer>> told <<rep $g.tracker>> and <<rep $g.soother>> to made their escape while <<they $g.restrainer>> held off the angry werewolves.
+        <<Rep $g.tracker>> took off immediately, but <<rep $g.soother>> had a difficult time leaving <<rep $g.restrainer>> behind, and was hurt in the skirmish before finally giving up and followed suit. Out of the corner of <<their $g.soother>> eye, <<they $g.soother>> saw <<rep $g.restrainer>> fell to the werewolves,
+        and perhaps when you see <<them $g.restrainer>> again, <<they $g.restrainer>> will not be the same...
+    </p>
+<</if>>
+
+
+
+

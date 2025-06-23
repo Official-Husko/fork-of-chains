@@ -1,0 +1,93 @@
+:: QuestSetupUnitTrainingRoleplayBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_roleplay_basic',  /* id */
+  'Roleplay Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingRoleplayBasic',  /* description */
+  setup.qdiff.easy19,
+  [
+    [
+      'QuestUnitTrainingRoleplayBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_roleplay_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingRoleplayBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_roleplay_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingRoleplayBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingRoleplayBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingRoleplayBasic [nobr]
+
+<p>
+Slaves must understand that their bodies is not the only thing they can use
+to please their owners.
+Their words are valuable too, and slaves must be taught how to speak the right
+words and act just right to enhance their owner's arousal.
+This training will teach the slave basic speech skills, and with further training
+might be able to guide them to further roleplay as anything their owner desires.
+</p>
+
+:: QuestUnitTrainingRoleplayBasicCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The training was a complete success. <<Rep $g.trainee>> now trainee|have good understanding
+of the power of the choice of words made during sex.
+</p>
+
+<<else>>
+
+<p>
+At the end of the week, <<rep $g.trainee>> can now utter the right words most of the time
+during sex, although further training are required to make them believable.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingRoleplayBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> failed to grasp the lessons,
+and all too often <<they $g.trainee>> fail to come up with the right words
+for the occassion.
+</p>
+
+:: QuestUnitTrainingRoleplayBasicDisaster [nobr]
+
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

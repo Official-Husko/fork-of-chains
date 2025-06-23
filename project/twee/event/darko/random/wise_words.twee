@@ -1,0 +1,111 @@
+:: EventSetup_wise_words [nobr event]
+
+<<run new setup.Event(
+'wise_words', /* key */
+"Wise Words", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_wise_words',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.trauma_combat, setup.trait.trauma_brawn, setup.trait.trauma_survival, setup.trait.trauma_intrigue, setup.trait.trauma_slaving, setup.trait.trauma_knowledge, setup.trait.trauma_social, setup.trait.trauma_aid, setup.trait.trauma_arcane, setup.trait.trauma_sex], true),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.bg_monk, setup.trait.bg_wiseman], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.TraumaHeal('you', 20),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('you', setup.qres.AnyTrait([setup.trait.bg_monk, setup.trait.bg_wiseman])),
+    setup.qc.DoAll([
+      setup.qc.TraumaHeal('you', 100),
+      setup.qc.FriendshipWithYou('slaver', 200),
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined),
+  ),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.moraleoffice),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_wise_words [nobr]
+<p>
+Your mood has been quite sour in the recent weeks, and the future looks kinda bleak to you these few days. In fact, you
+<<set _trait = $unit.player.getTraitWithTag('trauma')>>
+<<if _trait>>
+<<= setup.Text.Unit.Trait.description($unit.player, _trait)>> these days.
+<</if>>
+But you won't stop that from messing with your work, and as you recall,
+<<yourrep $g.slaver>> slaver|have arranged to meet personally with you today.
+</p>
+
+<p>
+To your surprise, <<they $g.slaver>> slaver|want to address the
+<<if _trait>>
+<<= setup.Text.Unit.Trait.noun($unit.player, _trait)>>
+<</if>>
+that slaver|have been plaguing you.
+<<if $g.slaver.isHasTrait('per_evil')>>
+You know the slaver is generally evil, but you're too tired to think about that and just hope that <<they $g.slaver>> slaver|have your best interest for now.
+<<elseif $g.slaver.isHasTrait('per_lunatic')>>
+You know the slaver is a lunatic, but you're too tired to think about that and just hope that <<they $g.slaver>> slaver|have your best interest for now.
+<<elseif $g.slaver.isHasTrait('per_cruel')>>
+You know the slaver is generally cruel, but you're too tired to think about that and just hope that <<they $g.slaver>> slaver|have your best interest for now.
+<<else>>
+Seeing no reason to mistrust the slaver, you tiredly sigh and just follow along with whatever <<they $g.slaver>> slaver|have planned for you.
+<</if>>
+<<They $g.slaver>> then gently guide you in a spiritual meditation, a discipline
+the
+<<if $g.slaver.isHasTrait('bg_monk')>>
+ex-monk
+<<else>>
+wiseman
+<</if>>
+is very familiar with.
+Initially, it is difficult for you to clean your thoughts, but <<theslaver $g.slaver>> keeps guiding you, almost hypnotically through the entire procedure.
+<<if $g.you.isHasAnyTraitExact(['bg_monk', 'bg_wiseman'])>>
+Your past taught you how to meditate, however, and it helped tremendously in following <<reps $g.slaver>> guidance.
+<</if>>
+</p>
+
+<p>
+Before you realize, you feel the burderns starting to lift from your shoulders. At the end of the procedure, you are fast asleep, and <<they $g.slaver>> slaver|decide to leave you be for today and leave your office. When you wake up sometime later, you feel refreshed, as if a great burden has been lifted from you.
+</p>
+
+<p>
+<<if $g.slaver.isHasTrait('per_evil') or
+$g.slaver.isHasTrait('per_lunatic') or
+$g.slaver.isHasTrait('per_cruel')>>
+You've noticed that your pockets are slightly lighter now — it seems the
+<<if $g.slaver.isHasTrait('per_lunatic')>>
+lunatic
+<<elseif $g.slaver.isHasTrait('per_cruel')>>
+cruel
+<<else>>
+evil
+<</if>>
+slaver has taken some of your money as payment for <<their $g.slaver>> services. But considering how effective it was, you'd gladly pay twice over for the same treatment anywhere else.
+<<run setup.qc.Money(-1000).apply($gQuest)>>
+
+<</if>>
+
+</p>

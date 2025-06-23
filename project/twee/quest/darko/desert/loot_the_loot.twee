@@ -1,0 +1,131 @@
+:: QuestSetup_loot_the_loot [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_loot_the_loot1',
+"Human (Desert): All gender",
+'subrace_humandesert', /* pools */
+0,
+[
+setup.qc.TraitReplace('unit', setup.trait.per_evil),
+setup.qc.BgTraitReset('unit', setup.trait.bg_raider), ],
+)>>
+<<run new setup.UnitGroup(
+'quest_loot_the_loot2',
+"Villager",
+'subrace_humandesert', /* pools */
+0,
+[
+setup.qc.RemoveTraitsWithTag('unit', 'skill'),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'loot_the_loot', /* key */
+"Loot the Loot", /* Title */
+"darko", /* Author */
+[ 'desert', 'unit'
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'scavenger1': setup.qu.scavenger,
+'scavenger2': setup.qu.scavenger,
+'carrier': setup.qu.carrier, },
+{ /* actors */
+'raider': 'quest_loot_the_loot1',
+'villager': 'quest_loot_the_loot2', },
+[ /* costs */
+],
+'Quest_loot_the_loot',
+setup.qdiff.normal37, /* difficulty */
+[ /* outcomes */
+[
+'Quest_loot_the_lootCrit',
+[
+setup.qc.Slave('raider', 'a|was a raider who got injured during a raid and abandoned by their raidmates', undefined),
+setup.qc.MoneyCrit(0.8), ],
+], [
+'Quest_loot_the_lootSuccess',
+[
+setup.qc.Slave('villager', 'a|was a villager in a desert settlement which got attacked, survived, only to be captured by your company', undefined),
+setup.qc.MoneyNormal(0.8), ],
+], [
+'Quest_loot_the_lootFailure',
+[
+setup.qc.Injury('carrier', 1),
+setup.qc.Injury('scavenger1', 1),
+setup.qc.Injury('scavenger2', 1), ],
+], [
+'Quest_loot_the_lootDisaster',
+[
+setup.qc.Injury('scavenger1', 4),
+setup.qc.Injury('scavenger2', 4),
+setup.qc.Injury('carrier', 4), ],
+], ],
+[
+[setup.questpool.desert, setup.rarity.common],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_loot_the_loot [nobr]
+
+<p>
+The <<lore region_desert>> are choke-full of raiders.
+News of a settlement being raided comes everyday, and in fact,
+you have learned about one such unfortunate settlements
+which just got freshly raided.
+It is highly likely that the raiders were not thorough,
+and whatever survived the raid would make an easy picking for
+your slavers if you are looking for a cheap human slave.
+The raiders probably already took most of the valuable slaves though, so
+whatever slave you found is likely to be of lower quality.
+</p>
+
+
+:: Quest_loot_the_lootCrit [nobr]
+
+<p>
+Your slaver found one of the raiders who were injured during the raid and had
+to recover first in the ruins of the settlement. <<They $g.raider>>
+raider|was unable to fight back when your slavers
+<<uadv $g.scavenger1>>
+decided that the raider would make a much better slave than the rest of the
+settlement's survivors.
+</p>
+
+
+:: Quest_loot_the_lootSuccess [nobr]
+
+<p>The raiders were not at all thorough with the place — they
+indulged too much in using the villagers sexually and were sloppy during the
+looting.
+<<set _att = setup.selectUnit([$g.scavenger1, $g.scavenger2, $g.carrier], {trait: 'per_attentive'})>>
+<<if _att>>
+<<Rep _att>> attentively found several buildings that are still perfectly lootable.
+<</if>>
+Your slavers <<uadv $g.scavenger1>>
+managed to picked many of the locks and looted some of the still-locked
+containers in the settlement. They also found an unfortunate villager who
+they deemed sufficiently fit as a slave and brought back home.
+</p>
+
+
+:: Quest_loot_the_lootFailure [nobr]
+<p>
+Unfortunately, in an unexpected twist the ruins of the settlement were picked clean
+by an unusually thorough group of raiders. On the way back,
+they were attacked by several desert scorpions giving your slavers minor injuries.
+</p>
+
+
+:: Quest_loot_the_lootDisaster [nobr]
+<p>
+The raiders apparently was hiding in the village, knowing full well that it
+would attract scavengers, which they hoped to enslave.
+Still, your slavers were not defenseless, and after a ruthless fight managed to retreat to safety
+albeit sustaining heavy injuries.
+</p>

@@ -1,0 +1,49 @@
+:: EventSetup_veteran_slaver [nobr event]
+
+<<run new setup.Event(
+'veteran_slaver', /* key */
+"Veteran Slaver", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_veteran_slaver',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_slaver], true),
+  ],
+  'slave': [
+    setup.qres.AllTraits([setup.trait.job_slave, setup.trait.training_none], true),
+    setup.qres.NotBusy(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('veteran_slaver', {
+slaver: "slaver",
+you: "you",
+slave: "slave",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.trainingchamber),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_veteran_slaver [nobr]
+<<include "Opportunity_veteran_slaver">>

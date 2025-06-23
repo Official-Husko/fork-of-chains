@@ -1,0 +1,327 @@
+:: QuestSetupTreatmentMindMend [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'treatment_mindmend',  /* id */
+  'Treatment: Mind Mend',  /* Title */
+  'Milk Maid Sona',   /* author */
+  ['fort', 'trait', ],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.heal_head_master,
+    'assistant1': setup.qu.heal_assistant,
+    'assistant2': setup.qu.heal_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.mindmend_potion),
+  ],  /* costs */
+  'TreatmentMindMend',  /* description */
+  setup.qdiff.hardest50,
+  [
+    [
+      'TreatmentMindMendCrit',
+      [
+        setup.qc.TraitRemove('trainee', setup.trait.training_mindbreak),
+      ],
+    ],
+    [
+      'TreatmentMindMendCrit',
+      [
+        setup.qc.TraitRemove('trainee', setup.trait.training_mindbreak),
+        setup.qc.Injury('trainee', 2),
+        setup.qc.OneRandomSeed([
+          setup.qc.DoAll([
+            setup.qc.Injury('head', 2),
+            setup.qc.Injury('assistant1', 2),
+          ]),
+          setup.qc.DoAll([
+            setup.qc.Injury('head', 2),
+            setup.qc.Injury('assistant2', 2),
+          ]),
+        ]),
+      ],
+    ],
+    [
+      'TreatmentMindMendCrit',
+      [
+        setup.qc.TraitRemove('trainee', setup.trait.training_mindbreak),
+        setup.qc.Injury('trainee', 4),
+        setup.qc.Injury('head', 4),
+        setup.qc.Injury('assistant1', 2),
+        setup.qc.Injury('assistant2', 2),
+      ],
+    ],
+    [
+      'TreatmentMindMendCrit',
+      [
+        setup.qc.TraitRemove('trainee', setup.trait.training_mindbreak),
+        setup.qc.Injury('trainee', 6),
+        setup.qc.OneRandomSeed([
+          setup.qc.Injury('head', 12),
+          setup.qc.Injury('assistant1', 12),
+          setup.qc.Injury('assistant2', 12),
+        ]),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentMindMend [nobr]
+
+<p>
+The
+<<if $g.trainee>>
+<<if $g.trainee.isHasTrait('subrace_angel')>>
+Light Roosting
+<<elseif $g.trainee.isHasTrait('subrace_fairy')>>
+Essence of Fairytuality
+<<elseif $g.trainee.isHasTrait('subrace_dragonkin')>>
+Reblazing the Red Matter
+<<elseif $g.trainee.isHasTrait('subrace_tigerkin')>>
+Clawing Mentality
+<<elseif $g.trainee.isHasTrait('subrace_demon')>>
+Melting the Mind'sberg
+<<elseif $g.trainee.isHasTrait('race_elf')>>
+Revivify the Green
+<<elseif $g.trainee.isHasTrait('race_wolfkin')>>
+Hewling of the Mind
+<<elseif $g.trainee.isHasTrait('race_catkin')>>
+Meowding of the Mind
+<<elseif $g.trainee.isHasTrait('race_greenskin')>>
+Green Serene
+<<elseif $g.trainee.isHasTrait('race_lizardkin')>>
+Scalied Mending
+<<elseif $g.trainee.isHasTrait('race_demon')>>
+A Tiefling Mind
+<<else>>
+Mind Mending
+<</if>>
+
+<<else>>
+Mind Mending
+<</if>>
+
+treatment
+restores a unit's mind function and removes <<rep setup.trait.training_mindbreak>>.
+</p>
+
+<p>
+For this, the hard part is definitely on
+collecting the necessary information for the treatment, training your slavers to do it,
+getting a <<rep setup.item.mindmend_potion>>, as well as building a spa.
+Once that done, the most important step will be to perform
+the treatment itself. While it is guaranteed to work, the
+slave's reaction the moment they
+regain their consciousness can be violent and unpredictable. If handled
+poorly, more than one person can get hurt, so your slavers better be ready in
+case of an emergency in the middle of the procedure.
+</p>
+
+
+:: TreatmentMindMendCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+<p>
+The three healers followed the treatment's instruction to a T, and thanks to their great abilities,
+<<reps $g.trainee>> awakening was slow and peaceful, giving <<therace $g.trainee>> enough time
+to take in where <<they $g.trainee>> was and what was happening. <<rep $g.head>> engaged in a
+conversation with <<them $g.trainee>> to distract <<them $g.trainee>> while <<rep $g.assistant1>> 
+and <<rep $g.assistant2>> put shackles in <<their $g.trainee>> ankles and collar around <<their $g.trainee>>
+<<uneck $g.trainee>>.
+Before <<they $g.trainee>> could do anything, the three slavers had
+<<them $g.trainee>> secured and chained, preventing <<therace $g.trainee>>
+from running or fighting back. After all, even with a healthy mind, <<they $g.trainee>>
+trainee|is still your slave.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+The three healers followed the treatment's instruction to a T.
+
+<<if $g.trainee.isHasTrait('subrace_angel')>>
+Unfortunately, they didn't take into consideration that the patient in this
+case was a powerful <<urace $g.trainee>>, that in the middle of <<their
+$g.trainee>> confusion used their powerful magic to push the slavers against
+the walls of the room in an attempt to escape. This stunt only drained what
+little energy <<therace $g.trainee>> had left, who then collapsed in the
+floor to the relief of the slavers. They quickly secured the unconscious
+slave with chains and shackles, but their pride, and their backs, were
+already hurt.
+ 
+<<elseif $g.trainee.isHasTrait('subrace_fairy')>>
+But working with something like a <<urace $g.trainee>> wasn't common at all, so when the treatment concluded, <<rep $g.trainee>> was simply laying in the middle of the room, confused and scared. When the slavers tried to get close to <<them $g.trainee>>, <<therace $g.trainee>> quickly fled, using <<their $g.trainee>> wings to get to the top of the place. Unfortunately for <<them $g.trainee>>, there weren't any windows in the room, which only exit was a now guarded locked door. It took a while to capture the elusive <<urace $g.trainee>>, but with some rope, good aim and a lot of luck, <<rep $g.trainee>> was finally on the ground, all tied up. This hadn't gone without cost, since <<therace $g.trainee>> had found a couple of scalpels and glass recipients that he had thrown at the slavers, causing several wounds and almost cutting <<reps $g.head>> ear off.
+ 
+
+<<elseif $g.trainee.isHasTrait('subrace_dragonkin')>>
+Considering the type of patient they were treating, they took several
+precautions and chained <<therace $g.trainee>> firmly. Confident with this,
+the group had committed a single, but costly, mistake: the muzzle of the
+slave hadn't been secured, allowing the now awake and extremely angry slave
+to spit magic from it. Luckily, the position of <<their $g.trainee>> head
+didn't allow <<rep $g.trainee>> to directly target someone, but all the
+slavers had to duck and cover from the seemingly endless stream of magic
+coming from within <<rep $g.trainee>>, until the slave finally dropped
+unconscious, tired from using so much magic and <<their $g.trainee>> own
+strength to break the chains that kept <<them $g.trainee>> in place. Everyone
+in the room ended up a bit scorched, but luckily no one was severely
+wounded... this time.
+
+<<elseif $g.trainee.isHasTrait('subrace_tigerkin')>>
+Unfortunately, they didn't take into consideration that the patient in this case was a powerful <<urace $g.trainee>>. Disoriented and confused, <<rep $g.trainee>> pushed the slavers back and tried to escape, but the door was locked. Using their naked body, <<they $g.trainee>> started lunging at it, trying to break it down. Luckily, <<rep $g.head>> knock <<them $g.trainee>> down before they could hurt themselves more and after a short struggle, the still weak slave laid on the floor, secured by chains. Sadly, this fight ended up hurting everyone involved, some more than others.
+ 
+<<elseif $g.trainee.isHasTrait('subrace_demon')>>
+But for reason, they seemed to forgot that the patient in this case was an extremely powerful <<urace $g.trainee>>, who, after waking up naked and confused, cursed the three slavers for disrespecting him. A strong, magical black whirlwind filled the room, lifting materials, tools and slavers alike. They quickly began to feel their bodies change, corruption seeping into their very beings, but before the transformations were completed, everything came to a halt and they fell unceremoniously to the ground. Apparently <<therace $g.trainee>>, although powerful, had a limit on how much magic <<they $g.trainee>> could use when they had just woke up from such a heavy procedure, but the sudden fall and attempt at corruption had left everyone tired and a bit sore.
+ 
+<<elseif $g.trainee.isHasTrait('race_elf')>>
+<<rep $g.trainee>> slowly woke up, and the image of three strangers
+intensively looking at <<them $g.trainee>> naked body was enough to trigger
+<<their $g.trainee>> fight-or-fly reflex, which regrettably, turned to
+"fight". <<Theslaver $g.trainee>> tried to punch and kick <<their
+$g.trainee>> way out of the room, but <<their $g.trainee>> body was still too
+tired from the treatment and only managed to connect a couple of good hits
+before the slavers subdued <<them $g.trainee>>.
+ 
+<<elseif $g.trainee.isHasTrait('race_wolfkin')>>
+Unfortunately, they didn't take into consideration that the patient in this
+case was an unruly <<urace $g.trainee>>, who, after waking up in a weird room
+surrounded by strangers, tried to bite and claw <<their $g.trainee>> way into
+a fight and hopefully, out the strange place. Unprepared for an assault of
+sharp fangs and deadly claws, the three slavers had to sustain a couple of
+serious wounds in order to knock down a still tired <<rep $g.trainee>> and
+put a big metal leash around <<their $g.trainee>> neck.
+
+<<elseif $g.trainee.isHasTrait('race_catkin')>>
+After seeing <<rep $g.trainee>> wake up, the three slavers celebrated a job
+well done and sadly, let their guard down against the cunning and slippery
+<<urace $g.trainee>>. Fearful and confused, especially after having <<their
+$g.trainee>> questions ignored, <<rep $g.trainee>> looked for an opportunity
+to run towards the door, which <<rep $g.head>> gave to <<therace $g.trainee>>
+when <<they $g.head>> turned <<their $g.trainee>> back. <<rep $g.trainee>>
+made it to the door before anyone could react, but found it locked. After a
+chaotic game of neko-and-mouse, <<theslaver $g.trainee>> had been secured,
+but everyone involved looked pretty tired after such ordeal.
+ 
+<<elseif $g.trainee.isHasTrait('race_greenskin')>>
+Unfortunately, they didn't take into consideration that the patient in this
+case was a powerful and violent <<urace $g.trainee>>. The moment they found
+themselves in such a strange place, <<rep $g.trainee>> went into a rampage,
+hurling equipment and materials everywhere and hitting everyone else in the
+room in the process. <<Therace $g.trainee>>'s tantrum only lasted a minute
+before the exhaustion took <<them $g.trainee>> down, and the slavers slowly
+made their way to <<their $g.trainee>> unconscious body, making sure
+<<therace $g.trainee>> wouldn't wake up again.
+ 
+<<elseif $g.trainee.isHasTrait('race_lizardkin')>>
+Unfortunately, they didn't take into consideration that the patient in this
+case was a sturdy <<urace $g.trainee>>. Completely confused by the strangers
+examining <<their $g.trainee>> scaly naked body, <<rep $g.trainee>> quickly
+got enraged and started using <<their $g.trainee>> claws, fangs and heavy
+tail to fight the three unprepared slavers, who got a couple of claw marks
+and blows to the chest for their problems. Even so, a coordinated attack took
+down <<therace $g.trainee>> and shackles and chains quickly found their way
+to its body.
+
+<<elseif $g.trainee.isHasTrait('race_demon')>>
+After seeing <<rep $g.trainee>> wake up, the three slavers immediately started to do a full checkup of the slave, unsuspecting of <<therace $g.trainee>> plans. Waking up in a table, completely naked and then being scrutinized with no shame by strangers wasn't making <<rep $g.trainee>> happy, and <<their $g.trainee>> anger quickly raised until <<they $g.trainee>> decided it was enough. Calling on the strength of <<their $g.trainee>> demon ancestors, <<rep $g.trainee>> hit <<rep $g.trainee>> in the back of the head, briefly stunning <<them $g.head>>, and then ran towards the door, which to <<their $g.trainee>> dismay was locked. The other two slavers tried to subdue <<them $g.trainee>>, but they found a tough fight against <<therace $g.trainee>>, until <<rep $g.trainee>> paid them back with the same kind of blow to the head. Everyone came out of it a bit battered, and making a mental note of not underestimating a <<urace $g.trainee>> in a fist fight.
+ 
+<<else>>
+<<rep $g.trainee>> slowly woke up, and the image of three strangers
+intensively looking at <<them $g.trainee>> naked body was enough to trigger
+<<their $g.trainee>> fight-or-fly reflex, which regrettably, turned to
+"fight". <<Theslaver $g.trainee>> tried to punch and kick <<their
+$g.trainee>> way out of the room, but <<their $g.trainee>> body was still too
+tired from the treatment and only managed to connect a couple of good hits
+before the slavers subdued <<them $g.trainee>>.
+
+<</if>>
+</p>
+
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+The three healers had some problems with the treatment and took longer than
+necessary. Tired by their arduous job, the three looked at each with other
+with joy and pride when their patient got up by themselves, weirded out by
+the scene right in front of <<them $g.trainee>>. <<rep $g.head>> started to
+do a checkup of the slave's naked body to make sure everything had gone well
+while <<rep $g.assistant1>> and <<rep $g.assistant2>> started asking <<them
+$g.trainee>> questions to determine <<their $g.trainee>> mental state and
+personality. Uncomfortable by such invasion of <<their $g.trainee>> privacy,
+<<rep $g.trainee>> looked at the three slavers with wariness, until <<they
+$g.trainee>> heard one of them referring to <<them $g.trainee>> with the word
+“slave”. Panicking, <<therace $g.trainee>> kicked <<rep $g.assistant1>> and
+<<rep $g.assistant2>> and pushed down <<rep $g.head>> before running out of
+the room. It took a while and several fights with an angry naked <<urace
+$g.trainee>> to subdue them, but at the end everything seemed in order, save
+for the multiple wounds of several of the people involved.</p>
+<<elseif $gOutcome == 'disaster'>>
+<p>
+The three healers had a lot of problems to treat <<rep $g.trainee>>. Between
+fights and misunderstandings about the instructions of the treatment, they
+managed to finally heal <<reps $g.trainee>> mind. Unfortunately, the three
+slavers were too tired to do the appropriate follow-up and decided to lock
+the slave in its cell to check on <<them $g.trainee>> the next day. That same
+night, weird noises were heard close to <<therace $g.trainee>>'s cell and
+
+<<if $gQuest.getSeed() % 3 == 0>>
+<<set _i = $g.head>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<<set _i = $g.assistant1>>
+<<else>>
+<<set _i = $g.assistant2>>
+<</if>>
+
+<<rep _i>> approached it to see what was happening. Apparently,
+someone forgot a very important step in the treatment, which was stabilizing
+the body once the mind had been mended, and now <<rep $g.trainee>> was having
+a seizure. <<rep _i>> quickly began working on saving the slave's
+life,
+
+<<if $g.trainee.isHasTrait('subrace_angel')>>
+but suffered multiple serious wounds in the process after <<therace $g.trainee>> lost control of <<their $g.trainee>> magic and blasted <<rep _i>> straight in the face.
+ 
+<<elseif $g.trainee.isHasTrait('subrace_fairy')>>
+but suffered multiple serious wounds in the process while trying to pin down <<therace $g.trainee>> and preventing <<them $g.trainee>> from flying up, which only ended with both crashing into several walls and other cages.
+ 
+<<elseif $g.trainee.isHasTrait('subrace_tigerkin')>>
+but suffered multiple serious wounds in the process, courtesy of <<therace $g.trainee>>'s sharp claws and fangs.
+ 
+<<elseif $g.trainee.isHasTrait('subrace_dragonkin')>>
+but suffered multiple serious wounds in the process, courtesy of <<therace $g.trainee>> mythical strength and magic breath, which almost burned <<them _i>> down to ashes.
+ 
+<<elseif $g.trainee.isHasTrait('subrace_demon')>>
+but sufferd multiple serious wounds in the process after <<therace $g.trainee>> lost control of <<their $g.trainee>> magic and almost fully corrupted the slaver, who managed to stabilize <<them $g.trainee>> before the corruption was completed.
+ 
+<<elseif $g.trainee.isHasTrait('race_wolfkin')>>
+but suffered multiple serious wounds in the process, courtesy of <<therace $g.trainee>>'s sharp claws and fangs.
+
+<<elseif $g.trainee.isHasTrait('race_greenskin')>>
+but suffered multiple serious wounds in the process after trying to wrestle with a powerful <<urace $g.trainee>> like <<rep $g.trainee>>.
+ 
+<<elseif $g.trainee.isHasTrait('race_lizardkin')>>
+but suffered multiple serious wounds in the process, courtesy of <<therace $g.trainee>>'s sharp claws, fangs and powerful tail.
+ 
+<<elseif $g.trainee.isHasTrait('race_demon')>>
+but suffered multiple serious wounds in the process, after underestimating <<therace $g.trainee>> strength.
+ 
+<<elseif $g.trainee.isHasTrait('race_catkin')>>
+but suffered multiple serious wounds in the process, trying to pin down the slippery <<urace $g.trainee>>.
+
+<<else>>
+but suffered multiple serious wounds in the process.
+ 
+<</if>>
+
+At the end of the day, both <<rep _i>> and <<rep $g.trainee>> looked
+very tired and hurt, but at least this experience will serve to avoid
+something like this from happening again… or so you hope.
+</p>
+<</if>>
+ 

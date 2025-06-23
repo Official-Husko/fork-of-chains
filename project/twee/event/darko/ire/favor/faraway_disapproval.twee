@@ -1,0 +1,39 @@
+:: EventSetup_faraway_disapproval [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'faraway_disapproval', /* key */
+"Faraway Disapproval", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_faraway_disapproval',
+{ /* roles */
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('humansea', -20),
+setup.qc.Favor('humansea', -500),
+],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humansea', 20),
+setup.qres.FavorAtLeast('humansea', 500), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_faraway_disapproval [nobr]
+
+<p>
+Despite the long distance, your company has somehow maintain a positive
+relationship with the <<rep $company.humansea>>. But recent events have
+painted your company in a much worse light for them, and apparently they have
+enough of it. In the coming days, you receive much less communication from
+these elusive people. It seems they have decided to sever connections with
+your company as the result of your recent actions.
+</p>

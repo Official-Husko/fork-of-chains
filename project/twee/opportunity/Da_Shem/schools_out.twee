@@ -1,0 +1,111 @@
+:: OpportunitySetup_schools_out [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"schools_out0",
+"dropout",
+"subrace_humankingdom_male",  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+<<run new setup.UnitGroup(
+"schools_out1",
+"Graduate",
+'subrace_humankingdom_male',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+  setup.qc.Trait('unit', setup.trait.per_submissive),
+  setup.qc.Trait('unit', setup.trait.training_obedience_basic),
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'schools_out', /* key */
+"Schools Out", /* Title */
+{  /* Author */
+  name: "Da_Shem",
+  url: 'https://discord.com/channels/774271990571335710/780362824047394827/804270432689455104',
+},
+[ /* tags */
+  'maleonly',
+  'city',
+  'unit',
+],
+1, /* expiration weeks */
+'Opportunity_schools_out',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_schools_out_0',
+    'Opportunity_schools_out_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Slave('dropout1', "a|was a dropout from a harsh institute", true),
+      setup.qc.Slave('dropout2', "a|was a dropout from a harsh institute", true),
+      setup.qc.Slave('dropout3', "a|was a dropout from a harsh institute", true),
+      setup.qc.Slave('dropout4', "a|was a dropout from a harsh institute", true),
+    ],
+  ],
+  [
+    'Opportunity_schools_out_1',
+    'Opportunity_schools_out_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Slave('graduate', "a|was a graduate from a harsh institute", true),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'dropout1': 'schools_out0',
+  'dropout2': 'schools_out0',
+  'dropout3': 'schools_out0',
+  'dropout4': 'schools_out0',
+  'graduate': 'schools_out1',
+  'headteacher': [],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_schools_out [nobr]
+Turns out the head of the institute, <<name $g.headteacher>>, was as good as
+<<their $g.headteacher>> word.
+<<They $g.headteacher>> has sent a missive inquiring about your preferences.
+<<They $g.headteacher>> can provide you either with a good number of dropouts or a single graduate.
+
+
+:: Opportunity_schools_out_0 [nobr]
+Dropouts
+
+
+:: Opportunity_schools_out_0_flavor [nobr]
+You are sure you can find buyers for some empty headed young men. Your buyer
+are shown in to basement of the institute where they can choose freely from a
+small group
+
+
+:: Opportunity_schools_out_1 [nobr]
+Graduates
+
+
+:: Opportunity_schools_out_1_flavor [nobr]
+There are not many clients who are interested in an already broken slaves.
+You decide it is better to choose a nice submissive young plaything.

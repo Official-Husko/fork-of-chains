@@ -1,0 +1,153 @@
+:: QuestSetupFuckholeFair [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'fuckholefair', /* key */
+  'Fuckhole Fair', /* Title */
+  'darko',   /* author */
+  ['vale', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'trader': setup.qu.slavetrader,
+    'trainer': setup.qu.slavetrainer,
+    'guard': setup.qu.guard,
+    'slave': setup.qu.fuckholeslave,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+  ],
+  'QuestFuckholeFair', /* passage description */
+  setup.qdiff.normal12, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestFuckholeFairCrit',
+      [
+        setup.qc.MoneyNormal(1.2),
+        setup.qc.Opportunity('fuckhole_fair'),
+        setup.qc.Favor('humanvale', 20),
+      ],
+    ],
+    [
+      'QuestFuckholeFairCrit',
+      [
+        setup.qc.MoneyNormal(1.2),
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestFuckholeFairFailure',
+      [
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestFuckholeFairFailure',
+      [
+        setup.qc.Injury('slave', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.Building(setup.buildingtemplate.dungeons)
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestFuckholeFair [nobr]
+
+<p>
+One of the northern settlements is holding a festival! Everyone is
+welcome to bring any attraction to the festival -- the attendees
+would often pay in order to make use of the available attractions.
+Somehow, your company was also invited to the festivities.
+</p>
+
+<p>
+You could try to bring the main attraction in your company -- slaves, of course.
+The slave does not have to be properly trained -- any hole obedient or not can serve a fuckbooth after all --
+but perhaps it is best to bring along a slaver or three to properly showcase the sex toy.
+With the right approach and slogan, this could turn you a tidy amount of profit from the
+sexually liberated farmers.
+</p>
+
+
+:: QuestFuckholeFairCrit [nobr]
+
+  <<if $g.slave.isMale()>>
+  <<else>>
+    <<questimage 'fuckhole_fair_female.jpg'>>
+  <</if>>
+
+<p>
+Your slavers built a makeshift pillory in the middle of the village square,
+and secured the
+<<if $g.slave.isHasTrait('training_obedience_basic')>>
+  obedient
+<<else>>
+  defiant
+<</if>>
+slave inside the pillory.
+Following the old age advice of "test it before you deploy",
+the slavers spent the better part of the first a day testing out and sampling the various
+holes offered by the slave.
+<<set _careless = setup.selectUnit([$g.trader, $g.trainer, $g.guard], {trait: 'per_brave'})>>
+<<set _cautious = setup.selectUnit([$g.trader, $g.trainer, $g.guard], {trait: 'per_cautious'})>>
+<<if _cautious>>
+A prudently taken precaution, no doubt thanks to your careful slaver <<rep _cautious>>.
+<<elseif _careless>>
+(A complete turnaround from <<reps _careless>> usually careless self that you have no doubt won't stick long in the <<urace _careless>>.)
+<</if>>
+From the testing they made a couple of adjustments,
+including the necessity of proper lubing and a place to gather up the bodily fluids leaking
+from the slave to be sold for some extra income.
+</p>
+
+<p>
+Thanks to the solid preparation by your slavers, the fuckbooth became
+<<if $gOutcome == 'crit'>>
+  the biggest attraction
+<<else>>
+  a successful attraction
+<</if>>
+in the festival, drawing many people into trying
+<<yourrep $g.slave>> out.
+The slave's holes
+<<if $gOutcome == 'crit'>>
+were almost always occupied
+<<else>>
+were used quite a lot
+<</if>>
+throughout the festival, with the villagers
+becoming more and more creative as the festival go.
+<<Rep $g.slave>> became familiar with the feeling of having all types of garden vegetables
+shoved up <<their $g.slave>> <<uhole $g.slave>>, while your slavers happily count the money they managed
+to make out of this festival.
+<<if $gOutcome == 'crit'>>
+One of the well off attendee was so impressed with <<rep $g.slave>> after the slave took
+his boot up the ass that he
+offered your company a choice between buying one of your slaves or setting up contact with you,
+which you should receive in your mail by now.
+<</if>>
+</p>
+
+
+:: QuestFuckholeFairFailure [nobr]
+
+<p>
+Your slavers were lazy in their preparation, and did not rehearse the fuckbooth a day
+before the festival.
+As a result, they were missing a few key components during the festival,
+including the necessity of heavy dosage of lube inside <<reps $g.slave>> <<ubody $g.slave>>.
+<<if $gOutcome == 'disaster'>>
+With proper lubing, 
+the slave's holes were completely unusable after an hour in the hot day,
+and your slavers had no choice but to close shop early.
+<<else>>
+Sex with the slave became too rough as a result, and
+they did not attract many customers.
+<</if>>
+</p>

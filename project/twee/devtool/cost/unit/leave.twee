@@ -1,0 +1,62 @@
+:: CostLeaveReason [nobr]
+
+<div>
+Unit
+<<textbox '_leavereason' 'a|is training to become a great warrior'>>.
+<<message '(?)'>>
+  <div class='helpcard'>
+    Complete the sentence describing the reason for being on leave.
+    Don't put a period at the end.
+  </div>
+<</message>>
+</div>
+
+
+:: CostLeave [nobr]
+
+<p>
+<<devactordefault>> will be on leave from your company
+for <<numberbox "_weeks" 1>> weeks.
+The reason is as follows.
+</p>
+
+<<include 'CostLeaveReason'>>
+
+<br/>
+
+<div>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Leave($qgDefaultActorName, _leavereason, _weeks)>>
+<</link>>
+</div>
+
+
+:: CostLeaveNoDuration [nobr]
+
+<p>
+<<devactordefault>> will be on leave from your company for an indefinite number of weeks.
+The reason is as follows.
+</p>
+
+<<include 'CostLeaveReason'>>
+
+<br/>
+
+<div>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Leave($qgDefaultActorName, _leavereason)>>
+<</link>>
+</div>
+
+
+:: CostReturn [nobr]
+
+<p>
+<<devactordefault>> will return to your company from their leave.
+</p>
+
+<div>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.Return($qgDefaultActorName)>>
+<</link>>
+</div>

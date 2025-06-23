@@ -1,0 +1,140 @@
+:: QuestSetup_the_seven_deadly_transformation__gluttony [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+],
+{
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__gluttony', /* key */
+"The Seven Deadly Transformation: Gluttony", /* Title */
+"darko", /* Author */
+[ 'transformation',
+'vale',
+'trait',
+'prep'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'wizard': setup.qu.arcanewater,
+'convincer': setup.qu.convincer,
+'trainer': setup.qu.slavetrainer,
+'fated': _criteriafated, },
+{ /* actors */
+'seer': 'vale_all', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__gluttony',
+setup.qdiff.hard16, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__gluttonyCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.MoneyNormal(),
+],
+], [
+'Quest_the_seven_deadly_transformation__gluttonyCrit',
+[
+  setup.qc.TraitReplace('fated', setup.trait.tail_werewolf),
+  setup.qc.Trait('fated', setup.trait.training_obedience_basic),
+  setup.qc.Trait('fated', setup.trait.training_oral_basic), ],
+], [
+'Quest_the_seven_deadly_transformation__gluttonyFailure',
+[
+],
+], [
+'Quest_the_seven_deadly_transformation__gluttonyFailure',
+[
+setup.qc.MoneyCustom(-1500), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.ExistUnit([
+  setup.qres.Job(setup.job.slave),
+  setup.qres.HasTitle('seven_deadly_transformation'),
+  setup.qres.NoTrait(setup.trait.tail_werewolf),
+]),
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__gluttony [nobr]
+<<set _headunit = setup.getUnit({job: setup.job.slave, title: "seven_deadly_transformation"})>>
+<<if !_headunit>>
+<<dangertext "Due to your company missing a slave important for this quest, this quest is no longer able to be completed.">>
+<<else>>
+<p>
+Your company has been contacted by a seer from the <<lore region_vale>>, apparently in regard to one of your slaves: <<rep _headunit>>. The seer proclaims that <<they $g.seer>> foresaw the great destiny awaiting <<rep _headunit>>, and implores your company to release <<them _headunit>> to allow <<them _headunit>> to fulfill <<their _headunit>> destiny to head north into the werewolf encampments.
+</p>
+
+<p>
+You cunningly pressed for as much details as possible, before actually refusing by your right the release of such a potentially valuable slave. Although you now know all the required details in order to help <<rep _headunit>> advance their journey: In the cold <<lore region_vale>> where the werewolf dwells, <<rep _headunit>> must find a nourishment so delicious that <<they _headunit>> cannot help but crave for it for the remainder of <<their _headunit>> life.
+</p>
+
+<p>
+You can bring <<rep _headunit>> together with a group of slavers to search for this legendary dish. Perhaps this will increase the overall value of the slave.
+</p>
+
+<p>
+Or, the seer could be a complete hogwash, faking a divination for some coin.
+</p>
+<</if>>
+
+
+
+:: Quest_the_seven_deadly_transformation__gluttonyCrit [nobr]
+
+<p>
+Your slavers made <<rep $g.fated>> try all the possible northern dishes they can think off — grilled wild board, roasted salmon, and even lizard innards steak, but nothing seemed to trigger any meaningful response from <<rep $g.fated>>. That is, until
+<<rep $g.wizard>> <<uadv $g.wizard>> came up with the idea that perhaps it is something related to the werewolves living on the north, instead of a general dish in the northern areas.
+</p>
+
+<p>
+Your slavers scoured the <<lore region_vale>> for a relatively friendly werewolf clan. They finally found one led by an elderly werewolf — as a gesture of goodwill, your slavers lent <<yourrep $g.fated>> to be used by the werewolf clanmates while the slavers were talking to the elder. The elder suggested various dishes but during the discussion, something strange occured. Blinding light came out from where <<rep $g.fated>> fated|was located -- <<Rep $g.fated>> shone brightly while in the middle of deepthroating a werewolf's dick, and before your slavers' eyes, a werewolf tail grow out from the slave's rear.
+After the tail fully grown and the werewolf clanmate withdrew his cock from the slave's mouth,
+<<rep $g.fated>> fell to the ground with a satisfied look at <<their $g.fated>> face, licking the leftover cum from <<their $g.fated>> lips.
+</p>
+
+<p>
+It seems your slavers have somehow helped advance <<reps $g.fated>> destiny. Perhaps this "prophecy" is not a complete hogwash.
+<<if $gOutcome == 'crit'>>
+For such a good fuck, your slavers were given several gifts by the werewolf tribe.
+<</if>>
+</p>
+
+
+:: Quest_the_seven_deadly_transformation__gluttonyFailure [nobr]
+
+<p>
+Your slavers made <<rep $g.fated>> try all the possible northern dishes they can think off — grilled wild board, roasted salmon, and even lizard innards steak, but nothing seemed to trigger any meaningful response from <<rep $g.fated>>.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+Your slavers eventually run out of ideas and decided to head back home. Perhaps they can try again sometime.
+</p>
+<<else>>
+<p>
+Your slavers even tried some of the more expensive food, which still triggered no response from <<rep $g.fated>>.
+After wasting much of your money, your slavers eventually ran out of ideas and decided to head back home. 
+Looking at your slaver's face of satisfaction of having tasted many delicious and expensive cuisine of the north,
+you have your doubts that they were just wasting your money on whatever food they fancy...
+</p>
+<</if>>

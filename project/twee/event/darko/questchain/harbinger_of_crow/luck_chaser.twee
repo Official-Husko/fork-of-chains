@@ -1,0 +1,48 @@
+:: EventSetup_luck_chaser [nobr event]
+
+<<run new setup.Event(
+'luck_chaser', /* key */
+"Luck Chaser", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_luck_chaser',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('luck_chaser', {a: 'a'}),
+  setup.qc.SetCooldownEvent(null, 100),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_harbinger_of_luck_progress', '3'),
+  setup.qres.VarLte('quest_harbinger_of_luck_done', 2),
+  setup.qres.NoOpportunity('luck_chaser'),
+  setup.qres.NoQuest('seven_petal_baths'),
+  setup.qres.NoQuest('lucky_horseshoe'),
+  setup.qres.NoQuest('clover_witch'),
+  setup.qres.NoQuest('blessings_of_the_south'),
+  setup.qres.NoQuest('luckiest_person_on_mestia'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_luck_chaser [nobr]
+<p>
+<<if $varstore.get('quest_harbinger_of_luck_done')>>
+Having failed yet another attempt at removing the source of <<their $g.a>> bad luck does not seems to diminish <<reps $g.a>> determination to get rid of it permanently. <<They $g.a>> has once more come with several leads for potential ways to rid <<themself $g.a>> of the curse...
+<<else>>
+Having made up <<their $g.a>> mind to try and rid <<themself $g.a>> of <<their $g.a>> bad luck, <<rep $g.a>> spent the last few weeks searching for ways to get rid of <<their $g.a>> curse. <<They $g.a>> comes to you today with a list of such "leads", although looking at them, you can't help but feels that <<they $g.a>> did not actually found anything useful and just grasping for straws...
+<</if>>
+</p>

@@ -1,0 +1,183 @@
+:: QuestSetup_drug_regime [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'Defiant Slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.Trait(setup.trait.will_defiant),
+  setup.qres.HasTag('in_training_defiant_slave'),
+],
+{
+}
+)>>
+
+
+<<set _effects = [
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+  setup.qc.TraitRemove('slave', setup.trait.will_defiant),
+  setup.qc.AddHistory('slave', "a|was broken by a drug regime administered by your slavers together with a particularly devilish elven alchemist"),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('slave', setup.qres.AnyTrait([setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_flight, setup.trait.skill_connected, setup.trait.skill_hypnotic, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal, setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], true)),
+    setup.qc.DoAll([
+      setup.qc.DecreaseTraitsRandom('slave', [setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_flight, setup.trait.skill_connected, setup.trait.skill_hypnotic, setup.trait.skill_creative, setup.trait.skill_entertain, setup.trait.skill_alchemy, setup.trait.skill_animal, setup.trait.magic_fire, setup.trait.magic_fire_master, setup.trait.magic_water, setup.trait.magic_water_master, setup.trait.magic_wind, setup.trait.magic_wind_master, setup.trait.magic_earth, setup.trait.magic_earth_master, setup.trait.magic_light, setup.trait.magic_light_master, setup.trait.magic_dark, setup.trait.magic_dark_master], 1, false)
+    ], undefined),
+    setup.qc.DoAll([
+      setup.qc.RemoveRandomTraitWithTag('slave', 'bg')
+    ], undefined)),
+]>>
+
+
+<<run new setup.QuestTemplate(
+'drug_regime', /* key */
+"Drug Regime", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'forest',
+  'prep',
+],
+4, /* weeks */
+200, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'alchemist1': [ setup.qu.alchemist, 1],
+  'alchemist2': [ setup.qu.alchemist, 1],
+  'trainer': [ setup.qu.slavetrainer, 1],
+},
+{ /* actors */
+  'elf': 'subrace_elf',
+},
+[ /* costs */
+  setup.qc.OneRandomSeed([
+    setup.qc.DoAll([
+      setup.qc.LoseItem('mindmend_potion', 1),
+      setup.qc.LoseItem('potion_isolation', 1),
+      setup.qc.LoseItem('blank_potion', 1),
+    ], undefined),
+    setup.qc.DoAll([
+      setup.qc.LoseItem('love_potion_true', 1),
+      setup.qc.LoseItem('blank_potion', 1),
+      setup.qc.LoseItem('potion_tight', 1),
+    ], undefined),
+    setup.qc.DoAll([
+      setup.qc.LoseItem('potion_slavertraining', 1),
+      setup.qc.LoseItem('potion_tight', 1),
+      setup.qc.LoseItem('potion_isolation', 1),
+    ], undefined)
+  ]),
+],
+'Quest_drug_regime',
+setup.qdiff.normal1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_drug_regimeCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.SlaverMarker('elf'),
+    ],
+  ],
+  [
+    'Quest_drug_regimeCrit',
+    _effects,
+  ],
+  [
+    'Quest_drug_regimeCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_drug_regimeCrit',
+    [
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+
+],
+)>>
+
+:: Quest_drug_regime [nobr]
+<<set _u = setup.getUnit({tag: 'in_training_defiant_slave'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+
+<p>
+The elves living in the <<lore region_forest>> are great alchemists, known
+for having proficiency in mixing potions far above other races. But while
+most uses their gift for innocent purposes like healing, there are rumor of a certain
+elven <<lady $g.elf>> living in a secluded hut who's capable of mixing
+potions for more nefarious purposes. Your slavers somehow managed to get in
+contact with <<them $g.elf>>, who agrees to the offer of breaking <<rep _u>>
+with a liberal usage of potions.
+</p>
+
+<p>
+There is a catch, however — seeing how stubborn your slave is, <<they
+$g.elf>> would require the strongest of her concoctions to break the slave's
+mind. And it's up to you to supply <<them $g.elf>> with the requisite
+potions, all of them fairly rare in their regard. But your slavers assures
+you that <<they $g.elf>> mastery over alchemy is so good that once <<they
+$g.elf>> get <<their $g.elf>> <<uhands $g.elf>> on the potions, there is no
+chance for <<them $g.elf>> to fail at <<their $g.elf>> job.
+</p>
+
+<p>
+However, being drugged like this will definitely have permanent side effect,
+including minor amnesia and loss of skills. If you are prepared for the
+costs, then this could be your only chance to finally break that resistant
+mind of <<rep _u>>...
+</p>
+
+<p>
+Alternatively, you can always ignore this quest, and try to break the slave via other means.
+</p>
+
+<</if>>
+
+
+
+:: Quest_drug_regimeCrit [nobr]
+
+<p>
+The ingredients were not easy to come by at all, having to scour the entire
+continent of <<lore geo_mestia>> to search for the potions. <<Rep
+$g.trainer>> <<uadv $g.trainer>> led the team into the elven alchemist's hut,
+and delivered the potions to <<them $g.trainer>>. In the coming days, <<rep
+$g.alchemist1>> and <<utheirrel $g.alchemist1 $g.alchemist2>> <<rep
+$g.alchemist2>> helped in any way they can as they concocted various elixirs,
+ranging from elixir of nipple sensitivity to elixir of pain to break the
+slave's resistance, without damaging the mind... too much. The slave was
+helpless to do anything as <<they $g.slave>> remained bound throughout the
+procedure, gulping elixirs upon elixirs all while <<rep $g.trainer>> <<uadv
+$g.trainer>> used <<their $g.trainer>> slave training mastery to properly
+shape the slave's mind.
+</p>
+
+<p>
+The treatment lasted for a full month, with increasingly complex elixirs
+being gulped down <<rep $g.slave>> both from <<their $g.slave>> <<umouth
+$g.slave>> and occasionally inserted from <<their $g.slave>> rear and
+absorbed directly into <<their $g.slave>> sternum. But the result showed:
+<<rep $g.slave>> slave|is no longer showing any of <<their $g.slave>> former
+defiancy, and slave|is now deemed ready by <<yourrep $g.trainer>> for proper
+training. There is a noticable side-effect however, as the elixir left part
+of the slave's mind somewhat blank, making <<them $g.slave>> forget some of
+<<their $g.slave>> past...
+</p>

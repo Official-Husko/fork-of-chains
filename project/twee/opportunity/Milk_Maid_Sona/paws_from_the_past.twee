@@ -1,0 +1,180 @@
+:: OpportunitySetup_paws_from_the_past [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'paws_from_the_past', /* key */
+"Paws from the Past", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'furry',
+  'forest',
+  'prep',
+  'item',
+  'favor',
+],
+1, /* expiration weeks */
+'Opportunity_paws_from_the_past',
+setup.qdiff.normal46, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_paws_from_the_past_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTagGlobal('quest_neko_statue_marker'),
+      setup.qc.AddTitle('neko', 'quest_living_pawst_0'),
+    ],
+  ],
+  [
+    'Opportunity_paws_from_the_past_1',
+    'Opportunity_paws_from_the_past_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTagGlobal('quest_neko_statue_marker'),
+      setup.qc.SetCooldownEvent('paws_from_the_past', 20),
+    ],
+  ],
+[
+    'Opportunity_paws_from_the_past_2',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTagGlobal('quest_neko_statue_marker'),
+      setup.qc.SetCooldownEvent('paws_from_the_past', 1000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.OpportunityUnique(),
+],
+{ /* actors */
+  'neko': []
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_paws_from_the_past [nobr]
+
+<<if !$varstore.get('quest_furging_a_new_path_completed')>>
+
+<p>
+The letter comes from a small neko village in the <<lore region_forest>>, and the
+apparently it is their leader who sent the letter. The next paragraph is full of
+information about their culture, traditions and other useless details that
+almost makes you want to throw away the letter and continue with your work,
+but just before you do, a line catches your attention.
+</p>
+
+<p>
+Apparently, this small
+and recondite village somehow found out about one of your latest missions,
+where you freed an ancient <<urace $g.neko>>
+by breaking the spell that kept them as a living statue.
+This group of neko has great interest in their ancestors, the
+tigerkin, and also on the war between the elves and the neko from centuries ago.
+Thanks to their obsession, they believe
+that someone who had lived in those ancient times can be an incredible source of
+information and wisdom. Unfortunately (and concerningly for you), they also know
+about <<their $g.neko>> current mental state after being trapped for so long within the statue.
+</p>
+
+<p>
+However, the neko are quite resourceful, and they are fully aware that
+the elves have potions and rituals that could possibly recover a mind no matter how terribly lost
+it was.
+That's why they are asking, if possible, that you use your resources
+to give <<rep $g.neko>> <<their $g.neko>> sanity back, and nothing else.
+Whatever you decide to do with the slave afterwards,
+just the knowledge that
+one of their ancestors has regained their mind would be enough to cheer up all
+the villagers there.
+</p>
+
+<p>
+All this seems really strange. They want you to heal your slave, and no
+matter what you do with <<them $g.neko>> afterwards, they'll be thankful to you?
+Sounds incredibly suspicious,
+especially when you read that because they are such a “small and poor”
+village, they can't pay you for it. Of course...
+</p>
+
+<p>
+Well, you can do what they asked of you and restore <<yourrep $g.neko>>'s mind,
+if you have or willing to gather the facilities and materials to do so.
+Maybe this will net you some favor with the neko.
+Or, you could simply ignore the letter and use
+your new slave as the brainless sexdoll it currently is.
+After all, not healing <<them $g.neko>> now doesn't mean you can't heal <<them $g.neko>>
+in the future, if you consider it necessary.
+And what slaving company worth their name does charity
+work without the possibility of a juicy reward?
+</p>
+
+<p>
+Either way, it might be your best interest to start
+<<successtext "building your relationship with the">> <<rep $company.elf>>.
+</p>
+
+<<else>>
+
+<p>
+The terms are just as last time: you
+restore the mind of your new furry “employee” and he will spread much good word about
+your company with his people and the neighboring villages, improving your reputation
+with the neko of the area and opening new possibilities of juicy deals in
+the future. And considering the costs of the treatment, he better speaks
+wonders about you with them.
+</p>
+
+<p>
+Of course, you can always ignore his request, and while you are sure
+he will be a little disappointed by your rejection, he'll get over it as soon
+as he finds out that you freed another one of kind again. It makes
+you wonder, though, why he wants so many old neko soldiers loose around the village,
+and you still ignore how he knows whenever you release one of them…
+</p>
+
+<</if>>
+
+
+:: Opportunity_paws_from_the_past_0 [nobr]
+Accept their request
+
+
+:: Opportunity_paws_from_the_past_1 [nobr]
+Ignore the letter
+
+
+:: Opportunity_paws_from_the_past_1_flavor [nobr]
+
+<<if !$varstore.get('quest_furging_a_new_path_completed')>>
+<p>
+You crumple up the paper and throw it outside. Sweet words and pretty
+envelopes aren't enough to convince you to spend resources without the chance
+of getting something good in return. While the person writing the
+letter may have good intentions, your company simply cannot survive on “good intentions”
+alone. You get back to work with the pile of papers that are mounting in front of you and soon
+enough, you forget everything related to that mysterious letter.
+</p>
+<</if>>
+
+:: Opportunity_paws_from_the_past_2 [nobr]
+Ignore the letter and ignore all future letters

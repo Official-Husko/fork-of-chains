@@ -1,0 +1,101 @@
+:: EventSetup_something_to_say [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'something_to_say', /* key */
+"Something to Say", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_something_to_say',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.Home(),
+    setup.qres.FriendshipWithYouAtLeast(750),
+    setup.qres.Not(setup.qres.IsCanTalk()),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_something_to_say [nobr]
+<p>
+<<Rep $g.slave>> slave|is
+<<if $g.slave.isCanWalk()>>
+standing
+<<else>>
+crawling
+<</if>>
+before you for a regular play session.
+<<if !$g.slave.isAllowedTalk()>>
+<<They $g.slave>> slave|is studiously observing the letter of your rule against speaking, and
+<<else>>
+<<They $g.slave>> looks particularly uncomfortable with <<their $g.slave>> <<ucmouth $g.slave>> today, but
+<</if>>
+is doing <<their $g.slave>> best to make your play as enjoyable as possible. <<Their $g.slave>> desire to please radiates off <<them $g.slave>> in almost palpable waves. <<They $g.slave>> obviously wants to communicate something to you, but can't do it
+<<if !$g.slave.isAllowedTalk()>>
+without breaking the rules.
+<<else>>
+with the <<ucmouth $g.slave>> in the way.
+<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Let <<them $g.slave>> speak briefly if <<they $g.slave>>'s very quiet">>
+
+<p>
+You stand up from your <<uslaverbed $g.slave>> and approach <<them $g.slave>> very closely without touching <<them $g.slave>>. Looking straight into <<their $g.slave>> eyes, which are
+<<if $g.slave.isCanSee()>>fixed helplessly on you,<<else>>
+covered by <<their $g.slave>> <<uceyes $g.slave>>,
+<</if>>
+you tell <<them $g.slave>> that you'll let <<them $g.slave>> say whatever it is <<they $g.slave>> needs to say to you, but only if <<they $g.slave>>'s very quiet.
+<<ustripmouth $g.slave>>
+<<They $g.slave>> <<if $g.slave.isCanSee()>>looks at you with huge eyes but<</if>> nods vigorously. <<They $g.slave>> waits until you lean into <<them $g.slave>>, making <<them $g.slave>> shiver at your proximity, before putting <<their $g.slave>> lips next to your ear and whispering nervously, "I love you, <<Master $unit.player>>."
+<<They $g.slave>> recoils a little as if burned by the audacity of <<their $g.slave>> words, but only manages to back off a little before you gather <<their $g.slave>> rocking torso into your <<uarms $unit.player>>,
+holding the back of <<their $g.slave>> head with one <<uhand $unit.player>> and rubbing <<their $g.slave>> quivering back with the other. Eventually, <<they $g.slave>> relaxes into <<if $unit.player.isHasBreasts()>>your soft chest<<else>>you<</if>>, knowing that <<their $g.slave>> <<master $unit.player>> can never and will never reciprocate, but accepting that the loving physical contact is a tremendously kind gesture for a master to make.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', 50).apply($gQuest)>>
+
+<<opt "Make <<them $g.slave>> say it in the fort square">>
+
+<p>
+Since you suspect you know what it is <<they $g.slave>>  slave|want to say, you
+lead <<them $g.slave>> by the <<uhand $g.slave>> onto the fort the square, busy with your slavers and visitors alike.
+You tell <<them $g.slave>> quietly that <<they $g.slave>>'s to shout whatever it is <<they $g.slave>> wanted to say, if it's something everyone should hear;
+otherwise <<they $g.slave>>'s to keep it to <<themself $g.slave>>.
+<<ustripmouth $g.slave>>
+<<They $g.slave>>
+<<if $g.slave.isCanSee()>>looks around<<else>>listens<</if>> nervously, <<their $g.slave>> <<uskin $g.slave>> betraying a growing blush, before clearing <<their $g.slave>> throat twice, licking <<their $g.slave>> lips, and howling "I LOVE MY <<if $unit.player.isMale()>>MASTER<<else>>MISTRESS<</if>>" at the tops of <<their $g.slave>> lungs.
+When this is out of <<them $g.slave>>, <<they $g.slave>> collapses a little, as though the pressure of holding it inside were propping <<them $g.slave>> up.
+Many visitors around laughing at the fun, and your fellow slavers giving you discreet winks and quiet congratulations.
+</p>
+
+<<opt "Keep <<them $g.slave>> quiet but spend some time with <<them $g.slave>>">>
+
+<p>
+You announce that you're feeling like some quiet time. <<They $g.slave>> cannot keep <<if $g.slave.isCanSee()>>a gleam of humor out of <<their $g.slave>> eye<<else>>the corners of <<their $g.slave>> lips from rising slightly<</if>> at hearing 'quiet time,' and <<they $g.slave>> follows you <<if !$g.slave.isCanWalk()>>on all fours<</if>> happily enough. When <<they $g.slave>> <<if $g.slave.isCanSee()>>sees<<else>>realizes<</if>> you're headed to your bedroom <<they $g.slave>> begins to anticipate <<their $g.slave>> <<master $unit.player>>'s
+<<udickorstrap $unit.player>>, but is surprised to find that instead of using <<them $g.slave>> you simply climb into <<uslaverbed $g.slave>> and pull <<them $g.slave>> under the sheets with you. <<They $g.slave>>'s almost disappointed, but after looking into your resting face for a while, nestles <<their $g.slave>> head onto your <<ubreasts $unit.player>> and goes to sleep with a look of contentment on <<their $g.slave>> face. When the two of you wake from your brief nap, you ask <<their $g.slave>> if <<they $g.slave>> has anything else to communicate to you. <<They $g.slave>> smiles sleepily and shakes <<their $g.slave>> head no.
+</p>
+
+<</choose>>

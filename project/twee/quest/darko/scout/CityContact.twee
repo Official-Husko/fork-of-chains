@@ -1,0 +1,80 @@
+:: QuestSetupCityContact [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'city_contact',  /* id */
+  'Establish Contact: City of Lucgate',  /* Title */
+  'darko',   /* author */
+  ['city', 'special', 'quest'],  /* tags */
+  1, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_city,
+    'scout2': setup.qu.scout_city,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestCityContact',  /* description */
+  setup.qdiff.normal25,
+  [
+    [
+      'QuestCityContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.citylead),
+        setup.qc.QuestDelay(setup.questpool.city, 7),
+        
+      ]
+    ],
+    [
+      'QuestCityContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.citylead),
+        setup.qc.QuestDelay(setup.questpool.city, 4),
+        
+      ],
+    ],
+    [
+      'QuestCityContactFailure',
+      [
+        setup.qc.QuestDirect('city_contact'),
+      ],
+    ],
+    [
+      'QuestCityContactFailure',
+      [
+        setup.qc.QuestDirect('city_contact'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestCityContact [nobr]
+
+<p>
+With the <<rep setup.buildingtemplate.scoutoffice>> ready,
+you should send a group of slavers to go to the <<lore region_city>>
+in order to find some contacts who are willing to supply
+your company with quest leads.
+Finding such contact may be difficult due to how these people perceive
+slavers, but every city has an undercity, and it is there your slavers will
+most likely find their <<man $unit.player>>.
+</p>
+
+:: QuestCityContactCrit [nobr]
+
+<p>
+Your slavers struck a deal with one of the local city thieves.
+You are not privy to the details, but
+all you know is that your company will be able to receive quest leads from the thief.
+</p>
+
+:: QuestCityContactFailure [nobr]
+<p>
+Unfortunately, your slavers failed to find any such contact within the walls of the
+<<lore region_city>>. You should try again.
+</p>

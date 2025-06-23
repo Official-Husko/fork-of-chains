@@ -1,0 +1,41 @@
+:: EventSetup_coming_of_age [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'coming_of_age', /* key */
+"Coming of Age", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[ ], /* tags */
+'Event_coming_of_age',
+{ /* roles */
+},
+{ /* actors */
+'child': null },
+[ /* outcomes */
+setup.qc.Opportunity('coming_of_age', {child: 'child',}), ],
+[ /* restrictions to generate */
+],
+1, /* Cooldown */
+setup.rarity.never,  /* Rarity */
+)>>
+
+:: Event_coming_of_age [nobr]
+<<set _mom = $family.getUnitRelation($g.child, setup.familyrelation.mother)>>
+<<set _dad = $family.getUnitRelation($g.child, setup.familyrelation.father)>>
+<<set _u = setup.getAnySlaver()>>
+<p>
+Today marks the 18-th birthday of <<rep $g.child>>, which if you recall
+correctly was the <<daughter $g.child>> of
+<<if _mom && _mom.isSlaver()>>
+<<yourrep _mom>>.
+<<else>>
+a former slaver in your employ.
+<</if>>
+Now comes the day where you need to decide what to do with the <<lass $g.child>>.
+You can try asking <<yourrep _u>> for advice, but on a second thought these
+personal matters are best resolved with your own <<uhands $unit.player>>.
+</p>

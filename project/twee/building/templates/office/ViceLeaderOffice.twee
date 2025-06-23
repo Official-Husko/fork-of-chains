@@ -1,0 +1,47 @@
+:: InitBuildingViceLeaderOffice [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'viceleaderoffice',
+  tags: [],
+  width: 2,
+  height: 3,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'viceleaderoffice',
+  name: 'Vice-leader office',
+  tags: ['office'],
+  description_passage: 'BuildingViceLeaderOffice',
+  costs: [
+    [setup.qc.Money(-3200)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('trainingchamber'),
+      setup.qres.Building('dutyroom'),
+      setup.qres.Building('greathall'),
+    ],
+  ],
+  on_build: [
+    [setup.qc.Duty('viceleader')],
+  ],
+  main_room_template_key: 'viceleaderoffice',
+})>>
+
+:: BuildingViceLeaderOffice [nobr]
+
+<p>
+A lavish office suitable for your vice-leader to do their work.
+Unlocks the Vice-leader duty, which increases your skills based on their skills, i.e.,
+<<for _iskill, _skill range setup.skill>><<rep _skill>><</for>>.
+The Vice-leader also can help automate some of your tasks, including slave training and
+answering mails. You will need the Vice-Leader assigned for these to work, but it will still
+work even when the Vice-Leader is injured or is going on a quest.
+</p>

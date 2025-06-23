@@ -1,0 +1,1002 @@
+:: QuestSetup_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_ [nobr quest]
+
+<<set _criteriaraider = new setup.UnitCriteria(
+null, /* key */
+'Raider-Inventor', /* name */
+[
+  setup.trait.bg_engineer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_slaver,
+  setup.trait.bg_soldier,
+  setup.trait.bg_raider,
+  setup.trait.height_giant,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_active,
+  setup.trait.per_cruel,
+  setup.trait.per_evil,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.trait.bg_healer,
+  setup.trait.bg_priest,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_calm,
+  setup.trait.per_humble,
+  setup.trait.per_studious,
+  setup.trait.per_kind,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriascout = new setup.UnitCriteria(
+null, /* key */
+'Spotter', /* name */
+[
+  setup.trait.per_cautious,
+  setup.trait.per_attentive,
+  setup.trait.skill_flight,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.eyes_neko,
+  setup.trait.eyes_dragonkin,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge_caravan_raid_kingdom_of_tor_', /* key */
+"A Merchant\'s Revenge: Caravan Raid (Kingdom of Tor)", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'money',
+  'unit',
+  'ire',
+  'city',
+],
+1, /* weeks */
+2, /* expiration weeks */
+{ /* roles */
+  'fighter': [ setup.qu.fighter_city, 1],
+  'raider': [ _criteriaraider, 1],
+  'scout': [ _criteriascout, 1],
+},
+{ /* actors */
+  'slaves': 'a_merchant_s_revenge_caravan_raid_western_forest_1',
+},
+[ /* costs */
+],
+'Quest_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_',
+setup.qdiff.hard43, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.Slave('slaves', "a|was a member of a Toran caravan, captured by your slavers in a raid", undefined),
+      setup.qc.MoneyCustom(1500),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.MoneyCustom(2500),
+      setup.qc.Ire('humankingdom', 2),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_Crit',
+    [
+      setup.qc.TraumatizeRandom('scout', 5),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_Crit',
+    [
+      setup.qc.OneRandom([
+setup.qc.Injury('scout', 1),
+setup.qc.Injury('scout', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('fighter', 1),
+setup.qc.Injury('fighter', 2)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('raider', 1),
+setup.qc.Injury('raider', 2)
+]),
+      setup.qc.Ire('humankingdom', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('mlangmerchantprincequest', '5'),
+  setup.qres.VarLte('mlang_merchantrevenge_caravancount', 12),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_ [nobr]
+/* mlangmerchantprincequest 5 = Caravan Raiding
+mlang_merchantrevenge_caravancount = How many caravans successfully raided
+*/
+
+<div class='lettercard'>
+    <p>
+        Dear <<name $unit.player>>,
+    </p>
+    <p>
+        I have been made aware of a caravan carrying a shipment of
+        <<if $gQuest.getSeed() % 6 == 0>>
+            <<set _goods = "marble">>
+        <<elseif $gQuest.getSeed() % 6 == 1>>
+            <<set _goods = "wheat">>
+        <<elseif $gQuest.getSeed() % 6 == 2>>
+            <<set _goods = "apples">>
+        <<elseif $gQuest.getSeed() % 6 == 3>>
+            <<set _goods = "ale">>
+        <<elseif $gQuest.getSeed() % 6 == 4>>
+            <<set _goods = "linen">>
+        <<elseif $gQuest.getSeed() % 6 == 5>>
+            <<set _goods = "iron ingots">>
+        <</if>>
+        <<= _goods>>
+        is due to arrive at Lucgate very shortly. The matter is of urgency as the caravan originates inside the Kingdom. The usual bonus will apply if you can prevent it from reaching the city.
+    </p>
+</div>
+
+<p>
+    Turning the note over, you see a hastily sketched map showing
+    <<if $gQuest.getSeed() % 5 == 0>>
+        a shallow ford over the <<lore geo_cerna>>.
+        <<set _location = "river">>
+    <<elseif $gQuest.getSeed() % 5 == 1>>
+        a cobbled road leading north past large swathes of farmland.
+        <<set _location = "farmland">>
+    <<elseif $gQuest.getSeed() % 5 == 2>>
+        a rocky outcrop in the foothills of the western mountains.
+        <<set _location = "foothills">>
+    <<elseif $gQuest.getSeed() % 5 == 3>>
+        a rocky beach along the southern coastline.
+        <<set _location = "beach">>
+    <<elseif $gQuest.getSeed() % 5 == 4>>
+        a lakeside trail in the western marches.
+        <<set _location = "lake">>
+    <</if>>
+    While it looks possible to stage an ambush there, but the area is more heavily populated than you'd normally like. The chances of being seen are...a lot higher.
+</p>
+
+
+:: Quest_a_merchant_s_revenge_caravan_raid_kingdom_of_tor_Crit [nobr]
+/* Set cargo */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<set _goods = "marble">>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _goods = "wheat">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _goods = "apples">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _goods = "ale">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _goods = "linen">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _goods = "iron ingots">>
+<</if>>
+
+/* Set ambush location */
+<<if $gQuest.getSeed() % 5 == 0>>
+    <<set _location = "river">>
+<<elseif $gQuest.getSeed() % 5 == 1>>
+    <<set _location = "farmland">>
+<<elseif $gQuest.getSeed() % 5 == 2>>
+    <<set _location = "foothills">>
+<<elseif $gQuest.getSeed() % 5 == 3>>
+    <<set _location = "beach">>
+<<elseif $gQuest.getSeed() % 5 == 4>>
+    <<set _location = "lake">>
+<</if>>
+
+<<if $g.scout.getHomeland() == setup.Text.Race.REGIONS.city>>
+    Being very familiar with the lands around the fort,
+<<else>>
+    After a bit of time with the map,
+<</if>>
+<<if $g.scout.isYou()>>
+    you guided your slavers to
+<<else>>
+    <<name $g.scout>> guided your slavers to
+<</if>>
+
+<<if $g.scout.isYou() or $g.fighter.isYou() or $g.raider.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.scout.isYou()>>
+        <<run _notyou.push($g.scout)>>
+    <</if>>
+    <<if !$g.fighter.isYou()>>
+        <<run _notyou.push($g.fighter)>>
+    <</if>>
+    <<if !$g.raider.isYou()>>
+        <<run _notyou.push($g.raider)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    <<if _location == "river">>
+        a shallow section of the <<lore geo_cerna>>, not too far from your fort, and a favoured crossing point for travellers. The issue wasn't going to be ambushing the caravan—the issue was going to be getting away unseen.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road - leaving only a token guard outside. At that point your slavers moved back from their vantage points to rest until the dark of night.
+                <<if $unit.player.isHasAnyTraitExact(["per_lunatic", "per_evil"])>>
+                    Attacking the inn was always an option. Or burning it. After all, they set up business close to your fort, they knew the risks. Still, you had to be quiet. After all, you
+
+                <<else>>
+                    You normally didn't bother the inn. It was a simple matter of not shitting where you ate. Still, killing them all meant... except, you didn't have to kill them. You
+                <</if>>
+                just needed the goods. And the ford with its rough water was right there.
+            </p>
+
+
+            With the clouds covering the moon, you led your slavers around the back of the inn, easily subduing the single guard hiding inside the doorway in an attempt to keep warm.
+
+            <<if _goods == "ale">>
+                Once inside you quickly smashed open the barrels of ale and headed back to the ford.
+            <<elseif _goods == "marble">>
+                <p>
+                    It was unclear if the marble slabs were going to be continuing on road on drays, or floated down the river on barges.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth'})>>
+                    <<if _unit>>
+                        But the conundrum was solved when <<name _unit>> used their familiarity with earth magic to turn the marble into mud, which filled the bottom of the drays with a thick layer of sludge.<br>
+                        "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth_master'})>>
+                        <<if _unit>>
+                            But the conundrum was solved when <<name _unit>> used their mastery of earth magic to turn the marble into sand, which immediately started to fall through the cracks of the drays to the floor.<br>
+                            "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <<elseif _goods == "wheat" or _goods == "apples">>
+                <p>
+                    It was a simple enough matter to tip the _goods into the river, and you were able to call it a job well done.
+                </p>
+            <<elseif _goods == "linen">>
+                <p>
+                    After securing a few bolts for
+                    <<if $fort.player.isHasBuilding("workshop")>>
+                        your tailor,
+                    <<else>>
+                        yourself,
+                    <</if>>
+                    you, <<name _o1>> and <<name _o2>> took your knives and started cutting and stabbing into the remaining fabric. It wouldn't make it completely unsellable, but much of it would be useless for anything except rags.
+                </p>
+            <<else>>
+                <p>
+                    The heavy load of iron ingots was a problem. They were heavy and they were difficult to break.
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                    <<if _unit>>
+                        After a moment, <<name _unit>> shrugged.<br>
+                        "Get ready to run back over the ford," <<they _unit>> said and then used <<their _unit>> fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                        <<if _unit>>
+                            After a moment, <<name _unit>> shrugged.<br>
+                            "Get ready to run back over the ford," <<they _unit>> said and then used <<their _unit>> mastery of fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <</if>>
+
+
+            <p>
+                As you headed back across the ford, <<name _o2>> carried the guard back over <<their _o2>> shoulder. <<They $g.slaves>> might have seen your faces after all.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road - leaving only a token guard outside. At that point your slavers moved back from their vantage points to rest until the dark of night.
+                <<if $unit.player.isHasAnyTraitExact(["per_lunatic", "per_evil"])>>
+                    Attacking the inn was always an option. Or burning it. After all, they set up business close to your fort, they knew the risks. Still, you had to be quiet. After all, you
+
+                <<else>>
+                    You normally didn't bother the inn. It was a simple matter of not shitting where you ate. Still, killing them all meant... except, you didn't have to kill them. You
+                <</if>>
+                just needed the goods. And the ford with its rough water was right there.
+            </p>
+
+
+            With the clouds covering the moon, you led your slavers around the back of the inn, easily subduing the single guard hiding inside the doorway in an attempt to keep warm.
+
+            <<if _goods == "ale">>
+                Once inside you quickly smashed open the barrels of ale and headed back to the ford.
+            <<elseif _goods == "marble">>
+                <p>
+                    It was unclear if the marble slabs were going to be continuing on road on drays, or floated down the river on barges.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth'})>>
+                    <<if _unit>>
+                        But the conundrum was solved when <<name _unit>> used their familiarity with earth magic to turn the marble into mud, which filled the bottom of the drays with a thick layer of sludge.<br>
+                        "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth_master'})>>
+                        <<if _unit>>
+                            But the conundrum was solved when <<name _unit>> used their mastery of earth magic to turn the marble into sand, which immediately started to fall through the cracks of the drays to the floor.<br>
+                            "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <<elseif _goods == "wheat" or _goods == "apples">>
+                <p>
+                    It was a simple enough matter to tip the _goods into the river, and you were able to call it a job well done.
+                </p>
+            <<elseif _goods == "linen">>
+                <p>
+                    After securing a few bolts for
+                    <<if $fort.player.isHasBuilding("workshop")>>
+                        your tailor,
+                    <<else>>
+                        yourself,
+                    <</if>>
+                    you, <<name _o1>> and <<name _o2>> took your knives and started cutting and stabbing into the remaining fabric. It wouldn't make it completely unsellable, but much of it would be useless for anything except rags.
+                </p>
+            <<else>>
+                <p>
+                    The load of iron ingots was a problem. They were heavy and they were difficult to break.
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                    <<if _unit>>
+                        After a moment, <<name _unit>> shrugged.<br>
+                        "Get ready to run back over the ford," <<they _unit>> said and then used their fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                        <<if _unit>>
+                            After a moment, <<name _unit>> shrugged.<br>
+                            "Get ready to run back over the ford," <<they _unit>> said and then used their mastery of fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <</if>>
+            <p>
+                Unfortunately it appears that someone had been watching you from inside the inn, and the blame for the raid is very squarely placed at your feet. Either that, or people have just assumed given your fort's proximity to ford.
+            </p>
+
+
+        <<elseif $gOutcome == 'failure'>>
+            <<if _goods == "marble" or _goods == "iron ingot">>
+                <p>
+                    It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road. At that point your slavers moved back from their vantage points to rest until the dark of night.
+                    <<if $unit.player.isHasAnyTraitExact(["per_lunatic", "per_evil"])>>
+                        Attacking the inn was always an option. Or burning it. After all, they set up business close to your fort, they knew the risks. Still, you had to be quiet. After all, you
+
+                    <<else>>
+                        You normally didn't bother the inn. It was a simple matter of not shitting where you ate. Still, killing them all meant... except, you didn't have to kill them. You
+                    <</if>>
+                    just needed the goods. And the ford with its rough water was right there, and they hadn't placed guards outside. Amateurs.
+                </p>
+                <p>
+                    It was unclear if the _goods were going to be continuing on road on drays, or floated down the river on barges. There were barges though, and your slavers toiled for several hours to load them with the _goods, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                </p>
+                <p>
+                    Unfortunately, they didn't go as far as you'd hoped, and at the end of the week you heard stories of how the caravanners had found the sunken barges and dredged up their trade goods, even if they hadn't worked out who was behind the botched theft.
+                </p>
+            <<else>>
+                <p>
+                    You arrived at your vantage point overlooking the ford just in time to see the caravans had finished crossing. Caravans. Apparently your target had made friends on the road.
+                    <<if $unit.player.isHasTrait('per_aggressive')>>
+                        Your first instinct was to attack anyway, but you
+                    <<elseif $unit.player.isHasTrait('per_cautious')>>
+                        Peering down over the caravans, you
+                    <<else>>
+                        You
+                    <</if>>
+                    could tell moving against their combined numbers with your two slavers would be a recipe for disaster, and it was with some regret that you turned around and headed back to the fort.
+                </p>
+            <</if>>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road - leaving only a token guard outside. At that point your slavers moved back from their vantage points to rest until the dark of night.
+                <<if $unit.player.isHasAnyTraitExact(["per_lunatic", "per_evil"])>>
+                    Attacking the inn was always an option. Or burning it. After all, they set up business close to your fort, they knew the risks. Still, you had to be quiet. After all, you
+
+                <<else>>
+                    You normally didn't bother the inn. It was a simple matter of not shitting where you ate. Still, killing them all meant... except, you didn't have to kill them. You
+                <</if>>
+                just needed the goods. And the ford with its rough water was right there.
+            </p>
+
+            <p>
+                With the clouds covering the moon, you led your slavers around the back of the inn, only to be confronted by about a dozen guards.<br>
+                "We thought you lot might show up," one scarred veteran said, grinning evilly. "I don't think you're going to like what we have in store for you filthy pigs<br>
+            </p>
+            <p>
+                You and your slavers sustained a number of injuries as you fled back to the ford, and you're all lucky to have escaped with your lives.
+            </p>
+
+        <</if>>
+
+    <<elseif _location == "farmland">>
+        a quiet rural road more used by farmers than traders. Unfortunately none of the crops appeared tall enough to hide in, leaving you with hedgerows and the occasional strand of scrubby trees.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'per_smart'})>>
+                <<if _unit>>
+                    Given the lack of cover, <<name _unit>> had the bright idea of donning tabards that looked, in bad light, not too dissimilar to those worn by the Knights of Tor. Given it would be nearly impossible to evade the eyes of the peasants in the fields, <<they _unit>> suggested the easiest solution was to not hide at all.
+                <</if>>
+                You ended up taking up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively. Your ambush threw the caravanners into disarray. Being a small caravan travelling along the quiet backroads, they had few guards, who you easily overpowered. After finding the cargo of _goods intact, you decided to drive it back to your fort instead. You'd find some use for it, even if it was just selling it somewhere else.
+            </p>
+            <p>
+                You also brought back the last surviving member of the caravan, who surrendered rather than be put to the sword. Now you just have to decide if <<they $g.slaves>>'s worth keeping.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                You ended up taking up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively. Your ambush threw the caravanners into disarray. Being a small caravan travelling along the quiet backroads, they had few guards, who you easily overpowered. After finding the cargo of _goods intact, you decided to drive it back to your fort instead. You'd find some use for it, even if it was just selling it somewhere else.
+            </p>
+            <p>
+                Unfortunately you didn't account for the farmers who witnessed the fight and tended to the wounded who scattered into the surrounding farmland. Your name is cursed throughout the Kingdom and you may find the Toran people harder to deal with in the future.
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                You ended up taking up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively. Unfortunately, you never saw the caravan, and after a while you felt a bit foolish standing poorly concealed within a copse of trees - especially when you noticed the farmers staring at you. You considered taking one of them as a slave, but they already knew you were there, and you didn't really feel like running after them through the fields.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                You ended up taking up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively. Unfortunately, the cover was sparse, and the caravan guards spotted <<name $g.fighter>> before they got too close. You and your slavers were forced to flee under a barrage of crossbow bolts, and limped back to the fort empty handed.
+            </p>
+        <</if>>
+
+    <<elseif _location == "foothills">>
+        a crumbling outcrop of jagged rock, sticking up from the arid dirt of the eastern foothills. It wasn't as inhospitable as the desert over the mountains,
+        <<if $unit.player.getHomeland() == setup.Text.Race.REGIONS.desert>>
+            and to you it felt like the first time you'd been warm in months.
+        <<else>>
+            and you started to feel uncomfortably hot.
+        <</if>>
+        You did find a small spring and pool of water at the base of the rock—this was likely a watering point, and a very promising ambush spot. You directed your slavers to find hiding places where they'd be concealed from any caravans coming through the nearby mountain pass, and then settled in to wait.
+
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course, that was when you struck, raining arrows down from above before closing in and taking on the rest in combat. The few guards were no match for your seasoned veterans, and you soon found yourself in possession of a wagonload of _goods.
+            </p>
+            <p>
+                You also had a trussed up new slave to take home with you. Or potential slave. Good times.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course, that was when you struck, raining arrows down from above before closing in and taking on the rest in combat. The few guards were no match for your seasoned veterans, and you soon found yourself in possession of a wagonload of _goods.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                <<if $unit.player.getHomeland() == setup.Text.Race.REGIONS.desert>>
+                    When the sun dipped down below the horizon with no sign of the caravan, you inspected the spring more closely, and found recent tracks of humans, wagons and horses. It appeared that they'd already passed, and you'd missed the window of opportunity.
+                <<else>>
+                    After several hours in the baking sun you were forced to seek shelter, and the prospect of waiting out there for several days became too much to contemplate, and you decided to head back to the fort. There would be other caravans to ambush and you really couldn't be bothered with that one.
+                <</if>>
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. That was when you struck, but <<name _o2>> stumbled as they leapt off the outcrop, and sprained their ankle upon landing. Being one <<woman _o2>> down in the fight didn't help when you were already outnumbered, and you were forced to flee, all of you nursing injuries as you headed back toward the fort.
+            </p>
+        <</if>>
+
+    <<elseif _location == "beach">>
+        a windswept gravel beach, covered with driftwood and piles of seaweed turning silver as it dried and smelling strongly of salt.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Taking up positions inside the treeline, you waited for the smugglers to arrive. First a small, tattered schooner rowed into the bay, the wooden hull slipping into view through the mist. Then two longboats, laden with supplies were lowered into the water and rowed their way to the shore.
+            </p>
+            <p>
+                Waiting until they had unloaded all their goods,
+                <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                <<if _unit>>
+                    <<name _unit>> used their control of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                    <<if _unit>>
+                        <<name _unit>> used their mastery of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+                    <<else>>
+                        your slavers threw bottles of alchemist's fire onto the longboats, setting them aflame and cutting the smugglers on the beach off from their allies on the schooner.
+                    <</if>>
+                <</if>>
+            </p>
+            <p>
+                You fell upon the smugglers like a pack of hungry wolves and soon had them all defeated. Looking up you saw the schooner slip out of the bay, and you could only hope the captain either wouldn't recognise you, or wouldn't speak of it. After all, they'd already been paid for their services, and hopefully handsomely enough to replace two longboats.
+                <<if _goods == "marble" or _goods == "iron ingot">>
+                    The fire hadn't done significant damage to the _goods, so you ended up loading them into your own wagon. You'd find some use for it, even it was just selling them on.
+                <<else>>
+                    The fire and water had damaged the _goods to the point of ruin, and your job here was done.
+                <</if>>
+                Leaving the beach you returned to the fort with the one remaining smuggler in tow. Hopefully they'd make a worthwhile—and profitable—slave.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Taking up positions inside the treeline, you waited for the smugglers to arrive. First a small, tattered schooner rowed into the bay, the wooden hull slipping into view through the mist. Then two longboats, laden with supplies were lowered into the water and rowed their way to the shore.
+            </p>
+            <p>
+                Waiting until they had unloaded all their goods,
+                <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                <<if _unit>>
+                    <<name _unit>> used their control of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                    <<if _unit>>
+                        <<name _unit>> used their mastery of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+                    <<else>>
+                        your slavers threw bottles of alchemist's fire onto the longboats, setting them aflame and cutting the smugglers on the beach off from their allies on the schooner.
+                    <</if>>
+                <</if>>
+            </p>
+            <p>
+                You fell upon the smugglers like a pack of hungry wolves and soon had them all defeated. Looking up you saw the schooner slip out of the bay, and you could only hope the captain either wouldn't recognise you, or wouldn't speak of it. After all, they'd already been paid for their services, and hopefully handsomely enough to replace two longboats.
+                <<if _goods == "marble" or _goods == "iron ingot">>
+                    The fire hadn't done significant damage to the _goods, so you ended up loading them into your own wagon. You'd find some use for it, even it was just selling them on.
+                <<else>>
+                    The fire and water had damaged the _goods to the point of ruin, and your job here was done.
+                <</if>>
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Taking up positions inside the treeline, you waited for the smugglers to arrive. First a small, tattered schooner rowed into the bay, the wooden hull slipping into view through the mist. They paused for a while, almost as if waiting, and <<name $g.scout>> could see there was a hurried conversation happening on the deck of the ship. Then, they reversed course and rowed their way back out into open water, leaving you cursing your luck. You didn't think you'd been seen, but clearly something had spooked them.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Taking up positions inside the treeline, you waited for the smugglers to arrive. Unfortunately, the first thing to arrive were a pair of large crocodiles, who rushed up from the estuary and attacked <<name _o1>>, probably in search of an easy meal. Caught by surprise, you and your slavers fought valiantly to extricate themselves from the fight, and while the wounds you sustained weren't major, you all developed a fever and the wounds swelled painfully, probably something from the bite of those carrion eaters.
+            </p>
+            <p>
+                You never saw the smugglers, and after the crocodiles, you didn't feel like waiting around for them any longer
+            </p>
+
+        <</if>>
+
+
+    <<else>>
+        a shores of a placid blue lake out in the western marches. It seemed strange to you that such an idyllic place had not been settled, but it was very far from the city—and it was close enough to the <<lore region_forest>> that anyone settling here risked being raided - or enslaved - by the elves. Or possibly you.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                After a brief investigation, <<name _o1>> discovered the lake was fairly deep, and dropped away quickly from the shore. With that knowledge you set up an ambush with the track between you and the lake, and waited for the caravan to arrive. When they did, you pushed them hard, and <<name _o2>> went straight for the horses, scaring them into the waters of the lake where they foundered and sunk, dragging the wagons in with them. Suddenly, you all saw slimy green tentacles wrench the horses under water, returning moments afterward to pull under those traders who had fallen into the water along with the wagons. Although momentarily taken aback you and <<name _o1>> focused on forcing the guards back into the water and into the slimy embrace of whatever monster lived in the depths of the lake.
+            </p>
+
+            <p>
+                In the end, all that was left were floating wooden remnants of the trade wagons, and one caravanner who had surrendered rather than face a watery death. The surface of the lake bubbled and roiled for a while before going completely still once more, only the flotsam and the red clouds of blood testament to the violence that had just transpired.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                After a brief investigation, <<name _o1>> discovered the lake was fairly deep, and dropped away quickly from the shore. With that knowledge you set up an ambush with the track between you and the lake, and waited for the caravan to arrive. When they did, you pushed them hard, and <<name _o2>> went straight for the horses, scaring them into the waters of the lake where they foundered and sunk, dragging the wagons in with them. Suddenly, you all saw slimy green tentacles wrench the horses under water, returning moments afterward to pull under those traders who had fallen into the water along with the wagons. Although momentarily taken aback you and <<name _o1>> focused on forcing the guards back into the water and into the slimy embrace of whatever monster lived in the depths of the lake.
+            </p>
+
+            <p>
+                The surface of the lake bubbled and roiled for a while before going completely still once more, only the caravan flotsam and the red clouds of blood testament to the violence that had just transpired within its depths.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                After a brief investigation, <<name _o1>> discovered the lake was fairly deep, and dropped away quickly from the shore. <<They _o1>> also discovered the reason the lake hadn't been colonised when a large, green, slimy tentacle tried to wrap around <<their _o1>> leg. Jumping out of the water, you all backed away from the water's edge, and spied the caravan on the far side of the lake, their guards obviously having seen you. With the element of surprise lost and definitely outnumbered, you gave them a wave and turned to head back to the fort. You'd get the next caravan. This one was going to be far too much trouble.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                After a brief investigation, <<name _o1>> discovered the lake was fairly deep, and dropped away quickly from the shore. With that knowledge you set up an ambush with the track between you and the lake, and waited for the caravan to arrive. When they did, you pushed them hard, and <<name _o2>> went straight for the horses, attempting to drive them into the waters of the lake.
+            </p>
+            <p>
+                Unfortunately, the caravan was well guarded, and one of the guards turned out to be highly proficient in water magic, creating a waterspout that picked you up and dropped you into the middle of the lake. Soon, <<name _o1>> and <<name _o2>> joined you in the water, and the caravan continued on, moving out of your reach long before you'd all reached the shore. Cursing your bad luck you headed back to the fort, hoping that you hadn't broken any bones over the course of that fight—and fall.
+            </p>
+        <</if>>
+    <</if>>
+
+<<else>>
+    <<if _location == "river">>
+        a shallow section of the <<lore geo_cerna>>, not too far from your fort, and a favoured crossing point for travellers. The issue wasn't going to be ambushing the caravan—the issue was going to be getting away unseen.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road - leaving only a token guard outside. At that point your slavers moved back from their vantage points to rest until the dark of night.
+            </p>
+
+            With the clouds covering the moon, <<name $g.fighter>> led the way around the back of the inn, easily subduing the single guard hiding inside the doorway in an attempt to keep warm.
+
+            <<if _goods == "ale">>
+                Once inside your slavers quickly smashed open the barrels of ale and headed back to the ford.
+            <<elseif _goods == "marble">>
+                <p>
+                    It was unclear if the marble slabs were going to be continuing on road on drays, or floated down the river on barges.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth'})>>
+                    <<if _unit>>
+                        But the conundrum was solved when <<name _unit>> used their familiarity with earth magic to turn the marble into mud, which filled the bottom of the drays with a thick layer of sludge.<br>
+                        "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth_master'})>>
+                        <<if _unit>>
+                            But the conundrum was solved when <<name _unit>> used their mastery of earth magic to turn the marble into sand, which immediately started to fall through the cracks of the drays to the floor.<br>
+                            "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <<elseif _goods == "wheat" or _goods == "apples">>
+                <p>
+                    It was a simple enough matter to tip the _goods into the river, and your slavers were able to call it a job well done.
+                </p>
+            <<elseif _goods == "linen">>
+                <p>
+                    After securing a few bolts for
+                    <<if $fort.player.isHasBuilding("workshop")>>
+                        the tailor,
+                    <<else>>
+                        themselves,
+                    <</if>>
+                    your slavers took their knives and started cutting and stabbing into the remaining fabric. It wouldn't make it completely unsellable, but much of it would be useless for anything except rags.
+                </p>
+            <<else>>
+                <p>
+                    The load of iron ingots was a problem. They were heavy and they were difficult to break.
+
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                    <<if _unit>>
+                        After a moment, <<name _unit>> shrugged.<br>
+                        "Get ready to run back over the ford," <<they _unit>> said and then used <<their _unit>> fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                        <<if _unit>>
+                            After a moment, <<name _unit>> shrugged.<br>
+                            "Get ready to run back over the ford," <<they _unit>> said and then used <<their _unit>> mastery of fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <</if>>
+
+
+            <p>
+                As your slavers headed back across the ford, <<name $g.raider>> carried the guard back over <<their $g.raider>> shoulder. <<They $g.slaves>> might have seen your faces after all.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road - leaving only a token guard outside. At that point your slavers moved back from their vantage points to rest until the dark of night.
+            </p>
+
+            With the clouds covering the moon, <<name $g.fighter>> led the way around the back of the inn, easily subduing the single guard hiding inside the doorway in an attempt to keep warm.
+
+            <<if _goods == "ale">>
+                Once inside your slavers quickly smashed open the barrels of ale and headed back to the ford.
+            <<elseif _goods == "marble">>
+                <p>
+                    It was unclear if the marble slabs were going to be continuing on road on drays, or floated down the river on barges.
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth'})>>
+                    <<if _unit>>
+                        But the conundrum was solved when <<name _unit>> used their familiarity with earth magic to turn the marble into mud, which filled the bottom of the drays with a thick layer of sludge.<br>
+                        "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {trait: 'magic_earth_master'})>>
+                        <<if _unit>>
+                            But the conundrum was solved when <<name _unit>> used their mastery of earth magic to turn the marble into sand, which immediately started to fall through the cracks of the drays to the floor.<br>
+                            "Well, that was easy," <<name _unit>> said <<uadv _unit>>. "Shall we go?"
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <<elseif _goods == "wheat" or _goods == "apples">>
+                <p>
+                    It was a simple enough matter to tip the _goods into the river, and your slavers were able to call it a job well done.
+                </p>
+            <<elseif _goods == "linen">>
+                <p>
+                    After securing a few bolts for
+                    <<if $fort.player.isHasBuilding("workshop")>>
+                        the tailor,
+                    <<else>>
+                        themselves,
+                    <</if>>
+                    your slavers took their knives and started cutting and stabbing into the remaining fabric. It wouldn't make it completely unsellable, but much of it would be useless for anything except rags.
+                </p>
+            <<else>>
+                <p>
+                    The load of iron ingots was a problem. They were heavy and they were difficult to break.
+
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                    <<if _unit>>
+                        After a moment, <<name _unit>> shrugged.<br>
+                        "Get ready to run back over the ford," <<they _unit>> said and then used <<their _unit>> fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                    <<else>>
+
+                        <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                        <<if _unit>>
+                            After a moment, <<name _unit>> shrugged.<br>
+                            "Get ready to run back over the ford," <<they _unit>> said and then used <<their _unit>> mastery of fire magic to melt the ingots, turning them into a rapidly cooling mass that started both dripping through and burning the drays they were in, filling the stables with smoke. It wouldn't take long for the alarm to be raised.
+
+                        <<else>>
+                            There were barges though, and your slavers toiled for several hours to load them with the marble slabs, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                        <</if>>
+                    <</if>>
+                </p>
+            <</if>>
+            <p>
+                Unfortunately it appears that someone had been watching them from inside the inn, and the blame for the raid is very squarely placed at your feet. Either that, or people have just assumed given your fort's proximity to ford.
+            </p>
+
+
+        <<elseif $gOutcome == 'failure'>>
+            <<if _goods == "marble" or _goods == "iron ingot">>
+                <p>
+                    It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road. At that point your slavers moved back from their vantage points to rest until the dark of night.
+                </p>
+                <p>
+                    It was unclear if the _goods were going to be continuing on road on drays, or floated down the river on barges. There were barges though, and your slavers toiled for several hours to load them with the _goods, smash a hole in the side and set them adrift in the current. Hopefully by the time they sank they'd be stuck in rocks, or in deep, murky water.
+                </p>
+                <p>
+                    Unfortunately, they didn't go as far as you'd hoped, and at the end of the week you heard stories of how the caravanners had found the sunken barges and dredged up their trade goods, even if they hadn't worked out who was behind the botched theft.
+                </p>
+            <<else>>
+                <p>
+                    Your slavers arrived at their vantage point overlooking the ford just in time to see the caravans had finished crossing. Caravans. Apparently their target had made friends on the road. <<name $g.raider>> could tell moving against their combined numbers with only three slavers would be a recipe for disaster, and it was with some regret that they turned around and headed back to the fort.
+                </p>
+            <</if>>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                It was sundown when the caravan made it to the river, and rather than pitch a camp, most of them took rooms in the Inn at the far side of the road. At that point your slavers moved back from their vantage points to rest until the dark of night.
+            </p>
+
+            <p>
+                With the clouds covering the moon, <<name $g.fighter>> led the way around the back of the inn, only to be confronted by about a dozen guards.<br>
+                "We thought you lot might show up," one scarred veteran said, grinning evilly. "I don't think you're going to like what we have in store for you filthy pigs<br>
+            </p>
+            <p>
+                Your slavers sustained a number of injuries as you fled back to the ford, and you're all lucky to have escaped with your lives.
+            </p>
+
+        <</if>>
+
+    <<elseif _location == "farmland">>
+        a quiet rural road more used by farmers than traders. Unfortunately none of the crops appeared tall enough to hide in, leaving your slavers with hedgerows and the occasional strand of scrubby trees.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'per_smart'})>>
+                <<if _unit>>
+                    Given the lack of cover, <<name _unit>> had the bright idea of donning tabards that looked, in bad light, not too dissimilar to those worn by the Knights of Tor. Given it would be nearly impossible to evade the eyes of the peasants in the fields, <<they _unit>> suggested the easiest solution was to not hide at all.
+                <</if>>
+                Your slavers took up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively, and their ambush threw the caravanners into disarray. Being a small caravan travelling along the quiet backroads, they had few guards, who were easily overpowered. After finding the cargo of _goods intact, <<name $g.raider>> decided to drive it back to your fort instead. There'd be some use for it, even if it was just selling it somewhere else.
+            </p>
+            <p>
+                They also brought back the last surviving member of the caravan, who surrendered rather than be put to the sword. Now you just have to decide if <<they $g.slaves>>'s worth keeping.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Your slavers took up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively, and their ambush threw the caravanners into disarray. Being a small caravan travelling along the quiet backroads, they had few guards, who were easily overpowered. After finding the cargo of _goods intact, <<name $g.raider>> decided to drive it back to your fort instead. There'd be some use for it, even if it was just selling it somewhere else.
+            </p>
+            <p>
+                Unfortunately they didn't account for the farmers who witnessed the fight and tended to the wounded who scattered into the surrounding farmland. <<rep $company.player>> is cursed throughout the Kingdom and you may find the Toran people harder to deal with in the future.
+            </p>
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Your slavers took up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively. Unfortunately, they never saw the caravan, and after a while <<name $g.scout>> felt a bit foolish standing poorly concealed within a copse of trees - especially when <<they $g.scout>> noticed the farmers staring at them. <<name $g.raider>> considered taking one of them as a slave, but the farmers already knew your slavers were there, and <<they $g.raider>> didn't really feel like running after them through the fields.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Your slavers took up positions in a sloping area of covered in trees and scrub, clearly being too steep and rocky to farm productively. Unfortunately, the cover was sparse, and the caravan guards spotted <<name $g.fighter>> before they got too close. Your slavers were forced to flee under a barrage of crossbow bolts, and limped back to the fort empty handed.
+            </p>
+        <</if>>
+
+    <<elseif _location == "foothills">>
+        a crumbling outcrop of jagged rock, sticking up from the arid dirt of the eastern foothills. It wasn't as inhospitable as the desert over the mountains, and they started to feel uncomfortably hot.
+
+        <<name $g.scout>> found a small spring and pool of water at the base of the rock—likely a watering point, and a good spot for an ambush. Looking around, your slavers found some places to hide from the sight of any caravans coming through the nearby mountain pass.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course that was when <<name $g.scout>> launched the ambush, raining arrows down from above while <<name $g.fighter>> and <<name $g.raider>> charged in to engage the caravanners in melee. The few guards were no match for your seasoned veterans, and they soon found themselves in possession of a wagonload of _goods to bring home.
+            </p>
+            <p>
+                They also brought back a potential slave, who is now awaiting your pleasure in the fort's slave pens.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course that was when <<name $g.scout>> launched the ambush, raining arrows down from above while <<name $g.fighter>> and <<name $g.raider>> charged in to engage the caravanners in melee. The few guards were no match for your seasoned veterans, and they soon found themselves in possession of a wagonload of _goods to bring home.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                After several hours in the baking sun your slavers were forced to seek shelter, and the prospect of waiting out there for several days became too much to contemplate. There would be other caravans to ambush and <<name $g.raider>> really couldn't be bothered with that one - assuming it ever turned up.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The traders came down from the foothills, although based on their garb they were bringing goods down from a mountain village rather than coming in from the desert. Still, none of them appeared fully comfortable in the heat and they headed straight for the spring to quench their thirst. Of course that was when <<name $g.scout>> launched the ambush, , but <<name $g.fighter>> stumbled as they leapt off the outcrop, and sprained their ankle upon landing. Being one <<woman $g.fighter>> down in the fight didn't help when your slavers were already outnumbered, and they were forced to flee, all of them nursing injuries as they headed back toward the fort.
+            </p>
+        <</if>>
+
+    <<elseif _location == "beach">>
+        a windswept gravel beach, covered with driftwood and piles of seaweed turning silver as it dried and smelling strongly of salt.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Taking up positions inside the treeline, your slavers waited for the smugglers to arrive. First a small, tattered schooner rowed into the bay, the wooden hull slipping into view through the mist. Then two longboats, laden with supplies were lowered into the water and rowed their way to the shore.
+            </p>
+            <p>
+                Waiting until they had unloaded all their goods,
+                <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                <<if _unit>>
+                    <<name _unit>> used their control of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                    <<if _unit>>
+                        <<name _unit>> used their mastery of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+                    <<else>>
+                        your slavers threw bottles of alchemist's fire onto the longboats, setting them aflame and cutting the smugglers on the beach off from their allies on the schooner.
+                    <</if>>
+                <</if>>
+            </p>
+            <p>
+                Your slavers fell upon the smugglers like a pack of hungry wolves and soon had them all defeated. Looking up <<name $g.scout>> saw the schooner slip out of the bay, and <<they $g.scout>> could only hope the captain either wouldn't recognise them, or wouldn't speak of it. After all, they'd already been paid for their services, and hopefully handsomely enough to replace two longboats.
+                <<if _goods == "marble" or _goods == "iron ingot">>
+                    The fire hadn't done significant damage to the _goods, so your slavers ended up loading them into their own wagon. There'd be some use for the shipment, even it was just selling them on.
+                <<else>>
+                    The fire and water had damaged the _goods to the point of ruin, and your slavers considered their job was done.
+                <</if>>
+                Leaving the beach they returned to the fort with the one remaining smuggler in tow. Hopefully <<they $g.slaves>>'d make a worthwhile—and profitable—slave.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Taking up positions inside the treeline, your slavers waited for the smugglers to arrive. First a small, tattered schooner rowed into the bay, the wooden hull slipping into view through the mist. Then two longboats, laden with supplies were lowered into the water and rowed their way to the shore.
+            </p>
+            <p>
+                Waiting until they had unloaded all their goods,
+                <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire'})>>
+                <<if _unit>>
+                    <<name _unit>> used their control of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+
+                <<else>>
+
+                    <<set _unit = setup.selectUnit([$g.fighter, $g.raider, $g.scout], {trait: 'magic_fire_master'})>>
+                    <<if _unit>>
+                        <<name _unit>> used their mastery of fire magic to set the longboats alight, cutting off the smugglers' escape routes and preventing any immediate reinforcements from the ship.
+                    <<else>>
+                        your slavers threw bottles of alchemist's fire onto the longboats, setting them aflame and cutting the smugglers on the beach off from their allies on the schooner.
+                    <</if>>
+                <</if>>
+            </p>
+            <p>
+                Your slavers fell upon the smugglers like a pack of hungry wolves and soon had them all defeated. Looking up <<name $g.scout>> saw the schooner slip out of the bay, and <<they $g.scout>> could only hope the captain either wouldn't recognise them, or wouldn't speak of it. After all, they'd already been paid for their services, and hopefully handsomely enough to replace two longboats.
+                <<if _goods == "marble" or _goods == "iron ingot">>
+                    The fire hadn't done significant damage to the _goods, so your slavers ended up loading them into their own wagon. There'd be some use for the shipment, even it was just selling them on.
+                <<else>>
+                    The fire and water had damaged the _goods to the point of ruin, and your slavers considered their job was done.
+                <</if>>
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Taking up positions inside the treeline, you waited for the smugglers to arrive. First a small, tattered schooner rowed into the bay, the wooden hull slipping into view through the mist. They paused for a while, almost as if waiting, and <<name $g.scout>> could see there was a hurried conversation happening on the deck of the ship. Then, they reversed course and rowed their way back out into open water, leaving your slavers cursing their luck. <<name $g.scout>> didn't think they'd been seen, but clearly something had spooked them.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Taking up positions inside the treeline, your slavers waited for the smugglers to arrive. Unfortunately, the first thing to arrive were a pair of large crocodiles, who rushed up from the estuary and attacked <<name $g.fighter>>, probably in search of an easy meal. Caught by surprise, your slavers fought valiantly to extricate themselves from the fight, and while the injuries they sustained weren't major, they all developed a fever and the wounds swelled painfully, probably something from the bite of those carrion eaters.
+            </p>
+            <p>
+                They never saw the smugglers, and after the crocodiles, they didn't feel like waiting around for them any longer
+            </p>
+
+        <</if>>
+
+
+    <<else>>
+        a shores of a placid blue lake out in the western marches. It seemed strange to <<name $g.scout>> that such an idyllic place had not been settled, but it was very far from the city—and it was close enough to the <<lore region_forest>> that anyone settling here risked being raided - or enslaved - by the elves. Or even the catkin.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                After a brief investigation, <<name $g.scout>>discovered the lake was fairly deep, and dropped away quickly from the shore. With that knowledge your slavers set up an ambush with the track between them and the lake, and waited for the caravan to arrive. When it did, your slavers pushed them hard, and <<name $g.raider>> went straight for the horses, scaring them into the waters of the lake where they foundered and sunk, dragging the wagons in with them. Suddenly, your slavers saw slimy green tentacles wrench the horses under water, returning moments afterward to pull under those traders who had fallen into the water along with the wagons. Although momentarily taken aback, <<name $g.scout>> and <<name $g.fighter>> focused on forcing the guards back into the water and into the slimy embrace of whatever monster lived in the depths of the lake.
+            </p>
+
+            <p>
+                In the end, all that was left were floating wooden remnants of the trade wagons, and one caravanner who had surrendered rather than face a watery death. The surface of the lake bubbled and roiled for a while before going completely still once more, only the flotsam and the red clouds of blood testament to the violence that had just transpired.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                After a brief investigation, <<name $g.scout>>discovered the lake was fairly deep, and dropped away quickly from the shore. With that knowledge your slavers set up an ambush with the track between them and the lake, and waited for the caravan to arrive. When it did, your slavers pushed them hard, and <<name $g.raider>> went straight for the horses, scaring them into the waters of the lake where they foundered and sunk, dragging the wagons in with them. Suddenly, your slavers saw slimy green tentacles wrench the horses under water, returning moments afterward to pull under those traders who had fallen into the water along with the wagons. Although momentarily taken aback, <<name $g.scout>> and <<name $g.fighter>> focused on forcing the guards back into the water and into the slimy embrace of whatever monster lived in the depths of the lake.
+            </p>
+
+            <p>
+                The surface of the lake bubbled and roiled for a while before going completely still once more, only the caravan flotsam and the red clouds of blood testament to the violence that had just transpired within its depths.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                After a brief investigation, <<name $g.fighter>> discovered the lake was fairly deep, and dropped away quickly from the shore. <<They $g.fighter>> also discovered the reason the lake hadn't been colonised when a large, green, slimy tentacle tried to wrap around <<their $g.fighter>> leg. Jumping out of the water, your slavers backed away from the water's edge, and spied the caravan on the far side of the lake, the guards obviously having seen them. With the element of surprise lost and definitely outnumbered, <<name $g.scout>> gave them a wave and turned to head back to the fort. They'd get the next caravan. This one was going to be far too much trouble.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                After a brief investigation, <<name $g.fighter>> discovered the lake was fairly deep, and dropped away quickly from the shore. With that knowledge your slavers set up an ambush with the track between you and the lake, and waited for the caravan to arrive. When they did, your slavers pushed them hard, and <<name $g.raider>> went straight for the horses, attempting to drive them into the waters of the lake.
+            </p>
+            <p>
+                Unfortunately, the caravan was well guarded, and one of them turned out to be highly proficient in water magic, creating a waterspout that picked <<name $g.raider>> up and dropped them into the middle of the lake. Soon, <<name $g.fighter>> and <<name $g.scout>> joined <<them $g.raider>> in the water, and the caravan continued on, moving out of their reach long before they reached the shore. Cursing their bad luck your slavers headed back to the fort, hoping that they hadn't broken any bones over the course of that fight—and fall.
+            </p>
+        <</if>>
+    <</if>>
+<</if>>

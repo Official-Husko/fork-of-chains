@@ -1,0 +1,329 @@
+:: QuestSetup_grand_lunacy [nobr quest]
+
+<<set _criteriaprincess = new setup.UnitCriteria(
+null, /* key */
+'"Princess\"', /* name */
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_noble,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_kind,
+  setup.trait.per_lunatic,
+  setup.trait.skill_entertain,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_cruel,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 1,
+  social: 1,
+  sex: 1,
+}
+)>>
+
+<<set _criteriavillager = new setup.UnitCriteria(
+null, /* key */
+'"Villager\"', /* name */
+[
+  setup.trait.bg_entertainer,
+  setup.trait.per_gregarious,
+  setup.trait.per_playful,
+  setup.trait.per_lunatic,
+],
+[
+  setup.trait.per_loner,
+  setup.trait.per_serious,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1.5,
+  social: 1.5,
+}
+)>>
+
+<<set _criteriadragon = new setup.UnitCriteria(
+null, /* key */
+'"Dragon\"', /* name */
+[
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.body_dragonkin,
+  setup.trait.wings_dragonkin,
+],
+[
+  setup.trait.race_human,
+  setup.trait.height_dwarf,
+  setup.trait.height_short,
+  setup.trait.per_submissive,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+],
+{
+  brawn: 1.5,
+  arcane: 1.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'grand_lunacy', /* key */
+"Grand Lunacy", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'unit',
+  'unknown',
+],
+4, /* weeks */
+setup.INFINITY, /* expiration weeks */
+{ /* roles */
+  'princess': [ _criteriaprincess, 1.5],
+  'villager': [ _criteriavillager, 1.5],
+  'dragon': _criteriadragon,
+},
+{ /* actors */
+  'lunatic': [
+  ],
+},
+[ /* costs */
+],
+'Quest_grand_lunacy',
+setup.qdiff.easy42, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_grand_lunacyCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.BoonizeRandom('lunatic', 50),
+    ],
+  ],
+  [
+    'Quest_grand_lunacyCrit',
+    [
+      setup.qc.EquipmentDirect('social_neck_other'),
+      setup.qc.Return('lunatic'),
+    ],
+  ],
+  [
+    'Quest_grand_lunacyCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.TraumatizeRandom('lunatic', 30),
+    ],
+  ],
+  [
+    'Quest_grand_lunacyDisaster',
+    [
+      setup.qc.QuestDirectSelf({
+lunatic: "lunatic",
+}),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_grand_lunacy [nobr]
+<p>
+You've heard from your other slavers that your lunatic slaver <<rep $g.lunatic>>, who had run away from your for in search of "adventure", has been found. The problem is that the lunatic refuses to go back to your fort and return to work until their quest for "adventure" is satisfied. When asked for more details, <<they $g.lunatic>> murmured incoherently, something about "a village", "dragon", and a "princess".
+</p>
+
+<p>
+By know, you know the lunatic quite well, and you've resigned yourself that the only way to bring <<them $g.lunatic>> back into your fort is to fulfill whatever fantasy <<they $g.lunatic>> is imagining. This means you'll need to help <<them $g.lunatic>> find <<their $g.lunatic>> "village", "dragon", and "princess", whatever it means.
+While there are certainly villages around your fort, there are no dragon or princess whatsoever in the vicinity, so some of your slavers must simply make do as a substitute for them...
+</p>
+
+
+
+
+
+:: Quest_grand_lunacyCrit [nobr]
+<p>
+The trio of slavers you've chosen for this farce prepared as best as they could.
+<<Rep $g.villager>> donned a regular worn-out village garb, and
+<<rep $g.princess>>
+<<if $g.princess.isMale()>>
+wore a wig as well as an embarrassingly thick make-up to barely pass as a <<woman $g.princess>>.
+<<if $g.princess.isHasTrait('face_attractive')>>
+(At least <<their $g.princess>> pretty face helped hide the fact that there is a <<man $g.princess>> underneath.)
+<<elseif $g.princess.isHasTrait('face_scary')>>
+(Which was made much harder by <<their $g.princess>> masculine and intimidating face.)
+<<elseif $g.princess.isHasTrait('muscle_thin')>>
+(But at least <<their $g.princess>> thin stature made it easier to hide the <<man $g.princess>> underneath.)
+<<elseif $g.princess.isHasTrait('muscle_strong')>>
+(Which was made much harder by <<their $g.princess>> bulging manly muscles.)
+<</if>>
+<<else>>
+<<if $g.princess.isHasTrait('bg_noble') or $g.princess.isHasTrait('bg_royal')>>
+wore a delicate make-up, and the blue-blooded slaver looked completely natural playing <<their $g.princess>> role as a <<princess $g.princess>>.
+<<else>>
+wore a relatively thick make-up to pass as a <<princess $g.princess>>,
+despite <<their $g.princess>> commoner background.
+<</if>>
+<</if>>
+Meanwhile, <<rep $g.dragon>> tried <<their $g.dragon>> best to emulate a big, scary, hulking dragon.
+<<if $g.dragon.isHasTrait('body_dragonkin')>>
+<<Their $g.dragon>>
+<<if $g.dragon.isHasTrait('height_tall')>>
+big,
+<</if>>
+scaly body made it much easier, however.
+<<elseif $g.dragon.isHasTrait('wings_dragonkin')>>
+<<Their $g.dragon>> majestic draconic wings made the task much easier, however.
+<<elseif $g.dragon.isHasTrait('race_lizardkin')>>
+<<Their $g.dragon>> lizardkin heritage certainly gave <<them $g.dragon>> an edge.
+<<elseif $g.dragon.isHasTrait('magic_fire')>>
+<<They $g.dragon>> may not look like a dragon from the outside, but being able to use fire magic meant <<they $g.dragon>> could pretend to breathe fire from <<their $g.dragon>> <<umouth $g.dragon>>.
+<<elseif $g.dragon.isHasTrait('height_tall')>>
+<<They $g.dragon>> may not look like a dragon from the outside, but being tall gave <<them $g.dragon>> an edge in the role.
+<<else>>
+A difficult task, considering <<they $g.dragon>> dragon|was lacking in anything that could help <<them $g.dragon>> with an edge.
+<</if>>
+Finally, your slavers found a freshly-raided and abandoned farmstead to make use as a makeshift draconic stronghold.
+All in all, a flimsy plan, but you're not going to invest in anything more for the lunatic.
+</p>
+
+<p>
+With that, <<yourrep $g.villager>> departed towards the lonely tavern where <<yourrep $g.lunatic>> was busy drinking away.
+<<if $g.villager.isHasTrait('per_lunatic')>>
+You've chosen a fellow lunatic for the task, an apt decision.
+<<set _dramatically = 'dramatically'>>
+<<else>>
+<<Rep $g.villager>> shook <<their $g.villager>> head, but decided to get the job over with.
+<<set _dramatically = 'half-heartedly'>>
+<</if>>
+<<Therace $g.villager>> <<= _dramatically>> entered the tavern, before saying, "Oh woe is me, a princess has been kidnapped by a big bad dragon, and I am in need for a hero. Could there be one brave enough to rescue the princess?".
+<<Rep $g.villager>> could see <<reps $g.lunatic>> <<uears $g.lunatic>> perked up at the commotion, and <<therace $g.lunatic>> turned to face your slaver, "You have come to the right place, o <<urace $g.villager>>, for you stand before a mighty <<urace $g.lunatic>>, hero of legends.". <<Rep $g.lunatic>> had apparently donned a cape from somewhere, trying to look cool. The cape was probably taken from one of the bedsheets in the upper floors, so it had the opposite effect instead.
+</p>
+
+<p>
+With the "villager"'s guidance, the "hero" ventured into the farmstead-turned-dragon-lair. Therein,
+<<yourrep $g.dragon>> blocked the path, standing before <<therace $g.lunatic>> and the farmstead behind.
+
+<<if $g.dragon.isHasTrait('per_lunatic')>>
+The fellow lunatic was completely in character, doing <<their $g.dragon>> best "dark, evil dragon" impression.
+<</if>>
+
+<<if $g.dragon.isHasTrait('body_dragonkin')>>
+<<Therace $g.dragon>> dragon|was almost naked, showing off <<their $g.dragon>> dragon-like scales as much as possible.
+<</if>>
+
+<<if $g.dragon.isHasTrait('wings_dragonkin')>>
+<<Their $g.dragon>> <<uwings $g.dragon>> were expanded intimidatingly from behind.
+<</if>>
+
+<<if $g.dragon.isHasTrait('magic_fire')>>
+Using <<their $g.dragon>> fire magic, <<they $g.dragon>> breathed a little fire from inside <<their $g.dragon>> <<umouth $g.dragon>>, adding to the immersion.
+<</if>>
+
+<<if $g.dragon.isHasTrait('face_scary')>>
+<<Their $g.dragon>> intimidating face add to the persona of "bad, evil dragon".
+<</if>>
+
+<<if $g.dragon.isHasTrait('face_attractive')>>
+<<Their $g.dragon>> <<uface $g.dragon>> distracted from the person of "bad, evil dragon".
+<</if>>
+
+
+<<if $g.dragon.isHasTrait('height_tall')>>
+<<Their $g.dragon>> large body made the disguise look somewhat more belieavable.
+<</if>>
+
+<<if $g.dragon.isHasTrait('height_short')>>
+<<Their $g.dragon>> short stature made the disguise look somewhat less belieavable.
+<</if>>
+
+However, it was abundantly clear that <<rep $g.dragon>> dragon|is just a <<urace $g.dragon>>, not a pure evil dragon, and anyone but the stark raving mad would be able to see this.
+</p>
+
+<p>
+But <<rep $g.lunatic>> is a stark raving mad, and hence the play continued. "I have come to rescue the princess from your evil clutches!", screamed <<therace $g.lunatic>> as <<they $g.lunatic>> charged in.
+<<if $g.dragon.isHasTrait('per_lunatic')>>
+The completely-in-character <<rep $g.dragon>> responded in kind, and the two engaged in a "fight", with wooden swords and farming rake as weapons.
+<<else>>
+Not wanting to get injured, <<rep $g.dragon>> wisely decided to feign defeat at the first touch of <<reps $g.lunatic>> harmless wooden sword.
+<</if>>
+With the "evil" vanquished, the lunatic slaver proceeded to bask in the "glory" and advanced into the "dragon lair" to receive <<their $g.lunatic>> well-deserved "gratitude" of the princess.
+</p>
+
+<p>
+Your slavers, all four of them, finally came back home. The "princess", <<rep $g.princess>>, stubbornly refused to talk about whatever might have happened inside the small farm hut.
+<<if $g.princess.isHasTrait('per_lunatic')>>
+When pressed for more information, <<they $g.princess>> simply let out a lunatic grin. On a second thought, you probably don't want to know what two lunatics would do inside a small, secluded farmstead...
+<<else>>
+
+Judging from <<their $g.princess>> occasional blush, however, you have little doubt about what might have happened inside.
+<<if $g.princess.isHasTrait('face_attractive')>>
+Perhaps the "hero" was enchanted by the princess' "beauty", and they copulated.
+<</if>>
+<<if $g.princess.isHasTrait('face_scary')>>
+Perhaps the "hero" was disgusted by the princess' "beauty", but still, a princess is a princess and they copulate.
+<</if>>
+
+<<if $g.princess.isHasTrait('muscle_thin')>>
+The "princess"'s narrow waist must have attracted quite a reaction from the lunatic.
+<<elseif $g.princess.isHasTrait('muscle_strong')>>
+The "princess" muscularity must have made it harder to believe that <<they $g.princess>> could be a princess, but you're not sure the lunatic even cared.
+<</if>>
+
+<<if $g.princess.isHasTrait('bg_noble') or $g.princess.isHasTrait('bg_royal')>>
+After all, the "princess" is as real as it could get, and actual blue blood flows within <<their $g.princess>> veins.
+<<else>>
+While the "princess" may just be a regular commoner, surely <<their $g.princess>> disguise was sufficient to convince your lunatic that it was not so.
+<</if>>
+
+<</if>>
+
+</p>
+
+<p>
+The next day, <<yourrep $g.lunatic>> reported for duty as usual, all trace of lunacy gone for the moment.
+Had it not for the lousy cape <<they $g.lunatic>> still wore that day, you would be hard-pressed to guess that this was the same <<man $g.lunatic>> that had gone on a rescue mission in the day past...
+</p>
+
+<p>
+<<if $gOutcome == 'crit'>>
+In the coming days, you also notice that <<rep $g.lunatic>> lunatic|have become much more cheerful — perhaps your little theatrics were a little too effective...
+<<elseif $gOutcome == 'failure'>>
+In the coming days, you also notice that <<rep $g.lunatic>> lunatic|is a little bit depressed, perhaps your little theatrics were a little bit too underwhelming...
+<</if>>
+</p>
+
+
+
+
+
+:: Quest_grand_lunacyDisaster [nobr]
+<p>
+The trio of slavers you sent yonder to woo <<rep $g.lunatic>> into an adventure of a lifetime had failed miserably. Not even a stark raving lunatic would believe the makeshift disguises they have donned. You completely understand their lack of enthusiasm of the task, but still you should try again if you want the lunatic to come back to your fort.
+</p>

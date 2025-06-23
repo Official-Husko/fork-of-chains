@@ -1,0 +1,197 @@
+:: QuestSetup_brothel_focus_ii [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'brothel_focus_ii', /* key */
+"Brothel Focus II", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'upgrade',
+],
+4, /* weeks */
+40, /* expiration weeks */
+{ /* roles */
+  'teacher': [ setup.qu.sex_teacher, 1],
+  'helper1': [ setup.qu.whore, 1],
+  'helper2': [ setup.qu.whore, 1],
+},
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+],
+'Quest_brothel_focus_ii',
+setup.qdiff.hard59, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_focus_iiCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.BoonizeRandom('teacher', 15),
+      setup.qc.BoonizeRandom('helper1', 15),
+      setup.qc.BoonizeRandom('helper2', 15),
+    ],
+  ],
+  [
+    'Quest_brothel_focus_iiCrit',
+    [
+      setup.qc.Opportunity('brothel_focus_ii', {
+owner: "owner",
+head: "head",
+}),
+    ],
+  ],
+  [
+    'Quest_brothel_focus_iiCrit',
+    [
+      setup.qc.Leave('teacher', "a|is looking for a lost whore in the vast Neko Port City ", 4),
+      setup.qc.Leave('helper1', "a|is looking for a lost whore in the vast Neko Port City ", 4),
+      setup.qc.Leave('helper2', "a|is looking for a lost whore in the vast Neko Port City ", 4),
+    ],
+  ],
+  [
+    'Quest_brothel_focus_iiCrit',
+    [
+      setup.qc.Leave('teacher', "a|is looking for a lost whore in the vast Neko Port City ", 8),
+      setup.qc.Leave('helper1', "a|is looking for a lost whore in the vast Neko Port City ", 8),
+      setup.qc.Leave('helper2', "a|is looking for a lost whore in the vast Neko Port City ", 8),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_focus_ii [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+Thanks to the recent renovation, <<attach _describe>> is on the right track
+to start catering to higher class clients. 
+However, as it stands now, the establishment is still nowhere near the level
+it needs to start attracting these clients.
+<<Yourrep $g.owner>> owner|think that the next step owner|need to be taken to bring
+your brothel to the next level.
+</p>
+
+<p>
+The former head whore, <<name $g.head>>, is now busily working <<their $g.head>>
+<<if $g.head.isFemale()>>(sexy)<</if>> ass
+<<if _promotion == 'money'>>
+managing the brothel's financial as your newly minted business manager.
+<<else>>
+ensuring the satisfaction of your brothel's customer with <<their $g.head>> words, instead of with
+<<their $g.head>> <<ugenital $g.head>>, as the newly minted customer relations officer.
+<</if>>
+In the gaping hole left by <<their $g.head>> absence, it was obvious that the other <<men $g.head>> are nowhere near as good as <<therace $g.head>>.
+<<Yourrep $g.owner>> thus owner|suggest to train these whores another time,
+a grueling month this time to try and bring them up to region-class level.
+</p>
+
+<p>
+The training will be tough, long, and difficult, but it will be worth it. Maybe. Per usual, you will need a sex teacher as well as two demonstratees, but they have to be rather skilled this time, sufficient to teach even the hardest sexual techniques to your working whores.
+</p>
+
+
+
+
+
+:: Quest_brothel_focus_iiCrit [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+<<set _promotion = setup.dutytemplate.questbrothelmanager.promotion()>>
+
+<p>
+<<Yourrep $g.teacher>> and <<their $g.teacher>> two demonstratees borrowed one of the
+<<if _facility == 'rooms'>>
+private rooms
+<<else>>
+sex dungeon cells
+<</if>>
+for the intense month-long training.
+Within the month, your slavers treated the free trainees almost like slaves, punishing them with rough painful anal sex and rewarding them by <<if $g.teacher.isHasDick()>>
+cumming down their throats<<else>>
+allowing them to eat <<reps $g.teacher>> ass.
+<</if>>
+The training was almost like training slaves — the whores were made to understand the intricacies of pleasuring others with a careful application of pain and pleasure.
+<<if _facility == 'rooms'>>
+The beds on the private rooms were reserved for the best of whores, who showed great understanding in their lessons and great enthusiasm in applying their new techniques, while the rest must contemplate upon their mistakes within tiny caged compartments.
+<<else>>
+The manacles in the dungeons were often used for punishment, and one/two whores were usually hanged as examples for the rest.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'success'>>
+
+<p>
+But while the method might have been questionable, the result spoke for its efficacy. Once
+three weeks had passed, the whores had gained much knowledge in the art of
+pleasuring others. The last week returned them to reality, that they are free
+<<men $g.head>>, not slaves, and they must pleasure the client not with a
+slave mentality, but with that befitting of a free <<man $g.head>>. A free <<man $g.head>>
+differs from that of a slave, and sex given by a free <<man $g.head>> should
+similarly feel different. To drill this into the whores' heads, <<yourrep
+$g.teacher>>
+opted to borrow the help of your former head whore <<name $g.head>>, who is now
+the brothel's
+<<if _promotion == 'money'>>
+business manager.
+<<else>>
+customer relations officer.
+<</if>>
+The former whore showed that <<they $g.head>> had not forgotten <<their $g.head>> skills, and gave great examples on how a free <<man $g.head>> should pleasure another.
+</p>
+
+<p>
+By the end of the harsh four-weeks long training, the whores had been transformed from ordinary street walkers to high-class sex workers. Their aura exhudes charm, and they almost radiate with sexual energy as they walked. They are now worthy to be called as courtesans. All that needs to be done is a final touch, a guidance on what route the brothel should take. This responsibility falls to you, as the proprietor of this place.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Seeing the initially clueless whores being transformed so thoroughly into high class made your slavers oddly happy, and you notice they become somewhat more cheerful when they came back.
+</p>
+<</if>>
+<<else>>
+
+<p>
+Unfortunately, your whores are free <<men $g.head>>, not slaves, and they were unable to cope with the slave trainings. During one of the nights, <<if $gOutcome == 'failure'>>one<<else>>several<</if>> of them escaped from the brothel.
+Since your brothel is short on workers, your three slavers had no choice but to personally scour the vast <<lore location_npc>> in search of the missing
+<<if $gOutcome == 'failure'>>
+whore...
+<<else>>
+whores...
+<</if>>
+</p>
+
+<</if>>

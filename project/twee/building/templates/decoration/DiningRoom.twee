@@ -1,0 +1,78 @@
+:: InitBuildingDiningRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'endtable',
+  tags: ['hidename', 'hideskill', ],
+  description_passage: 'RoomEndTable',
+  name: 'End table',
+  width: 1,
+  height: 1,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "knowledge",
+      bonus_amount: setup.ROOM_DECORATION_BONUS,
+    },
+    {
+      type: 'always',
+      skill_key: "sex",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'diningroom',
+  tags: [],
+  width: 2,
+  height: 2,
+  door_column: 0,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "knowledge",
+      bonus_amount: setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+    {
+      type: 'always',
+      skill_key: "sex",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: true,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'diningroom',
+  name: 'DiningRoom',
+  tags: ['decoration'],
+  description_passage: 'BuildingDiningRoom',
+  costs: setup.BuildingTemplate.getDecorationCosts(),
+  restrictions: setup.BuildingTemplate.getDecorationRestrictions(),
+  main_room_template_key: 'diningroom',
+  sub_room_template_key: 'endtable',
+})>>
+
+
+:: BuildingDiningRoom [nobr]
+
+<p>
+A room where your slavers can gather and enjoy a meal together, like a family.
+When placed at your fort, will increase
+<<rep setup.skill.knowledge>> in exchange for <<rep setup.skill.sex>>.
+</p>
+
+:: RoomEndTable [nobr]
+
+<p>
+An end table to make your fort looks less desolate.
+</p>

@@ -1,0 +1,144 @@
+:: QuestSetup_excalibur_crusade [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'excalibur_crusade', /* key */
+"Excalibur Crusade", /* Title */
+"darko", /* Author */
+[
+  'veteran',
+  'special',
+  'unknown',
+  'sea',
+], /* tags */
+4, /* weeks */
+setup.INFINITY, /* quest expiration weeks */
+{ /* roles */
+'informer': setup.qu.informer, 
+'warrior': setup.qu.dark_warrior, 
+'corruptor': setup.qu.corruptor, },
+{ /* actors */
+'knight': [
+], },
+[ /* costs */
+],
+'Quest_excalibur_crusade',
+setup.qdiff.hardest64, /* difficulty */
+[ /* outcomes */
+[
+'Quest_excalibur_crusadeCrit',
+[
+setup.qc.Opportunity('the_quest_for_excalibur', {knight: 'knight'}),
+setup.qc.MoneyNormal(),
+],
+], [
+'Quest_excalibur_crusadeCrit',
+[
+  setup.qc.Outcomes('crit'),
+  setup.qc.Injury('warrior', 5), 
+],
+], [
+'Quest_excalibur_crusadeCrit',
+[
+  setup.qc.Outcomes('crit'),
+  setup.qc.Injury('warrior', 20), 
+],
+], [
+'Quest_excalibur_crusadeDisaster',
+[
+setup.qc.QuestDirect('excalibur_crusade', {knight: 'knight'}),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_excalibur_crusade [nobr]
+
+<p>
+<<Yourrep $g.knight>> recently went on a quest to claim the divine sword
+Excalibur. But somehow, after claiming the legendary sword successfully,
+<<theslaver $g.knight>> suddenly turned against <<their $g.knight>> former comrades, while
+denouncing all of yours and your company's evil deeds. There can only be one
+explanation for this strange and out-of-character behavior of the previously
+<<uadjgood $g.knight>> slaver: the Excalibur must be possessing <<theslaver $g.knight>>,
+filling <<their $g.knight>> thoughts with everything good. This must be the
+ultimate fate of all doomed to be the Excalibur's host, which may explain why
+the sword was sealed so deep within the kingdom's coffers.
+</p>
+
+<p>
+Still, something has to be done, preferably before <<rep $g.knight>> arrives
+at the doorsteps of your fort and starts a rampage inside. Fortunately,
+<<rep $g.knight>> knight|was left alone at an abandoned and uninhabited
+island, so it will surely take <<them $g.knight>> a great deal of time to
+actually reach your fort. But best to handle this problem as soon as possible.
+</p>
+
+<p>
+An informer is needed to locate <<theslaver $g.knight>> within the vast network of islands
+of the <<lore region_sea>>. Once <<theslaver $g.knight>> is located, the difficult part begins.
+A skilled slaver, preferably experienced in fighting knights, must somehow
+subdue <<therace $g.knight>>. To make this possible at all, you will also need a
+wizard skilled in <<rep setup.trait.magic_dark>>, to corrupt the holy sword as
+much as possible and weaken it during the fight.
+</p>
+
+
+:: Quest_excalibur_crusadeCrit [nobr]
+
+<p>
+<<Yourrep $g.informer>> managed to locate <<rep $g.knight>> within a secluded
+island in the <<lore region_sea>>, apparently honing <<their $g.knight>> skills in
+preparation for the one-sided battle in assaulting your fort. Together with
+<<utheirrel $g.warrior $g.corruptor>> <<rep $g.corruptor>>, <<yourrep
+$g.warrior>> set sail towards the island.
+</p>
+
+<p>
+Upon reaching the island, they found <<rep $g.knight>> ready and waiting for
+them, apparently gifted the knowledge by the insights of Excalibur. A fight
+immediately ensued, with <<rep $g.warrior>> fighting the best <<they
+$g.warrior>> could against such a legendary sword.
+<<if $gOutcome == 'crit'>>
+<<rep $g.warrior>> warrior|is no slouch in fighting though, and could actually hold <<their $g.warrior>> own skillfully even against such a masterwork sword.
+<<elseif $gOutcome == 'success'>>
+<<rep $g.warrior>> suffered several cuts and bruises, but nothing major especially considering the stature of <<their $g.warrior>> opponent.
+<<elseif $gOutcome == 'failure'>>
+<<rep $g.warrior>> suffered a massive gash delivered swiftly by <<rep
+$g.knight>>, seemingly with no remorse inflicting griveous wound on <<their $g.warrior>>
+former <<ufriend $g.knight $g.warrior>>.
+<</if>>
+But in the nick of time, <<rep $g.corruptor>> finished chanting <<their
+$g.corruptor>> spell of mind bending, which was targeted towards the holy sword.
+The Excalibur started to glow a small shade of purple, which in turn caused
+<<rep $g.knight>> to groan in pain. Seizing the opportunity, <<rep
+$g.warrior>> advanced and delivered a swift blow with <<their $g.warrior>> <<uweapon $g.warrior>>,
+knocking <<rep $g.knight>> out, who then released
+<<their $g.knight>> grip on the sword. Your slavers quickly and wisely
+separated <<theslaver $g.knight>> from the sword, before binding and gagging <<rep
+$g.knight>> as an extra precaution for the long trip home.
+</p>
+
+<p>
+To recoup the costs of the expedition, your slavers sold the new plate armor previously worn by <<rep $g.knight>>.
+Meanwhile, the possessive sword Excalibur was placed and sealed in a secure
+box your slavers wisely brought to the isle, thanks to the advise of <<yourrep
+$g.informer>>. You should decide what to do with the sword and
+the tied-up slaver once they get back home.
+</p>
+
+
+:: Quest_excalibur_crusadeDisaster [nobr]
+<p>
+Four weeks of search led to nothing as <<rep $g.informer>> informer|was
+unable to locate or even get a slight hint on <<reps $g.knight>> whereabout.
+At least none of your slavers were affected by the endeavor. Still, better
+try again before <<rep $g.knight>> do something that <<they $g.knight>> will
+regret.
+</p>

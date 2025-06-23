@@ -1,0 +1,224 @@
+:: InteractionFondleDickSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_fondle_breasts',
+  'Fondle dick',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionFondleDick',
+  [],  /* Cost */
+  [  /* Requirements */
+    setup.qres.HasItem('sexmanual_grope'),
+  ],
+  [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.dick_tiny),
+    setup.qres.SlaveUsableByYou(),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionFondleDick [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<set _hasbreasts = $unit.player.isHasBreasts()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+
+<<set _umouthequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.mouth)>>
+<<set _friendship = $friendship.getFriendship(_u, $unit.player)>>
+
+<<set _mindbroken = _u.isMindbroken()>>
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+<<set _uballs = _u.isHasBalls()>>
+
+<<loadinteractioncommon _u>>
+
+<<if _chastity>>
+  Remove <<= _u.getName()>>'s chastity if you want to fondle $i.his dick.
+<<else>>
+
+  You descend into your $i.locgeneral and grabbed
+  your <<titlefull _u>>
+  <<= _u.getName()>> over
+  so you can fondle $i.his <<udickall _u>><<if _uballs>> and <<uballs _u>><</if>>.
+  <<ustripdick _u>>
+
+  <<set _udickequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.genital)>>
+
+  <<if _mindbroken>>
+    Like a toy,
+    $i.he dumbly remains still,
+    watching your <<uhands $unit.player>> move towards $i.his <<ubody _u>> without any real interest.
+    You gently trace your fingers along $i.his <<udick _u>>
+    before taking it gently in one <<uhand $unit.player>> and tenderly stroking your <<uhand $unit.player>> along its shaft
+    <<if _uballs>>
+      , while simultaneously cupping $i.hirs <<uballs _u>>
+    <</if>>.
+    You firmly wrap your fingers,
+    thumb and palm around $i.his dick,
+    rhythmically stroking along with both <<uhands $unit.player>>,
+    starting slow but gradually increasing the speed of your movements.
+    You occasionally squeeze the tip and head of
+    $i.his dick between your fingers and thumb.
+    $i.His prick stiffens like a rod
+    in your <<uhands $unit.player>> and you continue your expert strokes
+    along the erect shaft but,
+    except for the cockmilk leaking out of
+    $i.his dick, $i.he does not respond.
+    Since $i.he is mindbroken,
+    $i.his responses to you are purely physiological and your actions
+    have no affect on $i.him mentally.
+    You place your <<uadjphys _u>> toy back to $i.his
+    resting place, the $i.slavebed in the $i.room.
+  <<elseif _u.isHasTrait(setup.trait.training_obedience_basic) && _u.isHasTrait(setup.trait.per_submissive)>>
+    $i.He comes submissively over,
+    smiling a little submissive smile,
+    and points $i.his dick towards you.
+    You gently trace your fingers along $i.his <<udick _u>>
+    before taking it gently in one <<uhand $unit.player>> and tenderly stroking your <<uhand $unit.player>> along its shaft
+    <<if _uballs>>
+      , while simultaneously cupping $i.his <<uballs _u>>
+    <</if>>.
+    You firmly wrap your fingers, thumb and palm around $i.his dick,
+    rhythmically stroking along with both <<uhands $unit.player>>, starting slow
+    but gradually increasing the speed of your movements.
+    You occasionally squeeze the tip and head of $i.his
+    dick between your fingers and thumb.
+    $i.His prick stiffens like a rod in your <<uhands $unit.player>>
+    and you continue your expert strokes along the erect shaft.
+    Soon, $i.his movements indicate that $i.he is orgasming.
+    $i.He shudders and leaks $i.him cockmilk as $i.he orgasms in your <<uhands $unit.player>>.
+    You made $i.him lick $i.his own cum clean from your <<uhand $unit.player>> before you send your
+    <<uadjphys _u>> slave back to $i.his
+    resting place, the $i.slavebed in the $i.room.
+  <<elseif _u.isHasTrait(setup.trait.training_masochist_advanced) && _maintraining.getTags().includes('trmasochist')>>
+    $i.He hurriedly comes over to you, to stand between you and $i.location.
+    You lean over while $i.he lies down upon it,
+    face up, with $i.his dick pointed towards you. $i.He gasps when you slap $i.his <<udick _u>>
+    with your <<uhand $unit.player>>.
+    You firmly grab it and tightly squeeze it
+    with your fingers, stroking your <<uhand $unit.player>> along its
+    <<if _uballs>>
+      shaft, 
+      while simultaneously slapping $i.his <<uballs _u>>
+      with your other <<uhand $unit.player>>.
+      You pulled $i.his balls uncomfortably from its resting position, earning
+      you an ecstatic moan from your masochistic slave.
+    <<else>>
+      shaft.
+    <</if>>
+    You firmly wrap your fingers,
+    thumb and palm around $i.his dick,
+    roughly stroking along with both <<uhands $unit.player>>,
+    starting slow but gradually increasing the speed of your movements.
+    You occasionally slap and swat $i.his dick, as well as
+    squeezing and pinching the tip and head of
+    $i.his dick between your fingers and thumb.
+    $i.His prick stiffens like a rod in your <<uhands $unit.player>>
+    and you continue your expert manhandling of the erect shaft.
+    Your rough play leaves red marks on $i.his <<ubreasts _u>>
+    and nipples and $i.he becomes even more aroused.
+    Soon, $i.his movements indicate that $i.he is orgasming.
+    $i.He shudders and leaks $i.his cockmilk as $i.he orgasms
+    in your <<uhands $unit.player>>.
+    You made $i.him lick $i.his own cum clean from your <<uhand $unit.player>> before you send your
+    <<uadjphys _u>> slave back to $i.his
+    resting place, the $i.slavebed in the $i.room.
+    $i.He rubs the marks on $i.his dick and balls with $i.his <<uhands _u>>,
+    an ecstatic look on $i.his <<uface _u>>.
+    $i.He looks at you longingly, hungry for more.
+  <<elseif _notrain>>
+    $i.He clearly dislikes the thought of getting $i.his dick fondled by you.
+    $i.His lower lip quivers with trepidation as
+    $i.he watches your <<uhands $unit.player>> move towards $i.him.
+    $i.He has no choice but to obey if $i.he wants to avoid punishment.
+    $i.He gasps and shakes as you gently trace along $i.his <<udick _u>>
+    before taking it gently in one <<uhand $unit.player>> and tenderly stroking your <<uhand $unit.player>> along its
+    <<if _uballs>>
+      shaft, while simultaneously cupping $i.his <<uballs _u>>.
+    <<else>>
+      shaft.
+    <</if>>
+    You firmly wrap your fingers,
+    thumb and palm around $i.his dick,
+    rhythmically stroking along with both <<uhands $unit.player>>,
+    starting slow but gradually increasing the speed of your movements.
+    You occasionally squeeze the tip and head of $i.his
+    dick between your fingers and thumb.
+    $i.His prick stiffens like a rod in your <<uhand $unit.player>> and you
+    continue your expert strokes along the erect shaft.
+    $i.He grabs your wrist with $i.his <<uhands _u>>
+    and tries to stop it from moving but is unable
+    to and despite $i.his resistant pulling against you.
+    $i.He bites $i.his lip but $i.he cannot help but moan.
+    Soon $i.he shudders and leaks $i.his cockmilk as $i.he orgasms in your <<uhands $unit.player>>.
+    $i.He looks at you shamefully as you stop moving your <<uhands $unit.player>> and send your
+    <<uadjphys _u>> slave back to $i.his
+    resting place, the $i.slavebed in the $i.room.
+  <<elseif _basic>>
+    $i.He obeys silently,
+    standing in front of you as you move your <<uhands $unit.player>> towards $i.him.
+    You gently trace your fingers along $i.his <<udick _u>>
+    before taking it gently in one <<uhand $unit.player>> and tenderly stroking your <<uhand $unit.player>> along its
+    <<if _uballs>>
+      shaft, while simultaneously cupping $i.his <<uballs _u>>.
+    <<else>>
+      shaft.
+    <</if>>
+    You firmly wrap your fingers, thumb and palm around $i.his dick,
+    rhythmically stroking along with both <<uhands $unit.player>>, starting
+    slow but gradually increasing the speed of your movements.
+    You occasionally squeeze the tip and head of $i.his
+    dick between your fingers and thumb.
+    $i.His prick stiffens like a rod in your <<uhands $unit.player>>
+    and you continue your expert strokes along the erect shaft.
+    $i.He looks into your eyes furtively while $i.he grabs
+    your wrists with $i.his <<uhands _u>>, moving to match your <<uhand $unit.player>> movements.
+    $i.He moans and shudders, leaking $i.his cockmilk as
+    $i.he orgasms in your <<uhands $unit.player>>.
+    You made $i.him lick $i.his own cum clean from your <<uhand $unit.player>>.
+    $i.He dutifully looks at you as you stop moving your <<uhands $unit.player>> and send you
+    <<uadjphys _u>> slave back to $i.his
+    resting place, the $i.slavebed in the $i.room.
+  <<else>>
+    $i.He devotedly comes over and gives you an impassioned kiss.
+    $i.He smiles and points $i.his dick towards you.
+    You gently trace your fingers along $i.his <<udick _u>>
+    before taking it gently in one <<uhand $unit.player>> and tenderly stroking your <<uhand $unit.player>> along its
+    <<if _uballs>>
+      shaft, while simultaneously cupping $i.his <<uballs _u>>.
+    <<else>>
+      shaft.
+    <</if>>
+    You firmly wrap your fingers, thumb and palm around
+    $i.his dick,
+    rhythmically stroking along with both <<uhands $unit.player>>,
+    starting slow but gradually increasing the speed of your movements.
+    You occasionally squeeze the tip and head of $i.his
+    dick between your fingers and thumb.
+    $i.His prick stiffens like a rod in your <<uhands $unit.player>> and you
+    continue your expert strokes along the erect shaft.
+    $i.He begs you not to stop. Soon, $i.he moans and $i.his
+    movements indicate that $i.he is about to orgasm.
+    $i.He shudders and leaks $i.his cockmilk as $i.he orgasms in your <<uhands $unit.player>>.
+    $i.He eagerly licks $i.his own cum clean from your <<uhand $unit.player>>.
+    $i.He looks at you passionately as you stop moving your <<uhands $unit.player>> send your
+    <<uadjphys _u>> slave back to $i.his
+    resting place, the $i.slavebed in the $i.room.
+  <</if>>
+
+<</if>>
+
+<<unset $i>>

@@ -1,0 +1,170 @@
+:: OpportunitySetup_houndmastery [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_houndmaster_s_sniffer_0", /* key */
+"Houndmaster\'s Sniffer", /* name */
+"A slave lent to you by the master of hounds, with a very sensitive nose. Must be returned to the master of hounds intact and untransformed, at a later date", /* description */
+"a|is lent to you temporarily by the master of hounds, and must be returned later or face the consequences", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.UnitGroup(
+"houndmastery0",
+"Sniffer",
+'subrace_tigerkin',  /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTitle('unit', 'quest_houndmaster_s_sniffer_0'),
+  setup.qc.TraitsReplace('unit', [
+    setup.trait.training_obedience_basic,
+    setup.trait.training_pet_basic,
+    setup.trait.per_curious,
+    setup.trait.arms_neko,
+    setup.trait.body_neko,
+    setup.trait.legs_neko,
+    setup.trait.ears_neko,
+    setup.trait.tail_neko,
+    setup.trait.mouth_neko,
+    ]),
+  setup.qc.ResetInnateTraits('unit'),
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slave),
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'houndmastery', /* key */
+"Houndmastery", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+  'item',
+  'unknown',
+  'upgrade',
+],
+1, /* expiration weeks */
+'Opportunity_houndmastery',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_houndmastery_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.NoItem(setup.item.technology_petmaster),
+    ],
+    [ /* outcomes */
+      setup.qc.Item(setup.item.technology_petmaster),
+    ],
+  ],
+  [
+    'Opportunity_houndmastery_1',
+    null,
+    [ /* costs */
+      setup.qc.Money(-4000),
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.EquipmentDirect('tailplug_dog_master'),
+    ],
+  ],
+  [
+    'Opportunity_houndmastery_2',
+    'Opportunity_houndmastery_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.HasItem(setup.item.technology_petmaster),
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('houndmastery_sniffer_lent', '1', -1),
+      setup.qc.VarSet('houndmastery_sniffer_lent_deadline', '1', 30),
+      setup.qc.Slave('sniffer', "a|is a rare slave lent to you by the master of hounds", undefined),
+      setup.qc.SetCooldownQuest('houndmastery', setup.INFINITY),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'master': 'the_dog_whisperer0',
+  'sniffer': 'houndmastery0',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_houndmastery [nobr]
+<p>
+Having fulfilled the strange slave order, the hound<<master $g.master>>,
+satisfied with the slave, offers you a wealth of rewards for your choosing.
+</p>
+
+<<if !$inventory.isHasItem(setup.item.technology_petmaster)>>
+<p>
+First, <<they $g.master>> offers to teach you the secret to training pets.
+A remarkably valuable reward!
+</p>
+<</if>>
+
+<p>
+If you are willing to shell a little more coin out of your pocket, the
+hound<<master $g.master>> is willing to part with one of <<their $g.master>>
+rarest creation: the <<rep setup.equipment.tailplug_dog_master>>. This is
+likely the only place in <<lore geo_mestia>> where you can get this very rare
+equipment!
+</p>
+
+<<if $inventory.isHasItem(setup.item.technology_petmaster)>>
+<p>
+<<if $settings.bannedtags.furry>>
+  <<dangertext 'Warning:'>> This option contains <<dangertext 'furry'>> content, which you have banned!
+<</if>>
+Finally, you've been eyeing one of the more... exotic pets of the
+hound<<master $g.master>>. An extremely rare tigerkin slave,
+which makes you wonder how the <<man $g.master>> caught
+one in the first place. Nonetheless, you are sure that <<they $g.master>>
+will be willing to lend you the slave, as long as you promise to return the
+pet at a later date (which you should not break or face dire consequences...)
+</p>
+<</if>>
+
+
+:: Opportunity_houndmastery_0 [nobr]
+Get the <<rep setup.item.technology_petmaster>>
+
+
+:: Opportunity_houndmastery_1 [nobr]
+Pay to get the <<rep setup.equipment.tailplug_dog_master>>
+
+
+:: Opportunity_houndmastery_2 [nobr]
+Borrow the tigerskin slave for seven months
+
+
+:: Opportunity_houndmastery_2_flavor [nobr]
+<p>
+In your infinite wisdom, you have decided to borrow the slave <<rep
+$g.sniffer>> instead. Well <<they $g.sniffer>> sniffer|is certainly an incredibly rare
+slave, and you can definitely have some fun with the tigerkin for a while, but
+<<they $g.sniffer>> will have to be returned eventually. If the slave is ever
+gone from your company, or if the slave was to be returned transformed, no doubt
+the consequences will be dire, and the hound<<master $g.master>> will easily
+sever all connections with your company forever.
+</p>
+
+<p>
+The hound<<master $g.master>> brags about the slave's particularly sensitive
+nose — perhaps it could be put to good use somewhere in the <<lore
+region_forest>>, if one knows where to look...
+</p>

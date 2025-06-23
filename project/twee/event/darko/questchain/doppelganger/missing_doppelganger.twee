@@ -1,0 +1,42 @@
+:: EventSetup_missing_doppelganger [nobr event]
+
+<<run new setup.Event(
+'missing_doppelganger', /* key */
+"Missing Doppelganger", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_missing_doppelganger',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.AllUnitSatisfyDo([setup.qres.HasTitle('quest_doppelganged')],
+[setup.qc.RemovePerkChoice('unit', 'perk_doppelganged'), setup.qc.RemoveTitle('unit', 'quest_doppelganged')],
+),
+  setup.qc.VarRemove('quest_doppelganger_progress'),
+],
+[ /* restrictions */
+  setup.qres.HasUnitWithTitle('quest_doppelganged', {
+}),
+  setup.qres.NoUnitWithTitle('quest_doppelganger', {
+}),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_missing_doppelganger [nobr]
+<<set _u = setup.getUnit({title: 'quest_doppelganged'})>>
+
+<<if _u>>
+<p>
+Unfortunately, <<reps _u>> doppelganger has somehow left the continent.
+The benefits provided by having a doppelganger no longer affects the slaver.
+</p>
+<</if>>

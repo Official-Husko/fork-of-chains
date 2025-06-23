@@ -1,0 +1,46 @@
+:: EventSetup_dungeons_and_dragons_fetch_quest [nobr event]
+
+<<run new setup.Event(
+'dungeons_and_dragons_fetch_quest', /* key */
+"Dungeons and Dragons: Fetch Quest", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'unknown',
+  'fort',
+],
+'Event_dungeons_and_dragons_fetch_quest',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_heroic_withdrawal_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('dungeons_and_dragons_withdrawal_progress'),
+  setup.qc.Opportunity('dungeons_and_dragons_fetch_quest', {
+slaver: "slaver",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('dungeons_and_dragons_withdrawal_progress', '3'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_dungeons_and_dragons_fetch_quest [nobr]
+<p>
+Having successfully completed a heroic quest you gave <<them $g.slaver>> sometime ago, the "hero" grew bolder, and today <<yourrep $g.slaver>> asks your for another "heroic" quest suitable for a "hero" such as <<themself $g.slaver>>.
+</p>

@@ -1,0 +1,101 @@
+:: QuestSetupUnitTrainingMasochistAdvanced [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_masochist_advanced',  /* id */
+  'Masochist Training: Advanced',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_masochist,
+    'trainer2': setup.qu.training_trainer_masochist,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingMasochistAdvanced',  /* description */
+  setup.qdiff.harder45,
+  [
+    [
+      'QuestUnitTrainingMasochistAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_masochist_advanced),
+      ]
+    ],
+    [
+      'QuestUnitTrainingMasochistAdvancedCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_masochist_advanced),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingMasochistAdvancedFailure',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+    [
+      'QuestUnitTrainingMasochistAdvancedDisaster',
+      [
+        setup.qc.Injury('trainee', 2),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingMasochistAdvanced [nobr]
+<p>
+Once a slave has some basic association between pain and pleasure, the
+next step is to reinforce this connection by disallowing the slave to
+reach climax without some sort of pain.
+This deeper connection, once made, will inevitably cause the salve
+to crave some sort of punishment, which, depending on the master,
+is a good or a bad thing.
+</p>
+
+:: QuestUnitTrainingMasochistAdvancedCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_masochist_advanced_male_demonkin.jpg'>>
+<<else>>
+  <<questimage 'unit_training_masochist_advanced_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Rep $g.trainee>> turned out to be a natural masochist.
+In addition to completing the training with flying colors,
+their true mascohistic nature is also revealed.
+</p>
+
+<<else>>
+
+<p>
+It was not easy, but through both <<reps $g.trainee>> willingness,
+as well as your slaver's dedications, <<rep $g.trainee>>
+managed to acquire all the necessary skils to graduate from this
+training.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingMasochistAdvancedFailure [nobr]
+<p>
+Unfortunately, the training was unsuccessful, and the lessons were
+lost in <<reps $g.trainee>> thick skull. Even worse, the slave needs
+a week to recover from the injuries sustained during the training.
+</p>
+
+:: QuestUnitTrainingMasochistAdvancedDisaster [nobr]
+<p>
+Unfortunately, the lessons proved too much for <<rep $g.trainee>>.
+Their now wrecked body would need to fully recover first before reattempting
+this training.
+</p>

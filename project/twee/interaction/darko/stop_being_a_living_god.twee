@@ -1,0 +1,32 @@
+:: InteractionSetup_stop_being_a_living_god [nobr interaction]
+
+<<run new setup.Interaction(
+'stop_being_a_living_god', /* key */
+"Stop being a Living God", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+],
+'Interaction_stop_being_a_living_god',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* unit requirements */
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Available(),
+  setup.qres.HasTitle('quest_living_god'),
+],
+[ /* outcomes */
+  setup.qc.RemoveTitle('target', 'quest_living_god'),
+],
+1,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_stop_being_a_living_god [nobr]
+<p>
+Deciding that <<rep $g.target>> target|is better off as a full-time slaver under your employ, you decided it is time for <<them $g.target>> to stop going into <<their $g.target>> sermons in the little shrine setup over the <<rep setup.buildingtemplate.market>>.
+</p>

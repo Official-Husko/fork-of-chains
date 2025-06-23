@@ -1,0 +1,226 @@
+:: QuestSetupDamselInDistressKidnap [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _knight = setup.CriteriaHelper.Restrictions(
+  [
+    setup.qres.HasTitle('quest_knight_in_training'),
+  ],
+  setup.qu.knight,
+)>>
+
+<<run new setup.QuestTemplate(
+  'damsel_in_distress_kidnap', /* key */
+  'Damsel in Distress: Kidnap', /* Title */
+  'darko',   /* author */
+  ['city', 'femaleonly', 'unit', 'ire', 'prep', 'rare', ],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'knight': _knight,
+    'squire1': setup.qu.squire,
+    'squire2': setup.qu.squire,
+  },
+  { /* actors */
+    'innocent': 'quest_humankingdom_nobledaughter',
+    'ravaged': 'quest_humankingdom_nobledaughter_ravaged',
+  },
+  [ /* costs */
+  ],
+  'QuestDamselInDistressKidnap', /* passage description */
+  setup.qdiff.hardest40, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestDamselInDistressKidnapCrit',
+      [
+        setup.qc.Slave('innocent'),
+        setup.qc.RemoveTitle('knight', 'quest_knight_in_training'),
+        setup.qc.MoneyCrit(),
+        setup.qc.Ire('humankingdom', 4),
+        setup.qc.Ire('royal', 1),
+      ],
+    ],
+    [
+      'QuestDamselInDistressKidnapCrit',
+      [
+        setup.qc.Slave('ravaged'),
+        setup.qc.RemoveTitle('knight', 'quest_knight_in_training'),
+        setup.qc.MoneySmall(),
+        setup.qc.Ire('humankingdom', 4),
+        setup.qc.Ire('royal', 1),
+      ],
+    ],
+    [
+      'QuestDamselInDistressKidnapFailure',
+      [
+        setup.qc.Injury('knight', 2),
+        setup.qc.Injury('squire1', 2),
+        setup.qc.Injury('squire2', 2),
+      ],
+    ],
+    [
+      'QuestDamselInDistressKidnapDisaster',
+      [
+        setup.qc.RemoveTitle('knight', 'quest_knight_in_training'),
+      ],
+    ],
+  ],
+  [ /* quest pool and rarity */
+  ],
+  [
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestDamselInDistressKidnap [nobr]
+
+<<include 'OpportunityDamselInDistress'>>
+
+<p>
+For better or worse, you have decided to kidnap the noble daughter.
+</p>
+
+
+:: QuestDamselInDistressKidnapCrit [nobr]
+
+<<set _kidnap = ($gQuest.getTemplate().key == 'quest_knight_in_training_complete')>>
+
+<p>
+According to the intel your slavers gathered, the daughter was being kidnapped
+by a famous bandit king, who leads another slaving company such as yours.
+As a fellow raider, locating the daughter were not too much of an issue.
+The real issue was getting to the daughter
+before the bandits break her beyond saving, which will surely drop the price of such
+an exquisite little slave. Time is hence of the essence here.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Rep $g.knight>> and <<their $g.knight>> "squires" <<uadv $g.knight>>
+scoured the taverns efficiently, searching for defensive weakness of the bandit's fort.
+Of course, they do so in the facade of saving the daughter.
+A few bribe here and there, and after a few
+<<if $g.knight.isHasTrait('face_attractive')>>
+"knightly-good-looks"
+<<elseif $g.knight.isHasTrait('skill_intimidating')>>
+"knightly intimidation"
+<<elseif $g.knight.isHasTrait('face_scary')>>
+"knightly death glare"
+<<else>>
+"knightly charm"
+<</if>>
+was <<uadv $g.knight>> employed
+by <<yourrep $g.knight>>,
+the tavern wenches easily started talking about a possible escape tunnel from the tunnel,
+leading into the river next to it.
+Armed with this knowledge, your slavers embarked into the fort.
+There, they sneaked through the escape tunnel while managing to avoid the unwanted attention of
+any of the resident slavers.
+They managed to find the daughter apparently still unconscious from the kidnapping,
+tied up inside a cage.
+While a locked cage usually present problem for do-gooder knights such as <<rep $g.knight>>,
+it was not an issue at all for the rest of the experienced slavers.
+They lockpicked the cage and smuggled
+the daughter out of the
+<<if _kidnap>>
+fort, only for her to be locked away again, this time in a more secure cage
+and by far more experienced group of slavers.
+<<else>>
+fort.
+<</if>>
+</p>
+
+<<if !_kidnap>>
+<p>
+Back in the <<lore region_city>>, your slavers were hailed as heroes for
+bringing back the daughter with her innocence still completely intact.
+The head of her family ensured that <<yourrep $g.knight>>
+received the recognition that <<they $g.knight>> deserve.
+</p>
+<</if>>
+
+<<else>>
+
+<<if $g.ravaged.isMale()>>
+<<else>>
+  <<questimage 'damsel_in_distress_female.jpg'>>
+<</if>>
+
+<p>
+<<Rep $g.knight>> and <<their $g.knight>> squire <<uadv $g.knight>> decided
+that the fastest approach was to strike headlong into the enemy fort.
+And they did just that -- the enemies were no match for <<reps $g.knight>> prowess
+in combat and <<they $g.knight>> felled them all.
+The leader of the bandit camp, however, after seeing that <<their $g.knight>> slavers had fallen,
+went to the hostage room to fume <<their $g.knight>> stress over into the noble daughter,
+before escaping immediately after.
+By the time your slavers managed to locate the noble daughter,
+she was already broken from the abuse, sporting a blank look after being so
+violently used by the leader of the bandits.
+Although she was still alive, her once attractive face was no longer there.
+Still, she was alive, and that was what mattered most at the time.
+Your slavers unlocked her cage and brought her
+<<if _kidnap>>
+to her new home, in the dungeons of your fort.
+She can recover there before resuming her trainings, this time in the <<uhands $unit.player>> of a
+far more experienced group of slavers.
+<<else>>
+home.
+They entertained a little about the idea of using such a high pedigree slave, but your
+knight-in-training felt that it was not a very knightly act for them.
+<</if>>
+</p>
+
+<<if !_kidnap>>
+<p>
+Back in the <<lore region_city>>,
+the head of the noble daughter's family urged your slavers to come in quietly.
+He apologized profusely before saying that he was unable to endorse <<reps $g.knight>>
+promotion into a knight, lest the daughter's fate be known to public eyes.
+He pleaded with your slavers and gave them money in return,
+as well as promise of good words, including with their few connections within the elusive
+<<rep $company.royal>>.
+</p>
+<</if>>
+
+<</if>>
+
+<<if _kidnap>>
+<p>
+Somehow, the <<lore region_city>> heard of your wrongdoings, and any pretense of
+<<reps $g.knight>> knightly adventure was surely cut short.
+Even the <<rep $company.royal>> caught wind of it, which is most certainly not a good sign to come...
+</p>
+<</if>>
+
+
+
+:: QuestDamselInDistressKidnapFailure [nobr]
+
+<<set _kidnap = ($gQuest.getTemplate().key == 'quest_knight_in_training_complete')>>
+
+<p>
+<<Rep $g.knight>> and <<their $g.knight>> "squires" decided that the fastest approach
+must be to strike headlong into the enemy fort.
+But little that they knew that the fort's surroundings was littered with deadly traps.
+Your slavers fell (literally) victim into those traps and had no choice but to
+return back injured.
+<<if _kidnap>>
+If there was any good that came out of this, its the fact that the
+<<lore region_city>> never knew of your slavers' true intentions,
+and <<yourrep $g.knight>> can keep <<their $g.knight>> title of knight-in-training for now.
+<</if>>
+</p>
+
+
+:: QuestDamselInDistressKidnapDisaster [nobr]
+
+<p>
+<<Rep $g.knight>> and <<their $g.knight>> "squires" scoured the taverns
+efficiently, looking for a defensive weakness in the bandit's fort.
+But all the information they gathered about how mighty the fortress was
+shrunk <<reps $g.knight>> resolve.
+In the end, <<yourrep $g.knight>> decided to cancel the rescue attempt, which must
+looked absolutely poor on <<their $g.knight>> knightly resume.
+</p>

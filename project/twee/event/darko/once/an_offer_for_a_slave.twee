@@ -1,0 +1,78 @@
+:: EventSetup_an_offer_for_a_slave [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"a_discerning_letter0",
+"Master of Waves",
+'subrace_humansea',  /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_boss),
+  setup.qc.TraitsReplace('unit', [setup.trait.magic_wind_master, setup.trait.per_cruel, setup.trait.per_playful]),
+],
+)>> <<run new setup.UnitGroup(
+"a_discerning_letter1",
+"Slave of Waves",
+'sea_all', /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+  setup.qc.TraitsReplace('unit', [setup.trait.bg_maid, setup.trait.per_submissive, setup.trait.training_obedience_master, setup.trait.per_loyal, setup.trait.per_humble, setup.trait.per_chaste]),
+],
+)>>
+
+<<run new setup.Event(
+'an_offer_for_a_slave', /* key */
+"An Offer for a Slave", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+],
+'Event_an_offer_for_a_slave',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'master': 'a_discerning_letter0',
+  'slave': 'a_discerning_letter1',
+},
+[ /* outcomes */
+  setup.qc.SlaverMarker('master'),
+  setup.qc.SlaveMarker('slave'),
+],
+[ /* restrictions */
+],
+0, /* Cooldown */
+setup.rarity.never, /* Rarity */
+)>>
+
+:: Event_an_offer_for_a_slave [nobr]
+
+<p>
+Today, you've received an extremely well-written letter in your mailbox.
+</p>
+
+<div class='lettercard'>
+<p>
+Esteemed <<name $unit.player>> of <<rep $company.player>>,
+</p>
+
+<p>
+My name is <<name $g.slave>>, or so my <<master $g.master>> has named me. It
+has come to the attention of my <<master $g.master>>, <<lord $g.master>> <<name $g.master>>,
+that you have acquired a particularly rare slave — a
+defiant specimen that would not break from even the harshest trainings. My
+<<master $g.master>> delights in breaking such hardy slaves, as I was once,
+and would make a generous offer should you wish to sell the slave to <<them
+$g.master>>. If you are interested in this offer, please seek my <<master
+$g.master>> out in the <<lore region_sea>>.
+</p>
+<p>
+Your most humble slave,<br/>
+<<name $g.slave>>
+</p>
+</div>
+
+<p>
+An interesting offer. It seems if you are tired of breaking your defiant slaves, there is demand for these specimens somewhere in the <<lore region_sea>>. You could try to scout the area should you wish to follow-up on this offer.
+</p>

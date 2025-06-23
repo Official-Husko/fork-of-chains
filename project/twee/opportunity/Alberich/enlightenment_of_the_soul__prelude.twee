@@ -1,0 +1,197 @@
+:: OpportunitySetup_enlightenment_of_the_soul___prelude [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'enlightenment_of_the_soul___prelude', /* key */
+"Enlightenment of the Soul - Prelude", /* Title */
+{ /* Author */
+  name: "Alberich",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/k53ydc/enlightenment/',
+},
+[
+  'city',
+  'breeding',
+  'special',
+  'veteran',
+  'trait',
+], /* tags */
+4, /* opportunity expiration weeks */
+'Opportunity_enlightenment_of_the_soul___prelude',
+setup.qdiff.normal50, /* difficulty */
+[ /* options */
+[
+'Opportunity_enlightenment_of_the_soul___prelude_0',
+'Opportunity_enlightenment_of_the_soul___prelude_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.SetCooldownOpportunity(null, 30),
+],
+], [
+'Opportunity_enlightenment_of_the_soul___prelude_1',
+'Opportunity_enlightenment_of_the_soul___prelude_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.Player(setup.qres.Trait(setup.trait.gender_male)),
+],
+[ /* outcomes */
+  setup.qc.SetCooldownOpportunity(null, 30),
+],
+], [
+'Opportunity_enlightenment_of_the_soul___prelude_2',
+'Opportunity_enlightenment_of_the_soul___prelude_2_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.SetCooldownOpportunity(null, 30),
+],
+], [
+'Opportunity_enlightenment_of_the_soul___prelude_3',
+'Opportunity_enlightenment_of_the_soul___prelude_3_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.RemoveTitleGlobal('quest_enlightenment_2_graduate_1'),
+setup.qc.SetCooldownQuest('enlightenment_of_the_mind', 100),
+],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.always],
+],
+[ /* restrictions to generate */
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoOpportunity('infiltration_of_the_soul'),
+],
+{ /* actors */
+'master': 'quest_enlightenment_of_the_mind1',
+'pupil': [
+  setup.qres.Trait('gender_female'),
+  setup.qres.HasTitle('quest_enlightenment_2_graduate_1'),
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.Available(),
+],
+},
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_enlightenment_of_the_soul___prelude [nobr]
+<div class='lettercard'>
+<p>
+Honored <b>Guardian</b> of an Esteemed Student of Light!
+</p>
+<p>
+The Women's Academy of Light is honored to inform you that your pure-hearted, diligent <b>Ward</b>, <<rep $g.pupil>>, has passed through the first two Gates of Enlightenment. Her wits and diligence have brought her Enlightenment of the Mind. No puzzle proved too perplexing; no study session too soporific; no reading too recondite. Yet she excelled herself further in achieving Enlightenment of the Heart. Facing her inner fiends, she fought through her frailties, vanquished her vices, and towered over her temptations. None but the worthiest could come as far as she has . . .
+</p>
+</div>
+
+<i>The bow is drawn</i>, you think. <i>Make with the shaft. How much are you setting me back this time?</i>
+
+<div class='lettercard'>
+<p>
+. . . and now the trustees and officers of the Academy, in conclave assembled, are in agreement that she stands proudly in the ranks of those few, alone among the mortal races, who are fit to enter the final phase of training, pay the final prices, and emerge as True Mistresses of Light . . .
+</p>
+</div>
+
+<p>
+<i>In other words</i>, you think, <i>she's got a “guardian” who keeps coming up with those 10,000 gold piece tuition payments. Might as well come to it. What “price” are we talking here? </i>
+</p>
+
+<div class='lettercard'>
+<p>
+The final phase, the Enlightenment of the Soul, is the longest and the most rewarding for your worthy <b>Ward</b>. She must undergo the most profound transformation a woman can know, and as an essential part of her final enlightenment, she must endure the most joyful event each woman can imagine. She must give birth!
+</p>
+</div>
+
+<p>
+<i>That . . . I was not expecting.</i> You hardly know what to think as you continue.
+</p>
+
+<div class='lettercard'>
+<p>
+A certain warmth has grown between <<rep $g.pupil>> and her pupilmaster, <<rep $g.master>>, who would be proud to father her child, thereby blessing her, himself, the Academy, and the world. But the values and standards of the Academy forbid any improper insistence, and as a protective <b>Guardian</b> you may ease yourself of any concerns touching that point. If <<rep $g.pupil>> pupil|have already a loyal husband or sweetheart, she may arrive for the final course already with child, and receive the most tender care as well as the finest and most rigorous instruction, always with due consideration for her condition.
+</p>
+<p>
+During the forty weeks of the course, <<rep $g.pupil>> will also enjoy the opportunity to defray the costs of her education by performing healing services in the Kingdom of Tor, combining practical Art with instructive Lore that will enrich her remaining days. Thus, the Academy need request the merest pittance for processing and expenses, in the amount of ten thousand gold pieces, true crown weight . . .
+</p>
+</div>
+
+<p>
+<i>I knew it!</i> you think in cynical triumph.
+</p>
+
+<div class='lettercard'>
+<p>
+. . . after which you will enjoy a lifetime of pride, knowing that the <b>Ward</b> you have nurtured is now an accomplished Mistress of the Light. Please remit all fees at the beginning of the course . . .
+</p>
+</div>
+
+<p>
+Well, now, what to do?
+</p>
+
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_0 [nobr]
+Let the Pupilmaster impregnate her
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_0_flavor [nobr]
+Your original idea was simpler: she should just blow somebody and get the spellbook without all this “purificiation” nonsense. When the long-winded poetry's done, this is just a slower version of the same.
+
+<<set _preference = $settings.getGenderPreference(setup.job.slaver)>>
+<<set _child = setup.UnitBirth.generateChild($g.master, $g.pupil, _preference)>>
+
+<<run setup.qc.QuestDirect('enlightenment_of_the_soul', {child: 'child'}).apply(
+  setup.costUnitHelper(_child)
+)>>
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_1 [nobr]
+Impregnate her yourself
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_1_flavor [nobr]
+With all <i>you've</i> been paying, and all the time off she's had for these courses, the least she can do is let you enjoy her sweetness for a little while.
+
+<<set _preference = $settings.getGenderPreference(setup.job.slaver)>>
+<<set _child = setup.UnitBirth.generateChild($unit.player, $g.pupil, _preference)>>
+
+<<run setup.qc.Event('enlightenment_of_the_soul___interlude', 0, {child: 'child', pupil: 'pupil'}).apply(
+  setup.costUnitHelperDict({child: _child, pupil: $g.pupil})
+)>>
+
+<<run setup.qc.Leave('pupil', 'a|is preparing a|themself for getting pregnant', 1).apply($gQuest)>>
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_2 [nobr]
+Choose another slaver to father a child on her
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_2_flavor [nobr]
+
+<<set $gMenuVisible = false>>
+
+You know someone who'd be perfect for the job. Or maybe someone you want to reward for good service. He'll probably like both you and her better at the end of the transaction . . .
+
+<<run setup.qc.Leave('pupil', 'a|is preparing a|themself for getting pregnant', 1).apply($gQuest)>>
+
+<<set _dom = setup.DOM.Roster.quest_enlightenmentofthesoul($g.pupil)>>
+<<attach _dom>>
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_3 [nobr]
+Tear this stupid letter to shreds
+
+
+:: Opportunity_enlightenment_of_the_soul___prelude_3_flavor [nobr]
+Enough is enough! <<rep $g.pupil>> pupil|is one of your slavers, not some perpetual student you're supporting.

@@ -1,0 +1,14 @@
+:: WikiTitle [nobr]
+
+<<set _forfilter = Object.values(setup.title)>>
+
+<div>
+  <<run _dom = setup.DOM.Util.filterAll({
+    menu: 'title',
+    filter_objects: _forfilter,
+    display_callback: title => {
+      return title.rep()
+    },
+  })>>
+  <<attach _dom>>
+</div>

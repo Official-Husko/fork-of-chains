@@ -1,0 +1,332 @@
+:: QuestSetup_raiding_the_weres [nobr quest]
+
+<<run new setup.Title(
+"quest_alpha_were_0", /* key */
+"Alpha Were", /* name */
+"An alpha werewolf you captured", /* description */
+"a|was an alpha werewolf prior to being captured by you", /* unit text */
+7000, /* slave value */
+{ /* skill additives */
+brawn: 3,slaving: 2,sex: 2,},
+)
+>>
+
+<<run new setup.UnitGroup(
+"raiding_the_weres0",
+"Werewolf: All Gender alpha",
+'subrace_werewolf', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.AddTitle('unit', 'quest_alpha_were_0'),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_dominant, setup.trait.per_lunatic, setup.trait.per_aggressive, setup.trait.per_proud, setup.trait.per_direct, setup.trait.per_gregarious, setup.trait.per_cruel], 2, true, false),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.muscle_extremelystrong, setup.trait.height_giant, setup.trait.face_hideous, setup.trait.face_beautiful, setup.trait.per_smart, setup.trait.tough_tough, setup.trait.skill_ambidextrous, setup.trait.skill_intimidating, setup.trait.skill_connected, setup.trait.per_sexaddict], 2, false, false),
+],
+)>>
+
+
+<<set _criteriasaboteurone = new setup.UnitCriteria(
+null, /* key */
+'Saboteur ', /* name */
+[
+  setup.trait.bg_assassin,
+  setup.trait.bg_hunter,
+  setup.trait.bg_informer,
+  setup.trait.bg_thief,
+  setup.trait.tough_nimble,
+  setup.trait.per_smart,
+  setup.trait.per_attentive,
+  setup.trait.skill_creative,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_proud,
+  setup.trait.per_direct,
+  setup.trait.per_dreamy,
+  setup.trait.per_curious,
+  setup.trait.per_lunatic,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 1,
+  intrigue: 2,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'raiding_the_weres', /* key */
+"Raiding The Weres", /* Title */
+{ /* Author */
+  name: "Fae",
+  url: "",
+},
+[ /* tags */
+  'furry',
+  'vale',
+  'veteran',
+  'unit',
+  'ire',
+  'rare',
+  'danger',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'saboteurone': [ _criteriasaboteurone, 0.6],
+  'saboteurtwo': [ _criteriasaboteurone, 0.6],
+  'raiderone': [ setup.qu.raider, 0.6],
+  'raidertwo': [ setup.qu.raider, 0.6],
+  'slaver': [ setup.qu.slavecapturer, 0.6],
+},
+{ /* actors */
+  'commonwereone': 'subrace_werewolf',
+  'commonweretwo': 'subrace_werewolf',
+  'commonwerethree': 'subrace_werewolf',
+  'aphawere': 'raiding_the_weres0',
+},
+[ /* costs */
+],
+'Quest_raiding_the_weres',
+setup.qdiff.hardest55, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_raiding_the_weresCrit',
+    [
+      setup.qc.Slave('aphawere', "a|was an alpha werewolf your team managed to subdue during a raid", undefined),
+      setup.qc.Ire('werewolf', 5),
+      setup.qc.Outcomes('success'),
+    ],
+  ],
+  [
+    'Quest_raiding_the_weresCrit',
+    [
+      setup.qc.Slave('commonwereone', "a|was a werewolf you abducted in a raid", undefined),
+      setup.qc.Slave('commonweretwo', "a|was a werewolf you abducted in a raid", undefined),
+      setup.qc.Slave('commonwerethree', "a|was a werewolf you abducted in a raid", undefined),
+      setup.qc.Injury('raiderone', 5),
+      setup.qc.Injury('raidertwo', 5),
+      setup.qc.Ire('werewolf', 3),
+    ],
+  ],
+  [
+    'Quest_raiding_the_weresCrit',
+    [
+      setup.qc.Slave('commonwereone', "a|was a werewolf you abducted in a raid", undefined),
+      setup.qc.MissingUnit('raiderone'),
+      setup.qc.MissingUnit('raidertwo'),
+      setup.qc.OneRandom([
+        setup.qc.TraitIncreaseExisting('saboteurone', setup.trait.anus_gape),
+        setup.qc.TraitIncreaseExisting('saboteurtwo', setup.trait.anus_gape),
+      ]),
+      setup.qc.OneRandom([
+        setup.qc.TraitIncreaseExisting('saboteurone', setup.trait.vagina_gape),
+        setup.qc.TraitIncreaseExisting('saboteurtwo', setup.trait.vagina_gape),
+      ]),
+      setup.qc.Ire('werewolf', 3),
+    ],
+  ],
+  [
+    'Quest_raiding_the_weresCrit',
+    [
+      setup.qc.Injury('slaver', 5),
+      setup.qc.Outcomes("failure"),
+      setup.qc.MissingUnit('saboteurone'),
+      setup.qc.TraumatizeRandom('saboteurone', 40),
+      setup.qc.TraitIncreaseExisting('saboteurone', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('saboteurone', setup.trait.vagina_gape),
+      setup.qc.MissingUnit('saboteurtwo'),
+      setup.qc.TraumatizeRandom('saboteurtwo', 40),
+      setup.qc.TraitIncreaseExisting('saboteurtwo', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('saboteurtwo', setup.trait.vagina_gape),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_raiding_the_weres [nobr]
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+One day, as you leisurely sit at your desk doing who-knows-what,
+<<yourrep
+_u>> entered to talk about a particularly lucrative idea.
+Apparently <<therace _u>> has been pondering how to go
+about directly abducting werewolves.
+You're not sure why <<they _u>> seems to have some vested interest in
+capturing the furry race, but regardless of why,
+capturing them normally would be nothing
+short of suicidal, as werewolves tend to travel and stay together as a savage pack.
+But your slaver insists <<they _u>> has a plan, the plan being
+to have a group of two slavers sneak in, and start a fire alongside some fancy explosions in order to create
+a panic and draw the toughest weres to one place, so that a second group can
+rush in, nab some disoriented pack members, and get the hell out, running like hell and hoping they
+get far enough before anyone catches on to what happened.
+</p>
+
+<p>
+Admittedly you aren't completely sold the plan isn't suicidal.
+Should you decide to go about on this quest, you should definitely prepare for the worst...
+</p>
+
+
+:: Quest_raiding_the_weresCrit [nobr]
+
+<p>
+After several weeks of scouting, prep, and rehearsals <<rep $g.saboteurone>> and
+<<utheirrel $g.saboteurone $g.saboteurtwo>> <<rep $g.saboteurtwo>>
+snucked into position with the equipment they bought,
+quickly and quietly setting everything up and getting themselves ready for the
+ensuing chaos.
+<<if $gOutcome == 'crit'>>
+The raiding group waited for everything to kick off when <<rep
+$g.raidertwo>> noticed that the weres seemed to be in the middle of holding some kind of carnal celebration.
+while this at first alarmed the slaver, the group soon realized this was actually an auspicious
+coincidence as it meant that the weres were too busy drinking, and would be more inebriated than mormal,
+making the overall plan easier to work.
+<<else>>
+The raiding group waited for everything to kick off, everyone understandably on edge about the
+serious risk they were about to take.
+<</if>>
+</p>
+
+<p>
+When the time finally came, 
+<<rep $g.saboteurone>> snucked from <<their $g.saboteurone>> hiding place to sow the planned chaos.
+<<if $g.saboteurone.isHasAnyTraitExact(['bg_assassin', 'bg_thief', 'bg_informer', 'bg_hunter'])>>
+<<They $g.saboteurone>> saboteurone|have plenty of experience in subterfuge from <<their $g.saboteurone>>
+background.
+<</if>>
+<<if $g.saboteurone.isHasTrait('tough_nimble')>>
+<<Therace $g.saboteurone>> saboteurone|is nimble enough to slither into the territory without drawing undue attention.
+<</if>>
+<<if $g.saboteurone.isHasAnyTraitExact(['per_smart', 'skill_creative', 'per_attentive'])>>
+<<They $g.saboteurone>> even managed to sow some extra additional unplanned chaos along the way,
+including desecrating one of the larger chunk of cheese they found in the larder.
+<</if>>
+<<if $g.saboteurone.isHasTrait('magic_fire')>>
+<<They $g.saboteurone>> saboteurone|command fire magic, meaning <<they $g.saboteurone>> could
+start fire within the compound without needing to bring any sort of firestarter.
+<</if>>
+</p>
+
+<p>
+As soon as the saboteur team started things off, the camp erupted into pure unbridled chaos.
+The raiding team turned into a blur sprinting in and
+snagging some of the disoriented weres that happened to be alone,
+tying them up and dragging them out of the camp.
+Just when everything seemed to be going according to plan,
+the alpha of the pack howled a bloodcurling roar, restoring morale and
+intimidating your slavers.
+Just outside of the werewolves den, your slavers were face to face with the angry
+alpha, and they had to hope that <<rep $g.raiderone>> or <<rep $g.raidertwo>> got what it takes
+to defeat such an opponent.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The alpha was a magnificent specimen, and there was no chance in hell your slavers could match
+the hulking creature in one-on-one combat.
+But your slavers had the advantage of numbers, at least for that moment, and
+they knew it too.
+While <<rep $g.raiderone>> engaged the wolf,
+<<rep $g.raidertwo>>
+<<if $g.raidertwo.isHasTrait('per_sly')>>
+  sneaked in from behind before
+<<elseif $g.raidertwo.isHasTrait('per_brave')>>
+  charged in without warning and
+<<else>>
+  seized an opening and
+<</if>>
+<<if $g.raidertwo.isHasTrait('muscle_strong')>>
+  choked the consciousness out of the wolf.
+<<elseif $g.raidertwo.isHasTrait('magic_fire')>>
+  launched a fire spell, burning the wolf and knocking <<them $g.aphawere>> out cold.
+<<else>>
+  bashed <<their $g.raidertwo>> <<uweapon $g.raidertwo>> as hard as <<they $g.raidertwo>>
+  could against the wolf's groins. It worked, and the wolf knelt in pain before passing out cold.
+<</if>>
+</p>
+
+<p>
+Your slavers knew exactly that more werewolves were pursuing them, and decided not to press their luck
+even further. They packaged the downed former alpha wolf as well as some of <<their $g.aphawere>> captured
+earlier and cart them all off away before the pack regained their order.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+The fight was brutal, and it was clear that the alpha was more than strong enough to hold
+off both of your slavers.
+With the alpha's packmates approaching on the tow, your slavers realized they were running out of time.
+They decided to flee, -- <<rep $g.raiderone>> and <<rep $g.raidertwo>> would need to flee while being flanked by
+the wolves while the rest of the team would need to carry their new captives.
+It was difficult, but the team pulled it through and managed to escape to safety.
+<<Rep $g.raiderone>> and <<rep $g.raidertwo>> suffered grievous injuries, however, but
+all things considered it could have been so much worse.
+</p>
+
+<p>
+The incident damaged your relationship with the wolves, but you got a couple of new slaves in exchange.
+All in all, that could have gone much worse.
+As for <<rep $g.raiderone>> and <<rep $g.raidertwo>>, well, let's just say that your Rescuer
+should stop drinking on the job and get their ass moving.
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+<p>
+The fight was brutal, and it was clear that the alpha was more than strong enough to hold
+off both of your slavers.
+With the alpha's packmates approaching on the tow, your slavers realized they were running out of time.
+They decided to flee, but unfortunately
+both <<rep $g.raiderone>> and <<rep $g.raidertwo>> were locked in combat with no way to escape
+from their predicaments.
+The team had no choice but to abandon the two who were left to their fates as
+the team retreated back to safety together with one the tied-up packmates of the werewolf tribe.
+</p>
+
+<p>
+The incident damaged your relationship with the wolves, but you got a couple of new slaves in exchange.
+All in all, that could have gone much worse.
+As for <<rep $g.raiderone>> and <<rep $g.raidertwo>>, well, let's just say that your Rescuer
+should stop drinking on the job and get their ass moving.
+</p>
+
+<<elseif $gOutcome == 'disaster'>>
+
+<p>
+Despite the situation,
+<<rep $g.slaver>> had the most idiotic idea ever to try and use the opportunity
+to capture the enraged werewolf.
+<<Their $g.slaver>> floppy attempt at sneaking in were met with a heavy punch,
+and <<therace $g.slaver>> slaver|was out cold.
+Seeing <<their $g.slaver>> teammate downed, the rest of your team panicked and scrambled to escape,
+which did not end well as expected.
+Everyone on the team was captured, no doubt to be used as the tribe's playthings in the coming days.
+</p>
+
+<p>
+That is, except for <<rep $g.slaver>>. It seemed the werewolves had forgotten about <<therace $g.slaver>>
+who had been knocked out early on during the fight.
+A strange turn of events.
+In either case, you best prepare your Rescuer for they will have to work very hard if you want to see your captured slavers ever again...
+</p>
+
+<</if>>

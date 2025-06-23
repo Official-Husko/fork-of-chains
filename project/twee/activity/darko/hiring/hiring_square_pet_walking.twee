@@ -1,0 +1,75 @@
+:: ActivitySetup_fort_square_pet_walking [nobr activity]
+
+<<run new setup.ActivityTemplate({
+key: 'fort_square_pet_walking',
+name: "Fort Square Pet Walking", /* Title */
+author: { /* Author */
+  name: "darko",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.RememberUnit(),
+  ],
+  'pet': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.CanBeUsedByRememberedUnit(),
+    setup.qres.AnyTrait([setup.trait.training_pet_basic, setup.trait.training_pet_advanced, setup.trait.training_pet_master], true),
+  ],
+},
+critical_traits: [
+  setup.trait.per_playful,
+  setup.trait.per_dominant,
+  setup.trait.skill_animal,
+  setup.trait.per_evil,
+],
+disaster_traits: [
+  setup.trait.per_honorable,
+  setup.trait.per_submissive,
+  setup.trait.per_serious,
+  setup.trait.per_loner,
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "<<ugreetingshort $g.a>> just ensuring our little pet her get pet|their daily dose of sunlight.",
+      "<<ugreetingshort $g.a>> would you like to walk our <<urace $g.pet>> dog together?",
+    ],
+    bold: [
+      "Walk faster, you worthless pet!",
+      "Time for some walkies, pet!",
+    ],
+    cool: [
+      "Walk faster, pet.",
+      "<<ubusyshort $g.a>> walking the pet. Someone has to.",
+    ],
+    witty: [
+      "Who's a good pet? Yes! Yes you are!",
+      "No whining! Wag your tail more! Bad pet!",
+      "<<ugreetingshort $g.a>> come to join me on the totally normal chore of walking our <<urace $g.pet>> pet?",
+    ],
+    debauched: [
+      "No whining, you slutty pet! You just had your <<ucum $g.a>> lunch!",
+      "Aww, slutty pet wants some relief? Maybe after the walk is done, if I\'m feeling particulary generous.",
+    ],
+  },
+}, /* End of Dialogue #1 */
+{ /* Dialogue #2: */
+  actor: "pet",
+  texts: [
+    "<<upetwhine $g.pet>>",
+  ],
+}, /* End of Dialogue #2 */
+],
+room_templates: [
+  setup.roomtemplate.hiringsquare,
+],
+})>>

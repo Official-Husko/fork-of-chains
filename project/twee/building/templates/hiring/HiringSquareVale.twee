@@ -1,0 +1,43 @@
+:: InitBuildingHiringSquareVale [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'hiringsquarevale',
+  tags: [],
+  width: 2,
+  height: 2,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'hiringsquarevale',
+  name: 'Recruitment Booth: Vale',
+  tags: ['hiring', ],
+  description_passage: 'BuildingHiringSquareVale',
+  costs: [
+    [setup.qc.Money(-1000)],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('hiringsquare'),
+    ],
+  ],
+  on_build: [
+    [setup.qc.Contact(setup.contacttemplate.recruitervale),]
+  ],
+  main_room_template_key: 'hiringsquarevale',
+})>>
+
+
+:: BuildingHiringSquareVale [nobr]
+
+<p>
+A booth in the <<rep setup.buildingtemplate.hiringsquare>> where you can attempt
+to recruit the northerners and weres living in the <<lore region_vale>> into your company.
+Unlocks a contact which gives you a quest for hiring new slavers from the <<lore region_vale>>.
+</p>
+

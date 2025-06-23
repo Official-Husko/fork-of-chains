@@ -1,0 +1,138 @@
+:: QGCreate [autosave]
+<<nobr>>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_begin()>>
+<<attach _dom>>
+
+<<link '(Test your quest)' 'QuestDebugDo'>>
+  <<set setup.questtemplate[$dtquest.key] = $dtquest>>
+  <<if $qpool>>
+    <<run $qpool.registerQuest($dtquest, $qrarity)>>
+  <</if>>
+  <<set $qDebugQuestTemplate_key = $dtquest.key>>
+  <<set setup.DEVTOOL_qdesc = $qdesc>>
+  <<set setup.DEVTOOL_qoutcomedesc = $qoutcomedesc>>
+<</link>>
+
+[[(Back to edit quest)|QuestGen]]
+
+<br/>
+<br/>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_middle()>>
+<<attach _dom>>
+
+<</nobr>>
+<div id='devtoolcoderesult' class='companycard'> <code>"""::""" <<= $qpassagesetup >> [nobr quest]
+
+<<dtprintmeta>>
+<<for _irole, _role range $dtquest.getUnitCriterias()>> <<if !_role.criteria.key>> <<set _rolename = `_criteria${_irole}`>>
+    """<<"""set <<= _rolename >> = new setup.UnitCriteria(
+    null, """/* key */"""
+    '<<= setup.escapeJsString(_role.criteria.getName())>>', """/* name */"""
+    [
+      <<for _itrait, _trait range _role.criteria.getCritTraits()>><<nobr>>
+        &nbsp;
+        setup.trait.<<= _trait.key>>,
+      <</nobr>>
+      <</for>> ],
+    [
+      <<for _itrait, _trait range _role.criteria.getDisasterTraits()>><<nobr>>
+        &nbsp;
+        setup.trait.<<= _trait.key>>,
+      <</nobr>>
+      <</for>> ],
+    [
+      <<for _irestriction, _restriction range _role.criteria.getRestrictions()>><<nobr>>
+        &nbsp;
+        <<= _restriction.text()>>,
+      <</nobr>>
+      <</for>> ],
+    { <<for _iskill, _ivalue range _role.criteria.getSkillMultis()>> <<nobr>>
+        <<if _ivalue>>
+          <br/>
+          &nbsp;
+          <<= setup.skill[_iskill].keyword>>: <<= _ivalue>>,
+        <</if>>
+      <</nobr>> <</for>>
+    }
+    )>> <</if>>
+    <</for>><<nobr>>
+
+<</nobr>>"""<<run new setup.QuestTemplate("""
+  '<<= $qkey>>', """/* key */"""
+  <<dtprinttitle>>
+  <<dtprintauthor>>
+  <<dtprinttags>>
+  <<= $dtquest.weeks>>,  """/* weeks */"""
+  <<dtprintdeadlineweeks>>
+  { """/* roles */"""
+    <<for _irole, _role range $dtquest.getUnitCriterias()>><<nobr>>
+      &nbsp;
+      '<<= _irole>>':
+      <<set _slaverole = true>>
+      <<for _restriction range _role.criteria.getRestrictions()>>
+        <<if _restriction instanceof setup.qresImpl.Job && _restriction.job_key == setup.job.slaver.key>>
+          <<set _slaverole = false>>
+          <<break>>
+        <</if>>
+      <</for>>
+      <<if !_slaverole>>[<</if>>
+      <<if _role.criteria.key>>
+        setup.qu.<<= _role.criteria.key>>,
+      <<else>>
+        _criteria<<= _irole >>,
+      <</if>>
+      <<if !_slaverole>>
+        <<= _role.offsetmod>>],
+      <</if>>
+      <</nobr>>
+    <</for>>},
+  <<dtprintactors>>
+  <<dtprintcosts>>
+  '<<= $qpassagedesc>>',
+  <<dtprintdifficulty>>
+  [ """/* outcomes */"""
+    <<for _ioutcome, _outcomes range $dtquest.outcomes>><<nobr>>
+    &nbsp;
+    [
+      <br/>
+      &nbsp;
+      &nbsp;
+      '<<= $qpassageoutcomes[setup.DevToolHelper.getPassageIndex($qoutcomedesc, _ioutcome)]>>',
+      <br/>
+      &nbsp;
+      &nbsp;
+      [
+        <<for _ixxx, _outcome range _outcomes[1]>>
+          <br/>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <<= _outcome.text()>>,
+        <</for>>
+      <br/>
+      &nbsp;
+      &nbsp;
+      ],
+    <br/>
+    &nbsp;
+    ],
+    <</nobr>>
+    <</for>> ],
+  <<dtprintquestpool $qpool $qrarity>>
+  <<dtprintrestrictions 'quest_prerequisites'>>
+  <<dtprintexpirationoutcomes>>
+)>>
+
+"""::""" <<= $qpassagedesc >> [nobr]
+<<= setup.devToolFormat($qdesc)>>
+
+<<for _ipo, _po range $qpassageoutcomes>><<if !_ipo || $qoutcomedesc[_ipo].trim()>>
+"""::""" <<= _po >> [nobr]
+<<= setup.devToolFormat($qoutcomedesc[_ipo])>>
+
+
+<</if>><</for>>
+</code>
+</div>

@@ -1,0 +1,43 @@
+:: InitBuildingMasochistTrainingRoom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'masochisttrainingroom',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'masochisttrainingroom',
+  name: 'Masochist Training Room',
+  tags: ['training'],
+  description_passage: 'BuildingMasochistTrainingRoom',
+  costs: [
+    [
+      setup.qc.MoneyMult(-setup.BUILDING_MEDIUMLOW_MULT),
+    ],
+  ],
+  restrictions: [
+    [
+      setup.qres.Building('torturechamber'),
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_wind_master]),
+    ],
+  ],
+  main_room_template_key: 'masochisttrainingroom',
+})>>
+
+
+:: BuildingMasochistTrainingRoom [nobr]
+
+<p>
+Unlocks Masochist Training: Master for slaves.
+
+</p>
+

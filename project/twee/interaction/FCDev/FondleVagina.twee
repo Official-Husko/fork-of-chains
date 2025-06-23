@@ -1,0 +1,110 @@
+:: InteractionFondleVaginaSetup [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+  'unit_fondle_vagina',
+  'Fondle vagina',
+  'FCdev',   /* author */
+  [],  /* tags */
+  'InteractionFondleVagina',
+  [],  /* Cost */
+  [  /* Requirements */
+    setup.qres.HasItem('sexmanual_grope'),
+  ],
+  [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.vagina_tight),
+    setup.qres.SlaveUsableByYou(),
+  ],  /* Target requirements */
+  [],  /* Effects */
+  0,  /* cooldown in weeks */
+  setup.interactionpool.unit,  /* interaction pool this belongs to */
+)>>
+
+:: InteractionFondleVagina [nobr]
+
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<pronounload $i _u>>
+
+<<loadinteractioncommon _u>>
+
+You descend into your $i.locgeneral and grabbed
+your <<titlefull _u>>
+<<= _u.getName()>> over
+so you can fondle $i.his <<uvaginaall _u>>.
+<<ustripvagina _u>>
+
+<<if _u.isMindbroken()>>
+	Like a doll,
+  $i.he dumbly remains still,
+  watching your <<uhands $unit.player>> move towards $i.him without any real interest.
+  You gently trace along $i.his labia
+  with your outstretched fingers, strumming up and down the edges of $i.his pussylips,
+  then softly rub your fingers along the inner walls with a tender touch,
+  starting slow but gradually increasing the speed of your movements.
+  You occasionally flick $i.his clit
+  and rub it with your fingertips as your <<uhand $unit.player>> nears it.
+  Except for the pussy juices trickling down $i.his <<ulegs _u>>,
+  $i.he does not respond.
+	Since $i.he is mindbroken,
+  $i.his responses to you are purely physiological and your actions have no affect on $i.his mentally.
+  You leave your <<uadjphys _u>> toy back in $i.his
+  resting place, the $i.slavebed in the $i.room.
+<<elseif _u.isHasTrait(setup.trait.training_obedience_basic) && _u.isHasTrait(setup.trait.per_submissive)>>
+	$i.He comes submissively over,
+  smiling a little submissive smile,
+  and points $i.his pussy towards you.
+  You gently trace along $i.his labia
+  with your outstretched fingers,
+  strumming up and down the edges of $i.his pussylips,
+  then softly rub your fingers along the inner walls with a tender touch,
+  starting slow but gradually increasing the speed of your movements.
+  You occasionally flick $i.his clit
+  and rub it with your fingertips as your <<uhand $unit.player>> nears it.
+  $i.He begs you not to stop as $i.he looks into your <<ueyes $unit.player>>
+  expectantly as $i.he shudders in an orgasm.
+<<elseif _u.isHasTrait(setup.trait.training_none)>>
+  $i.He tries to refuse,
+  so you push the disobedient slave down over the
+  $i.bed
+  as you move your <<uhands $unit.player>> towards $i.him.
+  You gently trace along $i.his labia
+  with your outstretched fingers, strumming up and down the edges of $i.his pussylips,
+  then softly rub your fingers along the inner walls with a tender touch,
+  starting slow but gradually increasing the speed of your movements.
+  $i.He grabs your wrist to try to stop you but $i.he is unable to.
+  You occasionally flick $i.his clit
+  and rub it with your fingertips as your <<uhand $unit.player>> nears it,
+  despite $i.his resistant pulling against you.
+  $i.He bites $i.his lip but $i.he cannot help but moan
+  and $i.he shudders in an orgasm. $i.He looks at you shamefully as you stop moving your <<uhand $unit.player>>.
+<<elseif _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+  $i.He obeys silently, standing in front of you as you move your <<uhands $unit.player>> towards $i.him.
+  You gently trace along $i.his labia
+  with your outstretched fingers,
+  strumming up and down the edges of $i.his pussylips,
+  then softly rub your fingers along the inner walls with a tender touch,
+  starting slow but gradually increasing the speed of your movements.
+  You occasionally flick $i.his clit
+  and rub it with your fingertips as your <<uhand $unit.player>> nears it.
+  $i.He looks into your eyes furtively while $i.he grabs your wrist
+  with $i.his <<uhand _u>> and $i.he squeezes $i.his <<ulegs _u>> togetther as $i.he moans
+  and shudders in an orgasm. $i.He dutifully looks at you as you stop moving your <<uhand $unit.player>>.
+<<else>>
+	$i.He devotedly comes over and gives you an impassioned kiss.
+  $i.He smiles and points $i.his pussy towards you.
+  You gently trace along $i.his labia
+  with your outstretched fingers, strumming up and down the edges of $i.his pussylips,
+  then softly rub your fingers along the inner walls with a tender touch,
+  starting slow but gradually increasing the speed of your movements.
+  You occasionally flick $i.his clit
+  and rub it with your fingertips as your <<uhand $unit.player>> nears it.
+  $i.He squeezes $i.his <<ulegs _u>> lightly against your <<uhand $unit.player>> as
+  $i.he moans and shudders in orgasmic bliss.
+  $i.He looks at you passionately as you stop moving your <<uhand $unit.player>>.
+<</if>>
+
+<<unset $i>>

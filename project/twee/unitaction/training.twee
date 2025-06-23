@@ -1,0 +1,847 @@
+:: InitUnitActionTraining [nobr]
+
+<<run new setup.UnitAction({
+  key: 'obedience_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_obedience_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingchamber),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.NoTrait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_obedience_basic], 
+  prerequisite_traits: [], 
+})>>
+
+<<run new setup.UnitAction({
+  key: 'obedience_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_obedience_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingchamber),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_obedience_advanced],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'obedience_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_obedience_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.obediencetrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_obedience_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_obedience_master],
+  prerequisite_traits: [setup.trait.training_obedience_advanced],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'domestic_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_domestic_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.milkerroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_domestic_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_domestic_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'domestic_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_domestic_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.milkerroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_domestic_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_domestic_advanced],
+  prerequisite_traits: [setup.trait.training_domestic_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'domestic_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_domestic_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.domestictrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_domestic_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_domestic_master],
+  prerequisite_traits: [setup.trait.training_domestic_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'endurance_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_endurance_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingfield),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_endurance_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_endurance_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'endurance_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_endurance_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingfield),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_endurance_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_endurance_advanced],
+  prerequisite_traits: [setup.trait.training_endurance_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'endurance_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_endurance_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.endurancetrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_endurance_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_endurance_master],
+  prerequisite_traits: [setup.trait.training_endurance_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+
+<<run new setup.UnitAction({
+  key: 'oral_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_oral_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingbedroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_oral_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_oral_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'oral_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_oral_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingbedroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_oral_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_oral_advanced],
+  prerequisite_traits: [setup.trait.training_oral_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'oral_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_oral_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.oraltrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_oral_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_oral_master],
+  prerequisite_traits: [setup.trait.training_oral_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+
+
+<<run new setup.UnitAction({
+  key: 'vagina_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_vagina_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingbedroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.vagina_tight),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_vagina_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_vagina_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'vagina_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_vagina_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingbedroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.vagina_tight),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_vagina_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_vagina_advanced],
+  prerequisite_traits: [setup.trait.training_vagina_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'vagina_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_vagina_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.vaginatrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.vagina_tight),
+    setup.qres.TraitExact(setup.trait.training_vagina_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_vagina_master],
+  prerequisite_traits: [setup.trait.training_vagina_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'anal_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_anal_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingbedroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_anal_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_anal_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'anal_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_anal_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingbedroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_anal_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_anal_advanced],
+  prerequisite_traits: [setup.trait.training_anal_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'anal_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_anal_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.analtrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_anal_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_anal_master],
+  prerequisite_traits: [setup.trait.training_anal_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+
+<<run new setup.UnitAction({
+  key: 'dominance_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_dominance_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.torturechamber),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.NoTrait(setup.trait.training_dominance_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_dominance_basic],
+  prerequisite_traits: [setup.trait.training_obedience_advanced],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'dominance_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_dominance_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.torturechamber),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_dominance_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_dominance_advanced],
+  prerequisite_traits: [setup.trait.training_dominance_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'dominance_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_dominance_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.dominancetrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_dominance_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_dominance_master],
+  prerequisite_traits: [setup.trait.training_dominance_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'masochist_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_masochist_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.torturechamber),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_masochist_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_masochist_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'masochist_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_masochist_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.torturechamber),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_masochist_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_masochist_advanced],
+  prerequisite_traits: [setup.trait.training_masochist_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'masochist_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_masochist_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.masochisttrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_masochist_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_masochist_master],
+  prerequisite_traits: [setup.trait.training_masochist_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'toilet_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_toilet_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.fetishtrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_toilet_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_toilet_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'toilet_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_toilet_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.fetishtrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_toilet_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_toilet_advanced],
+  prerequisite_traits: [setup.trait.training_toilet_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'toilet_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_toilet_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.toilettrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_toilet_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_toilet_master],
+  prerequisite_traits: [setup.trait.training_toilet_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'horny_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_horny_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.milkerroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_horny_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_horny_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'horny_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_horny_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.milkerroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_horny_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_horny_advanced],
+  prerequisite_traits: [setup.trait.training_horny_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'horny_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_horny_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.hornytrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_horny_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_horny_master],
+  prerequisite_traits: [setup.trait.training_horny_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'roleplay_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_roleplay_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.fetishtrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_roleplay_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_roleplay_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'roleplay_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_roleplay_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.fetishtrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_roleplay_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_roleplay_advanced],
+  prerequisite_traits: [setup.trait.training_roleplay_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'roleplay_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_roleplay_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.roleplaytrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_roleplay_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_roleplay_master],
+  prerequisite_traits: [setup.trait.training_roleplay_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'sissy_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_sissy_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.fetishtrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.gender_male),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_sissy_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_sissy_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'sissy_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_sissy_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.fetishtrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.gender_male),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_sissy_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_sissy_advanced],
+  prerequisite_traits: [setup.trait.training_sissy_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'sissy_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_sissy_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.sissytrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.gender_male),
+    setup.qres.TraitExact(setup.trait.training_sissy_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_sissy_master],
+  prerequisite_traits: [setup.trait.training_sissy_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+
+<<run new setup.UnitAction({
+  key: 'pet_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_pet_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingfield),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_pet_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_pet_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'pet_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_pet_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingfield),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_pet_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_pet_advanced],
+  prerequisite_traits: [setup.trait.training_pet_basic, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'pet_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_pet_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.pettrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.TraitExact(setup.trait.training_pet_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_pet_master],
+  prerequisite_traits: [setup.trait.training_pet_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'pony_basic',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_pony_basic,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingfield),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_endurance_basic),
+    setup.qres.Trait(setup.trait.training_obedience_basic),
+    setup.qres.NoTrait(setup.trait.training_pony_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_pony_basic],
+  prerequisite_traits: [setup.trait.training_obedience_basic, setup.trait.training_endurance_basic],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'pony_advanced',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_pony_advanced,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.trainingfield),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_endurance_advanced),
+    setup.qres.Trait(setup.trait.training_obedience_advanced),
+    setup.qres.TraitExact(setup.trait.training_pony_basic),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_pony_advanced],
+  prerequisite_traits: [setup.trait.training_pony_basic, setup.trait.training_endurance_advanced, setup.trait.training_obedience_advanced , ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'pony_master',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_pony_master,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.ponytrainingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_endurance_advanced),
+    setup.qres.TraitExact(setup.trait.training_pony_advanced),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  is_multitrain: true,
+  result_traits: [setup.trait.training_pony_master],
+  prerequisite_traits: [setup.trait.training_pony_advanced, setup.trait.training_endurance_advanced, setup.trait.training_obedience_advanced, ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'mindbreak',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_mindbreak,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.torturechamber),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    
+  ],
+  result_traits: [setup.trait.training_mindbreak],
+  prerequisite_traits: [],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'willbreak',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.search_for_a_willbreaker,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.researchroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.AllowDefiant(),
+    setup.qres.Trait(setup.trait.will_defiant),
+    setup.qres.Through(
+      setup.qres.And([
+        setup.qres.NoQuest('search_for_a_willbreaker'),
+        setup.qres.NoUnitWithTag('in_training_defiant_slave'),
+      ]),
+      'You can only break one slave at a time.',
+    )
+  ],
+  result_traits: [],
+  prerequisite_traits: [setup.trait.will_defiant],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'convince',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_convince,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.Building(setup.buildingtemplate.convincingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Trait(setup.trait.training_none),
+    
+  ],
+})>>
+
+<<run new setup.UnitAction({
+  key: 'brainwash',
+  tags: ['training', ],
+  quest_template: setup.questtemplate.training_brainwash,
+  prerequisites: [],
+  unit_requirements: [
+    setup.qres.HasItem(setup.item.potion_slavertraining),
+    setup.qres.Building(setup.buildingtemplate.brainwashingroom),
+    setup.qres.Job(setup.job.slave),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+    setup.qres.NoTraits(setup.TraitHelper.TRAINING_MASTER),
+  ],
+})>>
+
+
+

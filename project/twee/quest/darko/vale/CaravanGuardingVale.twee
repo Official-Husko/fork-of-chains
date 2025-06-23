@@ -1,0 +1,159 @@
+:: QuestSetupCaravanGuardingVale [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'caravan_guarding_vale', /* key */
+  'Caravan Guarding: Vale', /* Title */
+  'darko',   /* author */
+  ['vale', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'guard1': setup.qu.guard,
+    'guard2': setup.qu.guard,
+    'guardsupport': setup.qu.guardsupport,
+  },
+  { /* actors */
+    'leader': 'subrace_humanvale',
+  },
+  [ /* costs */
+  ],
+  'QuestCaravanGuardingVale', /* passage description */
+  setup.qdiff.normal8, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestCaravanGuardingValeCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.SlaverMarker('leader'),
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestCaravanGuardingValeSuccess',
+      [
+        setup.qc.MoneyNormal(),
+        
+        setup.qc.Favor('humanvale', 10),
+      ],
+    ],
+    [
+      'QuestCaravanGuardingValeFailure',
+      [
+        setup.qc.Ire('humanvale', 2),
+      ],
+    ],
+    [
+      'QuestCaravanGuardingValeDisaster',
+      [
+        setup.qc.Injury('guard1', 2),
+        setup.qc.Injury('guard2', 2),
+        setup.qc.Injury('guardsupport', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestCaravanGuardingVale [nobr]
+
+<p>
+The <<lore region_vale>> has a reputation for being completely unsafe and full of raiders:
+raiders like your company and your fellow slaver companies.
+While you are usually on the offensive,
+occasionally there are lucrative opportunities to guard the caravan
+against other raiders instead. After all, who's better than fending off raider attacks
+than other fellow, more morally upstanding raiders?
+</p>
+
+
+:: QuestCaravanGuardingValeCrit [nobr]
+
+<p>
+<<Rep $g.guard1>> and <<utheirrel $g.guard1 $g.guard2>> <<rep $g.guard2>> effectively
+guarded the caravan.
+Along the way, the caravan was ambushed by bandits, who easily outnumbered the caravan members.
+But <<yourrep $g.guard1>> and <<rep $g.guard2>>
+were experienced and ready for the attack --
+they intimidated the bandits into
+<<set _fire = setup.selectUnit([$g.guard1, $g.guard2], {trait: 'magic_fire'})>>
+<<if _fire>>
+  <<Rep _fire>> occasionally flaunted <<their _fire>> fire magic too, adding to the show.
+<</if>>
+leaving with a proper bandit-to-bandit death stare.
+Impressed (or maybe actually intimidated) by your slavers'
+<<man $g.guard1>>liness,
+the <<if $g.leader.isFemale()>>busty<<else>>macho<</if>> caravan leader
+rewarded them with a little
+peek under <<their $g.leader>>
+<<if $g.leader.isFemale()>>skirt, revealing her lack of underwear and her attractively tight vagina,<<else>>pants, revealing his lack of underwear and the delicious crack of his butt,<</if>>
+before promising to put in good words about your slavers' prowess to the locals.
+</p>
+
+
+:: QuestCaravanGuardingValeSuccess [nobr]
+
+<<if $g.guard1.isHasTrait('per_chaste')>>
+  <<set _u = $g.guard1>>
+<<elseif $g.guard2.isHasTrait('per_chaste')>>
+  <<set _u = $g.guard2>>
+<<elseif $g.guardsupport.isHasTrait('per_chaste')>>
+  <<set _u = $g.guardsupport>>
+<<else>>
+  <<set _u = null>>
+<</if>>
+
+<p>
+Nothing, and absolutely nothing happened during the caravan travel.
+Your slavers were almost bored to death if it were not for
+the fact that the caravan leader <<themself $g.leader>> was a sight to behold:
+a
+<<if $g.leader.isFemale()>>
+busty woman with the biggest ass they had ever seen live around the area.
+Your slavers' collective sanity was saved thanks to the fat ass sensually bouncing off the carriage
+each time the caravan hit a bump along the way.
+
+<<else>>
+macho man with the stockiest ass they have ever seen around the area.
+Your slavers sanity is saved thanks to the muscly ass hotly bouncing off the carriage
+each time the caravan hits a rock along the way, which the tight pants failed to
+hide.
+<</if>>
+
+<<if _u>>
+<<Rep _u>> felt <<their _u>> chaste little soul dying a little inside.
+<<run setup.qc.TraumatizeRandom('unit', 2).apply(setup.costUnitHelper(_u))>>
+<</if>>
+
+</p>
+
+
+:: QuestCaravanGuardingValeFailure [nobr]
+
+<p>
+<<Rep $g.guard1>> and <<utheirrel $g.guard1 $g.guard2>> <<rep $g.guard2>>
+guarded the caravan.
+Along the way, however, the caravan was ambushed by bandits who easily outnumbered your team.
+Both <<rep $g.guard1>> and <<rep $g.guard2>> were sleeping on duty when it happened, and
+<<yourrep $g.guardsupport>> guardsupport|was the only one available to fight.
+Seeing no hope of winning, <<rep $g.guardsupport>> guardsupport|was forced to reveal
+<<their $g.guardsupport>> trump card: a proper raider-to-raider sweet talking.
+Under <<reps $g.guardsupport>> supervision, the raiders peacefully stole the caravan's content,
+leaving your slavers and the caravan leader unharmed and unmolested.
+</p>
+
+<p>
+Your slavers did not get paid for that kind of work.
+</p>
+
+
+:: QuestCaravanGuardingValeDisaster [nobr]
+
+<p>
+Unfortunately, the entire caravan was ambushed by a group of feral werewolves,
+who tipped the caravan over into a river, causing both your slavers and the
+caravan leader to be injured.
+</p>

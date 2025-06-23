@@ -1,0 +1,97 @@
+:: QGAddRole [nobr]
+
+<<if !$dtquest.name>>
+  <<warning 'Please give your quest / opportunity / event a name first.'>>
+  <<devgotoreturn>>
+<</if>>
+
+<div>
+<<devtoolreturnbutton>>
+</div>
+
+<div>
+<<successtext 'Role name'>>:
+<<message '(?)'>>
+  <div class='helptext'>
+    Name for this actor. Don't forget to fill this in!
+    <br/>
+    <br/>
+    Put something short,
+    which will make it easier for you later to refer to the unit in the stories.
+    <br/>
+    <br/>
+    The name must consists of only lower case characters and numbers. No space allowed.
+    For example, you can put "farmer", or even just "x", but you cannot put "Farmer", "x y", or "Y".
+  </div>
+<</message>>
+<<textbox '$qrolename' '' autofocus>>
+</div>
+
+Choose criteria:
+<<link '(Create new from scratch)' 'CriteriaGen'>>
+  <<set _qbaserole = null>>
+  <<include 'CRGenInit'>>
+<</link>>
+
+<<focwidget 'roleaddcriteria'>>
+  <<devgotoreturn>>
+<</focwidget>>
+
+<<for _icriteria, _criteria range $qcustomcriteria>>
+  <br/>
+  <<capture _criteria>>
+    <<= _criteria.getName()>>
+    <<message '(+)'>>
+      <<criteriacard _criteria>>
+    <</message>>
+  <</capture>>
+  <<set _text = `Select`>>
+  <<capture _icriteria, _criteria>>
+    <<button _text>>
+      <<devroleaddcriteria $qrolename _criteria>>
+    <</button>>
+    or
+    <<link '(New based from this)' 'CriteriaGen'>>
+      <<set _qbaserole = _criteria>>
+      <<include 'CRGenInit'>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+<<set _qmap = setup.DevToolHelper.getCriteriasMap()>>
+<<for _skillkey, _qulist range _qmap>>
+  <br/>
+  <<capture _qulist>>
+    <<if _skillkey == 'SLAVE'>>
+      <<set _text = 'Slave criterias'>>
+    <<else>>
+      <<= setup.skill[_skillkey].rep()>>
+      <<set _text = `${setup.skill[_skillkey].getName()}-based criterias`>>
+    <</if>>
+    <<message _text>>
+      <<for _icriteria, _criteria range _qulist>>
+        <<capture _criteria>>
+          <<= _criteria.getName()>>
+          <<message '(+)'>>
+            <<criteriacard _criteria>>
+          <</message>>
+        <</capture>>
+        <<set _text = `Select`>>
+        <<capture _criteria>>
+          <<button _text>>
+            <<devroleaddcriteria $qrolename _criteria>>
+          <</button>>
+          or
+          <<link '(New based from this)' 'CriteriaGen'>>
+            <<set _qbaserole = _criteria>>
+            <<include 'CRGenInit'>>
+          <</link>>
+        <</capture>>
+        <br/>
+      <</for>>
+    <</message>>
+  <</capture>>
+<</for>>
+
+
+

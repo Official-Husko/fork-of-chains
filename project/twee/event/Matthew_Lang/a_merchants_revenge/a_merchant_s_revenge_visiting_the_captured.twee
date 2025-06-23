@@ -1,0 +1,44 @@
+:: EventSetup_a_merchant_s_revenge_visiting_the_captured [nobr event]
+
+<<run new setup.Event(
+'a_merchant_s_revenge_visiting_the_captured', /* key */
+"A Merchant\'s Revenge: Visiting the Captured", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'watersport',
+  'fort',
+  'order',
+],
+'Event_a_merchant_s_revenge_visiting_the_captured',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'pc': [
+    setup.qres.You(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.HasTitle('quest_merchant_s_bandit_0'),
+  ],
+  'merchant': 'a_merchant_s_revenge1',
+},
+[ /* outcomes */
+  setup.qc.Opportunity('a_merchant_s_revenge_visiting_the_captured', {
+pc: "pc",
+slave: "slave",
+merchant: "merchant",
+}),
+  setup.qc.SetCooldownEvent(null, 1000),
+],
+[ /* restrictions */
+  setup.qres.VarGte('mlangmerchantprincequest', 1),
+],
+100, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_a_merchant_s_revenge_visiting_the_captured [nobr]
+<<include 'Opportunity_a_merchant_s_revenge_visiting_the_captured'>>

@@ -1,0 +1,146 @@
+:: QuestSetupTradingMissionCity [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _trader = setup.CriteriaHelper.CritTraits(
+  [
+    setup.trait.race_human,
+  ],
+  setup.CriteriaHelper.DisasterTraits(
+    [
+      setup.trait.race_elf,
+      setup.trait.race_wolfkin,
+      setup.trait.race_catkin,
+      setup.trait.race_greenskin,
+    ],
+    setup.qu.trader,
+  )
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'trading_mission_city', /* key */
+  'Trading Mission: City of Lucgate', /* Title */
+  'darko',   /* author */
+  ['city', 'money'],  /* tags */
+  1,  /* weeks */
+  3,  /* quest expiration weeks */
+  { /* roles */
+    'trader1': _trader,
+    'trader2': _trader,
+    'negotiator': setup.qu.negotiator,
+  },
+  { /* actors */
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-0.5),
+  ],
+  'QuestTradingMissionCity', /* passage description */
+  setup.qdiff.easy28, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestTradingMissionCityCrit',
+      [
+        setup.qc.MoneyNormal(3),
+        setup.qc.Favor('humankingdom', 30),
+      ],
+    ],
+    [
+      'QuestTradingMissionCitySuccess',
+      [
+        setup.qc.MoneyNormal(1.75),
+        
+      ],
+    ],
+    [
+      'QuestTradingMissionCityFailure',
+      [
+        setup.qc.MoneyNormal(0.1),
+      ],
+    ],
+    [
+      'QuestTradingMissionCityDisaster',
+      [
+        setup.qc.Injury('negotiator', 2),
+        setup.qc.Injury('trader1', 2),
+        setup.qc.Injury('trader2', 2),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestTradingMissionCity [nobr]
+
+<p>
+The <<lore region_city>> is the capital city of the <<rep $company.humankingdom>>.
+The city is burstling with activities, ranging from standard trading,
+operas, and whorehouses.
+Rare and exotic goods from outside are always in high demand within the walls of the city.
+</p>
+
+<p>
+If you are not averse to honest trading, your company can actually do honest work here,
+perhaps a welcome break from all the degeneracy and evil you usually partake
+in. Since the kingdom has outlawed slavery for over ten years,
+you would need one of the slavers to smooth it out with the guards and allow
+them to safely get inside the walls of the city.
+</p>
+
+
+:: QuestTradingMissionCityCrit [nobr]
+
+<p>
+<<set _con = setup.selectUnit([$g.trader1, $g.trader2, $g.negotiator], {trait: 'skill_connected'})>>
+<<set _gre = setup.selectUnit([$g.trader1, $g.trader2, $g.negotiator], {trait: 'per_gregarious'})>>
+<<if _con>>
+  Using <<their _con>> vast connections, <<rep _con>> "convinced" the guards that
+<<elseif _gre>>
+  Using <<their _gre>> silver tongue, <<rep _gre>> convinced the guards that
+<<else>>
+  <<Rep $g.negotiator>> had no issue at all and <<uadv $g.negotiator>>
+  convinced the guards that
+<</if>>
+<<rep $gTeam>> were honest traders, and even managed to convince
+the guards to let them in without the standard bribe.
+This allowed your slavers to repeatedly enter and exit the city,
+netting you a large amount of profit.
+</p>
+
+
+:: QuestTradingMissionCitySuccess [nobr]
+
+<p>
+With some proper use of misplaced purse, <<rep $g.negotiator>>
+negotiator|was able to
+<<uadv $g.negotiator>>
+convince the guards to let
+<<rep $gTeam>> in.
+Still, the bribe was expensive, and your slavers only manage to
+get a standard amount of profit from the trade.
+</p>
+
+
+:: QuestTradingMissionCityFailure [nobr]
+
+<p>
+<<Rep $g.negotiator>>
+negotiator|was able to
+<<uadv $g.negotiator>>
+convince the guards to let
+<<rep $gTeam>> in, but only after paying a ridiculous bribe.
+As a result, the team was unable to recoup the losses, and returned home to the fort
+with only a meager portion of the investment.
+</p>
+
+
+:: QuestTradingMissionCityDisaster [nobr]
+
+<p>
+When <<rep $g.negotiator>> negotiator|was in the middle of negotiating for an entry,
+<<rep $g.trader1>> made an unfortunate joke that ousted them as members of
+a slaver company. The team had to fight their way out from the guards
+to return back into your fort.
+</p>

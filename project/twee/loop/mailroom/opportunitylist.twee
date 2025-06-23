@@ -1,0 +1,41 @@
+:: OpportunityList [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _room = $fort.player.getBuilding(setup.buildingtemplate.mailroom)>>
+<<set _opportunities = $opportunitylist.getOpportunities()>>
+
+<h2><<= _room.getTitleRep()>></h2>
+
+<p>
+  You came in to see if you have any new mails.
+  <<if _opportunities.length>>
+    Currently, there are <<successtext _opportunities.length>> opportunities for you to take action on.
+  <<else>>
+    There are no opportunities pending your action right now.
+  <</if>>
+<<set _viceleader = $dutylist.getUnitIfAvailable('viceleader')>>
+<<if _viceleader>>
+  Your vice-leader <<rep _viceleader>> is also here.
+  <<focmove 'Manage auto-answer settings' 'OpportunityAutoAnswer'>>
+<</if>>
+</p>
+
+
+<<filterall 'opportunity' _opportunities>>
+  <<opportunitycard _displayobj>>
+<</filterall>>
+
+
+:: OpportunityOptionSelected [nobr]
+
+<<set _dom = setup.DOM.Card.opportunity_option_selected($opportunityinstance[$gOpportunity_key])>>
+<<attach _dom>>
+
+
+:: OpportunityAutoAnswer [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _dom = setup.DOM.Menu.opportunityautoanswer()>>
+<<attach _dom>>

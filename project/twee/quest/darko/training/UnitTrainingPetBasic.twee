@@ -1,0 +1,100 @@
+:: QuestSetupUnitTrainingPetBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_pet_basic',  /* id */
+  'Pet Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingPetBasic',  /* description */
+  setup.qdiff.easy24,
+  [
+    [
+      'QuestUnitTrainingPetBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pet_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingPetBasicSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pet_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingPetBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingPetBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingPetBasic [nobr]
+<p>
+This training will shape a slave into the ideal humanlike pet
+for its masters. Loyalty, being cute, and most importantly to always
+stand by the master's feet are some of the important duties that this
+training will impart upon the slaves.
+Graduates from this class must be comfortable walking on all fours,
+as well as wearing pet gear all day long.
+</p>
+
+:: QuestUnitTrainingPetBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_pet_basic_male.jpg'>>
+<<else>>
+  <<questimage 'unit_training_pet_basic_female.jpg'>>
+<</if>>
+
+<p>
+The training was a complete success.
+With the proper gear,
+<<rep $g.trainee>> would make a wonderful pet for its lucky master.
+Meanwhile your slavers gain a lot of experience from the training.
+</p>
+
+:: QuestUnitTrainingPetBasicSuccess [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_pet_basic_male.jpg'>>
+<<else>>
+  <<questimage 'unit_training_pet_basic_female.jpg'>>
+<</if>>
+
+<p>
+At the end of the week, <<rep $g.trainee>> can now be a passable
+pet for owners looking for a new pet.
+</p>
+
+:: QuestUnitTrainingPetBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> continues to exhibit humanlike behaviors
+even after this amount of training.
+</p>
+
+:: QuestUnitTrainingPetBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

@@ -1,0 +1,43 @@
+:: EventSetup_man_woman_of_the_sea [nobr event]
+
+<<run new setup.Event(
+'man_woman_of_the_sea', /* key */
+"Man/Woman of the Sea", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+],
+'Event_man_woman_of_the_sea',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.bg_pirate, setup.trait.bg_seaman], true),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('man_woman_of_the_sea', {
+slaver: "slaver",
+}),
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.scoutharbor),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_man_woman_of_the_sea [nobr]
+<<include "Opportunity_man_woman_of_the_sea">>

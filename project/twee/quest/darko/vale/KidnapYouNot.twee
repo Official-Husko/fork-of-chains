@@ -1,0 +1,141 @@
+:: QuestSetupKidnapYouNot [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'kidnap_you_not', /* key */
+  'Weed Removal', /* Title */
+  'darko',   /* author */
+  ['vale', 'unit'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'seducer': setup.qu.seducer,
+    'kidnap1': setup.qu.infiltrator,
+    'kidnap2': setup.qu.infiltrator,
+  },
+  { /* actors */
+    'target': 'subrace_humanvale',
+    'evil': 'subrace_humanvale',
+  },
+  [ /* costs */
+  ],
+  'QuestKidnapYouNot', /* passage description */
+  setup.qdiff.normal6, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestKidnapYouNotCrit',
+      [
+        setup.qc.Slave(
+          'target',
+          'a|was a villager in a northern settlement that is ordered to be removed by its unscrupulous neighbor'),
+        setup.qc.MoneyNormal(),
+        
+      ],
+    ],
+    [
+      'QuestKidnapYouNotCrit',
+      [
+        setup.qc.Slave(
+          'target',
+          'a|was a villager in a northern settlement that is ordered to be removed by its unscrupulous neighbor'),
+        setup.qc.Ire('humanvale', 1),
+      ],
+    ],
+    [
+      'QuestKidnapYouNotCrit',
+      [
+      ],
+    ],
+    [
+      'QuestKidnapYouNotCrit',
+      [
+        setup.qc.Injury('kidnap1', 1),
+        setup.qc.Injury('kidnap2', 1),
+        setup.qc.Ire('humanvale', 3),
+      ],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.common],], /* quest pool and rarity */
+  [
+    setup.qres.QuestUnique(),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestKidnapYouNot [nobr]
+
+<p>
+A somewhat well-off denizen of the <<lore region_vale>> came to your fort with a proposition
+after your own heart.
+<<They $g.evil>> wants your company to remove one of <<their $g.evil>> neighbors that have been a constant
+problem to <<their $g.evil>> business and personal life for some time now.
+It would be a nice coincidence if <<their $g.evil>> neighbor were to disappear one day,
+with nothing tying the disappearance back to <<them $g.evil>>.
+To a slaving company such as yours, this opportunity sounds like catching two birds with one stone, so
+why not help the poor neighbor rid their garden of the weed?
+</p>
+
+
+:: QuestKidnapYouNotCrit [nobr]
+
+<p>
+The plan was simple enough:
+have one of your slavers distract the guard while the others
+go in and kidnap the target in the middle of the night, before skipping town.
+Executing such a plan however would depend on the skills of the slavers.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<p>
+The plan went off without a hitch.
+Nobody could resist <<reps $g.seducer>> seductive charm,
+<<if $g.seducer.isHasTrait('face_attractive')>>
+especially paired with <<their $g.seducer>> <<uface $g.seducer>>,
+<<elseif $g.seducer.isHasTrait('dick_large')>>
+especially when <<they $g.seducer>> started to point seductively into <<their $g.seducer>> considerable bulge,
+<<elseif $g.seducer.isHasTrait('breast_large')>>
+especially when <<they $g.seducer>> started to seductively press <<their $g.seducer>> <<ubreasts $g.seducer>> together,
+<</if>>
+so while <<they $g.seducer>> <<uadv $g.seducer>> worked <<their $g.seducer>> magic on the guards,
+<<yourrep $g.kidnap1>> and <<utheirrel $g.kidnap1 $g.kidnap2>> <<rep $g.kidnap2>> went in via a window,
+before putting a sack and a gag over the target's head.
+Secured, the moaning neighbor was carried <<them $g.target>> outside and far from the village.
+
+<<if $gOutcome == 'success'>>
+
+Unfortunately, it turned out that <<reps $g.seducer>> grip on
+the guard's attention was not as strong as <<they $g.seducer>> believed.
+By the end of the day, the settlement somehow knew that it was your company who have
+kidnapped <<rep $g.target>>.
+Hearing this, your client dropped all communications with you, and your pay is
+gone. But at least you have <<rep $g.target>> as a new slave, who when
+sold should prove more than adequate to cover the costs of this endeavor.
+
+<<else>>
+
+<<Rep $g.seducer>> seducer|was so convincing that at the end of the week, nobody in the town,
+not even the guard had any idea who could have committed such a brazen kidnapping.
+
+<</if>>
+</p>
+
+<<elseif $gOutcome == 'failure'>>
+
+<p>
+Unfortunately, <<rep $g.seducer>> seducer|was unable to take the guard's
+attention long enough for your other slavers to do their work. Hearing a commotion,
+the guard rushed in and your slavers were left with no choice but to escape.
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, <<rep $g.seducer>> seducer|was not able to take the guard's
+attention at all,
+and the other slavers were injured during a fight with the guard as a result.
+</p>
+
+<</if>>
+

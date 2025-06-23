@@ -1,0 +1,128 @@
+:: EventSetup_manual_labor [nobr event]
+
+<<run new setup.Event(
+'manual_labor', /* key */
+"Manual Labor", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_manual_labor',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.AllTraits([setup.trait.bg_laborer], true),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.NotBusy(),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.bath),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_manual_labor [nobr]
+<p>
+Your fort residents need a lot of supplies, including building materials, tool maintenance equipment, as well as food ingredients. As a result, crates and crates of the stuff have to be hauled into your fort, a task usually delegated to your slaves. But today, right behind <<yourrep $g.slave>> is <<yourrep $g.slaver>>, who is also hauling a particularly heavy-looking create into your fort.
+<<if $g.slaver.isHasTrait('muscle_verystrong')>>
+The slaver certainly has the muscles for it too, <<their $g.slaver>> bulging muscles flex considerably as <<they $g.slaver>> lift another up.
+<<elseif $g.slaver.isHasTrait('muscle_strong')>>
+The slaver certainly has the physique for it too, <<their $g.slaver>> toned muscles flex as <<they $g.slaver>> lift a crate up.
+<<elseif $g.slaver.isHasTrait('muscle_verythin')>>
+Despite the awkwardly thin waist, <<theslaver $g.slaver>> surprisingly pack quite a power and is able to lift one of the crates up.
+<<elseif $g.slaver.isHasTrait('muscle_thin')>>
+Despite the narrow waist, <<theslaver $g.slaver>> surprisingly pack quite a power and is able to lift one of the crates up.
+<<else>>
+Despite <<their $g.slaver>> average figure, the slaver does not seem any exhausted lifting the heavy-looking crates along.
+<</if>>
+<<They $g.slaver>> slaver|is extremely familiar with manual heavy labor from <<their $g.slaver>> prior occupation before becoming a slaver, and perhaps <<theslaver $g.slaver>> is just wanting to relive the experience by helping out with the slave's menial duties.
+<<if $g.you.isHasTrait('bg_laborer')>>
+As a fellow former laborer yourself, you do get a small calling out of it as well...
+<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Help out too">>
+
+<p>
+Wanting to work your muscles as well, you join in the crate hauling team and haul up
+<<if $unit.player.isHasTrait('bg_laborer')>>
+six crates simultaneously, knowing exactly how to do that
+from your past as a laborer.
+<<elseif $unit.player.isHasTrait('muscle_verystrong')>>
+four crates simultaneously, using your extreme strength.
+<<elseif $unit.player.isHasTrait('muscle_strong')>>
+two crates simultaneously, using your considerable muscle strength.
+<<else>>
+a crate.
+<</if>>
+<<Yourrep $g.slaver>> slaver|look quite surprised
+<<if $g.slaver.isHasTrait('per_humble')>>
+and slightly embarrassed
+<</if>>
+seeing you joining along with <<their $g.slaver>> silly little hobby.
+<<if $unit.player.isHasTrait('bg_laborer')>>
+But <<they $g.slaver>> slaver|is actually quite glad to see that despite your current position,
+you are still willing to help out with hard labor, and from the shared past with you.
+You feel you've grown rather close with the <<urace $g.slaver>> by the end of the nice exercise.
+
+<<run setup.qc.FriendshipWithYou('slaver', 2000).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('slaver', 3).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('you', 3).apply($gQuest)>>
+
+<<else>>
+But <<they $g.slaver>> slaver|is actually quite glad to have another slaver helping out, and the two of you talk amiable as you carry the crates over to your fort between the rest of the slaves. The exercise is quite good for the both of you too.
+
+<<run setup.qc.FriendshipWithYou('slaver', 50).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('slaver', 3).apply($gQuest)>>
+<<run setup.qc.BoonizeRandom('you', 3).apply($gQuest)>>
+
+<</if>>
+</p>
+
+
+<<opt "Prepare a nice relaxing bath for <<rep $g.slaver>> later">>
+
+<p>
+Not wanting to get yourself sweaty, you instead head into the fort's <<rep setup.buildingtemplate.bath>> and prepare a nice, relaxing bath for <<yourrep $g.slaver>>. When <<rep $g.slaver>> finishes with the menial task, you invite <<therace $g.slaver>> over for some relaxing bath-time.
+The sore slaver enjoys the bath quite thoroughly, and <<they $g.slaver>> much appreciate your good gesture.
+<<if State.variables.settings.isCanBecomeLovers($unit.player, $g.slaver)>>
+  <<They $g.slaver>> slaver|is so tired that <<they $g.slaver>> slaver|do not realize that you are quite busy
+  stealing a glance or two on <<their $g.slaver>> delicious-looking <<ugenital $g.slaver>>, as well as
+  <<their $g.slaver>> exposed <<ubreasts $g.slaver>>.
+  <<if $unit.player.isHasTrait('per_chaste')>>
+    A chaste part of you is quite embarrassed by your actions.
+  <<elseif $unit.player.isHasTrait('per_lustful')>>
+    Before long, your fantasies get the better of you and you
+    <<if $unit.player.isHasDick()>>
+      cum secretly inside the water.
+    <<else>>
+      climax secretly inside the water.
+    <</if>>
+  <</if>>
+<</if>>
+</p>
+
+<<run setup.qc.FriendshipWithYou('slaver', 200).apply($gQuest)>>
+
+<</choose>>

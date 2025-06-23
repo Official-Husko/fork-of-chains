@@ -1,0 +1,115 @@
+:: OpportunitySetup_escort_offer2 [nobr opportunity]
+
+
+<<run new setup.UnitGroup(
+"escort_offer1",
+"Overly Dominant Drow",
+'subrace_drow', /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+  setup.qc.TraitReplace('unit', setup.trait.per_dominant),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_proud, setup.trait.per_independent, setup.trait.per_chaste, setup.trait.per_serious, setup.trait.per_stubborn, setup.trait.per_smart], 2, true, false),
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'escort_offer2', /* key */
+"Escort Offer", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'money',
+  'favor',
+  'trait',
+  'danger',
+],
+1, /* expiration weeks */
+'Opportunity_escort_offer2',
+setup.qdiff.harder39, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_escort_offer2_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_household_destroyer_progress'),
+      setup.qc.QuestDirect('dominant_escort', {
+drow: "drow",
+}),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_escort_offer2_1',
+    outcome_passage: 'Opportunity_escort_offer2_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarRemove('quest_household_destroyer'),
+      setup.qc.VarRemove('quest_household_destroyer_progress'),
+      setup.qc.SetCooldownQuest('household_destruction', 1000),
+      setup.qc.RemoveFromUnitGroup('drow'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('quest_household_destroyer', '10'),
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoQuest('dominant_escort'),
+],
+{ /* actors */
+  'drow': 'escort_offer1',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_escort_offer2 [nobr]
+<p>
+    After your previous reports of a certain drow royal causing entire households to get subbified, the rulers of <<rep $company.drow>> has contacted your company to discretely "dispose" of said royal.
+    The subby household issue has become a rather real problem, and they have decided that the best solution for now is to make the drow move out of the city.
+</p>
+
+<p>
+    Of course they can't simply exile such a high ranking drow from the city. On paper, the drow royal will simply be offered a rare vacation into the vast world above ground.
+    <<They $g.drow>> will be given a sufficient amount of money to spend <<their $g.drow>> time luxuriously above.
+</p>
+
+<p>
+    The only issue is that someone needs to escort the drow into the surface, a job which has been offered to you. The drow promises money and favor in exchange for the task. However, should you accept, whoever you send as escorts will likely spend a prolonged amount of time with the drow, and should they be of weak mind, who knows what might happen to them...
+</p>
+
+
+:: Opportunity_escort_offer2_0 [nobr]
+Accept
+
+
+
+:: Opportunity_escort_offer2_1 [nobr]
+Refuse
+
+
+:: Opportunity_escort_offer2_1_flavor [nobr]
+<p>
+    Given just how dominant the drow had been all these time, you figured that it might simply be too risky to send a group of your slavers to escort the dominant to the surface. Some other slaving company shall do it, and the drow shall become their business and never again yours.
+</p>
+
+
+

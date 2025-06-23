@@ -1,0 +1,57 @@
+:: QuestSetupPurifyWings [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'purify_wings',  /* id */
+  'Purify: Wings',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.purify_head_master,
+    'assistant1': setup.qu.purify_assistant,
+    'assistant2': setup.qu.purify_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.MoneyMult(-15),
+  ],  /* costs */
+  'PurifyWings',  /* description */
+  setup.qdiff.hardest56,
+  [
+    [
+      'PurifyAllCrit',
+      [
+        setup.qc.Purify('trainee', 'wings'),
+        
+      ]
+    ],
+    [
+      'PurifyAllSuccess',
+      [
+        setup.qc.Purify('trainee', 'wings'),
+        
+      ],
+    ],
+    [
+      'PurifyAllFailure',
+      [
+      ],
+    ],
+    [
+      'PurifyAllDisaster',
+      [
+        setup.qc.Injury('trainee', 4),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: PurifyWings [nobr]
+<p>
+Purify a unit's wings. Note that wing purification is significantly harder than other purifications.
+</p>

@@ -1,0 +1,47 @@
+:: EventSetup_trial_of_love_cancelled [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_love_trialist_0", /* key */
+"Love Trialist", /* name */
+"Participant in the Trials of Love", /* description */
+"a|is currently participating in the Trials of Love", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.Event(
+'trial_of_love_cancelled', /* key */
+"Trial of Love Cancelled", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Event_trial_of_love_cancelled',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+  setup.qc.VarRemove('trial_of_love_progress'),
+  setup.qc.VarSet('trial_of_love_cooldown', '1', 15),
+],
+[ /* restrictions */
+  setup.qres.ExistUnit([
+setup.qres.HasTitle('quest_love_trialist_0'),
+setup.qres.Not(setup.qres.BestFriend(setup.qres.HasTitle('quest_love_trialist_0')))
+]),
+],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_trial_of_love_cancelled [nobr]
+<p>
+The slavers you sent previously on the trial of love are apparently no longer
+lovers. This immediately disqualifies them from continuing the trials. You'll
+just have to wait for another opportunity to show up before reattempting.
+</p>

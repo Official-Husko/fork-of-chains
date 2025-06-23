@@ -1,0 +1,253 @@
+:: QuestSetup_the_trial_of_love__sickness [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaknight = new setup.UnitCriteria(
+null, /* key */
+'Brewer Trialist', /* name */
+[
+  setup.trait.bg_scholar,
+  setup.trait.bg_wiseman,
+  setup.trait.per_smart,
+  setup.trait.per_studious,
+  setup.trait.per_attentive,
+  setup.trait.skill_alchemy,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_active,
+  setup.trait.per_dreamy,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.LoverExist(),
+  setup.qres.HasTitle('quest_love_trialist_0'),
+],
+{
+  knowledge: 1.5,
+  social: 1.5,
+}
+)>>
+
+<<set _criteriahealer = new setup.UnitCriteria(
+null, /* key */
+'Gatherer Trialist', /* name */
+[
+  setup.trait.bg_wildman,
+  setup.trait.bg_hunter,
+  setup.trait.eyes_neko,
+  setup.trait.eyes_dragonkin,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.eyes_demon,
+  setup.trait.per_gregarious,
+  setup.trait.per_loyal,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.LoverExist(),
+  setup.qres.HasTitle('quest_love_trialist_0'),
+],
+{
+  survival: 1.5,
+  intrigue: 1.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_trial_of_love__sickness', /* key */
+"The Trial of Love: Sickness", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'veteran',
+  'prep',
+  'item',
+  'sea',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'knight': [ _criteriaknight, 1.5],
+  'healer': [ _criteriahealer, 1.5],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_the_trial_of_love__sickness',
+setup.qdiff.harder54, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_trial_of_love__sicknessCrit',
+    [
+      setup.qc.VarSet('trial_of_love_progress', '2', -1),
+      setup.qc.Item(setup.item.hate_potion),
+      setup.qc.Item(setup.item.love_potion),
+    ],
+  ],
+  [
+    'Quest_the_trial_of_love__sicknessCrit',
+    [
+      setup.qc.VarSet('trial_of_love_progress', '2', -1),
+      setup.qc.OneRandom([
+setup.qc.Item(setup.item.hate_potion),
+setup.qc.Item(setup.item.love_potion)
+]),
+    ],
+  ],
+  [
+    'Quest_the_trial_of_love__sicknessFailure',
+    [
+      setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+      setup.qc.MissingUnitRecapture('knight', 'capturedmedium'),
+      setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+    ],
+  ],
+  [
+    'Quest_the_trial_of_love__sicknessFailure',
+    [
+      setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+      setup.qc.MissingUnitRecapture('knight', 'capturedhard'),
+      setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.VarNull('trial_of_love_cooldown'),
+  setup.qres.VarEqual('trial_of_love_progress', '1'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('quest_love_trialist_0'),
+setup.qres.LoverExist(),
+setup.qres.BestFriend(setup.qres.HasTitle('quest_love_trialist_0'))
+]),
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('trial_of_love_cooldown', '1', 8),
+  setup.qc.RemoveTitleGlobal('quest_love_trialist_0'),
+
+],
+)>>
+
+:: Quest_the_trial_of_love__sickness [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+<<Yourrep _u>> has informed you that a rather special letter has arrived in
+your desk today. The letter is addressed to the slavers in your company who
+are currently participating in the Trial of Love, and it informs you that the
+second bout is due to be held very soon. Your slavers are urged to
+participate by going to a particular island in the <<lore region_sea>>, this time
+to apparently test another aspect of their love.
+</p>
+
+<p>
+<<if $inventory.isHasItem(setup.item.love_technology)>>
+While you already have <<rep setup.item.love_technology>> in your fort, it
+could never hurt to get more of that rare <<rep setup.item.love_potion_true>>.
+<<else>>
+As you recall, this is perhaps the only way to obtain that elusive <<rep
+setup.item.love_technology>>. You must admit that you have been dreaming
+about using this technology on some unsuspecting victims, making them fall in
+love with random people they meet in a random tavern.
+<</if>>
+Either way, you'd better prepare your slavers for another "leisurely vacation" if you
+want to continue on this goose chase.
+</p>
+
+<p>
+<<dangertext 'Note'>>: Ignoring this quest will disqualify your slavers from the current competition, and they would have to start anew!
+</p>
+
+
+:: Quest_the_trial_of_love__sicknessCrit [nobr]
+
+<p>
+<<Yourrep $g.knight>> and <<utheirrel $g.knight $g.healer>> <<rep $g.healer>>
+yet again arrived at a non-descript island. Just like last time, the island is
+a paradise — arching rocks greeted your slavers, inviting them to explore the
+seemingly pristine and uninhabited island. But the lovebirds were on a
+mission, and they had no intention to fail it.
+</p>
+
+<p>
+The second trial explored the theme of how far one would go for their beloved
+in sickness. Love stories often tell of tales where the lover would sail the seven seas
+in search of an elusive potion to cure their beloved sickness. In a strange
+mimicry of this tale, the second trial tasked its competitors to concoct as
+wondrous potion as they could possibly could from within the islands, as if
+their beloved were on the verge of dying with only the rare potion as their
+possible salvation.
+</p>
+
+<p>
+Your slavers immediately got to work.
+They sneaked a quick kiss before parting ways, with <<rep $g.knight>>
+investigating a recipe for a rare potion while <<utheirrel $g.knight
+$g.healer>> ventured into the wilds in search for rare ingredients.
+</p>
+
+<p>
+The venture was successful, and <<rep $g.healer>> <<uadv $g.healer>>
+collected many wondrous fruits from the jungle, the variants you have never
+encountered in <<lore geo_mestia>>.
+
+<<if $g.knight.isHasTrait('bg_scholar') or $g.knight.isHasTrait('bg_wiseman')>>
+It did not take the educated slaver <<rep $g.knight>> long to figure out that
+these fruits are mild aphrodisiacs.
+<<elseif $g.knight.isHasTrait('skill_alchemy')>>
+Given <<their $g.knight>> background in alchemy, <<rep $g.knight>>
+immediately recognized the strange pungent scent of the aphrodisiac fruit.
+<<elseif $g.knight.isHasTrait('per_studious')>>
+<<Rep $g.knight>> recalled after a while from one of the numerous books
+<<they $g.knight>> had read that these strange-looking fruits were highly
+arousing — an aphrodisiac fruit.
+<<else>>
+<<Rep $g.knight>> lacked any relevant background to be able to identify the
+fruit by smell, and resigned to identify it by taste. No sooner after the
+first bite did <<reps $g.knight>> gaze turned lustful, and advanced upon
+<<their $g.knight>> lover seemingly with no restraint. Only after <<rep
+$g.healer>> healer|was used beyond <<their $g.healer>> limit that the fruit's effect finally
+dissipated — a potent aphrodisiac fruit. <<Rep $g.knight>> would have the time to
+apologize to their lover <<rep $g.healer>> later, but for that moment,
+work must be done.
+<<run setup.qc.Injury('healer', 3).apply($gQuest)>>
+<</if>>
+</p>
+
+<p>
+Using the aphrodisiac fruit as a base,
+<<rep $g.knight>> <<uadv $g.knight>> concocted
+<<if $gOutcome == 'crit'>>
+two rare potions, capable of either befriending two people or making them hate each other.
+<<else>>
+a potion with potent friendship-altering effect.
+<</if>>
+The potion was indeed wondrous and rare, impressing the judges greatly. Your
+slavers had once again triumphed in the Trial of Love, and only the last
+trial awaits them now...
+</p>
+
+<p>
+Unknown to you, the quest was actually already completed by the end of the
+second week. But the lovebirds spent the rest of their time in the islands
+deepening their love by the caverns they found next to the sea, before
+eventually returning to reality — back at your fort with the prize. Sooner or
+later the invitation for the final bout of the trials will surely come to
+your office, as long as the lovers remain with your company.
+</p>
+
+
+:: Quest_the_trial_of_love__sicknessFailure [nobr]
+<<include "Quest_the_trial_of_loveFailure">>
+

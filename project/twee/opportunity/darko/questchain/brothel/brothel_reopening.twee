@@ -1,0 +1,144 @@
+:: OpportunitySetup_brothel_reopening [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"brothel_reopening0",
+"Girl Whore",
+'forest_allfemale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_whore),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_studious]),
+],
+)>> <<run new setup.UnitGroup(
+"brothel_reopening1",
+"Boy Whore",
+'forest_allmale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_whore),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_studious]),
+],
+)>>
+
+<<run new setup.OpportunityTemplate(
+'brothel_reopening', /* key */
+"Brothel Reopening", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_reopening',
+setup.qdiff.normal26, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_reopening_0',
+    'Opportunity_brothel_reopening_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.AddUnitToUnitGroup('boy', 'brothel_cleanup0'),
+      setup.qc.VarSet('quest_brothel_progress', '8', -1),
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_gender', 'male', -1),
+    ],
+  ],
+  [
+    'Opportunity_brothel_reopening_1',
+    'Opportunity_brothel_reopening_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.AddUnitToUnitGroup('girl', 'brothel_cleanup0'),
+      setup.qc.VarSet('quest_brothel_progress', '8', -1),
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_gender', 'female', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+  ],
+  'girl': 'brothel_reopening0',
+  'boy': 'brothel_reopening1',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_reopening [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+
+<p>
+You've purchased <<attach _describe>> some time ago, and
+<<yourrep $g.owner>>, who is responsible for managing the place,
+had worked hard trying to bring the place back up and running.
+After a month of work,
+<<they $g.owner>> owner|declare the place ready to open.
+<<They $g.owner>> owner|is as excited as you are to own a brothel, but owner|remain level-headed.
+<<if $g.owner.isHasTrait('per_aggressive')>>
+(An extremely rare occurrence for the aggresive slaver.)
+<</if>>
+</p>
+
+<p>
+<<Rep $g.owner>> had spent the last few weeks doing some research over to the other brothels in <<lore location_npc>>, and has come to the conclusion that your brothel will need to focus in order to draw in more customers. As the de-facto owner of the place, you'll need to make the decision on whether you want to focus providing the best girls in town, or the best dicks in town. Once the decision is made, the workers with the right genders will be employed as whores, while the rest will help out with the running of the brothel.
+</p>
+
+
+
+
+:: Opportunity_brothel_reopening_0 [nobr]
+Offer boys
+
+
+:: Opportunity_brothel_reopening_0_flavor [nobr]
+<<set _u = $g.boy>>
+
+<<include "QuestBrothelReopeningCommon">>
+
+:: QuestBrothelReopeningCommon [nobr]
+
+<p>
+You make up your mind, and designated your brothel to provide the best
+<<if _u.isHasDick()>>stiff dicks<<else>>wet pussies<</if>> in town.
+<<Yourrep $g.owner>> owner|announce the re-opening, and the workers of the brothel
+cautiously cheer. The door to your brothels is now open for public,
+although given the state of the brothel and its workers, you wonder if it'll
+actually drawn in any customers at all...
+</p>
+
+
+
+
+:: Opportunity_brothel_reopening_1 [nobr]
+Offer girls
+
+
+:: Opportunity_brothel_reopening_1_flavor [nobr]
+<<set _u = $g.girl>>
+
+<<include "QuestBrothelReopeningCommon">>

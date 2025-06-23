@@ -1,0 +1,75 @@
+:: QuestSetupDesertContact [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'desert_contact',  /* id */
+  'Establish Contact: Eastern Desert',  /* Title */
+  'darko',   /* author */
+  ['desert', 'special', 'quest'],  /* tags */
+  2, /* = weeks */
+  setup.INFINITY, /* = expired in */
+  {  /* your actors */
+    'scout1': setup.qu.scout_desert,
+    'scout2': setup.qu.scout_desert,
+    'guard': setup.qu.scout_guard,
+  },
+  {  /* generated actors */
+  },
+  [],  /* costs */
+  'QuestDesertContact',  /* description */
+  setup.qdiff.hard35,
+  [
+    [
+      'QuestDesertContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.desertlead),
+        setup.qc.QuestDelay(setup.questpool.desert, 10),
+        
+      ]
+    ],
+    [
+      'QuestDesertContactCrit',
+      [
+        setup.qc.Contact(setup.contacttemplate.desertlead),
+        setup.qc.QuestDelay(setup.questpool.desert, 6),
+        
+      ],
+    ],
+    [
+      'QuestDesertContactFailure',
+      [
+        setup.qc.QuestDirect('desert_contact'),
+      ],
+    ],
+    [
+      'QuestDesertContactFailure',
+      [
+        setup.qc.QuestDirect('desert_contact'),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestDesertContact [nobr]
+<p>
+With the <<rep setup.buildingtemplate.scoutcarriage>> ready,
+you should now
+find some contact in the <<lore region_desert>> who might be willing to supply
+your company with leads for quests.
+</p>
+
+:: QuestDesertContactCrit [nobr]
+
+<p>
+Your slavers journey to the east borne fruit. They managed to find
+a settlement near an oasis who they managed to convince to send out
+their problems for your company to solve.
+</p>
+
+:: QuestDesertContactFailure [nobr]
+<p>
+Unfortunately, your slavers failed to find any such contact. You should try again.
+</p>

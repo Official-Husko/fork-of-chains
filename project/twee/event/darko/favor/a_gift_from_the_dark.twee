@@ -1,0 +1,86 @@
+:: EventSetup_a_gift_from_the_dark [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'a_gift_from_the_dark', /* key */
+"A Gift from the Dark", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'item',
+  'desert',
+],
+'Event_a_gift_from_the_dark',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.Item(setup.item.sexmanual_tentacle_spitroast),
+],
+[ /* restrictions */
+  setup.qres.NoItem(setup.item.sexmanual_tentacle_spitroast),
+  setup.qres.FavorAtLeast('demon', 800),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_a_gift_from_the_dark [nobr]
+<<set _w = $company.player.getUnits({job: setup.job.slaver}).filter(u => !u.isYou() && u.isHasTrait('magic_earth_master'))>>
+
+<<set _u = setup.getAnySlaver()>>
+<<if _w.length>>
+<<set _u = _w[0]>>
+<</if>>
+
+<p>
+As you go around per your usual schedule, the sky surrounding your fort suddenly
+turns dark, and you can see purple magical vortex swirling far up on the sky above
+you. As you and your slavers brace for the incoming rain of corruption,
+what comes outside of it instead is a single box, which harmlessly lands on the
+courtyard before the sky clears itself again. From your window, you see
+<<yourrep _u>> curiously poking a stick to the seemingly harmless box, before
+<<uadv _u>> opening it, revealing a dense tome inside.
+</p>
+
+<p>
+The tome turns out to be an incredibly rare <<rep
+setup.item.sexmanual_tentacle_spitroast>>, describing what one could possibly
+do to slaves should they are blessed with tentacles.
+Well, that's not very useful, as neither you nor any of your slavers happens to possess
+tentacles, but then <<yourrep _u>> reminds you that certain masters of <<lore
+magic_earth>> are capable of summoning tentacles.
+
+<<if $unit.player.isHasTrait('magic_earth_master')>>
+You happen to be one of those select people, and after studying the tome for
+a good while you've concluded that you should be able try some of these techniques
+out on the slaves later...
+
+<<elseif _u.isHasTrait('magic_earth_master')>>
+<<Yourrep _u>> happens to be one of those gifted people, and you can see the
+<<if _u.isHasTrait('per_honorable')>>
+honorable slaver's disgust towards you and your degenerate ideas.
+
+<<else>>
+slaver's delight in trying the technique out.
+<</if>>
+
+<<else>>
+Unfortunately, none of your slavers are currently capable of using that magic,
+so the tome shall remain shelved for the time being.
+<</if>>
+</p>
+
+<<if $unit.player.isHasTrait('per_submissive')>>
+<p>
+Later that night, you woke up in the middle of the night to
+<<if $unit.player.isHasDick()>>
+an erection,
+<<else>>
+a wet dream,
+<</if>>
+after dreaming having all your available orifices penetrated by big, viny tentacles.
+You should probably get that submissive mind of yours checked by the resident doctor...
+</p>
+<</if>>

@@ -1,0 +1,42 @@
+:: InitBuildingBath [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'bath',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'bath',
+  name: 'Bath',
+  tags: ['recreation', ],
+  description_passage: 'BuildingBath',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUMLOW_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('recreationwing')],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('toiletslave')
+    ],
+  ],
+  main_room_template_key: 'bath',
+})>>
+
+:: BuildingBath [nobr]
+
+<p>
+Unlocks the Toilet slave duty, which increases the income
+made by your Entertainment Pimp
+based on the toilet skill of the slave.
+</p>

@@ -1,0 +1,24 @@
+:: PassageHeader [nobr]
+
+/* hack for back button to work again */
+<<if State.activeIndex > 0 && State.history[State.activeIndex-1].variables.gPassage == 'WeekEnd'>>
+  <<set State.history[State.activeIndex-1].variables.gPassage = State.history[State.activeIndex-1].variables.gOldPassage>>
+<</if>>
+
+<<if $devtooltype>>
+  <<include 'LoadDevWidgets'>>
+<</if>>
+
+<<focwidget 'loadnotification'>>
+  <<notificationscard>>
+<</focwidget>>
+
+<<if $notification>>
+  <<run $notification.deleteAll()>>
+  <div id='notifheader'>
+    <<loadnotification>>
+  </div>
+<</if>>
+
+<div class='warningsdiv'>
+</div>

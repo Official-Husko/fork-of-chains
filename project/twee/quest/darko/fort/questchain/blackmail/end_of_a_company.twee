@@ -1,0 +1,192 @@
+:: QuestSetup_end_of_a_company [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"end_of_a_company0",
+"Vice-Leader",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_slaver),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_fire, setup.trait.magic_water, setup.trait.magic_wind, setup.trait.magic_earth, setup.trait.magic_light, setup.trait.magic_dark], 1, false, false),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.muscle_strong, setup.trait.face_attractive, setup.trait.height_tall, setup.trait.per_smart], 1, false, false),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.per_proud, setup.trait.per_brave, setup.trait.per_dominant, setup.trait.per_serious], 1, false, false),
+],
+)>>
+
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.bg_mercenary,
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.You(),
+],
+{
+  combat: 0.5,
+  brawn: 0.5,
+  intrigue: 0.5,
+  slaving: 0.5,
+  aid: 0.5,
+  arcane: 0.5,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'end_of_a_company', /* key */
+"End of a Company", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'special',
+  'unit',
+],
+4, /* weeks */
+setup.INFINITY, /* expiration weeks */
+{ /* roles */
+  'you': [ _criteriayou, 1],
+  'dps': [ setup.qu.dps, 1],
+  'healer': [ setup.qu.healer, 1],
+},
+{ /* actors */
+  'boss': [
+  ],
+  'slaver': [
+  ],
+  'viceleader': 'end_of_a_company0',
+},
+[ /* costs */
+],
+'Quest_end_of_a_company',
+setup.qdiff.hard48, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_end_of_a_companyCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('viceleader', "a|was the vice-leader to a slaving company that you\'ve soundly defeated", undefined),
+    ],
+  ],
+  [
+    'Quest_end_of_a_companyCrit',
+    [
+      setup.qc.VarRemove('rival_blackmail_progress'),
+      setup.qc.VarRemove('rival_blackmail_active'),
+      setup.qc.SetCooldownEvent('blackmailed', 400),
+      setup.qc.Opportunity('the_price_of_revenge', {
+slaver: "slaver",
+boss: "boss",
+}),
+    ],
+  ],
+  [
+    'Quest_end_of_a_companyFailure',
+    [
+      setup.qc.QuestDirectSelf({
+boss: "boss",
+slaver: "slaver",
+}),
+    ],
+  ],
+  [
+    'Quest_end_of_a_companyDisaster',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Injury('you', 3),
+      setup.qc.Injury('dps', 3),
+      setup.qc.Injury('healer', 3),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_end_of_a_company [nobr]
+<p>
+Through your efforts in the past few weeks, your rival slaving company leader
+<<rep $g.boss>> had seen many of <<their $g.boss>> <<women $g.boss>> deserted
+or simply disappeared for one reason or another. With only a few slavers under
+<<their $g.boss>> employ, the time has finally come should you with to launch
+an attack into <<their $g.boss>> fort, rescuing <<yourrep $g.slaver>>.
+</p>
+
+<p>
+As you want to savor the result yourself, you are planning to go personally
+on this mission. But you also need two other slavers to accompany you.
+Assaulting the fort directly will be dangerous, so best prepare yourselves.
+</p>
+
+
+:: Quest_end_of_a_companyCrit [nobr]
+
+<p>
+After some careful preparation, you managed to find a particular time
+where the few of <<reps $g.boss>> remaining slavers were away from the fort.
+Seizing the opportunity, you led <<yourrep $g.dps>> and <<rep $g.healer>> on a
+frontal assault. With no slavers left to defend the fort, your slavers'
+assault were not met with any meaningful resistance, and before long you found yourself
+deep inside the enemy fort, looking up to the office where <<rep $g.boss>> must
+reside in.
+</p>
+
+<p>
+Inside the fort, you and your slavers dispatched the remaining slavers who
+were caught in surprise, since nobody alerted them of your presence.
+Downing slaver after slaver, you finally arrived at what appears to be the
+leader's office. You <<uadv $g.you>> kicked the door open, before finally
+coming face to face with your rival who had been black-mailing you all the
+past few weeks. <<Their $g.boss>> eyes cast downwards, <<they $g.boss>> knew
+<<they $g.boss>> boss|was defeated, but still managed to tempt you with one
+final offer...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Seeing the boss secured, <<yourrep $g.dps>> sneaked back from the room, and
+managed to grab a particularly valuable-looking former slaver to bring home
+as a slave.
+</p>
+<</if>>
+
+
+
+:: Quest_end_of_a_companyFailure [nobr]
+
+<p>
+You did not manage to choose the right time for the assault. By the time you
+arrived at the fort, one of <<their $g.boss>> remaining slavers spotted you
+from atop the fort, alerting the entire fort to your presence. There was no
+hope of you and your slavers to successfully invade a well-alerted fort, so
+you <<uadv $g.you>> ordered a retreat to fight another day. Fortunately,
+<<rep $g.boss>> seemed unaware that it was you who launched the attack, and
+assumed it to be the desperate act of some random bandit...
+</p>
+
+
+:: Quest_end_of_a_companyDisaster [nobr]
+
+<p>
+Your rival company leader is not a dumb <<man $g.boss>>, and it showed. In
+anticipation of attacks, <<they $g.boss>> had carefully lined up layers after
+layers of traps surrounding <<their $g.boss>> fort — traps you and your slavers
+fell victim to. Sustaining injuries, you and your slavers were forced to
+retreat and re-plan the attack for another day.
+</p>
+

@@ -1,0 +1,267 @@
+:: QuestSetup_bounty_hunt_spiders [nobr quest]
+
+<<set _criteriafighter1 = new setup.UnitCriteria(
+null, /* key */
+'Spider Fighter', /* name */
+[
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_brave,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_cautious,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 3,
+}
+)>>
+
+<<set _criteriafighter2 = new setup.UnitCriteria(
+null, /* key */
+'Spider Fighter', /* name */
+[
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_brave,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_cautious,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 3,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'bounty_hunt_spiders', /* key */
+"Bounty Hunt: Spiders", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'money',
+  'deep',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'fighter1': [ _criteriafighter1, 1],
+  'fighter2': [ _criteriafighter2, 1],
+  'support': [ setup.qu.defendersupport, 1],
+},
+{ /* actors */
+  'slave': 'deep_all',
+},
+[ /* costs */
+],
+'Quest_bounty_hunt_spiders',
+setup.qdiff.hard36, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_bounty_hunt_spidersCrit',
+    [
+      setup.qc.IfThenElse(
+setup.qres.And([
+setup.qres.Actor('fighter1', setup.qres.NoTraits([setup.trait.magic_fire, setup.trait.magic_fire_master], true)),
+setup.qres.Actor('fighter2', setup.qres.NoTraits([setup.trait.magic_fire, setup.trait.magic_fire_master], true)),
+setup.qres.Actor('support', setup.qres.NoTraits([setup.trait.magic_fire, setup.trait.magic_fire_master], true))
+]),
+setup.qc.DoAll([
+setup.qc.Slave('slave', "a|was an unfortunate resident of the Deeprealm who was attacked by giant spiders and turned into a cocoon", undefined)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Outcomes("success"),
+setup.qc.MoneyCustom(1500)
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_spidersCrit',
+    [
+      setup.qc.MoneyCustom(1500),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_spidersCrit',
+    [
+      setup.qc.Injury('fighter1', 1),
+      setup.qc.Injury('fighter2', 1),
+      setup.qc.Injury('support', 1),
+      setup.qc.TraumatizeRandom('fighter1', 5),
+      setup.qc.TraumatizeRandom('fighter2', 5),
+      setup.qc.TraumatizeRandom('support', 5),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_spidersCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.MissingUnit('fighter1'),
+setup.qc.MissingUnit('fighter2'),
+setup.qc.MissingUnit('support')
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_bounty_hunt_spiders [nobr]
+<p>
+    The <<lore region_deep>> is rife with monsters. Fortunately, most tend to live far outside the settlements, and since they dislike the bright light, the well-lit underground highways are usually safe for travel. But occasionally, some of the monsters would build a den far too close to the settlements, and these settlements would offer adventurers some work to get rid of these dens.
+</p>
+
+<p>
+    Amongst the many monsters inhabiting the underground, the perhaps most common one has to be the numerous species of giant spiders inhabiting the various caverns in the <<lore region_deep>>. One of the settlements is offering your company some pay to get rid of one of the spider nests that were far too close to the settlements. Spiders are notoriously weak to fire, so bringing a slaver proficient in fire magic might be the safest way to go. Although there may be some benefit of not using such a destructive magic...
+</p>
+
+
+
+
+:: Quest_bounty_hunt_spidersCrit [nobr]
+<<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+
+<<if $gOutcome == 'crit' && _unit && $g.slave.isFemale()>>
+    <<questimage "bounty_hunt_spiders_female.jpg">>
+<<else>>
+    <<questimage "bounty_hunt_spiders.jpg">>
+<</if>>
+
+<p>
+    The spider built a nest on a cavern just outside of the settlement, and your slavers were escorted there by a villager to do their jobs.
+    Once the villager left, your slavers began to work.
+    <<if _unit>>
+        <<Rep _unit>> casts a flame magic, burning the spiderweb and opening the way.
+    <<else>>
+        <<Rep $g.fighter1>> hacked the way through, cutting through the spiderwebs to reach the inner chambers.
+    <</if>>
+</p>
+
+<p>
+    Numerous spiders were found inside, and while most scuttle out of the way, a number of gigantic spiders came to defend their nest. Your slavers grabbed their weapons and began for a fierce fight.
+    <<if _unit>>
+        The ongoing fire weakened the spiders, helping sway the battle odds to your slavers'.
+    <<else>>
+        Without fire, the fight was harder than normal, and
+        <<if $gQuest.getSeed() % 2 == 0>>
+            <<rep $g.fighter1>> fighter1|was
+            bitten by one of the spiders, injuring <<them $g.fighter1>>.
+            <<run setup.qc.Injury('fighter1', 1).apply($gQuest)>>
+        <<else>>
+            <<rep $g.fighter2>> fighter2|was
+            bitten by one of the spiders, injuring <<them $g.fighter2>>.
+            <<run setup.qc.Injury('fighter2', 1).apply($gQuest)>>
+        <</if>>
+    <</if>>
+    <<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'muscle_verystrong'})>>
+    <<if _unit>>
+        Whenever the spider tried to encase your slavers in web, <<rep _unit>> used <<their _unit>> tremendous strength to break free from the web.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'per_brave'})>>
+    <<if _unit>>
+        <<Rep _unit>> rallied the more squeamish slavers, instilling courage on the team to pull through.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {trait: 'per_cautious'})>>
+    <<if _unit>>
+        <<Rep _unit>> got a little intimidated by the oversized spiders, the cowardic <<urace _unit>> certainly not having <<their _unit>> best day of the month.
+    <</if>>
+</p>
+
+<<set _unit = setup.selectUnit([$g.fighter1, $g.fighter2, $g.support], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+
+<<if $gOutcome == 'crit' && !_unit>>
+    <p>
+        Without the aid of fire magic, your slavers had a much harder time than normal to best these critters. But eventually, through pure skill (or so they claimed to you) they managed to prevail after the last of the spiders fell to their weapons. With the giant spiders defeated, the lesser and smallers ones all scattered and fled, and the den was ripe for the looting.
+    </p>
+    <p>
+        In the innermost chamber, your slavers found a prize — one of the villagers who had fallen victim to the spiders was encased in cocoon, clearly struggling and surprisingly
+        <<if $g.slave.isMale()>>
+            erect.
+        <<else>>
+            flush with arousal.
+        <</if>>
+        Perhaps the spiders were milking the poor <<urace $g.slave>> for whatever nefarious purpose?
+        In either case, seeing such a juicy potential slave, your slavers decided that the slave would make a much better reward than the promised money. They freed the <<urace $g.slave>> from the cocoon, only to collar <<them $g.slave>> when <<they $g.slave>> tried to thank your slavers. Whether or not your slavers made the correct decision of ditching pay in exchange for the slave remains to be seen, but the slave is now safe and sound in your <<rep setup.buildingtemplate.slavepens>>.
+    </p>
+
+<<elseif $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+    <p>
+        <<if _unit>>
+            The fire raged on, burning most of the spiders, and it was no doubt thanks to the fire that your slavers were able to finally force the spiders to flee.
+        <<else>>
+            Without fire, your slavers had to fight like mad to kill every single one of the numerous spiders. But they did just that.
+        <</if>>
+        Exhausted from the job well done, your slavers retreated back to the settlement, whose grateful villagers gave your slavers the promised reward
+        <<if $gOutcome == 'crit'>>
+            and then more
+        <</if>>
+        .
+    </p>
+
+<<elseif $gOutcome == 'failure'>>
+
+    <p>
+        Unfortunately,
+        <<if _unit>>
+            even with fire magic
+        <</if>>
+        there was simply too many spiders (or your slavers were simply too incompetent), and your slavers were forced to flee as they realized they were losing the battle of attrition.
+        Your slaver suffered minor injuries, made worse by the fact that the settlement rightfully refused your pay.
+    </p>
+
+<<else>>
+
+    <p>
+        Unfortunately,
+        <<if _unit>>
+            even with fire magic
+        <</if>>
+        there was simply too many spiders. Before they could realize, your slavers were surrounded, with their escape route blocked.
+        Your slavers struggled to retreat, breaking through the numerous spiders on their way back.
+        They managed to eventually retreat to the entrance, albeit with minor injuries, or so they thought.
+        Only then did they realize that
+        <<if $gQuest.getSeed() % 3 == 0>>
+            <<set $g.v = $g.fighter1>>
+        <<elseif $gQuest.getSeed() % 3 == 1>>
+            <<set $g.v = $g.fighter2>>
+        <<elseif $gQuest.getSeed() % 3 == 2>>
+            <<set $g.v = $g.support>>
+        <</if>>
+        <<rep $g.v>> was nowhere to be seen.
+        Perhaps <<they $g.v>> fell along the way, or perhaps the spiders immobilized the poor <<urace $g.v>> somehow, but <<they $g.v>> did not come back safely to your fort from the quest.
+    </p>
+
+    <p>
+        <<uneedrescue $g.v>>, maybe after some more competent adventurers get rid of the spider threat and "rescue" your captured slaver.
+    </p>
+
+<</if>>

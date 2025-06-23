@@ -1,0 +1,193 @@
+:: QuestSetup_alchemist_orders [nobr quest]
+
+<<run new setup.UnitGroup(
+"alchemist_orders0",
+"Erratic Alchemist",
+'forest_all', /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_wiseman),
+  setup.qc.TraitsReplace('unit', [setup.trait.skill_alchemy, setup.trait.per_lunatic, setup.trait.per_dominant]),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'alchemist_orders', /* key */
+"Alchemist Orders", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'item',
+  'order',
+  'forest',
+  'veteran',
+  'rare',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'negotiator1': [ setup.qu.negotiator, 1],
+  'negotiator2': [ setup.qu.negotiator, 1],
+  'scout': [ setup.qu.scout_forest, 1],
+},
+{ /* actors */
+  'alc': 'alchemist_orders0',
+},
+[ /* costs */
+],
+'Quest_alchemist_orders',
+setup.qdiff.harder54, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_alchemist_ordersCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.ItemPool(setup.itempool.all_good),
+    ],
+  ],
+  [
+    'Quest_alchemist_ordersCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.Opportunity('lonely_alchemist', {
+alc: "alc",
+}),
+setup.qc.Opportunity('lonely_alchemist2', {
+alc: "alc",
+}),
+setup.qc.Opportunity('lonely_alchemist3', {
+alc: "alc",
+})
+]),
+      setup.qc.VarRemove('lonely_alchemist_progress'),
+      setup.qc.SetCooldownQuest(null, 100),
+      setup.qc.SetCooldownQuest('test_subject_wanted', 10),
+    ],
+  ],
+  [
+    'Quest_alchemist_ordersFailure',
+    [
+      setup.qc.VarAdd('lonely_alchemist_progress', -2, -1),
+      setup.qc.OneRandomSeed([
+setup.qc.DoAll([
+setup.qc.Corrupt('negotiator1', null, 1),
+setup.qc.Corrupt('negotiator2', null, 1),
+setup.qc.Corrupt('scout', null, 1)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Injury('negotiator1', 7),
+setup.qc.Injury('negotiator2', 7),
+setup.qc.Injury('scout', 7)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Blessing('negotiator1', 30, null, true),
+setup.qc.Blessing('negotiator2', 30, null, true),
+setup.qc.Blessing('scout', 30, null, true)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_alchemist_ordersFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.epic],
+],
+[ /* restrictions */
+  setup.qres.Building('veteranhall'),
+  setup.qres.VarGte('lonely_alchemist_progress', 4),
+  setup.qres.QuestUnique(),
+  setup.qres.NoQuest('test_subject_wanted'),
+  setup.qres.NoOpportunity('lonely_alchemist'),
+  setup.qres.NoOpportunity('lonely_alchemist2'),
+  setup.qres.NoOpportunity('lonely_alchemist3'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_alchemist_orders [nobr]
+<p>
+Today, you receive a letter from the erratic alchemist <<name $g.alc>> living in the <<lore region_forest>>. As you recall, you've been supplying the <<urace $g.alc>> with "test subjects" for <<their $g.alc>> alchemical experiments, with various outcomes. While the slave is usually returned to you afterwards (albeit occasionally in a transformed state), the alchemist is requesting a more permanent test subject this time.
+</p>
+
+<p>
+<<if $unit.player.isHasTrait('bg_scholar')>>
+Despite the letter being cryptically written, your background as a scholar helps you decipher it quickly. As far as you understand,
+<<elseif $unit.player.isHasTrait('bg_wiseman')>>
+Despite the letter being cryptically written, your background as a wiseman helps you decipher it quickly. As far as you understand,
+<<else>>
+It took you a lot of effort to decipher the cryptically written letter, but in the end, you believe that
+<</if>>
+<<therace $g.alc>> is looking for a test subject for a lengthy experiment that <<they $g.alc>> alc|is planning to conduct in the coming weeks.
+While <<they $g.alc>> alc|is lacking in money to pay you for the salve, <<they $g.alc>> is willing to exchange a large quantity of rare potions for the slave.
+If the deal interest you, you could send a group of slavers to negotiate the fine details of the slave order by sending them into the <<lore region_forest>>.
+</p>
+
+<p>
+But there are enough winks and tidbit calligraphies here and there that indicate that professional use is not all the slave would be responsible for doing, but that's not really your concern, are they?
+</p>
+
+
+
+
+
+
+:: Quest_alchemist_ordersCrit [nobr]
+<p>
+The alchemist is a very, very crazy little <<urace $g.alc>>, and it took all your slavers' wits and smarts to decipher what it is the lunatic is trying to say.
+<<set _unit = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.scout], {trait: 'per_smart'})>>
+<<if _unit>>
+<<Rep _unit>> <<if _unit.isYou()>>are<<else>>is<</if>> smart enough to decipher it little by little, thankfully.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.scout], {trait: 'per_logical'})>>
+<<if _unit>>
+<<Reps _unit>> logical mind greatly helps in unraveling the lunatic's words.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.scout], {trait: 'per_lunatic'})>>
+<<if _unit>>
+As a fellow lunatic, <<Rep _unit>> effortlessly translated the gibberish to the other slavers.
+
+<</if>>
+
+<<set _unit = setup.selectUnit([$g.negotiator1, $g.negotiator2, $g.scout], {trait: 'per_gregarious'})>>
+<<if _unit>>
+<<Rep _unit>> had to use <<their _unit>> silver tongue to guide the conversation lest it would not go anywhere.
+
+<</if>>
+
+In the end, your slavers were able to make out the fine details of the slave order, which is now sitting quietly at your desk in front of you.
+<<if $gOutcome == 'crit'>>
+They were also able to negotiate an advance payment for your services in the form of a somewhat rare potion at the corner of your desk.
+<</if>>
+</p>
+
+
+
+
+
+:: Quest_alchemist_ordersFailure [nobr]
+<p>
+Unfortunately, something terribly wrong happened in the quest.
+Your slavers came back home
+<<if $gQuest.getSeed() % 3 == 0>>
+corrupted,
+<<elseif $gQuest.getSeed() % 3 == 1>>
+injured,
+<<elseif $gQuest.getSeed() % 3 == 2>>
+cursed,
+<</if>>
+and they were unable to recall the details as to how it happened. When they tried to remember as hard as they could, the only things that appeared in their mind vision are dicks, pussies, and a lot of warm "liquid" being forced down their throats. It seems that they finally learned what is it that the "test subjects" have experienced each time you send a slave or two to the alchemist...
+</p>

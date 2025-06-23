@@ -1,0 +1,52 @@
+:: EventSetup_animal_tamer__payment_cancelled [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'animal_tamer__payment_cancelled', /* key */
+"Animal Tamer: Payment Cancelled", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+],
+'Event_animal_tamer__payment_cancelled',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.VarRemove('animal_tamer_slave_order_active'),
+  setup.qc.VarRemove('animal_tamer_slave_being_trained'),
+  setup.qc.VarRemove('animal_tamer_slave_order_fulfilled'),
+  setup.qc.RemoveTagGlobal('in_training_defiant_slave'),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('animal_tamer_slave_being_trained', '1'),
+  setup.qres.VarNull('animal_tamer_slave_order_active'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_animal_tamer__payment_cancelled [nobr]
+<<set _u = setup.getUnit({tag: 'in_training_defiant_slave'})>>
+
+<<set _v = setup.getAnySlaver()>>
+
+<<if _u>>
+<p>
+A delivery has come to your fort today in the form of a very large box.
+As <<yourrep _v>> helps you open the box, you notice that there are breathing
+holes in various corners of the box, which gives you a good guess of what is contained inside. Indeed, you
+found <<yourrep _u>> in full bondage gear inside, apparently having finished training from the animal
+trainer's training. It seems the animal trainer has decided to return the
+slave to you.
+However, you can see that the slave is still full-on defiant,
+and remains unbroken — perhaps the animal trainer actually restores the
+animal's spirit, seeing that you have never made the requisite payment...
+Back to square one it is for you then.
+</p>
+
+<<set _g = setup.costUnitHelper(_u)>>
+<<run setup.qc.Return('unit').apply(_g)>>
+<</if>>

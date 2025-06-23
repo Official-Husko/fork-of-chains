@@ -1,0 +1,78 @@
+:: InitBuildingGallery [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'statue',
+  tags: ['hidename', 'hideskill', ],
+  description_passage: 'RoomStatue',
+  name: 'Statue',
+  width: 1,
+  height: 1,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "sex",
+      bonus_amount: setup.ROOM_DECORATION_BONUS,
+    },
+    {
+      type: 'always',
+      skill_key: "knowledge",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS,
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.RoomTemplate({
+  key: 'gallery',
+  tags: [],
+  width: 2,
+  height: 2,
+  skill_bonus: [
+    {
+      type: 'always',
+      skill_key: "sex",
+      bonus_amount: setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+    {
+      type: 'always',
+      skill_key: "knowledge",
+      bonus_amount: -setup.ROOM_DECORATION_BONUS_MAIN,
+    },
+  ],
+  is_fixed: false,
+  is_passable: true,
+  is_door: false,
+  is_optional: true,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'gallery',
+  name: 'Gallery',
+  tags: ['decoration'],
+  description_passage: 'BuildingGallery',
+  costs: setup.BuildingTemplate.getDecorationCosts(),
+  restrictions: setup.BuildingTemplate.getDecorationRestrictions(),
+  main_room_template_key: 'gallery',
+  sub_room_template_key: 'statue',
+})>>
+
+
+:: BuildingGallery [nobr]
+
+<p>
+A small clearing decorated with statues and sculptures of many kind.
+Some of them are depicts their actors in rather compromising positions.
+When placed at your fort, will increase
+<<rep setup.skill.sex>> in exchange for <<rep setup.skill.knowledge>>.
+</p>
+
+:: RoomStatue [nobr]
+
+<p>
+A beautiful yet somewhat indecent piece of work. Reminds you of yourself, really.
+</p>

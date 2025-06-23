@@ -1,0 +1,75 @@
+:: QuestSetupSurgeryBallsGrow [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_balls_grow',  /* id */
+  'Surgery: Balls Growth',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SurgeryBallsGrow',  /* description */
+  setup.qdiff.extreme50,
+  [
+    [
+      'SurgeryBallsGrowCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.balls_large),
+        
+      ]
+    ],
+    [
+      'SurgeryBallsGrowSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.balls_large),
+        
+      ],
+    ],
+    [
+      'SurgeryBallsGrowFailure',
+      [],
+    ],
+    [
+      'SurgeryBallsGrowDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryBallsGrow [nobr]
+<p>
+Grows the size of the slaver's balls.
+</p>
+
+:: SurgeryBallsGrowCrit [nobr]
+<p>
+The surgery went off without a hitch.
+</p>
+
+:: SurgeryBallsGrowSuccess [nobr]
+<p>
+The surgery was successful.
+</p>
+
+:: SurgeryBallsGrowFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SurgeryBallsGrowDisaster [nobr]
+<p>
+There was an accident which causes the surgery to fail catastrophically, badly
+injuring <<rep $g.trainee>>.
+</p>

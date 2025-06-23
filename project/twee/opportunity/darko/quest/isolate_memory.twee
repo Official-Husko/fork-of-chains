@@ -1,0 +1,88 @@
+:: OpportunitySetup_isolate_memory [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'isolate_memory', /* key */
+"Isolate Memory", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort', 'trait',
+],
+1, /* expiration weeks */
+'Opportunity_isolate_memory',
+setup.qdiff.normal51, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_isolate_memory_0',
+    'Opportunity_isolate_memory_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'target': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_isolate_memory [nobr]
+<p>
+The treatment was a success. <<Rep $g.target>> now target|lie in wait in the
+<<rep setup.buildingtemplate.treatmentroomisolation>>, awaiting the decision
+which of <<their $g.target>> memory to suppress.
+</p>
+
+
+:: Opportunity_isolate_memory_0 [nobr]
+Choose memory to isolate
+
+
+:: Opportunity_isolate_memory_0_flavor [nobr]
+
+<<set $gMenuVisible = false>>
+
+<p>
+Choose which of <<reps $g.target>> trait to remove.
+Alternatively, you can
+<<foclink 'change your mind and cancel' 'OpportunityList'>>
+  <<unset $gIsolateMemoryUnitKey>>
+<</foclink>>,
+although you will forfeit the
+<<rep setup.item.potion_isolation>> that is already spent on the training.
+</p>
+
+<<set $gIsolateMemoryUnitKey = $g.target.key>>
+
+<<set _traits = $unit[$gIsolateMemoryUnitKey].getRemovableTraits().filter(
+  trait => trait.getTags().includes('skill') || trait.getTags().includes('bg'))>>
+
+<<if !_traits.length>>
+  <div>
+    <<Reps $g.target>> memory is already as blank as it can get. No available trait to remove.
+  </div>
+<<else>>
+  <<for _trait range _traits>>
+    <<capture _trait>>
+      <div>
+        <<rep _trait>>
+        <<focbutton 'Remove' 'OpportunityList'>>
+          <<run $unit[$gIsolateMemoryUnitKey].removeTraitExact(_trait)>>
+          <<unset $gIsolateMemoryUnitKey>>
+        <</focbutton>>
+      </div>
+    <</capture>>
+  <</for>>
+<</if>>

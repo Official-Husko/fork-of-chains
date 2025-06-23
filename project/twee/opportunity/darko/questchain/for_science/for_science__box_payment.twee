@@ -1,0 +1,133 @@
+:: OpportunitySetup_for_science__box_payment [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'for_science__box_payment', /* key */
+"For Science: Box Payment", /* Title */
+"darko", /* Author */
+[ 'veteran', 'vale', 'item', 'special',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_for_science__box_payment',
+setup.qdiff.normal43, /* difficulty */
+[ /* options */
+[
+'Opportunity_for_science__box_payment_0',
+null,
+[ /* costs */
+setup.qc.Money(-12000), ],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.Item(setup.item.quest_for_science_box), ],
+], [
+'Opportunity_for_science__box_payment_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('for_science__box_payment__labor'), ],
+], [
+'Opportunity_for_science__box_payment_2',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.VarSet('for_science_slaveorder', 1, -1),
+setup.qc.SlaveOrderFlex(
+'For Science: Box Payment', /* name */
+'humanvale', /* company */
+12, /* expires in */
+1000, /* base price */
+0, /* trait multi */
+0, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.subrace_humankingdom,
+setup.trait.subrace_humanvale,
+setup.trait.subrace_humandesert,
+setup.trait.subrace_humansea,
+setup.trait.race_elf,
+setup.trait.race_catkin,
+setup.trait.race_wolfkin,
+setup.trait.race_greenskin,
+setup.trait.race_lizardkin,
+], 0, 0, 1),
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.training_obedience_advanced,
+setup.trait.training_endurance_basic,
+setup.trait.training_domestic_basic,
+setup.trait.training_oral_basic,
+setup.trait.training_dominance_basic,
+setup.trait.training_masochist_basic,
+setup.trait.training_pet_basic,
+setup.trait.training_pony_basic,
+setup.trait.training_horny_basic,
+setup.trait.training_roleplay_basic
+], 0, 0, 1),
+],
+[ /* fulfilled outcomes */
+setup.qc.VarRemove('for_science_slaveorder'),
+setup.qc.Item(setup.item.quest_for_science_box),
+],
+[ /* unfulfilled outcomes */
+setup.qc.VarRemove('for_science_slaveorder'),
+],
+), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+},
+[ /* expiration outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_for_science__box_payment [nobr]
+<p>
+Apparently, there is a catch to obtain the
+<<rep setup.item.quest_for_science_box>>.
+The box is made out of incredibly expensive materials, and the smith isn't
+going to want to part with it for free.
+You'll have to pay with one option or another, and the smith has kindly gave
+you three options.
+</p>
+
+<p>
+First, you can always just pay the expensive price with your own money from your own coffers.
+Second, the smith has plenty of orders in the upcoming season, and is wanting
+for seasonal help. You could dedicate a team of slavers to help the smith for
+this period, but this will surely take a long while and it won't be an easy
+task for the slavers either.
+Finally, you could offer a more permanent solution to the smith's manpower
+problem by offering them a slave...
+</p>
+
+
+:: Opportunity_for_science__box_payment_0 [nobr]
+Just pay
+
+
+
+:: Opportunity_for_science__box_payment_1 [nobr]
+Pay with labor
+
+
+
+:: Opportunity_for_science__box_payment_2 [nobr]
+Pay with a slave

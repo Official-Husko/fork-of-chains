@@ -1,0 +1,133 @@
+:: QuestSetupPetContest [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'pet_contest', /* key */
+  'Pet Contest', /* Title */
+  'darko',   /* author */
+  ['city', 'item', 'money'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.slavetrainer,
+    'trainer2': setup.qu.slavetrainer,
+    'pet': [setup.qu.slavepet, 2],
+  },
+  { /* actors */
+  },
+  [ /* costs */
+    setup.qc.MoneyNormal(-0.25),
+  ],
+  'QuestPetContest', /* passage description */
+  setup.qdiff.hard35, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestPetContestCrit',
+      [
+        setup.qc.Equipment(setup.equipmentpool.pet_good),
+        setup.qc.MoneyNormal(1.0),
+      ],
+    ],
+    [
+      'QuestPetContestSuccess',
+      [
+        setup.qc.MoneyNormal(1.4),
+        
+      ],
+    ],
+    [
+      'QuestPetContestFailure',
+      [
+      ],
+    ],
+    [
+      'QuestPetContestDisaster',
+      [
+        setup.qc.Injury('pet', 2),
+        setup.qc.Trait('pet', null, setup.trait.training_pet_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [[setup.questpool.city, setup.rarity.uncommon],], /* quest pool and rarity */
+  [
+    setup.qres.HasSlaveWithTraits([setup.trait.training_pet_basic]),
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestPetContest [nobr]
+
+<p>
+The <<rep $company.humankingdom>> has forbidden the atrocious act of slavery in any form since over ten years ago.
+But before that, slaves were everywhere in the kingdom. Back then, having a humanlike pet
+was considered one of the many signs of nobility and luxury.
+Once the slave ban were passed, humanlike pets were immediately outlawed, but that does
+not mean that these pets are completely gone.
+Some citizens still keep humanlike pet in secret, and underground pet contests are still often being held.
+</p>
+
+<p>
+As a proud owner of a humanlike pet yourself, you have been invited to join one of such contests.
+The contest will showcase these pets their pet-like abilities from the basic ones
+such as playing fetch, up into the harder tasks such as their ability to take a "bone" down
+their throat while wagging their tail enthusiastically.
+The grand prize is a tantalizing golden pet gear.
+But competition is sure to be fierce, so make sure to bring your best pet for the show!
+</p>
+
+
+:: QuestPetContestCrit [nobr]
+
+<p>
+Your pet <<rep $g.pet>> had barked, played fetch, choked on a bone and licked the judges' boots clean.
+<<if $g.pet.isHasTrait(setup.trait.tough_nimble)>><<They $g.pet>> pet|was even flexible enough
+that at one point managed to choke on its own bone.<</if>>
+The judges were completely impressed by your pet and at the end of the
+contest, <<yourrep $g.pet>> pet|was selected
+as the winner of the competition.
+Your slavers proudly brought their pet on all fours to sit
+on the podium, while <<yourrep $g.head>> <<uadv $g.head>>
+collected the grand prize, a golden pet gear suitable for high-class
+pets, alongside a generous amount of money.
+The pets standing in the podium were later made available for public use for
+an hour, before they are returned to their respective owners.
+</p>
+
+
+:: QuestPetContestSuccess [nobr]
+
+<p>
+Your pet <<rep $g.pet>> had barked, played fetch, choked on a bone and licked
+the judges' boots clean,
+but there was a hint of reluctance there that was visible to both your slavers and the judges.
+As a result, your pet did not manage to win the contest.
+Still, at the end of such contest, your slavers made your pet available for general use,
+and they generously tipped<<if $g.pet.isHasTrait(setup.trait.eq_plug_anus) ||
+$g.pet.isHasTrait(setup.trait.eq_plug_vagina)>>, especially from the
+adventurous young man who tried to double penetrate your pet's
+hole with the plug still inside<</if>>.
+</p>
+
+
+:: QuestPetContestFailure [nobr]
+
+<p>
+Your pet <<rep $g.pet>> had barked, played fetch, choked on a bone and licked the judges' boots clean,
+but there was a clear reluctance during the act that was obvious to both your slavers and the judges.
+This was unacceptable, and your slavers were forced to return with your pet
+back to the fort early.
+Such behavior from a pet surely deserve corrective punishment, and it is up to you how to deliver it.
+Perhaps substituting cum for its food for a week would do.
+</p>
+
+
+:: QuestPetContestDisaster [nobr]
+
+<p>
+Unfortunately, your pet were the target of another rowdy's pet attack. The
+big pet orc that wore a chastity belt brazenly
+assaulted your pet without warning, leaving your pet injured and shaken from the experience.
+The pet orc's owner was nowhere to be seen -- perhaps it was a stray pet?
+</p>

@@ -1,0 +1,74 @@
+:: OpportunitySetup_a_most_dangerous_animal__a_modest_offer [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'a_most_dangerous_animal__a_modest_offer', /* key */
+"A Most Dangerous Animal: A Modest Offer", /* Title */
+"darko", /* Author */
+[ 'vale', 'order',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_a_most_dangerous_animal__a_modest_offer',
+setup.qdiff.hard14, /* difficulty */
+[ /* options */
+[
+'Opportunity_a_most_dangerous_animal__a_modest_offer_0',
+'Opportunity_a_most_dangerous_animal__a_modest_offer_0_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+  setup.qres.Actor('slave', setup.qres.IsCanBeSold()),
+],
+[ /* outcomes */
+setup.qc.MoneyUnitValue("slave", 1.4, 15000),
+setup.qc.MissingUnitForever('slave'), ],
+], [
+'Opportunity_a_most_dangerous_animal__a_modest_offer_1',
+'Opportunity_a_most_dangerous_animal__a_modest_offer_1_flavor',
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+'slave': [], },
+)>>
+
+:: Opportunity_a_most_dangerous_animal__a_modest_offer [nobr]
+<<set _v = Math.min(15000, Math.round($g.slave.getSlaveValue() * 1.4))>>
+<p>
+A noble has taken a liking to one of their
+captures during the great noble hunt: <<yourrep $g.slave>>. The gamemaster is
+offering you up to <<money _v>> for the slave, should you wish to sell <<them
+$g.slave>>.
+(The price will be slightly lower if your player character's level is low.)
+</p>
+
+
+:: Opportunity_a_most_dangerous_animal__a_modest_offer_0 [nobr]
+Sell the slave
+
+
+:: Opportunity_a_most_dangerous_animal__a_modest_offer_0_flavor [nobr]
+<p>
+The exchange is completed. The gamemaster herds their new <<if $g.slave.isHasTrait('training_none')>>disobedient<<else>>meek<</if>> animal while you <<uadv $unit.player>> count the money
+you've just received from the exchange.
+</p>
+
+
+:: Opportunity_a_most_dangerous_animal__a_modest_offer_1 [nobr]
+Decline the offer
+
+
+:: Opportunity_a_most_dangerous_animal__a_modest_offer_1_flavor [nobr]
+<p>
+You decide that <<rep $g.slave>> slave|is worth more than what the gamemaster has
+offered, and decide to decline the offer.
+</p>

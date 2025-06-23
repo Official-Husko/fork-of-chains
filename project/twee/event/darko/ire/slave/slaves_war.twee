@@ -1,0 +1,43 @@
+:: EventSetup_slaves_war [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'slaves_war', /* key */
+"Slaves War", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_slaves_war',
+{ /* roles */
+'victim': [
+setup.qres.Available(),
+setup.qres.Job(setup.job.slave),
+],
+
+'slaver': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('outlaws', -20),
+setup.qc.MissingUnit('victim'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('outlaws', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_slaves_war [nobr]
+<p>
+Recently, your company's actions have undermined the general <<rep $company.outlaws>> society —
+In particular, you have made enemies with one particular outlawed slaving
+company in the past few weeks. In a brazen retaliation, they have
+kidnapped one of your slavers, <<yourrep $g.victim>>, straight from your
+fort. You have a mind to scold <<rep $g.slaver>> for allowing such a
+brazen kidnapping to happen, but on the other hand you should probably spend
+your time thinking how to get the slave back, if you wish.
+<<uneedrescue $g.victim>>.
+</p>

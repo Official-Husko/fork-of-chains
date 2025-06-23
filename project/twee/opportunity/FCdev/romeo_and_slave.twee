@@ -1,0 +1,245 @@
+:: OpportunitySetup_romeo_and_slave [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'romeo_and_slave', /* key */
+"Romeo and Slave", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_romeo_and_slave',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_romeo_and_slave_0',
+    'Opportunity_romeo_and_slave_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Ire('humanvale', 1),
+    ],
+  ],
+  [
+    'Opportunity_romeo_and_slave_1',
+    'Opportunity_romeo_and_slave_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+    ],
+  ],
+  [
+    'Opportunity_romeo_and_slave_2',
+    'Opportunity_romeo_and_slave_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Actor('slave', setup.qres.IsCanBeSold()),
+    ],
+    [ /* outcomes */
+      setup.qc.MissingUnitForever('slave'),
+      setup.qc.FavorUnitValue('slave', 'humanvale', 0.01),
+      setup.qc.FavorUnitValue('slave', 'humankingdom', 0.01),
+      setup.qc.IfThenElse(
+setup.qres.Actor('slave', setup.qres.SlaveValueAtLeast(5000)),
+setup.qc.DoAll([
+setup.qc.MoneyUnitValue("slave", 0.8, 20000)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Money(4000)
+], undefined)),
+    ],
+  ],
+  [
+    'Opportunity_romeo_and_slave_3',
+    'Opportunity_romeo_and_slave_3_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.Actor('slave', setup.qres.IsCanBeSold()),
+    ],
+    [ /* outcomes */
+      setup.qc.MissingUnitForever('slave'),
+      setup.qc.FavorUnitValue('slave', 'humanvale', 0.02),
+      setup.qc.FavorUnitValue('slave', 'humankingdom', 0.02),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'you': [ ],
+  'slave': [ ],
+  'blacksmith': [ ],
+  'lumberjack': [ ],
+  'tailor': [ ],
+},
+[ /* expiration outcomes */
+
+],
+false, /* is must be answered */
+)>>
+
+:: Opportunity_romeo_and_slave [nobr]
+<<if $gQuest.getSeed() % 3 == 0>>
+<<set _title = 'blacksmith'>>
+<<set $g.tenant = $g.blacksmith>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<<set _title = 'tailor'>>
+<<set $g.tenant = $g.tailor>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+<<set _title = 'woodworker'>>
+<<set $g.tenant = $g.lumberjack>>
+<</if>>
+
+<p>
+By now, your fort is a bustling hub of activity. Your slavers can be seen
+doing errands around your fort, while various merchants peddle their goods in
+your <<rep setup.buildingtemplate.market>>, which is bustling with
+visitors. Some of your slaves are stationed in the <<rep
+setup.buildingtemplate.recreationwing>>, where your slavers and visitors can
+come and spend their hard-earned coins on.
+</p>
+
+<p>
+Today, one of your tenants, <<rep $g.tenant>>, requests an interview.
+<<They $g.tenant>>'s
+<<if $gQuest.getSeed() % 3 == 0>>
+a worn, grey-haired tank of a <<man $g.tenant>>, and you know <<them
+$g.tenant>> as your resident blacksmith.
+<<Them $g.tenant>> makes working <<their $g.tenant>> anvil away looks so
+easy, and is a little intimidating somewhat.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+an educated <<man $g.tenant>>, complete with spectacles, and you know <<them
+$g.tenant>> as your resident tailor.
+<<They $g.tenant>> is a rather creative <<urace $g.tenant>>, and many often seek <<their $g.tenant>>
+talents when it comes to finding the best gift for others.
+<<elseif $gQuest.getSeed() % 3 == 2>>
+a powerfully built <<man $g.tenant>>, spotting a lumberjack axe on <<their $g.tenant>> <<uwaist $g.tenant>>. You know <<them $g.tenant>> quite well by now as your resident woodworker, and you know <<them $g.tenant>> to be pretty stoic.
+<</if>>
+But as <<they $g.tenant>> sits at your invitation and accepts a wine proffered by an attentive slave, <<they $g.tenant>> seems almost bashful.
+</p>
+
+<<if $g.slave.getSlaveValue() >= 5000>>
+<<set _price = Math.min($g.slave.getSlaveValue() * 0.8, 20000)>>
+<<else>>
+<<set _price = 4000>>
+<</if>>
+
+<p>
+"<<if $unit.player.isMale()>>Sir<<else>>Ma'am<</if>>, I'll say this straight. I'd like to buy one of your slaves. I've been seeing <<rep $g.slave>> a lot in the <<rep setup.buildingtemplate.recreationwing>>, and <<they $g.slave>> makes the years sit a little lighter on me.
+I've scraped together what I can, and I can pay you <<money _price>>.
+<<if $g.slave.getSlaveValue() < 3000>>
+It's a very good price for the slave, and must be
+<<elseif $g.slave.getSlaveValue() > 30000>>
+It's a poor price, but still
+<<else>>
+It's a decent price, probably a little less than you could get for a proper slave order. It's
+<</if>>
+a huge sum for a humble <<= _title >>;
+it's probably <<their $g.tenant>> entire savings.
+You ask what <<they $g.tenant>> would do with <<them $g.slave>>.
+"Well," <<they $g.tenant>> says, actually blushing,
+"I'd free <<them $g.slave>>. And marry <<them $g.slave>>, if <<they $g.slave>>'d have me."
+</p>
+
+
+
+
+:: Opportunity_romeo_and_slave_0 [nobr]
+<<if $g.slave>>Decline, and tell <<rep $g.slave>> not to see the tenant ever again<</if>>
+
+
+:: Opportunity_romeo_and_slave_0_flavor [nobr]
+<<if $gQuest.getSeed() % 3 == 0>>
+<<set _title = 'blacksmith'>>
+<<set $g.tenant = $g.blacksmith>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<<set _title = 'tailor'>>
+<<set $g.tenant = $g.tailor>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+<<set _title = 'woodworker'>>
+<<set $g.tenant = $g.lumberjack>>
+<</if>>
+
+<p>
+<<Rep $g.slave>> obeys your orders not to see the old <<= _title>>. Though neither <<them $g.tenant>> nor <<rep $g.slave>> says a word about it, the other people in your <<rep setup.buildingtemplate.market>> are not so closemouthed.
+Soon the tragic story of The <<= setup.capitalize(_title)>> and the Slave <<if $g.slave.isFemale()>>Girl<<else>>Boy<</if>> is being told in
+bars and brothels across the nearby region, with you naturally playing the role of the villain.
+</p>
+
+
+:: Opportunity_romeo_and_slave_1 [nobr]
+Politely decline
+
+
+:: Opportunity_romeo_and_slave_1_flavor [nobr]
+<p>
+"Ah well," he says, "didn't think you would, but I had to ask. If you'd be so kind as to keep <<them $g.slave>> assigned so I can keep seeing <<them $g.slave>>, I would be grateful. That was a fine victory, <<if $unit.player.isMale()>>Sir<<else>>Ma'am<</if>>; come down to the <<rep setup.buildingtemplate.market>> and visit me some time. Devils know, thanks to you I can afford a moment of pleasure here and there."
+</p>
+
+
+:: Opportunity_romeo_and_slave_2 [nobr]
+Accept
+
+
+:: Opportunity_romeo_and_slave_2_flavor [nobr]
+<<if $gQuest.getSeed() % 3 == 0>>
+<<set _title = 'blacksmith'>>
+<<set $g.tenant = $g.blacksmith>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<<set _title = 'tailor'>>
+<<set $g.tenant = $g.tailor>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+<<set _title = 'woodworker'>>
+<<set $g.tenant = $g.lumberjack>>
+<</if>>
+
+<p>
+The <<= _title>> leaves to collect <<their $g.tenant>> purchase. You discreetly follow, and you can see that <<rep $g.slave>> can hardly believe what's happened.
+<<They $g.slave>> hugs <<them $g.tenant>>, sobbing into <<their $g.tenant>> shoulder. As they walk hand in hand down towards <<their $g.tenant>> place, <<they $g.slave>> suddenly turn <<their $g.slave>> head towards you, gives a little nod and silently mouths the words 'thank you, <<master $unit.player>>.' Thanks to the gossipers in the market, soon the romantic story of The <<= setup.capitalize(_title)>> and the Slave <<if $g.slave.isFemale()>>Girl<<else>>Boy<</if>> is being told in bars and brothels across the nearby region, with you naturally playing a supporting role.
+</p>
+
+
+
+:: Opportunity_romeo_and_slave_3 [nobr]
+<<if $g.slave>>Give <<them $g.slave>> to the tenant as a gift<</if>>
+
+
+:: Opportunity_romeo_and_slave_3_flavor [nobr]
+<<if $gQuest.getSeed() % 3 == 0>>
+<<set _title = 'blacksmith'>>
+<<set $g.tenant = $g.blacksmith>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<<set _title = 'tailor'>>
+<<set $g.tenant = $g.tailor>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+<<set _title = 'woodworker'>>
+<<set $g.tenant = $g.lumberjack>>
+<</if>>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The <<= _title>> cannot believe <<their $g.tenant>> ears.
+After you repeat yourself twice, <<they $g.tenant>> leaves to collect your gift, thanking you clumsily.
+After you give your orders to <<yourrep _u>>,
+you secretly follow after, and you see that <<rep $g.slave>> can hardly believe what's happened. <<They $g.slave>> hugs <<them $g.tenant>>, sobbing into <<their $g.tenant>> shoulder. As they walk hand in hand down towards <<their $g.tenant>> quarters,
+<<they $g.slave>> suddently turns <<their $g.slave>> head towards you, and giving you a little nod and silently mouths the words 'thank you, <<master $unit.player>>.'
+</p>
+
+<p>
+You smile to yourself; when they get there they'll find flowers that you asked <<rep _u>> to collect and a paid reservation at one of the most famous restaurants in the <<lore region_city>>. Thanks to the gossippers in the market, soon the story is being told in bars and brothels across nearby region, with you naturally playing a starring role.
+</p>

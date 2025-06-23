@@ -1,0 +1,179 @@
+:: QuestSetup_rescuefor_profit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_rescuefor_profit1',
+'mindbroken slave',
+'subrace_humandesert', /* pools */
+0,
+[
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+<<run new setup.QuestTemplate(
+'rescuefor_profit', /* key */
+'Rescue for Profit', /* Title */
+'darko', /* Author */
+[ 'desert', 'money', 'ire',
+], /* tags */
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'infiltrator1': setup.qu.infiltrator,
+'infiltrator2': setup.qu.infiltrator,
+'thief': setup.qu.thief, },
+{ /* actors */
+'slave': 'quest_rescuefor_profit1', },
+[ /* costs */
+],
+'Quest_rescuefor_profit',
+setup.qdiff.hard43, /* difficulty */
+[ /* outcomes */
+[
+'Quest_rescuefor_profitCrit',
+[
+setup.qc.MoneyCrit(),
+setup.qc.Favor('humandesert', 25),
+setup.qc.Ire('orc', 1),
+],
+], [
+'Quest_rescuefor_profitCrit',
+[
+setup.qc.MoneyNormal(),
+setup.qc.Favor('humandesert', 25),
+setup.qc.Ire('orc', 1),
+],
+], [
+'Quest_rescuefor_profitCrit',
+[
+setup.qc.Slave('slave', 'a|was a villager in the eastern desert captured by an orc encampment and used beyond repair'),
+setup.qc.MoneyNormal(-0.5), ],
+], [
+'Quest_rescuefor_profitDisaster',
+[
+setup.qc.Corrupt('infiltrator1'),
+setup.qc.Corrupt('infiltrator2'),
+setup.qc.Corrupt('infiltrator1'),
+setup.qc.Corrupt('infiltrator2'),
+setup.qc.Corrupt('infiltrator1'),
+setup.qc.Corrupt('infiltrator2'),
+], ],
+],
+[
+[setup.questpool.desert, setup.rarity.uncommon],
+], /* quest pool and rarity */
+[
+], /* restrictions to generate */
+)>>
+
+:: Quest_rescuefor_profit [nobr]
+
+<p>
+One of the villages on the eastern settlement is offering bounty for the safe
+return of their leader's <<daughter $g.slave>>.
+While saving others is basically the opposite of your company's work, the
+bounty this time is quite a lucrative amount of money.
+In addition to that, doing occasional
+honest work such as this one is always a good opportunity to become closer
+with the people living in these settlements.
+You can send a group of slavers to rescue the <<daughter $g.slave>>, should you wish.
+</p>
+
+
+:: Quest_rescuefor_profitCrit [nobr]
+
+<<if $g.slave.isMale()>>
+<<else>>
+  <<questimage 'rescue_for_profit_female.jpg'>>
+<</if>>
+
+<p>
+Led by <<rep $g.infiltrator1>>, your slavers <<uadv $g.infiltrator1>>
+sneaked into the orc's encampment. The place was covered in a
+permanent smell of alcohol and cum, and numerous cumstains were present
+throughout the place. By the time your slavers sneaked in,
+most of the orcs there were already soundly asleep from the debauchery
+in the previous night — in fact, some still have their dicks up some slave's asses.
+Not wanting to waste time before they wake,
+<<set _cautious = setup.selectUnit([$g.infiltrator1, $g.infiltrator2, $g.thief], {trait: 'per_cautious'})>>
+<<if _cautious>>
+<<rep _cautious>> cautiously warned <<their _cautious>> teammates to hurry and
+got to work, scouring
+<<else>>
+your slavers got to work and scoured
+<</if>>
+the camp looking for the lost <<daughter $g.slave>>.
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Your slavers ultimately found the <<girl $g.slave>> inside a cage at the back of the
+encampment. It seemed that they were lucky to have arrived so soon, as the <<girl $g.slave>>
+still appeared unmolested, or at least as they eye could see.
+<<Yourrep $g.thief>> hurriedly picked the cage's lock, before escaping the place together
+with <<name $g.slave>>.
+</p>
+
+<<elseif $gOutcome == 'success'>>
+
+<p>
+Your slavers ultimately found the <<girl $g.slave>> chained to a post at the end
+of the encampment. It seemed that the camp leader kept <<them $g.slave>> as
+their own personal-use-only slave, so compared to the utterly broken slaves scattered
+throughout the encampment, the poor <<daughter $g.slave>> slave|was still moderately sane.
+Your slaver quickly unchained <<them $g.slave>>, and to prevent the <<urace $g.slave>>
+from making too much noises, aptly gagged <<them $g.slave>> before smuggling <<them $g.slave>> out.
+</p>
+
+<<else>>
+
+<p>
+Your slavers ultimately found the <<girl $g.slave>> at one of the "slave dumps" —
+a lovingly named place where the orcs store their slaves after heavy use to
+recover.
+With effort, they managed to pull the <<urace $g.slave>> out of the pile.
+The cum-soaked <<urace $g.slave>> appeared to have been completely broken —
+<<their $g.slave>> gaze kept wandering, fixed on a faraway place.
+Still, a job is a job and your slavers smuggled the slave out of the encampment.
+</p>
+
+<</if>>
+
+<p>
+Normally, this would be where your slavers present the new slave collar to
+their prospective slave. But this is a rescue mission for once, and instead they
+returned <<name $g.slave>> back to <<their $g.slave>> village.
+
+<<if $gOutcome == 'crit'>>
+The grateful village elder showered your slavers with gifts, as well as promise to tell
+their neighbors about the good deeds performed this time of your company.
+
+<<elseif $gOutcome == 'success'>>
+The village elder was shocked at the state of their <<daughter $g.slave>>,
+who slave|was almost completely broken from much abuse.
+Still, a promise was a promise and he gave your slavers the promised rewards.
+
+<<else>>
+But the village elder, in what seemed to be a denial, refused to acknowledge
+the <<urace $g.slave>> as his <<daughter $g.slave>>.
+After a long argument, your slavers were kicked out of the settlement together with
+the <<girl $g.slave>>. Your slavers gave up
+getting the original rewards, and decided that <<rep $g.slave>> might just make a sufficient
+alternative reward.
+<</if>>
+</p>
+
+
+:: Quest_rescuefor_profitDisaster [nobr]
+<p>
+Your slavers were discovered when attempting to sneak into the orc's camp.
+They tried to escape, and while <<rep $g.infiltrator1>> and <<rep $g.thief>>
+were lucky to find a way to do so, <<rep $g.infiltrator2>> infiltrator2|was not as lucky.
+The orcs descended upon <<them $g.infiltrator2>> and grabbed <<them $g.infiltrator2>>
+by the legs, before throwing and caging <<them $g.infiltrator2>> in the slave dump together with many other
+already-broken slaves.
+Your slavers had to risk their lives and their purities to save <<yourrep $g.infiltrator2>>.
+</p>

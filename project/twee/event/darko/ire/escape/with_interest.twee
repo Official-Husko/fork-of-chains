@@ -1,0 +1,41 @@
+:: EventSetup_with_interest [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'with_interest', /* key */
+"With Interest", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_with_interest',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slave),
+setup.qres.Available(),
+],
+},
+{ /* actors */
+'dragon': 'subrace_dragonkin', },
+[ /* outcomes */
+setup.qc.Ire('bank', -20),
+setup.qc.MissingUnitRecapture('victim', 'escapehard'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('bank', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_with_interest [nobr]
+<p>
+Through your recent actions, your reputation with the powerful <<rep
+$company.bank>> has suffered greatly. And now, it has come to bite you in
+the ass as a representative of the bank comes today to your fort demanding <<yourrep
+$g.victim>> as payment for your grievances against them.
+</p>
+
+<p>
+You are not planning to back down without a fight however, and as the slave
+is brought to <<their $g.victim>> new home, you use your connections to track
+down the slave. <<urescuenow $g.victim>>, but it won't be easy given the
+reputation of the <<rep $company.bank>>.
+</p>

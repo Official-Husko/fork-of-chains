@@ -1,0 +1,78 @@
+:: OpportunitySetup_dungeons_and_dragons_lair_of_evil_final_boss [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'dungeons_and_dragons_lair_of_evil_final_boss', /* key */
+"Dungeons and Dragons: Lair of Evil: Final Boss", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'prep',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_dungeons_and_dragons_lair_of_evil_final_boss',
+setup.qdiff.harder45, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_dungeons_and_dragons_lair_of_evil_final_boss_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('dungeons_and_dragons_lair_of_evil', {
+boss: "demon",
+prince: "prince",
+}),
+    ],
+  ],
+  [
+    'Opportunity_dungeons_and_dragons_lair_of_evil_final_boss_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('dungeons_and_dragons_lair_of_evil', {
+boss: "dragonkin",
+prince: "prince",
+}),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+  ],
+  'prince': [
+  ],
+  'dragonkin': 'subrace_dragonkin',
+  'demon': 'subrace_demon',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_dungeons_and_dragons_lair_of_evil_final_boss [nobr]
+<p>
+Finally, you'll have to invent some kind of evil boss that have kidnapped the <<prince $g.prince>>. A big bad dragon maybe? Or a dark, corrupted demon...
+</p>
+
+
+:: Opportunity_dungeons_and_dragons_lair_of_evil_final_boss_0 [nobr]
+Demon
+
+
+
+:: Opportunity_dungeons_and_dragons_lair_of_evil_final_boss_1 [nobr]
+Dragon

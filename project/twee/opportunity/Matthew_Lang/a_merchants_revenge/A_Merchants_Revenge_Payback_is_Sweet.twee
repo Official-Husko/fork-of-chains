@@ -1,0 +1,381 @@
+:: OpportunitySetup_a_merchant_s_revenge_payback_is_sweet [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'a_merchant_s_revenge_payback_is_sweet', /* key */
+"A Merchant\'s Revenge: Payback is Sweet", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'city',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_a_merchant_s_revenge_payback_is_sweet',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_0',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Actor('player', setup.qres.You()),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarSet('mlangmerchantprincequest', '5', -1),
+      setup.qc.VarRemove('mlang_merchantrevenge_caravancount'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_1',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_1_flavor',
+    costs: [ /* costs */
+      setup.qc.MoneyCustom(-50),
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarSet('mlangmerchantprincequest', '5', -1),
+      setup.qc.VarRemove('mlang_merchantrevenge_caravancount'),
+      setup.qc.BoonizeRandom('player', 5),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_2',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarSet('mlangmerchantprincequest', '5', -1),
+      setup.qc.VarRemove('mlang_merchantrevenge_caravancount'),
+      setup.qc.SlaveOrderFlex(
+'Slave Order: The Prince of Cups\' New Pissoir', /* name */
+'independent', /* company */
+12, /* expires in */
+1500, /* base price */
+200, /* trait multi */
+0.1, /* value multi */
+[ /* crit traits */
+setup.trait.per_submissive,
+setup.trait.training_obedience_advanced,
+setup.trait.training_obedience_master,
+setup.trait.training_oral_advanced,
+setup.trait.training_oral_master,
+],
+[ /* disaster traits */
+setup.trait.vagina_gape,
+setup.trait.anus_gape,
+setup.trait.muscle_extremelythin,
+setup.trait.face_hideous,
+setup.trait.per_stubborn,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.training_toilet_basic, setup.trait.training_toilet_advanced, setup.trait.training_toilet_master], true),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.per_lustful,
+setup.trait.training_masochist_advanced,
+setup.trait.training_masochist_basic,
+setup.trait.training_horny_basic,
+setup.trait.training_horny_advanced
+], 1, 0, 0),
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.per_dominant,
+setup.trait.per_chaste,
+setup.trait.corrupted,
+setup.trait.training_dominance_basic
+], 0, 1, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+    ],
+    visibility_restrictions: [
+        setup.qres.TagNotBanned('watersport'),
+    ],
+  },
+  {
+    description_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_3',
+    outcome_passage: 'Opportunity_a_merchant_s_revenge_payback_is_sweet_3_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.VarSet('mlangmerchantprincequest', '5', -1),
+      setup.qc.VarRemove('mlang_merchantrevenge_caravancount'),
+      setup.qc.SlaveMarker('slaves'),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.VarEqual('mlangmerchantprincequest', '2'),
+  setup.qres.UnitGroupNotBusy('a_merchant_s_revenge1'),
+],
+{ /* actors */
+  'merchant': 'a_merchant_s_revenge1',
+  'player': [
+      setup.qres.You(),
+  ],
+  'slaves': 'city_all',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet [nobr]
+/* mlangmerchantprincequest 2 = Cipher Found
+mlangmerchantprincequest 5 = Caravan Raid tips incoming */
+
+/*Set Player Drink*/
+<<if $unit.player.isHasAnyTraitExact(['bg_farmer','bg_mercenary','bg_pirate','bg_seaman', 'bg_soldier', 'bg_thug', 'bg_unemployed', 'bg_wildman', 'bg_woodsman'])>>
+    <<set _pdrink = 'tankard of mead'>>
+<<elseif $unit.player.isHasAnyTraitExact(['bg_monk', 'bg_priest'])>>
+    <<set _pdrink = 'cup of tea'>>
+<<else>>
+    <<set _pdrink = 'glass of wine'>>
+<</if>>
+
+<<dialogue $g.merchant>>
+    I'll be sending you advanced warning of their caravans and their travel routes. And paying you a bounty for each one that doesn't reach the city
+<</dialogue>>
+<<questimage "prince_of_cups.jpg">>
+<p>
+    By now, <<lore location_princeofcups>> is starting to feel familiar, from its polished wooden floors to the pressed white tablecloths, to the _pdrink waiting for you at the table, a <<uadjphys $g.merchant>> <<urace $g.merchant>> lounging on the opposite side, toying with a glass of deep red wine.<br>
+    <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+        "Nice to see you again." <<name $g.merchant>>'s eyes rake over your body, lingering on your
+        <<if $unit.player.isHasTrait('gender_male')>>
+            crotch for a noticeable moment.
+        <<else>>
+            breasts for a noticeable moment.
+        <</if>>
+        "It has been a while."
+    <<else>>
+        Nice to see you again." <<name $g.merchant>> says. "It's been a while."
+    <</if>>
+    <br>
+    <<if $unit.player.getSpeech() == setup.speech.friendly>>
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            "You too. You know, people are going to start talking if we keep doing this."<br>
+            <<name $g.merchant>> chuckles. "Not here they won't. Still. Some prudence wouldn't hurt."<br>
+            Shrugging, you take your seat and pick up your _pdrink. "If you insist."<br>
+            "I'm afraid I must.
+        <<else>>
+            "You too. You know, people are going to start talking if we keep doing this."<br>
+            "Not here they won't," <<name $g.merchant>> says grimly. "And besides. You aren't the only... mercenary I'm meeting here. Just the first, since you brought me the evidence I asked for."<br>
+            Taking a sip from your _pdrink you enjoy the flavour for a moment before swallowing. "All right, I'm listening."<br>
+            "Good.
+        <</if>>
+    <<elseif $unit.player.getSpeech() == setup.speech.bold>>
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            "Are we at the part where we fuck yet?"<br>
+            <<name $g.merchant>> leans back in their chair, regarding you cooly. "No. Anyway.
+            <<run setup.qc.VarSet("mlangmerchantprinceflirt", "0").apply($gQuest)>>
+        <<else>>
+            "We meet on your timetable," you say with a shrug. "What's going on?"
+            "Straight to the point, eh? Fine."<br>
+        <</if>>
+    <<elseif $unit.player.getSpeech() == setup.speech.cool>>
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            "You too. What's going on?"<br>
+            <<name $g.merchant>> smiles, "Quite a lot.
+        <<else>>
+            "What do you have for me?"<br>
+            <<name $g.merchant>> smiles, "Straight to the point, eh? Fine.
+        <</if>>
+    <<elseif $unit.player.getSpeech() == setup.speech.witty>>
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            "We can meet as often as you like," you say with a wink. "All you have to do is ask."<b>
+            <<name $g.merchant>> drops <<their $g.merchant>> head and chuckles. "True. Well, until such a time as I'm at liberty to do so, I have a proposal for you.
+        <<else>>
+            "Well, send me more invitations and you'll see a lot more of me."<br>
+            <<name $g.merchant>> arches an eyebrow. "Hmm. I suppose that's true. In any case, to business.
+        <</if>>
+    <<elseif $unit.player.getSpeech() == setup.speech.debauched>>
+        <<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+            "Did you want me to take my clothes off so you can get a better look?" you say, bringing your hands to the buttons of your shirt. "How far does the discretion of this place go, anyway?"<br>
+            <<name $g.merchant>> flushes, a deep crimson blossoming over <<their $g.merchant>> cheeks. "Uh.... quite far. Um. I...uh... have never seen anyone t-try it and I'd honestly rather not be the first."<br>
+            "Spoilspot," you say, pouting as you drop your hands and slide into the booth. "So what am I here for if not to
+            <<if $unit.player.isHasTrait('per_submissive')>>
+                be ravished on the table?"
+            <<else>>
+                ravish you on the table?"
+            <</if>>
+            <br>
+            "Well.
+        <<else>>
+            "It's always nice to see you too," you say, running your eyes over <<their $g.merchant>> body. "Even if it's just for business."<br>
+            "Ah yes. Business.
+        <</if>>
+    <</if>>
+
+    I deciphered the note you found and I'm reasonably confident I know who's behind the attacks on my caravans. I'm...surprised, and well, I want to make sure I'm right. So I'm going to ask you to turn the tables on them."<br>
+    <<if $unit.player.isHasTrait('per_slow')>>
+        "But how would I know if I'm at a table with them?"<br>
+        <<name $g.merchant>> pauses. "I mean that they run caravans and I want you to attack them."<br>
+        "Oh. Okay. How do I find them?"<br>
+        "
+    <<elseif $unit.player.isHasTrait('per_smart')>>
+        "So they're a merchant then?"<br>
+        "Yes. They are.
+    <<else>>
+        "All right. I'm sure you have an idea of how you want that to happen?"<br>
+        "I want you to raid their caravans," <<name $g.merchant>> says, running a finger around the rim of <<their $g.merchant>> wineglass. "
+    <</if>>
+    I'll be sending you advanced warning of their caravans—when they're coming, and the routes that they're taking. And I'll be paying you a bounty for each one that doesn't reach the city."<br>
+    <<if $unit.player.isHasAnyTraitExact(["per_evil", "per_aggressive", "per_cruel"])>>
+        "Kill them all?"<br>
+        "If that's what you want to do, sure.
+    <<elseif $unit.player.isHasAnyTraitExact(["per_kind", "per_empath"])>>
+        "Steal or destroy the cargo?"<br>
+        "If that's what you want to do, sure.
+    <<else>>
+        "Never arrive, or never arrive with sellable goods?"<br>
+        "Either one is fine by me," <<name $g.merchant>> says, taking a gulp of <<their $g.merchant>> wine, a drop of crimson spilling over <<their $g.merchant>> chin. <<They $g.merchant>> wipe of the excess with a napkin. "
+    <</if>>
+    Just be aware that if you leave any survivors it's more likely that the attack will be traced back to you and your company—and you may find the city becomes an increasingly hostile place. By all means use your judgement as to whether it's prudent to attack. I have other mercenaries I can hire. I'm just giving you first shot at the prize."
+    <<if $unit.player.isHasTrait('per_slow')>>
+        <br>
+        <<name $g.merchant>> hold up a hand as your brow begins to furrow. "I mean I'm telling you before I tell any of them."
+    <<else>>
+    <</if>>
+    <br>
+    "Thanks," you say, "How much of a head start?"<br>
+    "Depends on the caravan," <<rep $g.merchant>> says. "A few weeks. A month if possible."<br>
+    "Well then," you say, raising your drink in a toast. "I'd say you have yourself a deal."
+</p>
+
+<p>
+    Is there anything else you'd like to do while you're at the Prince of Cups?
+</p>
+
+
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_0 [nobr]
+Finish your drink and leave
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_0_flavor [nobr]
+<<if setup.qres.VarEqual("mlangmerchantprinceflirt", "1").isOk($gQuest)>>
+    You spend a few hours getting to know <<name $g.merchant>> a bit better over several rounds of drinks, and you smile when <<their $g.merchant>> foot pushes against yours underneath the table. Eventually, however, you pull yourself away and head back into the city.
+<<else>>
+    <<if $unit.player.getSpeech() == setup.speech.friendly>>
+        You chat amiably with <<name $g.merchant>> while you finish your drink. Afterwards, you head out into the city. <<They $g.merchant>> remain behind, probably ready for the next meeting—whoever that's with.
+    <<elseif $unit.player.getSpeech() == setup.speech.bold>>
+        You spend some time pushing for more information from <<name $g.merchant>>, but their cagey answers leave you with more questions than before. Downing your drink in frustration, you stomp out of <<lore location_princeofcups>>. You have better things to do with your time today, and now you're going to go and figure out what they were.
+    <<elseif $unit.player.getSpeech() == setup.speech.cool>>
+        You sip your _pdrink in near silence, enjoying the peace and calm of <<lore location_princeofcups>>. When you're done, you bid <<name $g.merchant>> farewell and head off into the city.
+    <<elseif $unit.player.getSpeech() == setup.speech.witty>>
+        You regale <<name $g.merchant>> with some of the funnier tales from your life and time passes more quickly than either of you seem to want. Eventually though, you finish your _pdrink and head off into the city as the sun starts to dip lower on the horizon.
+    <<elseif $unit.player.getSpeech() == setup.speech.debauched>>
+        You flirt outrageously with the <<urace $g.merchant>> as you finish your drink, but they seem generally uninterested in you. Eventually, you head out into the city. Hopefully you'll find a more receptive audience elsewhere.
+    <</if>>
+
+<</if>>
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_1 [nobr]
+Buy some drinks for later
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_1_flavor [nobr]
+/*Set Player Drink*/
+<<if $unit.player.isHasAnyTraitExact(['bg_farmer','bg_mercenary','bg_pirate','bg_seaman', 'bg_soldier', 'bg_thug', 'bg_unemployed', 'bg_wildman', 'bg_woodsman'])>>
+    <<set _pdrink = 'barrel of mead'>>
+    <<set _pcontainer = 'barrel'>>
+<<elseif $unit.player.isHasAnyTraitExact(['bg_monk'])>>
+    <<set _pdrink = 'small box of tea'>>
+    <<set _pcontainer = 'box'>>
+<<else>>
+    <<set _pdrink = 'cask of wine'>>
+    <<set _pcontainer = 'cask'>>
+<</if>>
+
+After finishing your drink, you head over to the bar, determined to bring a _pdrink back to the fort for your own private stash. You try not to appear shocked at the price, but hand over the coin and leave with the _pcontainer clutched in your hands.
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_2 [nobr]
+See if The Prince of Cups would like to buy a slave (Watersports Kink)
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_2_flavor [nobr]
+It takes a few minutes before your 
+<<if $unit.player.isHasTrait('per_direct')>>
+    direct query to speak to the manager about slaves
+<<else>>
+    discreet query to speak to the manager about indentured servants
+<</if>>
+finds its way to the duty manager. <br>
+
+<<if $unit.player.isHasTrait('per_direct')>>
+    "Slavery is illegal in the Kingdom of Tor and all of our employees are under contract and appropriately compensated," he says, a little too loudly. Dropping his voice, he continues "We'll have an order sent around to your company. Thank you for your patronage."
+    <p>
+        Oh right. These people and their doublespeak. Still, that's good enough, and you head back out into the city.
+    </p>
+
+<<else>>
+    "Well, I trust you've visited our toilets and have seen our special amenities. I'll have an employment request sent to your company. If you can fill it, we'd be happy to pay you a finders fee.
+    <p>
+        Remembering that slavery is technically illegal in the Kingdom of Tor, you nod you agreement and slip out into the city.
+    </p>
+<</if>>
+<<successtext "You have gained a new slave order">>
+
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_3 [nobr]
+Visit the toilets
+
+
+:: Opportunity_a_merchant_s_revenge_payback_is_sweet_3_flavor [nobr]
+<<if !$settings.bannedtags.watersport>>
+    Walking into the toilets you head around the corner, past the attendant and straight for the special attractions.
+    <<if $unit.player.isHasDick()>>
+
+        Pulling your soft cock out of your <<uequipslot $unit.player 'legs'>>, you head over to the <<woman $g.slaves>> on the right and shove your prick through the circular gag and into <<theirs $g.slaves>> mouth.
+
+        <p>
+            Grabbing <<their $g.slaves>> head for leverage you pull them into your crotch and let go, forcing them to swallow rapidly. This time though, your bladder is full from several rounds of drinking, and the volume proves to be too much for <<them $g.slaves>>, causing <<them $g.slaves>> to choke around your cock as the piss splashes out, splattering the front of your <<uequipslot $unit.player 'legs'>>. <br>
+            "That's going to stink," you tell them sternly. "If you weren't gagged I'd have you clean me up."<br>
+            "Uh orri, ease et e keean yu" the slave manages around the gag.<br>
+            "No, I'll just get a real piss pig I own to do it later. <<they $g.slaves>> love licking dried piss and spunk of my body before getting fresh loads of both.
+        </p>
+        <p>
+             The slave whines pathetically as you finish up and tuck your cock away, begging you to fuck <<their $g.slaves>> mouth, almost seeming fearful of the consequences should you leave unsatisfied. Maybe you should see about offering to replace of the slave. <<They $g.slaves>>'s attractive enough, but clearly need more training.
+        </p>
+
+    <<else>>
+        <p>
+            Removing your <<uequipslot $unit.player 'legs'>> and undergarments you position yourself over the <<woman $g.slaves>> on the right and let it flow. <<They $g.slaves>> gulp furiously as your piss splatters over their face, the metal gag preventing them from getting their lips around your pussy. It also prevents <<their $g.slaves>> tongue from reaching you, which is disappointing, but still, that was fun.
+        </p>
+    <</if>>
+<<else>>
+    As you walk into the toilet area you wonder how much the all the marble cost and if there's any way you can possibly afford to have your baths done up with elegant stone. Although whether that should be white marble or black marble is something you
+    <<if $unit.player.isHasAnyTraitExact(["bg_artist", "skill_creative"])>>
+        still haven't made a decision on despite the number of sketches and plans you've drawn up. There always seems to be something more pressing than marble floors and piped water.
+    <<else>>
+        never really thought about one way or another. Not affordable, so why bother?
+    <</if>>
+    <p>
+        Finishing your business, you wash your hands and head off into the city, a map showing the location of the bandit camp tucked away into a pocket.
+    </p>
+<</if>>

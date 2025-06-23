@@ -1,0 +1,15 @@
+/* use an item */
+:: ItemUnitUsableUse [nobr]
+
+<<set _target = setup.item[$gUseItem_key]>>
+
+Use <<rep _target>> on whom?
+
+<<set _unitlist = State.variables.company.player.getUnits()>>
+<<set _unitlist = _unitlist.filter(unit => _target.isUsableOn(unit) && unit.isHome())>>
+
+<<set _dom = setup.DOM.Roster.selectunit({
+  units: _unitlist,
+  unit_callback: (unit) => setup.DOM.Menu.useitemonunit(setup.item[$gUseItem_key], unit),
+})>>
+<<attach _dom>>

@@ -1,0 +1,155 @@
+:: QuestSetupUnitTrainingEnduranceBasic [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_endurance_basic',  /* id */
+  'Endurance Training: Basic',  /* Title */
+  'FCdev and darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_nosex,
+    'trainer2': setup.qu.training_trainer_nosex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingEnduranceBasic',  /* description */
+  setup.qdiff.easy13,
+  [
+    [
+      'QuestUnitTrainingEnduranceBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_endurance_basic),
+      ]
+    ],
+    [
+      'QuestUnitTrainingEnduranceBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_endurance_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingEnduranceBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingEnduranceBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingEnduranceBasic [nobr]
+
+<p>
+While some slave owners prefer their slaves to break from use,
+some find mindbroken slaves to be distasteful. These owners
+often train their slaves to be able to withstand said abuse,
+often with a smile on their face.
+But before any of those, the slave's basic endurance must be
+increased, and what better way than a couple of runs on the track?
+</p>
+
+:: QuestUnitTrainingEnduranceBasicCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_endurance_basic_male.jpg'>>
+<<else>>
+  <<questimage 'unit_training_endurance_basic_female.jpg'>>
+<</if>>
+
+<p>
+The first step to become an endurance slut is to increase the slave's stamina, and what
+better way than a couple of "motivated" run in your <<rep setup.buildingtemplate.trainingfield>>?
+At <<reps $g.head>> command,
+<<rep $g.trainee>> took off,
+running as fast as <<their $g.trainee>> <<ulegs $g.trainee>> could carry <<them $g.trainee>>.
+As <<they $g.trainee>> went,
+<<if $g.trainee.isHasTrait('dick_huge')>>
+
+<<their $g.trainee>> <<if $g.trainee.isHasTrait('dick_titanic')>>
+ridiculous penis<<else>>huge dick<</if>>
+flopped around painfully, hitting <<their $g.trainee>> thighs, but <<they $g.trainee>>
+tried to ignore it.
+
+<<elseif $g.trainee.isHasTrait('balls_huge')>>
+
+<<their $g.trainee>>
+<<if $g.trainee.isHasTrait('balls_titanic')>>
+ridiculous ballsack
+<<else>>
+huge ballsack
+<</if>>
+got painfully pinched between <<their $g.trainee>> thighs, but <<they $g.trainee>> tried to ignore it.
+
+<<elseif $g.trainee.isHasTrait('breast_huge')>>
+
+<<their $g.trainee>>
+
+<<if $g.trainee.isHasTrait('breast_titanic')>>
+ridiculous mammaries
+<<else>>
+huge tits
+<</if>>
+bounced around painfully,
+so <<they $g.trainee>> cradled <<their $g.trainee>> udders in <<their $g.trainee>> <<uarms $g.trainee>>,
+trying to support them as much as possible.
+
+<<else>>
+<<their $g.trainee>> cute rear made a pretty picture.
+<</if>>
+
+<<Yourrep $g.head>> made <<rep $g.trainee>>
+repeat the exercise until <<they $g.trainee>> trainee|was very tired,
+<<if $g.trainee.isHasTrait('tough_tough')>>
+which took quite some time,
+<<elseif $g.trainee.isHasTrait('tough_nimble')>>
+which didn't take that long,
+<</if>>
+hounding <<them $g.trainee>> mercilessly throughout,
+before sending <<them $g.trainee>> to rest away.
+The moment the slave recover, to <<their $g.trainee>> horror it was another track
+session, and this continued on for a week...
+</p>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+<<Reps $g.trainee>> training was a complete success, and the slave
+has been toughened-up, capable of withstanding more abuse than before.
+</p>
+
+<<else>>
+
+<p>
+At the end of the week, <<rep $g.trainee>> trainee|have
+became significantly more durable, and can withstand
+a longer period of abuse without breaking.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingEnduranceBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> seemed to have
+significantly lower endurance threshold than most people.
+Training <<them $g.trainee>> in endurance would need more
+effort.
+</p>
+
+:: QuestUnitTrainingEnduranceBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

@@ -1,0 +1,47 @@
+:: EventSetup_the_dragonkin_beckons2 [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'the_dragonkin_beckons2', /* key */
+"The Dragonkin Beckons", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_the_dragonkin_beckons2',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slave),
+setup.qres.Available(),
+],
+},
+{ /* actors */
+'dragon': 'subrace_dragonkin', },
+[ /* outcomes */
+setup.qc.Ire('dragonkin', -20),
+setup.qc.MissingUnitRecapture('victim', 'escapehard'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('dragonkin', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_the_dragonkin_beckons2 [nobr]
+
+<p>
+The sun shines brightly today, and just as you thought the day is perfect for once,
+a sudden chill freezes your entire compound. Paralyzed from an unknown force, you
+can't do anything but watch as a majestic blue-colored dragonkin descend
+from the sky into your compound. <<They $g.dragon>> calmly walks around your
+compound as if nothing had happened, inspecting some of your slaves until settling
+at <<yourrep $g.victim>>. "You will do," the dragonkin says calmly as <<they $g.dragon>>
+takes <<rep $g.victim>> and carries <<them $g.victim>> effortlessly back into
+the sky.
+</p>
+
+<p>
+Whatever paralyzes you and your slavers dissipate soon after. After catching
+your breath, you look to the sky wondering if this was a retribution for your
+actions against the <<rep $company.dragonkin>>. You shrug it all off, and
+start planning your next move. <<urescuenow $g.victim>>, although it sure as
+hell won't be easy.
+</p>

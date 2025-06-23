@@ -1,0 +1,50 @@
+:: EventSetup_puppy_return [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'puppy_return', /* key */
+"Puppy Return", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'forest',
+],
+'Event_puppy_return',
+{ /* roles */
+},
+{ /* actors */
+  'master': 'the_dog_whisperer0',
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.HasTitle('quest_houndmaster_s_sniffer_0'),
+    setup.qres.AllTraits([setup.trait.ears_neko, setup.trait.mouth_neko, setup.trait.arms_neko, setup.trait.legs_neko, setup.trait.tail_neko, setup.trait.body_neko], true),
+    setup.qres.NoTrait(setup.trait.training_mindbreak),
+  ],
+},
+[ /* outcomes */
+  setup.qc.VarRemove('houndmastery_sniffer_lent'),
+  setup.qc.SetCooldownQuest('houndmastery', 25),
+  setup.qc.MissingUnitForever('slave'),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('houndmastery_sniffer_lent', '1'),
+  setup.qres.VarNull('houndmastery_sniffer_lent_deadline'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_puppy_return [nobr]
+
+<p>
+Unexpectedly, today the hound<<master $g.master>> of the <<lore
+region_forest>> master|have personally come to your fort to pick up the puppy <<they
+$g.master>> had lent to your company some time ago. Upon seeing <<their
+$g.master>> owner, the puppy immediately leaps and runs on all fours to greet
+<<their $g.master>> owner in the way <<they $g.slave>> know best: by licking
+the <<master $g.master>>'s boots. Seeing the puppy all healthy and well, the
+hound<<master $g.master>> master|thank you and your company for all the business
+and go on <<their $g.master>> separate way. Parting in such a good terms,
+there is no doubt you will meet the <<man $g.master>> again in some future
+endeavor.
+</p>

@@ -1,0 +1,167 @@
+:: QuestSetupBountyHuntMinotaur [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _mercenary = new setup.UnitCriteria(
+  null, /* key */
+  'Mercenary', /* title */
+  [
+    setup.trait.race_greenskin,
+    setup.trait.per_smart,
+    setup.trait.per_chaste,
+    setup.trait.magic_water,
+    setup.trait.magic_water_master,
+  ], /* critical traits */
+  [
+    setup.trait.subrace_humandesert,
+    setup.trait.race_elf,
+    setup.trait.vagina_gape,
+    setup.trait.anus_gape,
+    setup.trait.per_slow,
+    setup.trait.per_lustful,
+    setup.trait.per_sexaddict,
+    setup.trait.per_submissive,
+    setup.trait.per_masochistic,
+    setup.trait.magic_fire,
+    setup.trait.magic_fire_master,
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sum to 3.0 */
+    combat: 3.0,
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'bounty_hunt_minotaur', /* key */
+  'Bounty Hunt: Minotaur', /* Title */
+  'darko',   /* author */
+  ['desert', 'money', 'favor',],  /* tags */
+  2,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'negotiator': setup.qu.negotiator,
+    'merc1': _mercenary,
+    'merc2': _mercenary,
+  },
+  { /* actors */
+    'victim': 'desert_all',
+  },
+  [ /* costs */
+  ],
+  'QuestBountyHuntMinotaur', /* passage description */
+  setup.qdiff.normal36, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestBountyHuntMinotaurCrit',
+      [
+        setup.qc.MoneyCrit(),
+        setup.qc.Favor('humandesert', 10),
+      ],
+    ],
+    [
+      'QuestBountyHuntMinotaurSuccess',
+      [
+        setup.qc.MoneyNormal(),
+        setup.qc.Favor('humandesert', 10),
+      ],
+    ],
+    [
+      'QuestBountyHuntMinotaurFailure',
+      [
+        setup.qc.SlaveMarker('victim'),
+      ],
+    ],
+    [
+      'QuestBountyHuntMinotaurDisaster',
+      [
+        setup.qc.Injury('merc1', 2),
+        setup.qc.Injury('merc2', 2),
+        setup.qc.Injury('negotiator', 2),
+        setup.qc.Trait('merc1', setup.trait.anus_gape),
+        setup.qc.IfActorSatisfyThen(
+          'merc1',
+          setup.qres.Trait(setup.trait.vagina_tight),
+          setup.qc.Trait('merc1', setup.trait.vagina_gape)),
+        setup.qc.Trait('merc2', setup.trait.anus_gape),
+        setup.qc.IfActorSatisfyThen(
+          'merc2',
+          setup.qres.Trait(setup.trait.vagina_tight),
+          setup.qc.Trait('merc2', setup.trait.vagina_gape)),
+      ],
+    ],
+  ],
+  [[setup.questpool.desert, setup.rarity.common],], /* quest pool and rarity */
+  [], /* prerequisites to generate */
+)>>
+
+
+:: QuestBountyHuntMinotaur [nobr]
+
+<p>
+Minotarus -- a half-man half-bull monsters living in the <<lore region_desert>>.
+Although they have the figure of a humanlik, their thoughts consists of nothing
+but plunging their massive rod into their next victim.
+Such a horny creature poses constant threat onto the nearby settlements, and
+occasionally bounties are posted to scare them away.
+Bounties that you can take, as long as your slavers remain vigilant throughout the quest.
+</p>
+
+
+:: QuestBountyHuntMinotaurCrit [nobr]
+
+<p>
+Your slavers managed to
+<<uadv $g.merc1>> shoo away these minotaurs from around the nearby settlements
+without using any violence.
+For such splendid work,
+<<if $g.negotiator.isHasTrait('per_sly')>>
+as well as via <<reps $g.negotiator>> slyly delivered persuasions,
+<</if>>
+the settlements were more than happy to pay your 
+slavers an extra bonus.
+</p>
+
+:: QuestBountyHuntMinotaurSuccess [nobr]
+
+<<if $g.victim.isMale()>>
+    <<questimage "bounty_hunt_minotaur_male.jpg">>
+<<else>>
+    <<questimage "bounty_hunt_minotaur_female.jpg">>
+<</if>>
+
+<p>
+Your slavers happened upon one such
+minotaur in the middle of assaulting an unlucky traveler.
+They were momentarily
+mesmerized by the size of the minotaur's dick, before
+<<uadv $g.merc1>> reminded the team of
+their original mission and proceed to defeat and shoo away the beast from the land.
+The traveler was certainly grateful for your help, and although your slavers accepted
+the thanks, they did not do so out of the kindness of their hearts.
+When the traveler handed over a pouch of thank-you-gold, your slavers
+<<set _greedy = setup.selectUnit([$g.merc1, $g.merc2, $g.negotiator], {trait: 'per_frugal'})>>
+<<if _greedy>>
+(and especially the greedy bastard that is <<rep _greedy>>)
+<</if>>
+smiled much more sincerely.
+</p>
+
+:: QuestBountyHuntMinotaurFailure [nobr]
+
+<p>
+Unfortunately, your slavers were lost in the vast <<lore region_desert>>.
+With no minotaur in sight, they gave up after two weeks and returned to your fort.
+</p>
+
+:: QuestBountyHuntMinotaurDisaster [nobr]
+
+<p>
+Happening upon one such minotaur in the middle of assaulting an unlucky traveler,
+your slavers were completely mesmerized by the size of the minotaur's dick.
+As the slavers all fell in their own fantasies, they did not realize when the
+minotaur, having completely filled the unlucky traveler with its sperm,
+turned its gaze into your slavers and proceeded to breed them one by one.
+Your slavers would need some time to recover from such ordeal, although to be
+fair it was probably their own fault to begin with.
+</p>

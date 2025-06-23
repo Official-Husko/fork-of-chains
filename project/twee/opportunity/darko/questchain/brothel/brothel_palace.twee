@@ -1,0 +1,147 @@
+:: OpportunitySetup_brothel_palace [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'brothel_palace', /* key */
+"Brothel Palace", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'upgrade',
+],
+1, /* expiration weeks */
+'Opportunity_brothel_palace',
+setup.qdiff.normal64, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_brothel_palace_0',
+    'Opportunity_brothel_palace_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarAdd('quest_brothel_class', 10, -1),
+      setup.qc.VarSet('quest_brothel_progress', '116', -1),
+      setup.qc.VarSet('quest_brothel_attraction', 'gravity', -1),
+    ],
+  ],
+  [
+    'Opportunity_brothel_palace_1',
+    'Opportunity_brothel_palace_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarAdd('quest_brothel_class', -10, -1),
+      setup.qc.VarSet('quest_brothel_progress', '116', -1),
+      setup.qc.VarSet('quest_brothel_attraction', 'bondage', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'owner': [
+    setup.qres.Home(),
+  ],
+  'head': [
+    setup.qres.Home(),
+  ],
+  'slave': 'brothel_head_courtesan',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_brothel_palace [nobr]
+<<set _profit = setup.dutytemplate.questbrothelmanager.profit()>>
+<<set _progress = setup.dutytemplate.questbrothelmanager.progress()>>
+<<set _class = setup.dutytemplate.questbrothelmanager.class()>>
+<<set _facility = setup.dutytemplate.questbrothelmanager.facility()>>
+<<set _attraction = setup.dutytemplate.questbrothelmanager.attraction()>>
+<<set _name = setup.dutytemplate.questbrothelmanager.brothelName()>>
+<<set _gender = setup.dutytemplate.questbrothelmanager.gender()>>
+<<set _describe = setup.dutytemplate.questbrothelmanager.describe()>>
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The luxurious new building of <<attach _describe>> is complete, and there is a room for one final amenity. You should choose a special attraction that cannot be found anywhere else but in your brothel, and <<yourrep $g.owner>> owner|have given you two options to choose from, both making full use of the head courtesan <<name $g.slave>>'s magical affinity.
+</p>
+
+<p>
+The first option is to construct a magical gravity room. This room will use magical crystals to channel wind and pressure upwards, cancelling gravity out. Anyone inside the room will be suspended in the air, which will allow them to engage in sexual activity unlike any others, including the sensation of flying while being fucking mercilessly. Truly a classy attraction fit for your high-class brothel.
+</p>
+
+<p>
+Alternatively, if you'd prefer something more raunchy, you could transform the room into a magical bondage room. The room will be fitted with enchanted manacles and sex toys, which can be used to many great effects, including forcing a hard-on as well as inflicting pain.
+<<if _sub == 'sub'>>
+Your clients could use these devices to punish your submissive courtesans to great effect.
+<<elseif _sub == 'dom'>>
+Your dominant courtesans could get very creative using these devices to punish their submissive clients.
+<<else>>
+The client is free to choose how they would prefer to use this, either to inflict pain and pleasure upon the willing courtesan or the other way around.
+<</if>>
+</p>
+
+
+
+
+
+:: Opportunity_brothel_palace_0 [nobr]
+Magic Gravity Room
+
+
+:: Opportunity_brothel_palace_0_flavor [nobr]
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The centermost chamber of your brothel has been transformed into the Magic Gravity Room. (Expensive) Magical crystals are planted on the bottom of the floor, and the head courtesan <<name $g.slave>> can channel <<their $g.slave>> magic in order to activate these crystals. Once activated, a moderate stream of wind pushes out from underneath, countering the gravity and letting anyone inside the room to float harmlessly.
+</p>
+
+<p>
+With the room fully functional, it is now up to the client's creativity how wild they want the sex to be.
+<<if _sub == 'sub'>>
+They could experience the joy of fucking your submissive sluts in the air, the feeling of anti-gravity fucking must be exhilarating.
+<<elseif _sub == 'dom'>>
+They could experience the joy of being fucked by your dominant courtesans in the air, including the sensation of a <<if $g.head.isHasDick()>>cock<<else>>strap-on<</if>> grazing their inner walls without being affected by gravity.
+<<else>>
+They could try both the experience of fucking and being fucked in the air — the feeling of anti-gravity fucking would be a new and an exciting territory.
+<</if>>
+All that remains now is to wait for the prospective and definitely well-paying customer.
+</p>
+
+
+
+
+:: Opportunity_brothel_palace_1 [nobr]
+Magic Bondage Room
+
+
+:: Opportunity_brothel_palace_1_flavor [nobr]
+<<set _sub = setup.dutytemplate.questbrothelmanager.sub()>>
+
+<p>
+The centermost chamber of your brothel has been transformed into the Magic Bondage Room. While there are still traditional manacles and fetters scattered throughout the walls of the rooms, the main attraction has to be the various floating restraints, as well as the enchanted sex toys available within the room. The head courtesan <<name $g.slave>> can channel <<their $g.slave>> magic in order to activate these crystals. Once activated, the sex toys and manacles would come to live, with various shocking effects.
+</p>
+
+<p>
+With the room fully functional, it is now up to the client's creativity how wild they want the sex to be.
+<<if _sub == 'sub'>>
+They could experience a sadistic delight in torturing and pleasuring your submissive and borderline masochistic courtesans at the same time with advanced magical bondage, spreading their bodies in however unnatural way they wish.
+<<elseif _sub == 'dom'>>
+They could experience the masochistic delight in being tortured and pleasured at the same time by your dominant courtesans, be it with the magical bondage bending their bodies in unnatural positions, or by the careful ministration of the vibrating and electrifying sex toys.
+<<else>>
+They could experience both the sexual delight from receiving and inflicting pain and discomfort, including using the vibrating and magically electrifying sex toys.
+<</if>>
+All that remains now is to wait for the prospective and definitely well-paying customer.
+</p>

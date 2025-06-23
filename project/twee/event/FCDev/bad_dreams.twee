@@ -1,0 +1,115 @@
+:: EventSetup_bad_dreams [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'bad_dreams', /* key */
+"Bad Dreams", /* Title */
+{ /* Author */
+  name: "FCdev",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_bad_dreams',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.SlaveOwnedByYou(),
+    setup.qres.Home(),
+    setup.qres.AnyTrait([setup.trait.training_none, setup.trait.training_obedience_basic], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_bad_dreams [nobr]
+<p>
+You are awoken on your <<uslaverbed $g.slave>> tonight from a quiet cry.
+You see a jerky movement near the <<uslavebed $g.slave>> in the dark. It's
+<<yourrep $g.slave>>, and <<they $g.slave>>'s obviously having a bad dream. <<They $g.slave>> raises an arm to fend off some imagined danger, and in doing so, pushes the blankets down around <<their $g.slave>> <<uwaist $g.slave>>.
+The movement bares <<their $g.slave>>
+<<if $g.slave.isHasTrait('breast_huge')>>udders<<elseif $g.slave.isHasTrait('breast_large')>>heavy breasts<<elseif $g.slave.isHasTrait('breast_tiny')>>boobs<<else>><<ubreasts $g.slave>><</if>>
+to the cool night air.
+The low light outlines <<their $g.slave>> nipples as they stiffen at the sudden change of temperature, becoming attractively erect.
+Still dreaming, <<they $g.slave>> clasps <<their $g.slave>> <<uarms $g.slave>> protectively over <<their $g.slave>> vulnerable chest,
+and rolls to one side.
+Halfway into a fetal position, <<they $g.slave>> turns <<their $g.slave>> head against you, still sleeping, while murmuring "N-no - please no - I'll d-do anyth-thing - no..."
+</p>
+
+<<choose>>
+
+<<opt "Hug <<them $g.slave>>">>
+
+<p>
+You reach out to hug <<them $g.slave>>, but as soon as your <<uhand $unit.player>> touches <<their $g.slave>> shoulder, <<they $g.slave>> writhes instinctively away.
+<<if $g.slave.isCanSee()>><<Their $g.slave>> eyes fly open, searching frantically for <<their $g.slave>> assailant.
+Seeing that it's you, <<they $g.slave>> screams and scrabbles away even harder.
+After making it a few feet, <<they $g.slave>> collects <<their $g.slave>> wits enough to bring <<themself $g.slave>> to a stop and stop screaming, though <<they $g.slave>> continues to <<if $g.slave.isFemale()>>sob<<else>>resist<</if>>, staring at you in <<if $g.slave.isFemale()>>terror<<else>>hatred<</if>><<else>><<They $g.slave>> gropes frantically for <<their $g.slave>> assailant, before making contact with you. <<They $g.slave>> screams and scrabbles away, only stopping when <<they $g.slave>> collides with the <<uobject $g.slave>>.
+Only after several call outs that it is you does <<they $g.slave>> stop screaming, though <<they $g.slave>> continues to <<if $g.slave.isFemale()>>sob<<else>>resist<</if>>, listening to your every breath in <<if $g.slave.isFemale()>>terror<<else>>hatred<</if>><</if>>.
+<<They $g.slave>> remains frozen in place as you slowly advance on <<them $g.slave>> and give <<them $g.slave>> a light embrace. <<Their $g.slave>>
+<<if $g.slave.isFemale()>>tears<<else>>fear<</if>> gradually stop, but <<they $g.slave>> does not relax, <<if $g.slave.isCanSee()>>remaining dumbly stiff<<else>>continuing to quake in fear<</if>> within your <<uarms $unit.player>>. Eventually you let <<them $g.slave>> go, and <<they $g.slave>> crawls pathetically back under <<their $g.slave>> blanket.
+It seems <<they $g.slave>> slave|is more afraid of you than ever, and if you thought that a simple hug could win <<them $g.slave>> over, you were wrong.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<<opt "Rape <<them $g.slave>>">>
+
+<p>
+You snatch the blanket off <<them $g.slave>>, shove <<their $g.slave>> uppermost shoulder down so <<their $g.slave>> face is smashed into the <<utile $g.slave>>, and bring your knees down between <<their $g.slave>> <<ulegs $g.slave>>, spreading them to force them apart.
+You use the <<uhand $unit.player>> that isn't controlling <<their $g.slave>> torso to locate <<their $g.slave>>
+
+<<if $g.slave.isHasVagina()>>
+
+<<if $g.slave.isHasTrait('vagina_gape')>>
+amusingly loose cunt
+<<elseif $g.slave.isHasTrait('vagina_loose')>>
+large <<woman $g.slave>>hood
+<<else>>
+tight pussy
+<</if>>
+
+<<else>>
+
+<<if $g.slave.isHasTrait('anus_gape')>>
+amusingly broad asshole
+<<elseif $g.slave.isHasTrait('anus_loose')>>
+big butthole
+<<else>>
+tight rosebud
+<</if>>
+
+<</if>>
+
+in the dark as <<they $g.slave>> begins to struggle and scream.
+<<They $g.slave>> comes fully awake when <<they $g.slave>> feels your rough fingers searching for and then finding <<their $g.slave>>
+<<uhole $g.slave>>,
+and <<their $g.slave>> noise increases to the point where it becomes annoying.
+<<if $g.slave.isHasTail()>>
+Raising <<their $g.slave>> tail, you
+<<else>>
+You
+<</if>>
+stuff <<their $g.slave>> face into the <<utile $g.slave>>
+and take <<them $g.slave>> mercilessly, using a pillow to cut off <<their $g.slave>> breath whenever <<they $g.slave>> struggles too much, until oncoming suffocation forces <<them $g.slave>> to go still and take it like a good little bitch.
+</p>
+<p>
+Sometimes dreams do come true.
+</p>
+
+<<run setup.qc.FriendshipWithYou('slave', -50).apply($gQuest)>>
+
+<</choose>>

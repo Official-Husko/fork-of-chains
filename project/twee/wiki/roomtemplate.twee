@@ -1,0 +1,18 @@
+:: WikiRoom [nobr]
+
+<<set _forfilter = Object.values(setup.roomtemplate)>>
+
+<div>
+  <<run _dom = setup.DOM.Util.filterAll({
+    menu: 'roomtemplate',
+    filter_objects: _forfilter,
+    display_callback: roomtemplate => {
+      if ($menufilter.get('roomtemplate', 'display') == 'compact') {
+        return setup.DOM.Card.roomtemplatecompact(roomtemplate, true);
+      } else {
+        return setup.DOM.Card.roomtemplate(roomtemplate, true);
+      }
+    },
+  })>>
+  <<attach _dom>>
+</div>

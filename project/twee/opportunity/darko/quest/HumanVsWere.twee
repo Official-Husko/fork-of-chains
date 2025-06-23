@@ -1,0 +1,53 @@
+:: OpportunitySetupHumanVsWere [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+  'human_vs_were',  /* key */
+  'Human vs Werewolf',  /* name */
+  'darko',  /* author */
+  ['vale', 'furry', 'unit', 'favor', ],  /* tags */
+  1,  /* deadline weeks, */
+  'OpportunityHumanVsWere',
+  setup.qdiff.normal14, /* difficulty */
+  [
+    [
+      'OpportunityHumanVsWereOptionDefense',
+      null,
+      [],
+      [],
+      [setup.qc.QuestDirect('human_vs_were_defense')],
+    ],
+    [
+      'OpportunityHumanVsWereOptionOffense',
+      null,
+      [],
+      [],
+      [setup.qc.QuestDirect('human_vs_were_offense')],
+    ],
+  ],
+  [[setup.questpool.vale, setup.rarity.uncommon],],
+  [],
+)>>
+
+:: OpportunityHumanVsWere [nobr]
+
+<<questimage "human_vs_were.jpg">>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+<<Yourrep _u>> informed you that
+the werewolves of the <<lore region_vale>> are planning
+to launch an assault on one of the settlements there.
+This presents an opportunity for you.
+First, you can inform the villagers and stand together with them in defense
+--- the villager will surely be grateful and may offer you a reward.
+Alternatively, you can wait until the attack begins and kidnap some of the villagers during the chaos.
+</p>
+
+:: OpportunityHumanVsWereOptionOffense [nobr]
+Kidnap villagers
+
+:: OpportunityHumanVsWereOptionDefense [nobr]
+Defend with the villagers

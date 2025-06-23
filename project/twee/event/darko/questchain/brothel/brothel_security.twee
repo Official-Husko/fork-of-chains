@@ -1,0 +1,43 @@
+:: EventSetup_brothel_security [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'brothel_security', /* key */
+"Brothel Security", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_brothel_security',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'head': 'brothel_cleanup0',
+  'owner': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Available(),
+    setup.qres.HasTitle('quest_brothel_owner_0'),
+    setup.qres.Home(),
+  ],
+},
+[ /* outcomes */
+  setup.qc.QuestDirect('brothel_security', {
+head: "head",
+owner: "owner",
+}),
+],
+[ /* restrictions */
+  setup.qres.VarNull('quest_brothel_wait'),
+  setup.qres.VarEqual('quest_brothel_progress', '28'),
+  setup.qres.NoQuest('brothel_security'),
+],
+10, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_brothel_security [nobr]
+<<include "Quest_brothel_security">>

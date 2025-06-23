@@ -1,0 +1,19 @@
+:: WikiEquipment [nobr]
+
+<<set _display = Object.values(setup.equipment)>>
+
+<<run _dom = setup.DOM.Util.filterAll({
+  menu: 'equipment',
+  filter_objects: _display,
+  display_objects: _display,
+  display_callback: equipment_obj => {
+    if ($menufilter.get('equipment', 'display') == 'compact') {
+      return setup.DOM.Card.equipmentcompact(equipment_obj, true);
+    } else {
+      return setup.DOM.Card.equipment(equipment_obj, true);
+    }
+  },
+})>>
+<<attach _dom>>
+
+

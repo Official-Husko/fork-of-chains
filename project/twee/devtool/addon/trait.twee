@@ -1,0 +1,68 @@
+:: AddonTraitsRandom [nobr]
+
+Adds
+<<numberbox "_crit" 0>>
+critical traits,
+<<numberbox "_disaster" 0>>
+disaster traits,
+and
+<<numberbox "_restriction" 0>>
+must-have traits from the following traits.
+The traits are inexact: e.g., <<rep setup.trait.muscle_verythin>> counts for
+<<rep setup.trait.muscle_thin>>, and <<rep setup.trait.dick_large>> counts for
+<<rep setup.trait.dick_tiny>>.
+<<message '(?)'>>
+  A must-have trait will be translated to unit requirement.
+  The traits will not overlap. For example, if a trait is chosen as a critical trait, it will not be
+  chosen as a disaster trait or must-have.
+<</message>>
+
+<<link '(Done)'>>
+  <<if _crit + _disaster + _restriction > _chosentraits.length>>
+    <<warning 'Not enough traits chosen! Must have at least equal to number of critical traits plus number of disaster traits'>>
+  <<else>>
+    <<run $soaddons.push(setup.SlaveOrderAddon.TraitsRandom(_chosentraits, _crit, _disaster, _restriction))>>
+    <<goto 'SlaveOrderGen'>>
+  <</if>>
+<</link>>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+:: AddonTraitsRandomExact [nobr]
+
+Adds
+<<numberbox "_crit" 0>>
+critical traits,
+<<numberbox "_disaster" 0>>
+disaster traits,
+and
+<<numberbox "_restriction" 0>>
+must-have traits from the following traits:
+The traits must match exactly.
+<<message '(?)'>>
+  A must-have trait will be translated to unit requirement.
+  The traits will not overlap. For example, if a trait is chosen as a critical trait, it will not be
+  chosen as a disaster trait or must-have.
+<</message>>
+
+<<link '(Done)'>>
+  <<if _crit + _disaster + _restriction > _chosentraits.length>>
+    <<warning 'Not enough traits chosen! Must have at least equal to number of critical traits plus number of disaster traits'>>
+  <<else>>
+    <<run $soaddons.push(setup.SlaveOrderAddon.TraitsRandomExact(_chosentraits, _crit, _disaster, _restriction))>>
+    <<goto 'SlaveOrderGen'>>
+  <</if>>
+<</link>>
+
+<<set _choose_traits_attachable = false>>
+<<include 'ChooseTraits'>>
+
+
+
+:: AddonRequireGenderRandomSlave [nobr]
+
+<<run $soaddons.push(setup.SlaveOrderAddon.RequireGenderRandom(setup.job.slave))>>
+<<gotowipehistory 'SlaveOrderGen'>>
+

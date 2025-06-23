@@ -1,0 +1,140 @@
+:: QuestSetup_brothel_takeover [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaowner = new setup.UnitCriteria(
+null, /* key */
+'Brothel Owner', /* name */
+[
+  setup.trait.skill_entertain,
+  setup.trait.per_sly,
+],
+[
+  setup.trait.per_direct,
+],
+[
+  setup.qres.NotYou(),
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 1,
+  social: 1,
+  sex: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'brothel_takeover', /* key */
+"Brothel Takeover", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'special',
+  'unknown',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'owner': [ _criteriaowner, 3],
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.Money(-5000),
+],
+'Quest_brothel_takeover',
+setup.qdiff.normal24, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_brothel_takeoverCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Money(1500),
+    ],
+  ],
+  [
+    'Quest_brothel_takeoverCrit',
+    setup.dutytemplate.questbrothelmanager.resetChain().concat([
+      setup.qc.VarSet('quest_brothel_wait', '4', -1),
+      setup.qc.VarSet('quest_brothel_progress', '1', -1),
+      setup.qc.AddTitle('owner', 'quest_brothel_owner_0'),
+      setup.qc.Duty('questbrothelmanager'),
+    ]),
+  ],
+  [
+    'Quest_brothel_takeoverCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Money(-1500),
+    ],
+  ],
+  [
+    'Quest_brothel_takeoverCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Money(-3000),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_brothel_takeover [nobr]
+<p>
+Having decided to buy the brothel, the last remaining thing to do is to complete the formalities and pay the money. You should select which of your slavers should become the registered brothel owner. They will need to go to the <<lore location_npc>> to complete the paperwork, which should take around one week.
+</p>
+
+<p>As the registered brothel owner, the slaver you choose will likely be involved in its future day-to-day operations. To properly manage the place, they should ideally have the following qualities: possesses basic management knowledge <<rep setup.skill.knowledge>>, good at smooth-talking other people <<rep setup.skill.social>>, and also good at using their genitals <<rep setup.skill.sex>>. It would be even better if they were to possess <<rep setup.trait.skill_entertain>>. Being <<rep setup.trait.per_sly>> is also preferred, but a <<rep setup.trait.per_direct>> slaver should be avoided.
+</p>
+
+<p>
+<<dangertext "This is an important decision.">> Whichever slaver you decide to send on this quest will very likely become the brothel's formal owner. Since your company funded the purchase, the ownership of the brothel basically belongs to you, and you will be the one making the important decisions regarding the brothel's future and operations. However, as the registered owner of the brothel, the slaver you choose will be better at managing the more mundane day-to-day operations of the place. Since you are already too busy managing your slaving company, you cannot become the official brothel owner.
+</p>
+
+
+
+
+
+:: Quest_brothel_takeoverCrit [nobr]
+<p>
+The whores were understandably wary switching managers from the bandits and now to your company, but since you answered their earlier plea for help, they were somewhat hopeful that your management would be better and kinder than that of your predecessor's.
+</p>
+
+<p>
+It took the entire week, but <<yourrep $g.owner>> managed to complete the formalities and purchased the brothel.
+<<if $gOutcome == 'crit'>>
+Thanks to <<their $g.owner>> skillful smooth talks, <<they $g.owner>> were able to negotiate for a lower price than expected.
+<<elseif $gOutcome == 'failure'>>
+Unfortunately, <<they $g.owner>> had to spend more bribe than expected to complete the purchase.
+<<elseif $gOutcome == 'disaster'>>
+Unfortunately, <<they $g.owner>> was not a very good smooth-talker, and had to spend an outrageous of money on bribes to complete the purchase.
+<<else>>
+<<They $g.owner>> spent the expected amount of money to complete the purchase.
+<</if>>
+</p>
+
+<p>
+While <<rep $g.owner>> owner|is the legal owner of the decrepit brothel now,
+since it was your company who paid for it,
+your company basically owns the place now.
+It will take some time before the brothel could be restored to something profitable, however,
+and you hope that it will be worth the efforts.
+</p>
+
+<p>
+<<successtext "Important:">> the "Brothel Manager" duty is now unlocked. Staff this duty if you wish to benefit from your little brothel.
+</p>
+
+
+
+
+
+

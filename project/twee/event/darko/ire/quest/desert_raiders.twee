@@ -1,0 +1,27 @@
+:: EventSetup_desert_raiders [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'desert_raiders', /* key */
+"Desert Raiders", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_desert_raiders',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('humandesert', -20),
+setup.qc.QuestDirect('desert_raider'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('humandesert', 20),
+setup.qres.Building('veteranhall'),
+],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_desert_raiders [nobr]
+<<include 'Quest_desert_raider'>>

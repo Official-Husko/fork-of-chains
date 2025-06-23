@@ -1,0 +1,217 @@
+:: QuestSetup_clover_witch [nobr quest]
+
+<<set _criteriaa = new setup.UnitCriteria(
+null, /* key */
+'Clover Farmer', /* name */
+[
+  setup.trait.bg_farmer,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.per_lavish,
+  setup.trait.per_sexaddict,
+  setup.trait.per_masochistic,
+],
+[
+  setup.trait.balls_tiny,
+  setup.trait.balls_small,
+  setup.trait.breast_tiny,
+  setup.trait.breast_small,
+  setup.trait.per_frugal,
+  setup.trait.per_chaste,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.HasTitle('quest_harbinger_of_misfortune_0'),
+  setup.qres.AnyTrait([
+    setup.trait.breast_tiny,
+    setup.trait.breast_small,
+    setup.trait.breast_medium,
+    setup.trait.breast_large,
+    setup.trait.breast_huge,
+    setup.trait.breast_titanic,
+    setup.trait.balls_tiny,
+    setup.trait.balls_small,
+    setup.trait.balls_medium,
+    setup.trait.balls_large,
+    setup.trait.balls_huge,
+    setup.trait.balls_titanic,
+  ], true),
+],
+{
+  knowledge: 1,
+  sex: 2,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'clover_witch', /* key */
+"Clover Witch", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'special',
+  'prep',
+  'trait',
+  'forest',
+],
+4, /* weeks */
+12, /* expiration weeks */
+{ /* roles */
+  'a': [ _criteriaa, 1],
+  'tender1': [ setup.qu.farmer, 1],
+  'tender2': [ setup.qu.farmer, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1500),
+],
+'Quest_clover_witch',
+setup.qdiff.harder55, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_clover_witchCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_crit', 1, -1),
+      setup.qc.Outcomes("success"),
+    ],
+  ],
+  [
+    'Quest_clover_witchCrit',
+    [
+      setup.qc.VarAdd('quest_harbinger_of_luck_done', 1, -1),
+      setup.qc.VarSet('quest_harbinger_of_luck_clover', '1', -1),
+      setup.qc.Blessing('tender1', 1, 'blessing_sanity8', undefined),
+      setup.qc.Blessing('tender2', 1, 'blessing_sanity8', undefined),
+      setup.qc.SetCooldownEvent('harbinger_of_chaos', 10),
+      setup.qc.SetCooldownEvent('harbinger_of_crows', 10),
+      setup.qc.Outcomes("failure"),
+    ],
+  ],
+  [
+    'Quest_clover_witchCrit',
+    [
+      setup.qc.Blessing('a', 1, 'curse_madness8', undefined),
+      setup.qc.SetCooldownEvent('luck_chaser', 10),
+    ],
+  ],
+  [
+    'Quest_clover_witchCrit',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.Blessing('tender1', 1, 'curse_madness8', undefined),
+      setup.qc.Blessing('tender2', 1, 'curse_madness8', undefined),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_clover_witch [nobr]
+<<set _unit = setup.getUnit({title: 'quest_harbinger_of_misfortune_0'})>>
+<<if !_unit>>
+<<missingunitquest>>
+<<else>>
+
+<p>
+In yet another attempt to purge <<themself _unit>> out of <<their _unit>> unluckiness, <<yourrep _unit>> has come with another absurd proposal. The four leaf clover is a symbol of luck, and surely getting a hold of one or two will purge all unluckiness away.
+Or at least <<rep _unit>> seems to think so, and in fact, <<they _unit>> has located a four-leaf-clover farmer somewhere in the <<lore region_forest>> (which is something you only learn to exist today).
+</p>
+
+<p>
+According to the rumors, however, getting ahold of such a symbol of luck isn't as easy as buying it off some farmer's hands. The prospective buyer can only buy the seed, which must then be planted themself in a patch of land loaned (at a small cost) from the same farmer. The clover must be personally "watered" and "fed" daily for several weeks until it mature, and only then will it grants luck and prosperity to its caretaker. And of course, "watered" and "fed" in this debauched continent could only mean one thing...
+</p>
+
+<p>
+Should you wish to go ahead and try with this mad endeavor, you could send <<rep _unit>> together with two other slavers to help <<therace _unit>> take care of the clover flower. And don't forget to bring the money to rent the patch of land!
+</p>
+
+<</if>>
+
+
+
+:: Quest_clover_witchCrit [nobr]
+<p>
+After the money is exchanged and the farmer meticulously counted every single coin, <<yourrep $g.a>> a|was finally given the clover seed and the small patch of land.
+The instructions are clear — <<rep $g.a>> is to
+"feed" and "water" the plant every day, once in the morning and once in the evening.
+Oh yes, <<they $g.a>> must
+<<if $g.a.isHasDick()>>
+squeeze that <<uballs $g.a>> of <<theirs $g.a>> dry twice per day.
+<<if $g.a.isHasTrait('balls_huge')>>
+Considering the absolute size of <<their $g.a>> balls, it will take some time, but the plant will surely be nourished from the
+<<elseif $g.a.isHasTrait('balls_medium')>>
+<<They $g.a>> a|have a normal pair of balls, and hopefully their modest output would be sufficient to grow the plant.
+<<else>>
+<<Their $g.a>> <<uballs $g.a>> could only produce so much cum, however, and it is unclear if the plant would be sufficiently nourished with the output.
+<</if>>
+
+<<else>>
+squeeze that <<ubreasts $g.a>> of <<theirs $g.a>> dry twice per day.
+<<if $g.a.isHasTrait('breast_huge')>>
+Considering the absolute size of <<their $g.a>> breasts, it will take some time, but the plant will surely be nourished from the
+<<elseif $g.a.isHasTrait('breast_medium')>>
+<<They $g.a>> a|have a normal pair of breasts, and hopefully their modest output would be sufficient to grow the plant.
+<<else>>
+<<Their $g.a>> <<ubreasts $g.a>> could only produce so much milk, however, and it is unclear if the plant would be sufficiently nourished with the output.
+<</if>>
+
+<</if>>
+</p>
+
+<p>
+Day by day pass by as <<rep $g.a>> a|continue, with the help of <<rep $g.tender1>> and <<rep $g.tender2>>, to take care of the plant.
+<<if $g.a.isHasTrait('bg_farmer')>>
+<<They $g.a>> a|know how to take care of plants given <<their $g.a>> past as a farmer.
+<</if>>
+<<if $g.a.isHasTrait('per_sexaddict')>>
+Being a sex addict means <<they $g.a>> a|was looking forward to every self-milking session.
+<</if>>
+<<if $g.a.isHasTrait('per_chaste')>>
+<<They $g.a>> secretly abhorred the milking sessions, <<their $g.a>> chaste mind unable to comprehend its necessity.
+<</if>>
+<<if $g.a.isHasTrait('per_lavish')>>
+<<They $g.a>> lavish <<if $g.a.isHasDick()>>cum over cum<<else>>milk over milk<</if>> generously on the plant.
+<</if>>
+<<if $g.a.isHasTrait('per_frugal')>>
+<<They $g.a>> gave the plant the bare minimum amount of
+<<if $g.a.isHasDick()>>cum<<else>>milk<</if>>,
+being a little too thrifty with <<their $g.a>> own produce.
+<</if>>
+<<if $g.a.isHasTrait('per_masochistic')>>
+<<They $g.a>> sometimes milk <<themself $g.a>> until <<their $g.a>> <<if $g.a.isHasDick()>><<udick $g.a>><<else>><<ubreasts $g.a>><</if>> hurt, the masochist secretly enjoying the self-inflicted pain and punishment.
+<</if>>
+Before long, three long weeks have passed, and it was time to reap the rewards.
+</p>
+
+<<if $gOutcome == 'crit' or $gOutcome == 'failure'>>
+<p>
+The clover blossomed beautifully, four perfect leaves jutting out from the center. <<Rep $g.a>> picked the clover, and something odd happened — a dark energy was coming out from <<therace $g.a>>, seeping into the flower. The lucky energy of the clover was visibly forced out of the plant, and surprisingly went into <<rep $g.tender1>> and <<rep $g.tender2>> instead. <<Yourrep $g.a>>, on the other hand, was left with a wilted, cursed flower, and instead of feeling blessed or lucky, <<rep $g.a>> felt more cursed than before, the ritual seemingly backfired despite the apparent success.
+</p>
+
+<p>
+It seems that warding away <<reps $g.a>> sheer unluckiness would not be so easy...
+</p>
+<<else>>
+<p>
+Unfortunately, your slavers' care was simply not enough. The clover did not mature correctly, and instead wilted and dried. Instead of a blessing, <<rep $g.a>> a|was cursed with yet another curse.
+<<if $gOutcome == 'disaster'>>
+The failure was so much that the curse even affected both <<rep $g.tender1>> and <<rep $g.tender2>>.
+<</if>>
+</p>
+
+<p>
+You'd just have to try again next time, perhaps by sending more competent slavers for the task...
+</p>
+<</if>>

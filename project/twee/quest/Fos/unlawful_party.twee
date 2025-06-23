@@ -1,0 +1,705 @@
+:: QuestSetup_unlawfull_party [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_criminal_connection_0", /* key */
+"Criminal Connection", /* name */
+"A valuable partner and connection between your company and the outlaws.", /* description */
+"a|have connections with the band of Outlaws of the kingdom", /* unit text */
+5550, /* slave value */
+{ /* skill additives */
+brawn: 1,intrigue: 3,slaving: 1,sex: 1,},
+)
+>>
+
+<<run new setup.UnitGroup(
+"unlawfull_party0",
+"Outlaw Bandits Boss",
+[ /* pools */
+[setup.unitpool.subrace_humanvale_male, 0.16949152542372878],
+[setup.unitpool.subrace_humankingdom_male, 0.16949152542372878],
+[setup.unitpool.subrace_humandesert_male, 0.16949152542372878],
+[setup.unitpool.subrace_werewolf_male, 0.16949152542372878],
+[setup.unitpool.subrace_orc_male, 0.16949152542372878],
+[setup.unitpool.subrace_humankingdom_female, 0.033898305084745756],
+[setup.unitpool.subrace_humanvale_female, 0.033898305084745756],
+[setup.unitpool.subrace_humandesert_female, 0.033898305084745756],
+[setup.unitpool.subrace_demon_female, 0.025423728813559317],
+[setup.unitpool.subrace_lizardkin_female, 0.025423728813559317],
+],
+1, /* reuse chance */
+[ /* unit post process */
+setup.qc.TraitsReplace('unit', [setup.trait.wings_demon, setup.trait.eyes_dragonkin, setup.trait.mouth_orc]),
+],
+)>>
+
+<<run new setup.UnitGroup(
+"unlawfull_party2",
+"Elvish Arcanist",
+'subrace_elf_female',  /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+setup.qc.Trait('unit', setup.trait.magic_wind_master),
+setup.qc.Trait('unit', setup.trait.magic_fire_master),
+setup.qc.Trait('unit', setup.trait.magic_dark),
+],
+)>>
+
+<<run new setup.UnitGroup(
+"unlawfull_party3",
+"Kingdom Knights",
+[ /* pools */
+[setup.unitpool.subrace_humankingdom_male, 0.8695652173913044],
+[setup.unitpool.subrace_humankingdom_female, 0.13043478260869565],
+],
+1, /* reuse chance */
+[ /* unit post process */
+setup.qc.TraitsReplace('unit', [setup.trait.bg_knight, setup.trait.skill_ambidextrous, setup.trait.skill_flight, setup.trait.wings_angel]),
+],
+)>>
+
+<<set _criteriahandler = new setup.UnitCriteria(
+null, /* key */
+'Criminal Handler', /* name */
+[
+setup.trait.bg_slaver,
+setup.trait.bg_mist,
+setup.trait.per_calm,
+setup.trait.per_dominant,
+setup.trait.per_aggressive,
+setup.trait.per_evil,
+setup.trait.magic_wind_master,
+setup.trait.magic_water_master,
+setup.trait.magic_earth_master,
+setup.trait.magic_dark_master,
+],
+[
+setup.trait.bg_slave,
+setup.trait.per_aggressive,
+setup.trait.per_calm,
+setup.trait.per_submissive,
+setup.trait.per_lunatic,
+setup.trait.per_masochistic,
+setup.trait.per_honorable,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+brawn: 0.15,
+slaving: 2.7,
+sex: 0.15,
+}
+)>>
+
+<<set _criteriaelf = new setup.UnitCriteria(
+null, /* key */
+'Elvish Offer', /* name */
+[
+setup.trait.bg_royal,
+setup.trait.bg_mythical,
+setup.trait.bg_noble,
+setup.trait.bg_courtesan,
+setup.trait.bg_whore,
+setup.trait.bg_entertainer,
+setup.trait.dick_huge,
+setup.trait.balls_huge,
+setup.trait.breast_huge,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.tough_tough,
+setup.trait.per_active,
+setup.trait.per_playful,
+],
+[
+setup.trait.training_mindbreak,
+setup.trait.value_low,
+setup.trait.bg_unemployed,
+setup.trait.bg_slave,
+setup.trait.muscle_verythin,
+setup.trait.muscle_extremelythin,
+setup.trait.dick_tiny,
+setup.trait.dick_small,
+setup.trait.balls_tiny,
+setup.trait.balls_small,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_stubborn,
+setup.trait.per_proud,
+setup.trait.trauma_sex,
+setup.trait.trauma_brawn,
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.AllTraits([setup.trait.race_elf, setup.trait.face_attractive, setup.trait.training_obedience_advanced, setup.trait.training_endurance_advanced, setup.trait.training_horny_advanced], false),
+],
+{
+sex: 3,
+}
+)>>
+
+<<set _criteriahuman = new setup.UnitCriteria(
+null, /* key */
+'Human Offer', /* name */
+[
+setup.trait.bg_royal,
+setup.trait.bg_mythical,
+setup.trait.bg_noble,
+setup.trait.bg_courtesan,
+setup.trait.bg_whore,
+setup.trait.bg_entertainer,
+setup.trait.balls_huge,
+setup.trait.dick_huge,
+setup.trait.breast_huge,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.tough_tough,
+setup.trait.per_playful,
+setup.trait.per_active,
+],
+[
+setup.trait.training_mindbreak,
+setup.trait.value_low,
+setup.trait.bg_unemployed,
+setup.trait.bg_slave,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.dick_tiny,
+setup.trait.dick_small,
+setup.trait.balls_tiny,
+setup.trait.balls_small,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_proud,
+setup.trait.per_stubborn,
+setup.trait.trauma_sex,
+setup.trait.trauma_brawn,
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.race_human], true),
+setup.qres.AllTraits([setup.trait.face_attractive, setup.trait.training_obedience_advanced, setup.trait.training_endurance_advanced, setup.trait.training_horny_advanced], false),
+],
+{
+sex: 3,
+}
+)>>
+
+<<set _criterianeko = new setup.UnitCriteria(
+null, /* key */
+'Neko Offer', /* name */
+[
+setup.trait.bg_royal,
+setup.trait.bg_mythical,
+setup.trait.bg_noble,
+setup.trait.bg_courtesan,
+setup.trait.bg_whore,
+setup.trait.bg_entertainer,
+setup.trait.dick_huge,
+setup.trait.balls_huge,
+setup.trait.breast_huge,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.tough_tough,
+setup.trait.per_playful,
+setup.trait.per_active,
+],
+[
+setup.trait.training_mindbreak,
+setup.trait.value_low,
+setup.trait.bg_unemployed,
+setup.trait.bg_slave,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.dick_tiny,
+setup.trait.dick_small,
+setup.trait.balls_tiny,
+setup.trait.balls_small,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.per_chaste,
+setup.trait.per_proud,
+setup.trait.per_dominant,
+setup.trait.per_stubborn,
+setup.trait.trauma_sex,
+setup.trait.trauma_brawn,
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.subrace_neko),
+setup.qres.AllTraits([setup.trait.face_attractive, setup.trait.training_obedience_advanced, setup.trait.training_endurance_advanced, setup.trait.training_horny_advanced], false),
+],
+{
+sex: 3,
+}
+)>>
+
+<<set _criteriaextraslave = new setup.UnitCriteria(
+null, /* key */
+'Extra Slave', /* name */
+[
+setup.trait.bg_royal,
+setup.trait.bg_mythical,
+setup.trait.bg_noble,
+setup.trait.bg_courtesan,
+setup.trait.bg_whore,
+setup.trait.bg_entertainer,
+setup.trait.dick_huge,
+setup.trait.balls_huge,
+setup.trait.breast_huge,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.tough_tough,
+setup.trait.per_playful,
+setup.trait.per_active,
+],
+[
+setup.trait.training_mindbreak,
+setup.trait.value_low,
+setup.trait.bg_unemployed,
+setup.trait.bg_slave,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.dick_tiny,
+setup.trait.dick_small,
+setup.trait.balls_tiny,
+setup.trait.balls_small,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.per_chaste,
+setup.trait.per_proud,
+setup.trait.per_stubborn,
+setup.trait.per_dominant,
+setup.trait.trauma_sex,
+setup.trait.trauma_brawn,
+],
+[
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.race_human, setup.trait.race_elf, setup.trait.subrace_neko], true),
+setup.qres.AllTraits([setup.trait.face_attractive, setup.trait.training_obedience_advanced, setup.trait.training_endurance_advanced, setup.trait.training_horny_advanced], false),
+],
+{
+sex: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'unlawfull_party', /* key */
+"Unlawfull Party", /* Title */
+{  /* Author */
+  name: "Fos",
+  url: 'https://www.reddit.com/r/FortOfChains/comments/koxn6x/unlawful_party_questoutlawkingdomoftor/',
+},
+[ /* tags */
+'gore',
+'city',
+'prep',
+'favor',
+'money',
+'veteran',
+'ire',
+],
+6, /* weeks */
+16,  /* expiration weeks */
+{ /* roles */
+'handler': [ _criteriahandler, 3],
+'elf': _criteriaelf,
+'human': _criteriahuman,
+'neko': _criterianeko,
+'extraslave': _criteriaextraslave,
+},
+{ /* actors */
+'boss': 'unlawfull_party0',
+'arcanist': 'unlawfull_party2',
+'archangel': 'unlawfull_party3',
+},
+[ /* costs */
+setup.qc.MoneyCustom(-1500),
+],
+'Quest_unlawfull_party',
+setup.qdiff.normal50, /* difficulty */
+[ /* outcomes */
+[
+'Quest_unlawfull_partyCrit',
+[
+setup.qc.IfThenElse(
+  setup.qres.Actor('handler', setup.qres.HasTitle('quest_criminal_connection_0')),
+  setup.qc.Item(setup.item.f_punishment_good),
+  setup.qc.RemoveTitleGlobal('quest_criminal_connection_0'),
+),
+setup.qc.AddTitle('handler', 'quest_criminal_connection_0'),
+setup.qc.MoneyCustom(13500),
+setup.qc.Favor('outlaws', 150),
+setup.qc.Trait('elf', setup.trait.training_oral_advanced),
+setup.qc.Trait('elf', setup.trait.training_vagina_advanced),
+setup.qc.Trait('elf', setup.trait.training_anal_advanced),
+setup.qc.Trait('human', setup.trait.training_oral_advanced),
+setup.qc.Trait('human', setup.trait.training_vagina_advanced),
+setup.qc.Trait('human', setup.trait.training_anal_advanced),
+setup.qc.Trait('neko', setup.trait.training_oral_advanced),
+setup.qc.Trait('neko', setup.trait.training_vagina_advanced),
+setup.qc.Trait('neko', setup.trait.training_anal_advanced),
+setup.qc.Trait('extraslave', setup.trait.training_masochist_advanced),
+setup.qc.Trait('extraslave', setup.trait.training_oral_advanced),
+setup.qc.Trait('extraslave', setup.trait.training_vagina_advanced),
+setup.qc.Trait('extraslave', setup.trait.training_anal_advanced),
+setup.qc.OneRandom([
+setup.qc.Trait('elf', setup.trait.training_oral_master),
+setup.qc.Trait('human', setup.trait.training_anal_master),
+setup.qc.Trait('neko', setup.trait.training_vagina_master),
+setup.qc.Trait('extraslave', setup.trait.training_masochist_master),
+]),
+setup.qc.Injury('extraslave', 32),
+],
+],
+[
+'Quest_unlawfull_partyCrit',
+[
+setup.qc.Trait('elf', setup.trait.training_oral_advanced),
+setup.qc.Trait('elf', setup.trait.training_vagina_basic),
+setup.qc.Trait('elf', setup.trait.training_anal_basic),
+setup.qc.Injury('elf', 6),
+setup.qc.Trait('human', setup.trait.training_oral_basic),
+setup.qc.Trait('human', setup.trait.training_vagina_basic),
+setup.qc.Trait('human', setup.trait.training_anal_advanced),
+setup.qc.Injury('human', 6),
+setup.qc.Trait('neko', setup.trait.training_oral_basic),
+setup.qc.Trait('neko', setup.trait.training_vagina_advanced),
+setup.qc.Trait('neko', setup.trait.training_anal_basic),
+setup.qc.Injury('neko', 6),
+setup.qc.Trait('extraslave', setup.trait.training_oral_basic),
+setup.qc.Trait('extraslave', setup.trait.training_vagina_basic),
+setup.qc.Trait('extraslave', setup.trait.training_anal_basic),
+setup.qc.Trait('extraslave', setup.trait.training_masochist_basic),
+setup.qc.Injury('extraslave', 32),
+setup.qc.MoneyCustom(9500),
+setup.qc.Favor('outlaws', 50),
+setup.qc.Ire('humankingdom', 2),
+],
+],
+[
+'Quest_unlawfull_partyCrit',
+[
+setup.qc.Trait('elf', setup.trait.training_oral_basic),
+setup.qc.Trait('human', setup.trait.training_anal_basic),
+setup.qc.Trait('neko', setup.trait.training_vagina_basic),
+setup.qc.Ire('humankingdom', 5),
+setup.qc.MissingUnit('extraslave'),
+setup.qc.Injury('handler', 5),
+setup.qc.Trait('extraslave', setup.trait.training_mindbreak),
+setup.qc.Injury('elf', 12),
+setup.qc.Injury('human', 12),
+setup.qc.Injury('neko', 12),
+setup.qc.Injury('extraslave', 32),
+setup.qc.Favor('outlaws', -250),
+],
+],
+[
+'Quest_unlawfull_partyDisaster',
+[
+setup.qc.MissingUnitForever('extraslave'),
+setup.qc.MissingUnitRecapture('neko', 'escapemedium'),
+setup.qc.MissingUnitRecapture('elf', 'escapemedium'),
+setup.qc.MissingUnitRecapture('human', 'escapemedium'),
+setup.qc.TraumatizeRandom('elf', 54),
+setup.qc.TraumatizeRandom('human', 54),
+setup.qc.TraumatizeRandom('neko', 54),
+setup.qc.MissingUnitRecapture('handler', 'capturedhard'),
+setup.qc.MoneyCustom(-15000),
+],
+],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.rare],
+],
+[ /* restrictions */
+setup.qres.Building('veteranhall'),
+setup.qres.QuestUnique(),
+setup.qres.Cooldown(28),
+setup.qres.FavorAtLeast('outlaws', 275),
+],
+[ /* expiration outcomes */
+],
+)>>
+
+:: Quest_unlawfull_party [nobr]
+<p>
+Among the many new letters that arrive at your desk today, there's one that gain of your attention more the others. It's a red letter filled with several hidden criminal symbols, no doubt coming from one of your
+many acquaintances in <<rep $company.outlaws>>...
+</p>
+
+<<if $unit.player.isHasTrait('bg\_boss')>>
+<p>
+It takes you only a few minutes to decrypt the message, making you feel some nostalgia of your criminal past, when you commanded a band of outlaws. As you read the request letter, an evil grim appear at your face, smiling as you can already imagine the debauched content of the request.
+</p>
+
+<<elseif $unit.player.isHasTrait('bg\_thug')>>
+
+<p>
+As you decipher the codes, you remember the days that you act as an enforcer, breaking legs and intimidating those who wrong your contractors. It takes a while, since you never actually used the decryption codes before, but you eventually finish the deciphering, and a sadistic smile grows on your face.
+</p>
+
+<<elseif $unit.player.isHasTrait('bg\_thief')>>
+<p>
+You don't even need to break the code, since you used the Thieves' Chant so many times in your former life that you can read it as a language of its own.
+After you finish reading the letter, you can even hear the sweet jingle of coins in a distance location in your memory.
+</p>
+<<else>>
+<p>
+You take you almost the entire day, while asking many of your slavers and even some of your must obedient slaves, but you finally decrypt the red letter. With the transcript in hands, you finally return to your office and read the decrypted request.
+</p>
+<</if>>
+
+<p>
+Apparently, several of the <<rep $company.outlaws>> bands is going to congregate
+within a hidden grove located somewhere in the <<rep $company.humankingdom>>'s
+surroundings and they are requesting a few of your slaves as part of the
+festivities.
+The criminals says that they are commemorating a wealthy
+trimester, and that they want to end it with a full round of debauchery with
+your slaves. They are asking for pretty and submissive humans, elves and
+neko, to represents each place that they have raided this trimester.
+</p>
+
+<<set _u = setup.getUnit({title: 'quest_criminal_connection_0'})>>
+<<if _u>>
+  <p>
+    <<dangertext 'Warning'>>: Only one unit can hold the title of <<rep setup.title.quest_criminal_connection_0>>.
+    Sending a slaver other than <<rep _u>> on this quest may remove the title from
+    <<rep _u>>!
+  </p>
+<</if>>
+
+:: Quest_unlawfull_partyCrit [nobr]
+
+<p>
+The travel itself took almost three full days, but your slavers finally reached the
+hidden grove where the criminal festivities will take place.
+Having arrived at the destination, your slavers promptly set out their merchandise:
+a quartet of slaves brought to entertain these masses of outlaws.
+Your slavers arrived early --
+in their first day, only a few of the <<rep $company.outlaws>> had
+arrived, so they took it easy on your slaves.
+But as more and more men and
+women of various questionable backgrounds arrived, the <<uadj $g.handler>> <<rep
+$g.handler>> began to wonder if the slaves will survive such a brutal
+task in hand: be fucked uninterruptedly by every outlaw of the many different races,
+genders and asset sizes for three more weeks.
+</p>
+
+<p>
+At the end of the first week, the group of bandits -- already surpassing sixty of them
+--
+had designated the specialities of each one of your slaves.
+<<Yourrep $g.elf>> elf|was designated as an oral bitch.
+The <<uadjbad $g.human>> <<reps $g.human>> <<uanus $g.human>> was elected the best
+asshole of the party.
+And finally, <<reps $g.neko>> <<ugenital $g.neko>> was always sore from being used
+uninterrupted.
+</p>
+
+<p>
+Meanwhile, <<yourrep $g.extraslave>> extraslave|was perhaps received the worst blunt of it all.
+<<They $g.extraslave>> extraslave|was used as a punishment doll,
+attracting the attention of the most sadistic of the bandits.
+<<They $g.extraslave>> experienced having <<their $g.extraslave>> <<unipples $g.extraslave>> stretched to their limits and having <<their $g.extraslave>> <<utorso $g.extraslave>> marked with several whip marks made by the Chief of the band <<themselves $g.boss>>.
+Each time, the bandit boss left <<their $g.extraslave>> <<utorso $g.extraslave>> filled with bruises and whip marks.
+</p>
+
+<<if $g.handler.isHasTrait('bg\_slaver')>>
+<p>
+Even as the weeks passed by, <<rep $g.handler>> never lost <<their $g.handler>>
+mind in the lustful atmosphere of the festivities, nor did <<they $g.handler>> let the alcohol
+cloud <<their $g.handler>> mind or lost the focus of the task in <<uhand $g.handler>>.
+<<They $g.handler>> <<uadv $g.handler>> ensured that the slaves
+were not used beyond their limitations, while still satisfying the many diverse
+desires of the bandits.
+</p>
+<<else>>
+<p>
+As the weeks goes by, <<rep $g.handler>> struggled to keep the slaves
+safe from the many ministrations of the bandits.
+</p>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The festivities continued, with both bandits and slaves submerged themselves in lust,
+alcohol and drugs.
+
+Even <<rep $g.handler>> <<themself $g.handler>> had a chance to enjoy having
+<<if $g.handler.isHasDick()>>
+
+<<their $g.handler>> <<udick $g.handler>> swallowed by
+<<reps $g.elf>> <<umouth $g.elf>>, feeling the cockhead
+rubbing deep within <<their $g.elf>> throat.
+
+<<else>>
+
+<<their $g.handler>> pussy,
+with <<reps $g.elf>> tongue expertly dancing on <<their $g.handler>> clit.
+<</if>>
+
+<<Therace $g.elf>> often had both of <<their $g.elf>> <<uhands $g.elf>> stroking
+thick cocks, while the bandit boss
+<<if $g.boss.isHasDick()>>
+thrusted
+<<their $g.boss>> <<udick $g.boss>> inside <<them $g.elf>>.
+<<else>>
+inserted <<their $g.boss>> big strap-on deep inside <<them $g.elf>>.
+<</if>>
+Some other time, two orcs spitroasted
+<<rep $g.human>> with theirs thick and
+huge cocks, making <<them $g.human>> scream in an exquisite mixture of pain and pleasure.
+<<Rep $g.neko>> had the pleasure of having <<their $g.neko>> <<uhole $g.neko>> penetrated and creamed again and again.
+In a different chamber, <<rep $g.extraslave>> was gang-banged and tortured without time to rest.
+</p>
+
+<p>
+And that was how the mission went, with lust and desire whose desperation increase day after
+day.
+But before long, stockholm syndrome kicked in, and <<rep $g.elf>>, <<rep $g.human>> and <<rep $g.neko>>
+fully accepted their destiny as fucktoys, as sex-slaves, and even managed to enjoy the use and abuse of their bodies.
+Even <<yourrep $g.extraslave>> started to feel immense pleasure as
+several methods of pain infliction was administrated on <<their
+$g.extraslave>> body, leaving bruises and marks on <<them $g.extraslave>>.
+<<Rep $g.handler>> made sure to stop the beating, raping and suffocating, whenever
+the slave is near breaking, and the task was made difficult as
+<<yourrep $g.extraslave>> extraslave|was so deep within it's pleasure that
+the slave <<themself $g.extraslave>> never gave strong indications of when to stop the abuse.
+</p>
+
+<p>
+On the last day, the bandit boss received the information that the location
+was compromised, so the band had to get away, and fast, before the knights of <<rep
+$company.humankingdom>> arrive at the location.
+All that's left was the scent and
+stain of debauchery and a hint of pleasure.
+</p>
+
+<p>
+Finally back at the gates of your fort, the bandit boss paid more than <<they $g.boss>> had promised --
+<<if _u == $g.handler>>
+  And as a gesture of lasting friendship, the bandit boss even donated one of <<their $g.boss>>
+  older slave-breaking device to you: the <<rep setup.item.f_punishment_good>>.
+<<elseif _u>>
+  The chief now remembers <<rep $g.handler>> as <<their $g.handler>> contact with your company,
+  and <<rep _u>> is never contacted again by the chief.
+<</if>>
+</p>
+
+<<else>>
+
+<p>
+With each passing day, more and more bandits came to join the festivities,
+entering in the circle of lustful debauchery.
+Most of the time, <<rep $g.elf>> elf|was being used orally --
+<<their $g.elf>> <<umouth $g.elf>> became very familiar
+sucking the dicks and licking the clits of the bandits.
+<<They $g.elf>> enjoy more and more, <<their $g.elf>> <<umouth $g.elf>>
+became a cum-dumpster for the outlaws.
+Meanwhile, <<rep $g.human>> and <<rep $g.neko>> were posted in the entrance of the grove,
+forced to share theirs holes with whoever degenerate had arrived.
+<<Rep $g.extraslave>> on the other hand extraslave|was kept ravaged, fucked and tortured
+in a different chamber --
+often to the point of unconsciousness, which did not even give them
+a sweet reprieve from the abuse.
+</p>
+
+<<if $gOutcome == 'success'>>
+
+<p>
+<<Reps $g.handler>> inability to understand the breaking point of your slaves
+made it difficult to decide when to stop, but fortunately,
+some day later an informer arrived with the
+news that the grove and the party had being discovered by the <<rep
+$company.humankingdom>>, and a party of knights is on the way.
+This meant that the festivities had to be stopped early, and the bandits was
+fast on their feet.
+In less than thirty minutes, the <<rep $company.outlaws>> had abandoned the grove,
+leaving nothing but a mess of perversion, and also your slavers and slaves.
+Slowed by the almost unconscious <<rep $g.extraslave>> and the exhausted
+<<rep $g.elf>>, <<rep $g.human>> and <<rep $g.neko>>,
+<<yourrep $g.handler>> had to make the run in a slower pace.
+Although they managed to avoid an unpleasant
+encounter with the knights, for more than once they were spotted by the knights' advance scouts.
+
+<<if $g.human.isHasTrait('subrace_humankingdom')>>
+And the fact that <<yourrep $g.human>>
+<<if $g.human.isHasTrait('bg\_royal')>> was a part of
+the royal family before entering <<their $g.human>> new life as a sex slave
+<<elseif $g.human.isHasTrait('bg\_noble')>> was a member of the nobility
+until turned into a sexual plaything
+<<elseif
+$g.human.isHasTrait('bg\_knight')>> was a knight in service of a proud and influential
+lord before being trained as a sex toy
+<<else>>
+was someone under the knights' protection
+before being kidnapped
+<</if>>
+certainly didn't help to contain their ire.
+<</if>>
+</p>
+
+<p>
+When <<rep $g.handler>> and the slaves eventually reached the gate of your fort,
+the bandit boss was there, waiting for them with a bag of gold.
+The exchange done, you are left with nothing but a big sack of gold and four very well-used slaves.
+</p>
+
+<<else>>
+
+<p>
+<<Reps $g.handler>> inability to manage the slaves turned out to be a problem.
+When an informer told the bandit boss that the <<rep $company.humankingdom>> had
+discovered their hideout,
+it didn't even take them thirty minutes for the <<rep $company.outlaws>> to abandon the grove.
+They left a half dead - and totally broken - <<urace $g.extraslave>> who was once an energetic <<rep $g.extraslave>>, together with totally spent and exhausted trio of slaves, still filled with cum and dripping every kind of bodily fluids.
+With no time to waste, <<rep $g.handler>> picked up the slaves and leave, but it was too late.
+A band of kingdom scouts armed with long bows were right behind their backs.
+<<Rep $g.handler>> ran, fleeing within the forests border, but while the other slaves follow <<their $g.handler>> orders obediently to run,
+<<rep $g.extraslave>> extraslave|was dragging them back.
+And when the arrows begins to fly in their direction, it did not take long before a decision had to be made.
+</p>
+
+<p>
+A burning sting was felt by <<rep $g.handler>> as an arrow hit <<them $g.handler>>.
+As <<they $g.handler>> look behind, the situation was getting out of <<their $g.handler>> <<uhands $g.handler>>.
+Two more arrows struct <<rep $g.elf>> right on <<theirs $g.elf>> <<uarms $g.elf>>, while both <<rep $g.human>> and <<rep $g.neko>> had one arrows deep within theirs back.
+Seeing that the scouts were gaining terrain and getting nearer with each passing moment.
+<<Rep $g.handler>> ordered the horse that was taking <<rep $g.extraslave>> to turn back and charged their pursuers with <<rep $g.extraslave>> still on it's back. With the distraction, the rest of the band managed to escape, only to discover that the bandit boss had informed the fort that your slaves wasn't what
+<<they $g.boss>> boss|was expecting and refused to pay even a single coin.
+</p>
+
+<</if>>
+
+<</if>>
+
+:: Quest_unlawfull_partyDisaster [nobr]
+
+<p>
+When your slaver and their harem of slaves left,
+nobody in <<rep $company.player>> expected the results to be so disastrous.
+By the end of the fourth week, the bandit boss arrived at the gates of the fort,
+injured and with only half of <<their $g.boss>> former banditry force, bearing terrible news.
+In the morning of the last day, a full regiment of knights bearing the <<rep $company.humankingdom>> banner invaded the cave together with an elven mystic.
+</p>
+
+<p>
+The bandit boss said that when they breached the grove, a kingdom arcanist launched an immense fireball, burning the eight bandits that was gang-raping <<rep $g.extraslave>>. Both the bandits and the slave were lost in the explosion.
+The explosion alerted the rest of the grove, and a brief battle started. But the half conscious slaves and the very drunk bandits were not even able to maintain the fight for longer than five minutes. And just like that, almost every single one of the <<rep $company.outlaws>> that attended to the party got defeated, arrested, or worse. Only the boss and a few others was able to flee, and on their escape they overheard
+the knights' leader giving the order to arrest <<yourrep $g.handler>> so they can punish <<them $g.handler>> for all <<their $g.handler>> crimes.
+</p>

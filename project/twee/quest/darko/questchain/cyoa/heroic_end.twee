@@ -1,0 +1,258 @@
+:: QuestSetup_heroic_end [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'You', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.You(),
+],
+{
+combat: 0.3,
+brawn: 0.3,
+survival: 0.3,
+intrigue: 0.3,
+slaving: 0.3,
+knowledge: 0.3,
+social: 0.3,
+aid: 0.3,
+arcane: 0.3,
+sex: 0.3,
+}
+)>>
+
+<<set _rewardcommon = [
+setup.qc.SetCooldownQuest('choose_your_own_adventure_', 50),
+setup.qc.IfThenElse(
+  setup.qres.VarEqual('choose_your_own_adventure_siblings', 'siblings'),
+  setup.qc.Sibling('hero1', 'hero2'),
+  setup.qc.Money(5000),
+),
+setup.qc.Slave('hero1', "a|was an ordinary villagefolk-turned-hero whose journey a|was prophesied in a mysterious book", undefined),
+setup.qc.Slave('hero2', "a|was an ordinary villagefolk-turned-hero whose journey a|was prophesied in a mysterious book", undefined),
+setup.qc.RemoveFromUnitGroup('hero1'),
+setup.qc.RemoveFromUnitGroup('hero2'),
+setup.qc.VarRemove('choose_your_own_adventure_progress'),
+setup.qc.VarRemove('choose_your_own_adventure_caution'),
+setup.qc.VarRemove('choose_your_own_adventure_oasis'),
+setup.qc.VarRemove('choose_your_own_adventure_lovers'),
+setup.qc.VarRemove('choose_your_own_adventure_strength'),
+setup.qc.VarRemove('choose_your_own_adventure_revenge'),
+setup.qc.VarRemove('choose_your_own_adventure_siblings'),
+setup.qc.VarRemove('choose_your_own_adventure_changes'),
+]>>
+
+
+<<run new setup.QuestTemplate(
+'heroic_end', /* key */
+"Heroic End", /* Title */
+"darko", /* Author */
+[
+  'special',
+  'veteran',
+  'danger',
+  'unknown',
+  'fort',
+], /* tags */
+3, /* weeks */
+setup.INFINITY, /* quest expiration weeks */
+{ /* roles */
+'you': _criteriayou,
+'defender': setup.qu.defender,
+'healer': setup.qu.healer, },
+{ /* actors */
+'hero1': 'quest_choose_your_own_adventure_hero1',
+'hero2': 'quest_choose_your_own_adventure_hero2', },
+[ /* costs */
+],
+'Quest_heroic_end',
+setup.qdiff.hardest49, /* difficulty */
+[ /* outcomes */
+[
+'Quest_heroic_endCrit',
+_rewardcommon.concat([
+setup.qc.TraumatizeRandom('you', 5), ]),
+], [
+'Quest_heroic_endCrit',
+_rewardcommon.concat([
+setup.qc.Injury('you', 4),
+setup.qc.TraumatizeRandom('you', 15), ]),
+], [
+'Quest_heroic_endCrit',
+_rewardcommon.concat([
+setup.qc.Injury('you', 10),
+setup.qc.TraumatizeRandom('you', 25),
+setup.qc.Injury('defender', 4),
+setup.qc.Injury('healer', 4),
+]),
+], [
+'Quest_heroic_endCrit',
+_rewardcommon.concat([
+setup.qc.Injury('you', 15),
+setup.qc.Injury('defender', 8),
+setup.qc.Injury('healer', 8),
+setup.qc.TraumatizeRandom('you', 35),
+]),
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_heroic_end [nobr]
+
+<p>
+The "Choose Your Own Adventure" book no longer disappears the last time you read it,
+all its chapters seemingly complete with the final chapter detailing the end of your company.
+</p>
+
+<p>
+If you choose to heed the warning in the book, then
+you must maintain being on guard, and keep watch for the upcoming assault by the
+very same <<= $varstore.get('choose_your_own_adventure_lovers')>>
+whose journey you have been keeping track over.
+The fight will be fierce, but everything you have worked hard for is at the stake. The
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+will no doubt attempt to remove you and the book
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+out of revenge.
+<<else>>
+to rid an evil from the world.
+<</if>>
+This quest will surely prove most <<dangertext "dangerous">>, especially to yourself.
+</p>
+
+
+:: Quest_heroic_endCrit [nobr]
+<p>
+You and a group of your chosen slavers spent the last few weeks doing your
+best preparations
+— all the fort walls had been reinforced, and your office, where
+the book resides, was made extra secure. Nothing else was unfortunately written on the
+book, giving you no clue on how the heroes would launch an assault on your fort.
+</p>
+
+<p>
+After two weeks of waiting, during a fateful night a loud crashing sound was heard from inside the fort.
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+<<if $varstore.get('choose_your_own_adventure_caution') == 'caution'>>
+You saw the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>,
+having succesfully sneaked past your slavers into the courtyard, cautiously advancing to your position.
+<<else>>
+The <<= $varstore.get('choose_your_own_adventure_lovers')>> brazenly climbed the unguarded walls of your fort into the courtyard and hurriedly advanced into your position, seemingly with the foreknowledge
+of where you were hiding.
+<</if>>
+<<else>>
+<<if $varstore.get('choose_your_own_adventure_caution') == 'caution'>>
+You saw an invicibility spell fizzling out, revealing the
+<<= $varstore.get('choose_your_own_adventure_lovers')>> already inside your court and heading towards you.
+<<else>>
+A loud bang was heard just outside your fort, which distracted your slavers while the
+<<= $varstore.get('choose_your_own_adventure_lovers')>> brazenly entered your court and advanced to your position.
+<</if>>
+<</if>>
+There was no time to waste, and you hurriedly call over <<yourrep $g.defender>> and <<utheirrel $g.defender $g.healer>> <<rep $g.healer>> to prepare for an inevitable fight.
+</p>
+
+<p>
+Finally face to face with you, you could sense the
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+burning anger
+<<else>>
+steely resolve
+<</if>>
+from the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>'s
+eyes, as they laid their accusations on you.
+Apparently the final fight against the demon last time made them think of the
+demon's parting words — how did your slavers seemingly always knew where they should
+go? The final straw was the first meeting with your slavers — on that
+fateful day, where they met your slavers walking away from their burning
+village.
+</p>
+
+<p>
+Connecting the dots, you realized that the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+now firmly believe that you were behind the attack on their village.
+Your company did raid villages after all, and their village might actually
+have been raided once or twice by your <<men $g.healer>>.
+It seems there is no turning back at that point, and the only thing left was to fight it out.
+</p>
+
+<p>
+<<if $varstore.get('choose_your_own_adventure_strength') == 'strength'>>
+As you saw the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+unsheathe their weapons, you prepared your trusty <<uweapon $unit.player>> while your slavers
+prepared their weapons.
+Soon, the sound of metal against metal could be heard across the fort as you
+and your slavers struggled to contain the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>'s might.
+<<if $gOutcome == 'crit'>>
+You deftly dodged all of the attacks and remained unscathed throughout.
+<<elseif $gOutcome == 'success'>>
+<<= $g.hero1.getName()>>'s attack connected and injured you.
+<<elseif $gOutcome == 'failure'>>
+A coordinated strike harassed you and your slavers peppering all of you in injuries.
+<<else>>
+<<= $g.hero1.getName()>>'s attack connected badly with your body, injuring you gravely.
+<</if>>
+<<else>>
+As you sawa the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+starting to chant a spell, you and your slavers hurriedly rushed and attacked
+them. Soon, the sound of wind and explosions could be heard across the fort as
+you and your slavers struggled to contain the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>'s power.
+<<if $gOutcome == 'crit'>>
+Even in the sea of explosions you managed to dodge most of them.
+<<elseif $gOutcome == 'success'>>
+<<= $g.hero1.getName()>>'s attack connected and injured you.
+<<elseif $gOutcome == 'failure'>>
+A large and seemingly unavoidable wind spell injured you and your slavers.
+<<else>>
+A coordinated spell were unleashed on you and your slavers, greatly injuring your team.
+<</if>>
+<</if>>
+</p>
+
+<p>
+But luck seemed to be on your side, as a stray attack hit the book, which
+immediately glowed dark and drowning the room in darkness. In a stroke of luck,
+apparently the book still maintained its very strong connections to the
+<<= $varstore.get('choose_your_own_adventure_lovers')>> and the stray hit stunned them for a good while.
+You ordered <<rep $g.defender>> to rush and rip apart the book, which <<they
+$g.defender>> did <<uadv $g.defender>>.
+The book emitted a loud screeching sound which disoriented both the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+and also yourself — it seemed you
+too maintained a connection to the book.
+But its effects were so much more profound on the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>, who writhed in pain on the floor.
+Soon enough, the lovers fainted and for what seemed to be the first time in
+ages you breathed a sigh of relief.
+</p>
+
+<p>
+Having secured the
+<<= $varstore.get('choose_your_own_adventure_lovers')>> to prepare them for their new lives as slaves,
+you surveyed the damage in your fort.
+Looks like everything else remained mostly fine, except perhaps the book which had been shred to smitherens. Before your eyes, the scattered pages of the book one by one flickered into black fire until nothing remained.
+</p>
+
+<p>
+You can't help but feels as if you are also a pawn of the book, nothing but entertainment for some demon lord... This harrowing experience will surely traumatize you for a good while.
+Perhaps you'll get another chance, this time to exact your own revenge against the demon...
+But for now, you'll have to satisfy yourself with the two new
+<<= $varstore.get('choose_your_own_adventure_siblings')>> slaves under your management.
+</p>

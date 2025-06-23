@@ -1,0 +1,70 @@
+:: UnitChangeSkillFocus [nobr]
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.changeskillfocus($unit[$gUnit_skill_focus_change_key])>>
+<<attach _dom>>
+
+
+:: UnitChangeTitles [nobr]
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.changeactivetitles($unit[$gUnit_key])>>
+<<attach _dom>>
+
+
+:: UnitDismissConfirm [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.dismissConfirm($unit[$gUnit_key])>>
+<<attach _dom>>
+
+
+:: UnitRetireConfirm [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.retireConfirm($unit[$gUnit_key])>>
+<<attach _dom>>
+
+
+:: UnitRetireAftermath [nobr]
+
+<<set $gMenuVisible = false>>
+<<set _dom = setup.DOM.Menu.retireAftermath($unit[$gUnit_key])>>
+<<attach _dom>>
+
+
+:: RetiredUnitDismissConfirm [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.retiredDismissConfirm($unit[$gUnit_key])>>
+<<attach _dom>>
+
+
+:: RehireRetiredConfirm [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.rehireRetiredConfirm($unit[$gUnit_key])>>
+<<attach _dom>>
+
+
+:: UnitEquipmentSet [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _dom = setup.DOM.Menu.equipmentsetpickequip($unit[$gUnit_key])>>
+<<attach _dom>>
+
+:: UnitChangeName [nobr]
+<<set $gMenuVisible = false>>
+
+/* Assumes $gUnit_key is set */
+
+Change <<rep $unit[$gUnit_key]>>'s nickname to
+<<textbox "$unit[$gUnit_key].nickname" $unit[$gUnit_key].getName() autofocus>>
+
+<br/>
+<<focreturn 'Done'>>

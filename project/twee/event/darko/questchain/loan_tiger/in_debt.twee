@@ -1,0 +1,40 @@
+:: EventSetup_in_debt [nobr event]
+
+<<run new setup.Event(
+'in_debt', /* key */
+"In Debt", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_in_debt',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.Event('loan_tiger_payment_due', 53, null, true),
+  setup.qc.SetCooldownEvent('loan_tiger_payment_due2', 27),
+],
+[ /* restrictions */
+  setup.qres.VarNull('tiger_bank_loan'),
+  setup.qres.HaveMetCompany('bank'),
+  setup.qres.MoneyAtMost(-1),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_in_debt [nobr]
+<<set _loan = 10000 + -$company.player.getMoney()>>
+<<set _total = Math.round(1.75 * _loan)>>
+
+<p>
+Unfortunately, due to one reason or another, your company has fallen into a crippling debt. Fortunately, the <<rep $company.bank>> has come to the rescue, lending your company <<money _loan>> to offset the debt. However, the loan does not come free, and you will have to pay them back with a steep interest, totaling <<money _total>> by next year. Given your financial situation, you are in unfortunately no situation to decline, and begrudgingly takes the money. Better start planning for how to pay them back...
+</p>
+
+<<run setup.qc.Money(_loan).apply($gQuest)>>
+<<run setup.qc.VarSet('tiger_bank_loan', _total, -1).apply($gQuest)>>

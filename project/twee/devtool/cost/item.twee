@@ -1,0 +1,60 @@
+:: CostItem [nobr]
+
+Gain an item:
+
+<<for _iitem, _item range setup.item>>
+  <<capture _item>>
+    <br/>
+    <<rep _item>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.Item(_item)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+
+:: CostLoseItem [nobr]
+
+Lose <<numberbox '_lostnumber' 1>> copies of:
+
+<<for _iitem, _item range setup.item>>
+  <<capture _item>>
+    <br/>
+    <<rep _item>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.LoseItem(_item, _lostnumber)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+
+:: CostItemPool [nobr]
+
+Gain an item from an item pool:
+
+<<for _iitem, _item range setup.itempool>>
+  <<capture _item>>
+    <br/>
+    <<rep _item>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.ItemPool(_item)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+
+:: CostItemIfNew [nobr]
+
+Gain an item, unless you already have the item, then nothing happens:
+
+<<for _iitem, _item range setup.item>>
+  <<capture _item>>
+    <br/>
+    <<rep _item>>
+    <<link '(select this)' 'QGCostDone'>>
+      <<set $qcost = setup.qc.ItemIfNew(_item)>>
+    <</link>>
+  <</capture>>
+<</for>>
+
+

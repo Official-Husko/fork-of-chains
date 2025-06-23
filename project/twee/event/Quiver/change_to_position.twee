@@ -1,0 +1,46 @@
+:: EventSetup_change_to_position [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'change_to_position', /* key */
+"Change to Position", /* Title */
+{  /* Author */
+  name: "Quiver",
+  url: "https://www.reddit.com/r/FortOfChains/comments/ktx1fr/new_event_post_for_playing_a_submissive_slaver/",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'unknown',
+],
+'Event_change_to_position',
+{ /* roles */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.AllTraits([setup.trait.per_submissive, setup.trait.per_sexaddict], true),
+    setup.qres.Trait(setup.trait.join_senior),
+    setup.qres.NoTitle('quest_slave_leader_of_the_company_0'),
+  ],
+  'them': [
+    setup.qres.NotYou(),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NoTrait(setup.trait.per_submissive),
+  ],
+},
+[ /* outcomes */
+  setup.qc.Opportunity('change_to_position', {
+you: "you",
+them: "them",
+}),
+],
+[ /* restrictions */
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.common,  /* Rarity */
+)>>
+
+:: Event_change_to_position [nobr]
+<<include "Opportunity_change_to_position">>

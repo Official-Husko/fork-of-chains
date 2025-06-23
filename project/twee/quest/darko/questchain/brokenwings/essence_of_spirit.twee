@@ -1,0 +1,371 @@
+:: QuestSetup_essence_of_spirit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+"essence_of_spirit0",
+"wizard",
+'subrace_humansea', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_mystic),
+  setup.qc.AddTraitsRandom('unit', [setup.trait.magic_fire, setup.trait.magic_water, setup.trait.magic_wind, setup.trait.magic_earth, setup.trait.magic_light, setup.trait.magic_dark], 1, false, false),
+  setup.qc.TraitsReplace('unit', [setup.trait.per_active, setup.trait.per_sexaddict]),
+],
+)>>
+
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.HasTitle('quest_broken_descent_0'),
+],
+{
+}
+)>>
+
+<<set _criteriainfiltrator1 = new setup.UnitCriteria(
+null, /* key */
+'Magical Infiltrator', /* name */
+[
+  setup.trait.bg_mythical,
+  setup.trait.bg_mystic,
+  setup.trait.tough_nimble,
+  setup.trait.per_smart,
+  setup.trait.per_studious,
+  setup.trait.per_attentive,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_slow,
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1.5,
+  arcane: 1.5,
+}
+)>>
+
+<<set _criteriainfiltrator2 = new setup.UnitCriteria(
+null, /* key */
+'Magical Infiltrator', /* name */
+[
+  setup.trait.bg_mythical,
+  setup.trait.bg_mystic,
+  setup.trait.tough_nimble,
+  setup.trait.per_smart,
+  setup.trait.per_studious,
+  setup.trait.per_attentive,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_slow,
+  setup.trait.per_dreamy,
+  setup.trait.per_masochistic,
+  setup.trait.per_honorable,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1.5,
+  arcane: 1.5,
+}
+)>>
+
+<<set _criteriadowser = new setup.UnitCriteria(
+null, /* key */
+'Essence Dowser', /* name */
+[
+  setup.trait.race_wolfkin,
+  setup.trait.bg_wildman,
+  setup.trait.bg_hunter,
+  setup.trait.bg_woodsman,
+  setup.trait.bg_nomad,
+  setup.trait.dick_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.breast_tiny,
+  setup.trait.per_active,
+  setup.trait.per_loner,
+  setup.trait.per_independent,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+  setup.trait.per_chaste,
+],
+[
+  setup.trait.bg_royal,
+  setup.trait.bg_boss,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.bg_knight,
+  setup.trait.bg_metalworker,
+  setup.trait.bg_engineer,
+  setup.trait.bg_scholar,
+  setup.trait.bg_noble,
+  setup.trait.bg_courtesan,
+  setup.trait.bg_informer,
+  setup.trait.bg_slaver,
+  setup.trait.bg_artisan,
+  setup.trait.bg_laborer,
+  setup.trait.bg_thug,
+  setup.trait.bg_thief,
+  setup.trait.bg_raider,
+  setup.trait.bg_clerk,
+  setup.trait.bg_maid,
+  setup.trait.bg_merchant,
+  setup.trait.bg_foodworker,
+  setup.trait.bg_whore,
+  setup.trait.bg_unemployed,
+  setup.trait.bg_slave,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_dreamy,
+  setup.trait.per_empath,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_lunatic,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  aid: 1,
+  arcane: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'essence_of_spirit', /* key */
+"Essence of Spirit", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+  'trait',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'infiltrator1': [ _criteriainfiltrator1, 1],
+  'infiltrator2': [ _criteriainfiltrator2, 1],
+  'dowser': [ _criteriadowser, 1],
+},
+{ /* actors */
+  'wizard': 'essence_of_spirit0',
+},
+[ /* costs */
+],
+'Quest_essence_of_spirit',
+setup.qdiff.hard41, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_essence_of_spiritCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('wizard', "a|was a wizard known for a|their vast debauchery, and had a temporary change of heart due to holding the Essence of Diligence", undefined),
+    ],
+  ],
+  [
+    'Quest_essence_of_spiritCrit',
+    [
+      setup.qc.Opportunity('restore_the_spirit', {
+slave: "slave",
+}),
+      setup.qc.Ire('humansea', 1),
+      setup.qc.Equipment(setup.equipmentpool.arcane),
+      setup.qc.MoneyCustom(2000),
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+    ],
+  ],
+  [
+    'Quest_essence_of_spiritFailure',
+    [
+      setup.qc.Injury('slave', 3),
+    ],
+  ],
+  [
+    'Quest_essence_of_spiritDisaster',
+    [
+      setup.qc.Corrupt('infiltrator1'),
+      setup.qc.Corrupt('infiltrator2'),
+      setup.qc.Injury('infiltrator1', 11),
+      setup.qc.Injury('infiltrator2', 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoOpportunity('restore_the_spirit'),
+  setup.qres.ExistUnit([
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('quest_broken_descent_0'),
+setup.qres.NoTitle('quest_spirit_restored_5')
+]),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_essence_of_spirit [nobr]
+<<set _u = setup.getUnit({title: 'quest_broken_descent_0'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<p>
+Your scouts have located what appears to be part of <<rep _u>>'s lost essence
+in the <<lore region_sea>>. They pinpointed the location to a lone wizard
+tower, standing menacingly in the middle of the ocean. While the wizard is
+infamous for <<their $g.wizard>> debauchery, recently <<they $g.wizard>>
+wizard|have not been doing any of such sort and instead locks <<themself
+$g.wizard>> inside <<their $g.wizard>> tower, seemingly deep in study.
+According to your scouts, this is highly atypical for the wizard, which tipped
+them that perhaps the wizard is affected by the lost essence one way or
+another...
+</p>
+
+<p>
+You could try to send a group of slavers to retrieve the essence. This will
+be rather dangerous however, as no doubt the wizard must have set many traps
+within <<their $g.wizard>> tower to ward off intruders. You must send two
+particularly stealthy slavers for the job — better if they know a little bit
+of magic too! And of course, you also need to send <<yourrep _u>>, together
+with another slaver to use the slave as a dowsing rod to locate the hidden
+tower...
+</p>
+<</if>>
+
+
+
+:: Quest_essence_of_spiritCrit [nobr]
+<p>
+Using <<yourrep $g.slave>> as a living dowsing rod, <<rep $g.dowser>> <<uadv
+$g.dowser>> led your slavers on a voyage south, and eventually located the
+isolated wizard tower. The tower stood imposingly on a lone island, alone
+seemingly with no one watching over it. But your slavers knew better than to
+let their guards down — there is no such thing as an unguarded wizard tower,
+especially in the <<lore region_sea>>.
+</p>
+
+<p>
+Once the boat docked on a secluded corner of the island, <<rep
+$g.infiltrator1>> and <<utheirrel $g.infiltrator1 $g.infiltrator2>> <<rep
+$g.infiltrator2>> got to work. They deftly avoided the various traps hidden
+throughout the islands, and judging from how some of them were already
+tripped, they probably don't want to be caught by the traps.
+Zig-zagging across the forest, they skillfully dodged the numerous traps until they
+reached the tower.
+</p>
+
+<p>
+Peeking through the tower window, they could see the wizard has seemingly
+fallen asleep on <<their $g.wizard>> desk. A perfect opportunity for your
+slavers! Ditching the surely warded door, your slavers launched a hooked rope
+into the window, before climbing it into the wizard's chambers.
+</p>
+
+<p>
+The wizard's chambers were extremely messy — it seemed that <<they $g.wizard>> had
+been dedicatedly studying for the past few months. Various posters of
+naked <<girl $g.slave>>s, no doubt the normal hobby of the wizard, were
+scattered on the floor, replaced with whiteboards full of magical
+calculations. And sitting in the center of the room was a strange blue-ish
+stone, glowing ever so slightly. <<Rep $g.infiltrator1>> suddenly had the
+urge to study one of the tomes in the chamber,
+<<if $g.infiltrator1.isHasTrait('per_studious')>>
+and while the studious slaver has always been eager for new knowledge, the
+urge almost defied normal desire.
+<<elseif $g.infiltrator1.isHasTrait('per_active')>>
+a complete change of heart from <<theslaver $g.infiltrator1>> who usually despise any kind of studying.
+<<else>>
+
+<</if>>
+If it not for <<reps $g.infiltrator2>> interference, <<rep $g.infiltrator1>>
+would probably refuse to leave the chamber. Clearly, this stone was exactly
+the reason for wizard's change of heart in the recent days — from a
+debauched sorcerer into a model studious wizard — and the object of your
+search.
+</p>
+
+<p>
+With <<rep $g.infiltrator1>> and the stone in tow, your slavers wisely decided
+to retreat from the island.
+<<if $gOutcome == 'crit'>>
+But seeing the juicy target in the wizard sleeping ever so soundly, your
+slavers were unable to resist and gambled on the risk, binding the wizard
+before gagging <<them $g.wizard>> to prevent any spells cast and bringing the
+poor soul back to your fort as a new slave, complete with some of <<their
+$g.wizard>> wizarding attire.
+<<else>>
+Seeing the sleeping wizard however, <<rep $g.infiltrator2>> managed to strip
+<<them $g.wizard>> of one of <<their $g.infiltrator2>> clothings and bring it home as a souvenir.
+<</if>>
+The ride home was relatively uneventful, save for the fact that your slavers
+all eagerly headed to the library once they arrive back at your fort. Not something you see
+everyday.
+Their eagerness for study did not last long, however, and as for <<rep $g.infiltrator1>>,
+<<if $g.infiltrator1.isHasTrait('per_studious')>>
+while the studious slaver can still often be seen in the library, it is more
+in norm of what the studious slaver used to do.
+<<else>>
+<<therace $g.infiltrator1>> nowadays can be seen spending <<their $g.infiltrator1>> free time back <<uhobbyverb $g.infiltrator1>>.
+<</if>>
+</p>
+
+<p>
+It is time to decide how to return this essence to <<rep $g.slave>>...
+</p>
+
+
+:: Quest_essence_of_spiritFailure [nobr]
+<p>
+<<Yourrep $g.dowser>> dowser|was too harsh in using the slave for locating
+the essence. By mid-quest, the slave's <<ugenital $g.slave>> was already far too punished
+and no longer useful as a dowsing rod.
+Your slavers were unable to locate the tower within the <<lore region_sea>>.
+</p>
+
+
+:: Quest_essence_of_spiritDisaster [nobr]
+<p>
+In a strange and unexpected twist, your slavers' ship were boarded by demonic
+pirates. Although your slavers managed to repel the intruders, they were
+heavily injured and corrupted during the fight, and was forced to retreat
+back to the fort to recuperate.
+</p>

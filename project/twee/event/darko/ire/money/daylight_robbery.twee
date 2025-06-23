@@ -1,0 +1,52 @@
+:: EventSetup_daylight_robbery [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'daylight_robbery', /* key */
+"Daylight Robbery", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_daylight_robbery',
+{ /* roles */
+'slaver': [
+setup.qres.NotYou(),
+setup.qres.Job(setup.job.slaver),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.MoneyCustom(-15000),
+setup.qc.Ire('royal', -20), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('royal', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_daylight_robbery [nobr]
+
+<p>
+A strange letter has arrived at your fort today, smelling faintly of roses.
+But it contains nothing even remotely sweet.
+It is a threat, and one you could not refuse: you have irked some people
+within the <<rep $company.royal>> who threatened to reveal your atrocities to the
+rest of the court. Given how much the king abhors slavery, this would no doubt
+plunge your company's reputation to the dirt, and there would be no more job you
+could possibly pick up afterwards.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The letter demanded you pay repatriations for your crimes against them -- a hefty sum of
+<<money 15000>> to be delivered to a specific spot near the city.
+With no other way around it, you sighed and ordered <<rep _u>> to pack up some of your hard-earned
+coins and set off to the spot.
+</p>
+
+<p>
+Perhaps you should rethink your actions more carefully in the future -- nothing good ever comes
+from antagonizing these powerful people...
+</p>

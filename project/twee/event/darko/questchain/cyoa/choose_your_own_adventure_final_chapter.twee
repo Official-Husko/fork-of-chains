@@ -1,0 +1,58 @@
+:: EventSetup_choose_your_own_adventure_final_chapter [nobr event]
+
+<<run new setup.Event(
+'choose_your_own_adventure_final_chapter', /* key */
+"Choose Your Own Adventure: Final Chapter", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_choose_your_own_adventure_final_chapter',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+},
+[ /* outcomes */
+  setup.qc.VarSet('choose_your_own_adventure_progress', '8a', -1),
+  setup.qc.IfThenElse(
+setup.qres.VarGte('choose_your_own_adventure_changes', 4),
+setup.qc.DoAll([
+setup.qc.Opportunity('choose_your_own_adventure__final_chapter', null)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Opportunity('choose_your_own_adventure__final_chapter_true_end', null)
+], undefined)),
+],
+[ /* restrictions */
+  setup.qres.VarEqual('choose_your_own_adventure_progress', '8'),
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_choose_your_own_adventure_final_chapter [nobr]
+<p>
+Once again the book bearing the sloppy written "Choose Your Own Adventure"
+appears on your desk.
+By now it proves to be an enjoyable read for you and happily await its
+return.
+You recall that so far, you have made <<=
+$varstore.get('choose_your_own_adventure_changes')>> modifications to the
+story,
+<<if $varstore.get('choose_your_own_adventure_changes') > 2>>
+a quite significant number of changes, which greatly alters the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>'s
+fate.
+<<else>>
+a modest amount of changes, barely tampering with the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>'s fate.
+<</if>>
+</p>
+
+<p>
+You open what seems to be the final chapter of the book, Chapter 5, and begin to read...
+</p>

@@ -1,0 +1,160 @@
+:: QuestSetup_catnapping [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriacatnipper = new setup.UnitCriteria(
+null, /* key */
+'Catnipper', /* name */
+[
+setup.trait.per_sly,
+setup.trait.skill_hypnotic,
+setup.trait.skill_animal,
+setup.trait.magic_earth,
+setup.trait.magic_earth_master,
+],
+[
+setup.trait.race_catkin,
+setup.trait.magic_wind,
+setup.trait.magic_wind_master,
+setup.trait.per_direct,
+],
+[
+setup.qres.Job(setup.job.slaver),
+],
+{
+knowledge: 1,
+social: 2,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'catnapping', /* key */
+'Catnapping', /* Title */
+'darko', /* Author */
+[ 'forest', 'unit', 'ire',
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'catnipper': _criteriacatnipper,
+'kidnapper1': setup.qu.kidnapper,
+'kidnapper2': setup.qu.kidnapper, },
+{ /* actors */
+'neko': 'subrace_neko', },
+[ /* costs */
+],
+'Quest_catnapping',
+setup.qdiff.normal19, /* difficulty */
+[ /* outcomes */
+[
+'Quest_catnappingCrit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.MoneyCustom(2000),
+],
+], [
+'Quest_catnappingCrit',
+[
+setup.qc.Ire('neko', 1),
+setup.qc.Slave('neko', 'a|was an ordinary neko living in the forests who put a|their trust in the wrong catnipper', undefined), ],
+], [
+'Quest_catnappingFailure',
+[
+],
+], [
+'Quest_catnappingDisaster',
+[
+setup.qc.Injury('catnipper', 2),
+setup.qc.Injury('kidnapper1', 2),
+setup.qc.Injury('kidnapper2', 2), ],
+], ],
+[
+[setup.questpool.forest, setup.rarity.common],
+], /* quest pool and rarity */
+[ /* restrictions to generate */
+  setup.qres.QuestUnique(),
+],
+)>>
+
+:: Quest_catnapping [nobr]
+
+<p>
+There is always demand for neko slaves —- with cute ears and tails, and
+occasionally cat-like eyes, they make adorable pets for many nobles in the
+undercity of Lucgate.
+</p>
+
+<p>
+According to the realm history, the neko originally evolved from cats.
+A particular genetic trait they share to this very day with their feline companions is
+their attraction to catnips,
+and you have hatched a plan based on this.
+Using a specialized slaver, you can try using a catnip to lure one of the neko
+into the open fields.
+Once they are out in the open, far away from civilization, it would
+be child's play to have two other slavers kidnap the addled slave and bring them to their new
+loving home.
+</p>
+
+
+:: Quest_catnappingCrit [nobr]
+
+<p>
+Your slavers had to travel to great length to find a catnip --- apparently the neko population
+had driven catnip to almost extinction from the surrounding regions.
+With a catnip in hand,
+<<rep $g.catnipper>> <<uadv $g.catnipper>> went into a small neko tavern.
+<<if $g.catnipper.isHasTrait('race_catkin')>>
+  Despite being a little addled by the catnip <<themself $g.catnipper>>, the
+  neko slaver <<rep $g.catnipper>>
+<<else>>
+  Your <<urace $g.catnipper>> slaver
+<</if>>
+managed to lure out one of the neko patron.
+<<if $gOutcome == 'crit'>>
+  <<Rep $g.catnipper>> even somehow managed to convince the potential slave to bring along
+  some of <<their $g.neko>> belongings.
+<</if>>
+</p>
+
+<p>
+  It seemed <<rep $g.catnipper>> had selected a particularly sensitive neko
+  as <<they $g.neko>> walked to the clearing already in an almost trance-like state.
+  Away from the village and civilization, <<rep $g.kidnapper1>> and <<utheirrel $g.kidnapper1 $g.kidnapper2>>
+  made quick work subduing the addled neko.
+  The neko will make a fine slave once you teach <<them $g.neko>> the proper behavior of a neko slave<<if $gOutcome == 'crit'>>,
+  while <<their $g.neko>> now-useless belongings are pawned for a decent
+  sum<</if>>.
+</p>
+
+<<if $g.catnipper.isHasTrait('race_catkin')>>
+<p>
+  The catnipper apparently also put <<rep $g.catnipper>> into a similar trance,
+  and your other slavers ended up having to carry <<reps $g.catnipper>> unresponsive
+  <<ubody $g.catnipper>> next to the slave <<them $g.neko>> back home.
+  <<run setup.qc.TraumatizeRandom('catnipper', 2).apply($gQuest)>>
+  <<run setup.qc.BoonizeRandom('catnipper', 8).apply($gQuest)>>
+</p>
+<</if>>
+
+
+:: Quest_catnappingFailure [nobr]
+
+<p>
+Unfortunately, your slavers never found any unsuspecting neko victim to lure
+using their hard-earned catnip. After spending a fruitless week they decided to give up
+and head home.
+</p>
+
+
+:: Quest_catnappingDisaster [nobr]
+<p>
+The plan backfired as <<rep $g.catnipper>> somehow catnipper|was lured by a
+group of unscrupulous neko, who proceeded to attempt to tame <<therace $g.catnipper>> and
+made <<them $g.catnipper>> into their cumslut.
+<<Yourrep $g.kidnapper1>> and <<rep $g.kidnapper2>> had to risk their lives
+"kidnapping" <<rep $g.catnipper>> from the neko, before any permanent mental
+changes were inflicted upon <<therace $g.catnipper>>.
+</p>
+

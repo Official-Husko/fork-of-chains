@@ -1,0 +1,127 @@
+:: QuestSetupUnitTrainingOralBasic [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+  'training_oral_basic',  /* id */
+  'Oral Training: Basic',  /* Title */
+  'FCdev and darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_dick_normal,
+    'trainer2': setup.qu.training_trainer_dick_normal,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingOralBasic',  /* description */
+  setup.qdiff.easy14,
+  [
+    [
+      'QuestUnitTrainingOralBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_oral_basic),
+        setup.qc.MoneyCustom(500),
+      ]
+    ],
+    [
+      'QuestUnitTrainingOralBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_oral_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingOralBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingOralBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingOralBasic [nobr]
+
+<p>
+Welcome to the gateway training for introducing slaves to the art of gulping down dick.
+Slaves are required to get familiar with both the taste and smell of
+dicks, as well as the substance that comes out from it.
+No matter what their prior disposition for them, they must learn to
+like swallowing dicks down their throat, or at least pretend to like them convincingly.
+</p>
+
+:: QuestUnitTrainingOralBasicCrit [nobr]
+
+<<if $g.trainee.isFemale()>>
+  <<if $g.trainee.isHasTrait('subrace_humansea')>>
+    <<questimage 'unit_training_oral_basic_female2.jpg'>>
+  <<else>>
+    <<questimage 'unit_training_oral_basic_female.jpg'>>
+  <</if>>
+<<else>>
+  <<questimage 'unit_training_oral_basic_male_humanvale.jpg'>>
+<</if>>
+
+<p>
+Simple problems require simple solutions - to get basic oral skills,
+<<rep $g.trainee>> will get fucked in the <<umouth $g.trainee>> until <<they $g.trainee>> either
+trainee|get over <<their $g.trainee>> hang-ups about oral or trainee|learn to hide them.
+<<Yourrep $g.head>> dragged the slave out into the fort square, chained <<them $g.trainee>>
+low so that <<their $g.trainee>> <<umouth $g.trainee>> was available, and tell
+<<them $g.trainee>> that <<they $g.trainee>> will suck dicks until <<they $g.trainee>> trainee|get
+through five in a row without grimacing, gagging, or resisting. <<Rep $g.head>> grabbed a chair out and settle in to watch the show, while
+<<rep $g.trainer1>> and <<utheirrel $g.trainer1 $g.trainer2>> <<rep $g.trainer2>> took turn
+using the slave's inexperienced <<umouth $g.trainee>>.
+</p>
+
+<p>
+<<Rep $g.trainee>> tried, <<they $g.trainee>> really did.
+But when word got out as to <<their $g.trainee>> current training regime,
+<<their $g.trainee>> users -- mostly other slavers in your employ and the occassional visitors --
+took a perverse enjoyment in being rougher than usual to evoke the exact reactions
+<<reps $g.trainee>> trying to avoid.
+More and more streaks were broken, no small thanks to <<rep $g.trainer1>>
+who
+<<if $g.trainer1.isHasTrait('per_kind')>>
+had to suppress their kind urges and be more cruel to the slave than <<they $g.trainer1>> would prefer to.
+<<elseif $g.trainer1.isHasTrait('per_cruel')>>
+took sadistic delight in breaking the slave's streak over and over again.
+<<else>>
+intentionally being rough to break the slave's streak.
+<</if>>
+To the slave's relief, the 14th streak was finally successful.
+While <<rep $g.head>> seriously head|doubt <<rep $g.trainee>> trainee|enjoy oral sex any more than
+<<they $g.trainee>> did at the start of the day,
+<<they $g.trainee>> certainly learned to keep <<their $g.trainee>> feelings on the matter to
+<<themself $g.trainee>>, and most certainly learn a thing or two about sucking dick.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+The enterprise drew a small crowd who tossed some coin over to your slavers, as
+payment for using such a pleasant facefuck hole.
+</p>
+<</if>>
+
+:: QuestUnitTrainingOralBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> continues to refuse
+taking dick down their throat even until the end of the training.
+</p>
+
+:: QuestUnitTrainingOralBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

@@ -1,0 +1,175 @@
+:: QuestSetupFleshShaperTempleKidnap [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _infiltrator = setup.CriteriaHelper.CritTraits(
+  [setup.trait.magic_water, setup.trait.magic_water_master],
+  setup.CriteriaHelper.DisasterTraits(
+    [
+      setup.trait.race_wolfkin,
+      setup.trait.magic_fire,
+      setup.trait.magic_fire_master,
+    ],
+    setup.qu.infiltrator,
+  )
+)>>
+
+<<run new setup.QuestTemplate(
+  'flesh_shaper_temple_kidnap', /* key */
+  'Flesh Shaper Temple: Kidnap', /* Title */
+  'darko',   /* author */
+  ['transformation', 'vale', 'unit'],  /* tags */
+  1,  /* weeks */
+  setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+  { /* roles */
+    'infil1': _infiltrator,
+    'infil2': _infiltrator,
+    'infil3': _infiltrator,
+  },
+  { /* actors */
+    'apprentice': 'quest_humanvale_mystic',
+    'leader': 'quest_humanvale_mysticleader',
+  },
+  [ /* costs */
+  ],
+  'QuestFleshShaperTempleKidnap', /* passage description */
+  setup.qdiff.hard19, /* difficulty */
+  [ /* outcomes */
+    [
+      'QuestFleshShaperTempleKidnapCrit',
+      [
+        setup.qc.Slave('leader', 'a|was the leader of the many flesh shaper temples on the <<lore region_vale>> who was kidnapped by your slaves.'),
+        
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleKidnapSuccess',
+      [
+        setup.qc.Slave('apprentice', 'a|was an apprentice flesh shaper in one of the many water temples on the <<lore region_vale>>.'),
+        
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleKidnapFailure',
+      [
+      ],
+    ],
+    [
+      'QuestFleshShaperTempleKidnapDisaster',
+      [
+        setup.qc.TraitIncreaseExisting('infil1', setup.trait.dick_large)
+,
+        setup.qc.TraitIncreaseExisting('infil1', setup.trait.balls_large)
+,
+        setup.qc.TraitIncreaseExisting('infil1', setup.trait.breast_large)
+,
+        setup.qc.TraitIncreaseExisting('infil2', setup.trait.dick_large)
+,
+        setup.qc.TraitIncreaseExisting('infil2', setup.trait.balls_large)
+,
+        setup.qc.TraitIncreaseExisting('infil2', setup.trait.breast_large)
+,
+        setup.qc.TraitIncreaseExisting('infil3', setup.trait.dick_large)
+,
+        setup.qc.TraitIncreaseExisting('infil3', setup.trait.balls_large)
+,
+        setup.qc.TraitIncreaseExisting('infil3', setup.trait.breast_large)
+,
+      ],
+    ],
+  ],
+  [], /* rarity, pool */
+  [
+  ], /* prerequisites to generate */
+)>>
+
+
+:: QuestFleshShaperTempleKidnap [nobr]
+
+<<include 'OpportunityFleshShaperTemple'>>
+
+<p>
+You have decided to try and kidnap one of these flesh-shaping priests.
+</p>
+
+
+:: QuestFleshShaperTempleKidnapCrit [nobr]
+
+<p>
+The temple your slavers happened upon turned out to be relatively new.
+As a result, it had very little protection, and,
+led by <<yourrep $g.infil1>>, your slavers had no problem at all infiltrating the temple and into the deepest sanctum.
+There, they witnessed the head priest in the middle of ritualistically transforming a
+slave's
+<<if $g.leader.isMale()>>
+dick, growing them into what is basically a third leg.
+<<else>>
+breasts, growing them enormous pair of pillowy surface.
+<</if>>
+Such work required heavy concentration, and the priest was completely oblivious to your slavers' presence.
+It was an easy task for <<rep $g.infil1>> to bonk the priest's head with the blunt side of <<their $g.infil1>>
+<<uweapon $g.infil1>>, rendering <<them $g.leader>> unconscious.
+With the caster knocked out, the transformation ceased midway, leaving a slave with
+<<if $g.leader.isMale()>>
+a massively disproportionate dick-to-balls ratio.
+<<else>>
+an massively uneven pair of breasts.
+<</if>>
+Your slavers contemplated to also steal the slave, but
+given the transformations on the slave,
+<<set _logic = setup.selectUnit([$g.infil1, $g.infil2, $g.infil2], {trait: 'per_logical'})>>
+<<if _logic>>
+<<rep _logic>> logically pointed out that it would simply be impossible to move the overgrown
+poor thing out of the temple, and they begrudgingly left the slave alone.
+<<else>>
+moving <<them $g.apprentice>> out of the temple unnoticed would be impossible and
+<<rep $g.infil2>> <<uadv $g.infil2>> suggested to leave <<them $g.apprentice>> be.
+<</if>>
+After escaping from the temple, your slavers took <<rep $g.leader>> to <<their $g.leader>> new
+home, back in the slave pits of your fort.
+</p>
+
+
+:: QuestFleshShaperTempleKidnapSuccess [nobr]
+
+<p>
+After observing the temple for several days, your slavers decided that an all-out
+infiltration into the well-guarded temple would be suicide.
+Instead, they decided to wait it out on a particularly juicy target
+in the form of a new flesh-shaping apprentice.
+It became a relatively easy task for them,
+waiting until the unsuspecting apprentice ventured out alone
+before ambushing the poor soul, tying <<them $g.apprentice>> up, and bringing <<them $g.apprentice>> back home.
+The <<lore region_vale>> is truly a dangerous place to be in...
+</p>
+
+
+:: QuestFleshShaperTempleKidnapFailure [nobr]
+
+<p>
+Having settled in for a while, the temple residents were unfortunately already all
+too aware of the dangers of the land.
+The temple was too heavily guarded, 
+and your slavers were not able to find any opportunity to kidnap the well-guarded priests.
+</p>
+
+
+:: QuestFleshShaperTempleKidnapDisaster [nobr]
+
+<<if $g.apprentice.isMale()>>
+  <<questimage 'flesh_shaper_temple_failure_male.jpg'>>
+<<else>>
+<</if>>
+
+<p>
+After observing the temple for several days, your slavers decided that an all-out
+infiltration into the well-guarded temple would be suicide.
+Instead, they decided to wait it out on a particularly juicy target
+in the form of a new flesh-shaping apprentice.
+They waited until the unsuspecting apprentice ventured out alone,
+before <<rep $g.infil1>> <<uadv $g.infil1>> led a surprise attack.
+But the apprentice was not completely defenseless --
+in desperation, <<they $g.apprentice>> channeled <<their $g.apprentice>> <<lore magic_water>>
+to suddenly grow your slaver's various assets, which distracted your slavers long enough for
+the cunning apprentice to escape.
+</p>

@@ -1,0 +1,941 @@
+:: QuestSetup_a_merchant_s_revenge_caravan_raid_southern_seas_ [nobr quest]
+
+
+<<set _criteriascout = new setup.UnitCriteria(
+null, /* key */
+'Scout (Sea)', /* name */
+[
+  setup.trait.race_lizardkin,
+  setup.trait.subrace_humansea,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_cautious,
+  setup.trait.per_attentive,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.race_greenskin,
+  setup.trait.subrace_humandesert,
+  setup.trait.bg_wildman,
+  setup.trait.per_dreamy,
+  setup.trait.per_lunatic,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 2,
+  arcane: 1,
+}
+)>>
+
+<<set _criteriafighter = new setup.UnitCriteria(
+null, /* key */
+'Pirate', /* name */
+[
+  setup.trait.race_lizardkin,
+  setup.trait.subrace_humansea,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.tough_nimble,
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_active,
+  setup.trait.per_playful,
+  setup.trait.skill_ambidextrous,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.subrace_humandesert,
+  setup.trait.per_studious,
+  setup.trait.per_dreamy,
+  setup.trait.per_serious,
+  setup.trait.per_submissive,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.eq_blind,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 1,
+  brawn: 1,
+  slaving: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'a_merchant_s_revenge_caravan_raid_southern_seas_', /* key */
+"A Merchant\'s Revenge: Caravan Raid (Southern Seas)", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'money',
+  'unit',
+  'ire',
+  'sea',
+  'danger',
+],
+3, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'scout': [ _criteriascout, 1],
+  'fighter': [ _criteriafighter, 1],
+  'raider': [ setup.qu.pirate, 1],
+},
+{ /* actors */
+  'slaves': 'sea_all',
+  'slave2': 'city_all',
+  'slave3': 'sea_all',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(600),
+],
+'Quest_a_merchant_s_revenge_caravan_raid_southern_seas_',
+setup.qdiff.harder46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_southern_seas_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.MoneyCustom(4000),
+      setup.qc.OneRandomSeed([
+        setup.qc.Slave('slaves', "a|was a sailor on the southern seas before you captured them in a raid", undefined),
+        setup.qc.Slave('slave2', "a|was a sailor on the southern seas before you captured them in a raid", undefined),
+        setup.qc.Slave('slave2', "a|was a sailor on the southern seas before you captured them in a raid", undefined),
+      ]),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_southern_seas_Crit',
+    [
+      setup.qc.VarAdd('mlang_merchantrevenge_caravancount', 1, -1),
+      setup.qc.Ire('humankingdom', 1),
+      setup.qc.MoneyCustom(5000),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_southern_seas_Crit',
+    [
+      setup.qc.TraumatizeRandom('scout', 30),
+    ],
+  ],
+  [
+    'Quest_a_merchant_s_revenge_caravan_raid_southern_seas_Crit',
+    [
+      setup.qc.Ire('humankingdom', 4),
+      setup.qc.OneRandom([
+setup.qc.Injury('scout', 4),
+setup.qc.Injury('scout', 6)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('fighter', 4),
+setup.qc.Injury('fighter', 6)
+]),
+      setup.qc.OneRandom([
+setup.qc.Injury('raider', 4),
+setup.qc.Injury('raider', 6)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('mlangmerchantprincequest', '5'),
+  setup.qres.VarLte('mlang_merchantrevenge_caravancount', 12),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_merchant_s_revenge_caravan_raid_southern_seas_ [nobr]
+/** mlangmerchantprincequest 5 = Caravan Raiding
+mlang_merchantrevenge_caravancount = How many caravans successfully raided
+**/
+
+<div class='lettercard'>
+    <p>
+        <<name $unit.player>>,
+    </p>
+    <p>
+        There is a trade shipment of
+        <<if $gQuest.getSeed() % 6 == 0>>
+            <<set _goods = "tea">>
+        <<elseif $gQuest.getSeed() % 6 == 1>>
+            <<set _goods = "cured sausages">>
+        <<elseif $gQuest.getSeed() % 6 == 2>>
+            <<set _goods = "fine silks">>
+        <<elseif $gQuest.getSeed() % 6 == 3>>
+            <<set _goods = "porcelain">>
+        <<elseif $gQuest.getSeed() % 6 == 4>>
+            <<set _goods = "spices">>
+        <<elseif $gQuest.getSeed() % 6 == 5>>
+            <<set _goods = "sugar">>
+        <</if>>
+        <<= _goods>>
+        due to arrive at the Port of Lucgate aboard
+        <<if $gQuest.getSeed() % 10 == 0>>
+            <<set _ship = "the Light of Dawn">>
+        <<elseif $gQuest.getSeed() % 10 == 1>>
+            <<set _ship = "the Nan Feng">>
+        <<elseif $gQuest.getSeed() % 10 == 2>>
+            <<set _ship = "the Dainty Sprite">>
+        <<elseif $gQuest.getSeed() % 10 == 3>>
+            <<set _ship = "the Joyful Damnation">>
+        <<elseif $gQuest.getSeed() % 10 == 4>>
+            <<set _ship = "the Kurāken no hitokuchi">>
+        <<elseif $gQuest.getSeed() % 10 == 5>>
+            <<set _ship = "the Graceful Ray">>
+        <<elseif $gQuest.getSeed() % 10 == 6>>
+            <<set _ship = "the Breath of Sobek">>
+        <<elseif $gQuest.getSeed() % 10 == 7>>
+            <<set _ship = "the Wu Lang">>
+        <<elseif $gQuest.getSeed() % 10 == 8>>
+            <<set _ship = "the Doragon Paru">>
+        <<elseif $gQuest.getSeed() % 10 == 9>>
+            <<set _ship = "the Serpant's Wing">>
+        <</if>>
+        _ship. If the winds remain good, you should be able to intercept them. Given the difficulty of this venture, a larger than normal bonus will apply should you be successful in preventing the shipment from arriving in Lucgate.
+    </p>
+</div>
+
+<p>
+    Along with the note you find a full set of navigation charts showing a plotted course to
+    <<if $gQuest.getSeed() % 5 == 0>>
+        an archipelago of tiny islands.
+        <<set _location = "archipelago">>
+    <<elseif $gQuest.getSeed() % 5 == 1>>
+        a coral atoll surrounded by shallow reefs.
+        <<set _location = "atoll">>
+    <<elseif $gQuest.getSeed() % 5 == 2>>
+        shipwreck coast. It's probably got another name, but no one uses it.
+        <<set _location = "shipwrecks">>
+    <<elseif $gQuest.getSeed() % 5 == 3>>
+        a secluded cove at the edge of uncharted land.
+        <<set _location = "cove">>
+    <<elseif $gQuest.getSeed() % 5 == 4>>
+        a busy trade port. A note is scrawled in a blank space on the map "this is the route they take - you'll find them somewhere along here.
+        <<set _location = "trade route">>
+    <</if>>
+    If you want to take on this contract, you'll need to hire a ship—and a ship of capable fighters. That's going to cost you.
+</p>
+<p>
+    The South Seas are a dangerous place, especially if you're heading out looking for fights. <<dangertext "There is always a chance that anyone you send out may not return, so select your slavers carefully">>
+</p>
+
+
+
+
+:: Quest_a_merchant_s_revenge_caravan_raid_southern_seas_Crit [nobr]
+/* Set cargo */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<set _goods = "tea">>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _goods = "cured sausages">>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _goods = "fine silks">>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _goods = "porcelain">>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _goods = "spices">>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _goods = "sugar">>
+<</if>>
+
+/* Set Ship name */
+<<if $gQuest.getSeed() % 10 == 0>>
+    <<set _ship = "the Light of Dawn">>
+<<elseif $gQuest.getSeed() % 10 == 1>>
+    <<set _ship = "the Nan Feng">>
+<<elseif $gQuest.getSeed() % 10 == 2>>
+    <<set _ship = "the Dainty Sprite">>
+<<elseif $gQuest.getSeed() % 10 == 3>>
+    <<set _ship = "the Joyful Damnation">>
+<<elseif $gQuest.getSeed() % 10 == 4>>
+    <<set _ship = "the Kurāken no hitokuchi">>
+<<elseif $gQuest.getSeed() % 10 == 5>>
+    <<set _ship = "the Graceful Ray">>
+<<elseif $gQuest.getSeed() % 10 == 6>>
+    <<set _ship = "the Breath of Sobek">>
+<<elseif $gQuest.getSeed() % 10 == 7>>
+    <<set _ship = "the Wu Lang">>
+<<elseif $gQuest.getSeed() % 10 == 8>>
+    <<set _ship = "the Doragon Paru">>
+<<elseif $gQuest.getSeed() % 10 == 9>>
+    <<set _ship = "the Serpant's Wing">>
+<</if>>
+
+/* Set ambush location */
+<<if $gQuest.getSeed() % 5 == 0>>
+    <<set _location = "archipelago">>
+<<elseif $gQuest.getSeed() % 5 == 1>>
+    <<set _location = "atoll">>
+<<elseif $gQuest.getSeed() % 5 == 2>>
+    <<set _location = "shipwrecks">>
+<<elseif $gQuest.getSeed() % 5 == 3>>
+    <<set _location = "cove">>
+<<elseif $gQuest.getSeed() % 5 == 4>>
+    <<set _location = "trade route">>
+<</if>>
+
+It takes just over a week for your hired ship to make it to
+
+<<if $g.scout.isYou() or $g.fighter.isYou() or $g.raider.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.scout.isYou()>>
+        <<run _notyou.push($g.scout)>>
+    <</if>>
+    <<if !$g.fighter.isYou()>>
+        <<run _notyou.push($g.fighter)>>
+    <</if>>
+    <<if !$g.raider.isYou()>>
+        <<run _notyou.push($g.raider)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    <<set _o2 = _notyou[1]>>
+
+    <<if _location == "achipelago">>
+        a small chain of islands, all of them small enough to sail around in a few hours.
+
+        <<if $gOutcome == 'crit'>>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+            <<if _unit>>
+                <<Rep _unit>> suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <<else>>
+                Your ship's captain suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <</if>>
+
+            <p>
+                Fortunately, hiding your ship worked, and <<rep $g.scout>> soon spied _ship from the crows nest, taking the expected route past the islands, and riding low in the water with an obviously full cargo. It looked like they might have been carrying much more than just the _goods your slavers needed to intercept. As your ship swung out on an interception route, <<rep $g.raider>> aimed the ship's ballista at the level of _ship's deck and fired, the large bolt striking one of the crew and taking them off the side.
+            </p>
+            <p>
+                The battle was swift and bloody, but it soon became apparent that your ship outmatched _ship and their captained wished to surrender. Do you:
+                <<choose>>
+                <<opt "Loot the cargo and let the ship go">>
+                    <<run setup.qc.Item('f_tile_normal').apply($gQuest)>>
+                    <<run setup.qc.Money(1000).apply($gQuest)>>
+                    You took your time picking through the cargo, taking the _goods, the more lucrative trade items and one of the crew as a likely slave. You also secured a rug that might look good somewhere in the fort from a shipment of carpets. With a jaunty wave, you sailed off, leaving _ship's crew to repair their sails and patch their hull.
+                <<opt "Loot what you want, and scuttle the ship, leaving whatever crew remains ot fend for themselves">>
+                    Your captain was uncomfortable with your decision, and started talking about a 'code of the seas', but you cut him off and set about picking out a few potential slaves before <<rep $g.fighter>> and <<rep $g.raider>> hacked large holes in _ship's hull. Given how shallow the water was, it could probably be raised and salvaged eventually, but you'd guaranteed the ship wouldn't make port. There was a lot of tension on the ship as you make for port, and when you returned to Lucgate the captain was very eager to see the back of you.
+                    <<run setup.qc.Ire('humansea', 2).apply($gQuest)>>
+                    <<run setup.qc.Ire('lizardkin', 2).apply($gQuest)>>
+                    <<run setup.qc.Favor('humankingdom', -50).apply($gQuest)>>
+                    <<run setup.qc.Money(1000).apply($gQuest)>>
+                    <<run setup.qc.Slave('slave3', "a|was a sailor on the southern seas, captured by your slavers in a raid", undefined).apply($gQuest)>>
+                <</choose>>
+            </p>
+
+
+        <<elseif $gOutcome == 'success'>>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+            <<if _unit>>
+                <<Rep _unit>> suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <<else>>
+                Your ship's captain suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <</if>>
+
+            <p>
+                Fortunately it seems that hiding your ship worked, and <<rep $g.scout>> soon spies _ship from the crows nest, taking the expected route past the islands, riding low in the water with an obviously full cargo. It looks like they may be carrying much more than just the _goods your slavers needed to intercept. As your ship swung out on an interception route, <<rep $g.raider>> aimed the ship's ballista at the level of _ship's deck and fired, the large bolt striking one of the crew and taking them off the side.
+            </p>
+            <p>
+                The battle was fierce and bloody, and ended with the other ship sinking down into the seas. Your own ship was badly damaged, but you managed to 'rescue' one of _ship's crew, who has taken up temporary residence in your slave pen.
+            </p>
+            <<run setup.qc.Slave('slaves', "a|was a sailor on the southern seas, captured by your slavers in a raid", undefined)>>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Or it should have. With a week of unfavourable winds, you never made it out of port, and it soon became apparent that you'd missed your intercept window as _ship pulled into the Port of Lucgate.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+            <<if _unit>>
+                <<Rep _unit>> suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <<else>>
+                Your ship's captain suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <</if>>
+
+            Fortunately it seems that hiding your ship worked, and <<rep $g.scout>> soon spies _ship from the crows nest, taking the expected route past the islands, riding low in the water with an obviously full cargo. It looks like they may be carrying much more than just the _goods your slavers needed to intercept. Unfortunately _ship turned out to be much better armed than you had expected and
+            <<if $gQuest.getSeed() % 2 == 0>>
+                <<name _o1>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them _o1>> back to the ship's deck, although <<their _o1>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper(_o1))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name _o1>> was the ballista bolt and their left <<uhand _o1>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper(_o1))>>
+                    <</if>>
+                </p>
+
+            <<elseif $gQuest.getSeed() % 2 == 1>>
+                <<name _o2>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them _o2>> back to the ship's deck, although <<their _o2>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper(_o2))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name _o2>> was the ballista bolt and their left <<uhand _o2>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper(_o2))>>
+                    <</if>>
+                </p>
+            <</if>>
+        <</if>>
+
+    <<elseif _location == "atoll">>
+        a ring of sand and a few specks of green sticking out of the ocean and surrounded by shallow, coral filled seas.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                While there wasn't any place to hide, you arrived just as _ship was sailing past the atoll, and your ship was both faster and better armed than them. After showering the other ship with arrows, <<rep $g.fighter>> led the assault on the ship itself, where the battle was swift and decisive. Securing the most valuable of the trade goods for yourself, you gave your captain control of _ship, and they sent it back to Lucgate under new ownership with a skeleton crew.
+            </p>
+            <p>
+                You also took back one of the surviving crew of _ship, and <<they $g.slaves>> is now in your slave pen, awaiting your final decision.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                While there wasn't any place to hide, you arrived just as _ship was sailing past the atoll, and your ship was both faster and better armed than them. After showering the other ship with arrows, <<rep $g.fighter>> led the assault on the ship itself, where the battle was swift and decisive. Securing the most valuable of the trade goods for yourself, you gave your captain control of _ship, and they sent it back to Lucgate under new ownership with a skeleton crew.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately there wasn't any place to hide, and you arrived just as _ship was sailing past the atoll. The moment you came within visual range of each other, _ship set a course away from you, keeping the coral reefs between you, and were soon able to outrun you with their second mast and additional sails. Cursing you trailed them all the way back to Port Lucgate, never able to get close enough to strike.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                There wasn't any place to hide, but you arrived just as _ship was sailing past the atoll. The moment you came within visual range of each other, _ship set a course away from you, but took a strange circuitous route that gave you an easy and direct route to catch up.
+            </p>
+
+            And so you took it. In doing so, you found out why _ship took the route they did.
+            <<if $g.slaves.isHasTrait('gender_male')>>
+                <p>
+                    The song was enthralling, rich baritone voices singing words you couldn't understand, but the meaning, the longing and the desire pierced your heart and went straight to your loins. And you clearly weren't the only one. Without uttering a single word, your ship's captain turned the wheel and sent your ship into the centre of the lagoon, the crew wordlessly adjusting the rigging and lowering the anchor.
+                </p>
+                <p>
+                    Stripping off your clothing, you dove into the water, and were met by the face of a handsome merman. Smiling, he swam up and pressed his lips against yours, and suddenly the pressure in your lungs vanished and you found yourself able to breathe water as easily as air. The song of the merfolk roared in your ears, filling your soul as he guided your lips to his stiff cock and you were vaguely aware of the rest of your slavers and ship crew being similarly accosted. Above, a large shadow suggested _ship was sailing off into the distance, and you couldn't remember why that had seemed so important.
+                </p>
+            <<else>>
+                <p>
+                    The song was enthralling, soaring soprano voices singing words you couldn't understand, but the meaning, the longing and the desire pierced your heart and went straight to your loins. And you clearly weren't the only one. Without uttering a single word, your ship's captain turned the wheel and sent your ship into the centre of the lagoon, the crew wordlessly adjusting the rigging and lowering the anchor.
+                </p>
+                <p>
+                    Stripping off your clothing, you dove into the water, and were met by the face of a beautiful mermaid. Smiling, she swam up and pressed her lips against yours, and suddenly the pressure in your lungs vanished and you found yourself able to breathe water as easily as air. The song of the merfolk roared in your ears, filling your soul as she guided your lips to a slit in her fish-like abdomen. You were vaguely aware of the rest of your slavers and ship crew being similarly accosted. Above, a large shadow suggested _ship was sailing off into the distance, and you couldn't remember why that had seemed so important.
+                </p>
+            <</if>>
+            <p>
+                The merfolk kept you all for a week, using every orifice to satiate their desires. Eventually they let you go, but they decided they wanted to keep
+                <<if $gQuest.getSeed() % 2 == 0>>
+                    <<name _o1>>
+                    <<run setup.qc.MissingUnit('unit').apply(setup.costUnitHelper(_o1))>>
+                <<elseif $gQuest.getSeed() % 2 == 1>>
+                    <<name _o2>>
+                    <<run setup.qc.MissingUnit('unit').apply(setup.costUnitHelper(_o2))>>
+                <</if>>
+                for a bit longer. Returning you to your ship with a large, valuable pearl, you leave with the memory of their song in your heard and part of you aches to return, even if it meant you might never leave.
+            </p>
+            <<run setup.qc.Money(1000).apply($gQuest)>>
+        <</if>>
+
+    <<elseif _location == "shipwrecks">>
+        a rocky stretch of ocean running along a coastline of cliffs and jungles. Large waves continually battered up against the rocks, and frequently battered ships up into those same rocks. Still, it was one of the only known trade routes to the distant land of <<lore geo_cathay>>, and a ship going missing here would not be suspicious. You just don't want it to be yours.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Your ship's captain proved to be worth every coin, as he skillfully steered through the choppy seas, bearing down upon _ship. You heard shouts of alarm as your slavers and your ship's crew unleashed a volley of arrows at the merchant's vessel, and it turned to flee. You weren't sure what caused the coil of rope to unspool, but you distinctly saw a trailing rope drop into the sea just before the sail yanked uselessly into the wrong position, turning the prow into the wind. A great wave caught _ship and pushed it into a group of jagged rocks. The sound of wood cracking and the cries of sailors being thrown into the sea blew back on the wind as pieces of _ship fall to the bottom of the sea.
+            </p>
+            <p>
+                While you lost the cargo, you did scoop a single survivor out of the sea, and <<they $g.slaves>> is now awaiting your attention in the slave pens.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Your ship's captain proved to be worth every coin, as he skillfully steered through the choppy seas, bearing down upon _ship. You heard shouts of alarm as your slavers and your ship's crew unleashed a volley of arrows at the merchant's vessel, and it turned to flee. You weren't sure what caused the coil of rope to unspool, but you distinctly saw a trailing rope drop into the sea just before the sail yanked uselessly into the wrong position, turning the prow into the wind. A great wave caught _ship and pushed it into a group of jagged rocks. The sound of wood cracking and the cries of sailors being thrown into the sea blew back on the wind as pieces of _ship fall to the bottom of the sea.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately you arrived just before a typhoon blew in from the sea and lashed the coast, and you spent a week alternating between throwing up and trying to prevent your own ship from sinking. You never caught a glimpse of _ship, but when you finally rowed back into port you saw them restocking and bringing on new cargo for another trip to somewhere. It looks like you're not getting paid for this one.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Your ship's captain proved to be worth every coin, as he skillfully steered through the choppy seas, bearing down upon _ship. You heard shouts of alarm as your slavers and your ship's crew unleashed a volley of arrows at the merchant's vessel. <<rep $g.fighter>> led the assault on the ship itself, which proved to be a terrible idea. The crew of _ship turned out to be seasoned fighters, and the boarding party was swiftly repelled.
+
+                <<if $gQuest.getSeed() % 2 == 0>>
+                    <<name _o1>> fell into the rough seas as <<they _o1>> attempted to leap back onto your ship, and were left behind as your captain broke away lest you find yourselves boarded and taken as chattel. You can only hope that <<they _o1>> survived and you might find them again later.
+                    <<run setup.qc.MissingUnit('unit').apply(setup.costUnitHelper(_o1))>>
+                <<elseif $gQuest.getSeed() % 2 == 1>>
+                    <<name _o2>> fell into the rough seas as <<they _o2>> attempted to leap back onto your ship, and were left behind as your captain broke away lest you find yourselves boarded and taken as chattel. You can only hope that <<they _o2>> survived and you might find them again later.
+                    <<run setup.qc.MissingUnit('unit').apply(setup.costUnitHelper(_o2))>>
+                <</if>>
+            </p>
+        <</if>>
+
+    <<elseif _location == "cove">>
+        a tropical cove with sandy beaches, crystal clear water, and fish so plentiful they roll up to the beach with each wave.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                You arrived and found _ship already inside the cove, in the process of being loaded up with smuggled cargo from an onshore cache. With their crew split between land and shore, and your own ship blocking their escape, the battle was over almost before it began, with _ship's crew fleeing into the forest leaving you with their cargo, a ship to sell, and a single captive who you've enjoyed on the voyage back to port.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                You arrived and found _ship already inside the cove, in the process of being loaded up with smuggled cargo from an onshore cache. With their crew split between land and shore, and your own ship blocking their escape, the battle was over almost before it began, with _ship's crew fleeing into the forest leaving you with their cargo and a ship to sell.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                You waited there for a week, catching fish, enjoying the beach and making coconut cocktails, but _ship never arrived. Whether you missed them or you got the wrong cove you aren't sure, but at least you got a bit of a holiday.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The cove was empty when you arrived, and not seeing the horizon empty of ships you and your slavers went ashore for some rest and relaxation, and were almost immediately attacked by the lizardkin who called the area their home. You managed to fight your way free, but your slavers and your ship's crew were badly injured to the point that boarding _ship was simply not a viable option, and you returned to port without even having seen them.
+            </p>
+
+        <</if>>
+
+    <<else>>
+        well, somewhere in the seas. Your captain assured you that you were on track,
+        <<if $unit.player.isHasAnyTraitExact(["bg_pirate", "bg_seaman"])>>
+            and your own knowledge of the seas confirmed that, even if there was open water as far as the eye can see in all directions.
+        <<else>>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+            <<if _unit>>
+                and <<Rep _unit>> agreed with their assessment, even if there was open water as far as the eye can see in all directions.
+            <<else>>
+                but you had no clue where you were, and his attempts to explain celestial navigation to you made no sense at all.
+            <</if>>
+
+        <</if>>
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Given you were travelling on a featureless expanse of ocean, looking to raid another ship, your captain suggested running at night with limited lights. It was risky, and potentially dangerous, but as the sun rose on your second week at sea, you found yourself almost on top of your quarry, who were still anchored for the night. The battle was swift and bloody, but it soon became apparent that your ship outmatched _ship and their captained wished to surrender. Do you:
+                <<choose>>
+                <<opt "Loot the cargo and let the ship go">>
+                    <<run setup.qc.Item('f_tile_normal').apply($gQuest)>>
+                    <<run setup.qc.Money(1000).apply($gQuest)>>
+                    You took your time to pick through the cargo, taking the _goods, the more lucrative trade items and one of the crew as a likely slave. You also secured a rug that might look good somewhere in the fort from a shipment of carpets. With a jaunty wave, you sailed off, leaving _ship's crew to repair their sails and patch their hull.
+                <<opt "Loot what you want, and scuttle the ship, leaving whatever crew remains ot fend for themselves">>
+                    Your captain was very uncomfortable with your decision, and tried to explain the code of the seas, but you overruled him, and set about picking out a few potential slaves before <<rep $g.fighter>> and <<rep $g.raider>> hacked large holes in _ship's hull. There was a lot of tension on the ship as you make for port, and when you returned to Lucgate the captain seemed very eager to see the back of you.
+                    <<run setup.qc.Ire('humansea', 2).apply($gQuest)>>
+                    <<run setup.qc.Ire('lizardkin', 2).apply($gQuest)>>
+                    <<run setup.qc.Favor('humankingdom', -50).apply($gQuest)>>
+                    <<run setup.qc.Money(1000).apply($gQuest)>>
+                    <<run setup.qc.Slave('slave3', "a|was a sailor on the southern seas, captured by your slavers in a raid", undefined).apply($gQuest)>>
+                <</choose>>
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Given you were travelling on a featureless expanse of ocean, looking to raid another ship, your captain suggested running at night with limited lights. It was risky, and potentially dangerous, but as the sun rose on your second week at sea, you found yourself almost on top of your quarry, who were still anchored for the night. The battle was fierce and bloody, and ended with the other ship sinking down into the seas. Your own ship was badly damaged, but you managed to 'rescue' one of _ship's crew, who has taken up temporary residence in your slave pen.
+            </p>
+            <<run setup.qc.Slave('slaves', "a|was a sailor on the southern seas, captured by your slavers in a raid", undefined)>>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Given you were travelling on a featureless expanse of ocean, looking to raid another ship, your captain suggested running at night with limited lights. It was risky, but it gave you a better chance of getting close to _ship before they realised your intentions.
+            </p>
+            <p>
+                Unfortunately, what you came across first was a sandbank, having drifted off course during a cloud covered night. It took a lot of time, sweat and effort to get your ship free, and with a heavily damaged keel, you were forced to return to port for repairs, lest a sea battle send you all to a watery grave.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Given you were travelling on a featureless expanse of ocean, looking to raid another ship, your captain suggested running at night with limited lights. It was risky, and potentially dangerous, but as the sun rose on your second week at sea, you found yourself almost on top of your quarry, who were still anchored for the night.
+            </p>
+            Unfortunately _ship turned out to be much better armed than you had expected and
+            <<if $gQuest.getSeed() % 2 == 0>>
+                <<name _o1>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use their knowledge of water magic to bring them back to the ship's deck, although their wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper(_o1))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name _o1>> was the ballista bolt and their left <<uhand _o1>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper(_o1))>>
+                    <</if>>
+                </p>
+
+            <<elseif $gQuest.getSeed() % 2 == 1>>
+                <<name _o2>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use their knowledge of water magic to bring them back to the ship's deck, although their wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper(_o2))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name _o2>> was the ballista bolt and their left <<uhand _o2>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper(_o2))>>
+                    <</if>>
+                </p>
+            <</if>>
+        <</if>>
+    <</if>>
+
+<<else>>
+    <<if _location == "achipelago">>
+        a small chain of islands, all of them small enough to sail around in a few hours.
+
+        <<if $gOutcome == 'crit'>>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+            <<if _unit>>
+                <<Rep _unit>> suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <<else>>
+                The captain your slavers hired suggested hiding around the back of one of the larger islands, and either sailing out to intercept _ship, or see if its crew come ashore for water.
+            <</if>>
+
+            <p>
+                Fortunately, hiding your ship worked, and <<rep $g.scout>> soon spied _ship from the crows nest, taking the expected route past the islands, and riding low in the water with an obviously full cargo hold. It looked like they were carrying much more than just the _goods your slavers needed to intercept. As your ship swung out on an interception route, <<rep $g.raider>> aimed the ship's ballista at the level of _ship's deck and fired, the large bolt striking one of the crew and taking them off the side.
+            </p>
+            <p>
+                The battle was swift and bloody, but it soon became apparent that _ship was outmatched and their captained wished to surrender. Your slavers took their time picking through the cargo, taking the _goods, the more lucrative trade items and one of the surrendering crew as a likely slave. With a jaunty wave, your slavers sailed off, leaving the remaining crew of _ship's to repair their sails and patch their hull.
+                <<run setup.qc.Money(1000).apply($gQuest)>>
+            </p>
+
+
+        <<elseif $gOutcome == 'success'>>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+            <<if _unit>>
+                <<Rep _unit>> suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <<else>>
+                The captain your slavers hired suggested hiding around the back of one of the larger islands, and either sailing out to intercept _ship, or see if its crew come ashore for water.
+            <</if>>
+
+            <p>
+                Fortunately, hiding the ship worked, and <<rep $g.scout>> soon spied _ship from the crows nest, taking the expected route past the islands, and riding low in the water with an obviously full cargo hold. It looked like they were carrying much more than just the _goods your slavers needed to intercept. As your ship swung out on an interception route, <<rep $g.raider>> aimed the ship's ballista at the level of _ship's deck and fired, the large bolt striking one of the crew and taking them off the side.
+            </p>
+            <p>
+                The battle was fierce and bloody, and ended with the other ship sinking down into the seas. Your own ship was badly damaged, but you managed to 'rescue' one of _ship's crew, who has taken up temporary residence in your slave pen.
+            </p>
+            <<run setup.qc.Slave('slaves', "a|was a sailor on the southern seas, captured by your slavers in a raid", undefined)>>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Or it should have. With a week of unfavourable winds, your slavers never made it out of port, and it soon became apparent that they'd missed their intercept window as _ship pulled into the Port of Lucgate.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+            <<if _unit>>
+                <<Rep _unit>> suggested hiding around the back of one of the larger islands, and either sail out to intercept, or see if _ship's crew come ashore for water.
+            <<else>>
+                The captain your slavers hired suggested hiding around the back of one of the larger islands, and either sailing out to intercept _ship, or see if its crew come ashore for water.
+            <</if>>
+
+            <p>
+                Fortunately, hiding the ship worked, and <<rep $g.scout>> soon spied _ship from the crows nest, taking the expected route past the islands, and riding low in the water with an obviously full cargo hold. It looked like they were carrying much more than just the _goods your slavers needed to intercept.
+            </p>
+            Unfortunately _ship turned out to be much better armed than they'd had expected and
+            <<if $gQuest.getSeed() % 3 == 0>>
+                <<name $g.scout>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them $g.scout>> back to the ship's deck, although <<their $g.scout>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper($g.scout))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name $g.scout>> was the ballista bolt and their left <<uhand $g.scout>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper($g.scout))>>
+                    <</if>>
+                </p>
+
+            <<elseif $gQuest.getSeed() % 3 == 1>>
+                <<name $g.fighter>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them $g.fighter>> back to the ship's deck, although <<their $g.fighter>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper($g.fighter))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name $g.fighter>> was the ballista bolt and their left <<uhand $g.fighter>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper($g.fighter))>>
+                    <</if>>
+                </p>
+            <<elseif $gQuest.getSeed() % 3 == 2>>
+                <<name $g.raider>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them $g.raider>> back to the ship's deck, although <<their $g.raider>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper($g.raider))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name $g.raider>> was the ballista bolt and their left <<uhand $g.raider>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper($g.raider))>>
+                    <</if>>
+                </p>
+            <</if>>
+        <</if>>
+
+    <<elseif _location == "atoll">>
+        a ring of sand and a few specks of green sticking out of the ocean and surrounded by shallow, coral filled seas.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                While there wasn't any place to hide, your slavers spotted _ship was sailing past the atoll, and their ship was both faster and better armed than them. After showering the other ship with arrows, <<rep $g.fighter>> led the assault on the ship itself, where the battle was swift and decisive. Securing the most valuable of the trade goods, they gave their ship's captain control of _ship, who sent it back to Lucgate with a skeleton crew and a new name.
+            </p>
+            <p>
+                They also took back one of the surviving crew of _ship, and <<they $g.slaves>> is now in your slave pen, awaiting your final decision.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                While there wasn't any place to hide, your slavers spotted _ship was sailing past the atoll, and their ship was both faster and better armed than them. After showering the other ship with arrows, <<rep $g.fighter>> led the assault on the ship itself, where the battle was swift and decisive. Securing the most valuable of the trade goods, they gave their ship's captain control of _ship, who sent it back to Lucgate with a skeleton crew and a new name.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                While there wasn't any place to hide, your slavers spotted _ship was sailing past the atoll. The moment _ship's crew caught sight of your slavers' ship, they set a course to flee, keeping the coral reefs between the two vessels. With their second mast and additional sails, _ship was soon a distant speck on the horizon, leaving your slavers to sail slowly back to port.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                While there wasn't any place to hide, your slavers spotted _ship was sailing past the atoll. The moment _ship's crew caught sight of your slavers' ship, they set a course to flee, but took a strange circuitous route that gave your slavers an easy and direct route to catch up.
+            </p>
+
+            And when your slavers took it, they found out why _ship took the route they did.
+            <<if $g.slaves.isHasTrait('gender_male')>>
+                <p>
+                    The song was enthralling, rich baritone voices singing words none of your slavers could understand, but the meaning, the longing and the desire pierced their hearts and went straight to their loins. Without uttering a single word, the ship's captain turned the wheel and guided ship into the centre of the lagoon, the crew wordlessly adjusting the rigging and lowering the anchor.
+                </p>
+                <p>
+                    <<dialogue $g.scout>>
+                        I don't really remember everything, but I was naked, and then there was a merman, and he kissed me and I could breathe water. I just remember he was gorgeous and all I wanted to do was get his cock in my mouth.
+                        <<if $g.scout.isHasTrait('per_chaste')>>
+                            Which is not like me at all.
+                        <<elseif $g.scout.isHasTrait('per_lustful')>>
+                            <<if $g.scout.isHasTrait('gender_male')>>
+                                And up my ass. And it felt fucking amazing.
+                            <<else>>
+                                And in my pussy.
+                            <</if>>
+
+                        <<elseif $g.scout.isHasTrait('per_sexaddict')>>
+                            <<if $g.scout.isHasTrait('gender_male')>>
+                                And up my ass. And it felt fucking amazing.
+                            <<else>>
+                                And in my pussy.
+                            <</if>>
+                        <<else>>
+                        <</if>>
+                    <</dialogue>>
+
+                </p>
+            <<else>>
+                <p>
+                    The song was enthralling, harmonic soprano voices singing words none of your slavers could understand, but the meaning, the longing and the desire pierced their hearts and went straight to their loins. Without uttering a single word, the ship's captain turned the wheel and guided ship into the centre of the lagoon, the crew wordlessly adjusting the rigging and lowering the anchor.
+                </p>
+                <<dialogue $g.scout>>
+                    I don't really remember everything, but I was naked, and then there was a mermaid, and she kissed me and I could breathe water. I just remember she was gorgeous and all I wanted to do was get my mouth on her pussy. Or whatever she had.
+                    <<if $g.scout.isHasTrait('per_chaste')>>
+                        Which is not like me at all.
+                    <<elseif $g.scout.isHasTrait('per_lustful')>>
+                        <<if $g.scout.isHasTrait('gender_male')>>
+                            I wanted to fuck her so bad.
+                        <<else>>
+                        <</if>>
+
+                    <<elseif $g.scout.isHasTrait('per_sexaddict')>>
+                        <<if $g.scout.isHasTrait('gender_male')>>
+                            I wanted to fuck her so bad.
+                        <<else>>
+                        <</if>>
+                    <<else>>
+                    <</if>>
+                <</dialogue>>
+            <</if>>
+            <p>
+                The merfolk kept your slavers for a week, using every orifice to satiate their desires. Eventually they let them go, but decided to keep
+                <<if $gQuest.getSeed() % 2 == 0>>
+                    <<name $g.fighter>>
+                    <<run setup.qc.MissingUnit('fighter').apply($gQuest)>>
+                <<elseif $gQuest.getSeed() % 2 == 1>>
+                    <<name $g.raider>>
+                    <<run setup.qc.MissingUnit('raider').apply($gQuest)>>
+                <</if>>
+                for a bit longer. Your slavers were gifted a large, valuable pearl, and left with the memory of the siren song in their heads.<br>
+                "You just left them?" you asked.<br>
+                "We had to! If changed their minds and kept us all, what then?"<br>
+                You can only hope you have a chance to rescue them later.
+            </p>
+            <<run setup.qc.Money(1000).apply($gQuest)>>
+        <</if>>
+
+    <<elseif _location == "shipwrecks">>
+        a rocky stretch of ocean running along a coastline of cliffs and jungles. Large waves continually battered up against the rocks, and frequently battered ships up into those same rocks. It was, unfortunately, one of the only known trade routes to the distant land of <<lore geo_cathay>>, and a ship going missing there would not be suspicious.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                The hired ship's captain proved to be worth every coin, as he skillfully steered through the choppy seas, bearing down upon _ship. Your slavers heard shouts of alarm as they unleashed a volley of arrows at the merchant's vessel, which turned to flee. <<name $g.scout>> wasn't sure what caused the coil of rope to unspool, but <<they $g.scout>> distinctly saw a trailing rope drop into the sea just before the sail yanked uselessly into the wrong position, turning the prow into the wind. A great wave caught _ship and pushed it into a group of jagged rocks. The sound of wood cracking and the cries of sailors being thrown into the sea blew back on the wind as pieces of _ship fall to the bottom of the sea.
+            </p>
+            <p>
+                While they lost the cargo, your slavers did scoop a single survivor out of the sea, and <<they $g.slaves>> is now awaiting your attention in the slave pens.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                The hired ship's captain proved to be worth every coin, as he skillfully steered through the choppy seas, bearing down upon _ship. Your slavers heard shouts of alarm as they unleashed a volley of arrows at the merchant's vessel, which turned to flee. <<name $g.scout>> wasn't sure what caused the coil of rope to unspool, but <<they $g.scout>> distinctly saw a trailing rope drop into the sea just before the sail yanked uselessly into the wrong position, turning the prow into the wind. A great wave caught _ship and pushed it into a group of jagged rocks. The sound of wood cracking and the cries of sailors being thrown into the sea blew back on the wind as pieces of _ship fall to the bottom of the sea.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Unfortunately your slavers arrived just before a typhoon blew in from the sea and lashed the coast, and they spent a week alternating between throwing up and trying to prevent their own ship from sinking. They never caught a glimpse of _ship, but when they finally rowed back into port <<name $g.raider>> saw them restocking and bringing on new cargo for another trip to somewhere. It looks like you're not getting paid for this one.
+            </p>
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The hired ship's captain proved to be worth every coin, as he skillfully steered through the choppy seas, bearing down upon _ship. Your slavers heard shouts of alarm as they unleashed a volley of arrows at the merchant's vessel. <<rep $g.fighter>> led the assault on the ship itself, which proved to be a terrible idea. The crew of _ship turned out to be seasoned fighters, and your boarding party was swiftly repelled.
+            </p>
+            <<if $gQuest.getSeed() % 3 == 0>>
+                <p>
+                    <<name $g.scout>> fell into the rough seas as <<they $g.scout>> attempted to leap back onto their ship, and were left behind as the captain broke away lest they find themselves boarded and taken as chattel. You can only hope that <<they $g.scout>> survived and you might find them again later.
+                </p>
+                <<run setup.qc.MissingUnit('scout').apply($gQuest)>>
+            <<elseif $gQuest.getSeed() % 3 == 1>>
+                <p>
+                    <<name $g.fighter>> fell into the rough seas as <<they $g.fighter>> attempted to leap back onto their ship, and were left behind as the captain broke away lest they find themselves boarded and taken as chattel. You can only hope that <<they $g.fighter>> survived and you might find them again later.
+                </p>
+                <<run setup.qc.MissingUnit('fighter').apply($gQuest)>>
+            <<elseif $gQuest.getSeed() % 3 == 2>>
+                <p>
+                    <<name $g.raider>> fell into the rough seas as <<they $g.raider>> attempted to leap back onto their ship, and were left behind as the captain broke away lest they find themselves boarded and taken as chattel. You can only hope that <<they $g.raider>> survived and you might find them again later.
+                </p>
+                <<run setup.qc.MissingUnit('raider').apply($gQuest)>>
+
+            <</if>>
+        <</if>>
+
+    <<elseif _location == "cove">>
+        a tropical cove with sandy beaches, crystal clear water, and fish so plentiful they roll up to the beach with each wave.
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Your slavers arrived and found _ship already inside the cove, in the process of being loaded up with smuggled cargo from an onshore cache. With their crew split between land and shore, and your slavers' ship blocking their escape, the battle was over almost before it began, with _ship's crew fleeing into the forest leaving your slavers with their cargo, a ship to sell, and a single captive who you who is now lying bound in your slave pen.
+            </p>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Your slavers arrived and found _ship already inside the cove, in the process of being loaded up with smuggled cargo from an onshore cache. With their crew split between land and shore, and your slavers' ship blocking their escape, the battle was over almost before it began, with _ship's crew fleeing into the forest leaving your slavers with their cargo and a ship to sell.
+            </p>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Your slavers waited at the cove for a week, catching fish, enjoying the beach and making coconut cocktails, but _ship never arrived. Whether they missed them or they got the wrong cove you aren't sure, but you got your slavers back nice and rested after a bit of a holiday.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                The cove was empty when your slavers arrived, and not seeing the horizon empty of ships they went ashore for some rest and relaxation, and were almost immediately attacked by the lizardkin who called the area their home. With <<name $g.fighter>> and <<name $g.raider>> fighting a desperate retreat, everyone managed to get back to the ship, but with your slavers and many of ship's crew badly injured, finding and boarding _ship was simply not a viable anymore, and your slavers returned to port without even having seen their quarry.
+            </p>
+
+        <</if>>
+
+    <<else>>
+        well, somewhere in the seas. The captain your slavers hired assured them that they were on track,
+        <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['bg_pirate', 'bg_seaman']})>>
+        <<if _unit>>
+            and <<Rep _unit>> agreed with their assessment, even if there was open water as far as the eye can see in all directions.
+        <<else>>
+            but your slavers had to take it on faith.
+        <</if>>
+
+        <<if $gOutcome == 'crit'>>
+            <p>
+                Given your slavers were travelling on a featureless expanse of ocean, looking to raid another ship, the captain suggested running at night with limited lights. It was risky, and potentially dangerous, but as the sun rose on your slavers' second week at sea, they found themselves almost on top of their quarry, who were still anchored for the night. The battle was swift and bloody, but it soon became apparent that
+                _ship was hopelessly outmatched and their captained wished to surrender.
+            </p>
+            <p>
+                Your slavers took their time picking through the cargo, taking the _goods, the more lucrative trade items and one of the crew as a likely slave. With a jaunty wave, they sailed off, leaving the crew of _ship to repair their sails and patch their hull.
+            </p>
+            <<run setup.qc.Money(1000).apply($gQuest)>>
+
+        <<elseif $gOutcome == 'success'>>
+            <p>
+                Given your slavers were travelling on a featureless expanse of ocean, looking to raid another ship, the captain suggested running at night with limited lights. It was risky, and potentially dangerous, but as the sun rose on your slavers' second week at sea, they found themselves almost on top of their quarry, who were still anchored for the night. The battle was swift and bloody, and ended with the other ship sinking down into the seas. Even with their own ship being badly damaged, your slavers managed to 'rescue' one of _ship's crew, who has taken up temporary residence in your slave pen.
+            </p>
+            <<run setup.qc.Slave('slaves', "a|was a sailor on the southern seas, captured by your slavers in a raid", undefined)>>
+
+        <<elseif $gOutcome == 'failure'>>
+            <p>
+                Given your slavers were travelling on a featureless expanse of ocean, looking to raid another ship, the captain suggested running at night with limited lights. It was risky, but it gave your slavers a better chance of getting close to _ship before its crew realised the danger they were win.
+            </p>
+            <p>
+                Unfortunately, what the ship came across first was a sandbank, having drifted off course during a cloud covered night. It took a lot of time, sweat and effort to get it free, and with a heavily damaged keel, your slavers were forced to return to port for repairs, lest a sea battle send them all to a watery grave.
+            </p>
+
+        <<elseif $gOutcome == 'disaster'>>
+            <p>
+                Given your slavers were travelling on a featureless expanse of ocean, looking to raid another ship, the captain suggested running at night with limited lights. It was risky, and potentially dangerous, but as the sun rose on your slavers' second week at sea, they found themselves almost on top of their quarry, who were still anchored for the night.
+            </p>
+            Unfortunately _ship turned out to be much better armed than you had expected and
+            <<if $gQuest.getSeed() % 3 == 0>>
+                <<name $g.scout>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them $g.scout>> back to the ship's deck, although <<their $g.scout>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper($g.scout))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name $g.scout>> was the ballista bolt and their left <<uhand $g.scout>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper($g.scout))>>
+                    <</if>>
+                </p>
+
+            <<elseif $gQuest.getSeed() % 3 == 1>>
+                <<name $g.fighter>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them $g.fighter>> back to the ship's deck, although <<their $g.fighter>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper($g.fighter))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name $g.fighter>> was the ballista bolt and their left <<uhand $g.fighter>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper($g.fighter))>>
+                    <</if>>
+                </p>
+            <<elseif $gQuest.getSeed() % 3 == 2>>
+                <<name $g.raider>> took a ballista bolt in the chest and fell into the sea—and within reach of the sharks that had been drawn to the bloody battle.
+                <p>
+                    <<set _unit = setup.selectUnit([$g.scout, $g.fighter, $g.raider], {anytrait: ['magic_water', 'magic_water_master']})>>
+                    <<if _unit>>
+                        Fortunately <<rep _unit>> was able to use <<their _unit>> knowledge of water magic to bring <<them $g.raider>> back to the ship's deck, although <<their $g.raider>> wounds will take a long time to heal.
+                        <<run setup.qc.Injury('unit', 24).apply(setup.costUnitHelper($g.raider))>>
+
+                    <<else>>
+                        By the time the water had finished churning, the only thing left of <<name $g.raider>> was the ballista bolt and their left <<uhand $g.raider>>
+                        <<run setup.qc.MissingUnitForever('unit').apply(setup.costUnitHelper($g.raider))>>
+                    <</if>>
+                </p>
+            <</if>>
+        <</if>>
+    <</if>>
+<</if>>

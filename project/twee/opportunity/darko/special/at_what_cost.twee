@@ -1,0 +1,161 @@
+:: OpportunitySetup_at_what_cost [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'at_what_cost', /* key */
+"At What Cost", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea', 'special', 'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_at_what_cost',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_at_what_cost_0',
+    'Opportunity_at_what_cost_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.AddTraitsRandom('you', [setup.trait.per_slow, setup.trait.per_submissive, setup.trait.per_masochistic, setup.trait.bg_slave], 1, false, true),
+      setup.qc.FreePlayer(),
+    ],
+  ],
+  [
+    'Opportunity_at_what_cost_1',
+    'Opportunity_at_what_cost_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveRandomTraitWithTag('you', 'bg'),
+      setup.qc.FreePlayer(),
+    ],
+  ],
+  [
+    'Opportunity_at_what_cost_2',
+    'Opportunity_at_what_cost_2_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.TraumatizeRandom('you', 101),
+      setup.qc.Injury('you', 50),
+      setup.qc.FreePlayer(),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'you': null,
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_at_what_cost [nobr]
+
+<p>
+Due to recent events, you have found yourself in an unfortunate predicament.
+You are currently en-route to board a ship, no doubt to be sold as a valuable
+slave in some distant land across the sea. If you want to escape, you have to
+act fast, and now!
+</p>
+
+<p>
+Being a senior slaver yourself, you know that such an escape will be almost
+impossible, if you are not bold.
+<<if $g.you.isHasTrait('per_submissive')>>
+(Not to mention that little submissive part of you that keep telling you to resign to your fate.)
+<<elseif $g.you.isHasTrait('per_dominant')>>
+But boldness has always been a part of your dominant mind.
+<<else>>
+You have to muster all the strength you can gather.
+<</if>>
+But more importantly, you will certainly need to make a choice, to sacrifice
+a part of you in order to make the escape possible.
+</p>
+
+<p>
+You can sacrifice your sanity, which will surely has a permanent impact on your psyche...
+</p>
+
+<p>
+You can sacrifice your memory, which will likely make you forgot certain skills you have in the past...
+</p>
+
+<p>
+Or you can sacrifice your body and mind, which will cripple you for a year or
+two, but with no other permanent effect...
+</p>
+
+<p>
+Either way, you have to make a decision now and fast!
+</p>
+
+
+:: Opportunity_at_what_cost_0 [nobr]
+At the cost of your sanity
+
+
+:: Opportunity_at_what_cost_0_flavor [nobr]
+<p>
+You decided to feign to the slavers that you have given up on escaping, and
+adopted the mindset of a slave. The ruse eventually pays off, as the slavers
+undo your bindings seeing the compliant slave that they think you have
+became. You manage to escape during the night, without looking back.
+</p>
+
+<p>
+Still, you can't help but feel that some part of this slave mindset will
+haunt you for the rest of your days...
+</p>
+
+
+:: Opportunity_at_what_cost_1 [nobr]
+At the cost of your memory
+
+
+:: Opportunity_at_what_cost_1_flavor [nobr]
+<p>
+You decided to feign to the slavers that your mind has been broken. You spend
+several days drooling like a mindbroken slave, unfocused at everything. The
+ruse eventually pays off, as the slavers undo your bindings seeing the
+mindbroken slave that they think you have became. You managed to escape
+during the night, without looking back.
+</p>
+
+<p>
+Still, you are deeply affected by the ruse, and you can feel some part of
+your memory flew away, like it was never there to begin with...
+</p>
+
+
+:: Opportunity_at_what_cost_2 [nobr]
+At the cost of your body and mind
+
+
+:: Opportunity_at_what_cost_2_flavor [nobr]
+<p>
+You decide to rebel against the slavers, fighting them and injuring some of
+them in the struggle. In retaliation, the slavers exact their revenge on
+you, leaving you gasping and severely beaten by the end of the ordeal. Seeing
+no more value in the broken slave that you have become, the slavers dump
+you in one of the villages along the way.
+</p>
+
+<p>
+You are able to make it back to your company with your mind mostly intact,
+but with heavy injuries and a trauma to haunt you for a year or two...
+</p>

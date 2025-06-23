@@ -1,0 +1,188 @@
+:: QuestSetup_nectar_of_the_gods [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'nectar_of_the_gods', /* key */
+"Nectar of the Gods", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'sea',
+  'item',
+  'veteran',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'biologist': [ setup.qu.biologist, 1],
+  'fighter': [ setup.qu.fighter_sea, 1],
+  'healer': [ setup.qu.healer, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_nectar_of_the_gods',
+setup.qdiff.harder56, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_nectar_of_the_godsCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Item(setup.item.potion_tight),
+    ],
+  ],
+  [
+    'Quest_nectar_of_the_godsCrit',
+    [
+      setup.qc.Item(setup.item.quest_bewitchment_nectar),
+      setup.qc.Equipment(setup.equipmentpool.combat_good),
+      setup.qc.TraitIncreaseExisting('biologist', setup.trait.anus_gape),
+    ],
+  ],
+  [
+    'Quest_nectar_of_the_godsFailure',
+    [
+      setup.qc.TraitIncreaseExisting('biologist', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('biologist', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('biologist', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('biologist', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('fighter', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('fighter', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('fighter', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('fighter', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('healer', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('healer', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('healer', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('healer', setup.trait.anus_gape),
+      setup.qc.TraumatizeRandom('biologist', 20),
+      setup.qc.TraumatizeRandom('fighter', 20),
+      setup.qc.TraumatizeRandom('healer', 20),
+      setup.qc.Injury('biologist', 5),
+      setup.qc.Injury('fighter', 4),
+      setup.qc.Injury('healer', 4),
+    ],
+  ],
+  [
+    'Quest_nectar_of_the_godsFailure',
+    [
+      setup.qc.Outcomes("failure"),
+      setup.qc.OneRandomSeed([
+setup.qc.Trait('biologist', setup.trait.per_submissive),
+setup.qc.Trait('fighter', setup.trait.per_submissive),
+setup.qc.Trait('healer', setup.trait.per_submissive)
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.always],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.NoItem(setup.item.quest_bewitchment_nectar),
+  setup.qres.VarEqual('quest_bewitchment_alternative', '1'),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_nectar_of_the_gods [nobr]
+
+<p>
+One of the lush islands in the <<lore region_sea>> is home to one of the
+rarest substance in the world: the <<rep
+setup.item.quest_bewitchment_nectar>> that you've been looking for as part of
+your revenge against the damned forest fairy.
+</p>
+
+<p>
+There will surely be unknown challenges for harvesting the nectar, however,
+so you'd better prepare for the worst. A biologist to harvest the nectar, and
+two other slavers that are prepared for anything.
+</p>
+
+
+:: Quest_nectar_of_the_godsCrit [nobr]
+<p>
+The island was lush, to say the least. Dense vegetation covered every inch of
+the island, and your slavers struggled to reach the heart of the island.
+There, a lone tree stood, towering over all the other vegetations. Without
+warning, vines started to sprout from the ground, as if the tree was welcoming
+your slavers with the promise of penetrations.
+</p>
+
+<p>
+As the vine wiggled into existence, <<yourrep $g.biologist>> recognized that
+the liquid emanating from its tip was the actual <<rep
+setup.item.quest_bewitchment_nectar>>. Excited at the opportunity, <<rep
+$g.biologist>> attempted to gather the nectar only for another vine to
+violently bursted from the ground, piercing <<their $g.biologist>> <<uanus
+$g.biologist>>. By the time <<rep $g.fighter>> cut off the vine, <<reps
+$g.biologist>> ass was already violated, and appeared more gaped than before.
+</p>
+
+<p>
+Now fully alert, your slavers prepared for battle as <<rep $g.biologist>>
+sneakily gathered the leaking plant liquid here and there. The battle was fierce,
+and many vines were felled by <<reps $g.fighter>> <<uweapon $g.fighter>> while
+<<rep $g.healer>> desperately tried to keep the collective damage at minimum.
+Eventually <<rep $g.biologist>> managed to collect enough of the nectar, and
+called out for the team to withdraw. Your slavers withdrew from battlefield,
+but not before <<rep $g.fighter>> managed to snatch one of the scattered
+armors on the battlefield, no doubt belonging to an unlucky adventurer who
+dared ventured here in the past.
+<<if $gOutcome == 'crit'>>
+<<rep $g.healer>> healer|was also able to snatch a rare <<rep
+setup.item.potion_tight>>, no doubt brought by some prudent but unlucky
+adventurer who must have withdrawn from the fight with a leaking ass...
+<</if>>
+</p>
+
+
+:: Quest_nectar_of_the_godsFailure [nobr]
+
+<p>
+The island was lush, to say the least. Dense vegetation covered every inch of
+the island, and your slavers struggled to reach the heart of the island.
+There, a lone tree stood, towering over all the other vegetations. Without
+warning, vines started to sprout from the ground, as if the tree was welcoming
+your slavers with the promise of penetrations.
+</p>
+
+<p>
+As the vine wiggled into existence, <<yourrep $g.biologist>> recognized that
+the liquid emanating from its tip was the actual <<rep
+setup.item.quest_bewitchment_nectar>>. Excited at the opportunity, <<rep
+$g.biologist>> attempted to gather the nectar only for another vine to
+violently bursted from the ground, piercing <<their $g.biologist>> <<uanus
+$g.biologist>>.
+Your other slavers were not spared either, as hundreds of tentacles started to sprout
+from the ground, seeking all and any hole left open for them to pierce.
+</p>
+
+<p>
+Within moments, all of your slavers were left writhing, having a vine or two inserted
+into all their orifices. It lasted for a good hour or so, before your slavers
+were drained of all their juices, and thrown aside. With no more willpower to
+gather the nectar, your slavers crawled back onto the ship,
+hoping to forget all these bad memories.
+</p>
+
+<<if $gOutcome == 'disaster'>>
+<p>
+Unfortunately,
+<<if $gQuest.getSeed() % 3 == 0>>
+<<rep $g.biologist>>
+<<elseif $gQuest.getSeed() % 3 == 1>>
+<<rep $g.fighter>>
+<<elseif $gQuest.getSeed() % 3 == 2>>
+<<rep $g.healer>>
+<</if>>
+seemed to get a little too addicted to the feeling of being violated, and became more submissive than ever...
+</p>
+<</if>>
+
+
+

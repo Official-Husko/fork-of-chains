@@ -1,0 +1,34 @@
+:: UGAddUnitPool [nobr]
+
+Weight:
+<<message '(?)'>>
+The larger the weight, the more often this pool is used.
+For example, a pool with weight 3 will be used thrice more often than another
+pool with weight 1.
+<</message>>
+<<numberbox '$ugweight' 1>>
+<br/>
+
+Choose unit pool:
+
+<<for _iunitpool, _unitpool range setup.unitpool>>
+  <<set _text = `Select ${_unitpool.getName()}`>>
+  <br/>
+  <<capture _unitpool>>
+    <<link _text>>
+      <<if $ugweight <= 0 || !$ugweight>>
+        <<warning 'Weight cannot be 0 or negative'>>
+      <<else>>
+        <<run $ugpools.push([_unitpool, $ugweight])>>
+        <<goto 'UnitGroupGen'>>
+      <</if>>
+    <</link>>
+  <</capture>>
+  <<capture _unitpool>>
+    <<message '(+)'>>
+      <<unitpoolcard _unitpool>>
+    <</message>>
+  <</capture>>
+<</for>>
+
+

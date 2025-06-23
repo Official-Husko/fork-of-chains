@@ -1,0 +1,148 @@
+:: OpportunitySetup_luck_chaser [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'luck_chaser', /* key */
+"Luck Chaser", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+  'prep',
+],
+1, /* expiration weeks */
+'Opportunity_luck_chaser',
+setup.qdiff.harder57, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_luck_chaser_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Through(setup.qres.And([
+setup.qres.VarNull('quest_harbinger_of_luck_bath')
+]), 'Must have not tried this before'),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('seven_petal_baths', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_luck_chaser_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Through(setup.qres.And([
+setup.qres.VarNull('quest_harbinger_of_luck_clover')
+]), 'Must have not tried this before'),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('clover_witch', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_luck_chaser_2',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Through(setup.qres.And([
+setup.qres.VarNull('quest_harbinger_of_luck_lucky')
+]), 'Must have not tried this before'),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('luckiest_person_on_mestia', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_luck_chaser_3',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Through(setup.qres.And([
+setup.qres.VarNull('quest_harbinger_of_luck_horse')
+]), 'Must have not tried this before'),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('lucky_horseshoe', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_luck_chaser_4',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+      setup.qres.Through(setup.qres.And([
+setup.qres.VarNull('quest_harbinger_of_luck_magic')
+]), 'Must have not tried this before'),
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('blessings_of_the_south', null),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'a': [
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_luck_chaser [nobr]
+<p>
+<<if !$varstore.get('quest_harbinger_of_luck_done')>>
+<<Yourrep $g.a>> has presented to you several options that might be able to cleanse <<their $g.a>> unluckiness. How effective these methods, you're not sure, but what's the harm in trying out one or two?
+<<else>>
+It's time to try another method. <<Yourrep $g.a>> has yet again suggested several leads worth pursuing...
+<</if>>
+</p>
+
+
+
+
+:: Opportunity_luck_chaser_0 [nobr]
+A certain lucky activity in the vales...
+
+
+
+:: Opportunity_luck_chaser_1 [nobr]
+A certain lucky plant in the forest...
+
+
+
+:: Opportunity_luck_chaser_2 [nobr]
+An incredibly lucky person in the city...
+
+
+
+:: Opportunity_luck_chaser_3 [nobr]
+A certain lucky object in the desert...
+
+
+
+:: Opportunity_luck_chaser_4 [nobr]
+A certain lucky ritual in the seas...
+

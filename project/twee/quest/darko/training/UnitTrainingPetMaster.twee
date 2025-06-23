@@ -1,0 +1,109 @@
+:: QuestSetupUnitTrainingPetMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_pet_master',  /* id */
+  'Pet Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingPetMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingPetMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pet_master),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingPetMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_pet_master),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingPetMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingPetMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_pet_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingPetMaster [nobr]
+<p>
+Once a training completed this final training, they will forever be someone's
+pet, and never anything else.
+To instill such behavior, their brain necessarily need to be rewired
+by an expert trainer.
+They need to understand that the kennel is now their new home,
+and that dog food is all they need for sustenance, among other things.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingPetMasterCrit [nobr]
+
+<<if $g.trainee.isMale()>>
+  <<questimage 'unit_training_pet_master_male.jpg'>>
+<<else>>
+  <<questimage 'unit_training_pet_master_female.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+Thanks to the skill of the training team,
+the training went much smoother than expected. <<Reps $g.trainee>> transformation into a permanent and dedicated pet
+has been completed.
+</p>
+
+<<else>>
+
+<p>
+It is done. <<Reps $g.trainee>> transformation into a parmanent and dedicated pet
+has been completed. <<Rep $g.trainee>> can now be assigned a master and a permanent pet suit,
+to complete the looks.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingPetMasterFailure [nobr]
+<p>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into the ultimate pet.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingPetMasterDisaster [nobr]
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

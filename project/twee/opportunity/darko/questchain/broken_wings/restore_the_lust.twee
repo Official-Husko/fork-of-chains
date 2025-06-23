@@ -1,0 +1,121 @@
+:: OpportunitySetup_restore_the_lust [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'restore_the_lust', /* key */
+"Restore the Lust", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'forest',
+],
+1, /* expiration weeks */
+'Opportunity_restore_the_lust',
+setup.qdiff.hard31, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_restore_the_lust_0',
+    'Opportunity_restore_the_lust_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.AddTitle('slave', 'quest_lust_restore_3'),
+      setup.qc.Trait('slave', setup.trait.per_chaste),
+    ],
+  ],
+  [
+    'Opportunity_restore_the_lust_1',
+    'Opportunity_restore_the_lust_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_dark]),
+    ],
+    [ /* outcomes */
+      setup.qc.VarAdd('broken_wings_dark', 1, -1),
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.AddTitle('slave', 'quest_lust_restore_3'),
+      setup.qc.Trait('slave', setup.trait.per_sexaddict),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slave': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_restore_the_lust [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Given what happened to the neko, this green-tinted stone must be the essence
+of chastity, perhaps part of the former identity of what makes <<rep
+$g.slave>> <<therace $g.slave>> <<they $g.slave>> is. And it is time to
+return it, unless...?
+</p>
+
+
+:: Opportunity_restore_the_lust_0 [nobr]
+Bless with chastity
+
+
+:: Opportunity_restore_the_lust_0_flavor [nobr]
+<p>
+A pleasant green light shines from within the stone, filling the room in
+a relaxing green color. Within moments, all the green energy is absorbed into
+<<reps $g.slave>> <<ugenital $g.slave>>, visibly taking shape into a green
+lock-like image, before vanishing entirely without trace.
+You can see <<their $g.slave>> <<ugenital $g.slave>> becoming healthier now,
+no longer perfectly pale in color.
+Perhaps chastity is a part of <<their $g.slave>> former identity, and
+restoring it might bring you one step closer to restoring the slave's
+mind...
+</p>
+
+
+:: Opportunity_restore_the_lust_1 [nobr]
+Corrupt the essence
+
+
+:: Opportunity_restore_the_lust_1_flavor [nobr]
+<<set _u = $company.player.getUnits({job: setup.job.slaver}).filter(u => u.isHasTrait('magic_dark'))[0]>>
+<<if _u>>
+
+<p>
+If what you guess is right, then this must be the spirit of chastity, which would
+ensure that <<rep $g.slave>> would want for nothing more than just one
+partner. But what a shame that would be, not knowing the joy of having
+multiple lovers. And hence with an evil smirk,
+<<if _u.isYou()>>
+you project your mastery over darkness unto the stone,
+<<else>>
+you ask <<yourrep _u>>
+to project <<their _u>> mastery over darkness unto the stone,
+<</if>>
+channeling dark corrupted energy into the stone of chastity.
+Soon enough, the green glow turns purple, and that's when you know it's time
+to bring it to <<yourrep $g.slave>>.
+</p>
+<p>
+The stone's essence is absorbed seemingly into the slave's <<ugenital
+$g.slave>>, until the stone entirely vanish. You can see <<their $g.slave>>
+<<ugenital $g.slave>> briefly turn purplish in color,
+becoming painfully <<wet $g.slave>> for a moment before returning back to normal.
+Perhaps you have made the right decision if you would like to eventually transform
+the unresponsive slave into a sex toy that behaves more to your liking...
+</p>
+<</if>>

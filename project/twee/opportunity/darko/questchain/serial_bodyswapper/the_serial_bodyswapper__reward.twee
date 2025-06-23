@@ -1,0 +1,135 @@
+:: OpportunitySetup_the_serial_bodyswapper__reward [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'the_serial_bodyswapper__reward', /* key */
+"The Serial Bodyswapper: Reward", /* Title */
+"darko", /* Author */
+[ 'desert', 'special', 'unit', 'trait',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_the_serial_bodyswapper__reward',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+[
+'Opportunity_the_serial_bodyswapper__reward_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.Opportunity('the_serial_bodyswapper__ritual_runaway',
+  {
+    target: 'fighter',
+    shifter1: 'shifter1',
+    shifter2: 'shifter2',
+    shifter3: 'shifter3',
+  }),
+],
+], [
+'Opportunity_the_serial_bodyswapper__reward_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.Opportunity('the_serial_bodyswapper__ritual_runaway',
+  {
+    target: 'exploder',
+    shifter1: 'shifter1',
+    shifter2: 'shifter2',
+    shifter3: 'shifter3',
+  }),
+],
+], [
+'Opportunity_the_serial_bodyswapper__reward_2',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.Opportunity('the_serial_bodyswapper__ritual_runaway',
+  {
+    target: 'distractor',
+    shifter1: 'shifter1',
+    shifter2: 'shifter2',
+    shifter3: 'shifter3',
+  }),
+],
+], [
+'Opportunity_the_serial_bodyswapper__reward_3',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+  setup.qc.Slave('shifter1', 'a|was a living body storage of the serial bodyswapper'),
+  setup.qc.Slave('shifter2', 'a|was a living body storage of the serial bodyswapper'),
+  setup.qc.Slave('shifter3', 'a|was a living body storage of the serial bodyswapper'),
+],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+{ /* actors */
+  'fighter': [],
+  'exploder': [],
+  'distractor': [],
+  'shifter1': [],
+  'shifter2': [],
+  'shifter3': [],
+},
+[ /* expired outcomes */
+],
+true,  /* is must be answered */
+)>>
+
+:: Opportunity_the_serial_bodyswapper__reward [nobr]
+
+<p>
+Your slavers have the opportunity to reenact for one last time the bodyswapping
+ritual in the stronghold of the serial bodyswapper.
+  The eligible slavers are:
+  <<rep $g.fighter>>,
+  <<rep $g.exploder>>, and
+  <<rep $g.distractor>>.
+  They can swap bodies with one of the bodyswapper's slaves:
+  <<rep $g.shifter1>>,
+  <<rep $g.shifter2>>, or
+  <<rep $g.shifter3>>.
+  But you can only do this once, and if you choose to bodyswap, the ritual
+  will surely attract unwanted attention from the surroundings, making it impossible
+  for your slavers to take these slaves home.
+  Note that your slavers would <<dangertext 'refuse to swap bodies with units of the opposite gender'>>!
+</p>
+
+<p>
+  The alternative is to forget about the bodyswap and just take all three of
+  these mindbroken slaves home.
+</p>
+
+<<unitcard $g.shifter1 1>>
+<<unitcard $g.shifter2 1>>
+<<unitcard $g.shifter3 1>>
+
+:: Opportunity_the_serial_bodyswapper__reward_0 [nobr]
+Choose <<rep $g.fighter>>
+
+
+:: Opportunity_the_serial_bodyswapper__reward_1 [nobr]
+Choose <<rep $g.exploder>>
+
+
+:: Opportunity_the_serial_bodyswapper__reward_2 [nobr]
+Choose <<rep $g.distractor>>
+
+
+:: Opportunity_the_serial_bodyswapper__reward_3 [nobr]
+Just take the slaves
+

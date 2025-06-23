@@ -1,0 +1,208 @@
+:: QuestSetup_second_best_ass [nobr quest]
+
+<<run new setup.Title(
+"quest_ex_best_ass_0", /* key */
+"Ex-Best Ass", /* name */
+"Won Best Ass in some festival long time ago", /* description */
+"a|won the best ass in the festival a long time ago and a|was kept as the orcish cum receptacle until a|their mind shattered completely", /* unit text */
+10000, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.UnitGroup(
+"second_best_ass0",
+"ExBestAss",
+'all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Mindbreak('unit'),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_gape),
+  setup.qc.AddTitle('unit', 'quest_ex_best_ass_0'),
+],
+)>>
+
+
+<<set _criteriaass = new setup.UnitCriteria(
+null, /* key */
+'Ass Inspector', /* name */
+[
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.per_attentive,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.dick_demon,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.dick_small,
+  setup.trait.per_chaste,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  slaving: 1,
+  sex: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'second_best_ass', /* key */
+"Second Best Ass", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'unit',
+  'special',
+],
+4, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'infil1': [ setup.qu.infiltrator, 1],
+  'infil2': [ setup.qu.infiltrator, 1],
+  'ass': [ _criteriaass, 1],
+},
+{ /* actors */
+  'a': [
+  ],
+  'slave': 'second_best_ass0',
+},
+[ /* costs */
+],
+'Quest_second_best_ass',
+setup.qdiff.hardest57, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_second_best_assCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Slave('slave', "a|was \"rescued\" from being the orc\'s ass-only cum receptacle", undefined),
+    ],
+  ],
+  [
+    'Quest_second_best_assCrit',
+    [
+      setup.qc.TraitReplaceExisting('a', setup.trait.anus_gape),
+      setup.qc.TraitReplace('a', setup.trait.per_sexaddict),
+      setup.qc.Return('a'),
+    ],
+  ],
+  [
+    'Quest_second_best_assCrit',
+    [
+      setup.qc.Injury('ass', 30),
+      setup.qc.Event('best_ass_rescue', 30, {
+        'a': 'a',
+      }),
+    ],
+  ],
+  [
+    'Quest_second_best_assCrit',
+    [
+      setup.qc.MissingUnit('ass'),
+      setup.qc.TraitReplaceExisting('ass', setup.trait.anus_gape),
+      setup.qc.Event('best_ass_rescue', 30, {
+        'a': 'a',
+      }),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('best_ass_rescue', 30, {
+    'a': 'a',
+  }),
+],
+)>>
+
+:: Quest_second_best_ass [nobr]
+<p>
+You have tracked <<reps $g.a>> whereabout to a certain orcish camp in the deserts. Apparently, <<they $g.a>> and all the previous winners of "Best ass" were still securely locked in their stockades, and being used daily as entertainment for the orcs and their guests. All their faces were covered in dark hood too, which poses a problem of identifying just which of the asses belong to <<rep $g.a>>.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+To solve this issue, <<yourrep _u>> has come up with the following plan: send your most sensitive-dicked slaver over to judge the ass one by one, accompanied with two infiltrators to infiltrate the camp at night. Surely they will be able to identify <<rep $g.a>> by the shape and the feeling of their ass, and will be able to smuggle <<them $g.a>> out safely...
+</p>
+
+
+
+:: Quest_second_best_assCrit [nobr]
+<p>
+Under the guise of the night, <<rep $g.infil1>> and <<utheirrel $g.infil1 $g.infil2>> smuggled <<rep $g.ass>> into the camp. But that was only the beginning of the task, and <<rep $g.ass>> went to work immediately. One by one, <<rep $g.ass>> assfucked the slaves one by one, relying on <<their $g.ass>> keen sense to distinguish your missing slaver <<rep $g.a>>.
+<<if $g.ass.isHasTrait('per_attentive')>>
+<<Rep $g.ass>> remained attentive as <<they $g.ass>> assfucked, feeling every detail of the fuck.
+<</if>>
+<<if $g.ass.isHasTrait('dick_demon')>>
+The sensitive barbs on <<their $g.ass>> demonic dick were very helpful for identifying the exact feeling of fucking <<reps $g.a>> ass.
+<</if>>
+<<if $g.ass.isHasTrait('per_lustful')>>
+<<Rep $g.ass>>, being the lustful <<urace $g.ass>>, ass|was quite motivated by the task.
+<</if>>
+<<if $g.ass.isHasTrait('per_chaste')>>
+<<Rep $g.ass>>, being the chaste <<urace $g.ass>>, ass|was quite horrified by the task.
+<</if>>
+<<if $g.ass.isHasTrait('per_dominant')>>
+Assfucking a sub felt right at home for the dominant <<urace $g.ass>>.
+<</if>>
+<<if $g.ass.isHasTrait('dick_huge')>>
+<<Their $g.ass>> <<udick $g.ass>> ass|was instrumental in helping to gauge how gaped each slave's ass were.
+<</if>>
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+
+<<if $gOutcome == 'crit'>>
+<p>
+<<Rep $g.ass>> ass|was very good at <<their $g.ass>> unorthodox job, and ass|was able to identify <<rep $g.a>> in no time at all. Your slavers had some extra time and decided to also take home the slave whose ass felt the best to <<rep $g.ass>> as an extra prize home.
+</p>
+<<else>>
+<p>
+It took a while, but <<rep $g.ass>> finally found the ass that "gripped just right". Your slavers confidently brought the slave, or rather, <<rep $g.a>> home.
+</p>
+<</if>>
+
+<p>
+Thankfully, <<reps $g.a>> mind remained somewhat intact despite the ordeal. <<They $g.a>> now a|sport a permanently dazed expression, however, and <<they $g.a>> would dream of being assfucked every now and then...
+</p>
+
+<<else>>
+
+<p>
+Unfortunately, <<rep $g.ass>> learned the hard way why a certain slave won best ass.
+One of the slave's asshole gripped <<reps $g.ass>> <<udickorstrap $g.ass>> so tightly that it refused to let it go. <<Rep $g.ass>> struggled for a long while, long enough to alert the guards, and before long the orcish warriors were coming at your slavers in force.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+<<Rep $g.ass>> had to risk the integrity of <<their $g.ass>>
+<<udickorstrap $g.ass>> in order to escape,
+injuring <<them $g.ass>> greatly both physically but mostly mentally in the process...
+</p>
+<<else>>
+<p>
+The ass was completely stubborn, gripping <<rep $g.ass>> very tightly with seemingly no intention of letting the phallus go. <<Rep $g.infil1>> and <<rep $g.infil2>> had no choice but to abandon <<rep $g.ass>> to <<their $g.ass>> fate lest they all share a place in one of the stockades for the rest of their careers...
+</p>
+
+<p>
+<<uneedrescue $g.ass>>, although knowing how the encampment works, <<their $g.ass>> ass would no doubt be somewhat more gaped already by the time you rescue <<them $g.ass>>...
+</p>
+<</if>>
+
+<p>
+You will surely get another chance to rescue <<rep $g.a>>...
+</p>
+
+<</if>>
+

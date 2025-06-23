@@ -1,0 +1,173 @@
+:: OpportunitySetup_under_new_management2 [nobr opportunity]
+
+<<run new setup.Title(
+"quest_brothel_owner_0", /* key */
+"Brothel Owner", /* name */
+"The Legal Owner of <<= setup.dutytemplate.questbrothelmanager.brothelName()>>.", /* description */
+"a|is the legal owner of <<= setup.dutytemplate.questbrothelmanager.brothelName()>> located in the <<lore location_npc>>", /* unit text */
+1500, /* slave value */
+{ /* skill additives */
+knowledge: 2,social: 2,sex: 2,},
+)
+>>
+
+<<run new setup.OpportunityTemplate(
+'under_new_management2', /* key */
+"Under New Management", /* Title */
+{ /* Author */
+  name: "darko (+Kyrozis)",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+  'unknown',
+],
+1, /* expiration weeks */
+'Opportunity_under_new_management2',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_under_new_management2_0',
+    'Opportunity_under_new_management2_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.MoneyCustom(3000),
+    ],
+  ],
+  [
+    'Opportunity_under_new_management2_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('brothel_takeover', null),
+    ],
+  ],
+  [
+    'Opportunity_under_new_management2_2',
+    'Opportunity_under_new_management2_2_flavor',
+    [ /* costs */
+      setup.qc.MoneyCustom(-2500),
+    ],
+    [ /* restrictions */
+      setup.qres.FavorAtLeast('neko', 500),
+    ],
+    [ /* outcomes */
+      setup.qc.Leave('guard1', "a|is on a well-deserved vacation with the brothel\'s staff", undefined),
+      setup.qc.Leave('guard2', "a|is on a well-deserved vacation with the brothel\'s staff", undefined),
+      setup.qc.Leave('pimp', "a|is on a well-deserved vacation with the brothel\'s staff", undefined),
+      setup.qc.Event('under_new_management_quality_time', 1, {guard1: 'guard1', guard2: 'guard2', pimp: 'pimp'}),
+    ],
+  ],
+  [
+    'Opportunity_under_new_management2_3',
+    'Opportunity_under_new_management2_3_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.Favor('neko', 150),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'guard1': [
+    setup.qres.Home(),
+  ],
+  'guard2': [
+    setup.qres.Home(),
+  ],
+  'pimp': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_under_new_management2 [nobr]
+<p>
+The workers and whores of the brothels understandably did not have any money left to pay your slavers for dispatching the bandits who had been abusing them so. Your slavers contemplated taking them as slaves instead, but doing so brazenly in the middle of the city were deemed too dangerous. Instead, they considered several of the possible options.
+</p>
+
+<p>
+First, were you to lack any heart, the slavers could simply ransack whatever remained of the brothel. This would rob the remaining whores and workers of their last line of livelihood, however, but that's probably not your concern...
+</p>
+
+<p>
+Alternatively, you could try to buy the place out. <<Yourrep $g.pimp>> estimated that it would cost your treasury <<money 5000>> to do so.
+Still, given how decrepit the place had become thanks to the bandits' regime, who knows if you'll ever get back your capital should you choose to buy the place out...
+</p>
+
+<<if setup.qres.FavorAtLeast('neko', 500).isOk($gQuest)>>
+<p>
+Since your company is in very good terms with the neko,
+as another option, you could try to convince your slavers, the whores, and
+the workers to spend the week together, all costs covered from your coffers.
+After all, it's not evey day that one gets the chance to spend all their free time with
+one of the cuddliest animals/people on this plane of existence.
+Surely it's worth every single gold coin, is it not?
+</p>
+<</if>>
+
+<p>
+Finally, your slavers could simply just walk away. After all, isn't a good deed its own reward?
+</p>
+
+
+
+:: Opportunity_under_new_management2_0 [nobr]
+Ransack the brothel for valuables
+
+
+:: Opportunity_under_new_management2_0_flavor [nobr]
+<p>
+The remaining whores were helpless to do anything as they watched their livelihood ransacked by the very same people they were pleading for help. Your slavers discovered some still intact furniture and valuables, which they sold to pay for their services.
+</p>
+
+
+:: Opportunity_under_new_management2_1 [nobr]
+Purchase the brothel
+
+
+
+:: Opportunity_under_new_management2_2 [nobr]
+Ask for some quality time
+
+
+:: Opportunity_under_new_management2_2_flavor [nobr]
+<p>
+The whores were a little taken aback by your strange request, some of them
+even blushing a little. However, since <<rep $company.player>> has a good
+reputation among the <<rep $company.neko>>,- and because <<they
+$unit.player>> offered to cover the costs- they agreed to take a week off
+with the people that just freed them from some vile bandits.
+</p>
+
+<p>
+After all, a little relaxation is what your slavers might just need right now.
+</p>
+
+
+:: Opportunity_under_new_management2_3 [nobr]
+Demand no payment
+
+
+:: Opportunity_under_new_management2_3_flavor [nobr]
+<p>
+The whores rejoiced when <<yourrep $g.pimp>> <<uadv $g.pimp>> demanded no payment, and simply wished them all the best. Soon after, you heard that the brothel was back to business, this time fully owned by its workers. The brothel became one of the best brothels in the area, and the workers paid your company back not in money, but by putting in good words about your company's deeds.
+</p>
+

@@ -1,0 +1,264 @@
+:: QuestSetup_bounty_hunt_hole_gaper [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"bounty_hunt_cave_slime0",
+"Kobold",
+'subrace_kobold', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.TraitReplaceExisting('unit', setup.trait.anus_gape),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.vagina_gape),
+  setup.qc.Trait('unit', setup.trait.per_sexaddict),
+],
+)>>
+
+
+
+<<set _criteriafighter1 = new setup.UnitCriteria(
+null, /* key */
+'Hole Gaper Fighter', /* name */
+[
+  setup.trait.bg_scholar,
+  setup.trait.vagina_tight,
+  setup.trait.anus_tight,
+  setup.trait.per_studious,
+  setup.trait.per_chaste,
+  setup.trait.skill_creative,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  arcane: 1,
+}
+)>>
+
+<<set _criteriafighter2 = new setup.UnitCriteria(
+null, /* key */
+'Slime Fighter', /* name */
+[
+  setup.trait.bg_scholar,
+  setup.trait.vagina_tight,
+  setup.trait.anus_tight,
+  setup.trait.per_studious,
+  setup.trait.per_chaste,
+  setup.trait.skill_creative,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  arcane: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'bounty_hunt_hole_gaper', /* key */
+"Bounty Hunt: Hole Gaper", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'deep',
+  'money',
+  'scaley',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'support': [ setup.qu.defendersupport, 1],
+  'fighter1': [ _criteriafighter1, 1],
+  'fighter2': [ _criteriafighter2, 1],
+},
+{ /* actors */
+  'kobold': 'bounty_hunt_cave_slime0',
+},
+[ /* costs */
+],
+'Quest_bounty_hunt_hole_gaper',
+setup.qdiff.hard32, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_bounty_hunt_hole_gaperCrit',
+    [
+      setup.qc.Slave('kobold', "a|was a kobold who fell victim to the dreaded Cave Slime", undefined),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_hole_gaperCrit',
+    [
+      setup.qc.Favor('kobold', 25),
+      setup.qc.MoneyCustom(1000),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_hole_gaperCrit',
+    [
+      setup.qc.TraitIncreaseExisting('fighter1', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('fighter1', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('fighter2', setup.trait.anus_gape),
+      setup.qc.TraitIncreaseExisting('fighter2', setup.trait.vagina_gape),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_hole_gaperCrit',
+    [
+      setup.qc.TraitReplaceExisting('fighter1', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('fighter1', setup.trait.anus_gape),
+      setup.qc.TraitReplaceExisting('fighter2', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('fighter2', setup.trait.anus_gape),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_bounty_hunt_hole_gaper [nobr]
+<p>
+    The kobolds of <<lore location_drak_xoth>> has asked for your help: someone, or something, has been attacking the kobolds. Thankfully, the attack was never lethal, but the victims was always found unconscious on the underground highway — all their holes gaped beyond recovery. The kobolds are calling it the "Hole Gaper" now.
+</p>
+
+<<if setup.qres.QuestDone().isOk($gQuest)>>
+    <p>
+        From your past experience, you know that this "Hole Gaper" is likely the dreaded Cave Slime. Should you fail, you can say good bye to whatever tightness your slavers' holes once possessed...
+    </p>
+<<else>>
+    <p>
+        Your slavers could try to discover whatever this "Hole Gaper" is, and put an end to this act of terror...
+    </p>
+<</if>>
+
+
+
+
+:: Quest_bounty_hunt_hole_gaperCrit [nobr]
+<<if $g.kobold.isMale()>>
+    <<questimage "bounty_hunt_cave_slime_male.jpg">>
+<<else>>
+    <<questimage "bounty_hunt_cave_slime_female.jpg">>
+<</if>>
+
+<p>
+    Starting from the location of the Hole Gaper's last victim, your slavers traced the monster to its source. The victim left a clear trail of fabric — it appears the victim's clothes were ripped apart and its seams were falling apart all the while. Your slavers traced for a good while, under they arrive at a cave. This must be where the "Hole Gaper" is hiding.
+</p>
+
+<p>
+    The Hole Gaper turns out to be an overgrown Cave Slime — a type of slime indigenous to the <<lore region_deep>>. This usually docile slime has mutated apparently, and grow curious with the ways of the people.
+    The cave slime is holding yet another unfortunate kobold in its clutches,
+    <<if $g.kobold.isMale()>>
+        inserting its watery tentacle into the screaming kobold's anus, while another covers the kobold's erect dick, pumping away and forcing the kobold to cum again and again.
+    <<else>>
+        inserting its watery tentacles into both the screaming kobold's anus, and the kobold's vagina.
+        The holes are gaped without mercy, the tentacles pulsating in and out all the while.
+    <</if>>
+</p>
+
+<p>
+    Using the advantage of surprise, your slavers tried to slay the monstrosity.
+    <<set _unit = setup.selectUnit([$g.support, $g.fighter1, $g.fighter2], {trait: 'magic_fire'})>>
+    <<if _unit>>
+        It is weak to fire, and <<reps _unit>> fire magic would be instrumental for the fight.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.support, $g.fighter1, $g.fighter2], {trait: 'magic_water'})>>
+    <<if _unit>>
+        It is completely immune to <<reps _unit>> water magic, and even drew power from it.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.support, $g.fighter1, $g.fighter2], {trait: 'anus_gape'})>>
+    <<if _unit>>
+        Seeing the kobold being gaped so much made <<reps _unit>> already gaping anus ached...
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.support, $g.fighter1, $g.fighter2], {trait: 'vagina_gape'})>>
+    <<if _unit>>
+        <<Reps _unit>> gaping pussy ached, subconsciously asking <<rep _unit>> to insert the tentacle inside...
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.support, $g.fighter1, $g.fighter2], {trait: 'per_smart'})>>
+    <<if _unit>>
+        <<Rep _unit>>
+        <<if _unit.isYou()>>
+            are
+        <<else>>
+            is
+        <</if>>
+        smart enough to devise unique strategy for countering such a monster.
+    <</if>>
+
+    <<set _unit = setup.selectUnit([$g.support, $g.fighter1, $g.fighter2], {trait: 'skill_creative'})>>
+    <<if _unit>>
+        <<Rep _unit>>
+        <<if _unit.isYou()>>
+            are
+        <<else>>
+            is
+        <</if>>
+        creative, and <<they _unit>> already prepared some oil in preparation for the fight. Water slimes are weak against oil, after all.
+    <</if>>
+
+
+</p>
+
+<<if $gOutcome == 'success'>>
+    <p>
+        The fight was fierce, but your slavers emerged victorious, holes intact.
+        By the time the fight had ended, however, the victim kobold was nowhere to be seen. It seemed that the kobold somehow managed to ascertain your slaver's impure intention, and escaped.
+    </p>
+
+    <p>
+        Still, your slavers defeated the great evil, and was rewarded with money as well as favor upon their return to the city.
+    </p>
+<<elseif $gOutcome == 'crit'>>
+    <p>
+        The fight was fierce, but your slavers emerged victorious, holes intact.
+        With a wheeze, the slime dissolved into nothing but water, freeing the trapped and gaped kobold.
+        Seeing such a juicy target, your slavers decided to ditch the rewards and took the gaped kobold as a slave instead.
+    </p>
+<<else>>
+    <p>
+        Unfortunately, your slavers' attacks were ineffective against such an incorporeal being. Before long, <<rep $g.fighter1>> and <<rep $g.fighter2>> found themselves side by side with the trapped kobold, tentacles filling all their open holes.
+        <<Rep $g.support>> watched in horror as <<their $g.support>> teammates were ravaged in a sickening rhythm.
+        <<if $gOutcome == 'failure'>>
+            Thankfully, it did not last long, and the slime grew bored soon after.
+        <<else>>
+            It lasted for a good few hours, and their holes became a lewd gape.
+        <</if>>
+        Your slavers and the kobold were unceremoniously thrown aside onto the highways. This must have been the fate of all the victims before them...
+    </p>
+<</if>>
+
+
+
+
+

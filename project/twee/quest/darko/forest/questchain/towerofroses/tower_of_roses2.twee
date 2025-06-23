@@ -1,0 +1,198 @@
+:: QuestSetup_tower_of_roses2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaadmirer = new setup.UnitCriteria(
+null, /* key */
+'admirer', /* name */
+[
+setup.trait.bg_royal,
+setup.trait.bg_noble,
+setup.trait.bg_knight,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_smart,
+setup.trait.per_lavish,
+setup.trait.per_honorable,
+setup.trait.skill_entertain,
+setup.trait.magic_light,
+setup.trait.magic_light_master,
+setup.trait.eq_valuable,
+],
+[
+setup.trait.bg_laborer,
+setup.trait.bg_farmer,
+setup.trait.face_scary,
+setup.trait.face_hideous,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_slow,
+setup.trait.per_frugal,
+setup.trait.per_lunatic,
+setup.trait.per_evil,
+setup.trait.magic_dark,
+setup.trait.magic_dark_master,
+],
+[
+setup.qres.Job(setup.job.slaver),
+setup.qres.HasTitle('tower_of_roses_admirer'),
+],
+{
+knowledge: 1,
+social: 1,
+sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'tower_of_roses2', /* key */
+"Tower of Roses", /* Title */
+"darko", /* Author */
+[ 'forest', 'money', 'prep'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'admirer': _criteriaadmirer,
+'writer': setup.qu.writer,
+'performer': setup.qu.performer, },
+{ /* actors */
+'prince': 'quest_tower_of_roses1', },
+[ /* costs */
+],
+'Quest_tower_of_roses2',
+setup.qdiff.normal24, /* difficulty */
+[ /* outcomes */
+[
+'Quest_tower_of_roses2Crit',
+[
+setup.qc.VarAdd('tower_of_roses_affection', 70, -1),
+setup.qc.MoneyCrit(), ],
+], [
+'Quest_tower_of_roses2Crit',
+[
+setup.qc.VarAdd('tower_of_roses_affection', 35, -1),
+setup.qc.MoneyNormal(), ],
+], [
+'Quest_tower_of_roses2Failure',
+[
+],
+], [
+'Quest_tower_of_roses2Failure',
+[
+setup.qc.SlaveMarker('prince'),
+setup.qc.VarRemove('tower_of_roses_affection'),
+setup.qc.RemoveTitle('admirer', 'tower_of_roses_admirer'),
+setup.qc.TraumatizeRandom('admirer', 10), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.VarLte('tower_of_roses_affection', 99),
+setup.qres.QuestUnique(),
+setup.qres.HasUnitWithTitle('tower_of_roses_admirer', {job_key: 'slaver'}),
+],
+)>>
+
+:: Quest_tower_of_rosesDescCommon [nobr]
+
+<p>
+An elven <<prince $g.prince>> has come to age and is now in search of a life-long
+companion. Being a hopeless romantic, <<they $g.prince>> built a tower deep
+within the forests and secluded <<themselves $g.prince>> in the uppermost
+floor of the tower. With the help of the elven wizards, thorny roses were
+grown all over the first floor of the tower, forming a curse that makes it
+impossible to access the <<prince $g.prince>>.
+</p>
+
+<p>
+The <<prince $g.prince>> is inviting all the finest suitors from around the
+region to attempt to woo <<them $g.prince>> from below, just like in a book
+<<they $g.prince>> read. Only when <<their $g.prince>> true love appears
+shall the curse be broken and the thorny roses wilted, opening the way to the
+<<prince $g.prince>>.
+</p>
+
+
+:: Quest_tower_of_roses2 [nobr]
+
+<<include 'Quest_tower_of_rosesDescCommon'>>
+
+<<set _headunit = setup.getUnit({title: "tower_of_roses_admirer", job: setup.job.slaver})>>
+<<if !_headunit>>
+  <<missingunitquest>>
+<<else>>
+<p>
+  You can continue <<reps _headunit>> effort to woo the <<prince $g.prince>>, if you so desire.
+</p>
+<</if>>
+
+
+:: Quest_tower_of_roses2Crit [nobr]
+
+<p>
+Your slavers arrived at the hidden tower in the forest.
+Sharp deadly thorns surrounded the entrance of the tower, barring anyone to come in or come out.
+From the outside of the tower,
+using the script written <<uadv $g.writer>> by <<rep $g.writer>>, <<yourrep
+$g.admirer>> <<uadv $g.admirer>> delivered the
+<<if $gOutcome == 'crit'>>
+poem in such a masterful way.
+<<else>>
+poem.
+<</if>>
+
+<<if $g.admirer.isHasTrait('skill_entertain')>>
+<<Their $g.admirer>> beautiful voice added to the atmosphere.
+<</if>>
+
+<<if $g.admirer.isHasAnyTraitExact(['bg_noble', 'bg_knight', 'bg_royal'])>>
+<<Their $g.admirer>> noble bearings were quite noticable in the delivery.
+<</if>>
+
+<<if $g.admirer.isHasTrait('face_attractive')>>
+<<Their $g.admirer>> <<uface $g.admirer>> shined through.
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+From the porch of <<their $g.prince>> tower, the <<prince $g.prince>>
+couldn't help but completely swoon over the delivery, and by extension to
+<<yourrep $g.admirer>>.
+<<else>>
+From the porch of <<their $g.prince>> tower, the <<prince $g.prince>> couldn't
+help but admires <<reps $g.admirer>> charm.
+<</if>>
+</p>
+
+<p>
+<<if $varstore.get('tower_of_roses_affection') >= 65>>
+It seems the prince is now deeply infatuated with <<yourrep $g.admirer>>. An
+opportunity may come very soon...
+<<elseif $varstore.get('tower_of_roses_affection') >= 30>>
+Your slavers noticed the <<prince $g.prince>> staring longingly at
+<<yourrep $g.admirer>>...
+<<else>>
+It seems that <<yourrep $g.admirer>> admirer|have caught the <<prince $g.prince>>'s attention...
+<</if>>
+</p>
+
+
+:: Quest_tower_of_roses2Failure [nobr]
+<p>
+Your slavers arrived at the hidden tower in the forest.
+Sharp deadly thorns surrounded the entrance of the tower, barring anyone to come in or come out.
+<<if $gOutcome == 'failure'>>
+<<Rep $g.admirer>> <<uadv $g.admirer>> read the script written by <<rep
+$g.writer>>. But the delivery failed to impress the <<prince $g.prince>>, who
+eventually closed <<their $g.prince>> window and turned your slavers away.
+<<else>>
+<<Rep $g.admirer>> <<uadv $g.admirer>> messed up reading the script written
+by <<rep $g.writer>>. The <<prince $g.prince>> was visibly upset by the
+incident and whatever admiration <<they $g.prince>> had built towards <<rep
+$g.admirer>> were all gone and have to be rebuilt from scratch.
+Being so completely rejected by the <<prince $g.prince>> left <<rep $g.admirer>>
+slightly traumatized.
+<</if>>
+</p>

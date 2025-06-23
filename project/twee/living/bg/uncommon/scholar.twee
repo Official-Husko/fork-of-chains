@@ -1,0 +1,39 @@
+:: LIVINGSETUP_scholar [nobr living]
+
+<<run new setup.Living({
+  key: 'scholar',
+  name: 'Schoolar',
+  tags: ['uncommon', ],
+  unit_restrictions: [],
+  default_preference: 0,
+  trait_preferences: {
+    bg_scholar: setup.LIVING_COMMON_PREFERENCE,
+    bg_wiseman: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_studious: setup.LIVING_MORECOMMON_PREFERENCE,
+    per_active: -setup.LIVING_UNCOMMON_PREFERENCE,
+  },
+  business: [
+    'reading new books',
+    'writing manuscripts',
+    'expanding a|their knowledge',
+  ],
+  location: 'library',
+})>>
+
+:: LIVING_scholar [nobr]
+
+<p>
+<<Rep $g.a>>
+<<if $g.a.isHasTrait('bg_scholar')>>
+resumes a|their scholarly interest by
+<<else>>
+explores a|their new interest in scholarly tasks by
+<</if>>
+purchasing many strange and exotic books from travelers all around the continent,
+which a|they would then keep in a|their personal library.
+<<if !$g.a.isHasTrait('per_chaste')>>
+A shelf is dedicated to storing the many sex manuals scattered around the land
+that a|they has learned to exist thanks to a|their time in your employ.
+<</if>>
+</p>
+

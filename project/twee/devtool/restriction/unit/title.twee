@@ -1,0 +1,101 @@
+:: RestrictionHasTitle [nobr]
+
+Unit has the following title:
+
+<<devtoolchoosetitle 'RestrictionHasTitleDo'>>
+
+:: RestrictionHasTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.HasTitle(_chosentitle)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionNoTitle [nobr]
+
+Unit does <<dangertext 'not'>> have the following title:
+
+<<devtoolchoosetitle 'RestrictionNoTitleDo'>>
+
+:: RestrictionNoTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.NoTitle(_chosentitle)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionHasSlaverWithTitle [nobr]
+
+Has a slaver with the following title:
+
+<<devtoolchoosetitle 'RestrictionHasSlaverWithTitleDo'>>
+
+:: RestrictionHasSlaverWithTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.HasUnitWithTitle(_chosentitle, {job_key: 'slaver'})>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionHasSlaveWithTitle [nobr]
+
+Has a slave with the following title:
+
+<<devtoolchoosetitle 'RestrictionHasSlaveWithTitleDo'>>
+
+:: RestrictionHasSlaveWithTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.HasUnitWithTitle(_chosentitle, {job_key: 'slave'})>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionNoSlaverWithTitle [nobr]
+
+No a slaver with the following title:
+
+<<devtoolchoosetitle 'RestrictionNoSlaverWithTitleDo'>>
+
+:: RestrictionNoSlaverWithTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.NoUnitWithTitle(_chosentitle, {job_key: 'slaver'})>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionNoSlaveWithTitle [nobr]
+
+Does not exist a slave with the following title:
+
+<<devtoolchoosetitle 'RestrictionNoSlaveWithTitleDo'>>
+
+:: RestrictionNoSlaveWithTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.NoUnitWithTitle(_chosentitle, {job_key: 'slave'})>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionNoUnitWithTitle [nobr]
+
+Does not exist any unit with the following title:
+
+<<devtoolchoosetitle 'RestrictionNoUnitWithTitleDo'>>
+
+:: RestrictionNoUnitWithTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.NoUnitWithTitle(_chosentitle)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionHasUnitWithTitle [nobr]
+
+Exists any unit with the following title:
+
+<<devtoolchoosetitle 'RestrictionHasUnitWithTitleDo'>>
+
+:: RestrictionHasUnitWithTitleDo [nobr]
+
+<<set $qrestriction = setup.qres.HasUnitWithTitle(_chosentitle)>>
+<<gotowipehistory 'QGRestrictionDone'>>
+
+
+:: RestrictionZeroTitle [nobr]
+
+<<set $qrestriction = setup.qres.ZeroTitle()>>
+<<include 'QGRestrictionDone'>>
+

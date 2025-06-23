@@ -1,0 +1,103 @@
+:: EventSetup_rivals [nobr event]
+
+<<run new setup.Event(
+'rivals', /* key */
+"Rivals", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_rivals',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [
+    setup.qres.You(),
+    setup.qres.Home(),
+  ],
+  'slaver': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+    setup.qres.Home(),
+    setup.qres.BestFriendFriendshipAtMost(-500),
+    setup.qres.RememberUnit(),
+  ],
+  'bf': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.NotYou(),
+    setup.qres.Available(),
+    setup.qres.BestFriendWithRememberedUnit(),
+    setup.qres.NoTraits([setup.trait.join_junior], true),
+  ],
+},
+[ /* outcomes */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.moraleoffice),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+:: Event_rivals [nobr]
+<<set _diff = setup.Unit.getAnyConflictingPerTraits($g.slaver, $g.bf)>>
+
+<p>
+Teamwork between your slavers is essential in this kind of slaving work, as they will often need to cooperate during a mission together. While some of your slavers have grown fond of each other and become friends, some others develop rivalries instead. <<Yourrep $g.slaver>>'s relationship with <<utheirrel $g.slaver $g.bf>> <<rep $g.bf>> is one of them, and
+<<if _diff>>
+it is quite clear why the two dislikes each other.
+<<Rep $g.slaver>> slaver|is quite the <<= _diff[0].repAdjective()>> <<urace $g.slaver>>, and <<they $g.slaver>> greatly slaver|dislike <<reps $g.bf>>
+excessive <<= _diff[1].repNounBad()>>.
+<<else>>
+it is unclear why they dislike each other, but they just do.
+<</if>>
+</p>
+
+<<choose>>
+
+<<opt "Rivalry is good">>
+
+<<set _diff = setup.Unit.getAnyConflictingPerTraits($g.slaver, $g.bf)>>
+
+<p>
+Rivalry has its own benefits, as a good rival motivates the other, making each of them work harder as a result.
+With this in mind, you spend the next few days goading the two and heighten their rivalry.
+<<if _diff>>
+Whenever <<rep $g.slaver>> slaver|show <<their $g.slaver>> <<= _diff[0].getName()>> side, you draw <<reps $g.bf>> attention to the act.
+You also arrange their schedules so that <<rep $g.slaver>> would stumble across when <<rep $g.bf>> is busy
+<<= setup.Text.Hobby.verb($g.bf, _diff[1])>>.
+<</if>>
+After a couple of days, the rivalry between the two has visibly intensified.
+</p>
+
+<<run setup.qc.Friendship('slaver', 'bf', -100).apply($gQuest)>>
+
+<<opt "Try to reconcile them">>
+
+<<set _diff = setup.Unit.getAnyConflictingPerTraits($g.slaver, $g.bf)>>
+<<set _same = setup.Unit.getAnySamePerTraits($g.slaver, $g.bf)>>
+
+<<if !_same>>
+<p>
+Despite your best efforts, <<rep $g.slaver>> and <<utheirrel $g.slaver $g.bf>> <<rep $g.bf>> did not visibly get along better with each other. The two are simply too different, sharing no common interest in all their hobbies. After a few days of trying, you have to give up trying to reconcile the two.
+</p>
+<<else>>
+<<set _hobby = setup.Text.Hobby.verb($g.bf, _same)>>
+<p>
+It's not easy to reconcile the two slavers, given their very differing opinions on each other. Your breakthrough comes when you noted that the two share a common interest in <<= _hobby>>.
+After that, you give the two slavers some free time where they can go <<= _hobby>> together.
+The two slavers seemingly reconciled, thanks to their shared interest in the hobby. When they returned to your fort, they have decided to try and put aside their differences, and begin their relationship anew.
+</p>
+
+<<run setup.qc.Friendship('slaver', 'bf', 'reset').apply($gQuest)>>
+
+
+<</if>>
+
+
+<</choose>>

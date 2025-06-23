@@ -1,0 +1,87 @@
+:: EventSetup_wanderer_joins [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_mysterious_wanderer_0", /* key */
+"Mysterious Wanderer", /* name */
+"A mysterious wonderer who one day showed up at your fort", /* description */
+"a|have a mysterious past that you know little about", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+<<run new setup.Title(
+"quest_shapeshifter__werewolf_1", /* key */
+"Shapeshifter: Werewolf", /* name */
+"Either through heritage or advanced magic, this unit is capable of shifting forms between northerner and werewolf", /* description */
+"a|is a shapeshifter capable of shifting form between an ordinary northerner and a hulking werewolf", /* unit text */
+3000, /* slave value */
+{ /* skill additives */
+brawn: 1,social: 1,},
+)
+>>
+
+<<run new setup.UnitGroup(
+"wanderer_joins1",
+"Wanderer",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_nomad),
+  setup.qc.TraitsReplace('unit', [setup.trait.face_attractive, setup.trait.per_loner, setup.trait.per_cautious]),
+  setup.qc.AddTitle('unit', 'quest_mysterious_wanderer_0'),
+],
+)>>
+
+<<run new setup.Event(
+'wanderer_joins', /* key */
+"Wanderer Joins", /* Title */
+"darko", /* Author */
+[ /* tags */
+],
+'Event_wanderer_joins',
+{ /* roles */
+},
+{ /* actors */
+  'wanderer': 'wanderer_joins1',
+},
+[ /* outcomes */
+  setup.qc.Slaver('wanderer', "has an unknown past", undefined),
+  setup.qc.SetCooldownEvent('wanderer_missing', 4),
+  setup.qc.VarRemove('half_werewolf_father_seen'),
+  setup.qc.VarRemove('half_werewolf_father_encountered'),
+  setup.qc.VarRemove('half_werewolf_epilogue'),
+],
+[ /* restrictions */
+  setup.qres.Building('prospectshall'),
+  setup.qres.NoUnitWithTitle('quest_mysterious_wanderer_0', {
+}),
+  setup.qres.NoUnitWithTitle('quest_shapeshifter__werewolf_1', {
+}),
+],
+setup.EVENT_DEFAULT_COOLDOWN, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_wanderer_joins [nobr]
+
+<p>
+Your fort has received a guest today — a hooded northerner who claims to seek
+the company of <<their $g.wanderer>> fellow <<women $g.wanderer>>. Seeing your company occupying a
+previously abandoned fort, <<they $g.wanderer>> saw an opportunity, which
+wanderer|lead <<them $g.wanderer>> to where <<they $g.wanderer>> wanderer|is now.
+</p>
+
+<p>
+You are not able to gather much information about the <<man $g.wanderer>>'s past, but at
+this point you are hard-pressed for slavers that it might be a good decision
+to hire the <<uadjphys $g.wanderer>> <<man $g.wanderer>> anyways.
+</p>
+
+<p>
+<<successtext 'Please note'>>: If you want to hire <<them $g.wanderer>>, you
+have to do so using by going into your <<rep setup.buildingtemplate.prospectshall>>.
+</p>

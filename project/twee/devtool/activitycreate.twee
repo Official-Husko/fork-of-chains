@@ -1,0 +1,54 @@
+:: AGCreate [autosave]
+<<nobr>>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_begin()>>
+<<attach _dom>>
+
+<<link '(Test your activity)' 'ActivityDebugDo'>>
+  <<run $dtquest.makeProperFromDevTool()>>
+  <<set setup.activitytemplate[$dtquest.key] = $dtquest>>
+  <<set $qDebugActivityTemplate_key = $dtquest.key>>
+<</link>>
+[[(Back to edit activity)|ActivityGen]]
+
+<br/>
+<br/>
+
+<<set _dom = setup.DOM.Menu.dev_content_generated_middle()>>
+<<attach _dom>>
+
+<</nobr>>
+<div id='devtoolcoderesult' class='companycard'> <code>"""::""" <<= $apassagesetup >> [nobr activity]
+<<dtprintmeta>>
+"""<<run new setup.ActivityTemplate({"""
+  key: '<<= $akey>>',
+  name: <<dtprinttitle>>
+  author: <<dtprintauthor>>
+  tags: <<dtprinttags>>
+  actor_unitgroups: <<dtprintactors>>
+  critical_traits: [
+  <<for _itrait, _trait range $dtquest.getCriticalTraits()>><<nobr>>
+    &nbsp;
+    setup.trait.<<= _trait.key>>,
+  <</nobr>>
+  <</for>> ],
+  disaster_traits: [
+  <<for _itrait, _trait range $dtquest.getDisasterTraits()>><<nobr>>
+    &nbsp;
+    setup.trait.<<= _trait.key>>,
+  <</nobr>>
+  <</for>> ],
+  restrictions: <<dtprintrestrictions 'restrictions'>>
+  rarity: <<= $dtquest.rarity.text() >>,
+  dialogues: [
+<<= setup.DevToolHelper.printActivityDialogues($dtquest)>>
+  ],
+  room_templates: [
+  <<for _room range $dtquest.getRoomTemplates()>><<nobr>>
+    &nbsp;
+    setup.roomtemplate.<<= _room.key>>,
+  <</nobr>>
+  <</for>> ],
+})>>
+
+</code></div>

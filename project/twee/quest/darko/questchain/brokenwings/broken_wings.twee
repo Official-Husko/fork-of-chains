@@ -1,0 +1,307 @@
+:: QuestSetup_broken_wings [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+"quest_broken_descent_0", /* key */
+"Broken Descent", /* name */
+"A slave that looks mindbroken and non-special in every way, but somehow draws the attention of people around", /* description */
+"a|is a mysterious slave you received that appears to be mindbroken, and not mindbroken at the same time", /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.Title(
+"quest_fallen_angel_1", /* key */
+"Fallen Angel", /* name */
+"A victim of the angel-demon war that is brought to the mortal realm in an ensuing chaos", /* description */
+"a|was an angel torn from the celestial realms in one of the demon-angel wars, and a|was reborn as a mortal", /* unit text */
+30000, /* slave value */
+{ /* skill additives */
+combat: 3,aid: 5,arcane: 2,},
+)
+>>
+<<run new setup.Title(
+"quest_joy_restored_2", /* key */
+"Joy Restored", /* name */
+"Joy has been restored to the slave", /* description */
+null, /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.Title(
+"quest_lust_restore_3", /* key */
+"Lust Restored", /* name */
+"Lust has been restored to the slave", /* description */
+null, /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.Title(
+"quest_empathy_restored_4", /* key */
+"Empathy Restored", /* name */
+"Empathy has been restored to the slave", /* description */
+null, /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+<<run new setup.Title(
+"quest_spirit_restored_5", /* key */
+"Spirit Restored", /* name */
+"Spirit has been restored to the slave", /* description */
+null, /* unit text */
+0, /* slave value */
+{ /* skill additives */
+},
+)
+>>
+
+
+
+<<set _criteriaslave = new setup.UnitCriteria(
+null, /* key */
+'slave', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllowDefiant(),
+  setup.qres.HasTitle('quest_broken_descent_0'),
+],
+{
+}
+)>>
+
+<<set _res = [
+  setup.qc.TraitAndMakeInnate('slave', setup.trait.wings_angel),
+  setup.qc.TraitReplace('slave', 'subrace_angel'),
+  setup.qc.IfThenElse(
+setup.qres.VarGte('broken_wings_dark', 3),
+setup.qc.DoAll([
+setup.qc.AddTraitsRandom('slave', [setup.trait.bg_assassin, setup.trait.bg_adventurer], 1, false, false),
+setup.qc.TraitsReplace('slave', [setup.trait.magic_dark_master]),
+setup.qc.AddTraitsRandom('slave', [setup.trait.per_evil, setup.trait.per_aggressive, setup.trait.per_dominant, setup.trait.per_logical], 2, false, false)
+], undefined),
+setup.qc.IfThenElse(
+setup.qres.VarGte('broken_wings_dark', 2),
+setup.qc.DoAll([
+setup.qc.AddTraitsRandom('slave', [setup.trait.bg_noble, setup.trait.bg_mystic], 1, false, false),
+setup.qc.TraitsReplace('slave', [setup.trait.magic_light, setup.trait.magic_dark]),
+setup.qc.AddTraitsRandom('slave', [setup.trait.per_lunatic, setup.trait.per_masochistic, setup.trait.per_loner, setup.trait.per_dreamy], 2, false, false)
+], undefined),
+setup.qc.DoAll([
+setup.qc.AddTraitsRandom('slave', [setup.trait.bg_knight, setup.trait.bg_healer], 1, false, false),
+setup.qc.TraitsReplace('slave', [setup.trait.magic_light_master]),
+setup.qc.AddTraitsRandom('slave', [setup.trait.per_submissive, setup.trait.per_empath, setup.trait.per_honorable, setup.trait.per_calm], 2, false, false)
+], undefined))),
+  setup.qc.TraitRemove('slave', setup.trait.will_indomitable),
+  setup.qc.TraitRemove('slave', setup.trait.training_mindbreak),
+  setup.qc.RemoveTitle('slave', 'quest_broken_descent_0'),
+  setup.qc.RemoveTitle('slave', 'quest_joy_restored_2'),
+  setup.qc.RemoveTitle('slave', 'quest_lust_restore_3'),
+  setup.qc.RemoveTitle('slave', 'quest_empathy_restored_4'),
+  setup.qc.RemoveTitle('slave', 'quest_spirit_restored_5'),
+  setup.qc.AddTitle('slave', 'quest_fallen_angel_1'),
+  setup.qc.Trait('slave', setup.trait.will_defiant),
+  setup.qc.VarRemove('broken_wings_dark'),
+  setup.qc.VarSet('broken_wings_cooldown', 1, 400),
+]>>
+
+<<run new setup.QuestTemplate(
+'broken_wings', /* key */
+"Broken Wings", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'fort',
+  'prep',
+  'unit',
+],
+4, /* weeks */
+100, /* expiration weeks */
+{ /* roles */
+  'slave': _criteriaslave,
+  'head': [ setup.qu.arcanelightveteran, 1],
+  'mender1': [ setup.qu.healer, 1],
+  'mender2': [ setup.qu.healer, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_broken_wings',
+setup.qdiff.harder46, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_broken_wingsCrit',
+    [
+      setup.qc.Outcomes('success'),
+      setup.qc.Equipment(setup.equipmentpool.aid_good),
+      setup.qc.Equipment(setup.equipmentpool.aid_good),
+    ],
+  ],
+  [
+    'Quest_broken_wingsCrit',
+    _res,
+  ],
+  [
+    'Quest_broken_wingsFailure',
+    [
+      setup.qc.TraumatizeRandom('head', 25),
+      setup.qc.TraumatizeRandom('mender1', 15),
+      setup.qc.TraumatizeRandom('mender2', 15),
+      setup.qc.VarSet('broken_wings_cooldown', 1, 10),
+    ],
+  ],
+  [
+    'Quest_broken_wingsFailure',
+    [
+      setup.qc.TraumatizeRandom('head', 40),
+      setup.qc.TraumatizeRandom('mender1', 30),
+      setup.qc.TraumatizeRandom('mender2', 30),
+      setup.qc.VarSet('broken_wings_cooldown', 1, 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.VarSet('broken_wings_cooldown', 1, 10),
+],
+)>>
+
+:: Quest_broken_wings [nobr]
+<<set _u = setup.getUnit({title: 'quest_broken_descent_0'})>>
+
+<<if !_u>>
+  <<missingunitquest>>
+<<else>>
+<p>
+With all four mortal essence restored to the slave, the last step to awaken
+the mind behind the lifeless eyes of <<yourrep _u>> is to mend whatever wound
+that broke the slave before. And from your slaver's research, this wound is a
+considerable one.
+</p>
+
+<p>
+To attempt the awakening, three especially gifted healers must attend to the
+slave for a month non-stop. Each must administer tender care to the slave to
+soothe the spirit, restore joy, bring pleasure, and draw the empathy back.
+<<set _score = $varstore.get('broken_wings_dark')>>
+<<if _score >= 3>>
+...or perhaps the opposite of it, given what you have chosen to do with the
+slave thus far.
+<<elseif _score <= 1>>
+Oh yes, you will finally see the fruit of your labor, having chose to nurture the slave
+ever so kindly thus far.
+<<else>>
+You will finally see the result of your ambivalence, and the slave will
+awaken exactly as you specify... or not.
+<</if>>
+</p>
+
+<p>
+The ritual will be long and taxing for your slavers, and you best get comfortable...
+</p>
+<</if>>
+
+
+:: Quest_broken_wingsCrit [nobr]
+<p>
+<<Yourrep $g.head>> <<uadv $g.head>> led the healing ritual. In a carefully
+designed room, your slavers tended non-stop to the poor slave for a month,
+attempting to rouse whatever spirit lying dormant inside the husk of
+<<therace $g.slave>>.
+</p>
+
+<p>
+By the end of the first week, the slave began to utter what appeared to be
+terrible nightmares. A war between angels and demons, in the land beyond even
+farther beyond <<lore concept_mist>>. The slave continued to narrate to your slavers with
+great detail — the clashes of celestial flesh against corrupted aberrations,
+and how <<their $g.slave>> comrade fell one by one until only <<they
+$g.slave>> remained.
+</p>
+
+<p>
+It was in the midst of battle, and seeing no escape from the enroaching demons
+and from <<their $g.slave>> upcoming demise, <<they $g.slave>> felt what <<they $g.slave>>
+vaguely recall as a feeling of fear. But fear was a forbidden feeling for an
+angel such as <<themself $g.slave>>, and the gods bestowed punishment upon <<them
+$g.slave>> mid-war by banishing <<them $g.slave>> unto the mortal plane and
+stripping <<them $g.slave>> of all that made them be before scattering it across
+the land.
+</p>
+
+<p>
+And you had collected and restored all of the essence back. But the
+former-angel change was already permanent, and <<they $g.slave>> now possesses
+a normal mortal body. Your slavers continued to soothe and pray for the poor
+soul, until they can see the slave's eyes lit up for the first time, full
+with life.
+</p>
+
+<p>
+<<set _score = $varstore.get('broken_wings_dark')>>
+<<if _score >= 3>>
+Given how you have decided to corrupt <<their $g.slave>> essence so very
+much, there was only anger reflected behind the slave's formerly pure
+mind. Anger at <<themself $g.slave>>, anger at the demons, and more
+importantly at the gods for cursing <<them $g.slave>> despite <<their
+$g.slave>> service. The slave proceeded to lash out at your slavers and trying to escape
+from <<their $g.slave>> predicament by spreading <<their $g.slave>> newly
+restored wings wide.
+<<elseif _score <= 1>>
+<<They $g.slave>> suddenly broke into sobs, regretting all that <<they
+$g.slave>> had done, and beg for forgiveness. Trying to return to <<their
+$g.slave>> god, the slave attempted an escape from your slavers, spreading
+<<their $g.slave>> newly restored wings wide.
+<<else>>
+<<They $g.slave>> remained in the room, unmoving, seemingly confused with the
+moderate changes to their personality here and there, no doubt thanks to your
+decisions thus far.
+Seemingly coming to a conclusion of your intentions, <<they $g.slave>> tried to
+escape from your slavers, spreading <<their $g.slave>> newly restored wings
+wide.
+<</if>>
+</p>
+
+<p>
+Fortunately, <<their $g.slave>> body is of a mortal now, and given your
+slavers' wealth of experience, they were able to subdue the former-angel. More
+importantly, however, the former angel's mind is now restored, and
+although <<they $g.slave>> will still require some work to be a proper slave,
+the training can at least begin now. As your slavers finished their reports,
+you lick your lips in anticipation of breaking a particularly hardy slave...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+It seems the ritual had also restored some semblance of divine clothings to
+the former angel. But the slave wouldn't be needing them for a good long while, and your
+slavers will keep these clothes and put them to better use.
+</p>
+<</if>>
+
+
+:: Quest_broken_wingsFailure [nobr]
+<p>
+Unfortunately, after spending four consecutive week of tending to the slave,
+<<yourrep $g.slave>>'s condition never improved past what was <<their $g.slave>>
+formerly broken self. Your slavers were crushed that their tender
+ministrations had no effect, and began questioning themselves.
+</p>
+
+<p>
+There will surely be another chance to reattempt this quest later.
+</p>

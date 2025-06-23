@@ -1,0 +1,471 @@
+
+:: QuestSetup_potion_of_lust_the_brewing [nobr quest]
+
+
+
+
+
+<<set _criteriaalchemist = new setup.UnitCriteria(
+null, /* key */
+'Alchemist', /* name */
+[
+  setup.trait.race_elf,
+  setup.trait.race_catkin,
+  setup.trait.bg_scholar,
+  setup.trait.per_studious,
+  setup.trait.per_curious,
+  setup.trait.skill_alchemy,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_slow,
+  setup.trait.per_active,
+  setup.trait.per_stubborn,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.skill_alchemy], true),
+],
+{
+  knowledge: 2,
+  arcane: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'potion_of_lust_the_brewing', /* key */
+"Potion of Lust: The Brewing", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'forest',
+  'prep',
+  'item',
+],
+6, /* weeks */
+2, /* expiration weeks */
+{ /* roles */
+  'alchemist': [ _criteriaalchemist, 3],
+},
+{ /* actors */
+  'slave': [
+    setup.qres.Job(setup.job.slave),
+    setup.qres.Available(),
+    setup.qres.SlaveUsableByYou(),
+    setup.qres.NoTraits([setup.trait.per_chaste], true),
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+  setup.qc.MoneyCustom(7500),
+],
+'Quest_potion_of_lust_the_brewing',
+setup.qdiff.harder40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_potion_of_lust_the_brewingCrit',
+    [
+      setup.qc.BoonizeRandom('alchemist', 5),
+      setup.qc.Item(setup.item.potion_lust, 1),
+      setup.qc.SetCooldownQuest('potion_of_lust_the_foraging', 75),
+      setup.qc.VarRemove('mlang_lustpotionquestfail'),
+    ],
+  ],
+  [
+    'Quest_potion_of_lust_the_brewingSuccess',
+    [
+      setup.qc.MoneyCustom(4000),
+      setup.qc.VarSet('mlang_lustpotionquestfail', '1', -1),
+    ],
+  ],
+  [
+    'Quest_potion_of_lust_the_brewingFailure',
+    [
+      setup.qc.Trauma('alchemist', setup.trait.trauma_sex, 5),
+      setup.qc.VarSet('mlang_lustpotionquestfail', '1', -1),
+    ],
+  ],
+  [
+    'Quest_potion_of_lust_the_brewingDisaster',
+    [
+      setup.qc.Injury('alchemist', 3),
+      setup.qc.TraitIncreaseExisting('alchemist', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('alchemist', setup.trait.anus_gape),
+      setup.qc.Outcomes("failure"),
+      setup.qc.VarSet('mlang_lustpotionquestfail', '1', -1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.alchemistshop),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_potion_of_lust_the_brewing [nobr]
+<<set _u = setup.getUnit({
+job: 'slaver',
+anytraits: ['skill_alchemy'],
+})>>
+
+<<if _u>>
+
+    <<set $g.alchemist to _u>>
+
+
+    <<if $g.alchemist.isYou()>>
+
+        <<set _notyou = []>>
+        <<if !$g.alchemist.isYou()>>
+            <<run _notyou.push($g.alchemist)>>
+        <</if>>
+        <<dialogue $g.alchemist>>
+            I've got them! I just have to...you know... distill it. And preserve it. And...stabilise it.
+        <</dialogue>>
+        <p>
+            With several, ripe and fragrant fruits of lust sitting in the <<rep setup.buildingtemplate.alchemistshop>>, along with several decomposing aberration tentacles.<br>
+            The reagents aren't going to keep for long, and the potency of the fruit lessens by the day. It'll probably be useless before the tentacles go bad. You do need to spend some money on specialised equipment, but if you're going to do this, you need to act fast.
+        </p>
+    <<else>>
+        <<dialogue $g.alchemist>>
+            I've got them, <<unickname $g.alchemist>>, I mean, we got them. I just have to...you know... distill it. And preserve it. And...stabilise it.
+        <</dialogue>>
+        <p>
+            With several, ripe and fragrant fruits of lust sitting in the <<rep setup.buildingtemplate.alchemistshop>>, along with several decomposing aberration tentacles.<br>
+
+            "We don't have much time, <<unickname $g.alchemist>>. The fruit is going to turn any day and honestly, they'll be useless before the tentacles start to turn. I know there's the cost of extra equipment, but... please?"
+        </p>
+    <</if>>
+    Whenever you're ready, you can start the project. Just don't expect it to be finished anytime soon.
+
+<<else>>
+
+    <p>
+        You don't have anyone proficient with <<rep setup.trait.skill_alchemy>> right now, so whatever lead
+        this quest might have led to, you cannot follow it.
+    </p>
+
+<</if>>
+
+
+:: Quest_potion_of_lust_the_brewingCrit [nobr]
+<<questimage "alchemylab.jpg">>
+
+<<if $g.alchemist.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.alchemist.isYou()>>
+        <<run _notyou.push($g.alchemist)>>
+    <</if>>
+    <p>
+        Moonlight filters through the windows of the <<rep setup.buildingtemplate.alchemistshop>>. You've more or less lived there for the past...month? More? Groggily you lift your head from the table and stretch, your neck clicking as you realise the room has gone dark. You must have fallen asleep again. Rubbing your eyes you fumble for the cup of tea beside you. Stone cold. Turning to the glow of the fire you see the fireplace has burned down to cold ash. The glow is... your gaze travels left back to the glass vessel, glowing a reddish orange from the liquid inside.
+    </p>
+    <p>
+        It's done.
+    </p>
+    <p>
+        It's
+        <<if setup.qres.QuestDone().isOk($gQuest) or setup.qres.VarEqual("mlang_lustpotionquestfail", "1").isOk($gQuest)>>
+            actually
+        <<else>>
+            finally
+        <</if>>
+
+        done. Stumbling over to the beaker you reach out with trembling hands and then pause. You slip your hands into the heat resistant mittens and then lift the beaker off its trivet, and carefully pour it into the sterilised bottle already packed into straw. The fumes smell like vaguely of pineapple and semen and you feel
+        <<if $unit.player.isHasDick()>>
+            your cock twitch
+        <<else>>
+            your pussy ache
+        <</if>>
+        just from the smell. Now the only question is who you give it to. Or if you sell it.
+    </p>
+
+<<else>>
+    It is nearing midnight when <<name $g.alchemist>> comes running into the <<rep setup.buildingtemplate.greathall>>, clutching a small wooden box, filled with straw and containing a single glass bottle filled with a glowing orange-red liquid. <<Their $g.alchemist>> hair is wild and unkempt, <<their $g.alchemist>> clothes rumpled and there are dark bags under <<their $g.alchemist>> eyes.<br>
+    "It's done," <<they $g.alchemist>> says, holding the box out to you.<br>
+    <<if setup.qres.QuestDone().isOk($gQuest) or setup.qres.VarEqual("mlang_lustpotionquestfail", "1").isOk($gQuest)>>
+        "Does it work?" You ask, looking up from your chair.<br>
+    <<else>>
+        "Have you tested it?" You ask, looking up from your chair.<br>
+    <</if>>
+    <<name $g.alchemist>> looks at you, pauses, and then looks down at the glowing bottle. "The fumes work well enough," <<they $g.alchemist>> says, shifting uncomfortably. "If you're asking about permanent effect, we won't know until you hand it to someone to drink."<br>
+    <<if $unit.player.isHasTrait('per_chaste')>>
+        Hesitantly, you unstopper the bottle, and the smell of the potion makes you recoil, jamming the cork back in and trying to refrain from retching. Maybe it works better on people who aren't you.
+    <<else>>
+        Crooking a finger to the closest slave, you unstopper the bottle and hold the cork out to <<them $g.slave>>. "Lick," you say with a grin.<br>
+        <<if $g.slave.isHasAnyTraitExact(["training_obedience_basic", "training_obedience_advanced", "training_obedience_master"])>>
+            Obediently,
+        <<else>>
+            Hesitantly,
+        <</if>>
+        <<they $g.slave>> licks a small drop of orange-gold liquid from the stopper and groans, <<their $g.slave>>
+        <<if $g.slave.isHasTrait('gender_male')>>
+            cock rising to full, throbbing hardness
+        <<else>>
+            pussy starting to visibly glisten
+        <</if>>
+        as <<they $g.slave>> fall forward, their mouth seeking your crotch. Smiling you <<ustrippantsand $unit.player>> spread your legs, giving <<name $g.slave>> access as <<they $g.slave>> get to work, <<their $g.slave>> eyes and tongue begging you to fuck them, do anything to them, as long as they get some release. Leaning back you smile at <<name $g.alchemist>>.<br>
+        "Well done," you say as you grip the back of <<name $g.slave>>'s head and encourage them to work harder. "I think this is going to be great...<br>
+    <</if>>
+<</if>>
+
+
+
+:: Quest_potion_of_lust_the_brewingSuccess [nobr]
+<<questimage "alchemylab.jpg">>
+
+<<if $g.alchemist.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.alchemist.isYou()>>
+        <<run _notyou.push($g.alchemist)>>
+    <</if>>
+    <p>
+        Moonlight filters through the windows of the <<rep setup.buildingtemplate.alchemistshop>>. You've more or less lived there for the past...month? More? Groggily you lift your head from the table and stretch, your neck clicking as you realise the room has gone dark. You must have fallen asleep again. Rubbing your eyes you fumble for the cup of tea beside you. Stone cold. Turning to the glow of the fire you see the fireplace has burned down to embers. Shit. Jumping to your feet you rush to the beaker and see a dull yellow liquid with a silvery sediment at the bottom. Wafting the fumes towards you leaves you completely unmoved, and you consider trying a sip before remembering you have a dungeon full of test subjects. Fetching one of them in you tilt <<their $g.slave>> head back and tap <<their $g.slave>> chin so that <<they $g.slave>> opens up.<br>
+        "Good <<girl $g.slave>>," you say. "Now swallow."
+    </p>
+    <p>
+        The results are...underwhelming to say the least, but you've come up with a very pleasant drink that sparkles in the light and tastes vaguely of effervescent pineapple. In the end you flog it to the merchants of Lucgate. It's definitely a mild aphrodisiac, just temporary and doesn't make the drinker more inclined to do anything they weren't already wanting to do. Maybe you'll have better luck next time.
+    </p>
+
+<<else>>
+    It is around noon when <<name $g.alchemist>> stumbles into the <<rep setup.buildingtemplate.greathall>>, feet dragging and clutching a small wooden box with a couple of ceramic bottles nestled inside, padded with hay from the stables. <<Their $g.alchemist>> hair is wild and unkempt, <<their $g.alchemist>> clothes rumpled and there are dark bags under <<their $g.alchemist>> eyes.<br>
+    "It didn't work, <<unickname $g.alchemist>>," <<they $g.alchemist>> says glumly.<br>
+    "No result at all?"<br>
+    "Oh it's a perfectly drinkable and very tasty drink and it'll give you a naughty buzz, but nothing like what we wanted," <<they $g.alchemist>> says, running a finger through <<their $g.alchemist>> hair. "I thought about distilling it, but the effects just aren't strong enough. Maybe the fruit was too old given how long it took to get back here, or maybe I got the quantities wrong—"<br>
+    You hold up one hand to interrupt. "Very tasty? You drank it?"<br>
+    <<name $g.alchemist>> shrugs. "I gave some to a slave first and nothing happened, so yes. Taste's a bit like effervescent pineapple with a bit of a kick to it. Great with mint."<br>
+    "Okay," you say thoughtfully ."Flog it to the nobles of Lucgate. Pitch it right and they'll eat it up, especially if it gets their absolutely not-slaves to crave some dick, even if it's just for right then."<br>
+    <p>
+        It's not the effect you wanted, but at least you'll recoup some of your costs. Maybe you'll have better luck next time.
+    </p>
+
+<</if>>
+
+
+
+:: Quest_potion_of_lust_the_brewingFailure [nobr]
+/* Final Ingredient */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<set _ingredient = 'a pinch of dried mugwort'>>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _ingredient = 'dried licquorice root'>>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _ingredient = 'the secretions of a green slime'>>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _ingredient = 'three glimmershroom caps'>>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _ingredient = 'half a cup of ground ginko nut powder'>>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _ingredient = 'a quart of fresh honey'>>
+<</if>>
+
+
+<<questimage "alchemylab.jpg">>
+
+<<if $g.alchemist.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.alchemist.isYou()>>
+        <<run _notyou.push($g.alchemist)>>
+    <</if>>
+    <p>
+        After a month more or less living in the lab, you're ready to add the final ingredient, _ingredient, to the cauldron. Then, after a day of reducing the—
+    </p>
+    <p>
+        The think smoke grey-blue smoke that filled the laboratory and sent you stumbling out the door in search of fresh air was not supposed to happen, and when the cauldron finally stops bubbling and you make it back in, you see the potion has become a thick, mucky goop that smells terrible and tastes worse. The smell lingers in your nostrils for days and turns you completely off sex. Ah well, back to the drawing board.
+    </p>
+
+<<else>>
+    Almost a month after <<name $g.alchemist>> all but locked <<themselves $g.alchemist>> away in the <<rep setup.buildingtemplate.alchemistshop>>, shouts, coughing, and a blue-grey cloud of smoky vapour has you legging it towards the shop, finding <<name $g.alchemist>> doubled over outside, coughing. <<Their $g.alchemist>> hair is wild and unkempt, <<their $g.alchemist>> clothes rumpled <<they $g.alchemist>> looks defeated.<br>
+    "I don't think that worked, <<unickname $g.alchemist>>," <<they $g.alchemist>> says.<br>
+    When the smoke clears enough for you to venture inside, you find what remains of the potion has become a thick, mucky goop at the bottom of the cauldron. It also has a near opposite, if temporary effect to the one you were hoping for, and tastes so foul that even your most obedient slaves end up throwing it back up again in a matter of minutes. Sighing, you chalk it up as a lost cause. Maybe you'll do better next time.
+
+<</if>>
+
+
+
+:: Quest_potion_of_lust_the_brewingDisaster [nobr]
+/* Final Ingredient */
+<<if $gQuest.getSeed() % 6 == 0>>
+    <<set _ingredient = 'mugwort'>>
+<<elseif $gQuest.getSeed() % 6 == 1>>
+    <<set _ingredient = 'licquorice root'>>
+<<elseif $gQuest.getSeed() % 6 == 2>>
+    <<set _ingredient = 'green slime secretions'>>
+<<elseif $gQuest.getSeed() % 6 == 3>>
+    <<set _ingredient = 'glimmershroom caps'>>
+<<elseif $gQuest.getSeed() % 6 == 4>>
+    <<set _ingredient = 'ginko nut powder'>>
+<<elseif $gQuest.getSeed() % 6 == 5>>
+    <<set _ingredient = 'fresh honey'>>
+<</if>>
+
+<<questimage "alchemylab.jpg">>
+
+<<set _u = setup.getAnySlaver()>>
+
+
+<<if $g.alchemist.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.alchemist.isYou()>>
+        <<run _notyou.push($g.alchemist)>>
+    <</if>>
+    <p>
+        After a month more or less living in the lab, you're ready to add the final ingredient, _ingredient, to the cauldron. Then, after a day of reducing the—
+    </p>
+    <p>
+        The think smoke grey-blue smoke that filled the laboratory and sent you stumbling out the door, tearing off your clothes as your body starts burning up with heat and lust.<br>
+        "<<unickname _u>>, are you all right?"
+        <<if $unit.player.isHasTrait('gender_male')>>
+            Dropping to the floor, you grab your achingly hard cock, already oozing precum and start to fuck your fist even as your free hand brushes down past your balls to push against your hole. "I need to fuck, or get fucked," you groan. "Preferably both and right now."
+            <<if $unit.player.getLover() == _u>>
+                <<name _u>>'s face breaks into a smile. "Well, who am I turn down that invitation?"<br>
+                You watch through glazed eyes as your lover hurried strips off their clothes and
+
+                <<if _u.isHasTrait('gender_male')>>
+                    kneels between your legs, pushing your knees up towards your chest as he spits on his dick and then your hole. The wet, slick heat against your fingers feels amazing as you mix his spit with your precum and slide first one, then two slick fingers deep into your ass.<br>
+                    "Damn, you really did a number on yourself, didn't you love?" <<name _u>> says as he gently removes your fingers and then slides his <<udick _u>> into your <<uhole $unit.player>> in one smooth motion.<br>
+                    You cry out as he plunges into you, his body covering yours as he leans in for a kiss.<br>
+                    "Harder," you growl as you wrap your arms and legs around his body, pushing your ass back to meet his thrusts.<br>
+                    "Fuck babe, you're going to make me—"<br>
+                    The smell of his sweat, the taste of his skin and the breathy hitch in his voice as he tips over the edge soothe your soul as his body clenches, and his cock twitches inside of you, pumping your ass full with his cum. You sigh in happiness, but almost immediately the hunger is back, and there's an ache in your balls and deep inside your ass that needs to be sated.<br>
+                    "More," you murmur, kissing his neck as you push against him, urging him to go in for round 2.<br>
+                    "More? Give me a minute to—"<br>
+                    <i>"More."</i>
+
+                <<else>>
+                    straddles your hips, sinking you into her in one smooth motion.
+
+                <</if>>
+
+            <<elseif _u.isHasTrait('per_chaste')>>
+                "Uh... I'll go get someone else?" <<they _u>> say, stumbling back, trying to put some distance between you. "Or maybe you should go use the slaves?"<br>
+                The slaves. Of course. That's a wonderful idea.
+
+            <<else>>
+                <<name _u>>'s face breaks into a smile. "Well, who am I turn down that invitation?"<br>
+                You watch through glazed eyes as <<they _u>> hurried strips off their clothes and
+
+                <<if _u.isHasTrait('gender_male')>>
+                    kneels between your legs, pushing your knees up towards your chest as he spits on his dick and then your hole. The wet, slick heat against your fingers feels amazing as you mix his spit with your precum and slide first one, then two slick fingers deep into your ass.<br>
+                    "Damn, you really did a number on yourself, didn't you?" <<name _u>> says with a chuckle as he lines himself up and shoves his <<udick _u>> into your <<uhole $unit.player>> in one hard shove.<br>
+                    You cry out as he plunges into you, his body covering yours as he leans in, covering your mouth with his hand.<br>
+                    "What? You asked for this," he reminds you. "And you're going to get it, you potion making slut."<br>
+                    By now the pain of entry has turned into a pleasant fullness and a hunger. "Harder," you growl as you wrap your arms and legs around his body, pushing your ass back to meet his thrusts.<br>
+                    "Fuck man, you're going to make me—"<br>
+                    The smell of his sweat, the taste of his skin and the breathy hitch in his voice as he tips over the edge soothe your soul as his body clenches, and his cock twitches inside of you, pumping your ass full with his cum. You sigh in happiness, but almost immediately the hunger is back, and there's an ache in your balls and deep inside your ass that needs to be sated.<br>
+                    "More," you murmur, biting his neck as you push against him, urging him to go in for round 2.<br>
+                    "More? Give me a minute to—"<br>
+                    <i>"More."</i>
+
+                <<else>>
+                    reveals her strap on. "Let's have some fun," she says.
+
+                <</if>>
+            <</if>>
+        <<else>>
+            Dropping to your knees you lean back, fingering your pussy as you flick across your engorged nipples with your free hand.<br>
+            "Fuck me," you whimper, "For Gods' sake, just fuck me already."
+        <</if>>
+    </p>
+    <p>
+        When you finally regain your senses, you find yourself in the dungeons, amongst a slumbering mound of cum soaked flesh. Looking around, you see the nude forms of both slaves and slavers. It looks like you took on all comers in every orifice you have. Licking your cracked lips you find the inside of your mouth still coated in the sticky residue of semen, and you are barely able to stand for the pain in your lower body. Limping out of the dungeons you back to your bedroom and fall into your bed, alone and fucked out. You suspect you're going to need a while to recover before you can even think about trying to figure out what you did wrong.
+    </p>
+<<else>>
+    <p>
+        Almost a month after <<name $g.alchemist>> all but locked <<themselves $g.alchemist>> away in the <<rep setup.buildingtemplate.alchemistshop>>, shouts, coughing, and a blue-grey cloud of smoky vapour has you legging it towards the shop, finding <<name $g.alchemist>> doubled over outside, coughing and tearing off all <<their $g.alchemist>> clothes, revealing <<their $g.alchemist>> <<utorso $g.alchemist>> and <<ugenital $g.alchemist>>.
+        "Fuck," <<they $g.alchemist>> says, <<their $g.alchemist>> hands going to <<their $g.alchemist>> <<ugenital $g.alchemist>>. "I need to fuck. So bad."<br>
+
+        <<if $unit.player.getLover() == $g.alchemist>>
+            "I think I can help with that," you say with a grin. "Right here though? I didn't think you were into exhibi—"<br>
+            "Right here," <<name $g.alchemist>> say firmly, starting to pull at your <<uequipslot $unit.player 'torso'>>. "I can't wait. I need this. Need it now."
+            <<if $g.alchemist.isHasTrait('gender_male')>>
+                Kicking off his pants, <<name $g.alchemist>> falls down onto his back, one hand stroking his <<udick $g.alchemist>>, and the other teasing his hole.<br>
+                "What the hell did you do in there?" you ask as you toss your clothes aside
+                <<if $unit.player.isHasDick()>>
+                    and kneel down between his legs, allowing a thick gob of spit to drop down from your lips to his ass before using your cock to smear it around his hole.<br>
+                    "Not sure," <<name $g.alchemist>> says, grunting as you slip just inside. "I think it was the last ingredient I added."<br>
+                    "Which was?"<br>
+                    <<name $g.alchemist>> impatiently wraps his legs around your waist and pulls you into him, his ass clenching around you as you bottom out, your pubes nestling right up against his hole. "Shit!" he cries, his face screwing up in a mixture of pain and pleasure as he adjusts to having you inside of him. "Fucking shit, balls, it was _ingredient. Then there was smoke and I... really need cock."<br>
+                    Slipping your hands under his shoulders you start to thrust into his ass. "Well I'm here to give it to you," you gasp as he tightens around you, working your cock with his ass muscles and pushing back to meet each of your thrusts, desperate to cram every inch of you into him.<br>
+                    "Oh fuck, babe, please fuck me. Fuck me, harder, oh gods, yes, right there, right there, oh gods, <<name $unit.player>>!"<br>
+                    His hands are everywhere, gliding up your back and gripping your shoulders hard enough to leave bruises as he clenches around you, his mouth seeking yours as you tense and start to unload deep into him.<br>
+                    "Oh fuck yes," he moans, his voice breathy in your ear.<br>
+                    "what about you? you didn't—"<br>
+                    "Later," he mumbles, squeezing his ass around your cock. "Think you can go for round two?"
+
+                <<else>>
+                    and straddle him, placing a hand on his chest to hold him down. "I'm on top," you say firmly.<br>
+                    He nods eagerly. "Okay, sure, anything you... fuck!" he swears, his eyes closing as you sink down onto him. "Fucking hell, oh gods..."
+                <</if>>
+            <<else>>
+                /* Alchemist is female*/
+                Fully naked and breathing heavily, <<name $g.alchemist>> sits back on her haunches, her legs spread as she plays with her pussy, her other hand rubbing her nipples.<br>
+                "Fuck me," she whimpers, as you start pulling of your clothes, "For Gods' sake, just fuck me already."
+            <</if>>
+        <<elseif $unit.player.isHasTrait('per_chaste')>>
+            /* Player and Alchemist are not lovers. Player is chaste*/
+            "Oh, um. Okay. I'll send some people your way. Or maybe you can try use the slaves?"<br>
+
+        <<else>>
+            /* Player and Alchemist are not lovers. Player is not chaste*/
+            "I think I can help with that," you say with a grin. "Want to take this somewhere else maybe? I can-"<br>
+            "No. Here," <<name $g.alchemist>> say firmly, starting to pull at your <<uequipslot $unit.player 'torso'>>. "I can't wait. I need this. Need it now."
+            <<if $g.alchemist.isHasTrait('gender_male')>>
+                Kicking off his pants, <<name $g.alchemist>> falls down onto his back, one hand stroking his <<udick $g.alchemist>>, and the other teasing his hole.<br>
+                "What the hell did you do in there?" you ask as you toss your clothes aside
+                <<if $unit.player.isHasDick()>>
+                    and kneel down between his legs, allowing a thick gob of spit to drop down from your lips to his ass before using your cock to smear it around his hole.<br>
+                    "Not sure," <<name $g.alchemist>> says, grunting as you slip just inside. "I think it was the last ingredient I added."<br>
+                    "Which was?"<br>
+                    <<name $g.alchemist>> impatiently wraps his legs around your waist and pulls you into him, his ass clenching around you as you bottom out, your pubes nestling right up against his hole. "Shit!" he cries, his face screwing up in a mixture of pain and pleasure as he adjusts to having you inside of him. "Fucking shit, balls, it was _ingredient. Then there was smoke and I... really need cock."<br>
+                    Slipping your hands under his shoulders you start to thrust into his ass. "Well I'm here to give it to you," you gasp as he tightens around you, working your cock with his ass muscles and pushing back to meet each of your thrusts, desperate to cram every inch of you into him.<br>
+                    "Oh fuck, babe, please fuck me. Fuck me, harder, oh gods, yes, right there, right there, oh gods, <<name $unit.player>>!"<br>
+                    His hands are everywhere, gliding up your back and gripping your shoulders hard enough to leave bruises as he clenches around you, his mouth seeking yours as you tense and start to unload deep into him.<br>
+                    "Oh fuck yes," he moans, his voice breathy in your ear.<br>
+                    "what about you? you didn't—"<br>
+                    "Later," he mumbles, squeezing his ass around your cock. "Think you can go for round two?"
+                <<else>>
+                    and straddle him, placing a hand on his chest to hold him down. "I'm on top," you say firmly.<br>
+                    He nods eagerly. "Okay, sure, anything you... fuck!" he swears, his eyes closing as you sink down onto him. "Fucking hell, oh gods..."
+                <</if>>
+            <<else>>
+                /* Alchemist is female*/
+                Fully naked and breathing heavily, <<name $g.alchemist>> sits back on her haunches, her legs spread as she plays with her pussy, her other hand rubbing her nipples.<br>
+                "Fuck me," she whimpers, as you start pulling of your clothes, "For Gods' sake, just fuck me already."
+
+            <</if>>
+        <</if>>
+    </p>
+    <p>
+        <<if $unit.player.isHasTrait('per_chaste')>>
+            When you eventually venture into the dungeons, you see <<name $g.alchemist>> lying passed out in the middle of a pile of flesh. It looks like <<they $g.alchemist>> exhausted all the slaves, and more than a few slavers as well. The flaky white of dried cum patches dot <<their $g.alchemist>> skin. Hopefully they'll be all right, but after that marathon, they may be in hospital recovering for a while. Whatever happens, it doesn't look like they were successful making a lust potion.
+        <<else>>
+            After <<they $g.alchemist>> wore you out, <<name $g.alchemist>> went through a number of slavers before becoming the focus of an orgy down in the dungeons—one that you happily joined in,
+            <<if $unit.player.isHasAnyTraitExact(["per_lustful", "per_sexaddict"])>>
+                and when you wake up, you're still there, tangled in a pile of limbs and well fucked. Smiling, you taste the remnants of cum on your lips as you look over to where <<name $g.alchemist>> is sleeping, legs akimbo, and cum still dripping from their mouth
+                <<if $g.alchemist.isHasTrait('gender_male')>>
+                    and ass.
+                <<else>>
+                    , pussy and ass.
+                <</if>>
+            <<else>>
+                although you left while it was still in full swing. When you finally peeked in yousee <<name $g.alchemist>> lying passed out in the middle of a pile of flesh. It looks like <<they $g.alchemist>> exhausted all the slaves, and more than a few slavers as well. The flaky white of dried cum patches dot <<their $g.alchemist>> skin.
+            <</if>>
+            Hopefully they'll be all right, but after that marathon, they may be in hospital recovering for a while. Whatever happens, it doesn't look like they were successful making a lust potion.
+        <</if>>
+    </p>
+<</if>>
+
+
+

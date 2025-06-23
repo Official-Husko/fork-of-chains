@@ -1,0 +1,65 @@
+:: RestrictionHasTag [nobr]
+
+Unit has the following tag/flag: <<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.HasTag(_tag)>>
+<</link>>
+
+
+:: RestrictionNoTag [nobr]
+
+Unit does <<dangertext 'NOT'>> have the following tag/flag: <<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.NoTag(_tag)>>
+<</link>>
+
+
+:: RestrictionNoUnitWithTag [nobr]
+
+Does not exists a unit <<dangertext 'ANYWHERE'>>
+<<message '(?)'>>
+  This includes slavers that you have lost, but are still rescue-able.
+<</message>>
+that have the following tag/flag: <<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.NoUnitWithTag(_tag)>>
+<</link>>
+
+
+
+:: RestrictionHasSlaverWithTag [nobr]
+
+At least one of your <<rep setup.job.slaver>> slavers has the tag / flag:
+<<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.HasUnitWithTagAndJob(_tag, setup.job.slaver)>>
+<</link>>
+
+
+
+:: RestrictionHasSlaveWithTag [nobr]
+
+At least one of your <<rep setup.job.slave>> slaves has the tag / flag:
+<<textbox '_tag' ''>>.
+<<include 'CostTagHelp'>>
+
+<br/>
+<<link 'Done' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.HasUnitWithTagAndJob(_tag, setup.job.slave)>>
+<</link>>
+
+
+
+

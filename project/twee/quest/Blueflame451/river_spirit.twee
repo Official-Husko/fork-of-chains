@@ -1,0 +1,281 @@
+:: QuestSetup_river_spirit [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriaswimmer = new setup.UnitCriteria(
+null, /* key */
+'Frisky Swimmer', /* name */
+[
+  setup.trait.race_lizardkin,
+  setup.trait.bg_pirate,
+  setup.trait.bg_seaman,
+  setup.trait.per_dreamy,
+  setup.trait.per_active,
+  setup.trait.per_lunatic,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_large,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.breast_large,
+  setup.trait.breast_huge,
+  setup.trait.breast_titanic,
+  setup.trait.muscle_strong,
+  setup.trait.tough_tough,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.subrace_lizardkin,
+],
+[
+  setup.trait.breast_tiny,
+  setup.trait.balls_tiny,
+  setup.trait.dick_tiny,
+  setup.trait.per_chaste,
+  setup.trait.per_cautious,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_extremelythin,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1.5,
+  sex: 1.5,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'river_spirit', /* key */
+"River Spirit", /* Title */
+"Blueflame451", /* Author */
+[ /* tags */
+  'vale',
+  'money',
+  'monstersex',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'swimmer': [ _criteriaswimmer, 1],
+  'mage': [ setup.qu.arcanewater, 1],
+  'defender': [ setup.qu.defendersupport, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_river_spirit',
+setup.qdiff.hard12, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_river_spiritCrit',
+    [
+      setup.qc.MoneyCrit(),
+      setup.qc.Outcomes("failure"),
+      setup.qc.SetCooldownQuest(null, 12),
+    ],
+  ],
+  [
+    'Quest_river_spiritCrit',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.Outcomes("failure"),
+      setup.qc.SetCooldownQuest(null, 6),
+    ],
+  ],
+  [
+    'Quest_river_spiritCrit',
+    [
+      setup.qc.IfThenElse(
+setup.qres.Actor('swimmer', setup.qres.NoTraits([setup.trait.per_lustful, setup.trait.per_sexaddict, setup.trait.subrace_lizardkin, setup.trait.bg_whore], true)),
+setup.qc.DoAll([
+setup.qc.TraumatizeRandom('swimmer', 2)
+], undefined),
+setup.qc.DoAll([
+
+], undefined)),
+    ],
+  ],
+  [
+    'Quest_river_spiritDisaster',
+    [
+      setup.qc.Injury('swimmer', 3),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_river_spirit [nobr]
+<p>
+In the recent weeks,
+a mysterious river creature has been harassing fishermen, bathers, and has even capsized small boats on one of the rivers of the <<lore region_vale>>.
+No one has been killed yet, but the locals are afraid of going into the river now, and want these attacks to cease all same.
+Being the superstitious folks they are, they believed it would bring bad luck to kill a river spirit.
+They instead offer a reward only if the creature can be subdued or driven off without doing it any harm.
+</p>
+
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+You run a slaving company, not an exorcism agency, and have no clue how to drive off such a spirit.
+But <<yourrep _u>> happens to know that such spirits usually attack for a very simple and primal
+reason: these spirits are simply horny.
+It might be possible to satiate the spirit, if you were to send a slaver
+(un)lucky enough to satiate whatever desire the spirit wants from them...
+Just make sure they have fiery passions, strong hands, and most importantly good lung capacity!
+</p>
+
+
+:: Quest_river_spiritCrit [nobr]
+
+<<if $g.swimmer.isMale()>>
+  <<questimage 'river_spirit_male.jpg'>>
+<<else>>
+<</if>>
+
+
+<p>
+With <<their $g.mage>> magical expertise, <<yourrep $g.mage>> tracked the source of the spirit
+into a particular site of the river.
+After being imbued with the magic protections <<rep $g.mage>> could muster,
+<<if $g.swimmer.isHasTrait('per_chaste')>>
+<<yourrep $g.swimmer>> blushed, before awkwardly disrobing and entered the river.
+<<elseif $g.swimmer.isHasTrait('per_lustful')>>
+<<yourrep $g.swimmer>> stripped and dived into the river, without hiding <<their $g.swimmer>> eagerness at all.
+<<else>>
+<<rep $g.swimmer>> stripped off <<their $g.swimmer>> <<uequipment $g.swimmer>> and entered the river.
+<</if>>
+<<if $g.swimmer.isHasTrait('race_lizardkin')>>
+Being a lizardkin, swimming came naturally for <<them $g.swimmer>>.
+<</if>>
+</p>
+
+<p>
+As <<rep $g.swimmer>> swam and dove,
+a musical, chiming laughter bubbled out of the flowing river.
+Suddenly, cool, slim fingers began to grip and caress <<reps $g.swimmer>> <<ulegs $g.swimmer>>
+while an ardent mouth kissed and sucked at <<their $g.swimmer>> body.
+At the same time,
+<<theslaver $g.swimmer>> felt an improbable long and flexible tongue slithering against <<them $g.swimmer>> in erotic exploration.
+
+<<if $g.swimmer.isHasDick()>>
+The tongue wrapped about <<their $g.swimmer>> <<udick $g.swimmer>> drawing <<them $g.swimmer>> between slurping lips.
+<<else>>
+The determined tongue discovered and fluttered deep inside <<their $g.swimmer>> <<uvagina $g.swimmer>>. The mouth follows soon after, sealing the wiggling tongue inside with a kiss.
+<</if>>
+
+Filled with overstimulation, <<rep $g.swimmer>> took a few deep breaths before <<they $g.swimmer>> disappeared under the water.
+</p>
+
+<<if $gOutcome == 'failure'>>
+
+<p>
+The river water churned and roiled for a few tense minutes before <<rep $g.swimmer>> swimmer|was ejected back to the surface.
+<<if $g.swimmer.isHasTrait('race_lizardkin')>>
+Despite being a lizardkin, the magical nature of the encounter still left the <<man $g.swimmer>>
+gasping for breath.
+<</if>>
+Sputtering and nearly drowning, <<they $g.swimmer>> swimmer|was pulled ashore by <<their $g.swimmer>> teammates.
+
+<<if $g.swimmer.isHasTrait('per_lustful')>>
+<<Theslaver $g.swimmer>> will require some time to recover after this, but a wan smile seemed to cling to <<their $g.swimmer>> lips as <<they $g.swimmer>> rested.
+<<else>>
+<<Theslaver $g.swimmer>> will require some time to recover after this.
+<</if>>
+Whatever occurred under the water did not seem to pacify the river spirit,
+and the troubles continued. Your slavers did not get paid for such a sloppy job.
+</p>
+
+<<else>>
+
+<p>
+Deep down in the water, <<rep $g.swimmer>> caught a glimpse of the creature molesting
+<<them $g.swimmer>>, its
+<<if $g.defender.isFemale()>>
+  attractive and graceful
+<<else>>
+  attractive and masculine
+<</if>>
+form dragging <<therace $g.swimmer>> effortlessly deep down into the churning water.
+
+Then, the river spirit began to press its gooey body against
+<<them $g.swimmer>>, its fine, delicate scales stimulating
+<<reps $g.swimmer>> <<uskin $g.swimmer>>.
+Soon after, <<they $g.swimmer>> found <<themself $g.swimmer>> mounted,
+<<if $g.swimmer.isHasDick()>>
+<<their $g.swimmer>> <<udick $g.swimmer>> penetrating an unseen but incredible snug orifice.
+<<else>>
+something firm and lively surging into <<their $g.swimmer>> <<uvagina $g.swimmer>>.
+<</if>>
+Within into desperate copulation,
+the river spirit lustfully kissed <<their $g.swimmer>> lips. The kiss was very hard,
+and it felt as if the spirit wanted to suck the air out of <<their $g.swimmer>> burning lungs.
+</p>
+
+<p>
+Meanwhile, <<rep $g.mage>> and <<rep $g.defender>> who were waiting on the shore began to hear the musical river voice again.
+Only this time, the voice is accompanied by lewd moans and contented sighs.
+Just moments after that, <<rep $g.swimmer>> burst back into the surface, gasping for breath
+from the underwater ordeal.
+</p>
+
+<p>
+After <<reps $g.swimmer>> strange encounter, the troublesome attacks finally ceased.
+It seemed that the copulation had calmed the river spirit's passion.
+The thankful villagers gave your slavers the promised reward, and your slavers
+did not deem it necessary to expound how it was done.
+
+<<if $gOutcome == 'crit'>>
+On the way back to the fort, <<rep $g.swimmer>> revealed to <<their $g.swimmer>> teammates a gleaming river pearl that <<they $g.swimmer>> found after the
+<<if $g.swimmer.isHasTrait('per_lustful')>>
+incredible experience.
+<<else>>
+ordeal.
+<</if>>
+<<elseif $gOutcome == 'success'>>
+Along the way back, <<rep $g.swimmer>>
+<<if $g.swimmer.isHasTrait('per_lustful')>>
+just couldn't seem to quit grinning lustfully.
+<<else>>
+kept shivering, slowly recovering from the cold embrace of the river water.
+<</if>>
+<</if>>
+</p>
+<</if>>
+
+
+:: Quest_river_spiritDisaster [nobr]
+<p>
+Your slavers found what they believe to be the site of river attacks
+and <<rep $g.swimmer>>
+
+<<if $g.swimmer.isHasTrait('per_sexaddict')>>
+lustily
+<<elseif $g.swimmer.isHasTrait('per_lustful')>>
+eagerly
+<</if>>
+
+dived right into the river without double-checking it first.
+A mistake -- instead of a mischievous river spirit, <<yourrep $g.swimmer>> found a hungry demonic rusalka!
+As soon as a trace of blood started to appear in the river,
+<<rep $g.defender>> <<uadv $g.defender>> leapt into the river,
+rescuing <<rep $g.swimmer>>.
+Still, <<they $g.swimmer>> swimmer|was already wounded by the river monster, and would need some time
+to rest.
+</p>

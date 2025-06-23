@@ -1,0 +1,74 @@
+:: QuestSetupSurgeryDickShrink [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_dick_shrink',  /* id */
+  'Surgery: Dick Shrinking',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SurgeryDickShrink',  /* description */
+  setup.qdiff.extreme52,
+  [
+    [
+      'SurgeryDickShrinkCrit',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.dick_large.getTraitGroup()),
+        
+      ]
+    ],
+    [
+      'SurgeryDickShrinkSuccess',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.dick_large.getTraitGroup()),
+        
+      ],
+    ],
+    [
+      'SurgeryDickShrinkFailure',
+      [],
+    ],
+    [
+      'SurgeryDickShrinkDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryDickShrink [nobr]
+<p>
+Shrinks both the length and girth of the slaver's dick.
+</p>
+
+:: SurgeryDickShrinkCrit [nobr]
+<p>
+The surgery went off without a hitch.
+</p>
+
+:: SurgeryDickShrinkSuccess [nobr]
+<p>
+The surgery was successful.
+</p>
+
+:: SurgeryDickShrinkFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SurgeryDickShrinkDisaster [nobr]
+<p>
+The surgery failed catastrophically, badly injuring <<rep $g.trainee>>.
+</p>

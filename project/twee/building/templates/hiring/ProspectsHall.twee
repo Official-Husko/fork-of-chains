@@ -1,0 +1,41 @@
+:: InitBuildingProspectsHall [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'prospectshall',
+  tags: [],
+  width: 2,
+  height: 4,
+  door_column: 0,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'prospectshall',
+  name: 'Prospects hall',
+  tags: ['hiring', 'critical'],
+  description_passage: 'BuildingProspectsHall',
+  costs: [
+    [setup.qc.Money(-500)],
+  ],
+  restrictions: [
+    [setup.qres.Building('lodgings')],
+  ],
+  main_room_template_key: 'prospectshall',
+})>>
+
+
+:: BuildingProspectsHall [nobr]
+
+<p>
+One of the most important improvements, a prospect hall is where
+new prospective slavers are accomodated in your fort before your
+decide to hire them.
+Unlocks hiring new slavers.
+
+</p>
+

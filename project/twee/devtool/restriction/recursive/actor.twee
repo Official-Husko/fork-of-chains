@@ -1,0 +1,29 @@
+:: RestrictionActor [nobr]
+
+
+
+<p>
+<<devactordefault>> must satisfy:
+</p>
+
+<<link '(Continue)' 'QGRestrictionDone'>>
+  <<set $qrestriction = setup.qres.Actor($qgDefaultActorName, $qrestriction ? $qrestriction.restriction : setup.qres.Never('Never'))>>
+<</link>>
+
+
+:: RestrictionActorHeader [nobr]
+
+<b><i><<= _entry.actor_name >></i> must satisfy:</b>
+
+<<capture _passage, _ientry, _entry, _listpath>>
+  <<link '(change actor)' 'RestrictionActor'>>
+    <<set $qPassageName = _passage>>
+    <<set $qJsPath = _listpath>>
+    <<set $qListIndex = _ientry>>
+    <<set $qrestriction = _entry>>
+    <<run setup.DevToolHelper.saveScrollPos()>>
+  <</link>>
+<</capture>>
+
+
+

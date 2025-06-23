@@ -1,0 +1,27 @@
+:: EventSetup_orc_invasion [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'orc_invasion', /* key */
+"Orc Invasion", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_orc_invasion',
+{ /* roles */
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('orc', -20),
+setup.qc.QuestDirect('orc_invasion'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('orc', 20),
+setup.qres.Building('veteranhall'),
+],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_orc_invasion [nobr]
+<<include 'Quest_orc_invasion'>>

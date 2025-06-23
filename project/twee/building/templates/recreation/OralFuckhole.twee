@@ -1,0 +1,42 @@
+:: InitBuildingOralFuckhole [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'oralfuckhole',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'oralfuckhole',
+  name: 'Oral fuckhole',
+  tags: ['recreation', ],
+  description_passage: 'BuildingOralFuckhole',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_MEDIUMLOW_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('recreationwingsex')],
+  ],
+  on_build: [
+    [
+      setup.qc.Duty('oralfuckholeslave')
+    ],
+  ],
+  main_room_template_key: 'oralfuckhole',
+})>>
+
+:: BuildingOralFuckhole [nobr]
+
+<p>
+Unlocks the Oral Fuckhole slave duty, which increases the income
+made by your Sex Pimp
+based on the oral skill of the slave.
+</p>

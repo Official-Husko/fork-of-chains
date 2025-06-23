@@ -1,0 +1,122 @@
+:: BedchamberEnter [nobr]
+
+<<set $gMenuVisible = true>>
+
+<<set _bedchamberx = $bedchamber[$gBedchamber_key]>>
+
+You enter <<= _bedchamberx.getName()>>.
+
+<<bedchambercard _bedchamberx>>
+
+<<focmove '(Exit room)' 'BedchamberList'>>
+
+<<if _bedchamberx.isPrivate() && _bedchamberx.getSlaver() != $unit.player>>
+  <<rep _bedchamberx.getSlaver()>> <<dangertextlite 'disallowed'>> you from using <<their _bedchamberx.getSlaver()>> slaves.
+<<else>>
+  <<set _slaves = _bedchamberx.getSlaves()>>
+  <<for _islave, _slave range _slaves>>
+    <<capture _slave>>
+      <<set _text = `(Interact with ${_slave.getName()})`>>
+      <<message _text>>
+        <<set _dom = setup.DOM.Menu.interactionpool(setup.interactionpool.unit, _slave)>>
+        <<attach _dom>>
+      <</message>>
+    <</capture>>
+  <</for>>
+<</if>>
+
+<<set _bedchamber = _bedchamberx>>
+
+<<set _dom = setup.DOM.Menu.bedchamberdescription(_bedchamber)>>
+<<attach _dom>>
+
+
+:: BedchamberRename [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _bedchamberx = $bedchamber[$gBedchamber_key]>>
+
+Change <<rep _bedchamberx>>'s name to:
+<<textbox "_bedchamberx.name" _bedchamberx.getName()>>.
+
+<br/>
+<<focreturn 'Done'>>
+
+
+:: BedchamberOwnerChange [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _bedchamberx = $bedchamber[$gBedchamber_key]>>
+
+Change <<rep _bedchamberx>>'s owner from <<= _bedchamberx.getSlaver().rep()>> to:
+
+<<focreturn '(Cancel)'>>
+
+<<set _dom = setup.DOM.Roster.bedchambersetslaver(_bedchamberx)>>
+<<attach _dom>>
+
+
+:: BedchamberOptionsChange [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _bedchamberx = $bedchamber[$gBedchamber_key]>>
+
+Change <<rep _bedchamberx>>'s rules to: (click to change)
+
+<<for _optionkey, _optionobj range setup.BEDCHAMBER_OPTIONS>>
+  <br/>
+  <<set _varname = `_bedchamberx.option_map.${_optionkey}`>>
+  <<set _options = {}>>
+  <<for _iobj, _obj range _optionobj>>
+    <<set _options[_obj.text] = _iobj>>
+  <</for>>
+  <<capture _varname, _options>>
+    <<cycle _varname autoselect>>
+      <<optionsfrom _options>>
+    <</cycle>>
+  <</capture>>
+<</for>>
+
+<br/>
+<br/>
+<<focreturn '(Done)'>>
+
+<<run setup.DOM.Nav.topLeftNavigation(
+  setup.DOM.Nav.return(
+    'Confirm [space]',
+  )
+)>>
+
+
+:: BedchamberChangeFurniture [nobr]
+
+<<set $gMenuVisible = false>>
+
+<<set _bedchamber = $bedchamber[$gBedchamber_key]>>
+
+<<run setup.DOM.Nav.topLeftNavigation(
+  setup.DOM.Nav.link(
+    'Confirm [space]',
+    () => {
+      const res = State.variables.gBedchamberChangeFurnitureReturnPassage;
+      delete State.variables.gBedchamberChangeFurnitureReturnPassage;
+      setup.DOM.Nav.goto(res);
+    },
+  )
+)>>
+
+<div>
+  <<foclink '(Confirm)'>>
+    <<set _res = $gBedchamberChangeFurnitureReturnPassage>>
+    <<unset $gBedchamberChangeFurnitureReturnPassage>>
+    <<focgoto _res>>
+  <</foclink>>
+</div>
+
+<<set _dom = setup.DOM.Menu.bedchamberedit(_bedchamber)>>
+<<attach _dom>>
+
+

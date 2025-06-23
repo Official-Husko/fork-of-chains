@@ -1,0 +1,15 @@
+:: RestrictionFortSkillBonusAtLeast [nobr]
+
+<div>
+Fort total bonus on the following skill is at least <<numberbox '_bonus' 5>>:
+</div>
+
+<<for _skill range setup.skill>>
+<div>
+  <<capture _skill>>
+    <<foclink _skill.rep() 'QGRestrictionDone'>>
+      <<set $qrestriction = setup.qres.FortSkillBonusAtLeast(_skill, _bonus)>>
+    <</foclink>>
+  <</capture>>
+</div>
+<</for>>

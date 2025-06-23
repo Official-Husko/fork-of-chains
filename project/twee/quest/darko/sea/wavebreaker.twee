@@ -1,0 +1,154 @@
+:: QuestSetup_wavebreaker [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'wavebreaker', /* key */
+"Wavebreaker", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'order', 'sea', 'rare',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'envoy': [ setup.qu.escort, 1],
+  'trainer': [ setup.qu.slavetrainer, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+  'master': 'a_discerning_letter0',
+  'slave': 'a_discerning_letter1',
+},
+[ /* costs */
+],
+'Quest_wavebreaker',
+setup.qdiff.normal45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_wavebreakerCrit',
+    [
+      setup.qc.SetCooldownQuest(null, 54),
+      setup.qc.SlaveOrderFlex(
+'Wavebreaker Order', /* name */
+'independent', /* company */
+52, /* expires in */
+5000, /* base price */
+2500, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+],
+[ /* disaster traits */
+setup.trait.per_masochistic,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AllowDefiant(),
+setup.qres.Trait(setup.trait.will_defiant),
+],
+[ /* addons */
+setup.SlaveOrderAddon.TraitsRandom([
+setup.trait.race_lizardkin,
+setup.trait.race_demon,
+setup.trait.muscle_verystrong,
+setup.trait.tough_tough,
+setup.trait.per_chaste,
+setup.trait.per_proud,
+setup.trait.per_brave,
+setup.trait.per_stubborn,
+setup.trait.per_dominant,
+setup.trait.per_calm
+], 5, 0, 0),
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+    ],
+  ],
+  [
+    'Quest_wavebreakerCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_wavebreakerFailure',
+    [
+      setup.qc.QuestDirect('wavebreaker'),
+    ],
+  ],
+  [
+    'Quest_wavebreakerFailure',
+    [
+      setup.qc.QuestDirect('wavebreaker'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.HasSlaveWithTraits([setup.trait.will_defiant]),
+  setup.qres.Building(setup.buildingtemplate.researchroom),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_wavebreaker [nobr]
+
+<p>
+As you recall, a certain master in the <<lore region_sea>> that calls
+<<themself $g.master>> as the <<master $g.master>> of waves is offering to
+buy your <<rep setup.trait.will_defiant>> slaves. This is a rare opportunity,
+as no other slave-dealers would even bother dealing with these extremely
+head-strong slaves.
+</p>
+
+<p>
+You have the precise address of the <<master $g.master>> of waves, should you
+wish to sell one of your slaves. It won't be difficult, but it will take some
+time before your slavers can contact the
+<<if $unit.player.isHasTrait('per_cruel')>>
+tasteful
+<<elseif $unit.player.isHasTrait('per_kind')>>
+distasteful
+<</if>>
+<<man $g.master>>.
+</p>
+
+
+
+:: Quest_wavebreakerCrit [nobr]
+<p>
+Your slavers never met with the <<master $g.master>>, and all contact were
+made through <<their $g.master>> head-slave, an oddly familiar <<urace
+$g.slave>>. The slave was a little unnerving, seemingly completely broken to
+<<their $g.slave>> <<master $g.master>>'s will.
+As your slavers exited the mansion, the <<master $g.master>>'s slave reminded
+your slavers that <<their $g.slave>> <<master $g.master>> is willing to make
+at most one purchase per year.
+</p>
+
+<p>
+Only when your slavers exited the mansion with the slave order did they
+finally realize why the slave was so familiar — <<they $g.slave>> slave|is
+one of the famous seven pirates of the <<lore region_sea>>, whose wanted
+poster littered the cities back in the days.
+It was believed that <<they $g.slave>> went missing
+sometime ago, presumably dead, but your slavers know better now.
+</p>
+
+
+:: Quest_wavebreakerFailure [nobr]
+
+<p>
+Despite the obvious address of the <<master $g.master>>,
+your slavers still managed to somehow get themselves lost in the vast <<lore region_sea>>.
+Eventually, they returned to the dock, having exhausted their supplies for the journey.
+You should try again with a better team.
+</p>

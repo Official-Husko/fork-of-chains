@@ -1,0 +1,241 @@
+:: QuestSetup_sea_escort [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"sea_escort0",
+"Sea Pirate",
+'sea_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_pirate),
+],
+)>> <<run new setup.UnitGroup(
+"sea_escort1",
+"Mercenary",
+'sea_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_mercenary),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'sea_escort', /* key */
+"Sea Escort", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'sea',
+  'money',
+  'unknown',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+  'guard1': [ setup.qu.guard, 1],
+  'guard2': [ setup.qu.guard, 1],
+  'support': [ setup.qu.guardsupport, 1],
+},
+{ /* actors */
+  'pirate': 'sea_escort0',
+  'merc': 'sea_escort1',
+},
+[ /* costs */
+],
+'Quest_sea_escort',
+setup.qdiff.hard50, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_sea_escortCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.MoneyCustom(12000),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(6000),
+setup.qc.Favor('lizardkin', 300)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(6000),
+setup.qc.Favor('humansea', 300)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(6000),
+setup.qc.Slave('pirate', "a|was a pirate in the southern seas captured by your slavers and made into a slave", undefined)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(6000),
+setup.qc.Slaver('merc', "a|was a mercenary working in the Southern Seas who asked to join your company for a more permanent position", undefined)
+], undefined)
+]),
+    ],
+  ],
+  [
+    'Quest_sea_escortCrit',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.MoneyCustom(6000),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(3000),
+setup.qc.Favor('lizardkin', 150)
+], undefined),
+setup.qc.DoAll([
+setup.qc.MoneyCustom(3000),
+setup.qc.Favor('humansea', 150)
+], undefined),
+setup.qc.MoneyCustom(6000),
+setup.qc.MoneyCustom(6000)
+]),
+    ],
+  ],
+  [
+    'Quest_sea_escortFailure',
+    [
+      setup.qc.OneRandomSeed([
+setup.qc.MissingUnit('guard1'),
+setup.qc.MissingUnit('guard2')
+]),
+    ],
+  ],
+  [
+    'Quest_sea_escortFailure',
+    [
+      setup.qc.MissingUnit('guard1'),
+      setup.qc.MissingUnit('guard2'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.sea, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_sea_escort [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+The <<lore region_sea>> is a very dangerous region, even for your experienced slavers. So it is not a surprise that most people who decide to go southwards would hire escorts and mercenaries to guard them along the journey. Given how treacherous the seas are and the dangers within, the promised pay for such a duty is very high. One such offer is sitting quietly at your desk right now, and you can send a group of slavers on a honest mission for once, guarding people on their journey across the sea. The reward is great, and who knows what the might encounter along the way?
+</p>
+
+
+
+
+
+:: Quest_sea_escortCrit [nobr]
+<<if $gQuest.getSeed() % 5 == 0 || $gQuest.getSeed() % 5 == 4>>
+
+<p>
+
+To your complete surprise, the journey was completed without encountering any danger.
+<<if $gOutcome == 'success'>>
+The grateful merchants paid handsomely for your slavers' services, even though all they did was
+<<else>>
+The merchants that your slavers guarded made so much profit that they shared a rather generous reward for your slavers services, despite them doing nothing and mostly just
+<</if>>
+<<set _sleep = (
+$g.guard1.isHasTrait('per_dreamy') or $g.guard1.isHasTrait('per_active') or
+$g.guard2.isHasTrait('per_dreamy') or $g.guard2.isHasTrait('per_active') or
+$g.support.isHasTrait('per_dreamy') or $g.support.isHasTrait('per_active')
+)>>
+<<if _sleep>>
+snooze on the job.
+<<else>>
+drink on the job.
+<</if>>
+</p>
+
+<<if $gQuest.getSeed() % 5 == 4 && $gOutcome == 'crit'>>
+<p>
+At the end of the journey, one of the other hired mercenaries approached your slavers, apparently impressed by... whatever they were doing on the ship. <<Therace $g.merc>> asked to join their employer — that is you — and <<they $g.merc>> merc|is now waiting in your <<rep setup.buildingtemplate.prospectshall>>. Given your slavers were mostly
+<<if _sleep>>
+slept throughout
+<<else>>
+drinking on
+<</if>>
+this job, however, you're not sure that <<their $g.merc>> impression about your company is at all accurate...
+</p>
+<</if>>
+
+<<else>>
+
+<p>
+The exotic species living across the seas fetch for a wonderful price in the continent of <<lore geo_mestia>>, and as a result many slaver ships are abound in the seas.
+Your slavers had the misfortune of encountering one such ship, but fortunately,
+<<yourrep $g.guard1>> and <<utheirrel $g.guard1 $g.guard2>> were quite good at their job.
+When the slaver ship decided to board the merchant ship your slavers were guarding,
+<<yourrep $g.guard1>> raised <<their $g.guard1>> <<uweapon $g.guard1>> and charged <<uadv $g.guard1>> into the incoming slavers. Clash of metal against metal ensued, but ultimately it was <<reps $g.guard2>> <<upraisenoun $g.guard2>> that earned your slavers a hard-won victory.
+</p>
+
+<p>
+<<if $gQuest.getSeed() % 5 == 3 && $gOutcome == 'crit'>>
+The invading slavers were routed back to their ship, but <<rep $g.guard1>> <<uadv $g.guard1>> snatched one of them and knocked <<them $g.pirate>> unconscious.
+<<Therace $g.pirate>> would make for a fine slave indeed back at your fort, although
+there is no doubt that your slavers would have already sampled the slaves' various orifices to mitigate the boredom of the journey back home.
+<<elseif $gQuest.getSeed() % 5 == 1 or $gQuest.getSeed() % 5 == 2>>
+With the pirates defeated, your slavers instead boarded the pirate ship to look for valuables. Inside, they found
+<<if $gQuest.getSeed() % 5 == 1>>
+several lizardkin captives
+<<else>>
+several human captives
+<</if>>
+being tied up and stored like a cargo.
+The thoughts of enslaving all of them came into mind, but considering the journey back home together with their employers, it was rather unfeasible to take all of them back home. Your slavers decided to free them instead, and the rescued slaves were
+<<if $gOutcome == 'crit'>>
+very grateful, and your company's reputation soar with the
+<<else>>
+grateful, increasing your company's reputation with the
+<</if>>
+<<if $gQuest.getSeed() % 5 == 1>>
+<<rep $company.lizardkin>>.
+<<else>>
+<<rep $company.humansea>>.
+<</if>>
+<<else>>
+
+<</if>>
+
+</p>
+
+<</if>>
+
+
+
+
+:: Quest_sea_escortFailure [nobr]
+<p>
+Unfortunately, the merchant ship was ambushed by
+<<if $gQuest.getSeed() % 3 == 0>>
+a kraken, who assaulted the ship out of nowhere.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+a slaving ship, who boarded the ship in the middle of the night.
+<<elseif $gQuest.getSeed() % 3 == 2>>
+a pirate ship, who brazenly assaulted the ship.
+<</if>>
+Your slavers fought bravely against the threat, but ultimately
+<<if $gOutcome == 'disaster'>>
+both <<rep $g.guard1>> and <<rep $g.guard2>> were
+<<elseif $gQuest.getSeed() % 2 == 0>>
+<<rep $g.guard1>> was
+<<else>>
+<<rep $g.guard1>> was
+<</if>>
+
+<<if $gQuest.getSeed() % 3 == 0>>
+grabbed by one of the many tentacles and yanked out of the ship.
+<<elseif $gQuest.getSeed() % 3 == 1>>
+kidnapped by the slavers who then retreated to their ship.
+<<elseif $gQuest.getSeed() % 3 == 2>>
+downed by the unscrupulous pirates who then took their "booty" to their ship.
+<</if>>
+
+It might still be possible to rescue your slaver<<if $gOutcome == 'disaster'>>s<</if>>, if you act quick enough. Better get your Rescuer to work, if you already have one.
+</p>

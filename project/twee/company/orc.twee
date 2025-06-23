@@ -1,0 +1,42 @@
+:: InitCompanyOrc [nobr company]
+
+<<set _item = setup.qc.EquipmentForSale(
+  'blacksmith',
+  /* amount = */ 1,
+)>>
+
+<<set _rare = setup.qc.EquipmentForSaleSingle(
+  'combat_arms_master',
+)>>
+
+<<run new setup.CompanyTemplate(
+  'orc',
+  'Orcish Band',
+  'CompanyTemplateOrc',
+  [ /* favor effects */
+    [
+      _item,
+      _item,
+      _item,
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_MEDIUM),
+    ],
+    [
+      _item,
+      _item,
+      _item,
+      setup.qc.DoAll([_rare], setup.FAVOR_MASTER_EQUIPMENT_PROBABILITY_HIGH),
+    ],
+  ],
+)>>
+
+:: CompanyTemplateOrc [nobr]
+
+A group of green-skinned brutes living on the <<lore region_desert>>.
+Orc smiths are famous for having crafted the sturdiest of armors,
+and they can be enticed to sell their wares if you befriend them enough.
+

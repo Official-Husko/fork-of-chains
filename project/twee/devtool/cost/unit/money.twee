@@ -1,0 +1,25 @@
+:: CostMoneyUnitValue [nobr]
+
+
+
+Gain money equal to <<devactordefault>>'s value multiplied by
+<<numberbox '_multiplier' 0.5>>, and capped at <<numberbox '_cap' 10000>>g.
+
+<br/>
+<<link 'Done' 'QGCostDone'>>
+  <<set $qcost = setup.qc.MoneyUnitValue($qgDefaultActorName, _multiplier, _cap)>>
+<</link>>
+
+
+:: CostFavorUnitValue [nobr]
+
+<p>
+Gain favor equal to <<devactordefault>>'s value multiplied by
+<<numberbox '_multiplier' 0.05>>. (Remember that the actual number shown in the game is ten times multiplied by this.)
+</p>
+
+<<focwidget 'costrelationshipwidget'>>
+  <<set $qcost = setup.qc.FavorUnitValue($qgDefaultActorName, _company, _multiplier)>>
+<</focwidget>>
+
+<<include 'CostFavorChoose'>>

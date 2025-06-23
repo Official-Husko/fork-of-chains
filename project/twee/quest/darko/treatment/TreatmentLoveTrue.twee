@@ -1,0 +1,147 @@
+:: QuestSetupTreatmentLoveTrue [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _target = new setup.UnitCriteria(
+  null, /* key */
+  'TARGET SLAVER', /* title */
+  [ /* critical traits */
+  ],
+  [
+  ], /* disaster traits */
+  [setup.qres.Job(setup.job.slaver)], /* requirement */
+  { /* skill effects, sums to 3.0 */
+  }
+)>>
+
+
+<<run new setup.QuestTemplate(
+  'treatment_love_true',  /* id */
+  'Treatment: Love',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'target': _target,
+    'head': [setup.qu.heal_head_master, 2],
+    'assistant1': [setup.qu.heal_assistant, 1],
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [
+    setup.qc.LoseItem(setup.item.love_potion_true),
+  ],  /* costs */
+  'TreatmentLoveTrue',  /* description */
+  setup.qdiff.hard65,
+  [
+    [
+      'TreatmentLoveTrueCrit',
+      [
+        setup.qc.Friendship('trainee', 'target', 2000),
+        setup.qc.Hookup('trainee', 'target'),
+        setup.qc.TraumatizeRandom('trainee', 50),
+        setup.qc.TraumatizeRandom('target', 50),
+      ],
+    ],
+    [
+      'TreatmentLoveTrueSuccess',
+      [
+        setup.qc.Friendship('trainee', 'target', 2000),
+        setup.qc.Hookup('trainee', 'target'),
+        setup.qc.TraumatizeRandom('trainee', 50),
+        setup.qc.TraumatizeRandom('target', 50),
+        setup.qc.Injury('trainee', 3),
+        setup.qc.Injury('target', 3),
+      ],
+    ],
+    [
+      'TreatmentLoveTrueFailure',
+      [
+        setup.qc.Friendship('trainee', 'target', 2000),
+        setup.qc.Hookup('trainee', 'target'),
+        setup.qc.TraumatizeRandom('trainee', 50),
+        setup.qc.TraumatizeRandom('target', 50),
+        setup.qc.Injury('trainee', 7),
+        setup.qc.Injury('target', 7),
+      ],
+    ],
+    [
+      'TreatmentLoveTrueDisaster',
+      [
+        setup.qc.Friendship('trainee', 'target', 2000),
+        setup.qc.Hookup('trainee', 'target'),
+        setup.qc.TraumatizeRandom('trainee', 50),
+        setup.qc.TraumatizeRandom('target', 50),
+        setup.qc.Injury('trainee', 10),
+        setup.qc.Injury('target', 10),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: TreatmentLoveTrue [nobr]
+<p>
+Forcefully makes two units love each other,
+by using a <<rep setup.item.love_potion_true>>.
+A very mentally invasive procedure.
+There is no doubt the slavers will be in severe trauma after the procedure ended.
+While this procedure always succeeds, it usually cause injuries to the patients.
+</p>
+
+<p>
+<<dangertext 'IMPORTANT'>>: The unit assigned to the TARGET SLAVER role will be the unit
+that becomes the patient's lover.
+</p>
+
+:: TreatmentLoveTrueCommon [nobr]
+
+<p>
+It is done. Whatever their prior feelings towards each other, it does not matter anymore,
+and somehow <<yourrep $g.trainee>> trainee|is now the sole and only lovers of <<rep $g.target>>.
+But they can't help but feel something wrong with how they feel towards each other,
+and they are expected to feel a great disquiet over the next few months.
+</p>
+
+
+:: TreatmentLoveTrueCrit [nobr]
+<<include 'TreatmentLoveTrueCommon'>>
+
+<p>
+<<Rep $g.head>> directed the procedure with such skill that both <<rep $g.trainee>>
+and <<rep $g.target>>
+did not sustain any injuries at all at the end of the procedure.
+</p>
+
+:: TreatmentLoveTrueSuccess [nobr]
+<<include 'TreatmentLoveTrueCommon'>>
+
+<p>
+The healing procedure went about as well as expected.
+<<Rep $g.trainee>>
+and <<rep $g.target>>
+will need some time to recover from the procedure.
+</p>
+
+:: TreatmentLoveTrueFailure [nobr]
+<<include 'TreatmentLoveTrueCommon'>>
+
+<p>
+<<Rep $g.head>> head|was unskilled in administering the procedure and as a result
+<<rep $g.trainee>>
+and <<rep $g.target>>
+were severely injured during the procedure.
+</p>
+
+:: TreatmentLoveTrueDisaster [nobr]
+<<include 'TreatmentLoveTrueCommon'>>
+
+<p>
+<<Rep $g.head>> head|was completely incompetent in administering the procedure and as a result
+<<rep $g.trainee>>
+and <<rep $g.target>>
+were heavily injured during the procedure.
+</p>

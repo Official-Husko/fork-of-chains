@@ -1,0 +1,79 @@
+:: QuestSetupSurgeryMuscleGrow [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'surgery_muscle_grow',  /* id */
+  'Surgery: Muscle Growth',  /* Title */
+  'darko',   /* author */
+  ['fort', 'transformation'],  /* tags */
+  4, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.surgery_head,
+    'assistant1': setup.qu.surgery_assistant,
+    'assistant2': setup.qu.surgery_assistant,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'SurgeryMuscleGrow',  /* description */
+  setup.qdiff.hardest51,
+  [
+    [
+      'SurgeryMuscleGrowCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.muscle_strong),
+        setup.qc.AddTitle('trainee', 'fleshshape_muscle'),
+      ]
+    ],
+    [
+      'SurgeryMuscleGrowSuccess',
+      [
+        setup.qc.Trait('trainee', setup.trait.muscle_strong),
+        setup.qc.AddTitle('trainee', 'fleshshape_muscle'),
+      ],
+    ],
+    [
+      'SurgeryMuscleGrowFailure',
+      [],
+    ],
+    [
+      'SurgeryMuscleGrowDisaster',
+      [
+        setup.qc.Injury('trainee', 8),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: SurgeryMuscleGrow [nobr]
+<p>
+Grows the size of the slaver's muscles.
+</p>
+
+<p>
+<<dangertext 'WARNING'>>: changing bodyshape is intrusive,
+and will no doubt have a permanent negative impact on the slaver's body.
+</p>
+
+:: SurgeryMuscleGrowCrit [nobr]
+<p>
+The surgery went off without a hitch.
+</p>
+
+:: SurgeryMuscleGrowSuccess [nobr]
+<p>
+The surgery was successful.
+</p>
+
+:: SurgeryMuscleGrowFailure [nobr]
+<p>
+Unfortunately, <<reps $g.head>> attempt throughout the week did not borne result.
+</p>
+
+:: SurgeryMuscleGrowDisaster [nobr]
+<p>
+The surgery failed catastrophically, badly injuring <<rep $g.trainee>>.
+</p>

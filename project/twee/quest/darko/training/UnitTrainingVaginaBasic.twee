@@ -1,0 +1,96 @@
+:: QuestSetupUnitTrainingVaginaBasic [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_vagina_basic',  /* id */
+  'Vagina Training: Basic',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  1, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head,
+    'trainer1': setup.qu.training_trainer_dick_normal,
+    'trainer2': setup.qu.training_trainer_dick_normal,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingVaginaBasic',  /* description */
+  setup.qdiff.easy15,
+  [
+    [
+      'QuestUnitTrainingVaginaBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_vagina_basic),
+        
+      ]
+    ],
+    [
+      'QuestUnitTrainingVaginaBasicCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_vagina_basic),
+        
+      ],
+    ],
+    [
+      'QuestUnitTrainingVaginaBasicFailure',
+      [],
+    ],
+    [
+      'QuestUnitTrainingVaginaBasicDisaster',
+      [
+        setup.qc.Injury('trainee', 1),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingVaginaBasic [nobr]
+<p>
+While traditional sex is something that everyone capable of doing,
+slaves must learn to go beyond traditional sex to be able to give
+maximum pleasure back when being fucked.
+This can be achieved from both the physical feedback, as well as the
+non-physical feedback such as proper moans and body language when being fucked.
+</p>
+
+:: QuestUnitTrainingVaginaBasicCrit [nobr]
+
+<<if $g.trainee.isFemale()>>
+  <<questimage 'unit_training_vagina_basic_female_humankingdom.jpg'>>
+<</if>>
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+The training was a complete success. <<Rep $g.trainee>> trainee|have
+learned the basics of being a fuck whore,
+while your slavers gain a lot of experience from the training.
+</p>
+
+<<else>>
+
+<p>
+At the end of the week, <<rep $g.trainee>>
+is now able to improve the fucker's experience when fucking <<them $g.trainee>>,
+and is passable as a whore.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingVaginaBasicFailure [nobr]
+<p>
+Unfortunately, <<rep $g.trainee>> trainee|is not bright enough
+to understand the difference between regular sex, and being
+a proper slave during sex.
+</p>
+
+:: QuestUnitTrainingVaginaBasicDisaster [nobr]
+<p>
+Either <<rep $g.head>> head|was too harsh in employing punishment,
+or just pure bad luck, <<rep $g.trainee>> managed to get injured
+and the training had to be stopped early.
+</p>

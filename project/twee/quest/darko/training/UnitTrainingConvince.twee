@@ -1,0 +1,139 @@
+:: QuestSetupUnitTrainingConvince [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.QuestTemplate(
+'training_convince', /* key */
+"Slaver Training - Basic", /* Title */
+"darko", /* Author */
+[ 'fort', 'trait'
+], /* tags */
+4, /* weeks */
+1, /* quest expiration weeks */
+{ /* roles */
+'head': setup.qu.training_head,
+'convincer2': setup.qu.convincer,
+'convincer1': setup.qu.convincer, },
+{ /* actors */
+'trainee': null, },
+[ /* costs */
+  setup.qc.MoneyUnitValue('trainee', -3, 100000),
+],
+'Quest_training_convince',
+setup.qdiff.normal40, /* difficulty */
+[ /* outcomes */
+[
+'Quest_training_convinceCrit',
+[
+  setup.qc.MissingUnitOpposite('trainee'),
+  setup.qc.TraumatizeRandom('trainee', 150),
+  setup.qc.TraumatizeRandom('trainee', 150),
+  setup.qc.MoneyNormal(),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('trainee', setup.qres.WeeksWithCompanyAtLeast(53)),
+    setup.qc.DoAll([
+      setup.qc.Trait('trainee', setup.trait.bg_slave)
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined)
+  ),
+],
+], [
+'Quest_training_convinceCrit',
+[
+  setup.qc.MissingUnitOpposite('trainee'),
+  setup.qc.TraumatizeRandom('trainee', 150),
+  setup.qc.TraumatizeRandom('trainee', 150),
+  setup.qc.IfThenElse(
+    setup.qres.Actor('trainee', setup.qres.WeeksWithCompanyAtLeast(53)),
+    setup.qc.DoAll([
+      setup.qc.Trait('trainee', setup.trait.bg_slave)
+    ], undefined),
+    setup.qc.DoAll([
+    ], undefined)
+  ),
+],
+], [
+'Quest_training_convinceFailure',
+[
+],
+], [
+'Quest_training_convinceFailure',
+[
+setup.qc.TraumatizeRandom('convincer1', 12),
+setup.qc.TraumatizeRandom('convincer2', 12),
+],
+],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_training_convince [nobr]
+
+<p>
+While there has been several occurrences of a former slave becoming a slaver, it is still relatively rare.
+For one, the slave owners are usually reluctant to give up a perfectly good slave.
+More importantly, the slave, having experienced what it felt under the whip, is usually averse to having to inflict their suffering on another.
+</p>
+
+<p>
+With a highly skilled slaver, however,
+it might just be possible to actually convince a slave to become a slaver.
+It will be extremely difficult, however, and would require a specific team of slavers to do so, as well
+as a large amount of money to entice the potential slaver.
+Furthermore, the former-slave will surely be traumatized by their experiences when they were enslaved,
+which will reduce their slaving capabilities for a good while. The trauma will surely go away
+in due time, however, and there are no permanent damage.
+</p>
+
+
+:: Quest_training_convinceCrit [nobr]
+
+<p>
+Over the past two weeks, using various interrogation techniques,
+your slavers <<uadv $g.convincer1>> convinced
+your now former slave <<rep $g.trainee>> the benefits of becoming a slaver.
+After long days of convincing, <<rep $g.trainee>> finally saw the light, and
+decided to accept the bribe, agreeing to become one of your slavers. <<Rep
+$g.trainee>> trainee|is now waiting in the <<rep
+setup.buildingtemplate.prospectshall>> for you to officially take in as a slaver.
+</p>
+
+<p>
+Still, <<their $g.trainee>> experiences as a slave trainee|weigh heavily on <<them $g.trainee>>,
+giving them a temporary trauma that lasts quite a while.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Seeing <<their $g.trainee>> future secure as a slaver, <<rep $g.trainee>> gave to you the location of <<their $g.trainee>> secret stash that was originally planned as <<their $g.trainee>> lifeline upon escaping from your fort.
+</p>
+<</if>>
+
+<<if $g.trainee.getWeeksWithCompany() >= 53>>
+  <p>
+    <<Rep $g.trainee>> had been a slave under your care for quite a long while, and <<they $g.trainee>> often can
+    be seen reflexively behaving like how a slave would.
+  </p>
+<</if>>
+
+
+:: Quest_training_convinceFailure [nobr]
+
+<p>
+Unfortunately, <<rep $g.trainee>> managed to stubbornly resist all your slavers arguments, and ultimately preferred being whipped to whipping others. The training failed, and must be repeated to try this again.
+</p>
+
+<p>
+Your money is gone too, and you could not tell which one of your slavers were responsible for it...
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Talking with the slave deeply affected your slavers, making them question some of their
+life decisions.
+</p>
+<</if>>

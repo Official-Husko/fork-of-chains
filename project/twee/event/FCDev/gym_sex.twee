@@ -1,0 +1,254 @@
+:: EventSetup_gym_sex [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<set _outcomes =
+[ /* outcomes */
+  setup.qc.IfThenElse(
+setup.qres.Actor('gym', setup.qres.AnyTrait([setup.trait.per_chaste, setup.trait.per_submissive, setup.trait.per_kind], true)),
+setup.qc.DoAll([
+setup.qc.BoonizeRandom('other', 2)
+], undefined),
+setup.qc.DoAll([
+setup.qc.Friendship('gym', 'other', 300)
+], undefined)),
+  setup.qc.SetCooldownEvent('gym_sex_mm', 1000),
+  setup.qc.SetCooldownEvent('gym_sex_mf', 1000),
+  setup.qc.SetCooldownEvent('gym_sex_ff', 1000),
+]
+>>
+
+<<set _gymreq = [
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+  setup.qres.Available(),
+  setup.qres.Trait(setup.trait.muscle_strong),
+]>>
+
+<<set _otherreq = [
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NotYou(),
+  setup.qres.Available(),
+  setup.qres.NoTrait(setup.trait.muscle_strong),
+  setup.qres.NoTrait(setup.trait.per_dominant),
+]>>
+
+<<run new setup.Event(
+'gym_sex_mm', /* key */
+"Gym Sex", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_gym_sex',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [ setup.qres.You(), ],
+  'gym': _gymreq.concat([
+    setup.qres.TraitExact(setup.trait.gender_male),
+  ]),
+  'other': _otherreq.concat([
+    setup.qres.TraitExact(setup.trait.gender_male),
+  ]),
+},
+_outcomes,
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.gym),
+  setup.qres.AllowLovers('gender_male', 'gender_male'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'gym_sex_mf', /* key */
+"Gym Sex", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_gym_sex',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [ setup.qres.You(), ],
+  'gym': _gymreq.concat([
+    setup.qres.TraitExact(setup.trait.gender_male),
+  ]),
+  'other': _otherreq.concat([
+    setup.qres.TraitExact(setup.trait.gender_female),
+  ]),
+},
+_outcomes,
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.gym),
+  setup.qres.AllowLovers('gender_male', 'gender_female'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+<<run new setup.Event(
+'gym_sex_ff', /* key */
+"Gym Sex", /* Title */
+{ /* Author */
+  name: "FCdev and darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+],
+'Event_gym_sex',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'you': [ setup.qres.You(), ],
+  'gym': _gymreq.concat([
+    setup.qres.TraitExact(setup.trait.gender_female),
+  ]),
+  'other': _otherreq.concat([
+    setup.qres.TraitExact(setup.trait.gender_female),
+  ]),
+},
+_outcomes,
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.gym),
+  setup.qres.AllowLovers('gender_female', 'gender_female'),
+],
+0, /* Cooldown */
+setup.rarity.rare, /* Rarity */
+)>>
+
+
+:: Event_gym_sex [nobr]
+<p>
+<<if $g.gym.isHasTrait('muscle_verystrong')>>
+<<Yourrep $g.gym>> has an immensely powerful physique, and <<therace $g.gym>>
+maintains it with a tremendous workout routine. <<Theslaver $g.gym>> can often be seen
+working out for hours, lifting weights far heavier than <<their $g.gym>>
+peers. This gives <<them $g.gym>> power, but it also makes <<them $g.gym>>
+looks quite good.
+<<else>>
+<<Yourrep $g.gym>> takes care of <<themself $g.gym>>, and it shows.
+While there is no explicit requirement that a slaver must work out hard and regularly, it is of course good to be physically fit for such a demanding job. Not to mention, it's often useful to look good.
+<</if>>
+</p>
+
+<p>
+Ever since you've built the <<rep setup.buildingtemplate.gym>>,
+<<rep $g.gym>> has been spending quite a lot of time there, maintaining the size of <<their $g.gym>> muscles.
+As you pass by the gym today, you see <<them $g.gym>> working out as usual, and <<they $g.gym>> appears to have just completed the final rep of <<their $g.gym>> first workout of the day.
+But more interestingly, you see <<yourrep $g.other>> frozen in the open doorway, having seen something in the workout room that caught <<their $g.other>> attention as <<they $g.other>> passed by.
+<<Their $g.other>> <<ueyes $g.other>> are fixed on <<reps $g.gym>>
+
+<<if $g.gym.isHasBreasts()>>
+sports bra clad boobs with almost painful intensity.
+You can't really blame <<them $g.other>>; the bra's soaked in <<their $g.gym>> sweat and <<their $g.gym>> nipples are clearly visible as bumps in the tight material.
+
+<<else>>
+abdominal muscles with almost painful intensity.
+You can't really blame <<them $g.other>>;
+they're pretty cut, and <<their $g.other>> bare chest is coated in a light sheen of glistening sweat.
+<</if>>
+</p>
+
+<p>
+<<Their $g.other>> eyes track up <<reps $g.gym>> torso comically until <<they $g.other>>'s looking into <<their $g.gym>> eyes.
+<<Rep $g.other>> stares dumbly at <<rep $g.gym>> for a moment before realizing what <<they $g.other>>'s doing and blushing with embarrassment.
+"Sorry, I was just, um, passing by and I thought, um, I saw, um, sorry I'm going now," <<they $g.other>> babbles,
+and turns to flee.
+</p>
+
+
+<<if $g.gym.isHasTrait('per_chaste')>>
+<p>
+The chaste slaver's embarrassment at having being so lustfully watched only doubles when <<rep $g.gym>> finally notices that you were also watching the entire scene unfolds. <<They $g.gym>> blushes furiously, stammering out from the gym quickly to wash and change clothes. In the coming days, however, you noticed <<rep $g.other>> works harder than normal, no doubt trying to impress <<rep $g.gym>>...
+</p>
+<<elseif $g.gym.isHasTrait('per_submissive')>>
+<p>
+<<Yourrep $g.gym>> does not give chase, and while others would mistake it for
+leniency, you know <<theslaver $g.gym>> too well by now and especially <<their $g.gym>>
+submissive tendencies.
+In the coming days, however, you noticed <<rep $g.other>> works harder than normal, no doubt trying to impress <<rep $g.gym>>, completely oblivious to <<their $g.gym>> submissive nature...
+</p>
+<<elseif $g.gym.isHasTrait('per_kind')>>
+<p>
+<<Yourrep $g.gym>> only smiles at the scene, the kind slaver never thinking of any sort of retaliation. Finally noticing your presence, <<they $g.gym>> waves at you as well before finally going back to <<their $g.gym>> quarters to change clothes.
+In the coming days, however, you noticed <<rep $g.other>> works harder than normal, no doubt trying to impress <<rep $g.gym>>, completely oblivious to <<their $g.gym>> submissive nature...
+</p>
+<<else>>
+
+<p>
+As <<they $g.other>> run away, <<rep $g.other>> follows the natural impulse when embarrassed, and turns <<their $g.other>> head resolutely away from <<rep $g.gym>>, trying very hard to forget making such a fool of <<themself $g.other>>.
+This means that <<they $g.other>> does not see <<reps $g.gym>> rapid, predatory pursuit of <<their $g.gym>>; nor does <<they $g.other>> hear <<reps $g.gym>> careful stride across the flooring. <<Their $g.other>> first indication that she's prey is when <<reps $g.gym>> <<uhands $g.gym>> grab <<them $g.other>> around <<their $g.other>> middle and hug <<rep $g.other>> hard against <<their $g.gym>>
+<<if $g.gym.isHasBreasts()>>
+sweaty boobs.
+<<else>>
+sweaty, bare chest.
+<</if>>
+<<They $g.other>> stiffens and shrieks with surprise.
+<<Reps $g.gym>> warm, animal presence has an immediate effect. <<They $g.gym>> hears <<rep $g.other>> sucks in <<their $g.other>> breath and then feel <<them $g.other>> begin to breathe increasingly hard as <<their $g.gym>> <<uscent $g.gym>> sinks into <<them $g.other>> and <<their $g.other>> embarrassment is starting to get replaced by lust.
+</p>
+
+<p>
+<<if $g.gym.isFemale()>>
+Despite <<their $g.gym>> feminine appearance, <<rep $g.gym>> has capable <<uhands $g.gym>>.
+<<else>>
+<<rep $g.gym>> has strong <<uhands $g.gym>> to go with <<their $g.gym>> masculine appeal.
+<</if>>
+
+They rove across <<reps $g.other>> front, hugging <<them $g.other>> hard against <<themself $g.gym>>
+as <<rep $g.gym>> massages and gropes.
+
+<<if $g.other.isHasTrait('breast_huge')>>
+
+<<Their $g.other>> tits are so big that hefting them creates a bit of a burn in <<reps $g.gym>> biceps, in addition to making <<rep $g.other>> writhe against <<them $g.gym>>.
+
+<<else>>
+
+<<rep $g.gym>> pinches <<reps $g.other>> nipples and tug them hard, making <<therace $g.other>> writhe and buck against <<them $g.gym>>.
+
+<</if>>
+
+<<if !$g.gym.isHasDick()>>
+<<rep $g.gym>> grabs one of <<reps $g.other>> <<uhands $g.other>>
+and guide it down to <<their $g.other>> own
+<<ugenital $g.other>>, making <<them $g.other>> play with <<themself $g.other>>.
+Meanwhile, <<rep $g.gym>> looks after <<their $g.gym>> womanhood with <<their $g.gym>> other <<uhand $g.gym>>,
+schlicking expertly while holding <<rep $g.other>> close, ensuring that <<they $g.other>> feels every motion of what <<they $g.gym>>'s doing.
+When <<their $g.gym>> fingers are thoroughly coated with pussyjuice, <<rep $g.gym>> drops <<their $g.other>> <<uhand $g.other>>,
+letting <<rep $g.other>> continue masturbating on <<their $g.other>> own, and then use the freed hand to replace the one <<they $g.gym>> gym|was using to touch <<themself $g.gym>>.
+Then, <<rep $g.gym>> takes the wet fingers and push them into <<their $g.other>> mouth; <<rep $g.other>> willingly sucks them clean, using <<their $g.other>> tongue to gather every trace of <<reps $g.gym>> secretions.
+<<Rep $g.gym>> gathers sweat from between <<their $g.gym>> <<ubreasts $g.gym>>,
+and make <<rep $g.other>> suck that off <<their $g.gym>> fingers too. When <<rep $g.other>> orgasms, <<rep $g.gym>> shoves <<them $g.other>> against the wall and humps against <<them $g.other>> and <<their $g.other>> <<uhand $g.other>> both, climaxing <<themself $g.gym>>.
+
+<<else>>
+
+<<rep $g.gym>> pulls <<rep $g.other>> up onto <<their $g.other>> toes and slide <<themself $g.gym>> inside <<them $g.other>>, <<therace $g.other>> gasping when <<they $g.other>> feels <<reps $g.gym>> hot dick enter <<their $g.other>>
+<<if $g.other.isHasVagina()>>cunt<<else>>anus<</if>>.
+Once <<they $g.gym>>'s hilted, <<rep $g.gym>> bring <<rep $g.other>> <<uhands $g.other>> up on either side of <<their $g.other>> head to grasp
+<<their $g.gym>> shoulders behind <<them $g.other>>, and then scoops <<reps $g.other>> <<ulegs $g.other>> up and hoist <<them $g.other>> to rest against <<their $g.gym>> <<ubreasts $g.gym>>,
+held in midair and impaled on <<their $g.gym>> <<udick $g.gym>>.
+<<Rep $g.gym>> can't pound <<rep $g.other>> all that hard in this challenging position, but the effort of holding <<themself $g.other>> this way forces <<rep $g.other>> to tighten <<their $g.other>> muscles down hard, producing an excellent sensation.
+<<if $g.other.isHasVagina()>>
+After a while, <<rep $g.gym>> lift <<rep $g.other>> up as high as <<they $g.gym>> can, freeing <<their $g.gym>> member, and then lower <<therace $g.other>> back down again, forcing <<themself $g.gym>> up <<their $g.other>> butt instead despite <<therace $g.other>>'s <<uadjgood $g.other>> begging.
+<</if>>
+It doesn't take long before you notice <<rep $g.gym>> filling <<reps $g.other>> ass with cum.
+<</if>>
+
+
+
+Having decided that you've seen enough, you quietly exit the scene, not wanting to alert any of the slavers.
+In the coming days you've noticed the two slavers seemingly getting along better with each other.
+</p>
+
+<</if>>
+
+

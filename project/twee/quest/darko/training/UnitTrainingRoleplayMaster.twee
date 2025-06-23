@@ -1,0 +1,110 @@
+:: QuestSetupUnitTrainingRoleplayMaster [nobr quest]
+
+<<run new setup.QuestTemplate(
+  'training_roleplay_master',  /* id */
+  'Roleplay Training: Master',  /* Title */
+  'darko',   /* author */
+  ['fort', 'trait'],  /* tags */
+  2, /* = weeks */
+  1, /* = expired in */
+  {  /* your actors */
+    'head': setup.qu.training_head_master_wind,
+    'trainer1': setup.qu.training_trainer_sex,
+    'trainer2': setup.qu.training_trainer_sex,
+  },
+  {  /* generated actors */
+    'trainee': null,
+  },
+  [],  /* costs */
+  'QuestUnitTrainingRoleplayMaster',  /* description */
+  setup.get_TRAINING_MASTER_DIFFICULTY(),
+  [
+    [
+      'QuestUnitTrainingRoleplayMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_roleplay_master),
+        setup.qc.TraitRemove('trainee', setup.trait.per_slow),
+      ]
+    ],
+    [
+      'QuestUnitTrainingRoleplayMasterCrit',
+      [
+        setup.qc.Trait('trainee', setup.trait.training_roleplay_master),
+        setup.qc.TraitRemove('trainee', setup.trait.per_slow),
+      ],
+    ],
+    [
+      'QuestUnitTrainingRoleplayMasterFailure',
+      [
+      ],
+    ],
+    [
+      'QuestUnitTrainingRoleplayMasterDisaster',
+      [
+        setup.qc.Trait('trainee', null, setup.trait.training_roleplay_master.getTraitGroup()),
+      ],
+    ],
+  ],
+  [],
+  [],
+)>>
+
+:: QuestUnitTrainingRoleplayMaster [nobr]
+
+<p>
+The final training will erase the slave's former slave, making them a perfectly
+malleable toy for their owner, able to become the personality of anything their
+master wishes for.
+They want an addled sex toy? They get an addled sex toy. They want a
+former crime fighter who fell on hard times? They'll get that and some more.
+Whatever dark desires their owner might crave, the slave will be able to provide
+an acting convincing enough to satisfy their owner's desires.
+</p>
+
+<p>
+  Succeeding this training will remove <<rep setup.trait.per_slow>> from the slave, if any.
+</p>
+
+<p>
+  Completing a master training will lock out all the other master training.
+</p>
+
+:: QuestUnitTrainingRoleplayMasterCrit [nobr]
+
+<<if $gOutcome == 'crit'>>
+
+<p>
+  Thanks to the skill of the training team,
+  the training went much smoother than expected. <<Reps $g.trainee>> transformation into an elite master edger
+  has been completed.
+</p>
+
+<<else>>
+
+<p>
+It is done. <<Reps $g.trainee>> transformation into an elite master edger
+has been completed.
+</p>
+
+<</if>>
+
+:: QuestUnitTrainingRoleplayMasterFailure [nobr]
+
+<p>
+While <<rep $g.trainee>> tries <<their $g.trainee>> best to
+follow the training, either through <<reps $g.trainee>> sheer
+stubbornness or through <<rep $g.head>> lack of skill,
+the training was not able to completely transform the slave
+into the ultimate master edger.
+At the end of the training,
+<<rep $g.head>> head|have no choice but to give up on the
+training.
+</p>
+
+:: QuestUnitTrainingRoleplayMasterDisaster [nobr]
+
+<p>
+The training was a complete failure. To reattempt this training,
+<<rep $g.trainee>> must redo some of the previous training
+again.
+</p>

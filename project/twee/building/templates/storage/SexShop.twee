@@ -1,0 +1,58 @@
+:: InitBuildingSexShop [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'sexshop',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: true,
+})>>
+
+<<run new setup.UnitGroup(
+'contact_sexshopowner',
+'Sex Shop Owner',
+'subrace_neko',
+0,
+[
+  setup.qc.BgTraitReset('unit', setup.trait.bg_courtesan),
+  setup.qc.TraitsReplace('unit', [
+    setup.trait.skill_entertain,
+    setup.trait.per_chaste,
+  ]),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.breast_huge),
+  setup.qc.TraitReplaceExisting('unit', setup.trait.dick_huge),
+],
+)>>
+
+<<run new setup.BuildingTemplate({
+  key: 'sexshop',
+  name: 'Sex Shop',
+  tags: ['storage', ],
+  description_passage: 'BuildingSexShop',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('armory')],
+  ],
+  on_build: [
+    [setup.qc.Contact(setup.contacttemplate.sexpeddler, null, 'contact_sexshopowner'),]
+  ],
+  main_room_template_key: 'sexshop',
+})>>
+
+
+:: BuildingSexShop [nobr]
+
+<p>
+An underground room in your fort that has been transformed into a marketplace for
+sexual-related items.
+Unlocks buying sex equipments such as dildos and gags.
+</p>
+

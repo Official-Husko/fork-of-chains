@@ -1,0 +1,86 @@
+:: InteractionSetup_make_love_on_the_bed [nobr interaction]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Interaction(
+'make_love_on_the_bed', /* key */
+"Make love on the bed", /* Title */
+"FCdev", /* Author */
+[ ], /* tags */
+'Interaction_make_love_on_the_bed',
+[ /* costs */
+],
+[ /* prerequisites */
+],
+[ /* unit requirements */
+setup.qres.Job(setup.job.slave),
+setup.qres.Trait(setup.trait.training_obedience_advanced),
+setup.qres.SlaveUsableByYou(),
+setup.qres.SlaveOwnedByYou(),
+setup.qres.FriendshipWithYouAtLeast(500),
+],
+[ /* outcomes */
+],
+0,
+setup.interactionpool.unit,
+)>>
+
+:: Interaction_make_love_on_the_bed [nobr]
+<<set $i = {}>>
+<<set _u = $g.target>>
+<<set _hasdick = $unit.player.isHasDick()>>
+<<set _hasvagina = $unit.player.isHasVagina()>>
+<<pronounload $i _u>>
+
+<<set _maintraining = setup.UnitTitle.getMainTraining(_u)>>
+<<set _chastity = _u.isHasTrait(setup.trait.eq_chastity)>>
+<<set _blind = _u.isHasTrait(setup.trait.eq_blind)>>
+
+<<set _utorsoequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.torso)>>
+<<set _ulegsequip = setup.Text.Unit.Equipment.getEquipmentAt(_u, setup.equipmentslot.legs)>>
+
+<<set _unaked = setup.Text.Unit.Equipment.isNaked(_u)>>
+<<set _verymaso = (_u.isHasTrait(setup.trait.training_masochist_advanced) && _maintraining.getTags().includes('trmasochist'))>>
+<<set _maso = (_u.isHasTrait(setup.trait.training_masochist_basic) && _maintraining.getTags().includes('trmasochist'))>>
+
+<<set _advanced = _u.isHasTrait(setup.trait.training_obedience_advanced)>>
+<<set _basic = _u.isHasTraitExact(setup.trait.training_obedience_basic)>>
+<<set _notrain = _u.isHasTrait(setup.trait.training_none)>>
+
+<<loadinteractioncommon _u>>
+
+Entering your $i.room, illuminated by the $i.lighting is your slave
+<<rep _u>> waiting obediently with $i.his <<ubody _u>> laid across the $i.bed.
+When $i.he sees the kind of lovemaking you're in the mood for,
+$i.he spreads $i.him <<uarms _u>> for you, smiling gently.
+$i.He kisses you lovingly,
+<<if !_u.isCanTalk()>>taking your hand in $i.his and drawing a heart on your palm with one finger.
+<<else>>
+"I love you."
+<</if>>
+<<if _hasvagina>>$i.He lies on $i.his side and raises one leg
+for you so you can straddle the other,
+sliding up to press your pussy against $i.his submissive groin.
+You grind against $i.him; the stimulation is so strong that $i.he
+writhes into the sheets, panting and whining.
+<<if _hasdick>>Your stiff dick, unused for once, slides deliciously between your warm
+bodies.
+<</if>>
+<<else>>
+<<if _u.isHasVagina()>>
+$i.His pussy is warm and very wet,
+making penetration easy;
+$i.he gasps and arches $i.his back,
+clasping you between $i.his <<ulegs _u>> as $i.his <<ueyes _u>> look deep into yours.
+<<else>>$i.His butt is relaxed and welcoming,
+and $i.he holds $i.his legs back to take missionary anal loving as
+$i.his <<ueyes _u>> look deep into yours.
+<</if>>
+<</if>>
+You both know each other quite well,
+and maintain the gentle communion for a long time.
+When $i.he senses your climax building, $i.he lets $i.himself climb
+to orgasm with you, holding
+<<if !_hasdick>>your hips in $i.his <<uhands _u>><<else>>
+you in $i.his <<uarms _u>><</if>>.
+$i.He quickly cleans you with $i.his <<umouth _u>> and heads out to cleam $i.himself.

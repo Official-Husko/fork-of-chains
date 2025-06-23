@@ -1,0 +1,130 @@
+:: OpportunitySetup_dungeons_and_dragons_fetch_quest [nobr opportunity]
+
+<<run new setup.OpportunityTemplate(
+'dungeons_and_dragons_fetch_quest', /* key */
+"Dungeons and Dragons: Fetch Quest", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'prep',
+  'unknown',
+  'fort',
+],
+1, /* expiration weeks */
+'Opportunity_dungeons_and_dragons_fetch_quest',
+setup.qdiff.normal42, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_dungeons_and_dragons_fetch_quest_0',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('dungeons_and_dragons_wolfstone', null),
+    ],
+  ],
+  [
+    'Opportunity_dungeons_and_dragons_fetch_quest_1',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('dungeons_and_dragons_woodsgem', null),
+    ],
+  ],
+  [
+    'Opportunity_dungeons_and_dragons_fetch_quest_2',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.QuestDirect('dungeons_and_dragons_desert_pearl', null),
+    ],
+  ],
+  [
+    'Opportunity_dungeons_and_dragons_fetch_quest_3',
+    null,
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.RemoveTitle('slaver', 'quest_heroic_withdrawal_0'),
+      setup.qc.TraumatizeRandom('slaver', 50),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_dungeons_and_dragons_fetch_quest [nobr]
+
+<<include 'Event_dungeons_and_dragons_fetch_quest'>>
+
+<p>
+You silently shake your head at the idiocy, but the slaver did complete the task you made up some time ago, so it was partly your fault that you've indulged <<them $g.slaver>> at all from the start.
+There are several options you can take here.
+</p>
+
+<p>
+You can flatly refuse, and end this farce here once and for all. <<Therace $g.slaver>> will surely get grumpy in the coming weeks, but much better than if you were to refuse <<them $g.slaver>> later.
+</p>
+
+<p>
+Or alternatively, you can try to come up with a surely impossible task for the slaver. Having failed a "heroic" quest would surely bring the slaver back to reality, and can resume being your slaver properly once more. Clearly the quest you thought up before was not as impossible as it sounds, however, and you need something else this time.
+</p>
+
+<p>
+<<if $unit.player.isHasTrait('bg_scholar')>>
+You recall the many adventure stories you've read when you were working a scholar in your past.
+<<elseif $unit.player.isHasTrait('bg_wiseman')>>
+You recall the many stories you know, from the times in the past where you worked as a wiseman.
+<<elseif $unit.player.isHasTrait('per_studious')>>
+As a studious slaver, you are quite well-read, and you know many adventure stories.
+<<else>>
+You may not have read too many books, but you do know one or two adventure stories being told in taverns.
+<</if>>
+Among them, the hero always, without exception, do a fetch quest or two in their career. You could try to ask <<rep $g.slaver>> to fetch something that clearly does not exist in the world.
+A magical Wolfstone in the <<lore region_vale>>, maybe? Or a rare culinary artifact in the <<lore region_forest>> dubbed the Woodstone? Or maybe a Desert Pearl of inordinary value...
+</p>
+
+
+
+
+:: Opportunity_dungeons_and_dragons_fetch_quest_0 [nobr]
+The... Wolfstone, yes
+
+
+
+:: Opportunity_dungeons_and_dragons_fetch_quest_1 [nobr]
+Woodsgem in the forests...
+
+
+
+:: Opportunity_dungeons_and_dragons_fetch_quest_2 [nobr]
+A... Desert Pearl?
+
+
+
+:: Opportunity_dungeons_and_dragons_fetch_quest_3 [nobr]
+Enough is enough! Ignore <<their $g.slaver>> request and move on with your day

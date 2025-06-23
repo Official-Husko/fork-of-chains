@@ -1,0 +1,123 @@
+:: QuestSetup_community_service [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.UnitGroup(
+'quest_community_service1',
+"Beggar",
+'subrace_humankingdom', /* pools */
+0,
+[
+setup.qc.RemoveTraitsWithTag('unit', 'skill'),
+setup.qc.BgTraitReset('unit', setup.trait.bg_unemployed), ],
+)>>
+
+<<run new setup.QuestTemplate(
+'community_service', /* key */
+"Community Service", /* Title */
+"darko", /* Author */
+[ 'city', 'unit'
+], /* tags */
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION,  /* expiration weeks */
+{ /* roles */
+'brawler1': setup.qu.brawler,
+'brawler2': setup.qu.brawler,
+'seducer': setup.qu.seducer, },
+{ /* actors */
+'beggar': 'quest_community_service1',
+'beggar2': 'quest_community_service1', },
+[ /* costs */
+],
+'Quest_community_service',
+setup.qdiff.normal27, /* difficulty */
+[ /* outcomes */
+[
+'Quest_community_serviceCrit',
+[
+  setup.qc.Outcomes('success'),
+setup.qc.Slave('beggar2', 'a|was a beggar in the <<lore region_city>> that you "hired" as a slave', undefined), ],
+], [
+'Quest_community_serviceCrit',
+[
+setup.qc.Slave('beggar', 'a|was a beggar in the <<lore region_city>> that you "hired" as a slave', undefined), ],
+], [
+'Quest_community_serviceFailure',
+[
+],
+], [
+'Quest_community_serviceDisaster',
+[
+setup.qc.MoneyNormal(-1), ],
+], ],
+[
+[setup.questpool.city, setup.rarity.common],
+], /* quest pool and rarity */
+[
+setup.qres.Building(setup.buildingtemplate.dungeons), ], /* restrictions to generate */
+)>>
+
+:: Quest_community_service [nobr]
+<p>
+The humans living in the <<rep $company.humankingdom>> are the most
+populous of all the races in <<lore geo_mestia>>. People
+from all sort of occupations live in the <<lore region_city>>, from the noblest of
+nobles to the lowliest of beggars.
+</p>
+
+<p>
+Occasionally, your company receive slave orders for a regular <<lore race_humankingdom>>.
+If you need such a slave, one of
+the easiest way is by venturing into the <<lore region_city>>, and "hire" one
+of the numerous beggars living off its streets.
+Nobody will miss them, and maybe they could finally be the productive member of the
+society they always wanted to be by becoming your slave.
+</p>
+
+
+:: Quest_community_serviceCrit [nobr]
+
+<p>
+It was relatively easy to pick a somewhat healthy beggar with the vast city.
+<<if $g.seducer.isHasTrait('per_sly')>>
+  <<Reps $g.seducer>> golden tongue no doubt helped quite a bit in the seduction attempt.
+<<elseif $g.seducer.isHasTrait('face_attractive')>>
+  <<Reps $g.seducer>> attractive face no doubt helped quite a bit in the seduction attempt.
+<<elseif $g.seducer.isHasTrait('breast_large')>>
+  <<Reps $g.seducer>> bulging crotch no doubt helped quite a bit in the seduction attempt.
+<<elseif $g.seducer.isHasTrait('dick_large')>>
+  <<Reps $g.seducer>> voluptuous boobs no doubt helped quite a bit in the seduction attempt.
+<</if>>
+With the promise of easy money, <<rep $g.seducer>> managed to <<uadv
+$g.seducer>> brought
+<<if $gOutcome == 'crit'>>
+two beggars
+<<else>>
+a beggar
+<</if>>
+outside
+the city, only for <<rep $g.brawler1>> and <<rep $g.brawler2>> to "rough up" before
+making
+<<if $gOutcome == 'crit'>>
+them
+<<else>>
+<<them $g.beggar>>
+<</if>>
+join your company as slaves.
+</p>
+
+
+:: Quest_community_serviceFailure [nobr]
+<p>
+Unfortunately, <<yourrep $g.seducer>> seducer|was not charismatic enough to
+attract even the beggars of the city to come with <<them $g.seducer>>.
+After wasting a week in the city without gain, they decided to go home.
+</p>
+
+
+:: Quest_community_serviceDisaster [nobr]
+<p>
+<<Rep $g.seducer>> managed to catch the attention of the guards who
+recognized <<them $g.seducer>> as part of a slaving company. Your slavers had
+to fight to get out of the city and returned home injured.
+</p>

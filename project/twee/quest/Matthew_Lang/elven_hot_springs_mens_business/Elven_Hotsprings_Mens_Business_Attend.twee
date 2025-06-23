@@ -1,0 +1,393 @@
+
+:: QuestSetup_elven_hot_springs_men_s_business_attend_ [nobr quest]
+
+
+
+
+
+<<set _criteriahandler = new setup.UnitCriteria(
+null, /* key */
+'Salesman', /* name */
+[
+  setup.trait.bg_merchant,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_frugal,
+  setup.trait.per_stubborn,
+  setup.trait.per_logical,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.skill_hypnotic,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_slow,
+  setup.trait.per_lavish,
+  setup.trait.per_curious,
+  setup.trait.per_empath,
+  setup.trait.per_chaste,
+  setup.trait.per_lunatic,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.race_elf, setup.trait.gender_male], true),
+],
+{
+  social: 2,
+  sex: 1,
+}
+)>>
+
+<<set _criteriaoffering = new setup.UnitCriteria(
+null, /* key */
+'Offering Slave', /* name */
+[
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.training_obedience_advanced,
+  setup.trait.training_obedience_master,
+  setup.trait.training_toilet_basic,
+  setup.trait.training_toilet_advanced,
+  setup.trait.training_toilet_master,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_chaste,
+  setup.trait.per_dominant,
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.Trait(setup.trait.training_obedience_basic),
+  setup.qres.AnyTrait([setup.trait.training_domestic_basic, setup.trait.training_domestic_advanced, setup.trait.training_domestic_master], true),
+  setup.qres.AllTraits([setup.trait.gender_male], true),
+  setup.qres.NoTraits([setup.trait.race_elf], true),
+],
+{
+}
+)>>
+
+<<set _criteriaparticipant = new setup.UnitCriteria(
+null, /* key */
+'Seducer', /* name */
+[
+  setup.trait.bg_courtesan,
+  setup.trait.bg_whore,
+  setup.trait.dick_large,
+  setup.trait.dick_huge,
+  setup.trait.dick_titanic,
+  setup.trait.balls_large,
+  setup.trait.balls_huge,
+  setup.trait.balls_titanic,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_sly,
+  setup.trait.per_playful,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.eq_slutty,
+  setup.trait.eq_veryslutty,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.dick_tiny,
+  setup.trait.dick_small,
+  setup.trait.breast_tiny,
+  setup.trait.breast_small,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_direct,
+  setup.trait.per_serious,
+  setup.trait.per_chaste,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.subrace_elf, setup.trait.gender_male], true),
+],
+{
+  intrigue: 1,
+  sex: 2,
+}
+)>>
+<<run new setup.QuestTemplate(
+'elven_hot_springs_men_s_business_attend_', /* key */
+"Elven Hot Springs - Men\'s Business (Attend)", /* Title */
+{ /* Author */
+  name: "Matthew Lang",
+  url: "https://www.matthew-lang.com",
+},
+[ /* tags */
+  'forest',
+  'favor',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'handler': [ _criteriahandler, 1.5],
+  'offering': _criteriaoffering,
+  'participant': [ _criteriaparticipant, 1.5],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_elven_hot_springs_men_s_business_attend_',
+setup.qdiff.easy20, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_elven_hot_springs_men_s_business_attend_Crit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Opportunity('elven_hot_springs_men_s_business_a_modest_offer', {slave: 'offering'}),
+    ],
+  ],
+  [
+    'Quest_elven_hot_springs_men_s_business_attend_Crit',
+    [
+      setup.qc.Favor('elf', 80),
+      setup.qc.BoonizeRandom('handler', 5),
+      setup.qc.BoonizeRandom('participant', 5),
+    ],
+  ],
+  [
+    'Quest_elven_hot_springs_men_s_business_attend_Failure',
+    [
+    ],
+  ],
+  [
+    'Quest_elven_hot_springs_men_s_business_attend_Disaster',
+    [
+      setup.qc.MissingUnitRecapture('offering', 'capturedeasy'),
+      setup.qc.Injury('handler', 2),
+      setup.qc.Favor('elf', 50),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_elven_hot_springs_men_s_business_attend_ [nobr]
+<p>
+    Once a year, the Cult of Caledain holds a sacred gathering at one of the many hot springs deep within the <<lore region_forest>>. In line with the cult's beliefs, the gathering is open to any male elf who wishes to attend, and the festivities mostly include drinking lots of wine, pissing in the open, and orgies in the hot springs. The Cultists believe that taking the cum of a strong warrior into one's body increases both strength and virility, and with clothing being strictly prohibited, the gathering sounds like a lot of fun for those inclined towards mansex. Or elves so inclined anyway.
+</p>
+<p>
+    You've decided it would also be a great opportunity
+
+    <<if $unit.player.isHasTraitsExact(["race_elf", "gender_male"])>>
+        for you to attend the revelries and build goodwill with your elven neighbors in the <<lore region_forest>>. You'd need another male elf to come with you, assuming you go yourself, and you also think that bringing a helper slave would be a good idea as well. They'd need to be male, not an elf, and trained in domestic duties.
+        <<if $settings.bannedtags.watersport>>
+        <<else>>
+            A trained piss drinker would likely score you bonus points as well.
+        <</if>>
+
+    <<else>>
+        build relations with the elves of the <<lore region_forest>>. You'd need to send at one male elf—two if you send a slave to help out, and at least one of them would need to be a wood elf to stand any chance of finding out where the gathering is being held. The slave would need to be male, not an elf, lest that cause insult, and trained in domestic duties.
+        <<if $settings.bannedtags.watersport>>
+        <<else>>
+            A trained piss drinker would likely score you bonus points as well.
+        <</if>>
+    <</if>>
+
+</p>
+
+
+
+:: Quest_elven_hot_springs_men_s_business_attend_Crit [nobr]
+<<if $g.participant.isYou() or $g.handler.isYou() or $g.offering.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.participant.isYou()>>
+        <<run _notyou.push($g.participant)>>
+    <</if>>
+    <<if !$g.handler.isYou()>>
+        <<run _notyou.push($g.handler)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    /* Player is on mission */
+    <p>
+        After posing a few questions to <<their $g.participant>> contacts in the <<lore region_forest>>, <<rep $g.participant>> led the way to the hot springs, obedient slave in tow. Nestled halfway up a mountain and commanding a bit of a view across the valley, the heat and humidity of the water hits you as you enter the clearing full of rocky pools. There are already a good number of men here, including a number of darker skinned drow. All are naked, drinking, eating, relaxing in the water, or already fucking. A roaring bonfire fire casts a merry glow around the glade, and you see what look to be buried firepits full of burned down coals, likely containing recently hunted deer or boar.
+    </p>
+    <p>
+        "I know you," a muscular, tattooed elf with a large, thick cock says, barring your way. "You're with <<rep $company.player>>. You'd better not be here looking for slaves."<br>
+        "No, just here to bond with my fellow men," you say with what you hope is a disarming grin.<br>
+        The man's face breaks into a wide smile. "Great," he says. "Why don't you get down on your knees and show me how good you are at bonding. And then you can give me a blessing of strength right up my ass."<br>
+        <<if $unit.player.isHasTrait('per_chaste')>>
+            Your grin falters, but you force yourself down onto your knees, eyeing his throbbing cock warily. This is, after all, what you signed up for. Taking a deep breath, you close your eyes and open your mouth, flinching slightly as you feel the warm slick heat of his penis on your tongue.<br>
+            "That's it," he says gently, and you feel his hands on the sides of your head, not demanding, but supporting. "Daddy's going to make you big and strong."
+        <<else>>
+            Grinning, you sink to your knees and take his throbbing cock into your mouth, savoring the rich taste of his precum, your hand running down you tug on your own stiffening prick. This is exactly what you signed up for, after all.
+        <</if>>
+    </p>
+    <p>
+        While you're busy, <<name _o1>>
+        <<if $settings.bannedtags.watersport>>
+            leads <<name $g.offering>> over towards the wine, and starts him on his duties, all while keeping close enough so that <<name $g.offering>> doesn't have any chance to escape. The leg shackles help with that too, of course, but it's good that <<name _o1>> isn't taking any chances.
+        <<else>>
+            pushes <<name $g.offering>> down onto his knees and feeds him the first of many loads of piss. Soon, <<name $g.offering>> is surrounded by elves, each eager to fill his mouth and belly with more recycled wine than he can manage. Eventually they throw him in a hastily dug pit and hose him down, looping his chain around the trunk of a nearby tree to keep him in place.<br>
+            "Stay, slut," <<name _o1>> says with a chuckle as he turns and offers his hard cock to a nearby elf, who eagerly drops to his knees and starts worshipping <<name _o1>>'s prick.
+        <</if>>
+    </p>
+    <p>
+        You leave nearly two days later, balls drained and well fucked, but clean and renewed from the hot water and the camaraderie of the Cult of Caledain. <<name $g.offering>> trudges along quietly behind you, head bowed and
+        <<if $settings.bannedtags.watersport>>
+            exhausted from two days of non stop cooking, cleaning, and pouring wine.
+        <<else>>
+            stomach gurgling from the final loads of piss he'd been granted as a farewell 'gift' from the reveling cultists.
+        <</if>>
+    </p>
+<<else>>
+    /* Player is not on mission */
+    <<dialogue $g.participant>>
+        It was amazing, <<unickname $g.participant>>, thank you for letting me go. I'm proud to be part of <<rep $company.player>>
+    <</dialogue>>
+    <<if $unit.player.isHasTraitsExact(["race_elf", "gender_male"])>>
+        "You should come next time," <<name $g.participant>> says seriously. "It's a great experience. I only wish it was longer."<br>
+        "You look exhausted," you say carefully.<br>
+        "Oh I am," he agrees. "And completely fucked out, but I feel great. Bring on next year, and cocks I can cram in my mouth and the asses I can breed."<br>
+        <<if $unit.player.isHasTrait('per_chaste')>>
+            You shudder. It sounds so far out from your comfort zone you'd almost rather be tortured.
+        <<elseif $unit.player.isHasAnyTraitExact(["per_lustful", "per_sexaddict"])>>
+            You feel a smile tug at the corners of your lips. "Maybe I'll go next time then," you say. "That does sound like fun."
+        <<else>>
+            "Well, I'm glad you had fun," you say.
+        <</if>>
+    <<else>>
+        /* PC is not a male elf and isn't eligible to attend */
+        "You look exhausted," you say carefully.<br>
+        "Oh I am," he agrees. "And completely fucked out, but I feel great. Bring on next year, and cocks I can cram in my mouth and the asses I can breed."<br>
+        <<if $unit.player.isHasTrait('per_chaste')>>
+            You shudder. It sounds so far out from your comfort zone you'd almost rather be tortured.
+        <<elseif $unit.player.isHasAnyTraitExact(["per_lustful", "per_sexaddict"])>>
+            You feel a smile tug at the corners of your lips. "That does sound like fun," you say.
+        <<else>>
+            "Well, I'm glad you had fun," you say.
+        <</if>>
+    <</if>>
+    <br>
+    "I've put <<name $g.offering>> back in his pen to rest, <<unickname $g.handler>>," <<name $g.handler>> says as <<name $g.participant>> leaves your office. "He's exhausted, but did well. Very well."<br>
+    <<if $unit.player.isHasTrait('per_cruel')>>
+        "As he should," you say indifferently. "That's his place."<br>
+        "Yes <<unickname $g.handler>>," <<name $g.handler>> says, saluting before turning and leaving himself. He too seems more relaxed and happier than usual, which is good. It would just have been nice if this outing had also generated some income.
+    <<else>>
+        "Glad to hear it," you say with a smile. "Maybe we'll see more interest from buyers out west now. Tell <<name $g.offering>> he did well, and give him some real food as a treat."<br>
+        "Yes <<unickname $g.handler>>," <<name $g.handler>> says, saluting before turning and leaving himself. He too seems more relaxed and happier than usual, which is good. Hopefully they've helped to ingratiate <<rep $company.player>> with the elves as well.
+    <</if>>
+<</if>>
+
+
+
+:: Quest_elven_hot_springs_men_s_business_attend_Failure [nobr]
+Despite asking around, <<rep $g.participant>> participant|was unable to find the location of the sacred hot springs being used for this year's gathering.
+<<if setup.qres.IreAtLeast('elf', 10).isOk($gQuest)>>
+    Maybe if <<rep $company.elf>> wasn't as pissed at you, <<their $g.participant>> contacts would be more forthcoming with the information.
+<<else>>
+    Maybe you'll have better luck next year.
+<</if>>
+
+
+
+
+:: Quest_elven_hot_springs_men_s_business_attend_Disaster [nobr]
+<<if $g.participant.isYou() or $g.handler.isYou() or $g.offering.isYou()>>
+
+    <<set _notyou = []>>
+    <<if !$g.participant.isYou()>>
+        <<run _notyou.push($g.participant)>>
+    <</if>>
+    <<if !$g.handler.isYou()>>
+        <<run _notyou.push($g.handler)>>
+    <</if>>
+    <<set _o1 = _notyou[0]>>
+    /* Player is on mission */
+    <p>
+        After posing a few questions to <<their $g.participant>> contacts in the <<lore region_forest>>, <<rep $g.participant>> led the way to the hot springs, obedient slave in tow. Nestled halfway up a mountain and commanding a bit of a view across the valley, the heat and humidity of the water hits you as you enter the clearing full of rocky pools. There are already a good number of men here, including a number of darker skinned drow. All are naked, drinking, eating, relaxing in the water, or already fucking. A roaring bonfire fire casts a merry glow around the glade, and you see what look to be buried firepits full of burned down coals, likely containing recently hunted deer or boar.
+    </p>
+    <p>
+        "I know you," a muscular, tattooed elf with a large, thick cock says, barring your way. "You're with <<rep $company.player>>. You'd better not be here looking for slaves."<br>
+        "No, just here to bond with my fellow men," you say with what you hope is a disarming grin.<br>
+        The man's face breaks into a wide smile. "Great," he says. "Why don't you get down on your knees and show me how good you are at bonding. And then you can give me a blessing of strength right up my ass."<br>
+        <<if $unit.player.isHasTrait('per_chaste')>>
+            Your grin falters, but you force yourself down onto your knees, eyeing his throbbing cock warily. This is, after all, what you signed up for. Taking a deep breath, you close your eyes and open your mouth, flinching slightly as you feel the warm slick heat of his penis on your tongue.<br>
+            "That's it," he says gently, and you feel his hands on the sides of your head, not demanding, but supporting. "Daddy's going to make you big and strong."
+        <<else>>
+            Grinning, you sink to your knees and take his throbbing cock into your mouth, savoring the rich taste of his precum, your hand running down you tug on your own stiffening prick. This is exactly what you signed up for, after all.
+        <</if>>
+    </p>
+    <p>
+        While you're busy, <<name _o1>>
+        <<if $settings.bannedtags.watersport>>
+            leads <<name $g.offering>> over towards the wine, and starts him on his duties, before bending over and taking a cock up his ass right there at the wine table.
+        <<else>>
+            pushes <<name $g.offering>> down onto his knees and feeds him the first of many loads of piss. Soon, <<name $g.offering>> is surrounded by elves, each eager to fill his mouth and belly with more recycled wine than he can manage. Eventually they throw him in a hastily dug pit and hose him down.<br>
+            "Stay, slut," <<name _o1>> says with a chuckle as he turns and offers his hard cock to a nearby elf, who eagerly drops to his knees and starts worshipping <<name _o1>>'s prick.
+        <</if>>
+    </p>
+    <p>
+        A day later, you look around, and can't see any sign of your slave, and with <<name _o1>> on his hands and knees being spitroasted by hunky, elven brothers, it looks like he wasn't keeping an eye on <<name $g.offering>> either. Cursing, you yank <<name _o1>> away from his playmates and set out looking for your runaway slave. Eventually you're forced to return to the fort, cutting your time short at the gathering. The cultists are understanding and wish you well.<br>
+        "See you next year, I hope," the tattooed man who challenged you on arrival says, giving you a hug and a peck on the lips. "I want to have your cock back in my ass again sometime."<br>
+        "Drop by the fort and I'll bend you over," you say with a wink. "And I'll even let you leave again afterwards."<br>
+        He guffaws and slaps you on the back as you leave the sacred hot springs. Hopefully you'll be able to recover your slave. Next time you'll have to ensure he's kept chained up.
+    </p>
+<<else>>
+    <<dialogue $g.handler>>
+        We, uh... lost him, <<unickname $g.handler>>...
+    <</dialogue>>
+    <<name $g.handler>> cringes, but <<name $g.participant>> looks pissed.<br>
+    "You mean <i>you</i> lost him," he snaps. "My job was to offer my cock, ass or mouth to any man who wanted me. Your job was to keep the slave in sight at all times."<br>
+    <<if $unit.player.isHasTraitsExact(["per_cruel", "per_aggressive"])>>
+        "You fucking what?!" you roar, slamming your firsts into the table.
+
+        <<set _unit = setup.getUnit({duty: 'rescuer'})>>
+        <<if _unit>>
+            "You'd both better fucking hope that <<name _unit>> is able to find him. Now get
+        <<else>>
+            "You'd both better fucking hope that your rescuer is able to find him. Now get
+        <</if>>
+
+        your butts down to the dungeons and I want every slave cell spotless by the time I come down—and you're doing it all yourself, no using the slaves to help."<br>
+        "Yes <<unickname $g.handler>>," <<name $g.handler>>
+        <<if $g.handler.isHasAnyTraitExact(["per_aggressive", "per_dominant", "per_proud", "per_cruel"])>>
+            says, jaw clenched tightly before turning and storming out of your office, <<name $g.participant>> following behind him.
+        <<else>>
+            says contritely, and backs quickly out of your office, <<name $g.participant>> following behind him.
+        <</if>>
+    <<else>>
+        You take in a deep breath and let it out slowly. "I see. Well,
+
+        <<set _unit = setup.getUnit({duty: 'rescuer'})>>
+        <<if !_unit>>
+            you two can get
+        <<else>>
+            you'd both better fucking hope that <<name _unit>> is able to find him. Now get
+        <</if>>
+        your butts down to the dungeons and I want every slave cell spotless by the time I come down—and you're doing it all yourself, no using the slaves to help."<br>
+        "Yes <<unickname $g.handler>>," <<name $g.handler>>
+        <<if $g.handler.isHasAnyTraitExact(["per_aggressive", "per_dominant", "per_proud", "per_cruel"])>>
+            says, jaw clenched tightly before turning and storming out of your office, <<name $g.participant>> following behind him.
+        <<else>>
+            says contritely, and backs quickly out of your office, <<name $g.participant>> following behind him.
+        <</if>>
+    <</if>>
+<</if>>
+
+
+
+

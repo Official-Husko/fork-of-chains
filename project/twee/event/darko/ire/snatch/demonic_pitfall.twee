@@ -1,0 +1,45 @@
+:: EventSetup_demonic_pitfall [nobr event]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Event(
+'demonic_pitfall', /* key */
+"Unknown Tentacle Object", /* Title */
+"darko", /* Author */
+[ ], /* tags */
+'Event_demonic_pitfall',
+{ /* roles */
+'victim': [
+setup.qres.Job(setup.job.slaver),
+setup.qres.Available(),
+setup.qres.NotYou(),
+],
+},
+{ /* actors */
+},
+[ /* outcomes */
+setup.qc.Ire('demon', -20),
+setup.qc.MissingUnitRecapture('victim', 'capturedhard'), ],
+[ /* restrictions to generate */
+setup.qres.IreAtLeast('demon', 20), ],
+0, /* Cooldown */
+setup.rarity.always,  /* Rarity */
+)>>
+
+:: Event_demonic_pitfall [nobr]
+
+<p>
+Today, you spilled your drink in the morning, lost a sparring fight to <<rep
+$g.victim>> later, and triped on your own clothes and fell flat into the
+ground just now. Just as you thought your day cannot get any worse, the
+sky suddenly turns dark. As you stare into the sky cursing your luck, a dark
+tendril lurches very fast into your compound, grabbing <<yourrep $g.victim>>, and
+within moments sucks <<theslaver $g.victim>> back into the vortex.
+</p>
+
+<p>
+While you are tempted to just blame it all on luck, this is probably the
+works of <<rep $company.demon>> whom you've angered recently. <<uneedrescue
+$g.victim>>, before god-knows what the demons will do to the poor <<urace
+$g.victim>> there in the land beyond <<lore concept_mist>>.
+</p>

@@ -1,0 +1,271 @@
+:: QuestSetup_what_it_means_to_be_a_hero [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.Title(
+  'choose_your_own_adventure_demon',  /* key */
+  "Demon of Choices",   /* name */
+  'Was once a demon playing with mortals using a corrupted necromonicon',   /* name */
+  'a|was a powerful demon playing with mortals using a corrupted necromonicon',
+  15000,   /* slave value */
+  {
+    arcane: 4,
+    sex: 3,
+  },
+)>>
+
+<<set _traits = setup.TraitHelper.getAllTraitsOfTags(['skin']).filter(a => !a.isCorruption() && !a.getTags().includes('dickshape'))>>
+<<set _reward = setup.qc.OneRandom(
+  _traits.map(a => setup.qc.Trait('unit', a))
+)>>
+
+<<run new setup.UnitGroup(
+'quest_what_it_means_to_be_a_hero1',
+"Demon Lord",
+'subrace_demon',  /* pools */
+0, /* reuse chance */
+[
+setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+setup.qc.TraitReplace('unit', setup.trait.per_evil),
+setup.qc.TraitReplace('unit', setup.trait.will_defiant),
+setup.qc.AddTitle('unit', 'choose_your_own_adventure_demon'),
+_reward,
+_reward,
+_reward,
+setup.qc.ResetInnateTraits('unit'),
+],
+)>>
+
+<<set _common = [
+  setup.qc.IfThenElse(
+    setup.qres.VarEqual('choose_your_own_adventure_siblings', 'siblings'),
+    setup.qc.Sibling('hero1', 'hero2'),
+    setup.qc.Money(5000),
+  ),
+  setup.qc.Opportunity('choose_your_own_adventure__true_end',
+    {hero1: 'hero1', hero2: 'hero2', demon: 'demon'}),
+  setup.qc.VarSet('choose_your_own_adventure_progress', '10', -1),
+]>>
+
+<<run new setup.QuestTemplate(
+'what_it_means_to_be_a_hero', /* key */
+"What It Means to be a Hero", /* Title */
+"darko", /* Author */
+[
+  'forest',
+  'veteran',
+  'special',
+  'unknown'
+], /* tags */
+4, /* weeks */
+8, /* quest expiration weeks */
+{ /* roles */
+'warrior': setup.qu.light_warrior,
+'purifier': setup.qu.purify_assistant,
+'tank': setup.qu.tank, },
+{ /* actors */
+'hero1': 'quest_choose_your_own_adventure_hero1',
+'hero2': 'quest_choose_your_own_adventure_hero2',
+'demon': 'quest_what_it_means_to_be_a_hero1', },
+[ /* costs */
+],
+'Quest_what_it_means_to_be_a_hero',
+setup.qdiff.abyss59, /* difficulty */
+[ /* outcomes */
+[
+'Quest_what_it_means_to_be_a_heroCrit',
+_common,
+], [
+'Quest_what_it_means_to_be_a_heroCrit',
+_common.concat([
+  setup.qc.Injury('purifier', 1),
+  setup.qc.TraumatizeRandom('tank', 4),
+  setup.qc.Corrupt('warrior'),
+]),
+], [
+'Quest_what_it_means_to_be_a_heroCrit',
+_common.concat([
+  setup.qc.Injury('purifier', 10),
+  setup.qc.TraumatizeRandom('tank', 40),
+  setup.qc.Corrupt('warrior'),
+  setup.qc.Corrupt('warrior'),
+]),
+], [
+'Quest_what_it_means_to_be_a_heroDisaster',
+[
+setup.qc.VarSet('choose_your_own_adventure_progress', '10', -1),
+setup.qc.QuestDirect('heroic_end'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.always],
+],
+[ /* restrictions to generate */
+setup.qres.QuestUnique(),
+setup.qres.VarEqual('choose_your_own_adventure_progress', '9'), ],
+[ /* expired outcomes */
+setup.qc.SetCooldownQuest(null, 50),
+],
+)>>
+
+:: Quest_what_it_means_to_be_a_hero [nobr]
+
+<p>
+The demonic book of "Choose Your Own Adventure" has quite a few characters.
+First, there are the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>, whose tale the book describes in great detail.
+An then, there's you, who is making changes to the book and ending up as the villain.
+But then, there's the sage, somehow just living quietly off in the forests.
+</p>
+
+<p>
+Recalling the story, it was during their training with the sage that the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+had their vision of the demon in the desert.
+Did the sage tampered with their memory?
+Who is the sage?
+</p>
+
+<p>
+You can send a group of slavers together with the book back into the forest
+to demand answerso to these questions... but beware. It is going to be incredibly
+dangerous.
+</p>
+
+
+:: Quest_what_it_means_to_be_a_heroCrit [nobr]
+
+<p>
+Arriving at the sage's cottage, your slavers were surprised to find the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+there too, with their
+<<if $varstore.get('choose_your_own_adventure_strength')>>
+sword
+<<else>>
+staff
+<</if>>
+pointed at the sage.
+Seeing your arrival, the sage finally dropped all pretense and morphed into
+<<their $g.demon>> true form — a true pureblooded demon. A dark blast swooshed
+around the area, pushing your slavers and the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+to the ground.
+</p>
+
+<p>
+Apparently, the entire scene was all for the demon's amusement. The book? A
+morphed necronomicon with <<their $g.demon>> own sloppy handwritten note on
+it. The demon watched over all the action unfold through the pendants given
+to the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+<<if $varstore.get('choose_your_own_adventure_lovers') == 'lovers'>>
+including all the
+sexy actions between the
+<<= $varstore.get('choose_your_own_adventure_siblings')>>.
+<</if>>
+Seeing no point in fighting your slavers, the demon attempted to flee the scene.
+</p>
+
+<p>
+The once pristine grove was turned into a dessicated field of rotten flowers.
+But the dead trees prove quite a hindrance for the demon as <<they $g.demon>>
+demon|was unable to fly away as freely as <<they $g.demon>> wanted to.
+Seeing the opportunity,
+<<= $g.hero1.getName()>>
+<<if $varstore.get('choose_your_own_adventure_caution') == 'caution'>>
+cautiously
+<<else>>
+bravely<</if>>
+<<if $varstore.get('choose_your_own_adventure_strength')>>
+notched an arrow
+<<else>>
+hurled a spell
+<</if>>
+onto the wings of the demons.
+Angered, the demons turned instead to face the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+as they stood preparedly.
+</p>
+
+<<if $gOutcome == 'crit'>>
+<p>
+Your slavers fought valiantly throughout the fight, deftly avoiding most
+lethal and non-lethal blows.
+</p>
+<<elseif $gOutcome == 'success'>>
+<p>
+Your slavers suffered minor injuries throughout the fight, with <<rep
+$g.warrior>> being corrupted by the demon forces while <<uadv $g.warrior>>
+protecting <<their $g.warrior>> allies.
+</p>
+<<elseif $gOutcome == 'failure'>>
+<p>
+Your slavers suffered major injuries throughout the fight, with <<rep
+$g.warrior>> being significantly corrupted by the forces while <<uadv
+$g.warrior>> protecting <<their $g.warrior>> allies.
+</p>
+<</if>>
+
+<p>
+The fight was intense, as the demon hurled <<lore magic_dark>> of various
+kinds into your slavers and the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>.
+But, fueled by their
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+anger,
+<<else>>
+resolve,
+<</if>>
+after a fierce fight and in no small part thanks to your slavers' bravery,
+the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+and your slavers emerged victorious with the demon
+collapsed to the ground, unused to the workings of the mortal world.
+As the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+attempted to kill the demon, your slavers asked the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+to instead take
+"pity" on the demon. Your slavers <<uadv $g.tank>> promised them that your
+slavers will ensure that they will never see the demon ever again.
+</p>
+
+<p>
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+Their quest for revenge would be incomplete for as long as the demon lives.
+<<else>>
+Their quest for peace could not be over for as long as the demon lives.
+<</if>>
+But they still deferred somewhat to your slavers, whose company had been
+their most trustworthy allies thus far. But they asked you now to make a choice,
+the final choice in this story.
+</p>
+
+<p>
+If you kill the demon, they shall join offer their services and join your company.
+</p>
+
+<p>
+If you spare the demon, they shall leave the region, never to be seen again by your company.
+</p>
+
+<p>
+What will you choose?
+</p>
+
+
+:: Quest_what_it_means_to_be_a_heroDisaster [nobr]
+
+<p>
+Arriving at the sage's cottage, your slavers were surprised to find the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+there too. But your slavers appeared too late, and the sage had somehow convinced the
+<<= $varstore.get('choose_your_own_adventure_lovers')>>
+that your company was the true mastermind of all the tragedies after all.
+With their eyes full of
+<<if $varstore.get('choose_your_own_adventure_revenge') == 'revenge'>>
+hatred,
+<<else>>
+resolve,
+<</if>>
+they asked your slavers to warn you to get ready to face judgment soon.
+</p>

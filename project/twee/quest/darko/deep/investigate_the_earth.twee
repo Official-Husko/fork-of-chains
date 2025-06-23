@@ -1,0 +1,156 @@
+:: QuestSetup_investigate_the_earth [nobr quest]
+
+<<set _criteriasur = new setup.UnitCriteria(
+null, /* key */
+'Ground Surveyor', /* name */
+[
+  setup.trait.height_dwarf,
+  setup.trait.per_calm,
+  setup.trait.per_curious,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.height_giant,
+  setup.trait.per_aggressive,
+  setup.trait.per_stubborn,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  knowledge: 3,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'investigate_the_earth', /* key */
+"Investigate the Earth", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'unknown',
+],
+2, /* weeks */
+setup.INFINITY, /* expiration weeks */
+{ /* roles */
+  'sur': [ _criteriasur, 1],
+  'fighter': [ setup.qu.fighter, 1],
+  'support': [ setup.qu.support, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_investigate_the_earth',
+setup.qdiff.normal30, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_investigate_the_earthCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.Favor('kobold', 140),
+    ],
+  ],
+  [
+    'Quest_investigate_the_earthCrit',
+    [
+      setup.qc.Favor('kobold', 10),
+      setup.qc.Item(setup.item.lorebook_deep, 1),
+    ],
+  ],
+  [
+    'Quest_investigate_the_earthCrit',
+    [
+      setup.qc.Item(setup.item.lorebook_deep, 1),
+      setup.qc.Ire('kobold', 1),
+    ],
+  ],
+  [
+    'Quest_investigate_the_earthCrit',
+    [
+      setup.qc.Item(setup.item.lorebook_deep, 1),
+      setup.qc.Ire('kobold', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_investigate_the_earth [nobr]
+<<questimage "investigate_the_earth.jpg">>
+<p>
+    After the latest earthquake, a suspicious and mysterious cavern
+    has opened up at your fort's open yard, leading downwards.
+    You start to suspect that it might not be a regular earthquake. Something, or perhaps someone down below is causing it, and it might be in your best interest to investigate.
+</p>
+
+
+
+:: Quest_investigate_the_earthCrit [nobr]
+<<questimage "deeprealm.jpg">>
+
+<p>
+    Your trio of slavers prepared themselves for braving the unknown below.
+    <<Rep $g.sur>> would lead the expedition, while <<rep $g.fighter>> and <<rep $g.support>> would tag along just in case something dangerous appeared.
+</p>
+
+<p>
+    After nodding to each other, they jumped into the hole, and into the dark underneath. Lighting the torch reveals a sizeable caverns, leading even deeper downwards. Your trio of slavers slowly followed along the dark and damp tunnels, into the unknown...
+</p>
+
+<p>
+    The tunnel got smaller, and your slavers were forced to crawl on all fours to continue.
+    Amidst the dank smell of the place (or was it <<reps $g.fighter>> ass that's right in front of <<reps $g.support>> face?), <<rep $g.sur>> suddenly felt a breeze of wind. Before long the source is revealed as the tunnel opens to an open space, an underground highway of sort. And your slavers were not alone.
+</p>
+
+<p>
+    A bunch of tiny lizardkin could be seen busily repairing parts of a collapsed wall. Despite being tiny, they work fast and efficiently, hammering the walls back into shape. It seems you have found the cause for your tremor — your fort is just right above the highway, and their repairs must have caused tremors upwards.
+</p>
+
+<p>
+    Inspecting them closer, <<rep $g.sur>> finally realized that these are no lizardkin. They are kobolds, who apparently has made the underworld their home. A thriving kobold civilization seems to exist down here, and who knows what else.
+</p>
+
+<<if $gOutcome == 'crit' || $gOutcome == 'success'>>
+    <p>
+        Sensing no danger, your slavers came in with their hands open.
+        The kobolds were surprised, naturally, but soon relaxed as <<rep $g.sur>>
+        made it clear that they came without harm, and was just investigating the cause of the ruckus.
+        <<if $gOutcome == 'crit'>>
+            Looking for a gift, <<rep $g.sur>> rummaged <<their $g.sur>> backpack trying to find something, until <<they $g.sur>> realized the kobolds were intently looking at <<their $g.sur>> leftover breakfast.
+            Indeed, it seems surface food is quite rare here, and <<rep $g.sur>> <<uadv $g.sur>> gave it to the kobolds as a gesture of goodwill.
+        <</if>>
+    </p>
+<<else>>
+    <p>
+        Unfortunately, the kobolds mistook your slavers for enemies, and took fighting positions.
+        These kobolds are builders, however, and they were no match for <<reps $g.fighter>> prowess in combat. Still, it seemed that you have left a negative first impression on these kobolds.
+    </p>
+<</if>>
+
+<p>
+    In the next few days, your slavers managed to learn much about the world below — the <<lore region_deep>>, as the kobolds put it.
+    <<if $g.sur.isHasTrait('bg_scholar')>>
+        The bookworm <<rep $g.sur>> already knows about it from one of the books <<they $g.sur>> read in <<their $g.sur>> past job as a scholar.
+    <<elseif $g.sur.isHasTrait('per_studious')>>
+        The studious <<rep $g.sur>> already knows about it from one of the books <<they $g.sur>> read in your library.
+    <<else>>
+        <<Rep $g.sur>> seemed to recall reading something like that in the library, but it was not very clear.
+    <</if>>
+    Still, it seems that your fort just happens to be right above the place, which means should you excavate the tunnel properly into an entrance (by building the <<rep setup.buildingtemplate.scouttunnel>>), you could explore the <<lore region_deep>>.
+    Who knows what kind of interesting creatures the realm hold?
+</p>

@@ -1,0 +1,78 @@
+:: OpportunitySetup_shepherd_of_men [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'shepherd_of_men', /* key */
+'Shepherd of Men', /* Title */
+'darko',   /* author */
+[ 'desert', 'unit', 'money',
+], /* tags */
+1, /* opportunity expiration weeks */
+'Opportunity_shepherd_of_men',
+setup.qdiff.harder38, /* difficulty */
+[ /* options */
+[
+'Opportunity_shepherd_of_men_0',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+],
+[ /* outcomes */
+setup.qc.QuestDirect('shepherd_of_men_raid'), ],
+], [
+'Opportunity_shepherd_of_men_1',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.Building(setup.buildingtemplate.dungeons), ],
+[ /* outcomes */
+setup.qc.QuestDirect('shepherd_of_men_steal'), ],
+], [
+'Opportunity_shepherd_of_men_2',
+null,
+[ /* costs */
+],
+[ /* restrictions */
+setup.qres.Building(setup.buildingtemplate.dungeons), ],
+[ /* outcomes */
+setup.qc.QuestDirect('shepherd_of_men_capture'), ],
+], ],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.uncommon],
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Opportunity_shepherd_of_men [nobr]
+<p>
+Many of the people living in the <<lore region_desert>> make their living as a shepherd.
+These people raise livestock, and usually are forced to travel great distances to let them feed.
+Various types of livestock are raised, including sheep, goat, camels, and occasionally... people.
+</p>
+
+<p>
+You have learned of a particular people-farm who apparently captured unwary
+travelers and trained them to be durable yet obedient slaves.
+This presents an opportunity to you:
+first, you can try to abduct one of the livestock in the farm -- after all,
+your company can always use a pre-trained slave.
+Or, you can simply raid the farm for as many valuables as possible, if all you care about is money.
+There is also the option of enslaving the lead shepherd, but such
+endeavor must prove extremely dangerous.
+</p>
+
+
+:: Opportunity_shepherd_of_men_0 [nobr]
+Raid the farm
+
+
+:: Opportunity_shepherd_of_men_1 [nobr]
+Steal a slave
+
+
+:: Opportunity_shepherd_of_men_2 [nobr]
+Capture the shepherd

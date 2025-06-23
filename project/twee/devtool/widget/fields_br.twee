@@ -1,0 +1,102 @@
+:: DevToolFieldWidgetsBr [widget]
+
+/* widgets that requires br */
+
+<<focwidget 'dtprintmeta'>>
+  <<for _title range $qcustomtitle>>"""<<run """<<= _title.toText()>>""">>"""
+  <</for>><<for _iug, _ug range $qcustomunitgroup>> <<nobr>>
+    <<set _used = false>>
+    <<for _iactor, _actor range $dtquest.getActorUnitGroups()>>
+      <<if _actor instanceof setup.UnitGroup && _actor.key == _ug.key>>
+        <<set _used = true>>
+      <</if>>
+    <</for>>
+  <</nobr>> <<if _used>> """<<run """<<= _ug.toJs()>>""">>""" <</if>> <</for>>
+<</focwidget>>
+
+<<focwidget 'dtprinttitle'>><<nobr>>
+  "<<= setup.escapeJsString($dtquest.name)>>", """/* Title */"""
+<</nobr>><</focwidget>>
+
+<<focwidget 'dtprintauthor'>>{  """/* Author */"""
+&nbsp;&nbsp;name: "<<= setup.escapeJsString($dtquest.author.name)>>",
+&nbsp;&nbsp;url: "<<= setup.escapeJsString($dtquest.author.url)>>",
+},<</focwidget>>
+
+<<focwidget 'dtprintdeadlineweeks'>><<nobr>>
+  <<if $devtooltype == 'quest' and $dtquest.deadline_weeks == setup.QUEST_DEFAULT_EXPIRATION>>setup.QUEST_DEFAULT_EXPIRATION<<else>><<= $dtquest.deadline_weeks>><</if>>,  """/* expiration weeks */"""
+<</nobr>><</focwidget>>
+
+<<focwidget 'dtprintdifficulty'>><<nobr>>
+  setup.qdiff.<<= $dtquest.difficulty.diffname>><<= $dtquest.difficulty.level>>, """/* difficulty */"""
+<</nobr>><</focwidget>>
+
+<<focwidget 'dtprintactors'>>{ """/* actors */"""
+    <<for _iactor, _actor range $dtquest.getActorUnitGroups()>><<nobr>>
+      &nbsp;
+      '<<= _iactor>>':
+      <<if Array.isArray(_actor)>>
+        [
+        <<for _iactorcost, _actorcost range _actor>>
+          <br/>
+          &nbsp;
+          &nbsp;
+          <<= _actorcost.text()>>,
+        <</for>>
+        <br/>
+        &nbsp;
+        ],
+      <<elseif _actor instanceof setup.UnitGroup>>
+        '<<= _actor.key>>',
+      <<elseif _actor instanceof setup.ContactTemplate>>
+        setup.contacttemplate.<<= _actor.key>>,
+      <<else>>
+        null,
+      <</if>>
+    <</nobr>>
+    <</for>> }, <</focwidget>>
+
+
+<<focwidget 'dtprinttags'>>[  """/* tags */"""
+  <<for _itag, _tag range $dtquest.tags>><<nobr>>
+    &nbsp;
+    '<<= _tag>>',
+  <</nobr>>
+  <</for>> ],<</focwidget>>
+
+
+<<focwidget 'dtprintcosts'>>[ """/* costs */"""
+  <<for _icost, _cost range $dtquest.costs>><<nobr>>
+    &nbsp;
+    <<= _cost.text()>>,
+  <</nobr>>
+  <</for>> ], <</focwidget>>
+
+
+<<focwidget 'dtprintrestrictions'>>[ """/* restrictions */"""
+  <<for _irestriction, _restriction range $dtquest[$args[0]]>><<nobr>>
+    &nbsp;
+    <<= _restriction.text()>>,
+    <</nobr>>
+  <</for>> ], <</focwidget>>
+
+
+<<focwidget 'dtprintoutcomes'>>[ """/* outcomes */"""
+  <<for _ioutcome, _outcome range $dtquest[$args[0]]>><<nobr>>
+    &nbsp;
+    <<= _outcome.text()>>,
+    <</nobr>>
+  <</for>> ], <</focwidget>>
+
+
+<<focwidget 'dtprintexpirationoutcomes'>>[ """/* expiration outcomes */"""
+  <<for _ixxx, _outcome range $dtquest.expired_outcomes >><<nobr>>
+    &nbsp;
+    <<= _outcome.text()>>,
+    <</nobr>>
+  <</for>>
+], <</focwidget>>
+
+<<focwidget 'dtprintquestpool'>>[ """/* quest pool and rarity */"""
+    <<if $args[0]>> [setup.questpool.<<= $args[0].key>>, <<= $args[1].text()>>],
+    <</if>> ], <</focwidget>>

@@ -1,0 +1,293 @@
+:: QuestSetup_oasis_trap [nobr quest]
+
+
+<<run new setup.Title(
+"quest_tentacle_attuned_0", /* key */
+"Tentacle-Attuned", /* name */
+"Has a certain connection with a tentacle aberration in the deserts", /* description */
+"a|have a spiritual connection with a desert tentacle aberration, allowing a|them to track its whereabouts all the time", /* unit text */
+3000, /* slave value */
+{ /* skill additives */
+ sex: 3,},
+{
+ is_negative: false,
+},
+)
+>>
+
+
+
+<<set _criteriatamer = new setup.UnitCriteria(
+null, /* key */
+'Tentacle Tamer', /* name */
+[
+  setup.trait.per_attentive,
+  setup.trait.skill_flight,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_dreamy,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.magic_earth_master, setup.trait.skill_animal], true),
+],
+{
+  survival: 2,
+  knowledge: 1,
+}
+)>>
+
+<<set _criteriamage = new setup.UnitCriteria(
+null, /* key */
+'Tentacle Manipulator', /* name */
+[
+  setup.trait.per_cautious,
+  setup.trait.per_calm,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_brave,
+  setup.trait.per_aggressive,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AllTraits([setup.trait.magic_water_master], true),
+],
+{
+  arcane: 3,
+}
+)>>
+
+<<set _criteriamaster = new setup.UnitCriteria(
+null, /* key */
+'Tentacle Master', /* name */
+[
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.per_masochistic,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.vagina_tight,
+  setup.trait.anus_tight,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_chaste,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.AnyTrait([setup.trait.skill_animal, setup.trait.magic_earth_master], true),
+],
+{
+  survival: 1,
+  arcane: 1,
+  sex: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'oasis_trap', /* key */
+"Oasis Trap", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'unit',
+  'rare',
+  'prep',
+],
+4, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'tamer': [ _criteriatamer, 1],
+  'mage': [ _criteriamage, 1],
+  'master': [ _criteriamaster, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_oasis_trap',
+setup.qdiff.hardest51, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_oasis_trapCrit',
+    [
+      setup.qc.Outcomes("success"),
+      setup.qc.QuestDirect('harvest_season'),
+    ],
+  ],
+  [
+    'Quest_oasis_trapCrit',
+    [
+      setup.qc.AddTitle('master', 'quest_tentacle_attuned_0'),
+      setup.qc.TraitIncreaseExisting('master', setup.trait.vagina_gape),
+      setup.qc.TraitIncreaseExisting('master', setup.trait.anus_gape),
+    ],
+  ],
+  [
+    'Quest_oasis_trapCrit',
+    [
+      setup.qc.Injury('tamer', 2),
+      setup.qc.Injury('mage', 3),
+      setup.qc.Injury('master', 2),
+    ],
+  ],
+  [
+    'Quest_oasis_trapCrit',
+    [
+      setup.qc.MissingUnit('master'),
+      setup.qc.TraitReplaceExisting('master', setup.trait.vagina_gape),
+      setup.qc.TraitReplaceExisting('master', setup.trait.anus_gape),
+      setup.qc.TraitsReplace('master', [setup.trait.bg_slave, setup.trait.per_sexaddict]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.VarEqual('desert_spring_progress', '1'),
+  setup.qres.QuestUnique(),
+  setup.qres.NoUnitWithTitle('quest_tentacle_attuned_0', {
+}),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_oasis_trap [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+    During one of your recent quests into the <<lore region_desert>>, you've discovered that a certain tentacle aberration is mindlessly trapping thirsty travelers to be remade into its breeding incubator.
+    The news spread quickly throughout your fort, and in particular, <<yourrep _u>> somehow ended up knowing about it.
+</p>
+
+<p>
+    A few days ago, <<they _u>> came to your office with a plan degenerate enough to rival one of the demon's depraved stratagems. The idea is simple — your company would surely benefit greatly from having such a creature under your control. You can then let it keep trapping unfortunate travelers in the desert, while your slavers could come from time to time to "harvest" the slaves. Surely an easy and fail-proof way to get a good chunk of slaves for your company!
+</p>
+
+<p>
+    It won't be an easy thing to do, however, taming this beast. The beast moves around on the desert so much, so you first must have a good slaver capable of hunting the beast down. Someone familiar with the working of the tentacles <<rep setup.trait.magic_earth_master>> or strong connection with animals <<rep setup.trait.skill_animal>> will be necessary. Then the most difficult part then begins. One of your slavers must somehow form a connection with the beast, to allow you to track its location within the deserts. Then, a flesh shaper must alter the monster's flesh, to allow your slavers to access the body and harvest its good from time to time. Finally, a bonding ritual must be performed to "tame" the mindless beast. Again, you would need someone familiar with tentacles or animals to do the work. Given the monster's affinity for tentacles, you'd just best prepared that the ritual will involve lots and lots of tentacles...
+</p>
+
+
+
+
+:: Quest_oasis_trapCrit [nobr]
+<p>
+    <<Yourrep $g.tamer>> tamer|was responsible for locating the tentacle beast in the vast deserts.
+    <<if $g.tamer.isHasTrait('per_attentive')>>
+        <<They $g.tamer>> tamer|was attentive, making it easier to spot the beast.
+    <</if>>
+    <<if $g.tamer.isHasTrait('per_dreamy')>>
+        <<They $g.tamer>> tamer|was not the most perceptive slaver, and <<they $g.tamer>> may have missed a spot or two during the search.
+    <</if>>
+    <<if $g.tamer.isHasTrait('magic_earth_master')>>
+        <<Their $g.tamer>> mastery over tentacles extend to tentacle monsters, and <<they $g.tamer>> used the connection to help locate the beast.
+    <<elseif $g.tamer.isHasTrait('skill_animal')>>
+        <<Their $g.tamer>> affinity with animals extend to tentacle monsters, and <<they $g.tamer>> used the connection to help locate the beast.
+    <</if>>
+    <<if $g.tamer.isHasTrait('skill_flight')>>
+        <<They $g.tamer>> tamer|was able to fly, and locating the monster from the sky made the job easier.
+    <</if>>
+</p>
+
+<<if $gOutcome == 'failure'>>
+    <p>
+        After a few weeks scouting the deserts, <<rep $g.tamer>> still could not locate the beast. Your slavers eventually had to give up and return home. The only proof that they were doing some kind of work, instead of spending all their time in the taverns, was the injuries they somehow suffered during the quest.
+    </p>
+<<else>>
+    <p>
+        After a few weeks scouting the desert, <<rep $g.tamer>> spotted the beast's trap as the only thing standing out in the middle of a vast, empty desert.
+        Your slavers approached cautiously, and <<reps $g.master>> job began. <<They $g.master>> would need to form a bond with the beast, one way or another. As part of the ritual, <<rep $g.master>> allowed <<themself $g.master>> to be swallowed by the monster, and soon disappeared down into the desert, inside the beast's body.
+    </p>
+
+    <<if $gOutcome == 'disaster'>>
+        <p>
+            Your other slavers waited for days, then weeks, and after three weeks, they knew something was wrong. But they were too late to realize, for the beast decided to migrate to another unknown part of the desert, leaving <<rep $g.mage>> and <<rep $g.tamer>> clueless to the whereabouts of <<rep $g.master>> and the beast that had consumed <<them $g.master>>...
+        </p>
+
+        <p>
+            <<urescuenow $g.master>>, preferably while <<their $g.master>> sanity is still intact...
+        </p>
+    <<else>>
+
+        <p>
+            Inside the body, <<rep $g.master>> began to work as planned.
+            <<if $g.master.isHasTrait('skill_animal')>>
+                <<They $g.master>> knew that even beasts like these are still animals, and <<they $g.master>> used <<their $g.master>> strong affinity with animals to soothe and communicate with the beast. The beast turned out to be not so mindless after all, and it listened intently as <<rep $g.master>> attempted to tame it.
+            <<else>>
+                <<They $g.master>> master|was a master of earth magic, and were able to match the monster tentacle by tentacle. <<Reps $g.master>> tentacles fought against the monster's tentacle, eventually winning the feelery fight and subjugating the beast. It was prime for the true taming attempt to begin.
+            <</if>>
+        </p>
+
+        <p>
+            The bond must be sealed with a bond of tentacles. As the final part of the ritual, <<rep $g.master>> gave <<their $g.master>> body away, allowing the monster to insert its unholy tentacle deep within <<them $g.master>>, exploring every nook and cranny and remembering the feeling of its tamer.
+            <<if $g.master.isHasTrait('anus_tight')>>
+                The tentacles had a hard time penetrating <<reps $g.master>> overly tight asshole, making the connection harder to form, and inducing much pain to <<rep $g.master>>.
+            <<elseif $g.master.isHasTrait('vagina_tight')>>
+                The tentacles had a hard time penetrating <<reps $g.master>> overly tight pussy, making the connection harder to form, and inducing much pain to <<rep $g.master>>.
+            <</if>>
+
+            <<if $g.master.isHasTrait('anus_gape')>>
+                The tentacles slides easily in and out of <<reps $g.master>> gaping asshole,
+                making the connection easier to form.
+            <<elseif $g.master.isHasTrait('vagina_gape')>>
+                The tentacles slides easily in and out of <<reps $g.master>> gaping pussy,
+                making the connection easier to form.
+            <</if>>
+
+            <<if $g.master.isHasTrait('per_dominant')>>
+                Despite the constant fucking, <<rep $g.master>> remained in dominant control over the monstrous intercourse, and managed to concentrate on the ritual.
+            <</if>>
+            <<if $g.master.isHasTrait('per_submissive')>>
+                The constant fucking was too much for <<reps $g.master>> submissive mind, and <<they $g.master>> lapsed in concentration a few times during the ritual.
+            <</if>>
+
+            <<if $g.master.isHasTrait('per_lustful')>>
+                <<Rep $g.master>> might have enjoyed the fucking a little more than necessary, and may have forgotten to concentrate on the ritual.
+            <</if>>
+            <<if $g.master.isHasTrait('per_chaste')>>
+                <<Rep $g.master>> hated the forced penetration.
+            <</if>>
+            <<if $g.master.isHasTrait('per_masochistic')>>
+                <<Reps $g.master>> masochistic brain meant that the pain of sudden penetration did not bother <<rep $g.master>> overly too much.
+            <</if>>
+
+        </p>
+
+        <p>
+            After a few long grueling hours of constant fucking, <<reps $g.master>> holes were forever gaped, but the ritual was a success. The tamed beast gently spitted <<rep $g.master>> back out, a connection visibly forming between the beast and the <<urace $g.master>>. It was then a simple thing for <<rep $g.mage>> to alter the beast's body, putting a hidden secret entrance for your slavers into the beast's body, where the slaves were stored and used.
+        </p>
+
+        <p>
+            <<if $gOutcome == 'crit'>>
+                In a stroke of luck, a number of slaves seemed ready to be harvested inside the beast. A quest has been prepared for you to harvest these slaves while you got the chance.
+            <<else>>
+                As long as <<rep $g.master>> remained with your company, you might be able to harvest the slaves inside the beast from time to time, whenever you scout the <<lore region_desert>>.
+            <</if>>
+        </p>
+
+    <</if>>
+
+<</if>>

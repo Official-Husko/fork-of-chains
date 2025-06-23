@@ -1,0 +1,118 @@
+:: OpportunitySetup_restore_the_empathy [nobr opportunity]
+
+/* PROOFREAD COMPLETE */
+
+<<run new setup.OpportunityTemplate(
+'restore_the_empathy', /* key */
+"Restore the Empathy", /* Title */
+"darko", /* Author */
+[ /* tags */
+  'trait',
+  'desert',
+],
+1, /* expiration weeks */
+'Opportunity_restore_the_empathy',
+setup.qdiff.hard36, /* difficulty */
+[ /* options */
+  [
+    'Opportunity_restore_the_empathy_0',
+    'Opportunity_restore_the_empathy_0_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+    ],
+    [ /* outcomes */
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.Trait('slave', setup.trait.per_lavish),
+      setup.qc.AddTitle('slave', 'quest_empathy_restored_4'),
+    ],
+  ],
+  [
+    'Opportunity_restore_the_empathy_1',
+    'Opportunity_restore_the_empathy_1_flavor',
+    [ /* costs */
+    ],
+    [ /* restrictions */
+      setup.qres.HasSlaverWithTraits([setup.trait.magic_dark]),
+    ],
+    [ /* outcomes */
+      setup.qc.VarAdd('broken_wings_dark', 1, -1),
+      setup.qc.VarSet('broken_wings_cooldown', '1', 10),
+      setup.qc.Trait('slave', setup.trait.per_frugal),
+      setup.qc.AddTitle('slave', 'quest_empathy_restored_4'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'slave': [
+  ],
+  'orc': 'subrace_orc',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_restore_the_empathy [nobr]
+<<set _u = setup.getAnySlaver()>>
+
+<p>
+Having obtained the yellow-colored shard from the scary orc <<lady $g.orc>>,
+it is time to return the essence back to your unresponsive slave
+<<rep $g.slave>>. Right?
+</p>
+
+
+:: Opportunity_restore_the_empathy_0 [nobr]
+Bless with generosity
+
+
+:: Opportunity_restore_the_empathy_0_flavor [nobr]
+
+<p>
+A bright yellow light emanates from the shard as you bring it closer to <<yourrep
+$g.slave>>. The shard is then absorbed directly into <<their $g.slave>> head.
+Yellowish substance visibly flows from the shard into <<their $g.slave>> mind, until
+the shard is reduced to nothingness.
+While <<their $g.slave>> mind still remains broken, the color of <<therace $g.slave>>'s face
+is healthier now, perhaps this is part of the correct path to restore <<them
+$g.slave>> back to a that of a functional sex toy.
+</p>
+
+
+:: Opportunity_restore_the_empathy_1 [nobr]
+Corrupt the essence
+
+
+:: Opportunity_restore_the_empathy_1_flavor [nobr]
+
+<<set _u = $company.player.getUnits({job: setup.job.slaver}).filter(u => u.isHasTrait('magic_dark'))[0]>>
+<<if _u>>
+
+<p>
+<<if _u.isYou()>>
+With an evil smirk, you focus the darkest energy within you, channeling your
+<<else>>
+<<Yourrep _u>>
+flashes a grin as you tell <<them _u>> your about depraved plan. <<They _u>>
+immediately gets to work, channeling <<their _u>>
+<</if>>
+mastery over <<rep setup.trait.magic_dark>> over to the shard. Soon, the
+shard's color turns from bright yellow to purplish, a sure sign that the
+corruption is successful.
+Despite the corruption, <<reps $g.slave>> body still accepts the shard as part
+of <<them $g.slave>>, absorbing it fully until the shard is reduced to
+nothingness. Even though there are seemingly no trace of the corruption in the slave,
+<<if _u.isYou()>>
+you can feel
+<<else>>
+<<rep _u>> tells you that <<they _u>> can feel
+<</if>>
+a dark, evil presence inside the slave's mind now...
+</p>
+<</if>>

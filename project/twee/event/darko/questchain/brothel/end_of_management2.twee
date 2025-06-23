@@ -1,0 +1,44 @@
+:: EventSetup_end_of_management2 [nobr event]
+
+<<run new setup.Event(
+'end_of_management2', /* key */
+"End of Management", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'forest',
+],
+'Event_end_of_management2',
+{ /* roles (LEGACY) */
+},
+{ /* actors */
+  'courtesan': 'brothel_head_courtesan',
+  'head': 'brothel_cleanup0',
+},
+setup.dutytemplate.questbrothelmanager.resetChain().concat([
+  /* outcomes */
+  setup.qc.Slave('courtesan', "", undefined),
+  setup.qc.AddHistory('courtesan', 'a|was appointed head courtesan in your brothel, but returned as a slave to your company when it closes'),
+  setup.qc.Slaver('head', "a|was the former head-whore of your brothel", undefined),
+]),
+[ /* restrictions */
+  setup.qres.NoUnitWithTitle('quest_brothel_owner_0', {}),
+  setup.qres.Not(setup.qres.VarNull('quest_brothel_progress')),
+  setup.qres.VarGte('quest_brothel_progress', 500),
+  setup.qres.UnitGroupHasUnit('brothel_head_courtesan'),
+  setup.qres.UnitGroupHasUnit('brothel_cleanup0'),
+],
+0, /* Cooldown */
+setup.rarity.always, /* Rarity */
+)>>
+
+:: Event_end_of_management2 [nobr]
+<<include "Event_end_of_management">>
+
+<p>
+Luckily, you were able to pick up both the former-slave-turned-head-courtesan <<rep $g.courtesan>>, as well as the
+former head-whore <<rep $g.head>>. The courtesan has been obediently returned to your
+slave pens, while you can decide if you want to hire the former head-whore.
+</p>

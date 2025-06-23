@@ -1,0 +1,52 @@
+:: InitBuildingTrainingBedroom [nobr]
+
+<<run new setup.RoomTemplate({
+  key: 'trainingbedroom',
+  tags: [],
+  width: 3,
+  height: 3,
+  door_column: 1,
+  skill_bonus: [
+    {
+      type: "near",
+      skill_key: "sex",
+      room_keys: [
+        'oraltrainingroom',
+        'vaginatrainingroom',
+        'analtrainingroom',
+        'oralfuckhole',
+        'analfuckhole',
+        'vaginafuckhole',
+      ],
+    },
+  ],
+  is_fixed: false,
+  is_passable: false,
+  is_door: true,
+  is_optional: false,
+  is_outdoors: false,
+})>>
+
+<<run new setup.BuildingTemplate({
+  key: 'trainingbedroom',
+  name: 'Training Bedroom',
+  tags: ['training', 'unlocker', ],
+  description_passage: 'BuildingTrainingBedroom',
+  costs: [
+    [setup.qc.MoneyMult(-setup.BUILDING_CHEAP_MULT)],
+  ],
+  restrictions: [
+    [setup.qres.Building('trainingchamber')],
+  ],
+  main_room_template_key: 'trainingbedroom',
+})>>
+
+
+:: BuildingTrainingBedroom [nobr]
+
+<p>
+A small room with a bed within the training chamber complex.
+Unlocks basic and advanced vaginal, oral, and anal sex training for slaves.
+
+</p>
+

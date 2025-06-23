@@ -1,0 +1,132 @@
+:: QuestSetup_the_sweet_taste_of_virginity [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriayou = new setup.UnitCriteria(
+null, /* key */
+'you', /* name */
+[
+],
+[
+],
+[
+  setup.qres.You(),
+],
+{
+  arcane: 3.0,
+}
+)>>
+
+
+<<set _criteriavirgin1 = new setup.UnitCriteria(
+null, /* key */
+'\"Virgin\"', /* name */
+[
+],
+[
+],
+[
+  setup.qres.Job(setup.job.slave),
+  setup.qres.AllTraits([setup.trait.vagina_tight], true),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_sweet_taste_of_virginity', /* key */
+"The Sweet Taste of Virginity", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'special',
+  'prep',
+  'trait',
+],
+1, /* weeks */
+10, /* expiration weeks */
+{ /* roles */
+  'virgin1': _criteriavirgin1,
+  'virgin2': _criteriavirgin1,
+  'virgin3': _criteriavirgin1,
+  'you': [_criteriayou, 3],
+},
+{ /* actors */
+  'slaver': [
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+  setup.qc.Money(-1000),
+],
+'Quest_the_sweet_taste_of_virginity',
+setup.qdiff.easiest1, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_sweet_taste_of_virginityCrit',
+    [
+      setup.qc.Leave('virgin1', "a|is imbuing the Plant of Lewdity with the sweetness of virginity", 15),
+      setup.qc.Leave('virgin2', "a|is imbuing the Plant of Lewdity with the sweetness of virginity", 15),
+      setup.qc.Leave('virgin3', "a|is imbuing the Plant of Lewdity with the sweetness of virginity", 15),
+      setup.qc.Event('the_fruit_of_lewdity', 20, {
+slaver: "slaver",
+}),
+      setup.qc.Mindbreak('virgin1'),
+      setup.qc.Mindbreak('virgin2'),
+      setup.qc.Mindbreak('virgin3'),
+      setup.qc.TraitReplace('virgin1', setup.trait.vagina_gape),
+      setup.qc.TraitReplace('virgin2', setup.trait.vagina_gape),
+      setup.qc.TraitReplace('virgin3', setup.trait.vagina_gape),
+    ],
+  ],
+  [
+    'Quest_the_sweet_taste_of_virginityCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_sweet_taste_of_virginityCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+  [
+    'Quest_the_sweet_taste_of_virginityCrit',
+    [
+      setup.qc.Outcomes("crit"),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+  setup.qc.Event('withering_plant', 0, {
+slaver: "slaver",
+}),
+
+],
+)>>
+
+:: Quest_the_sweet_taste_of_virginity [nobr]
+
+<<include "PlantOfLewditySweetTasteOfVirginityCommon">>
+
+<p>
+As you have chosen to supply the plant with actual "virgin"s, you'll have to
+supply three slaves whose vaginas are still relatively intact. You have no doubt
+that bad, gaping things will happen to them though — being violated for
+months continuously tend to do that — so <<dangertext "be prepared for the slaves' minds to be completely emptied">>.
+</p>
+
+
+
+:: Quest_the_sweet_taste_of_virginityCrit [nobr]
+<<include "Quest_the_sweet_taste_of_anal_virginityCrit">>
+
+

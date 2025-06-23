@@ -1,0 +1,205 @@
+:: QuestSetup_the_seven_deadly_transformation__pride2 [nobr quest]
+
+/* PROOFREAD COMPLETE */
+
+<<set _criteriafated = new setup.UnitCriteria(
+null, /* key */
+'fated', /* name */
+[
+
+],
+[
+
+],
+[
+setup.qres.IsCanBeSold(),
+setup.qres.Job(setup.job.slave),
+setup.qres.HasTitle('seven_deadly_transformation'),
+setup.qres.NoTrait(setup.trait.arms_werewolf),
+setup.qres.NoTrait(setup.trait.arms_neko),
+setup.qres.NoTrait(setup.trait.arms_dragonkin),
+setup.qres.NoTrait(setup.trait.arms_demon),
+setup.qres.Trait(setup.trait.tail_werewolf),
+setup.qres.Trait(setup.trait.eyes_neko),
+setup.qres.Trait(setup.trait.ears_elf),
+setup.qres.Trait(setup.trait.mouth_orc),
+setup.qres.Trait(setup.trait.legs_demon),
+setup.qres.Trait(setup.trait.body_dragonkin),
+],
+{
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'the_seven_deadly_transformation__pride2', /* key */
+"The Seven Deadly Transformation: The End", /* Title */
+"darko", /* Author */
+[
+  'transformation',
+  'sea',
+  'veteran',
+  'prep',
+  'special',
+  'upgrade',
+  'order'
+], /* tags */
+6, /* weeks */
+12, /* quest expiration weeks */
+{ /* roles */
+'trainer': setup.qu.slavetrainer,
+'warrior': setup.qu.dark_warrior,
+'fated': _criteriafated,
+'wizard': setup.qu.corruptor, },
+{ /* actors */
+'demon': 'subrace_demon', },
+[ /* costs */
+],
+'Quest_the_seven_deadly_transformation__pride2',
+setup.qdiff.extreme62, /* difficulty */
+[ /* outcomes */
+[
+'Quest_the_seven_deadly_transformation__pride2Crit',
+[
+  setup.qc.Outcomes('success'),
+  setup.qc.Blessing('trainer', 1),
+  setup.qc.Blessing('warrior', 1),
+  setup.qc.Blessing('fated', 1), ],
+], [
+'Quest_the_seven_deadly_transformation__pride2Crit',
+[
+setup.qc.SetCooldownQuest('the_seven_deadly_transformations__sloth', 100),
+setup.qc.MissingUnitForever('fated'),
+setup.qc.Item(setup.item.transformation_technology),
+setup.qc.Item(setup.item.potion_transformation), ],
+], [
+'Quest_the_seven_deadly_transformation__pride2Crit',
+[
+  setup.qc.Outcomes('success'),
+setup.qc.Corrupt('trainer'),
+setup.qc.Corrupt('wizard'),
+setup.qc.Corrupt('warrior'),
+setup.qc.TraumatizeRandom('trainer', 17),
+setup.qc.TraumatizeRandom('wizard', 17),
+setup.qc.TraumatizeRandom('warrior', 17), ],
+], [
+'Quest_the_seven_deadly_transformation__pride2Crit',
+[
+  setup.qc.Outcomes('success'),
+setup.qc.MissingUnit('wizard'),
+setup.qc.MissingUnit('trainer'),
+setup.qc.TraumatizeRandom('warrior', 27), ],
+], ],
+[ /* quest pool and rarity */
+],
+[ /* restrictions to generate */
+],
+)>>
+
+:: Quest_the_seven_deadly_transformation__pride2 [nobr]
+
+<<include 'Opportunity_the_seven_deadly_transformation__virtue_or_sin'>>
+
+<p>
+You made the sensible but dangerous decision of trying to seal the deal.
+</p>
+
+
+:: Quest_the_seven_deadly_transformation__pride2Crit [nobr]
+
+<p>
+Your slavers arrived at the target island — a dark shadow loomed seemingly
+eternally over the island, covering it in darkness. After trudging through the
+untamed forests, <<rep $g.wizard>> <<uadv $g.wizard>> stopped your slavers in
+their track. Lo and behold, the slavers were greeted with an empty altar in
+the middle of a crater, surrounded by carvings of various demonic sexual
+acts.
+</p>
+
+<p>
+<<Rep $g.warrior>> <<uadv $g.warrior>> stood guard while <<rep $g.wizard>>
+prepared for the ritual. <<uslaverstripall $g.fated>> <<Yourrep $g.trainer>> then
+placed the struggling slave atop of the altar, and the altar immediately
+worked their magic.
+</p>
+
+<p>
+<<Reps $g.fated>> human-like arms immediately grew tired and dropped to the
+altar unmoving, as if it was chained by the heaviest of restraint. Their
+hooves were pulled down towards the corners of the ritual by envious hands
+appearing out of nowhere, and <<rep $g.fated>> was straight-eagled to the
+altar. Their wolf-like tail grew in length and two large penis-shapes tips formed
+at its end, which then entered <<their $g.fated>> own <<umouth $g.fated>> while
+spouting cum-like substance
+down <<their $g.fated>> throat. From under the altar, a massive stony
+phallus-like object impaled their <<uanus $g.fated>>, which would made <<them
+$g.fated>> scream if not for the tail-gag shoved down <<their $g.fated>> <<umouth $g.fated>>.
+Electric jolts both tormented and
+pleasured the struggling slave, and <<they $g.fated>> would climax if not for
+the demonic chastity cage appearing out of nowhere and cruelly constricting their
+<<ugenital $g.fated>>. Meanwhile <<their $g.fated>> <<ubreast $g.fated>> all
+the time puffed out proudly displaying it sensuously for your slavers'
+entertainment.
+</p>
+
+<p>
+The bondage lasted for a few hours before a thunderstorm crashed into the
+crater —— from the resulting mist appeared what seemed to be the demon lord
+himself, with two of his slaves crawling and leashed besides him. One stopped
+and acted as his throne while the other as his footstool, and the demon made
+himself comfortably to watch the scene unfolded.
+</p>
+
+<<if $gOutcome == 'success' or $gOutcome == 'crit'>>
+
+<p>
+When the debauched ritual finally ended, <<yourrep $g.fated>>
+collapsed into the altar in <<their $g.fated>> own sexual fluids. Satisfied
+by the performance, the demon lord personally collared the slave, marking
+<<them $g.fated>> as a permanent addition to his harem of sex toys.
+</p>
+
+<p>
+For helping him raise such a good pet, your slavers were rewarded with the
+secret knowledge of bodily transformation — <<rep
+setup.item.transformation_technology>>. The demon lord together with his
+three slaves then disappeared into a breach in <<lore concept_mist>>, leaving no trace that
+they were ever here.
+</p>
+
+<<else>>
+
+<p>
+It was then that your slavers got a very sudden and strong compelling order to
+join in the ritual. One by one, your slavers were unable to resist as their
+body were pulled into the altar, to join in the debauchery. One impaled among
+another, flesh upon flesh were piled up on top of the altar with one filling
+the other reciprocately. Lost in sexual desires, your slavers became slaves
+for the demon's entertainment, which lasted for hours long.
+</p>
+
+<<if $gOutcome == 'failure'>>
+<p>
+By the time they regained their consciousness, your slavers were alone with
+no trace of <<rep $g.fated>> or the demon lord anywhere. It could all just be
+a dream, but your slavers somehow ended up with the secret knowledge of
+bodily transformation — <<rep setup.item.transformation_technology>>, inside
+their head.
+</p>
+<<else>>
+
+<p>
+By the time <<they $g.warrior>> regained <<their $g.warrior>> consciousness,
+none of <<their $g.warrior>> team members were anywhere to be seen. Searching
+the area yielded nothing, but <<rep $g.warrior>> somehow gained understanding
+of a secret ancient technology: <<rep setup.item.transformation_technology>>,
+inside their head.
+<<They $g.warrior>> <<uadv $g.warrior>> gave up the search and left for home
+alone and a little broken.
+</p>
+<</if>>
+
+<</if>>
+
+<p>
+Lying on the altar is a single bottle of <<rep setup.item.potion_transformation>>, perhaps a gift from the satisfied demon lord?
+</p>

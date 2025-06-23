@@ -1,0 +1,93 @@
+:: OpportunitySetup_kobold_learning [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'kobold_learning', /* key */
+"Kobold Learning", /* Title */
+{ /* Author */
+  name: "darko",
+  url: "",
+},
+[ /* tags */
+  'fort',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_kobold_learning',
+setup.qdiff.normal40, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_kobold_learning_0',
+    outcome_passage: 'Opportunity_kobold_learning_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_studious),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_kobold_learning_1',
+    outcome_passage: 'Opportunity_kobold_learning_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.TraitReplace('kobold', setup.trait.per_active),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+],
+{ /* actors */
+  'kobold': [
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_kobold_learning [nobr]
+<p>
+    <<Rep $g.kobold>> asks for your advise on where <<they $g.kobold>> should focus <<their $g.kobold>> training on. The library, like a proper wizard? Or the fields, like a proper fighter?
+</p>
+
+
+:: Opportunity_kobold_learning_0 [nobr]
+Hit the books
+
+
+:: Opportunity_kobold_learning_0_flavor [nobr]
+<p>
+    Knowledge is power.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> could be seen spending most of <<their $g.kobold>> free time in the library, absorbing as much knowledge as <<they $g.kobold>> can.
+</p>
+
+
+:: Opportunity_kobold_learning_1 [nobr]
+Hit the fields
+
+
+:: Opportunity_kobold_learning_1_flavor [nobr]
+<p>
+    Strength is power.
+</p>
+<p>
+    In the coming days, you can see your advice had taken root. <<Rep $g.kobold>> can be seen practicing with <<their $g.kobold>> <<uweapon $g.kobold>>, sometimes even after the night has fell.
+</p>
+

@@ -1,0 +1,18 @@
+:: WikiBuilding [nobr]
+
+<<set _forfilter = Object.values(setup.buildingtemplate)>>
+
+<div>
+  <<run _dom = setup.DOM.Util.filterAll({
+    menu: 'buildingtemplate',
+    filter_objects: _forfilter,
+    display_callback: buildingtemplate => {
+      if ($menufilter.get('buildingtemplate', 'display') == 'compact') {
+        return setup.DOM.Card.buildingtemplatecompact(buildingtemplate, true);
+      } else {
+        return setup.DOM.Card.buildingtemplate(buildingtemplate, true);
+      }
+    },
+  })>>
+  <<attach _dom>>
+</div>
