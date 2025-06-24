@@ -21,7 +21,7 @@ This fork continues the legacy with new features, content, and a focus on collab
 
 **Fort of Chains: Galvanized** is a completed, highly moddable sandbox management game where you lead a band of slavers in a fantasy world. The game is text-only, open-source, and designed to generate short stories through its quest and event system. It is configurable for all gender orientations (MM, MF, FF) and contains mature themes.
 
-- ⬇️ [Download Latest Release](https://github.com/Official-Husko/fork-of-chains/releases)
+- ⬇️ [Download Latest Release](https://github.com/Official-Husko/fork-of-chains/releases/latest)
 - 📜 [Feature / Fetish List](https://github.com/Official-Husko/fork-of-chains/blob/master/docs/faq.md#does-this-game-contain-insert-fetish-here)
 
 > **Warning:** This game contains heavy themes of slavery and non-consensual sex. There is no support for playing as a submissive character.
