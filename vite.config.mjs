@@ -107,9 +107,34 @@ export default defineConfig(({ command, mode }) => {
               return generateVirtualModuleCode()
             }
           },
-          async configureServer(server) { // dev server: serve a modified index.html file, and remap some assets
+          /**
+           * Dev server: serve a modified index.html file, remap assets, and watch .twee files.
+           * On .twee change, recompile and trigger a full browser reload.
+           *
+           * SKIP_TWEE env var: Set to skip compiling .twee files (for JS/CSS-only builds).
+           */
+          async configureServer(server) {
             await compileTwee('devserver')
             const virtualModulePath = VIRTUAL_JS_MODULE.substring(1)
+            // Watch .twee files in dev mode and recompile on change, then reload browser (debounced)
+            server.watcher.add(path.join(__dirname, 'project/twee/**/*.twee'))
+            let tweeRebuildTimeout = null
+            server.watcher.on('change', (file) => {
+              if (file.endsWith('.twee')) {
+                clearTimeout(tweeRebuildTimeout)
+                tweeRebuildTimeout = setTimeout(() => {
+                  compileTwee('devserver')
+                    .then(() => {
+                      server.ws.send({ type: 'full-reload' })
+                    })
+                    .catch((err) => {
+                      console.error('Twee compile failed:', err)
+                      // Optionally, you could send a custom event to the browser here if you want to handle it in the UI
+                      // server.ws.send({ type: 'error', err: String(err) })
+                    })
+                }, 200) // 200ms debounce
+              }
+            })
             server.middlewares.use((req, res, next) => {
               //console.debug('Fetching', req.url)
               if (req.url === '/') {
