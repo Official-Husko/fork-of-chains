@@ -1,5 +1,33 @@
 export const EXPORTABLE = true
 
+/**
+ * Building Tag Definitions
+ * -----------------------------------
+ * This object defines all tags used to categorize and describe building properties and improvements in the game.
+ *
+ * @typedef {{
+ *   type: string,
+ *   title: string,
+ *   description: string
+ * }} BuildingTag
+ *
+ * @type {Record<string, BuildingTag>}
+ *
+ * Example usage:
+ *   // Access the title of the "critical" tag
+ *   const criticalTitle = setup.BUILDING_TAGS.critical.title;
+ *
+ * Expected structure:
+ *   setup.BUILDING_TAGS = {
+ *     tagKey: {
+ *       type: "unique" | "type", // etc.
+ *       title: "Title",
+ *       description: "Description",
+ *     },
+ *     ...
+ *   }
+ */
+
 setup.BUILDING_TAGS = {
   critical: {
     type: 'unique',
@@ -97,4 +125,7 @@ setup.BUILDING_TAGS = {
     description: 'Other improvements essentials for your fort',
   },
 }
+
+// Freeze the object to prevent modifications during runtime
+Object.freeze(setup.BUILDING_TAGS)
 
