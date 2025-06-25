@@ -1,6 +1,6 @@
 /**
  * Unit Action Tag Definitions
- * -----------------------------------
+ * -----------------------------------------------------------------------------
  * This object defines all tags used to categorize and describe unit actions in the game.
  *
  * @typedef {{
@@ -25,34 +25,43 @@
  *     ...
  *   }
  */
-setup.TAG_UNITACTION = {
-  training: {
+
+/**
+ * Supported unit action tag definitions.
+ * @type {readonly [string, UnitActionTag][]}
+ */
+const UNIT_ACTION_TAGS = Object.freeze([
+  ["training", {
     type: "type",
     title: "Training",
     description: "Trains the slave in the art of servicing their betters",
-  },
-  purification: {
+  }],
+  ["purification", {
     type: "type",
     title: "Purification",
     description: "Restores a unit's body to its original and uncorrupted state",
-  },
-  corruption: {
+  }],
+  ["corruption", {
     type: "type",
     title: "Corruption",
     description: "Corrupts the unit, replacing their bodyparts with something of demonic origin",
-  },
-  treatment: {
+  }],
+  ["treatment", {
     type: "type",
     title: "Treatment",
     description: "Various procedures to heal a unit in both body and mind",
-  },
-  fleshshape: {
+  }],
+  ["fleshshape", {
     type: "type",
     title: "Flesh-Shaping",
     description: "A collection of invasive procedure to alter the physique of a unit",
-  },
-};
+  }],
+]);
 
-// Freeze the object to prevent modifications during runtime
+/** @type {Object.<string, UnitActionTag>} */
+setup.TAG_UNITACTION = {};
+for (const [key, value] of UNIT_ACTION_TAGS) {
+  setup.TAG_UNITACTION[key] = value;
+}
 Object.freeze(setup.TAG_UNITACTION);
 
