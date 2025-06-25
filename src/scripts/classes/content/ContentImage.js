@@ -83,9 +83,9 @@ setup.ContentImage = class ContentImage extends setup.TwineClass {
           parseImageList(image_directory, credits);
           // Cleanup
           // @ts-ignore
-          delete window.IMAGE_CREDITS;
+          delete window["IMAGE_CREDITS"];
           // @ts-ignore
-          delete window.UNITIMAGE_CREDITS;
+          delete window["UNITIMAGE_CREDITS"];
         },
         () => {
           // imagemeta not found. Use empty credits as fallback.
