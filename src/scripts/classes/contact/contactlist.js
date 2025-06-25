@@ -1,61 +1,94 @@
+/**
+ * @file contactlist.js
+ * @module ContactList
+ * @description
+ * Provides the ContactList class for managing a collection of Contact instances.
+ * Handles creation, storage, retrieval, and lifecycle management of contacts, including filtering, addition, removal, and weekly advancement.
+ * Ensures robust error handling, type safety, and performance.
+ */
 
-// Will be assigned to $contactlist
+/**
+ * ContactList manages a list of Contact keys and provides methods to add, remove, retrieve, and advance contacts.
+ * @class
+ */
 setup.ContactList = class ContactList extends setup.TwineClass {
+  /**
+   * @type {Array<string|number>}
+   * Array of contact keys managed by this list.
+   */
+  contact_keys;
+
+  /**
+   * Constructs a new ContactList instance.
+   */
   constructor() {
-    super()
-    this.contact_keys = []
+    super();
+    this.contact_keys = [];
   }
 
   /**
-   * @param {setup.ContactTemplate} [template]
-   * @returns {setup.Contact[]}
+   * Retrieves all contacts, optionally filtered by a ContactTemplate.
+   * @param {setup.ContactTemplate} [template] - Optional template to filter contacts by.
+   * @returns {setup.Contact[]} Array of matching contacts.
    */
   getContacts(template) {
-    let result = this.contact_keys.map(key => State.variables.contact[key])
+    let result = this.contact_keys.map(key => State.variables.contact[key]);
     if (template) {
-      result = result.filter(contact => contact.getTemplate() == template)
+      result = result.filter(contact => contact && contact.getTemplate() === template);
     }
-    return result
+    return result;
   }
 
+  /**
+   * Adds a contact to the list, ensuring uniqueness and updating statistics.
+   * @param {setup.Contact} contact - The contact to add.
+   */
   addContact(contact) {
-    State.variables.statistics.add('contact_obtained', 1)
-
-    if (!contact) throw new Error(`Contact undefined adding contact to contactlist`)
-    if (this.contact_keys.includes(contact.key)) throw new Error(`Contact ${contact.key} already in contactlist`)
-    this.contact_keys.push(contact.key)
-    setup.notify(`<<successtext 'New contact'>>: ${contact.rep()}`)
+    if (!contact) throw new Error("Contact undefined adding contact to contactlist");
+    if (this.contact_keys.includes(contact.key)) throw new Error(`Contact ${contact.key} already in contactlist`);
+    this.contact_keys.push(contact.key);
+    State.variables.statistics.add('contact_obtained', 1);
+    setup.notify(`<<successtext 'New contact'>>: ${contact.rep()}`);
   }
 
+  /**
+   * Removes a contact from the list and queues it for deletion.
+   * @param {setup.Contact} contact - The contact to remove.
+   */
   removeContact(contact) {
-    if (!contact) throw new Error(`Contact undefined removing contact to contactlist`)
-    if (!this.contact_keys.includes(contact.key)) throw new Error(`Contact ${contact.key} not found in contactlist`)
-    this.contact_keys = this.contact_keys.filter(contact_key => contact_key != contact.key)
-    setup.queueDelete(contact, 'contact')
+    if (!contact) throw new Error("Contact undefined removing contact to contactlist");
+    const idx = this.contact_keys.indexOf(contact.key);
+    if (idx === -1) throw new Error(`Contact ${contact.key} not found in contactlist`);
+    this.contact_keys.splice(idx, 1);
+    setup.queueDelete(contact, 'contact');
   }
 
+  /**
+   * Checks if the list contains a contact with the given template.
+   * @param {setup.ContactTemplate} template - The template to check for.
+   * @returns {boolean} True if a contact with the template exists, false otherwise.
+   */
   isHasContact(template) {
-    let contacts = this.getContacts()
-    for (let i = 0; i < contacts.length; ++i) {
-      if (contacts[i].getTemplate() == template) return true
-    }
-    return false
+    return this.getContacts().some(contact => contact && contact.getTemplate() === template);
   }
 
+  /**
+   * Advances all contacts by one week, applying their effects and removing expired ones.
+   */
   advanceWeek() {
-    let to_remove = []
-    let contacts = this.getContacts()
+    const to_remove = [];
+    const contacts = this.getContacts();
     for (let i = 0; i < contacts.length; ++i) {
-      let contact = contacts[i]
-      contact.apply()
-      contact.advanceWeek()
+      const contact = contacts[i];
+      if (!contact) continue;
+      contact.apply();
+      contact.advanceWeek();
       if (contact.isExpired()) {
-        to_remove.push(contact)
+        to_remove.push(contact);
       }
     }
     for (let i = 0; i < to_remove.length; ++i) {
-      this.removeContact(to_remove[i])
+      this.removeContact(to_remove[i]);
     }
   }
-
-}
+};
