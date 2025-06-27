@@ -1,152 +1,127 @@
-# Content Guide
+# 🧩 Content Guide
 
-This guide details what kind of content the game need, and what kind of content
-the game does not critically need.
+![Version: 1.0](https://img.shields.io/badge/Version-1.0-green) ![Last  Updated: 2025-06-27](https://img.shields.io/badge/Last%20Updated-27--06--2025-blue)
 
-# Sorely Needed
+This document provides an idea of the content that can be added to the game **Fort of Chains: Galvanized**.
 
-The big three are: quests, mails, and events.
+It lists a few things that we are actively looking for, as well as some content that can be added but is not a priority right now.
 
-Living can be freely added to, but they are not supported by content creator.
-See [here](project/twee/living) for existing livings to template of.
+## 🚀 Sorely Needed Content
 
-Other contents such as
-items, furniture, buildings, living, etc. can be added too, but
-they do not have a specialized GUI interface to help add them.
-See [here](#adding-content-outside-content-creator) for more information.
+The big three are: **quests**, **mails**, and **events**.
 
-Sec Actions can be added too, although it is more difficult than the other because it is not
-supported by the Content Creator Tool. See [here](docs/sexaction.md) for more information.
+- Living can be freely added, but they are not supported by the content creator. See [existing livings](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/living) for templates.
 
+- Other content such as items, furniture, buildings, etc. can be added, but do not have a specialized GUI. See [Adding Content Outside Content Creator](#%EF%B8%8F-adding-content-outside-content-creator).
 
-## Rewriting existing content and proofreading
+- Sex Actions can be added too, but are more difficult (not supported by the Content Creator Tool). See [Sex Action Guide](https://github.com/Official-Husko/fork-of-chains/blob/main/docs/sexaction.md).
 
-All rewrite and proofreading work are highly appreciated.
-The quests are located in
-[this folder](project/twee/quest), which has a subfolder for each author.
-Each file corresponds to one quest.
-Editing the quest texts should be self-explanatory inside each file.
-The opportunities are located in
-[this folder](project/twee/opportunity), and follow the same rule as the quests.
-Finally, events are in
-[this folder](project/twee/event), again following the same rule as quests.
+---
 
-## Text works
+### ✍️ Rewriting & Proofreading
 
-Expanding texts in the game is always welcome.
-Banter texts are [here](src/scripts/text/raw/).
-Unit adjectives and adverbs are [here](project/twee/trait/_texts.twee) and
-[here](project/twee/speech/_texts.twee).
-Various text-related things are in
-[here](src/scripts/text), including
-background texts, stripping, etc.
+All rewrite and proofreading work are highly appreciated!
 
-# Can be added
+- Quests: [project/twee/quest](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/quest) (subfolder for each author)
+- Opportunities: [project/twee/opportunity](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/opportunity)
+- Events: [project/twee/event](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/event)
 
-## Items
+Editing quest texts is self-explanatory inside each file.
 
-Items that unlock certain features can be added manually, if you need them as quest rewards.
-If you would like this, the easiest is to simply write your content first without the item,
-and then describe the item to us. We will implement it for you and into your content.
+---
 
-Alternatively, you can also add the item yourself, e.g., for testing.
-To do so, open [this file](project/twee/item/questitem/questitem.twee),
-and add your new item there.
-For example, to add an Earth Badge, you append the following lines to the file:
+### 📝 Text Works
 
-```
+Expanding texts in the game is always welcome!
+
+- Banter texts: [src/scripts/text/raw/](https://github.com/Official-Husko/fork-of-chains/tree/main/src/scripts/text/raw)
+- Unit adjectives/adverbs: [project/twee/trait/_texts.twee](https://github.com/Official-Husko/fork-of-chains/blob/main/project/twee/trait/_texts.twee), [project/twee/speech/_texts.twee](https://github.com/Official-Husko/fork-of-chains/blob/main/project/twee/speech/_texts.twee)
+- Other text: [src/scripts/text](https://github.com/Official-Husko/fork-of-chains/tree/main/src/scripts/text)
+
+---
+
+## 🪙 Can Be Added
+
+### 🧪 Items
+
+Items that unlock features can be added manually (e.g., as quest rewards). Write your content first, then describe the item to the team, or add it yourself for testing:
+
+To add an item, edit [questitem.twee](https://github.com/Official-Husko/fork-of-chains/blob/main/project/twee/item/questitem/questitem.twee):
+
+```twee
 <<run new setup.ItemQuest(
   'earth_badge',
   'Earth Badge',
   "A mysterious item that allows its wielder to manipulate earth."
- )>>
+)>>
 ```
 
-The first parameter is the id of the item (just put the lower_cased version of its name),
-the second is the name,
-and the third is the description of the item.
+- First parameter: item id (lowercase)
+- Second: name
+- Third: description
 
-You can also add consumable items (such as potions) in either
-[this file](project/twee/item/item/notusableitem.twee),
-[this file](project/twee/item/item/usableitem.twee),
-or,
-[this file](project/twee/item/item/usablefreeitem.twee),
-The first file is for items that cannot be used directly, but
-can be consumed as part of a quest requirements,
-such as reset level potions.
-The second file is for items that can be used directly on units,
-such as healing potions.
-The third is for items that can be used directly, but does not target any unit.
+Consumable items:
 
-To make the items you created appear in the game,
-you to [compile the game](https://gitgud.io/darkofocdarko/fort-of-chains#compiling-instructions) after adding them.
+- Not usable: [notusableitem.twee](https://github.com/Official-Husko/fork-of-chains/blob/main/project/twee/item/item/notusableitem.twee)
+- Usable on units: [usableitem.twee](https://github.com/Official-Husko/fork-of-chains/blob/main/project/twee/item/item/usableitem.twee)
+- Usable (no target): [usablefreeitem.twee](https://github.com/Official-Husko/fork-of-chains/blob/main/project/twee/item/item/usablefreeitem.twee)
 
-# Living
+**Remember to [compile the game](https://github.com/Official-Husko/fork-of-chains#compiling-instructions) after adding items!**
 
-New living can be freely added.
-See [here](https://gitgud.io/darkofocdarko/fort-of-chains/-/tree/master/project/twee/living) for existing ones
-to template on.
+---
 
-# Not really needed
+### 🏠 Living
 
-## Traits
+New living can be freely added. See [existing livings](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/living) for templates.
 
-There is already 400+ traits in the game. New traits are **not** encouraged to be added, because each trait
-adds to the complexity of developing new content for the game.
-This is especially true for personality traits, as they are referenced by a lot of places in the game.
+---
 
-## Perk Traits
+## 💤 Low Priority Content
 
-**Perk traits are an exception**: Perk traits only have gameplay effect, and very little flavor effect,
-and hence it can also be added into the game. They are considered extremely rare, however, and should only
-be given after the player done something noteworthy.
+### 🧬 Traits
 
-## Race
+There are over 400+ traits. New traits are **not a priority right now** as they add complexity, especially personality traits.
 
-There is absolutely no plan to add more **primary races** into the game.
-But **subrace** can be added, albeit needing
-a lot of efforts to. See
-[here](https://gitgud.io/darkofocdarko/fort-of-chains/-/blob/master/docs/faq.md#new-races) for more information,
-including all the requirements to add new subrace.
+### ⭐ Perk Traits
 
-# Regarding submissive (i.e., opposite of dominant) content
+**Perk traits are an exception:** They have gameplay effects only and are rare, given for noteworthy achievements.
 
-Since you are leading a group of slavers whose main job is to raid others, player submission
-is a little too far from the game's main theme. However, you are still welcome to add player submission
-stories -- but if you do that, please either restrict it to only players characters with the submissive trait.
-In the content creator, this can be done via: (Add new restriction) -> (You...) -> (Unit's trait...) ->
-(Unit must have this trait) -> pick the submissive trait.
-(These can be done via the content creator, and can
-also be checked in the story with with: `<<if $unit.player.isSubmissive()>><</if>>`).
+### 🦄 Race
 
-# Adding Content Outside Content Creator
+There are plans to add more **primary races** in the near future. **Subraces** can be added right away, but require significant effort. See [FAQ: New Races](https://github.com/Official-Husko/fork-of-chains/blob/main/docs/faq.md#new-races).
 
-## Item, Equipment, Furniture
+---
 
-First, open the [item](project/twee/item), [equipment](project/twee/equipment),
-or [furniture](project/twee/furniture) folders, depending
-on which one you are trying to make.
-To add a new item/equipment/furniture, you basically need to append some texts
-into the files in this folder.
-For example, to create a new sex manual, you can open
-[sexmanual.twee](project/twee/item/questitem/sexmanual.twee),
-and add the following at the end:
-```
+## 🪶 Submissive Content
+
+Player submission is not the main theme, but you are welcome to add stories for submissive players. Restrict such content to characters with the submissive trait. In the content creator, use:
+
+- (Add new restriction) → (You...) → (Unit's trait...) → (Unit must have this trait) → pick the submissive trait
+- Or in code: `<<if $unit.player.isSubmissive()>><</if>>`
+
+---
+
+## 🛠️ Adding Content Outside Content Creator
+
+### 🧪 Item, Equipment, Furniture
+
+- Open the [item](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/item), [equipment](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/equipment), or [furniture](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/furniture) folders.
+- Append your new content to the appropriate file.
+- For a new sex manual, add to [sexmanual.twee](https://github.com/Official-Husko/fork-of-chains/blob/main/project/twee/item/questitem/sexmanual.twee):
+
+```twee
 <<run new setup.ItemSexManual({
   key: 'sexmanual_mysexaction',
   name: 'Sex Manual: My Sex Action',
   description: "Unlocks 'My Sex Action' sex actions. Requires <<rep setup.item.sexmanual_mysexaction>> to use.",
   tags: [],
- } )>>
+})>>
 ```
 
-The game will automatically detect the changes once you
-[compile the game](https://gitgud.io/darkofocdarko/fort-of-chains#compiling-instructions) after adding them.
+- Compile the game after adding new content.
 
-## Building, Living, 
+### 🏗️ Building, Living
 
-First, open the [building](project/twee/building) or [living](project/twee/living) folder.
-Then, copy one of the files there as a base template, and edit it into your new building/living.
-The game will automatically detect these files and convert them into new building/livings
-once you
-[compile the game](https://gitgud.io/darkofocdarko/fort-of-chains#compiling-instructions) after adding them.
+- Open the [building](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/building) or [living](https://github.com/Official-Husko/fork-of-chains/tree/main/project/twee/living) folder.
+- Copy a file as a base template and edit it.
+- The game will detect new files after you compile.
