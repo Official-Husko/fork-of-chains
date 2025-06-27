@@ -1,20 +1,23 @@
-# Test / Deployment Guide
+# 🚀 Test / Deployment Guide
 
-This guide details deployment process for the game.
-To deploy, you must first [install NodeJS](https://gitgud.io/darkofocdarko/fort-of-chains/-/blob/master/docs/javascript.md).
+![Version: 1.0](https://img.shields.io/badge/Version-1.0-green) ![Last  Updated: 2025-06-27](https://img.shields.io/badge/Last%20Updated-27--06--2025-blue)
 
-The deployment process consist of several steps:
+This guide details the deployment process for the game **Fort of Chains: Galvanized**.
 
-- Test
-- Increase version number
-- Build the precompiled version
-- Optionally, build the zip version to upload on itch.io
+To deploy, you must first [install NodeJS](docs/javascript.md).
 
-These three steps are detailed as follows:
+The deployment process consists of several steps:
 
-## Test
+- ✅ Test
+- 🔢 Increase version number
+- 🏗️ Build the precompiled version
+- 📦 Optionally, build the zip version to upload on itch.io
 
-The game has a semi-automated testing built into the game:
+---
+
+## ✅ Test
+
+The game has a semi-automated testing system:
 
 1. [Compile the game](docs/javascript.md)
 2. Open the game, then from the main menu, select `(Debug start)`
@@ -22,74 +25,69 @@ The game has a semi-automated testing built into the game:
 4. Scroll down and select `(TEST EVERYTHING)`
 5. Wait for a few minutes until the testing is completed
 6. Open the Javascript Console (e.g., `Ctrl + Shift + J`), and look for errors there
-7. If you found an error there, you can do a search in the page
-(not in the javascript console) for `error`. This should lead you to the particular quest /
-content that has problems.
+7. If you find an error, search the page for `error` to locate the problematic quest/content
 
-This test will try and run all quest, opportunity, event, interaction, epilogue, activity, and more.
-This will usually cover the entire code base, so if the test succeed, the game is likely to be
-in a good state.
+This test will try and run all quests, opportunities, events, interactions, epilogues, activities, and more. If the test succeeds, the game is likely in a good state.
 
-If you have `npm` installed, the game also has a sanity checking that spots various common mistakes.
-You can run it with `npm run sanity`.
+If you have `npm` installed, you can also run a sanity check for common mistakes:
 
-## Increasing version number
+```bash
+npm run sanity
+```
 
-- The first step depends on your OS:
-  - Windows:
-    - Execute `update.bat` to bump micro version (e.g., 1.8.2.3 to 1.8.2.4)
-    - Execute `updatepatch.bat` to bump patch version (e.g., 1.8.2.3 to 1.8.3.0)
-    - Execute `updateminor.bat` to bump minor version (e.g., 1.8.2.3 to 1.9.0.0)
-    - Execute `updatemajor.bat` to bump major version (e.g., 1.8.2.3 to 2.0.0.0)
-  - Linux:
-    - Run `npm run set-version bump` to bump micro version (e.g., 1.8.2.3 to 1.8.2.4)
-    - Run `npm run set-version bump-patch` to bump patch version (e.g., 1.8.2.3 to 1.8.3.0)
-    - Run `npm run set-version bump-minor` to bump minor version (e.g., 1.8.2.3 to 1.9.0.0)
-    - Run `npm run set-version bump-major` to bump major version (e.g., 1.8.2.3 to 2.0.0.0)
+---
 
-- The command above will automatically update `changelog.txt` (https://gitgud.io/darkofocdarko/fort-of-chains/-/blob/master/changelog.txt), and you need to update this file.
+## 🔢 Increasing Version Number
 
-## Building the precompiled version
+> [!WARNING]
+> The following commands for increasing the version number will soon be replaced with a Go-based equivalent.
 
-- Windows:
-  - Execute `precompile.bat`
-- Linux:
-  - Run: `npm run precompile`
+- **Linux:**
+  - Micro version: `npm run set-version bump` (e.g., 1.8.2.3 → 1.8.2.4)
+  - Patch version: `npm run set-version bump-patch` (e.g., 1.8.2.3 → 1.8.3.0)
+  - Minor version: `npm run set-version bump-minor` (e.g., 1.8.2.3 → 1.9.0.0)
+  - Major version: `npm run set-version bump-major` (e.g., 1.8.2.3 → 2.0.0.0)
+- **Windows:**
+  - Micro: `update.bat`
+  - Patch: `updatepatch.bat`
+  - Minor: `updateminor.bat`
+  - Major: `updatemajor.bat`
 
-This will automatically update the `dist` folder with the latest precompiled version.
+The command above will automatically update `changelog.txt`. Please update this file with your changes.
 
-## Building the full zip version
+---
 
-Please note this may take a while.
+## 🏗️ Building the Precompiled Version
 
-- Windows:
-  - Execute `deployfull.bat`
-- Linux:
-  - Run: `npm run deployfull`
+- **Linux:**
+  ```bash
+  npm run precompile
+  ```
+- **Windows:**
+  Run `precompile.bat`
+
+This will update the `dist` folder with the latest precompiled version.
+
+---
+
+## 📦 Building the Full Zip Version
+
+> [!NOTE]
+> This may take a while.
+
+- **Linux:**
+  ```bash
+  npm run deployfull
+  ```
+- **Windows:**
+  Run `deployfull.bat`
 
 This will generate a `focfull.zip` containing the full game with all images.
 
-## Building the itch.io zip version
+---
 
-- Windows:
-  - Execute `deployitch.bat`
-- Linux:
-  - Run: `npm run deployitch`
+## 📝 Release Notes and Documentation
 
-This will generate a `focitch.zip` containing the game version suitable to be played
-on browser in itch.io.
-Note that itch.io has a strict requirement of "at most 1000 files".
-To reduce the number of files, you can remove some of the unit images found in the `dist`
-folder.
-The easiest way to do this is to download a previous version from `itch.io`,
-then override the `dist/imagepacks` folder with the one from the previous `itch.io` version.
+It's a good idea to recap changes with release notes. See [past release notes](https://github.com/Official-Husko/fork-of-chains/tree/main/docs/update).
 
-## Release notes and documentation
-
-It might be good to recap the changes with a release notes. See
-https://gitgud.io/darkofocdarko/fort-of-chains/-/tree/master/docs/update for past
-release notes.
-
-You want to link the new release notes in the main
-README page too: https://gitgud.io/darkofocdarko/fort-of-chains/-/blob/master/README.md
-
+Link the new release notes in the main [README page](https://github.com/Official-Husko/fork-of-chains/blob/main/README.md) as well.
