@@ -1,215 +1,145 @@
-# How to Submit Merge Requests
+# 🚀 How to Submit Merge Requests
 
-This is a full guide how to create a merge request into this repository.
-There are two versions of this guide, the [Simple](#simple-merge-request) one if your changes is fairly small
-(e.g., just submitting a new quest, or some text fixes), and the [Robust](#robust-merge-request) one if you are hoping to contribute more to the project (e.g., changing the engine code, or submitting multiple quests).
+![Version: 1.0](https://img.shields.io/badge/Version-1.0-green) ![Last  Updated: 2025-06-27](https://img.shields.io/badge/Last%20Updated-27--06--2025-blue)
 
-## Simple Merge Request
+This is a full guide on how to create a merge request (pull request) into this repository.
+There are two versions of this guide:
+- **Simple**: For small changes (e.g., submitting a new quest, or text fixes)
+- **Robust**: For larger contributions (e.g., engine code, multiple quests)
 
-This guide will not require you to install anything, and just push the merge request directly from
-the web UI!
+---
 
-If you have already installed `git`, or if you are looking for a more robust option, see
-[robust guide](#robust-merge-request).
+## ✨ Simple Merge Request
 
-1. First, fork the repository:
+This guide lets you submit a merge request directly from the web UI—no installation required!
 
-  - Create a gitgud.io account if you have not already, and log in.
-  - Navigate to [this page](https://gitgud.io/darkofocdarko/fort-of-chains)
-  - On the top right corner of this page, click the "Fork" button ![fork](docs/img/fork.png)
-  - Click the "Select" button under your username
-  - Wait until the forking process is complete (this may take a few minutes)
+If you already use `git`, or want a more robust workflow, see the [Robust Guide](#robust-merge-request).
 
-2. Make changes to the repository:
-  - Navigate to https://gitgud.io/[YOUR_USERNAME]/foc, where [YOUR_USERNAME] is your gitgud.io username. (If you are following this tutorial, then you should already be at this page.)
-  - Use the gitgud.io GUI interface to add your changes to the game:
-    - To add a new file:
-      - Navigate to the directory where your file should reside, e.g., "project/twee/quest/[YOUR_USERNAME]".
-      - Click on the [+] button next to the directory name ![button](docs/button.png)
-      - Select "New file". Put the file name, e.g., "my_quest.twee", and paste in your content there. As the commit message, put something descriptive again, e.g., "New quest: My Quest".
-    - To edit an existing file:
-      - Navigate to the file, e.g, to "project/twee/quest/init/custom.twee"
-      - Click the Edit button right above the content of this file ![edit](docs/img/edit.png)
-      - Edit the file.
-      - Once you're done, save the file. For the commit message, put something descriptive.
-    - To add a new folder / directory:
-      - Navigate to the parent directory. For example, go to "project/twee/quest"
-      - Click the [+] button in this page next to the directory name ![button](docs/button.png)
-      - Select "New directory". Put the directory name, e.g., [YOUR_USERNAME]. As the commit message, you can put something descriptive, for example, "New quest directory for [YOUR_USERNAME]".
+### 1️⃣ Fork the Repository
 
-3. Create merge request:
-  - Navigate back to [https://gitgud.io/darkofocdarko/fort-of-chains](https://gitgud.io/darkofocdarko/fort-of-chains)
-  - From the menu on the left sidebar, select "Merge Requests" ![button](docs/img/merge.png)
-  - Click new merge request ![button](docs/img/newmerge.png)
-  - For the source branch, select your fork, and the branch named "master"
-  
-   ![mergebranch](docs/img/mergebranch.png)
+- Go to [the GitHub repo](https://github.com/Official-Husko/fork-of-chains)
+- Click the **Fork** button at the top right
+- Wait for the forking process to finish
 
-  - For the target branch, select `darkofocdarko/fort-of-chains`, and `master`.
-  - Click `Compare branches and continue`
-  - Write in the details of your merge request
-    - For example, in the title, you can write "Water Well quest"
-    - In the description, you can write: "A new Lv15 normal quest in the vale that give money."
-  - Click "Submit merge requests", and you are done!
+### 2️⃣ Make Your Changes
 
-4. Responding to feedbacks:
-  - You can receive feedbacks for your merge requests --- for example, someone could point out that there is a typo in your quest.
-  - Navigate back to https://gitgud.io/[YOUR_USERNAME]/foc (replace YOUR_USERNAME with your gitgud.io username)
-  - Repeat steps in (2) above to edit your files.
-  - Nothing else needs to be done, your merge request will automatically be updated!
+- Navigate to `https://github.com/[YOUR_USERNAME]/fork-of-chains`
+- Use the GitHub web interface to add or edit files:
+  - **Add a new file:**
+    1. Go to the directory (e.g., `project/twee/quest/[YOUR_USERNAME]`)
+    2. Click **Add file** → **Create new file**
+    3. Name your file (e.g., `my_quest.twee`) and paste your content
+    4. Add a descriptive commit message (e.g., `New quest: My Quest`)
+  - **Edit an existing file:**
+    1. Navigate to the file (e.g., `project/twee/quest/init/custom.twee`)
+    2. Click the **Edit** button (✏️)
+    3. Make your changes and save with a descriptive commit message
+  - **Add a new folder:**
+    1. Go to the parent directory (e.g., `project/twee/quest`)
+    2. Click **Add file** → **Create new file**
+    3. Type your new folder name followed by `/` and a placeholder file (e.g., `[YOUR_USERNAME]/.gitkeep`)
+    4. Commit as above
 
-5. Once your merge request is committed, delete your fork:
-  - Navigate back to https://gitgud.io/[YOUR_USERNAME]/foc (replace YOUR_USERNAME with your gitgud.io username)
-  - Click settings in the bottom right corner of the sidebar, and then to General ![general](docs/img/general.png)
-  - Scroll to the bottom, and click the `Expand` button on `Advanced`
-  - Scroll to the bottom again, and click `Delete project` ![delete](docs/img/delete.png)
-  - Follow the instructions on the screen, and then click `Yes, delete project`
-  - Congratulations, you can now repeat again from step (1) to get another merge request
-  - Alternatively, you can follow the guide below which makes it much easier in the long run to add many merge requests, since you don't have to keep deleting the project each time
+### 3️⃣ Create a Pull Request
 
+- Go to [Pull Requests](https://github.com/Official-Husko/fork-of-chains/pulls)
+- Click **New pull request**
+- For the source branch, select your fork and branch (usually `main`)
+- For the target branch, select `Official-Husko/fork-of-chains` and `main`
+- Click **Compare & pull request**
+- Fill in the details:
+  - **Title:** e.g., `Water Well quest`
+  - **Description:** e.g., `A new Lv15 normal quest in the vale that gives money.`
+- Click **Create pull request** 🎉
 
-## Robust Merge Request
+### 4️⃣ Responding to Feedback
 
-This guide will require you to install `git`.
-Please see [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for instructions
-how to install git.
+- You may receive feedback on your pull request (e.g., typo suggestions)
+- Edit your files as needed (repeat step 2)
+- Your pull request will update automatically!
 
-It is also highly recommended to install a robust text-editor with built-in git support,
-for easier time editing the files.
-One recommended option is the free [Visual Studio Code](https://code.visualstudio.com/download),
-which among other things supports the SugarCube 2 syntax, which is used in this project.
+### 5️⃣ Once Merged
 
-Once you have both `git` and preferably `Visual Studio Code` installed, continue reading the tutorial.
+- You’re done! Thank you for contributing! 🥳
 
-1. First, fork the repository:
+---
 
-  - Create a gitgud.io account if you have not already, and log in.
-  - Navigate to [this page](https://gitgud.io/darkofocdarko/fort-of-chains)
-  - On the top right corner of this page, click the "Fork" button ![fork](docs/img/fork.png)
-  - Click the "Select" button under your username
-  - Wait until the forking process is complete (this may take a few minutes)
+## 🛠️ Robust Merge Request
 
-2. Clone your fork into your computer:
-  - Navigate to https://gitgud.io/[YOUR_USERNAME]/foc, where [YOUR_USERNAME] is your gitgud.io username. (If you are following this tutorial, then you should already be at this page.)
-  - Click the `Clone` button, and then copy the url under `https` by clicking the copy button next to it:
-  ![clone](docs/img/clone.png)
+This guide is for contributors who want to use `git` locally for more control.
 
-  - Open `git`, and navigate to a directory of your choosing. This is where the game files will be stored
-  for you to edit later.
+### Prerequisites
 
-    - Windows
+- Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- (Recommended) Install [Visual Studio Code](https://code.visualstudio.com/download)
 
-      To do this via `git bash`, use the `cd` command. For example:
+### 1️⃣ Fork the Repository
 
-      ```
-        cd "C:\project"
-      ```
+- Go to [the GitHub repo](https://github.com/Official-Husko/fork-of-chains) and click **Fork**
 
-      Will move to folder `project` in your C partition (make sure to create the folder first!)
+### 2️⃣ Clone Your Fork
 
-    - Linux
+```bash
+git clone https://github.com/[YOUR_USERNAME]/fork-of-chains.git
+cd fork-of-chains
+```
 
-      Use `cd` command in terminal. For example:
+- Add the main repo as upstream:
 
-      ```
-      cd ~/project
-      ```
+```bash
+git remote add upstream https://github.com/Official-Husko/fork-of-chains.git
+```
 
-      Will move to a folder called `project` in your home directory (make sure to create the folder first!)
+### 3️⃣ Update Your Fork
 
-  - Clone the repository by running:
+```bash
+git pull upstream main
+```
 
-  ```
-    git clone https://gitgud.io/[YOURUSERNAME]/foc
-  ```
+If you have local changes:
+```bash
+git stash
+git pull upstream main
+git stash pop
+```
 
-  (The url above should be copied from earlier, just paste it in there.)
+### 4️⃣ Make Your Changes
 
-  - Wait until the download is complete (may take 10 minutes or so).
+- Use your editor (e.g., VS Code) to add or edit files
+- Commit your changes:
 
-  - Navigate into the resulting folder named `foc`, e.g., by typing:
+```bash
+git add .
+git commit -m "Added new quest: Water Well"
+```
 
-  ```
-    cd foc
-  ```
+- Push to your fork:
 
-  - Add "upstream" branch by running:
+```bash
+git push origin main
+```
 
-  ```
-    git remote add upstream https://gitgud.io/darkofocdarko/fort-of-chains.git
-  ```
+### 5️⃣ Create a Pull Request
 
-3. Update version to master
+- Go to [Pull Requests](https://github.com/Official-Husko/fork-of-chains/pulls)
+- Click **New pull request**
+- Select your fork/branch as the source, and `Official-Husko/fork-of-chains`/`main` as the target
+- Fill in the title and description
+- Click **Create pull request**
 
-  - Update your version of files:
+### 6️⃣ Responding to Feedback
 
-  ```
-  git pull upstream master
-  ```
+- You may receive feedback on your pull request
+- Make changes as needed, commit, and push again—your pull request will update automatically
 
-    - If git complains something like "You have local changes, commit them first!", then instead do:
+### 7️⃣ Once Merged
 
-      ```
-      git stash
-      git pull upstream master
-      git stash pop
-      ```
+- You’re done! 🎉
 
-4. Edit your files
-  - If you are using `Visual Studio Code`:
-    - (Optional) Install extension:
-      - Sugarcube2 by Cherrybomb67 (for editing sugarcube files, don't install the other two)
+### 8️⃣ Creating Another Pull Request
 
-    - Click `File`, then `Open Folder...`, and select the `foc` folder created by `git` earlier.
+- Repeat steps 3–7 above for each new contribution
 
-  - Change your files! Add your quest, edit the files to your liking, etc. This should be where the bulk of your time will be spent.
+---
 
-5. Test your game!
-  - [Compile the game](https://gitgud.io/darkofocdarko/fort-of-chains#compiling-instructions)
-  - Open `dist/index.html` and test the game! (Don't mistakenly open `dist/precompiled.html`)
-
-5. Commit your changes to your fork
-
-  - Add the changes to be committed:
-    - If you are using `Visual Studio Code`, navigate to the `Source Control` menu ![source](docs/img/source.png)
-      - Click the [+] button next to `Changes` ![plus](docs/img/plus.png)
-      - Write in a commit message describing your changes, then click the `Commit` button ![commit](docs/img/commit.png)
-    - If you are not using `Visual Studio Code`,
-
-      ```
-      git add .
-      git commit -m 'Added new quest: Water well'
-      ```
-
-  - Push to your fork
-
-  ```
-    git push origin master
-  ```
-
-6. Create a merge request
-
-  - Navigate back to [https://gitgud.io/darkofocdarko/fort-of-chains](https://gitgud.io/darkofocdarko/fort-of-chains)
-  - From the menu on the left sidebar, select "Merge Requests" ![button](docs/img/merge.png)
-  - Click new merge request ![button](docs/img/newmerge.png)
-  - For the source branch, select your fork, and the branch named "master"
-  
-   ![mergebranch](docs/img/mergebranch.png)
-
-  - For the target branch, select `darkofocdarko/fort-of-chains`, and `master`.
-  - Click `Compare branches and continue`
-  - Write in the details of your merge request
-    - For example, in the title, you can write "Water Well quest"
-    - In the description, you can write: "A new Lv15 normal quest in the vale that give money."
-  - Click "Submit merge requests", and you are done!
-
-7. Responding to feedbacks:
-  - You can receive feedbacks for your merge requests --- for example, someone could point out that there is a typo in your quest.
-  - Repeat steps (4) and (5) above.
-  - Nothing else needs to be done, your merge request will automatically be updated!
-
-8. Once your merge request is accepted
-  - You are done!
-
-9. Creating another merge request
-  - Repeat step (3) to (8) in the above.
+> 💡 **Tip:** For more info on compiling and testing the game, see the [README](https://github.com/Official-Husko/fork-of-chains#compiling-instructions).
