@@ -1,9 +1,46 @@
-## Installing NodeJS
+# 📦 Installing NodeJS
 
-You can install node from [here](https://nodejs.org/en/).  You want to grab the LTS version, usually the one on the left.  This will download an msi file, that will then install node on your system.
+You can install Node.js from the [official website](https://nodejs.org/en/). Choose the **LTS version** (usually on the left). This will download an installer for your system.
 
-The only thing to watch out for when installing Node is to make sure that it is added to your path, and that you include npm.  By default, both of these options will be enabled.  For best results, install node on your main hard drive (usually C) with your operating system.
+---
 
-![alt text](https://i.imgur.com/uaXMM9k.png "Make sure to include npm and add to path!")
+## 🐧 Linux
 
-To make sure eveything works, you can open a command prompt and type `npm`.  If the command isn't recognized, you've messed up!  Otherwise, a help message explaining npm should display.
+Most Linux distributions let you install Node.js and npm from your package manager. For example:
+
+- **Debian/Ubuntu:**
+  ```bash
+  sudo apt update
+  sudo apt install nodejs npm
+  ```
+- **Arch Linux:**
+  ```bash
+  sudo pacman -S nodejs npm
+  ```
+- **Fedora:**
+  ```bash
+  sudo dnf install nodejs npm
+  ```
+
+---
+
+## 🪟 Windows
+
+- Download the installer from the [Node.js website](https://nodejs.org/en/).
+- Choose the **LTS version** and run the installer.
+- Make sure to check the options to add Node.js to your PATH and include npm (enabled by default).
+- For best results, install Node.js on your main hard drive (usually C:).
+
+![Node.js installer options](https://i.imgur.com/uaXMM9k.png "Make sure to include npm and add to path!")
+
+---
+
+## ✅ Verifying Your Installation
+
+Open a terminal or command prompt and run:
+
+```bash
+npm --version
+```
+
+If you see a version number, everything is set up! If you get a "command not found" error, Node.js or npm is not installed correctly or not in your PATH.
