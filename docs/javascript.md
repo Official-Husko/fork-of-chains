@@ -1,50 +1,94 @@
-## Compiling Javascript Files
+# ⚡ Compiling Javascript Files
+
+![Version: 1.0](https://img.shields.io/badge/Version-1.0-green) ![Last  Updated: 2025-06-27](https://img.shields.io/badge/Last%20Updated-27--06--2025-blue)
+
+This document explains how to compile the JavaScript and CSS files used in the game. It covers both full builds that include all assets, as well as compiling only the `.twee` files.
+
+## 🏗️ Build Overview
 
 During a full build of the project, two steps are run:
- 1. Compilation of all the `.js` (javascript code) and `.css` (style) files into a pair of bundle files (`generated/dist/user.min.js` and `generated/dist/user.min.css`)
- 2. Compilation of the `.twee` files together with this js/css bundle, using tweego, into the final `dist/index.html`
 
-### Full build (JS/CSS & Twee)
+1️⃣ **Compile all `.js` (JavaScript) and `.css` (style) files** into a pair of bundle files:
+   - `generated/dist/user.min.js`
+   - `generated/dist/user.min.css`
 
-First of all, you will need to have a recent version of [NodeJS](https://nodejs.org/en) installed, to be able to run the `node` and `npm` commands.
+2️⃣ **Compile the `.twee` files** together with the JS/CSS bundle (using Tweego) into the final `dist/index.html`.
 
-Then you'll need to open a terminal or command prompt to run the following commands. Note that all commands are to be run from the root directory of the repository (the folder containing the package.json file).
+---
 
-The first time you are building the project (an in the rare occasion where they change), you will need to install the project dependencies with the following command:
-```
+## 🛠️ Full Build (JS/CSS & Twee)
+
+First, make sure you have a recent version of [NodeJS](https://nodejs.org/en) installed to run `node` and `npm` commands.
+
+Open a terminal in the root directory of the repository (where `package.json` is located) and run:
+
+```bash
 npm install
 ```
 
-Then, you can run the following command:
-```
+Then, to build everything:
+
+```bash
 npm run build
 ```
-This will compile both the js+css and the twee files, and generate the final `dist/index.html` file, which can be opened in the browser to play the game.
 
-The command above will generate a "debug" build of the game. You can instead run one of the following commands to generate different build depending on what you want:
+This will compile both JS+CSS and Twee files, generating the final `dist/index.html` file, which you can open in your browser to play the game.
 
-- Build a debug version of the game: `npm run build`
+> [!WARNING]
+> The above command creates a debug build. See below for other build options.
 
-Also note that the intermediate js+css bundles are generated in different folders depending on the mode:
-- For production builds: `generated/dist/user.min.js` and `generated/dist/user.min.css`
-- For debug builds: `generated/debug/user.min.js` and `generated/debug/user.min.css`
+### 🔧 Build Modes
 
-### Compile only Twee
+- **Debug build:**
+  ```bash
+  npm run build
+  ```
+- **Production build:**
+  (see your project's scripts for additional options)
 
-If you only want to compile the .twee files, you don't need to have NodeJS installed. You can just run either `./compile.sh` (linux / macOS), or `./compile.bat` (Windows).
+Intermediate JS+CSS bundles are generated in different folders depending on the mode:
+- Production: `generated/dist/user.min.js` and `generated/dist/user.min.css`
+- Debug: `generated/debug/user.min.js` and `generated/debug/user.min.css`
 
-By default this will compile using the production js+css bundle at `generated/dist/`, you can add the "debug" argument to use instead the development bundle at `generated/debug/`. For example:
-```
+---
+
+## 📝 Compile Only Twee
+
+If you only want to compile the `.twee` files, you don't need NodeJS. Run one of these from the root directory:
+
+- **Linux/macOS:**
+  ```bash
+  ./compile.sh
+  ```
+- **Windows:**
+  ```bat
+  ./compile.bat
+  ```
+
+To use the debug bundle:
+
+```bash
 ./compile.sh debug
-``````
+```
 
-## Devmode (experimental)
+---
 
-You can run `npx vite dev` to start an interactive development server. Once ready, you can access the game at `http://localhost:3100`.
-In this mode, changes to js and css files will retrigger an hotreload, and for CSS styles and JSX components they _might_ reload instantaneaously with the updated code without needing a full page reload.
+## ⚙️ Devmode (Experimental)
 
-However, some things may broke as the codebase is not fully ready to support it properly. Even so, it is very useful for testing UI changes.
+You can run an interactive development server with hot reload:
 
-## Version bump, precompiling, and deploying
+```bash
+npx vite dev
+```
 
-Please check [Deployment Guide](docs/deploy.md).
+Once ready, open [http://localhost:3100](http://localhost:3100) in your browser.
+
+- Changes to JS and CSS files will trigger hot reload.
+- Some UI changes may update instantly without a full page reload.
+- Some features may not work perfectly yet, but it's very useful for UI testing.
+
+---
+
+## 🚀 Version Bump, Precompiling, and Deploying
+
+See the [Deployment Guide](docs/deploy.md) for more info.
