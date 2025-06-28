@@ -1,3 +1,11 @@
+"use strict";
+
+/**
+ * The default number of fort sectors for a new player fort.
+ * @constant {number}
+ */
+const DEFAULT_PLAYER_FORT_SECTORS = 4;
+
 /**
  * @file initstate.js
  * @description Contains initialization logic for game state variables, setup routines, and base establishment for the fort grid system. This module is responsible for setting up all core game data structures, singleton instances, and initial building placement logic. It is a critical entry point for the simulation's stateful environment.
@@ -134,7 +142,7 @@ setup.initState = function () {
   // --- Fort Initialization ---
   /** @type {Record<string, setup.Fort>} */
   this.fort = {};
-  new setup.Fort("player", "Player's Fort", 4);
+  new setup.Fort("player", "Player's Fort", DEFAULT_PLAYER_FORT_SECTORS);
 
   // --- Quest Generation and Instance Initialization ---
   /** @type {Record<string, setup.QuestInstance>} */
