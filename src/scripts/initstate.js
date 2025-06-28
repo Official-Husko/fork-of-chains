@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * The default number of fort sectors for a new player fort.
  * @constant {number}
