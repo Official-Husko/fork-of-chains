@@ -18,6 +18,7 @@ setup.TwineClass = class TwineClass {
    * @returns {this} A new instance of the same class with identical properties.
    */
   clone() {
+    // @ts-ignore
     return setup.rebuildClassObject(this.constructor, this)
   }
 
@@ -57,6 +58,7 @@ setup.TwineClassCustom = class TwineClassCustom {
    * @returns {this} A new instance of the same class with identical properties.
    */
   clone() {
+    // @ts-ignore
     return setup.rebuildClassObject(this.constructor, this)
   }
 
