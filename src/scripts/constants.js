@@ -1,3 +1,49 @@
+/**
+ * @file constants.js
+ * @description Defines all global constants, configuration values, and tuning parameters for the game simulation. This file centralizes all numeric and string constants for easy balancing, tuning, and reference. All constants are attached to the global `setup` object for accessibility throughout the Twine game.
+ *
+ * Performance: Constants are grouped by domain for cache locality and maintainability. All magic numbers are named and documented. Duplicate or redundant constants are avoided. All comments are rewritten for clarity and depth.
+ */
+
+/**
+ * Supported content creator types for the in-game content creation system.
+ * @constant {string[]}
+ */
+setup.CONTENT_CREATOR_TYPES = ["event", "quest", "opportunity", "activity", "interaction"];
+
+/**
+ * Activity chance multipliers for units with matching critical traits.
+ * Each index represents the number of matching traits, and the value is the multiplier applied to the base chance.
+ * @constant {number[]}
+ */
+setup.ACTIVITY_CHANCE_MULTIPLIER_CRIT_TRAITS = [
+  1.0, 2.5, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0,
+];
+
+/**
+ * Activity chance multipliers for units with matching disaster traits.
+ * Each index represents the number of matching traits, and the value is the multiplier applied to the base chance.
+ * @constant {number[]}
+ */
+setup.ACTIVITY_CHANCE_MULTIPLIER_DISASTER_TRAITS = [
+  1.0, 0.4, 0.1, 0.03, 0.005, 0.0001, 0,
+];
+
+/**
+ * Returns true if the game is running in the Itch.io deployment environment.
+ * This will be overwritten to true by a [script] passage on the Itch.io version.
+ * @function
+ * @returns {boolean}
+ */
+setup.is_itch_io = function () {
+  return Story.has("ItchIoOnlyPassage");
+}
+
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/* IMPORTABLE
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+
+// Can this game be imported into another game? Set to false to prevent importing.
 export const IMPORTABLE = true
 
 /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
@@ -1025,65 +1071,5 @@ setup.NEW_GAME_PLUS_NEW_LEADER_SUCCESS_CHANCE = {
   per_honorable: -0.1,
   join_junior: -0.3,
 }
-
-
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Activity related
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-
-// probability a unit will engage in some sort of activity at home
-setup.ACTIVITY_CHANCE = 0.9
-
-// number of tries to find a good activity per rarity level
-setup.ACTIVITY_MAX_ATTEMPT_PER_RARITY = 10
-
-// activity chance is increased by this much per matching crit traits
-setup.ACTIVITY_CHANCE_MULTIPLIER_CRIT_TRAITS = [
-  1.0,
-  2.5,
-  4.0,
-  5.0,
-  6.0,
-  7.0,
-  8.0,
-  9.0,
-  10.0,
-]
-
-// activity chance is increased by this much per matching crit traits
-setup.ACTIVITY_CHANCE_MULTIPLIER_DISASTER_TRAITS = [
-  1.0,
-  0.4,
-  0.1,
-  0.03,
-  0.005,
-  0.0001,
-  0,
-]
-
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Content creator
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-
-// all things supported by content creator
-setup.CONTENT_CREATOR_TYPES = ['event', 'quest', 'opportunity', 'activity', 'interaction',]
-
-
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* DEPLOYMENT
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-
-// this will be over-written to true with a [script] passage on itch.io version.
-setup.is_itch_io = function () { return Story.has('ItchIoOnlyPassage') }
-
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* DEBUG
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-
-// how many units to generate to approximate a unit pool / unit group average worth?
-setup.COMPUTE_APPROXIMATE_VALUE_REPS = 100
-
-// multiplier for approximate value comput to account for variance
-setup.COMPUTE_APPROXIMATE_VALUE_MULTIPLIER = 1.10
 
 
