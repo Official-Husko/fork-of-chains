@@ -30,63 +30,58 @@ setup.ACTIVITY_CHANCE_MULTIPLIER_DISASTER_TRAITS = [
 ];
 
 /**
- * Returns true if the game is running in the Itch.io deployment environment.
- * This will be overwritten to true by a [script] passage on the Itch.io version.
- * @function
- * @returns {boolean}
+ * Indicates if this game can be imported into another game. Set to false to prevent importing.
+ * @constant {boolean}
  */
-setup.is_itch_io = function () {
-  return Story.has("ItchIoOnlyPassage");
-}
+export const IMPORTABLE = true;
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* IMPORTABLE
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Number of slaver choices available to the player at the start of the game.
+ * @constant {number}
+ */
+setup.STARTING_SLAVER_CHOICES = 12;
 
-// Can this game be imported into another game? Set to false to prevent importing.
-export const IMPORTABLE = true
+/**
+ * Maximum number of units allowed in a unit group.
+ * @constant {number}
+ */
+setup.UNIT_GROUP_MAX_UNITS = 10;
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Number of unit choices at start */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Number of weeks an image is banned after being used for a unit.
+ * @constant {number}
+ */
+setup.UNIT_IMAGE_MEMORY = 10;
 
-setup.STARTING_SLAVER_CHOICES = 12
+/**
+ * Number of weeks of image ban lifted when a weekend lapses.
+ * @constant {number}
+ */
+setup.UNIT_IMAGE_WEEKEND_MEMORY_LAPSE = 5;
 
+/**
+ * Level at which experience and money plateau for units.
+ * @constant {number}
+ */
+setup.LEVEL_PLATEAU = 40;
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Unit group related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Level to which the veteran hall raises quests.
+ * @constant {number}
+ */
+setup.LEVEL_VETERANHALL = 20;
 
-setup.UNIT_GROUP_MAX_UNITS = 10
-
-
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Unit image related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-
-// if an image is used, how long to ban it for?
-setup.UNIT_IMAGE_MEMORY = 10
-
-// how much ban is lifted from images when weekend lapse?
-setup.UNIT_IMAGE_WEEKEND_MEMORY_LAPSE = 5
-
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Level related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-
-// what level does exp and money plateau at?
-setup.LEVEL_PLATEAU = 40
-
-// what level does veteran hall raises quests to?
-setup.LEVEL_VETERANHALL = 20
-
-// maximum number of level ups in one sitting
-setup.LEVEL_UP_MAX_ONE_SITTING = 5
+/**
+ * Maximum number of level-ups a unit can achieve in one sitting.
+ * @constant {number}
+ */
+setup.LEVEL_UP_MAX_ONE_SITTING = 5;
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Skill related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Skill related constants
+ * @section Skill
+ */
 
 // how many skill points per level up?
 setup.SKILL_INCREASE_PER_LEVEL = 6
@@ -119,9 +114,10 @@ setup.DEFAULT_INITIAL_SKILLS = Array(10).fill([7, 12])
 setup.SKILL_MODIFIER_MIN_MULT = -0.9
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Money related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Money related constants
+ * @section Money
+ */
 
 // how much money each slaver makes per week on average
 setup.MONEY_PER_SLAVER_WEEK = 500
@@ -149,24 +145,46 @@ setup.BUILDING_HIGH_MULT = 40
 setup.BUILDING_VERYHIGH_MULT = 100
 setup.BUILDING_ASTRO_MULT = 200
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Slave trade related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Slave trade related constants
+ * @section Slave Trade
+ */
 
-// how much money for each of these traits:
-
+/**
+ * @type {number}
+ * Money value for a medium rarity trait.
+ */
 setup.MONEY_TRAIT_MEDIUM = 1000
+/**
+ * @type {number}
+ * Money value for a rare rarity trait.
+ */
 setup.MONEY_TRAIT_RARE = 2500
+/**
+ * @type {number}
+ * Money value for an epic rarity trait.
+ */
 setup.MONEY_TRAIT_EPIC = 7500
+/**
+ * @type {number}
+ * Money value for a legendary rarity trait.
+ */
 setup.MONEY_TRAIT_LEGENDARY = 12500
 
 // base slave value
 setup.SLAVE_BASE_VALUE = 2 * setup.MONEY_PER_SLAVER_WEEK
 
+/**
+ * @constant {number}
+ * Standard multiplier for training value calculations.
+ * Used to calculate the value added by training traits.
+ */
+setup.SLAVE_TRAINING_WEEKS_STANDARD = 3;
+
 // how much each of these training traits adds to slave value?
-setup.SLAVETRAINVALUE_BASIC = Math.round(0.5 * 3 * setup.MONEY_PER_SLAVER_WEEK)
-setup.SLAVETRAINVALUE_ADVANCED = Math.round(1.2 * 3 * setup.MONEY_PER_SLAVER_WEEK)
-setup.SLAVETRAINVALUE_MASTER = Math.round(3 * 3 * setup.MONEY_PER_SLAVER_WEEK)
+setup.SLAVETRAINVALUE_BASIC = Math.round(0.5 * setup.SLAVE_TRAINING_WEEKS_STANDARD * setup.MONEY_PER_SLAVER_WEEK)
+setup.SLAVETRAINVALUE_ADVANCED = Math.round(1.2 * setup.SLAVE_TRAINING_WEEKS_STANDARD * setup.MONEY_PER_SLAVER_WEEK)
+setup.SLAVETRAINVALUE_MASTER = Math.round(3 * setup.SLAVE_TRAINING_WEEKS_STANDARD * setup.MONEY_PER_SLAVER_WEEK)
 
 setup.SLAVE_ORDER_MENIAL_MULTI = 0.4
 
@@ -176,9 +194,10 @@ setup.SLAVE_VALUE_MARKET_MINIMUM = 1000
 // minimum price to recruit slaver
 setup.SLAVER_VALUE_MARKET_MINIMUM = 1000
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Exp related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Experience (EXP) related constants
+ * @section Experience
+ */
 
 // exp required at level 1 to level up:
 setup.EXP_LEVEL_1 = 10
@@ -210,9 +229,10 @@ setup.EXP_DISASTER_MULTIPLIER = 4
 // how much exp does an on duty unit gets compared to normal units?
 setup.EXP_DUTY_MULTIPLIER = 0.4
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Quest and content related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Quest and content related constants
+ * @section Quest & Content
+ */
 
 // how many weeks worth of quest do you get per scouting attempt per week?
 setup.QUEST_WEEKS_PER_SCOUT = 6
@@ -226,9 +246,10 @@ setup.EVENT_DEFAULT_COOLDOWN = 1000
 // Default expiration for quests
 setup.QUEST_DEFAULT_EXPIRATION = 6
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Market related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Market related constants
+ * @section Market
+ */
 
 // weeks until a slaver expires from prospect hall
 setup.MARKET_OBJECT_SLAVER_EXPIRATION = 6
@@ -246,9 +267,10 @@ setup.MARKET_OBJECT_ITEM_EXPIRATION = 6
 setup.CONTACT_PEDDLER_MARKUP = 2.0
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Equipment related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Equipment related constants
+ * @section Equipment
+ */
 
 // Amount of equipmentset granted by having an armory and each upgrade to it:
 setup.EQUIPMENTSET_ARMORY_DEFAULT_STORAGE = 3
@@ -290,9 +312,10 @@ setup.EQUIPMENT_STAT_BOOST_MASTER = 0.05
 setup.EQUIPMENT_WEAPON_MASTER_MIN_SKILL = 100
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Bedchamber and Furniture related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Bedchamber and furniture related constants
+ * @section Bedchamber & Furniture
+ */
 
 // when do the bedchamber slave give addition +1 to stat?
 // rivalry counts
@@ -311,17 +334,19 @@ setup.FURNITURE_SKILL_MASTER = 5
 
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Slave training related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Slave training related constants
+ * @section Slave Training
+ */
 
 setup.get_TRAINING_MASTER_DIFFICULTY = function () {
   return setup.qdiff.hardest50
 }
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Banter related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Banter related constants
+ * @section Banter
+ */
 
 // will need these many friends first before they can use slaves
 setup.BANTER_USE_LIMIT = 1
@@ -339,9 +364,10 @@ setup.BANTER_INTERACTION_MAX_FRIENDSHIP = 200
 setup.BANTER_INTERACTION_MIN_FRIENDSHIP = -200
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Skill related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Friendship and rivalry skill gain constants
+ * @section Friendship & Rivalry
+ */
 
 // Note: lovers will get both the friendship and rivalry bonuses
 
@@ -352,13 +378,18 @@ setup.FRIENDSHIP_MAX_SKILL_GAIN = 0.4
 setup.RIVALRY_MAX_SKILL_GAIN = 0.1
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Trait related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Trait related constants
+ * @section Trait
+ */
 
 setup.PERK_GAIN_AT_LEVEL = [25, 45]
 
 // how many maximum traits of this tag can a unit have at the same time?
+/**
+ * @type {Object<string, number>}
+ * Maximum number of traits a unit can have by tag.
+ */
 setup.TRAIT_MAX_HAVE = {
   bg: 3,
   skill: 4,
@@ -379,7 +410,10 @@ setup.TRAIT_JUNIOR_THRESHOLD = 52
 setup.TRAIT_SENIOR_THRESHOLD = 200
 
 // values to get the value traits
-setup.TRAIT_VALUE_LOW_THRESHOLD = 3000
+/**
+ * @type {number[]}
+ * Thresholds for value traits.
+ */
 setup.TRAIT_VALUE_HIGH_THRESHOLDS = [
   10000,
   20000,
@@ -390,10 +424,17 @@ setup.TRAIT_VALUE_HIGH_THRESHOLDS = [
   150000,
 ]
 
+/**
+ * @type {number}
+ * Threshold for low value trait.
+ */
+setup.TRAIT_VALUE_LOW_THRESHOLD = 3000
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Perk related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+
+/**
+ * Perk related constants
+ * @section Perk
+ */
 
 // price of a standard perk potion
 setup.PERK_POTION_STANDARD_PRICE = 10000
@@ -470,9 +511,10 @@ setup.PERK_QUEST_DOPPELGANGER_INJURY_WEEKS = 16
 // harbinger of crows skill bonus
 setup.PERK_QUEST_HARBINGER_OF_CROW_SKILL_BONUS = 0.09
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Corruption trait related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Corruption trait related constants
+ * @section Corruption
+ */
 
 // chance a corruption will give a rare trait instead
 setup.CORRUPTION_MISFIRE_RARE_CHANCE = 0.05
@@ -484,9 +526,10 @@ setup.CORRUPTION_MISFIRE_MEDIUM_CHANCE = 0.15
 setup.CORRUPTION_PERMANENT_MISFIRE_CHANCE_MULTIPLIER = 0.1
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Trauma related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Trauma related constants
+ * @section Trauma
+ */
 
 // trauma durations
 setup.TRAUMA_SHORT = 6
@@ -561,9 +604,10 @@ setup.TRAUMA_TRAIT_ADJUST = {
 }
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Curse and Blessings related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Curse and blessing related constants
+ * @section Curse & Blessing
+ */
 
 setup.BLESSING_MAX_STACKS = 8
 
@@ -580,9 +624,10 @@ setup.CURSE_CROW_MAX_CRIT_CHANCE = 0.5
 setup.CURSE_VICE_PERMANENT_CORRUPTION_CHANCE = 0.01
 setup.CURSE_DEMISE_LOST_MONEY = 3500
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Duties related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Duties related constants
+ * @section Duties
+ */
 
 // how much is the multiplier per skill total?
 setup.DUTY_SKILL_MULTIPLIER_TOTAL = 0.008
@@ -680,16 +725,18 @@ setup.INSURER_MULTIS = {
   }
 }
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* History related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * History related constants
+ * @section History
+ */
 
 setup.HISTORY_UNIT_MAX = 100
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Favor related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Favor related constants
+ * @section Favor
+ */
 
 // maximum amount of favor? minimum is 0
 setup.FAVOR_MAX = 2000
@@ -729,9 +776,11 @@ setup.FAVOR_RELATIONSHIP_MANAGER_UPKEEPS = [
   5700,
 ]
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Ire related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Ire related constants
+ * @section Ire related
+ * Constants related to the Ire system, including DCO payments for reducing ire.
+ */
 
 // money paid when DCO reduces ire by 1
 setup.IRE_DCO_PAY = 1000
@@ -740,20 +789,28 @@ setup.IRE_DCO_PAY = 1000
 setup.IRE_DCO_PAY_CRIT = 2000
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Childbirth related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Childbirth related constants
+ * @section Childbirth related
+ * Constants related to childbirth and trait inheritance. Note: Childbirth is not a feature in the game.
+ */
 
 // chance the child will inherit one of the parent's background traits
-setup.CHILD_TRAIT_BACKGROUND_INHERIT_CHANCE = 0.25
+setup.CHILD_TRAIT_BACKGROUND_INHERIT_CHANCE = 0.25;
 
-// chance the child will inherit one of the parent's non background trait
-setup.CHILD_TRAIT_NON_BACKGROUND_INHERIT_CHANCE = 0.33
+/**
+ * Probability that a child will inherit one of the parent's non-background traits.
+ * @constant {number}
+ * @deprecated This constant is planned for removal in a future update. Childbirth is not a feature in the game.
+ */
+setup.CHILD_TRAIT_NON_BACKGROUND_INHERIT_CHANCE = 0.33;
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Difficulty related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Difficulty related constants
+ * @section Difficulty related
+ * Constants related to difficulty scaling, success/failure conversions, and stat requirements.
+ */
 
 // if success goes above 100%, how much of the leftover is converted to critical?
 setup.DIFFICULTY_SUCCESS_EXCESS_CRIT_CONVERSION = 0.25
@@ -789,9 +846,10 @@ setup.DIFFICULTY_BASE_STAT_SUM_PER_LEVEL = 4.6
 setup.DIFFICULTY_LV0_STAT = 27
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Item related */
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Item related constants
+ * @section Item
+ */
 
 setup.ITEM_MARKET_ALCHEMIST_POTION_MARKUP = 5
 
@@ -802,9 +860,10 @@ setup.ITEM_PRICE_GOOD = 10000
 setup.ITEM_PRICE_MASTER = 20000
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Deck and rarity
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Deck and rarity related constants
+ * @section Deck & Rarity
+ */
 
 setup.DECK_SUBDECKS = 4
 
@@ -820,9 +879,10 @@ setup.DECK_DRAW_RETRIES_QUEST = 200
 setup.DECK_DRAW_RETRIES_EVENT = 200
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Unit generation
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Unit generation related constants
+ * @section Unit Generation
+ */
 
 /* average number of personality traits of each rarity */
 setup.UNIT_POOL_PER_TRAITS_AVERAGE_COMMON = 3.0
@@ -866,16 +926,18 @@ setup.POOL_PER_EPIC_4 = 0.05
 setup.POOL_PER_LEGENDARY_5 = 0.01
 
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* Party
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Party related constants
+ * @section Party
+ */
 
 /* max number of parties */
 setup.PARTY_MAX = 100
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* ROOMS
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Room related constants
+ * @section Room
+ */
 
 /* max skill that can be boosted from rooms */
 setup.ROOM_MAX_SKILL_BOOST = 12
@@ -928,9 +990,10 @@ setup.FORTGRID_RELOCATE_PRICE_PER_TILE = 20
  */
 setup.FORTGRID_NEAR_DISTANCE = 10
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* FORT CAPACITIES
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Fort capacities related constants
+ * @section Fort Capacities
+ */
 
 // these three governs number of slavers per lodgings level
 setup.FORT_SLAVER_CAPACITY_PER_LODGING = 2
@@ -944,9 +1007,10 @@ setup.FORT_GUEST_ROOM_CAPACITY_PER_LEVEL = 4
 // minimum number of slavers. Cannot dismiss slavers to have less than this
 setup.SLAVER_COUNT_MINIMUM = 5
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* RETIREMENT
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * Retirement related constants
+ * @section Retirement
+ */
 
 // cost to re-recruit a retiree
 setup.RETIRE_RERECRUIT_COST_MONEY = 10000
@@ -975,9 +1039,10 @@ setup.LIVING_VERYCOMMON_PREFERENCE = 0.01
 // default preference for extremely common livings
 setup.LIVING_EXTREMELYCOMMON_PREFERENCE = 0.001
 
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-/* NEW GAME PLUS
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+/**
+ * New Game Plus related constants
+ * @section New Game Plus
+ */
 
 // number of slavers you can bring along on a new game plus
 setup.NEW_GAME_PLUS_SLAVERS = 3
