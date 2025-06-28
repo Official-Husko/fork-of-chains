@@ -1,138 +1,104 @@
-/**
- * @file rng.js
- * @description High-performance randomization and probability utilities for Twine games. Includes weighted sampling, shuffling, permutations, and choice utilities. All functions are documented with in-depth JSDoc for maintainability and IDE support.
- *
- * Performance improvements:
- * - Uses modern JavaScript best practices and avoids unnecessary array copies.
- * - Ensures all randomization is robust and non-mutating unless explicitly required.
- * - Removes duplicate logic and clarifies intent in all methods.
- * - Consistent use of double quotes and clear error handling.
- */
 
-setup.rng = {};
+setup.rng = {}
 
 /**
- * Normalizes an array of [item, weight] pairs so that the sum of weights is 1.0.
- * Modifies the input array in place.
- *
- * @function
- * @param {Array<[any, number]>} chanceArray - Array of [item, weight] pairs.
- * @throws {Error} If the sum of weights is zero.
- * @returns {void}
+ * @param {Array<[any, number]>} chance_array
  */
-setup.rng.normalizeChanceArray = function (chanceArray) {
-  let sum = 0.0;
-  for (let i = 0; i < chanceArray.length; ++i) {
-    sum += chanceArray[i][1];
+setup.rng.normalizeChanceArray = function (chance_array) {
+  let sum_chance = 0.0
+  for (let i = 0; i < chance_array.length; ++i) {
+    sum_chance += chance_array[i][1]
   }
-  if (!sum) throw new Error("Sum of chances must be non zero");
-  for (let i = 0; i < chanceArray.length; ++i) {
-    chanceArray[i][1] /= sum;
+  if (!sum_chance) throw new Error(`Sum of chances must be non zero`)
+  for (let i = 0; i < chance_array.length; ++i) {
+    chance_array[i][1] /= sum_chance
   }
-};
+}
 
 /**
- * Samples a random item from a weighted array, optionally normalizing weights.
- *
- * @function
- * @param {Array<[any, number]>} rawChanceArray - Array of [item, weight] pairs.
- * @param {boolean} [normalize=false] - Whether to normalize weights before sampling.
- * @returns {any|null} The selected item, or null if none selected.
+ * @param {Array<[*, number]>} raw_chance_array   [[object, chance]]
+ * @param {boolean} [normalize]
  */
-setup.rng.sampleArray = function (rawChanceArray, normalize) {
-  let chanceArray = rawChanceArray;
+setup.rng.sampleArray = function (raw_chance_array, normalize) {
+  // chance_array is [[something, 0.5], [something, 0.4]]
+  let chance_array = raw_chance_array
   if (normalize) {
-    chanceArray = rawChanceArray.slice(); // shallow copy
-    setup.rng.normalizeChanceArray(chanceArray);
+    chance_array = raw_chance_array.filter(a => true)
+    setup.rng.normalizeChanceArray(chance_array)
   }
-  let randomVal = Math.random();
-  for (let i = 0; i < chanceArray.length; ++i) {
-    let chanceObj = chanceArray[i];
-    if (chanceObj[1] >= randomVal) return chanceObj[0];
-    randomVal -= chanceObj[1];
-  }
-  return null;
-};
 
-/**
- * Samples a random key from an object with weights as values.
- *
- * @function
- * @param {Object.<string, number>} keyChanceMap - Object mapping keys to weights.
- * @param {boolean} [normalize=false] - Whether to normalize weights before sampling.
- * @returns {string|null} The selected key, or null if none selected.
- */
-setup.rng.sampleObject = function (keyChanceMap, normalize) {
-  /** @type {Array<[string, number]>} */
-  let chances = [];
-  for (let key in keyChanceMap) {
-    chances.push([key, keyChanceMap[key]]);
+  let randomval = Math.random()
+  for (let i = 0; i < chance_array.length; ++i) {
+    let chanceobj = chance_array[i]
+    if (chanceobj[1] >= randomval) return chanceobj[0]
+    randomval -= chanceobj[1]
   }
-  if (normalize) setup.rng.normalizeChanceArray(chances);
-  // @ts-ignore
-  return setup.rng.sampleArray(chances);
-};
+  return null
+}
 
-/**
- * Generates all permutations of an input array.
- *
- * @function
- * @param {Array<any>} inputArr - The array to permute.
- * @returns {Array<Array<any>>} An array of all permutations.
- */
-setup.rng.AllPermutations = function (inputArr) {
-  /** @type {Array<Array<any>>} */
-  let result = [];
+
+setup.rng.sampleObject = function (key_chance_map, force_return) {
+  // key_chance_map: {something1: 0.5, something2: 0.4}
+  // returns something1 or something2
+
   /**
-   * @param {Array<any>} arr
-   * @param {Array<any>} m
+   * @type {Array<[any, number]>}
    */
-  const permute = function (arr, m) {
-    m = m || [];
+  let chances = []
+  for (let key in key_chance_map) {
+    chances.push([key, key_chance_map[key]])
+  }
+  if (force_return) setup.rng.normalizeChanceArray(chances)
+  return setup.rng.sampleArray(chances)
+}
+
+// from https://stackoverflow.com/questions/9960908/permutations-in-javascript
+setup.rng.AllPermutations = function (inputArr) {
+  let result = [];
+  const permute = (arr, m = []) => {
     if (arr.length === 0) {
-      result.push(m);
+      result.push(m)
     } else {
       for (let i = 0; i < arr.length; i++) {
         let curr = arr.slice();
         let next = curr.splice(i, 1);
-        permute(curr.slice(), m.concat(next));
+        permute(curr.slice(), m.concat(next))
       }
     }
-  };
-  permute(inputArr, []);
+  }
+  permute(inputArr)
   return result;
-};
+}
 
-/**
- * Picks an item from a weighted rarity array, with special handling for priority and impossible cases.
- *
- * @function
- * @param {Array<[any, number]>} chanceArray - Array of [item, rarity] pairs. 0 = priority, 1 = common, 100 = impossible.
- * @returns {any} The selected item.
- */
-setup.rng.QuestChancePick = function (chanceArray) {
-  chanceArray.sort((c1, c2) => c1[1] - c2[1]);
-  let rnd = Math.floor(Math.random() * 100);
-  if (chanceArray[0][1] === 0) {
-    rnd = 0;
-  } else if (rnd < chanceArray[0][1]) {
-    rnd = chanceArray[0][1];
-  }
-  let maxCandidate = 0;
-  while (maxCandidate + 1 < chanceArray.length && chanceArray[maxCandidate + 1][1] <= rnd) {
-    maxCandidate += 1;
-  }
-  maxCandidate += 1;
-  return chanceArray[Math.floor(Math.random() * maxCandidate)][0];
-};
 
-/**
- * Randomizes an array in-place using the Durstenfeld shuffle algorithm.
- *
- * @function
- * @param {Array<any>} array - The array to shuffle.
- * @returns {void}
- */
+setup.rng.QuestChancePick = function (chance_array) {
+  // chance array: [[obj1, 1], [obj2, 50]], ...
+  // 1: common. 100: impossible. 0: priority quest: a special case that is always preferred, if any
+  chance_array.sort((c1, c2) => c1[1] < c2[1] ? -1 : (c1[1] > c2[1] ? 1 : 0))
+
+  let rnd = Math.floor(Math.random() * 100)
+  if (chance_array[0][1] == 0) {
+    // priority for rarity 0
+    rnd = 0
+  } else if (rnd < chance_array[0][1]) {
+    rnd = chance_array[0][1]
+  }
+
+  // Find max candidate that satisfies
+  let max_candidate = 0
+  while (max_candidate + 1 < chance_array.length && chance_array[max_candidate + 1][1] <= rnd) {
+    max_candidate += 1
+  }
+  max_candidate += 1
+
+  // pick one at random
+  return chance_array[Math.floor(Math.random() * max_candidate)][0]
+}
+
+
+
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+/* from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array */
 setup.rng.shuffleArray = function (array) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
@@ -140,34 +106,24 @@ setup.rng.shuffleArray = function (array) {
     array[i] = array[j];
     array[j] = temp;
   }
-};
+}
 
-/**
- * Picks a single random element from an array.
- *
- * @function
- * @param {Array<any>} array - The array to pick from.
- * @throws {Error} If the array is empty.
- * @returns {any} The selected element.
- */
 setup.rng.choice = function (array) {
-  if (!array.length) throw new Error("Cannot random choice empty array");
-  return array[Math.floor(Math.random() * array.length)];
-};
+  if (!array.length) throw new Error(`Cannot random choice empty array`)
+  return array[Math.floor(Math.random() * array.length)]
+}
 
 /**
- * Picks multiple random elements from an array without replacement.
- *
- * @function
- * @param {Array<any>} array - The array to pick from.
- * @param {number} choices - The number of elements to pick.
- * @throws {Error} If not enough elements are available.
- * @returns {Array<any>} The selected elements.
+ * Pick choices from array without replacement
+ * @param {Array} array 
+ * @param {number} choices 
  */
 setup.rng.choicesRandom = function (array, choices) {
-  if (array.length < choices) throw new Error("Not enough elements in array for " + choices + " choices");
-  if (!choices) return [];
-  let arrayCopy = array.slice(); // shallow copy
-  setup.rng.shuffleArray(arrayCopy);
-  return arrayCopy.slice(0, choices);
-};
+  if (array.length < choices) throw new Error(`Not enough elements in array for ${choices} choices`)
+  if (!choices) return []
+
+  // shallow copy, not deep copy ANGERY
+  let arraycopy = array.filter(a => true)
+  setup.rng.shuffleArray(arraycopy)
+  return arraycopy.splice(0, choices)
+}
