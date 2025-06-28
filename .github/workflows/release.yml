@@ -26,16 +26,54 @@ jobs:
       - name: Build (release)
         run: npm run build
 
-      - name: Zip dist folder
+      - name: Zip full release (full game)
         run: |
           cd dist
-          zip -r ../game-release.zip .
+          zip -r ../full-game.zip .
           cd ..
+
+      - name: Zip imagepack only
+        run: |
+          cd test
+          zip -r ../imagepack-release.zip imagepacks
+          cd ..
+
+      - name: Zip mods only
+        run: |
+          cd test
+          zip -r ../mods-release.zip mods
+          cd ..
+
+      - name: Zip update files
+        run: |
+          cd test
+          zip -r ../update-release.zip index.html precompiled.html js js-debug
+          cd ..
+
+      - name: Zip assets (img and assets folders)
+        run: |
+          cd test
+          zip -r ../assets-release.zip img assets
+          cd ..
+
+      - name: Set prerelease flag
+        id: prerelease
+        run: |
+          if [[ "${GITHUB_REF##*/}" == *-pre* || "${GITHUB_REF##*/}" == *-alpha* || "${GITHUB_REF##*/}" == *-beta* || "${GITHUB_REF##*/}" == *-rc* ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          prerelease: true
-          files: game-release.zip
+          prerelease: ${{ steps.prerelease.outputs.prerelease }}
+          files: |
+            full-game.zip
+            imagepack-release.zip
+            mods-release.zip
+            update-release.zip
+            assets-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
