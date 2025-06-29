@@ -1,20 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ ! -d ".git" ]; then
-	#not running in git repo, so can't use git commands :-)
-	echo "No .git repo found - skipping sanity checks"
-	exit 0
+    echo "No .git repo found - skipping sanity checks"
+    exit 0
 fi
 
-WARNING='\033[93m'
 WARNING='\033[93m'
 ENDC='\033[0m'
 
 myprint() {
-	while read data; do
-		echo -n -e "[$1]$WARNING"
-		echo "$data"
-	done
+    local label="$1"
+    while read -r data; do
+        echo -e "[$label]${WARNING}${data}${ENDC}"
+    done
 }
 
 GREP="git grep -n --color"
