@@ -31,6 +31,7 @@
 // 'State' is the SugarCube global for game state and variables
 // 'importScripts' loads external JS files dynamically
 
+// @ts-ignore
 declare const setup: any;
 declare function importScripts(...urls: string[]): Promise<void>;
 
@@ -38,6 +39,7 @@ declare function importScripts(...urls: string[]): Promise<void>;
  * ContentImage class manages all content images and their metadata for the game.
  * Provides static methods for initialization, lookup, and credit organization.
  */
+// @ts-ignore
 setup.ContentImage = class ContentImage extends setup.TwineClass {
   /**
    * Maps image file paths to their corresponding ImageObject.
@@ -76,6 +78,7 @@ setup.ContentImage = class ContentImage extends setup.TwineClass {
         const image_path = `${directory}/${image_key}`;
         const image_info = credits[image_key];
         const image_object: ImageObject = { path: image_path, info: image_info };
+        // @ts-ignore
         setup.ContentImage.CONTENT_IMAGE_PATH_TO_OBJ[image_path] = image_object;
         image_list.push(image_object);
       }
@@ -116,6 +119,7 @@ setup.ContentImage = class ContentImage extends setup.TwineClass {
     }
 
     // Begin initialization by loading the main metadata file
+    // @ts-ignore
     Construct(setup.ContentImage.IMAGEMETA, setup.ContentImage.IMAGE_DIR);
   }
 
@@ -127,8 +131,11 @@ setup.ContentImage = class ContentImage extends setup.TwineClass {
    * @returns The ImageObject if found, or null if not found.
    */
   static getImageObjectIfAny(image_name: string): ImageObject | null {
+    // @ts-ignore
     const path = `${setup.ContentImage.IMAGE_DIR}/${image_name}`;
+    // @ts-ignore
     if (path in setup.ContentImage.CONTENT_IMAGE_PATH_TO_OBJ) {
+      // @ts-ignore
       return setup.ContentImage.CONTENT_IMAGE_PATH_TO_OBJ[path];
     } else {
       // In debug mode, throw an error for missing images to aid development
@@ -147,6 +154,7 @@ setup.ContentImage = class ContentImage extends setup.TwineClass {
    */
   static getCreditsByArtist(): { [artist: string]: ImageObject[] } {
     const result: { [artist: string]: ImageObject[] } = {};
+    // @ts-ignore
     for (const imageUnknown of Object.values(setup.ContentImage.CONTENT_IMAGE_PATH_TO_OBJ)) {
       const image = imageUnknown as ImageObject;
       if (image.info && typeof image.info.artist === "string") {

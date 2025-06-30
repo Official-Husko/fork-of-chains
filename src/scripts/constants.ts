@@ -1,4 +1,19 @@
-export const IMPORTABLE = true
+/**
+ * constants.ts
+ * -------------
+ * This file contains all global game constants and configuration values for the Twine SugarCube project.
+ * All values are attached to the global `setup` object for use throughout the game.
+ *
+ * Converted from JavaScript to TypeScript for type safety and maintainability.
+ */
+
+export const IMPORTABLE = true;
+
+declare global {
+  // Augment the global setup object for all constants
+  // @ts-ignore
+  var setup: typeof setup & { [key: string]: any };
+}
 
 /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
 /* Number of unit choices at start */
