@@ -64,6 +64,7 @@ declare interface GlobalSettings {
   mods_installed?: readonly string[],
 }
 
+// @ts-ignore
 type Rarity = "legendary" | "epic" | "rare" | "uncommon" | "common" | "negative"
 
 interface DialogueText {

@@ -110,6 +110,7 @@ declare global {
 
   const Setting: SettingsAPI
 
+  // @ts-ignore
   const State: StateAPI & {
     variables: StateVariables
     readonly history: any[]
