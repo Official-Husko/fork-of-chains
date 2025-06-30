@@ -1,47 +1,72 @@
 /**
- * @file ContentTemplate.js
- * @module ContentTemplate
- * @description
- * Provides the ContentTemplate class for defining and validating content/quest templates in the game.
- * Handles author info, tag validation, actor unit group mapping, and difficulty assignment.
- * Ensures robust error handling, type safety, and extensibility for future content features.
+ * ContentTemplate.ts
+ * ------------------
+ * This module defines the ContentTemplate class, which provides a base for content/quest templates in the game.
+ * It handles validation, author info parsing, tag management, actor unit group mapping, and difficulty assignment.
+ *
+ * Key Responsibilities:
+ * - Validate and initialize all template properties.
+ * - Parse and normalize author info.
+ * - Validate, sort, and manage tags.
+ * - Map actor names to unit group keys/objects.
+ * - Provide extensibility for subclasses (event, quest, etc.).
+ *
+ * Best Practices:
+ * - Use explicit type annotations for all parameters and properties.
+ * - Throw clear errors for invalid input.
+ * - Keep all validation and parsing logic encapsulated in the constructor.
+ * - Document all public methods and properties.
  */
+
+// Declare global game objects and helpers
+// 'setup' is the SugarCube global for game logic and classes
+
+declare const setup: any;
+
+/**
+ * Type for author info, which can be a string or an object with name and url.
+ */
+type AuthorInfo = string | { name: string; url: string };
 
 /**
  * ContentTemplate defines the structure and behavior of a content/quest template, including tags, author, actor unit groups, and difficulty.
- * @class
- * @property {string} key - Unique identifier for this content template.
- * @property {string} name - Display name for the content template.
- * @property {object} author - Author info object (parsed from string or object).
- * @property {string[]} tags - Array of tags describing the template's properties.
- * @property {object} actor_unitgroup_key_map - Mapping of actor names to unit group keys/objects.
- * @property {setup.QuestDifficulty} difficulty - Difficulty level for the content template.
- * @property {string|null} TYPE - Type of content (event, quest, opportunity, etc.), set by subclasses.
  */
 export class ContentTemplate extends setup.TwineClass {
+  TYPE: 'event' | 'quest' | 'opportunity' | 'activity' | 'interaction' | null = null;
+  key: string;
+  name: string;
+  author: { name: string; url?: string };
+  tags: string[];
+  actor_unitgroup_key_map: Record<string, any>;
+  difficulty: any;
+
   /**
    * Constructs a new ContentTemplate instance, validates input, and initializes all properties.
    * Throws if required fields are missing or invalid.
    *
-   * @param {string} key - Unique key for this template.
-   * @param {string} name - Display name for the template.
-   * @param {string|object} author - Author info (string or {name, url}).
-   * @param {string[]} tags - Array of tags for this template.
-   * @param {Object<string, any>} actor_unitgroups - Actor-to-unitgroup mapping.
-   * @param {setup.QuestDifficulty} difficulty - Difficulty level for the template.
+   * @param key - Unique key for this template.
+   * @param name - Display name for the template.
+   * @param author - Author info (string or {name, url}).
+   * @param tags - Array of tags for this template.
+   * @param actor_unitgroups - Actor-to-unitgroup mapping.
+   * @param difficulty - Difficulty level for the template.
    */
-  constructor(key, name, author, tags, actor_unitgroups, difficulty) {
+  constructor(
+    key: string,
+    name: string,
+    author: AuthorInfo,
+    tags: string[],
+    actor_unitgroups: Record<string, any>,
+    difficulty: any
+  ) {
     super();
-    /**
-     * @type {'event' | 'quest' | 'opportunity' | 'activity' | 'interaction' | null}
-     */
     this.TYPE = null; // Will be filled by subclass
     if (!key) throw new Error("quest key cannot be null");
     this.key = key;
     if (name === null || name === undefined) throw new Error(`Name of quest ${key} cannot be null`);
     this.name = name;
     // Defensive: ensure author is string or {name, url}
-    this.author = setup.QuestTemplate.parseAuthorInfo(/** @type {string | {name: string, url: string}} */(author));
+    this.author = setup.QuestTemplate.parseAuthorInfo(author);
     if (!Array.isArray(tags)) throw new Error(`Tags of quest ${key} must be an array. E.g., ['transformation']. Put [] for no tags.`);
     // Cache tag keys for performance
     const questTagKeys = Object.keys(setup.QUESTTAGS);
@@ -53,9 +78,6 @@ export class ContentTemplate extends setup.TwineClass {
       }
     }
     this.tags.sort((a, b) => questTagKeys.indexOf(a) - questTagKeys.indexOf(b));
-    /**
-     * @type {Object<string, {type: string, val?: *, key?: string}>}
-     */
     if (actor_unitgroups) {
       this.actor_unitgroup_key_map = setup.ActorHelper.parseMap(actor_unitgroups);
     } else {
@@ -66,59 +88,59 @@ export class ContentTemplate extends setup.TwineClass {
 
   /**
    * Returns the template object (to be overridden by subclasses).
-   * @returns {null}
    */
-  getTemplate() { return null; }
+  getTemplate(): null {
+    return null;
+  }
 
   /**
    * Returns the parsed author info object.
-   * @returns {object}
    */
-  getAuthor() { return this.author; }
+  getAuthor(): { name: string; url?: string } {
+    return this.author;
+  }
 
   /**
    * Returns the tags associated with this template.
-   * @returns {string[]}
    */
-  getTags() { return this.tags; }
+  getTags(): string[] {
+    return this.tags;
+  }
 
   /**
    * Returns the difficulty level for this template.
-   * @returns {setup.QuestDifficulty}
    */
-  getDifficulty() { return this.difficulty; }
+  getDifficulty(): any {
+    return this.difficulty;
+  }
 
   /**
    * Returns the display name for this template.
-   * @returns {string}
    */
-  getName() { return this.name; }
+  getName(): string {
+    return this.name;
+  }
 
   /**
    * Returns the actor unit groups for this template, parsed from the key map.
-   * @returns {Object<string, setup.ContactTemplate | setup.UnitGroup | setup.Restriction[]>}
    */
-  getActorUnitGroups() {
+  getActorUnitGroups(): Record<string, any> {
     return setup.ActorHelper.parseUnitGroups(this.actor_unitgroup_key_map);
   }
 
   /**
    * Returns the subraces directly involved in this quest, based on actor unit groups.
-   * @returns {setup.Trait[]}
    */
-  getActorSubraces() {
+  getActorSubraces(): any[] {
     const subraces = setup.TraitHelper.getAllTraitsOfTags(['subrace']);
     const unit_groups = this.getActorUnitGroups();
-    /** @type {{[key: string]: boolean}} */
-    const found = {};
+    const found: Record<string, boolean> = {};
     for (const group of Object.values(unit_groups)) {
       if (group instanceof setup.UnitGroup) {
         const pools_objs = group.getUnitPools();
-        /** @type {{[key: string]: boolean}} */
-        const races = {};
+        const races: Record<string, boolean> = {};
         for (const pool_obj of pools_objs) {
-          /** @type {setup.UnitPool} */
-          const pool = /** @type {setup.UnitPool} */(Array.isArray(pool_obj) ? pool_obj[0] : pool_obj);
+          const pool = Array.isArray(pool_obj) ? pool_obj[0] : pool_obj;
           let subrace = null;
           for (const subrace_test of subraces) {
             if (pool.key.startsWith(subrace_test.key)) {
@@ -127,6 +149,7 @@ export class ContentTemplate extends setup.TwineClass {
             }
           }
           if (subrace) {
+            // @ts-ignore
             races[subrace.key] = true;
           }
         }
@@ -140,10 +163,8 @@ export class ContentTemplate extends setup.TwineClass {
 
   /**
    * Returns the result job for a given actor name (to be implemented in subclasses).
-   * @param {string} actor_name
-   * @returns {setup.Job | null}
    */
-  getActorResultJob(actor_name) {
+  getActorResultJob(actor_name: string): any {
     return null;
   }
 }
