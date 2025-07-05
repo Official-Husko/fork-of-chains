@@ -1,3 +1,5 @@
+// @ts-nocheck
+// filepath: /run/media/pawbeans/Project Drive/Projects/twine/fort-of-chains2/src/scripts/classes/title/titlelist.ts
 
 setup.TITLE_MAX_ASSIGNED = 2
 

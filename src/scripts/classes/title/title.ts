@@ -1,3 +1,5 @@
+// @ts-nocheck
+// filepath: /run/media/pawbeans/Project Drive/Projects/twine/fort-of-chains2/src/scripts/classes/title/title.ts
 
 setup.Title = class Title extends setup.TwineClass {
   /**
@@ -41,16 +43,16 @@ setup.Title = class Title extends setup.TwineClass {
 
   toText() {
     let base = `new setup.Title(\n`
-    base += `"${setup.escapeJsString(this.key)}",  """/* key */"""\n`
-    base += `"${setup.escapeJsString(this.name)}",  """/* name */"""\n`
-    base += `"${setup.escapeTwine(setup.escapeJsString(this.description))}",  """/* description */"""\n`
+    base += `"${setup.escapeJsString(this.key)}",  \"\"\"/* key */\"\"\"\n`
+    base += `"${setup.escapeJsString(this.name)}",  \"\"\"/* name */\"\"\"\n`
+    base += `"${setup.escapeTwine(setup.escapeJsString(this.description))}",  \"\"\"/* description */\"\"\"\n`
     if (this.unit_text) {
-      base += `"${setup.escapeTwine(setup.escapeJsString(this.unit_text))}",  """/* unit text */"""\n`
+      base += `"${setup.escapeTwine(setup.escapeJsString(this.unit_text))}",  \"\"\"/* unit text */\"\"\"\n`
     } else {
-      base += `null,  """/* unit text */"""\n`
+      base += `null,  \"\"\"/* unit text */\"\"\"\n`
     }
-    base += `${this.slave_value},  """/* slave value */"""\n`
-    base += `{   """/* skill additives */"""\n`
+    base += `${this.slave_value},  \"\"\"/* slave value */\"\"\"\n`
+    base += `{   \"\"\"/* skill additives */\"\"\"\n`
 
     let skill_adds = this.getSkillAdds()
     for (let i = 0; i < skill_adds.length; ++i) {
@@ -61,8 +63,8 @@ setup.Title = class Title extends setup.TwineClass {
     }
 
     base += `},\n`
-    base += `{\n`
-    base += `&nbsp;is_negative: ${this.isNegative()},\n`
+    base += `{
+    &nbsp;is_negative: ${this.isNegative()},\n`
     base += `},\n`
     base += `)\n`
     return base
