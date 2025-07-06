@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // effects: [cost1, cost2, cost3, ...]
 // actor name is: 'unit'

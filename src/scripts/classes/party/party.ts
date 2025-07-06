@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.Party = class Party extends setup.TwineClass {
   constructor() {
     super()

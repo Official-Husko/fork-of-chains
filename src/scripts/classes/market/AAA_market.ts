@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 setup.Market = class Market extends setup.TwineClass {
   constructor(key, name, varname, setupvarname) {

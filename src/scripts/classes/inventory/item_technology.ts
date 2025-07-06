@@ -1,5 +1,6 @@
+// @ts-nocheck
 
-setup.ItemQuest = class ItemQuest extends setup.Item {
+setup.ItemTechnology = class ItemTechnology extends setup.Item {
   /**
    * @param {{
    * key: string
@@ -13,9 +14,8 @@ setup.ItemQuest = class ItemQuest extends setup.Item {
       key: key,
       name: name,
       description: description,
-      item_class: setup.itemclass.questitem,
+      item_class: setup.itemclass.technologyitem,
       tags: tags,
     })
   }
 }
-

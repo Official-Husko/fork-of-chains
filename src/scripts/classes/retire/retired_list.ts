@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // special. Will be assigned to State.variables.retiredlist
 
 setup.RetiredList = class RetiredList extends setup.TwineClass {

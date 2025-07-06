@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * @type {Registry<typeof setup.Living>}
  */

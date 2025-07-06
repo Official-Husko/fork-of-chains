@@ -1,3 +1,5 @@
+// @ts-nocheck
+
   
 setup.ItemClass = class ItemClass extends setup.TwineClass {
   constructor(key, name) {

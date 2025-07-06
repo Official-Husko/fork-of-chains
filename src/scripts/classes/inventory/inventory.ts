@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // special. Will be assigned to State.variables.inventory
 export class Inventory extends setup.TwineClass {

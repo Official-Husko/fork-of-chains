@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export class QuestInstanceAllowedInjured extends setup.QuestInstance {
   /**
    * @returns {boolean}

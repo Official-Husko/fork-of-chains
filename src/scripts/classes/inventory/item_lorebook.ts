@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.ItemLorebook = class ItemLorebook extends setup.Item {
   /**
    * @param {{

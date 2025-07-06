@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { ContentTemplate } from "../content/ContentTemplate"
 setup.OpportunityTemplate = class OpportunityTemplate extends ContentTemplate {
   /**

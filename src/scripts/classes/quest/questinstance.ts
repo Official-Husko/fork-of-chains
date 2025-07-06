@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.QuestInstance = class QuestInstance extends setup.TwineClass {
   constructor(quest_template, actor_units) {
     super()

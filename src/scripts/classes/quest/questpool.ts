@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { ContentTemplate } from "../content/ContentTemplate"
 
 setup.QuestPool = class QuestPool extends setup.TwineClass {

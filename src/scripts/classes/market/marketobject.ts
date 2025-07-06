@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 setup.MarketObject = class MarketObject extends setup.TwineClass {
   /**

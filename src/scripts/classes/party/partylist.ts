@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // assigned to $partylist
 setup.PartyList = class PartyList extends setup.TwineClass {
   constructor() {

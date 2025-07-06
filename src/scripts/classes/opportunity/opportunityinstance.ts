@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 setup.OpportunityInstance = class OpportunityInstance extends setup.TwineClass {
   constructor(opportunity_template, actor_units) {

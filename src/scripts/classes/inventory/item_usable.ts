@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.ItemUsable = class ItemUsable extends setup.Item {
   /**
    * @param {{

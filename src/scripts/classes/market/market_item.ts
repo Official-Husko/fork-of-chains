@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 setup.MarketItem = class MarketItem extends setup.Market {
   constructor(key, name) {

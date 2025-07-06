@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { QuestInstanceAllowedInjured } from "./questinstanceunitaction"
 import { doFinalize } from "../../util/questassign"
 

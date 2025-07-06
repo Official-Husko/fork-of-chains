@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.Item_keygen = 1
 
 setup.Item = class Item extends setup.TwineClass {

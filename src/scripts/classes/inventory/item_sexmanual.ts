@@ -1,18 +1,20 @@
-setup.ItemTechnology = class ItemTechnology extends setup.Item {
+// @ts-nocheck
+
+setup.ItemSexManual = class ItemSexManual extends setup.Item {
   /**
    * @param {{
    * key: string
    * name: string
    * description: string
-   * tags: string[]
-   * }} args
+   * tags: []
+   * }} param0 
    */
   constructor({ key, name, description, tags }) {
     super({
       key: key,
       name: name,
       description: description,
-      item_class: setup.itemclass.technologyitem,
+      item_class: setup.itemclass.sexmanual,
       tags: tags,
     })
   }

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.MONEY_MULTIS = {
   'easiest': 0.8,
   'easier': 0.9,

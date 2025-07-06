@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // Will be assigned to $opportunitylist
 setup.OpportunityList = class OpportunityList extends setup.TwineClass {

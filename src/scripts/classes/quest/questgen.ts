@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // set to $questgen. Responsible for generating most quests.
 // When a quest is generated in qc.QuestDelay(), then it will only be generated here.

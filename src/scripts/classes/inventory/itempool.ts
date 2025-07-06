@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // Don't put to class. ItemPoolGroup can be a thing in the future.
 setup.ItemPool = class ItemPool {
