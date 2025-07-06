@@ -2,7 +2,6 @@
 
 // Type for 'setup' global (SugarCube.setup)
 // declare stuff that is defined in the .twee files (hence not detected)
-// @ts-ignore
 declare namespace setup {
   let INFINITY: number
   let INIT_DONE: boolean
@@ -44,41 +43,29 @@ declare namespace setup {
   let speech: Registry<typeof setup.Speech>
   let trait: Registry<typeof setup.Trait>
   let traitgroup: Registry<typeof setup.TraitGroup>
-  // @ts-ignore
   let unitaction: Registry<typeof setup.UnitAction>
   let unitgroup: Registry<typeof setup.UnitGroup>
   let unitpool: Registry<typeof setup.UnitPool>
 
   interface UnitAction { }
 
-  // @ts-ignore
   let unitaction: UnitAction
 
-  // @ts-ignore
   let ch: Record<string, (actor_name) => string>
 
   let qs: {
-    // @ts-ignore
     job_slaver: Restriction
-    // @ts-ignore
     job_slave: Restriction
-    // @ts-ignore
     trait_vagina: Restriction
-    // @ts-ignore
     trait_dick: Restriction
-    // @ts-ignore
     trait_breast: Restriction
-    // @ts-ignore
     trait_balls: Restriction
-    // @ts-ignore
     trait_gender_male: Restriction
-    // @ts-ignore
     trait_gender_female: Restriction
   }
 
   let SPEECH_ADVERBS: Record<string, string[]>
   let TRAIT_TEXTS: Record<string, Record<string, string>>
-  // @ts-ignore
   let TRAIT_TEXTS_DEFAULT: Record<string, *>
   let TRAIT_PHYSICAL_TAGS: string[]
   let TRAITRACESKINMAP: Record<string, Record<string, number>>

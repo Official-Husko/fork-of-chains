@@ -64,7 +64,6 @@ declare interface GlobalSettings {
   mods_installed?: readonly string[],
 }
 
-// @ts-ignore
 type Rarity = "legendary" | "epic" | "rare" | "uncommon" | "common" | "negative"
 
 interface DialogueText {
@@ -94,7 +93,6 @@ interface ScheduledEventInfo {
 interface ScheduledEventInfoRealized {
   occur_week: number,
   events: Array<{
-    // @ts-ignore
     event: setup.Event,
     is_visible_in_calendar: boolean
   }>,
