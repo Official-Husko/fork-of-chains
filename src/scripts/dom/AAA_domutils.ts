@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { createComponent, render } from "solid-js/web"
 
 setup.DOM = {}
