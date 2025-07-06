@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 /**
  * Initializes the State.variables
  * Will be called with "this" set to State.variables
@@ -38,8 +36,10 @@ setup.initState = function () {
   {
     /** @type {Record<string, setup.Company>} */
     this.company = {};
-    for (const _companytemplate of Object.values(setup.companytemplate))
-      new setup.Company(_companytemplate.key, _companytemplate);
+    for (const _companytemplate of Object.values(setup.companytemplate)) {
+      const companytemplate = _companytemplate as CompanyTemplate;
+      this.company[companytemplate.key] = new setup.Company(companytemplate.key, companytemplate);
+    }
 
     // special case for player company name
     this.company.player.name = this.company.player.getName();
@@ -75,8 +75,9 @@ setup.initState = function () {
     this.unitgroup_unit_keys = {};
 
     // Initialize 'unitgroup_unit_keys' to empty arrays
-    for (const unitgroup of Object.values(setup.unitgroup)) {
-      if (unitgroup instanceof setup.UnitGroup)
+    for (const _unitgroup of Object.values(setup.unitgroup)) {
+      const unitgroup = _unitgroup as UnitGroupType;
+      if (unitgroup && typeof unitgroup.resetUnitGroupUnitKeys === 'function')
         unitgroup.resetUnitGroupUnitKeys();
     }
   }

@@ -109,3 +109,18 @@ declare type setup_qres = {
 declare type setup_SlaveOrderAddon = {
   [k in keyof typeof setup.SlaveOrderAddonImpl]: ConstructorProxyFunction<typeof setup.SlaveOrderAddonImpl[k]>
 }
+
+declare class CompanyTemplate extends setup.TwineClass {
+  key: string;
+  name: string;
+  favor_effects: any[];
+  description_passage: string;
+  constructor(key: string, name: string, description_passage: string, favor_effects: any[]);
+  getName(): string;
+  getFavorEffects(): any[];
+  getDescriptionPassage(): string;
+}
+
+declare namespace setup {
+  let CompanyTemplate: typeof CompanyTemplate;
+}
