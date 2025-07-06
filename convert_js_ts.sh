@@ -2,8 +2,15 @@
 
 # ------------------------------------------------------------------------------
 # Script: convert_js_ts.sh
-# Purpose: Convert all .js files in src to .ts, add @ts-nocheck, and fix imports
+# Purpose: Convert all .js files in a selected folder to .ts, add @ts-nocheck, and fix imports
 # ------------------------------------------------------------------------------
+
+read -rp "Enter the relative path to the folder to convert (e.g. src/scripts/classes): " target_dir
+
+if [[ -z "$target_dir" || ! -d "$target_dir" ]]; then
+    echo "Invalid or empty folder. Exiting."
+    exit 1
+fi
 
 converted=0
 skipped=0
@@ -30,6 +37,6 @@ while read -r jsfile; do
         ((failed++))
     fi
 
-done < <(find src -type f -name "*.js")
+done < <(find "$target_dir" -type f -name "*.js")
 
 echo "Conversion complete. $converted files converted, $skipped files skipped, $failed files failed."
