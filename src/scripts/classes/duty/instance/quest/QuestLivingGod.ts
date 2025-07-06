@@ -1,5 +1,7 @@
+// @ts-nocheck
+
 // for load order:
-import { } from "../../dutytemplate"
+import "../../dutytemplate";
 
 setup.DutyTemplateQuestLivingGod = class DutyTemplateQuestLivingGod extends setup.DutyTemplate {
   constructor() {

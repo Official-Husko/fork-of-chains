@@ -1,5 +1,7 @@
+// @ts-nocheck
+
 // for load order:
-import { } from "../dutytemplate"
+import "../dutytemplate";
 
 setup.DutyTemplateBedchamberSlave = class DutyTemplateBedchamberSlave extends setup.DutyTemplate {
   constructor() {

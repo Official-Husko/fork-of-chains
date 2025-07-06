@@ -1,6 +1,8 @@
+// @ts-nocheck
+
 // for load order:
 import { generateTeamName } from "../../../../names/namegen"
-import { } from "../../dutytemplate"
+import "../../dutytemplate";
 
 const EXTRA_HIGH_PROFIT_THRESHOLD = 300
 

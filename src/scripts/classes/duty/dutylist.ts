@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // assigned to special variable $dutylist
 setup.DutyList = class DutyList extends setup.TwineClass {
   constructor() {

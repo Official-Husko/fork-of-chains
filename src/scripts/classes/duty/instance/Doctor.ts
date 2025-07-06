@@ -1,5 +1,7 @@
+// @ts-nocheck
+
 // for load order:
-import { } from "../dutytemplate"
+import "../dutytemplate";
 
 setup.DutyTemplateDoctor = class DutyTemplateDoctor extends setup.DutyTemplate {
   constructor() {

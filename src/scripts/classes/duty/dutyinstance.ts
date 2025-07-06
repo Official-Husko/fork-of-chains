@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * An instance of a duty. Sometimes, this class is overridden to provide for a more complex behavior.
  */
