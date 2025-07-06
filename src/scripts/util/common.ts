@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 /**
  * @param {object | string} obj 

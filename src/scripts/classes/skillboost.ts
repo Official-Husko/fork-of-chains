@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Extra permanent skill boost that units can get. Soft-capped.
  * Stores at $skillboost

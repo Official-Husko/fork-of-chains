@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.Fort = class Fort extends setup.TwineClass {
   constructor(key, name, base_max_buildings) {

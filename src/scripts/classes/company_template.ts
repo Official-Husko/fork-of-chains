@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.CompanyTemplate = class CompanyTemplate extends setup.TwineClass {
   /**
    * @param {string} key

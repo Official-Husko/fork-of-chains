@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { generateTeamName } from "../names/namegen"
 
 setup.Team = class Team extends setup.TwineClass {

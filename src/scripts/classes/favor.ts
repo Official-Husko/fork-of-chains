@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Favor management system for tracking and decaying favor with companies.
  * Optimized for Twine JS games. Handles favor adjustments, decay, and conversions.

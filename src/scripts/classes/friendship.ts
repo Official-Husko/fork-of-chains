@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Min / max values for friendships
  */

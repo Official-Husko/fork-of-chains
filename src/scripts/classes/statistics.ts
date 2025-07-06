@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // will be set to $statistics.
 setup.Statistics = class Statistics extends setup.TwineClass {

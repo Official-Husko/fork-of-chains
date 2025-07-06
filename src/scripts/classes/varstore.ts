@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 // special. Will be assigned to State.variables.varstore
 setup.VarStore = class VarStore extends setup.TwineClass {
   constructor() {

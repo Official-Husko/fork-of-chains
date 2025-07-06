@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Will be assigned to $bodyshift
  * Tracks units that occupies two bodies or more. This is handled using bodyswaps.

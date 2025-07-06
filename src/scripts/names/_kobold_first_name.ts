@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /* from
 https://www.fantasynamegenerators.com/kobold-names.php
 */
@@ -36,9 +38,10 @@ const nm1 = [
   "x",
   "z",
   "zr",
-]
+];
 
-const nm2 = ["e",
+const nm2 = [
+  "e",
   "i",
   "u",
   "e",
@@ -76,7 +79,7 @@ const nm2 = ["e",
   "ei",
   "ia",
   "ee",
-]
+];
 
 const nm3 = [
   "b",
@@ -166,7 +169,7 @@ const nm3 = [
   "zz",
   "zzk",
   "zd",
-]
+];
 
 const nm4 = [
   "c",
@@ -189,7 +192,7 @@ const nm4 = [
   "sk",
   "sz",
   "x",
-]
+];
 const nm5 = [
   "",
   "",
@@ -229,7 +232,7 @@ const nm5 = [
   "z",
   "zh",
   "zr",
-]
+];
 const nm6 = [
   "a",
   "e",
@@ -266,7 +269,7 @@ const nm6 = [
   "ee",
   "ea",
   "aa",
-]
+];
 const nm7 = [
   "b",
   "bb",
@@ -358,7 +361,7 @@ const nm7 = [
   "zz",
   "zsz",
   "zd",
-]
+];
 const nm8 = [
   "",
   "",
@@ -385,7 +388,7 @@ const nm8 = [
   "s",
   "y",
   "z",
-]
+];
 const nm11 = [
   "",
   "",
@@ -415,7 +418,8 @@ const nm11 = [
   "vr",
   "x",
   "z",
-  "zr",]
+  "zr",
+];
 const nm12 = [
   "a",
   "e",
@@ -454,7 +458,7 @@ const nm12 = [
   "ia",
   "ai",
   "ei",
-]
+];
 const nm13 = [
   "b",
   "bb",
@@ -509,7 +513,7 @@ const nm13 = [
   "zsz",
   "zzs",
   "zd",
-]
+];
 const nm14 = [
   "",
   "",
@@ -526,70 +530,69 @@ const nm14 = [
   "sz",
   "x",
   "z",
-]
+];
 
-const br = ""
+const br = "";
 export function kobold_gen_name(type) {
-  const tp = type
+  const tp = type;
 
-  let name
+  let name;
   // male
   if (tp == 1) {
-    let rnd = Math.floor(Math.random() * nm5.length)
-    let rnd2 = Math.floor(Math.random() * nm6.length)
-    let rnd5 = Math.floor(Math.random() * nm8.length)
+    let rnd = Math.floor(Math.random() * nm5.length);
+    let rnd2 = Math.floor(Math.random() * nm6.length);
+    let rnd5 = Math.floor(Math.random() * nm8.length);
     if (Math.random() < 0.4) {
       while (rnd < 3) {
-        rnd = Math.floor(Math.random() * nm5.length)
+        rnd = Math.floor(Math.random() * nm5.length);
       }
       while (rnd5 < 15) {
-        rnd5 = Math.floor(Math.random() * nm8.length)
+        rnd5 = Math.floor(Math.random() * nm8.length);
       }
-      name = nm5[rnd] + nm6[rnd2] + nm8[rnd5]
+      name = nm5[rnd] + nm6[rnd2] + nm8[rnd5];
     } else {
-      let rnd3 = Math.floor(Math.random() * nm7.length)
-      let rnd4 = Math.floor(Math.random() * nm6.length)
+      let rnd3 = Math.floor(Math.random() * nm7.length);
+      let rnd4 = Math.floor(Math.random() * nm6.length);
       if (rnd < 3) {
         while (rnd5 < 5) {
-          rnd5 = Math.floor(Math.random() * nm8.length)
+          rnd5 = Math.floor(Math.random() * nm8.length);
         }
       }
-      name = nm5[rnd] + nm6[rnd2] + nm7[rnd3] + nm6[rnd4] + nm8[rnd5]
+      name = nm5[rnd] + nm6[rnd2] + nm7[rnd3] + nm6[rnd4] + nm8[rnd5];
     }
     // female case
   } else if (tp === 2) {
-    let rnd = Math.floor(Math.random() * nm11.length)
-    let rnd2 = Math.floor(Math.random() * nm12.length)
-    let rnd5 = Math.floor(Math.random() * nm14.length)
+    let rnd = Math.floor(Math.random() * nm11.length);
+    let rnd2 = Math.floor(Math.random() * nm12.length);
+    let rnd5 = Math.floor(Math.random() * nm14.length);
     if (Math.random() < 0.4) {
       while (rnd < 5) {
-        rnd = Math.floor(Math.random() * nm11.length)
+        rnd = Math.floor(Math.random() * nm11.length);
       }
       while (rnd5 < 5) {
-        rnd5 = Math.floor(Math.random() * nm14.length)
+        rnd5 = Math.floor(Math.random() * nm14.length);
       }
-      name = nm11[rnd] + nm12[rnd2] + nm14[rnd5]
+      name = nm11[rnd] + nm12[rnd2] + nm14[rnd5];
     } else {
-      let rnd3 = Math.floor(Math.random() * nm13.length)
-      let rnd4 = Math.floor(Math.random() * nm12.length)
+      let rnd3 = Math.floor(Math.random() * nm13.length);
+      let rnd4 = Math.floor(Math.random() * nm12.length);
       if (rnd < 5) {
         while (rnd5 < 5) {
-          rnd5 = Math.floor(Math.random() * nm14.length)
+          rnd5 = Math.floor(Math.random() * nm14.length);
         }
       }
-      name = nm11[rnd] + nm12[rnd2] + nm13[rnd3] + nm12[rnd4] + nm14[rnd5]
+      name = nm11[rnd] + nm12[rnd2] + nm13[rnd3] + nm12[rnd4] + nm14[rnd5];
     }
   }
-  return setup.capitalize(name)
+  return setup.capitalize(name);
 }
 
 setup.NAME_kobold_male_first_name = function () {
   // male name
-  return kobold_gen_name(/* type = */ 1)
-}
+  return kobold_gen_name(/* type = */ 1);
+};
 
 setup.NAME_kobold_female_first_name = function () {
   // male name
-  return kobold_gen_name(/* type = */ 2)
-}
-
+  return kobold_gen_name(/* type = */ 2);
+};

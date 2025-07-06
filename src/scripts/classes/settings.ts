@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // will be set to $settings
 setup.Settings = class Settings extends setup.TwineClass {
 

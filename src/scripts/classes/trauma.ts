@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 // special. Will be assigned to State.variables.trauma
 setup.Trauma = class Trauma extends setup.TwineClass {
   constructor() {

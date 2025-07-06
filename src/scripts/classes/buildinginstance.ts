@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.BuildingInstance = class BuildingInstance extends setup.TwineClass {
   constructor(template) {

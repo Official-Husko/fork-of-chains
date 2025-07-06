@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // special variable $cache set to this.
 setup.Cache = class Cache extends setup.TwineClass {
   constructor() {

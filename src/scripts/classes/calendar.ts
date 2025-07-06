@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { ContentTemplate } from "./content/ContentTemplate"
 
 // special variable $calendar set to this.

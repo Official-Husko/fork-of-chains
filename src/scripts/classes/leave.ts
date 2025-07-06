@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Will be assigned to $leave.
  * Tracks units that are "on leave" or "away" from your company for

@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // special. Will be assigned to State.variables.hospital
 setup.Hospital = class Hospital extends setup.TwineClass {

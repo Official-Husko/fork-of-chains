@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.Speech = class Speech extends setup.TwineClass {
   constructor(key, name, description, traits) {

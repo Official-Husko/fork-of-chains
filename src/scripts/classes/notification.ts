@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // will be set to $notification
 setup.Notification = class Notification extends setup.TwineClass {

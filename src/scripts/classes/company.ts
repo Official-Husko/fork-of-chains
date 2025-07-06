@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.Company = class Company extends setup.TwineClass {
   /**

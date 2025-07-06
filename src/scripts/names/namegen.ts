@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { team_adjective } from "./_team_adjective"
 import { team_noun } from "./_team_noun"
 

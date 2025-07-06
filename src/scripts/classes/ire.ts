@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Tracks the amount of ire your company has with all other entities out there.
  * @extends setup.TwineClass

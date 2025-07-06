@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.BuildingTemplate = class BuildingTemplate extends setup.TwineClass {
   /**
