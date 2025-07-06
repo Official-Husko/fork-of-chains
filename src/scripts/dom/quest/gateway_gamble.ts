@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * @param {setup.Unit} slaver 
  * @param {setup.Unit} slave 

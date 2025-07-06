@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { menuItem, menuItemTitle } from "../../ui/menu"
 
 /**

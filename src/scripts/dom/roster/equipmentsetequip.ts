@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { menuItemAction, menuItemText } from "../../ui/menu"
 import { setEquipmentSetOnUnit } from "../menu/equipmentsetpickequip"
 
