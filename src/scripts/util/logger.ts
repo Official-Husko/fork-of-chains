@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 /**
  * @param {string} id

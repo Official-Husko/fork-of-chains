@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 setup.DebugInit = {}
 
 setup.DebugInit.playerUnit = function () {

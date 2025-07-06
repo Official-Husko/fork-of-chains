@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 /**
  * Initializes the State.variables

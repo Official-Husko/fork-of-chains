@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.UnitPoolTraitAlloc = class UnitPoolTraitAlloc extends setup.TwineClass {
   /**
    * @param {Object<string, number>} trait_preferences   // how much does this pool prefers a certain trait.

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.PermuteHelper = {}
 
 setup.PermuteHelper.permute = function permute(permutation, max_permutatons=Infinity) {

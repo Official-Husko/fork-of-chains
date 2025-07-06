@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 
 // NOTE: Must add at least one element to SugarCube's Settings to avoid

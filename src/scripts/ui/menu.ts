@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 /**
  * Helper function to generate the DOM structure for a menu

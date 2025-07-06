@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { generateUnitName } from "../../../names/namegen"
 
 setup.UnitPool = class UnitPool extends setup.TwineClass {

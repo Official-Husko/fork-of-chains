@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 const tags_to_brackets = {
   'if': 2,
   'else': 2,

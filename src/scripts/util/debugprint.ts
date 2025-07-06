@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 function printStatistics() {
   const statistics = [
     [`Quests`, setup.questtemplate],

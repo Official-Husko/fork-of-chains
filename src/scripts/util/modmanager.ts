@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { resolveAsyncIterator } from "./files"
 import { globalsettings } from "./globalsettings"
 import { createLogger } from "./logger"

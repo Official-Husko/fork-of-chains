@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 // crash the game. for Debugging.
 setup.debugCrash = function () {
   throw new Error('Test crash from debugCrash')

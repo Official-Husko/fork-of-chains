@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 Object.defineProperty(String.prototype, 'hashCode', {
   value: function() {

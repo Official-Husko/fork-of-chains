@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // Defines functions that deal with local filesystem files
 

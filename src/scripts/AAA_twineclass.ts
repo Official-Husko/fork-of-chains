@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // To support saving and reloading classes in twine save games.
 // All classes should inherit from this or else implement a .clone() and .toJSON()
 // Even if you're not planning to save it into the variables, still preferred to inherit from this

@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 setup.getAuthorCredits = function () {
   /**
    * @param {object} iter

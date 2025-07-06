@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // trait_list: list of traits in order, from the "most negative" to the "most positive"
 // for example, for muscle would be

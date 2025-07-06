@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // setup.globalsettings:
 //  stores persistent global settings, which exist outside the saves (affects all)

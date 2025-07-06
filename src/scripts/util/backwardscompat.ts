@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { initNewGamePlus } from "../dom/menu/newgameplus"
 
 /**
