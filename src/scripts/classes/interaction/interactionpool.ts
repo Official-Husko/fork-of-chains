@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.InteractionPool = class InteractionPool extends setup.TwineClass {
   constructor(key) {

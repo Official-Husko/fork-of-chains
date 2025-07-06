@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { domCardRep } from "../../dom/util/cardnamerep"
 import { menuItemAction, menuItemExtras, menuItemText, menuItemTitle } from "../../ui/menu"
 

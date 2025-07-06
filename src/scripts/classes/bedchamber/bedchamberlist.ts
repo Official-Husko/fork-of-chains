@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // special. Will be assigned to State.variables.bedchamberlist
 setup.BedchamberList = class BedchamberList extends setup.TwineClass {

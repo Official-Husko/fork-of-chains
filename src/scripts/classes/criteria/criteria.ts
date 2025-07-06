@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const IMPORTABLE = true
 
 setup.UnitCriteria = class UnitCriteria extends setup.TwineClass {

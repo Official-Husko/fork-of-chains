@@ -1,3 +1,7 @@
+// @ts-nocheck
+
+
+
 setup.DialogueHelper = class DialogueHelper extends setup.TwineClass {
   /**
    * @param {string} actor_name 

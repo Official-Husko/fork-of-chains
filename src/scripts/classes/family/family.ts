@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.FAMILY_RELATION_MAP = {
   sibling: {

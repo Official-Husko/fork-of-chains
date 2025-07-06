@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { ContentTemplate } from "../content/ContentTemplate"
 
 setup.Event = class Event extends ContentTemplate {

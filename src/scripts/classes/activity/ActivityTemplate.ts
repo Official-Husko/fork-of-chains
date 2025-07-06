@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { doFinalize } from "../../util/questassign"
 import { ContentTemplate } from "../content/ContentTemplate"
 

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { IMPORTABLE } from "../criteria"
 
 setup.QuestUnitCriteriaRapeFetishist = class QuestUnitCriteriaRapeFetishist extends setup.UnitCriteria {

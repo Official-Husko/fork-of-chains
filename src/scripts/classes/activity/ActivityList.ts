@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Singleton at $activitylist
  */

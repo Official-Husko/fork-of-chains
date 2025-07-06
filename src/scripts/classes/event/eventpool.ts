@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // special variable $eventpool set to this.
 setup.EventPool = class EventPool extends setup.TwineClass {

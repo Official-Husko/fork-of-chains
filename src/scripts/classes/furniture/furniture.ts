@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // Explicit dependency, otherwise Item is still undefined
 import "../inventory/item.js"

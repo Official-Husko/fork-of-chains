@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const EXPORTABLE = true
 
 setup.Job = class Job extends setup.TwineClass {

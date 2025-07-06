@@ -1,4 +1,7 @@
-import { } from '../job'
+// @ts-nocheck
+
+
+import '../job'
 
 setup.job = {}
 

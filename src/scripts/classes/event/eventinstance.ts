@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.EventInstance = class EventInstance extends setup.TwineClass {
   constructor(

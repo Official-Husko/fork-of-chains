@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.ActivityInstance = class ActivityInstance extends setup.TwineClass {
   /**
    * @param {setup.ActivityTemplate} activity_template 

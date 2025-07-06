@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // create a bunch of fucking-related activities.
 setup.ActivityTemplateInitFuck = function () {
   const rarity_default = setup.rarity.rare

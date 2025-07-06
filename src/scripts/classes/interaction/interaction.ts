@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { ContentTemplate } from "../content/ContentTemplate"
 
 setup.Interaction = class Interaction extends ContentTemplate {

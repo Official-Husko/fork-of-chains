@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // Flavor text about banter between two units.
 setup.BanterInstance = class BanterInstance {

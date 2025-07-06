@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // hack to make this into an importable module
 export const FURNITURE_SLOT = 0
 

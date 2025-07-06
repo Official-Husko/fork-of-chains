@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.FamilyRelation = class FamilyRelation extends setup.TwineClass {
   /**

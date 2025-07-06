@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // Helper class about banter between two units.
 setup.BanterHelper = {}

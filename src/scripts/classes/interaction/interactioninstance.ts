@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.InteractionInstance = class InteractionInstance extends setup.TwineClass {
   constructor(interaction, unit) {

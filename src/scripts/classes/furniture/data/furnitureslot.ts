@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import {} from "../furnitureslot"
 
 setup.furnitureslot = {}
