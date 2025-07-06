@@ -1,15 +1,15 @@
-import { menuItemAction, menuItemText } from "../../ui/menu"
-
+// @ts-nocheck
+import { menuItemAction, menuItemText } from "../../ui/menu";
 /**
  * @param {setup.Unit} unit
  * @returns {setup.DOM.Node}
  */
 setup.DOM.Menu.changeskillfocus = function (unit) {
-  const fragments = []
-  fragments.push(html`
+    const fragments = [];
+    fragments.push(html `
     <div>
       Change ${unit.rep()}'s skill focuses.
-      ${setup.DOM.Util.help(html`
+      ${setup.DOM.Util.help(html `
         <p>
         Skill focus is the priority skill that the unit will try to focus on.
         These skills will always increase whenever the unit gains a level.
@@ -29,7 +29,7 @@ setup.DOM.Menu.changeskillfocus = function (unit) {
         ${setup.skill.brawn.rep()}${setup.skill.arcane.rep()}
         on level up.
         It has roughly
-        ${setup.DOM.Util.help(html`
+        ${setup.DOM.Util.help(html `
           Each skill focus chance is calculated independently. So
           ${setup.skill.brawn.rep()}${setup.skill.brawn.rep()}${setup.skill.arcane.rep()}
           means that there are two chances, each with
@@ -54,68 +54,57 @@ setup.DOM.Menu.changeskillfocus = function (unit) {
         skewed towards the skills they are particularly good at.
         </p>
         </div>
-      `)
-    }
+      `)}
     </div>
-  `)
-
-  fragments.push(setup.DOM.Card.unit(
-    unit, /* hide actions = */ true
-  ))
-
-  const focuses = unit.getSkillFocuses(/* no sort = */ true)
-  let z = []
-  for (let i = 0; i < focuses.length; ++i) {
-    z.push(i)
-  }
-  z.forEach(i => {
-    const focus = focuses[i]
-    const inner = []
-    inner.push(html`
+  `);
+    fragments.push(setup.DOM.Card.unit(unit, /* hide actions = */ true));
+    const focuses = unit.getSkillFocuses(/* no sort = */ true);
+    let z = [];
+    for (let i = 0; i < focuses.length; ++i) {
+        z.push(i);
+    }
+    z.forEach(i => {
+        const focus = focuses[i];
+        const inner = [];
+        inner.push(html `
       <div>
       Change focus #${i + 1} from
       ${setup.SkillHelper.explainSkillWithAdditive(unit, focus)}
       to:
       </div>
-    `)
-    /**
-     * @type {JQLite[]}
-     */
-    const veryin = []
-    setup.skill.forEach(skill => {
-      const text = html`${setup.SkillHelper.explainSkillWithAdditive(unit, skill)}`
-
-      if (skill == focus) {
-        veryin.push(menuItemText({
-          text: text,
-        }))
-      } else {
-        veryin.push(menuItemAction({
-          text: text,
-          callback: () => {
-            unit.setSkillFocus(i, skill)
-            setup.DOM.Nav.goto()
-          }
-        }))
-      }
-    })
-    inner.push(setup.DOM.Util.menuItemToolbar(veryin))
-    inner.push(html`<hr/>`)
-    fragments.push(setup.DOM.create('div', {}, inner))
-  })
-
-  fragments.push(html`
+    `);
+        /**
+         * @type {JQLite[]}
+         */
+        const veryin = [];
+        setup.skill.forEach(skill => {
+            const text = html `${setup.SkillHelper.explainSkillWithAdditive(unit, skill)}`;
+            if (skill == focus) {
+                veryin.push(menuItemText({
+                    text: text,
+                }));
+            }
+            else {
+                veryin.push(menuItemAction({
+                    text: text,
+                    callback: () => {
+                        unit.setSkillFocus(i, skill);
+                        setup.DOM.Nav.goto();
+                    }
+                }));
+            }
+        });
+        inner.push(setup.DOM.Util.menuItemToolbar(veryin));
+        inner.push(html `<hr/>`);
+        fragments.push(setup.DOM.create('div', {}, inner));
+    });
+    fragments.push(html `
     <div>
-      ${setup.DOM.Nav.button(
-    'Confirm',
-    () => {
-      setup.DOM.Nav.gotoreturn()
-    }
-  )}
+      ${setup.DOM.Nav.button('Confirm', () => {
+        setup.DOM.Nav.gotoreturn();
+    })}
     </div>
-  `)
-
-  setup.DOM.Nav.topLeftNavigation(setup.DOM.Nav.return(`Confirm`))
-
-  return setup.DOM.create('div', {}, fragments)
-}
+  `);
+    setup.DOM.Nav.topLeftNavigation(setup.DOM.Nav.return(`Confirm`));
+    return setup.DOM.create('div', {}, fragments);
+};
