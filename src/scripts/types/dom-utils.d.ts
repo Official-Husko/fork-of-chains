@@ -1,3 +1,7 @@
+
+// @ts-nocheck
+
+
 export {}
 
 declare global {

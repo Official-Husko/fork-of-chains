@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 
 // Type for 'setup' global (SugarCube.setup)

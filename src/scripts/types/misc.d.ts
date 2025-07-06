@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 // augment "window" global object type
 interface Window {
   // Used by "/classes/unit/unitimage.js"

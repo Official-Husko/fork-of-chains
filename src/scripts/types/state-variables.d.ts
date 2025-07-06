@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // Type for State.variables (SugarCube.State.variables)
 

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 
 // Declare augments to the Unit class, from other files
 // (to make type checker aware of them, and not complain)

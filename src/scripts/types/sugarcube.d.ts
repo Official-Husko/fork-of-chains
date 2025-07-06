@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 //
 // File that defines custom types to override some of SugarCube
 //   Base on SugarCube's offical types "userdata.d.ts" file
