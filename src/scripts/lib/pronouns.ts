@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /*
  * Simple pronoun macros (and related things).
  * 

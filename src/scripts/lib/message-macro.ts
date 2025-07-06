@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // message macro, by chapel (with help from T.M. Edwards); for sugarcube 2
 // version 1.0.1
 // see the documentation: https://github.com/ChapelR/custom-macros-for-sugarcube-2#message-macro

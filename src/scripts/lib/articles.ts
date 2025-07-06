@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // MIT License (see LICENSE)
 
 // v1.0.0
