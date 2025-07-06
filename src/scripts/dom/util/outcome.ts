@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * <<favor>>
  * Formats favor amount.

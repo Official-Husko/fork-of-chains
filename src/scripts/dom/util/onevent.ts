@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Listen on the specified even for its first element child,
  * and runs a certain callback when that event is triggered

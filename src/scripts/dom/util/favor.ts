@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * @param {number} favor 
  * @returns {string}

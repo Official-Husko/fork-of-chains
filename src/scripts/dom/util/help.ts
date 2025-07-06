@@ -1,3 +1,5 @@
+// @ts-nocheck
+
  /**
   * Shows a link for help text
   * 

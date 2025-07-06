@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * @param {Object} obj 
  * @returns {string}

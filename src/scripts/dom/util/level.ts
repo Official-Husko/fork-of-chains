@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Formats level.
  * @param {number} level

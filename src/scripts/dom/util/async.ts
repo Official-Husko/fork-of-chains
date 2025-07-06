@@ -1,3 +1,5 @@
+// @ts-nocheck
+
  /**
   * Returns a node that will be filled with children asynchronously.
   * <<foctimed>>

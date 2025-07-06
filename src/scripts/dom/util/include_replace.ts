@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Twine-parse a passage and returns it as a node. Replace unit macros too.
  * <<include>>

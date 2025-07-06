@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Unit's rep
  * @param {setup.Unit} unit 

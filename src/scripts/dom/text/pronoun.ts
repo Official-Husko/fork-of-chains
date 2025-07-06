@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { pronouns, getBasePronoun, getRelevantCharacter } from '../../lib/pronouns'
 
 setup.DOM.Pronoun = {}

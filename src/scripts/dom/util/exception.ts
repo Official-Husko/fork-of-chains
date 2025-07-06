@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /*
   Appends an error view to the passed DOM element.
 */

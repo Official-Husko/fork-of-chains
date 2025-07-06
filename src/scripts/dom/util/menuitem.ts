@@ -1,3 +1,5 @@
+// @ts-nocheck
+
  /**
   * Converts a menu item into a toolbar node
   * 

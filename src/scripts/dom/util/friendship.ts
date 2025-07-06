@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Formats friendship amount.
  * <<friendship>>

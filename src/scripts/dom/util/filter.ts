@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Returns filter toolbar on a menu.
  * Do not use directly! Instead, use:

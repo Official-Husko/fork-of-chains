@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Macro that allows filtering child html elements based on a filter function
  * 

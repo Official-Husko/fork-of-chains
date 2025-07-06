@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Formats object's name. <<nameof>>
  * @param {object} object

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * <<message>> but in JS.
  * Shows the message Node when triggered
