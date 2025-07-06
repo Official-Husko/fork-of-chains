@@ -1,0 +1,3 @@
+// @ts-nocheck
+
+setup.SexText = {}

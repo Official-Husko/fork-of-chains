@@ -1,10 +1,10 @@
-import { PenisOrgasmOngoing } from "../../orgasm/PenisOrgasmOngoing"
-
+// @ts-nocheck
+import { PenisOrgasmOngoing } from "../../orgasm/PenisOrgasmOngoing";
 export class PenisAnusOrgasmBase extends PenisOrgasmOngoing {
-  /**
-   * @returns {setup.SexBodypart} 
-   */
-  getPenetrationTarget() {
-    return setup.sexbodypart.anus
-  }
+    /**
+     * @returns {setup.SexBodypart}
+     */
+    getPenetrationTarget() {
+        return setup.sexbodypart.anus;
+    }
 }

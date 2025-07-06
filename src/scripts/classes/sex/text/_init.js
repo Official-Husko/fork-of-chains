@@ -1,1 +1,3 @@
-setup.SexText = {}
+"use strict";
+// @ts-nocheck
+setup.SexText = {};
