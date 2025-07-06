@@ -46,7 +46,11 @@ done < <(find src -type f -name "*.js" -print0)
 # Count total files in src
 all_files=$(find src -type f | wc -l)
 
+# Count all JS files in src (after deletion)
+all_js_files=$(find src -type f -name "*.js" | wc -l)
+
 echo "Summary:"
 echo "  Deleted JS files: $deleted_count"
 echo "  TypeScript files: $ts_count"
+echo "  Total JS files in src: $all_js_files"
 echo "  Total files in src: $all_files"
