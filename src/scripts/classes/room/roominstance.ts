@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 setup.RoomInstance = class RoomInstance extends setup.TwineClass {
   /**
    * @param {{

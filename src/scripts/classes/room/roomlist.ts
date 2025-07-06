@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * list of rooms. Actually not storing anything for now, but a collection of convenience methods
  * Actual list of rooms is stored in $roominstance

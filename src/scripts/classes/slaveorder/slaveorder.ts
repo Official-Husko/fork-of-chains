@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const EXPORTABLE = true
 
 setup.SlaveOrder = class SlaveOrder extends setup.TwineClass {

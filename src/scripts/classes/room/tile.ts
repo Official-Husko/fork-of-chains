@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 const ZOOM_AMOUNT = {
   zoom0_25: 0.25,
   zoom0_5: 0.5,

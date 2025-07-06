@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 setup.RoomTemplate = class RoomTemplate extends setup.TwineClass {
   static ROOM_IMAGES = {}

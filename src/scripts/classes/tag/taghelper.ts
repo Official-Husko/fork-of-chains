@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { menuItem } from "../../ui/menu"
 import { getCallback } from "../filter/AAA_filter"
 

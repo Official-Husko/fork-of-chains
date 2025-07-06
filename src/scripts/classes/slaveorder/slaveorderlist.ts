@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 // will be assigned to $slaveorderlist
 setup.SlaveOrderList = class SlaveOrderList extends setup.TwineClass {

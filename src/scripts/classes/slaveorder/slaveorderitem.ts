@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { } from "./slaveorder"
 
 // slave order that rewards item instead of money

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * The grid representing your fort. Does not actually get stored,
  * but gets recomputed each time.

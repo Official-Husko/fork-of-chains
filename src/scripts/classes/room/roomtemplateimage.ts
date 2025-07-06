@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // warning: this is asynchronous!
 setup.initializeRoomImageTable = function () {
   /**
