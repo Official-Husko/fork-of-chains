@@ -33,7 +33,7 @@ done < <(find src -type f -name "*.ts" -print0)
 ts_count=${#ts_basenames[@]}
 
 # For each .js file, check if a .ts file with the same base name exists
-find src -type f -name "*.js" -print0 | while IFS= read -r -d '' jsfile; do
+while IFS= read -r -d '' jsfile; do
     base="${jsfile%.js}"
     ((js_count++))
     if [[ -n "${ts_basenames["$base"]}" ]]; then
@@ -41,10 +41,7 @@ find src -type f -name "*.js" -print0 | while IFS= read -r -d '' jsfile; do
         rm -- "$jsfile"
         ((deleted_count++))
     fi
-done
-
-# Wait for background jobs to finish (if any)
-wait
+done < <(find src -type f -name "*.js" -print0)
 
 # Count total files in src
 all_files=$(find src -type f | wc -l)
