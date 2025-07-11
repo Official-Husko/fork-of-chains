@@ -118,7 +118,11 @@ export default defineConfig(({ command, mode }) => {
             const virtualModulePath = VIRTUAL_JS_MODULE.substring(1)
             // Watch .twee files in dev mode and recompile on change, then reload browser (debounced)
             server.watcher.add(path.join(__dirname, 'project/twee/**/*.twee'))
+            // Watch .ts files in src and project folders
+            server.watcher.add(path.join(__dirname, 'src/**/*.ts'))
+            server.watcher.add(path.join(__dirname, 'project/**/*.ts'))
             let tweeRebuildTimeout = null
+            let tsRebuildTimeouts = {}
             server.watcher.on('change', (file) => {
               if (file.endsWith('.twee')) {
                 clearTimeout(tweeRebuildTimeout)
@@ -133,6 +137,22 @@ export default defineConfig(({ command, mode }) => {
                       // server.ws.send({ type: 'error', err: String(err) })
                     })
                 }, 200) // 200ms debounce
+              } else if (file.endsWith('.ts')) {
+                // Debounce per file
+                clearTimeout(tsRebuildTimeouts[file])
+                tsRebuildTimeouts[file] = setTimeout(() => {
+                  // Compile only the changed TS file to JS using tsc
+                  const tsc = child_process.spawn('npx', ['tsc', file, '--outDir', path.dirname(file), '--target', 'ESNext', '--module', 'ESNext', '--moduleResolution', 'node', '--esModuleInterop', '--skipLibCheck', '--noEmit', 'false', '--pretty', 'false'], {
+                    stdio: ['ignore', 'inherit', 'inherit']
+                  })
+                  tsc.on('exit', (code) => {
+                    if (code === 0) {
+                      server.ws.send({ type: 'full-reload' })
+                    } else {
+                      console.error('TypeScript compile failed for', file)
+                    }
+                  })
+                }, 200)
               }
             })
             server.middlewares.use((req, res, next) => {
