@@ -1,5 +1,19 @@
 // @ts-check
 
+/*
+ * Environment Variables Supported by this Vite Config:
+ *
+ *   SKIP_TWEE      - If set (any value), skips compiling .twee files during build and dev server. Useful for JS/CSS-only builds or rapid iteration.
+ *   NODE_ENV       - Standard Node.js environment variable, used by Vite for mode selection (e.g., 'development', 'production').
+ *   PORT           - If set, overrides the dev server port (default: 3800).
+ *   (add more here as needed)
+ *
+ * Example usage:
+ *   SKIP_TWEE=1 npx vite build --mode development
+ *   NODE_ENV=production npx vite build --mode production
+ *   PORT=4000 npx vite dev
+ */
+
 //
 // To run a build:
 //   npx vite build --mode {mode}
@@ -15,19 +29,17 @@
 //   npx vite dev
 //
 
-import fs from 'node:fs'
+import fs from 'fs/promises'
 import os from 'node:os'
 import url from 'node:url'
 import path from 'node:path'
 import child_process from 'node:child_process'
 
-import { defineConfig, /*splitVendorChunkPlugin*/ } from 'vite'
+import { defineConfig } from 'vite'
 import solidjsPlugin from 'vite-plugin-solid'
 import postcssAutoprefixer from 'autoprefixer'
 import postcssNesting from 'postcss-nesting'
-
 import glob from 'fast-glob'
-
 import CONFIG from './src/config.json'
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
@@ -49,42 +61,40 @@ export default defineConfig(({ command, mode }) => {
   const VIRTUAL_JS_MODULE = './src/index.virtual.js'
   const VIRTUAL_JS_MODULE_RESOLVED_ID = /*'\0' +*/ VIRTUAL_JS_MODULE
   function generateVirtualModuleCode() {
-    // Dynamically generate an index with all .js files (so non-imported modules get compiled)
     let js = [
       ...glob.sync(CONFIG.directories["user-js"]),
       ...glob.sync(CONFIG.directories["user-css"]),
     ].map(f => `import "${f.replace("./src", ".")}";`).join('\n')
-  
-    if (mode === 'itch') { // in itch.io mode, generate the index of embedded images
-      js += '\n\n'
-      const filesToEmbed = glob.sync("./dist/img/!(unit|panorama|content|noembed)/**/*.+(png|svg)").filter(x => !x.includes("/big/"))
-      return (
-        filesToEmbed.map((f, i) => `import img${i} from "${f}"\n`).join('') +
-        `\nwindow.IMAGES = {\n${filesToEmbed.map((f, i) => `"${f.replace(/^.*?(img)/, '$1')}":img${i},`).join('\n')}\n}\n`
-      )
-    }
-  
     return js
   }
 
-  async function compileTwee(/** @type {string} */ mode) {
+  async function compileTwee(mode, ws) {
     if (!process.env.SKIP_TWEE) {
       const scriptFile = (os.platform() === 'win32' ? 'compile.bat' : 'compile.sh')
-      await new Promise((resolve, reject) => {
-        child_process.spawn(path.join(__dirname, scriptFile), [ mode, "", indexHtmlPath ], {
-          stdio: ['ignore', 'inherit', 'inherit']
-        }).on('exit', code => code ? reject(code) : resolve(code))
-      })
-      console.info("Rebuild finished")
+      try {
+        await new Promise((resolve, reject) => {
+          child_process.spawn(path.join(__dirname, scriptFile), [ mode, "", indexHtmlPath ], {
+            stdio: ['ignore', 'inherit', 'inherit']
+          }).on('exit', code => code ? reject(code) : resolve(code))
+        })
+        console.info("Rebuild finished")
+      } catch (err) {
+        console.error('Twee compile failed:', err)
+        if (ws) ws.send({ type: 'error', err: String(err) })
+      }
     }
   }
 
-  const assetFileNames = (/** @type {import('rollup').PreRenderedAsset} */ asset) => {
-    if (/\.css$/i.test(asset.name ?? '')) {
-      //return 'styles/[name].[ext]'
-      return 'styles/user.min.[ext]'
-    } else {
-      return 'assets/[name].[ext]'
+  const assetFileNames = (asset) => {
+    const ext = (asset.name ?? '').split('.').pop()
+    switch (ext) {
+      case 'css':
+        return 'styles/user.min.[ext]'
+      case 'png':
+      case 'svg':
+        return 'assets/[name].[ext]'
+      default:
+        return 'assets/[name].[ext]'
     }
   }
 
@@ -93,7 +103,6 @@ export default defineConfig(({ command, mode }) => {
     //target: 'modules',
     plugins: [
       solidjsPlugin(),
-      //splitVendorChunkPlugin(),
       (function () {
         return {
           name: 'foc-vite-plugin',
@@ -114,31 +123,36 @@ export default defineConfig(({ command, mode }) => {
            * SKIP_TWEE env var: Set to skip compiling .twee files (for JS/CSS-only builds).
            */
           async configureServer(server) {
-            await compileTwee('devserver')
+            await compileTwee('devserver', server.ws)
             const virtualModulePath = VIRTUAL_JS_MODULE.substring(1)
-            // Watch .twee files in dev mode and recompile on change, then reload browser (debounced)
+            // Watch .twee and .ts files in dev mode and recompile on change, then reload browser (debounced)
             server.watcher.add(path.join(__dirname, 'project/twee/**/*.twee'))
-            let tweeRebuildTimeout = null
+            server.watcher.add(path.join(__dirname, 'src/scripts/**/*.ts'))
+            let rebuildTimeout = null
             server.watcher.on('change', (file) => {
-              if (file.endsWith('.twee')) {
-                clearTimeout(tweeRebuildTimeout)
-                tweeRebuildTimeout = setTimeout(() => {
-                  compileTwee('devserver')
-                    .then(() => {
-                      server.ws.send({ type: 'full-reload' })
-                    })
-                    .catch((err) => {
-                      console.error('Twee compile failed:', err)
-                      // Optionally, you could send a custom event to the browser here if you want to handle it in the UI
-                      // server.ws.send({ type: 'error', err: String(err) })
-                    })
-                }, 200) // 200ms debounce
+              if (file.endsWith('.twee') || file.endsWith('.ts')) {
+                clearTimeout(rebuildTimeout)
+                rebuildTimeout = setTimeout(() => {
+                  if (file.endsWith('.twee')) {
+                    compileTwee('devserver', server.ws)
+                      .then(() => server.ws.send({ type: 'full-reload' }))
+                  } else if (file.endsWith('.ts')) {
+                    // TypeScript: run tsc on the changed file
+                    child_process.spawn('npx', ['tsc', file], { stdio: ['ignore', 'inherit', 'inherit'] })
+                      .on('exit', code => {
+                        if (code === 0) {
+                          server.ws.send({ type: 'full-reload' })
+                        } else {
+                          server.ws.send('error', { err: `TypeScript compile failed for ${file}` })
+                        }
+                      })
+                  }
+                }, 200) // 200ms debounce for all watched files
               }
             })
             server.middlewares.use((req, res, next) => {
-              //console.debug('Fetching', req.url)
               if (req.url === '/') {
-                return fs.promises.readFile(path.join(__dirname, indexHtmlPath), 'utf8').then(html => (
+                return fs.readFile(path.join(__dirname, indexHtmlPath), 'utf8').then(html => (
                   res.setHeader('content-type', 'text/html').end(html
                     .replace(`jQuery((function`, () => 'jQuery((async function')
                     .replace(`Story.init`, () => 'await Story.init')
@@ -151,6 +165,21 @@ export default defineConfig(({ command, mode }) => {
                 ))
               } else if (req.url === virtualModulePath) {
                 return res.setHeader('content-type', 'text/javascript').end(generateVirtualModuleCode())
+              }
+              next()
+            })
+          },
+          /**
+           * Vite 4+ only: configurePreviewServer for preview-specific logic
+           */
+          async configurePreviewServer(server) {
+            // You can add preview-specific middleware or logic here if needed
+            // Example: serve a custom preview index.html
+            server.middlewares.use((req, res, next) => {
+              if (req.url === '/') {
+                return fs.readFile(path.join(__dirname, indexHtmlPath), 'utf8').then(html => (
+                  res.setHeader('content-type', 'text/html').end(html)
+                ))
               }
               next()
             })
@@ -244,7 +273,7 @@ export default defineConfig(({ command, mode }) => {
       }
     },
     server: {
-      port: 3800,
+      port: process.env.PORT ? Number(process.env.PORT) : 3800,
     },
   }
 })
