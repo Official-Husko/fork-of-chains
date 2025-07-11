@@ -8,6 +8,7 @@ export const GLOBAL_UNITPOOL_CHANCES: Readonly<ChanceArray<UnitPoolKey>> = [
   ["subrace_humansea", 0.05],
   ["subrace_neko", 0.4],
   ["subrace_werewolf", 0.1],
+  ["subrace_foxkin", 0.05],
   ["subrace_elf", 0.4],
   ["subrace_drow", 0.05],
   ["subrace_orc", 0.15],
@@ -53,6 +54,7 @@ export default definitions<UnitGroupDefinition>()({
     chances: GLOBAL_UNITPOOL_CHANCES.concat([
       ["subrace_humanvale", 24],
       ["subrace_werewolf", 6],
+      ["subrace_foxkin", 6],
     ]),
     reuse_chance: 0,
     unit_post_process: [],

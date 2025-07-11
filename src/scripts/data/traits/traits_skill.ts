@@ -78,6 +78,15 @@ export default {
     tags: ["skill", "medium", "nonmagic"],
   },
 
+  skill_seductive: {
+    name: "seductive",
+    description:
+      "Is skilled at seducing and enticing others, using charm, body language, and allure.",
+    slave_value: "MONEY_TRAIT_MEDIUM",
+    skill_bonuses: { social: 0.125, sex: 0.125 },
+    tags: ["skill", "medium", "nonmagic"],
+  },
+
   //
   // MAGIC
   //

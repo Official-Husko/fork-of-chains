@@ -381,4 +381,30 @@ furniture at your fort...`,
       _rare: qc.ItemForSaleSingle("itemmarket", "f_slaverbed_master"),
     },
   },
+
+  foxkin: {
+    name: "Foxkin Kennels",
+    description: `
+Hidden beneath the trees of the <<lore region_vale>>, the **Foxkin Kennels** quietly serve under the protection—and ownership—of their werewolf masters.
+Foxkin are raised as obedient companions, prized for their submissive nature, soft voices, and eager loyalty. They are trained from a young age for pleasure, decorum, and fertility.
+The Kennels offer cages, frames, and toys tailored to the needs of these special pets. Those with enough favor may even be allowed to adopt one... or breed their own.`,
+    favor_effects: [
+      [
+        //_cage,
+        //_toy,
+      ],
+      [
+        //_cage,
+        //_frame,
+        //qc.DoAll([_foxpet], Constants.FAVOR_MASTER_UNIT_PROBABILITY_MEDIUM),
+      ],
+      [
+        //_cage,
+        //_frame,
+        //_toy,
+        //qc.DoAll([_foxpet, _foxfertile], Constants.FAVOR_MASTER_UNIT_PROBABILITY_HIGH),
+      ],
+    ],
+    defs: {},
+  },
 });

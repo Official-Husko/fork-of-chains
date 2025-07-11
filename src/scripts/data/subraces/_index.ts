@@ -5,6 +5,7 @@ import { DEFINITION_SUBRACE_DRAGONKIN } from "./subrace_dragonkin";
 import { DEFINITION_SUBRACE_DROW } from "./subrace_drow";
 import { DEFINITION_SUBRACE_ELF } from "./subrace_elf";
 import { DEFINITION_SUBRACE_FAIRY } from "./subrace_fairy";
+import { DEFINITION_SUBRACE_FOXKIN } from "./subrace_foxkin";
 import { DEFINITION_SUBRACE_HUMANDESERT } from "./subrace_humandesert";
 import { DEFINITION_SUBRACE_HUMANKINGDOM } from "./subrace_humankingdom";
 import { DEFINITION_SUBRACE_HUMANSEA } from "./subrace_humansea";
@@ -24,6 +25,7 @@ export const SUBRACE_DEFINITIONS = {
   drow: DEFINITION_SUBRACE_DROW,
   elf: DEFINITION_SUBRACE_ELF,
   fairy: DEFINITION_SUBRACE_FAIRY,
+  foxkin: DEFINITION_SUBRACE_FOXKIN,
   humandesert: DEFINITION_SUBRACE_HUMANDESERT,
   humankingdom: DEFINITION_SUBRACE_HUMANKINGDOM,
   humansea: DEFINITION_SUBRACE_HUMANSEA,

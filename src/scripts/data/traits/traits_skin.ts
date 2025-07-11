@@ -59,6 +59,14 @@ export default {
     },
     tags: ["eyes", "skin", "genderless", "common", "corruption", "skin_demon"],
   },
+  eyes_foxkin: {
+    name: "eyes (fox)",
+    description:
+      "Possess playful amber eyes with sharp slitted pupils. Good at reading emotions.",
+    slave_value: 0,
+    skill_bonuses: {},
+    tags: ["medium", "skin_foxkin"],
+  },
 
   //
   // EARS
@@ -143,6 +151,14 @@ export default {
       "skin_demonkin",
     ],
   },
+  ears_foxkin: {
+    name: "ears (fox)",
+    description:
+      "Possess large perky fox-like ears, sensitive to sound and praise.",
+    slave_value: 0,
+    skill_bonuses: {},
+    tags: ["medium", "skin_foxkin"],
+  },
 
   //
   // MOUTH
@@ -218,6 +234,14 @@ export default {
     },
     tags: ["mouth", "skin", "genderless", "skin_demon", "common", "corruption"],
   },
+  mouth_foxkin: {
+    name: "mouth (fox)",
+    description:
+      "Possess a soft narrow muzzle with sensitive lips and thin fangs.",
+    slave_value: Constants.MONEY_TRAIT_RARE,
+    skill_bonuses: {},
+    tags: ["rare", "fangs", "skin_foxkin"],
+  },
 
   //
   // BODY
@@ -282,6 +306,15 @@ export default {
       "skin_demon",
       "skin_demonkin",
     ],
+  },
+
+  body_foxkin: {
+    name: "body (fox)",
+    description:
+      "Possess a slim and soft-furred body made for pleasure and attention.",
+    slave_value: Constants.MONEY_TRAIT_RARE,
+    skill_bonuses: {},
+    tags: ["rare", "furry", "skin_foxkin"],
   },
 
   //
@@ -377,6 +410,13 @@ export default {
     },
     tags: ["arms", "skin", "genderless", "common", "corruption", "skin_demon"],
   },
+  arms_foxkin: {
+    name: "arms (fox)",
+    description: "Possess a delicate pair of furred arms with soft claws.",
+    slave_value: 0,
+    skill_bonuses: {},
+    tags: ["medium", "skin_foxkin"],
+  },
 
   //
   // LEGS
@@ -419,6 +459,13 @@ export default {
       intrigue: -0.35,
     },
     tags: ["legs", "skin", "genderless", "common", "corruption", "skin_demon"],
+  },
+  legs_foxkin: {
+    name: "legs (fox)",
+    description: "Possess digitigrade legs with soft fur and dainty paws.",
+    slave_value: 0,
+    skill_bonuses: {},
+    tags: ["medium", "skin_foxkin"],
   },
 
   //
@@ -477,6 +524,16 @@ export default {
       "skin_demonkin",
     ],
   },
+  tail_foxkin: {
+    name: "tail (fox)",
+    description:
+      "Possess a long bushy tail that twitches with emotion — often used for teasing.",
+    slave_value: Constants.MONEY_TRAIT_RARE,
+    skill_bonuses: {
+      sex: +0.15,
+    },
+    tags: ["rare", "skin_foxkin"],
+  },
 
   //
   // DICKSHAPE
@@ -518,6 +575,14 @@ export default {
       "skin_demon",
       "skin_demonkin",
     ],
+  },
+  dick_foxkin: {
+    name: "dick (fox)",
+    description:
+      "Possess a slim, lightly knotted cock. Easily aroused and quick to breed.",
+    slave_value: 0,
+    skill_bonuses: {},
+    tags: ["medium", "skin_foxkin"],
   },
 
   //

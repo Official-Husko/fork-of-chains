@@ -433,4 +433,13 @@ export default {
     skill_bonuses: { knowledge: -0.1, social: -0.1, brawn: 0.1, slaving: 0.1 },
     tags: ["bg", "common", "poor"],
   },
+
+  bg_pet: {
+    name: "pet",
+    description:
+      "Pampered and trained as a companion or plaything, especially for dominant races.",
+    slave_value: Constants.MONEY_TRAIT_RARE,
+    skill_bonuses: { social: 0.1, sex: 0.1, aid: 0.05, combat: -0.2 },
+    tags: ["bg", "rare", "foxkin", "pet"],
+  },
 } satisfies TraitOrGroupDefinitions;

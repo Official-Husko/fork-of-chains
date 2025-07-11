@@ -19,6 +19,8 @@ export class SexBodypart_Mouth extends SexBodypart {
     let t;
     if (unit.isHasTrait(setup.trait.mouth_werewolf)) {
       t = ["muzzle", "maw"];
+    } else if (unit.isHasTrait(setup.trait.mouth_foxkin)) {
+      t = ["soft muzzle", "fox muzzle", "muzzle"];
     } else if (unit.isHasTrait(setup.trait.mouth_dragonkin)) {
       t = ["snout", "maw"];
     } else {

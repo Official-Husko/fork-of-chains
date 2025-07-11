@@ -68,6 +68,7 @@ export default {
   skinDiscomfortMultiplier(unit: Unit, sex: SexInstance): number {
     let base = setup.SexUtil.calculateTraitMultiplier(unit, {
       body_werewolf: -0.9, // thick fur
+      body_foxkin: -0.7, // less thick fur hopefully
       body_neko: -0.9, // thick fur
       body_orc: 0.0,
       body_drow: 0.0,

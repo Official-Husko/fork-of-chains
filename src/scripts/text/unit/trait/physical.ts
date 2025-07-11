@@ -623,7 +623,7 @@ export const TextUnitTrait_Physical = {
     if (!tail) return "";
     const base = setup.sexbodypart.tail.repSimple(unit);
     if (Math.random() < 0.7) return base;
-    if (tail == setup.trait.tail_werewolf) {
+    if (tail == setup.trait.tail_werewolf || tail == setup.trait.tail_foxkin) {
       return `fully wolf-like ${base}`;
     } else if (tail == setup.trait.tail_neko) {
       return `long and slender cat-like ${base}`;

@@ -45,6 +45,7 @@ export class NibbleNeck extends SexAction {
             [
               setup.trait.mouth_neko,
               setup.trait.mouth_werewolf,
+              setup.trait.mouth_foxkin,
               setup.trait.mouth_dragonkin,
             ],
             true,
@@ -160,6 +161,7 @@ export class NibbleNeck extends SexAction {
 
     const is_thickfur = them.isHasAnyTraitExact([
       setup.trait.body_werewolf,
+      setup.trait.body_foxkin,
       setup.trait.body_neko,
       setup.trait.body_dragonkin,
     ]);

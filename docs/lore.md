@@ -28,3 +28,4 @@ The lore of the game provides a rich background and context for the world, its c
 | Fairy (subrace)         | 25000g   | Forest      | Wind             | Flight                | playful, dreamy, lunatic, weak, beautiful, short                       |
 | Angel (subrace)         | 50000g   | -           | Light            | Flight                | honorable, kind, generous, chaste, honest, brave, loyal, beautiful     |
 | Tigerkin (subrace)      | 30000g   | Forest      | Earth            | Ambidextrous          | dominant, proud, active, playful, lustful, strong, nimble              |
+| Foxkin (subrace)       | 6000g    | Vale        | Water            | Breeding              | submissive, obedient, pack-animal, lustful, soft, eager, breedable     |

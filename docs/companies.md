@@ -12,6 +12,7 @@
 | `'neko'`        | Neko Port City                           |
 | `'orc'`         | Orcish Band                              |
 | `'werewolf'`    | Werewolves of the Northern Vale          |
+| `'foxkin'`      | Foxkin Kennels of the Northern Vale      |
 | `'lizardkin'`   | Lizardkin                                |
 | `'dragonkin'`   | Dragonkin                                |
 | `'demon'`       | The Great Mist                           |
