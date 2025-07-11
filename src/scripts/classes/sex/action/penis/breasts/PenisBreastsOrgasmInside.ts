@@ -62,6 +62,12 @@ setup.SexActionClass.PenisBreastsOrgasmInside = class PenisBreastsOrgasmInside e
         `a|Their fat knot swells up, painfully pushing away the ${soft} flesh of b|reps b|breasts
         in a futile attempt to lock itself in.`,
       ]
+    } else if (me.isHasTrait('dick_foxkin')) {
+      t = [
+        `a|Their slim, sensitive cock twitches eagerly, the small knot swelling and pressing gently between the ${soft} flesh of b|reps b|breasts, making b|rep shudder with every motion.`,
+        `a|Their lightly knotted cock pulses with excitement, the knot swelling quickly and nestling between b|reps b|breasts, eager but gentle.`,
+        `a|Rep's fox cock is quick to swell and throb, the small knot pressing and teasing between b|reps b|breasts, sending waves of heat and need.`,
+      ]
     } else if (me.isHasTrait('dick_dragonkin')) {
       t = [
         ` a|Their ribbed shaft repeatedly bumps against the ${soft} flesh of b|reps b|breasts on

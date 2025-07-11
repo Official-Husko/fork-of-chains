@@ -77,6 +77,8 @@ setup.SexActionClass.PenisMouthDomRough = class PenisMouthDomRough extends Penis
         t.push(`Spreading a|their knees out on either side of b|reps head, a|rep violently a|thrust downwards, burying a|their a|dick deep down b|reps throat. Grinding the base against b|their lips for moment, a|they then a|proceed to start roughly fucking b|their face, causing b|rep to let out a muffled moan as b|they b|struggle to breathe, and, squirming about beneath a|rep, b|they b|feel b|their throat being raked by the series of barbs that line the sides of a|their a|dick.`)
       } else if (me.isHasTrait('dick_werewolf')) {
         t.push(`Spreading a|their knees out on either side of b|reps head, a|rep violently a|thrust downwards, burying a|their a|dick deep down b|reps throat. Grinding the base against b|their lips for moment, a|they then a|proceed to start roughly fucking b|their face, causing b|rep to let out a muffled moan as b|they b|struggle to breathe, and, squirming about beneath a|rep, b|they b|feel b|their lips being repeatedly battered by the fat knot at the base of a|their a|dick.`);
+      } else if (me.isHasTrait('dick_foxkin')) {
+        t.push(`Spreading a|their knees out on either side of b|reps head, a|rep thrusts downwards, the slim, sensitive cock slipping easily past b|reps lips. The small knot swells quickly, popping inside with a needy twitch as a|rep a|lets out a|a_moan, hips pressing close to b|reps b|face. The knot is gentler than a werewolf's, but still locks them together, making b|rep shudder and moan around it.`)
       }
 
     } else {
@@ -101,7 +103,9 @@ setup.SexActionClass.PenisMouthDomRough = class PenisMouthDomRough extends Penis
         t.push(`With a sudden, violent thrust forwards, a|rep a|bury a|their a|dick deep down b|reps throat. Holding b|their head in place with both a|hands, a|they then a|proceed to start roughly fucking b|their b|face, causing tears to start streaming from b|their b|eyes as the barbs lining a|reps demonic shaft repeatedly rake up the sides of b|their throat.`)
       } else if (me.isHasTrait('dick_werewolf')) {
         t.push(`With a sudden, violent thrust forwards, a|rep a|bury a|their a|dick deep down b|reps throat. Holding b|their head in place with both a|hands, a|they then proceeds to start roughly fucking b|their b|face, causing tears to start streaming from b|their b|eyes as a|reps a|slam a|their knot repeatedly against b|their lips.`)
-			}
+      } else if (me.isHasTrait('dick_foxkin')) {
+        t.push(`With a sudden, eager thrust, a|rep a|buries their slim, sensitive cock deep down b|reps throat. Holding b|their head in place, a|rep a|lets the small knot swell and pop inside, locking them together in a needy, trembling embrace. The knot is gentler than a werewolf's, but still makes b|rep shudder and moan around it.`)
+      }
     }
 
     story += setup.rng.choice(t)

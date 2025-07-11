@@ -26,7 +26,12 @@ setup.SexActionClass.PenisMouthDomEarsPull = class PenisMouthDomEarsPull extends
         discomfort: setup.Sex.DISCOMFORT_MEDIUMLARGE,
         paces: setup.SexPace.getAllPaces(),
         restrictions: [
-          setup.qres.AnyTrait([setup.trait.ears_werewolf, setup.trait.ears_neko, setup.trait.ears_demon], true),
+          setup.qres.AnyTrait([
+            setup.trait.ears_werewolf,
+            setup.trait.ears_neko,
+            setup.trait.ears_demon,
+            setup.trait.ears_foxkin,
+          ], true),
         ],
       },
     ]
@@ -87,7 +92,7 @@ setup.SexActionClass.PenisMouthDomEarsPull = class PenisMouthDomEarsPull extends
     const ears = this.repEars()
 
     let st
-    const knotbase = `${me.isHasTrait('dick_werewolf') ? 'a|their knot' : 'the base of a|their dick'}`
+    const knotbase = `${me.isHasTrait('dick_werewolf') ? 'a|their knot' : me.isHasTrait('dick_foxkin') ? 'the small knot at the base of a|their dick' : 'the base of a|their dick'}`
     if (mypace == setup.sexpace.dom) {
       st = [
         `Roughly grasping b|reps ${ears}, a|rep violently a|jerk b|their head forwards,
@@ -101,6 +106,9 @@ setup.SexActionClass.PenisMouthDomEarsPull = class PenisMouthDomEarsPull extends
          taking hold of b|reps ${ears} and use the natural handlebars to a|thrust a|their a|dick all the way
          inside b|reps throat.`,
       ]
+      if (me.isHasTrait('dick_foxkin')) {
+        st.push(`With a|a_moan, a|rep a|grab b|reps ${ears}, yanking b|them forward until b|their lips are pressed against the small knot at the base of a|their slim, sensitive cock. The knot swells quickly, locking them together in a gentle, needy embrace, making b|rep shudder and moan around it.`)
+      }
     } else {
       st = [
         `Taking hold of b|reps ${ears}, a|rep a|eagerly a|pull b|their head forwards, forcing b|them to swallow a|their a|dick all the way down to the base.`,
@@ -109,6 +117,9 @@ setup.SexActionClass.PenisMouthDomEarsPull = class PenisMouthDomEarsPull extends
         `Using b|reps ${ears} as handles, a|rep a|eagerly thrust a|their a|dick forward and forward until
          b|reps lips are pressing against ${knotbase}.`,
       ]
+      if (me.isHasTrait('dick_foxkin')) {
+        st.push(`With a|a_moan, a|rep a|grab b|reps ${ears}, pulling b|them forward until b|their lips are pressed against the small knot at the base of a|their slim, sensitive cock. The knot swells quickly, locking them together in a gentle, needy embrace, making b|rep shudder and moan around it.`)
+      }
     }
 
     story += setup.rng.choice(st)

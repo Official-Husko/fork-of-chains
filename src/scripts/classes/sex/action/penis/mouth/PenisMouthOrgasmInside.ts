@@ -59,6 +59,11 @@ setup.SexActionClass.PenisMouthOrgasmInside = class PenisMouthOrgasmInside exten
         ` As a|rep a|feel a|their knot swelling, a|they a|ram ${fully} forwards, trying to fit the entire swelled-up thing inside b|reps b|mouth. It took several deliberate thrusts, but in one fell thrust, a|they a|succeed in pushing the swollen knot past b|their lips and into b|their b|mouth.
         a|They a|press a|their groin firmly against b|reps b|face as a|they a|feel a|their knot pops inside of b|rep, fulling expanding and locking the member ${downtheirthroat}.`,
       ]
+    } else if (me.isHasTrait('dick_foxkin')) {
+      t = [
+        ` a|Rep a|push ${fully} forward, the slim, sensitive cock slipping easily past b|reps lips. The small knot at the base swells quickly, popping inside with a needy twitch as a|rep a|let out a|a_moan, hips pressing close to b|reps b|face.`,
+        ` As a|rep a|feel a|their fox cock twitching, a|they a|thrust ${fully} forward, the lightly knotted shaft swelling and popping inside b|reps b|mouth. a|Rep a|shudders, the eager knot locking them together as a|rep a|moans softly.`,
+      ]
     } else {
       t = [
         ` Ramming a|their a|dick ${deep} ${downtheirthroat},
@@ -89,6 +94,12 @@ setup.SexActionClass.PenisMouthOrgasmInside = class PenisMouthOrgasmInside exten
         `a|Rep can a|feel the ridges of a|their a|dick bumping and hitting the inner walls of b|their b|mouth, eliciting
         a muffled moan from b|them.`
       )
+    } else if (me.isHasTrait('dick_foxkin')) {
+      t = [
+        `a|Rep can a|feel their slim, sensitive cock twitching eagerly, the small knot swelling with every thrust, making b|rep shudder and moan around it.`,
+        `a|Rep's lightly knotted cock pulses with excitement, eager to please and be pleased, the knot swelling and locking them together in a gentle, needy embrace.`,
+        `a|Rep's fox cock is quick to swell and throb, every motion sending a wave of heat and need, the knot popping inside and holding them close.`,
+      ]
     }
 
     if (t.length) {
@@ -106,6 +117,11 @@ setup.SexActionClass.PenisMouthOrgasmInside = class PenisMouthOrgasmInside exten
         ` a|Rep a|let out a moan as a|they a|start to feel their knot growing to full size. Before long,
         b|Rep b|let out a very muffled cry as b|they b|is stuck, and is pulled around whenever a|rep a|move;
         proof that a|reps a|dick is now fully locked inside b|their b|mouth.`,
+      ]
+    } else if (me.isHasTrait('dick_foxkin')) {
+      t = [
+        ` a|Rep a|lets out a soft, needy moan as the small knot swells and locks them together, the sensation more gentle than forceful, but no less intense.`,
+        ` a|Rep a|shudders, the eager knot holding them close, every pulse sending a wave of pleasure through both.`,
       ]
     }
 

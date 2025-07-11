@@ -212,6 +212,8 @@ setup.SexBodypartClass.Penis = class Penis extends setup.SexBodypart {
         let mult = ``
         if (unit.isHasTrait('dick_werewolf')) {
           mult = `, knot included,`
+        } else if (unit.isHasTrait('dick_foxkin')) {
+          mult = `, slim and eager, knot swelling quickly,`
         } else if (unit.isHasTrait('dick_dragonkin')) {
           mult = `, with all the ridges delicious touching the inner walls,`
         } else if (unit.isHasTrait('dick_demon')) {
@@ -269,6 +271,12 @@ setup.SexBodypartClass.Penis = class Penis extends setup.SexBodypart {
         `a|Rep can a|feel a|their knot growing at the stimulation when the a|dick hits the inner walls.`,
         `a|Reps knotted a|dick threatens to grow to full size with every penetration.`,
         `a|Rep can a|feel blood pumping into a|their a|dick which will no doubt grow a|their knot to full size soon.`,
+      ]
+    } else if (unit.isHasTrait('dick_foxkin')) {
+      t = [
+        `a|Rep can a|feel their slim, sensitive cock twitching eagerly, the small knot swelling with every thrust.`,
+        `a|Rep's lightly knotted cock pulses with excitement, eager to please and be pleased.`,
+        `a|Rep's fox cock is quick to swell and throb, every motion sending a wave of heat and need.`,
       ]
     }
     if (t.length) {

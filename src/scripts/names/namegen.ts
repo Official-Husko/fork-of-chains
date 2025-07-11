@@ -22,6 +22,12 @@ const werewolf_nameset = {
   surname: () => setup.rng.choice(setup.NAME_norse_surname),
 }
 
+const foxkin_nameset = {
+  male_first: () => setup.rng.choice(setup.NAME_werewolf_male_first_name),
+  female_first: () => setup.rng.choice(setup.NAME_werewolf_female_first_name),
+  surname: () => setup.rng.choice(setup.NAME_norse_surname),
+}
+
 const arabic_nameset = {
   male_first: () => setup.rng.choice(setup.NAME_arabic_male_first_name),
   female_first: () => setup.rng.choice(setup.NAME_arabic_female_first_name),
@@ -111,6 +117,8 @@ export function generateUnitName(traits) {
     nameset = japanese_nameset
   } else if (traits.includes(setup.trait.subrace_werewolf)) {
     nameset = werewolf_nameset
+  } else if (traits.includes(setup.trait.subrace_foxkin)) {
+    nameset = foxkin_nameset
   } else if (traits.includes(setup.trait.subrace_elf)) {
     nameset = elf_nameset
   } else if (traits.includes(setup.trait.subrace_drow)) {

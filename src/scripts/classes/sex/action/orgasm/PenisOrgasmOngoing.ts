@@ -99,6 +99,12 @@ export class PenisOrgasmOngoing extends PenisOrgasm {
         but with a determined moan, a|rep violently a|thrust forwards, and with an accompanying cry
         from b|rep, a|they a|manage to force a|their fat knot into b|reps ${orifice}.`
       ]
+    } else if (me.isHasTrait('dick_foxkin')) {
+      t = [
+        ` Pushing forward, a|rep a|press the small, sensitive knot at the base of a|their slim cock against b|reps ${orifice}.
+        The knot swells quickly, and with a needy moan, a|rep a|thrusts gently, popping the knot inside and locking them together in a gentle, trembling embrace.`,
+        ` With a soft, eager moan, a|rep a|presses the lightly knotted cock against b|reps ${orifice}, the knot swelling and slipping inside with a shudder, holding them close as a|rep a|rides out the orgasm.`,
+      ]
     } else {
       t = [
         ` Ramming a|their a|dick deep into b|reps ${orifice}, a|rep a|let out a|a_moan as it starts to twitch inside of b|them.`,
@@ -168,6 +174,8 @@ export class PenisOrgasmOngoing extends PenisOrgasm {
     if (me.isHasTrait('dick_werewolf')) {
       story += ` Keeping a|their hips pushed tightly against b|reps ${orifice}, a|rep a|let out a|a_moan as a|their knot swells up to its full size. a|They then a|buck back a little, and b|rep b|let out a startled cry as b|they a|is pulled along with a|them; evidence that a|their a|dick is now firmly
 			locked inside b|their ${orifice}.`
+    } else if (me.isHasTrait('dick_foxkin')) {
+      story += ` Keeping a|their hips pressed close, a|rep a|lets out a soft, needy moan as the small knot swells and locks them together, the sensation more gentle than forceful, but no less intense.`
     }
 
     return story

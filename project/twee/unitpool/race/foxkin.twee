@@ -1,0 +1,103 @@
+:: InitUnitPoolRaceFoxkin [nobr unitpool]
+
+<<set _foxkin = new setup.UnitPoolTraitAlloc(
+  {  /* trait preferences */
+    /* =========== */
+    /* RACE */
+    /* =========== */
+    subrace_foxkin: 1,
+
+    /* =========== */
+    /* BACKGROUNDS */
+    /* =========== */
+    bg_entertainer: setup.POOL_BG_COMMON_1,
+    bg_maid: setup.POOL_BG_COMMON_1,
+    bg_slave: setup.POOL_BG_COMMON_1,
+    bg_courtesan: setup.POOL_BG_UNCOMMON_2,
+    bg_whore: setup.POOL_BG_UNCOMMON_2,
+    bg_pet: setup.POOL_BG_RARE_3,
+    bg_companion: setup.POOL_BG_RARE_3,
+    bg_laborer: setup.POOL_BG_UNCOMMON_2,
+    bg_unemployed: setup.POOL_BG_UNCOMMON_2,
+    bg_nomad: setup.POOL_BG_RARE_3,
+    bg_farmer: setup.POOL_BG_RARE_3,
+    bg_mystic: setup.POOL_BG_EPIC_4,
+    bg_priest: setup.POOL_BG_EPIC_4,
+    bg_merchant: setup.POOL_BG_EPIC_4,
+    bg_noble: setup.POOL_BG_ULTRA_7,
+
+    /* =========== */
+    /* PERSONALITY */
+    /* =========== */
+    per_submissive: setup.POOL_PER_COMMON_1,
+    per_loyal: setup.POOL_PER_COMMON_1,
+    per_affectionate: setup.POOL_PER_COMMON_1,
+    per_social: setup.POOL_PER_UNCOMMON_2,
+    per_chaste: setup.POOL_PER_UNCOMMON_2,
+    per_sexaddict: setup.POOL_PER_RARE_3,
+    per_calm: setup.POOL_PER_UNCOMMON_2,
+    per_loner: 0.05,
+    per_dominant: 0.01,
+
+    /* =========== */
+    /* MAGIC */
+    /* =========== */
+    magic_emotion: 0.5,
+    skill_seduction: 0.5,
+    skill_domestic: 0.5,
+    skill_breeding: 0.5,
+    magic_water: 0.1,
+
+    /* =========== */
+    /* PHYSICAL */
+    /* =========== */
+    androgynous: 0.3,
+    soft_body: 0.5,
+    high_libido: 0.5,
+    fertile: 0.5,
+    muscle_weak: 0.3,
+    muscle_average: 0.5,
+    muscle_strong: 0.05,
+    breast_small: 0.2,
+    breast_medium: 0.2,
+    breast_large: 0.05,
+    dick_small: 0.2,
+    dick_medium: 0.2,
+    dick_foxkin: 0.9,
+    balls_small: 0.2,
+    balls_medium: 0.2,
+    tail_foxkin: 1.0,
+    ears_foxkin: 1.0,
+    mouth_foxkin: 1.0,
+    body_foxkin: 1.0,
+    arms_foxkin: 1.0,
+    legs_foxkin: 1.0,
+
+  },
+  {  /* trait dispreferences */
+    per_dominant: 5.0,
+    muscle_verystrong: 5.0,
+    muscle_extremelystrong: 5.0,
+    magic_fire: 5.0,
+    magic_fire_master: 5.0,
+  },
+)>>
+
+
+<<run new setup.UnitPool(
+    'subrace_foxkin_male',
+    'Foxkin Male',
+    _foxkin.computePreferences(setup.trait.gender_male),
+    setup.DEFAULT_INITIAL_SKILLS,
+)>>
+
+<<run new setup.UnitPool(
+    'subrace_foxkin_female',
+    'Foxkin Female',
+    _foxkin.computePreferences(setup.trait.gender_female),
+    setup.DEFAULT_INITIAL_SKILLS,
+)>>
+
+
+
+

@@ -31,6 +31,8 @@ export class PenisOrgasm extends PenisOrgasmBase {
 			story += `a|They a|reach down and a|slide a|their a|hand up and down over a|their sensitive little barbs.`
 		} else if (me.isHasTrait('dick_werewolf')) {
 			story += `a|They a|reach down and a|start to furiously masturbate; a|their a|hand sliding down the length of a|their a|dick to grip and rub at a|their swollen knot.`
+		} else if (me.isHasTrait('dick_foxkin')) {
+			story += `a|They a|reach down and a|start to eagerly masturbate; a|their a|hand sliding down the length of a|their slim, sensitive cock to gently squeeze and tease the small knot at its base as it swells quickly.`
 		} else if (me.isHasTrait('dick_dragonkin')) {
 			story += `a|They a|reach down and a|slide a|their a|hand up and down over the bumpy ribs that line a|their a|dick.`
 		} else {
@@ -79,6 +81,11 @@ export class PenisOrgasm extends PenisOrgasmBase {
 			story += setup.rng.choice([
 				`The thick knot at the base of a|reps a|dick swells up, and a|they a|feel a|their a|balls tightening as a|they a|start to cum.`,
 				`a|Reps a|balls tightens, and with their thick knot forming a|they can feel the cum starting to gush out.`
+			])
+    } else if (me.isHasTrait('dick_foxkin')) {
+			story += setup.rng.choice([
+				`The small, sensitive knot at the base of a|reps a|dick swells quickly, and a|they a|feel a|their a|balls tightening as a|they a|start to cum.`,
+				`a|Reps a|balls tighten, and with their lightly knotted cock, a|they can feel the cum starting to gush out as the knot swells eagerly.`
 			])
 		} else {
 			story += setup.rng.choice([
@@ -235,6 +242,11 @@ export class PenisOrgasm extends PenisOrgasmBase {
 				It takes a few minutes for it to start to deflate, and with a wet pop, a|they a|is finally able to pull a|their a|dick free. `,
 				` Even after a|reps a|balls have been fully emptied into b|rep, a|their knot locks a|them together in place with b|rep.
 				It takes several minutes until the knot begins to deflate, and finally a|rep a|is able to pull a|their a|dick free from b|rep with a loud pop. `,
+			])
+		} else if (me.isHasTrait('dick_foxkin') && sex.getBodypartPenetrationTarget(me, mbody)) {
+			story += setup.rng.choice([
+				` Even after a|reps a|balls have pumped their entire load into b|rep, the small, sensitive knot at the base of a|their cock remains gently swollen, locking ${me.isYou() ? 'the two of you together' : 'a|them and a|their partner together'} in a trembling, needy embrace. It takes a little while for it to soften, and with a soft pop, a|they a|is finally able to pull a|their a|dick free. `,
+				` Even after a|reps a|balls have been fully emptied into b|rep, the lightly knotted cock keeps a|them together, the knot holding them close in a gentle, lingering afterglow. It takes a little while for the knot to soften, and finally a|rep a|is able to pull a|their a|dick free from b|rep with a soft pop. `,
 			])
 		}
 

@@ -33,6 +33,7 @@ setup.SexActionClass.NibbleNeck = class NibbleNeck extends setup.SexAction {
           setup.qres.AnyTrait([
             setup.trait.mouth_neko,
             setup.trait.mouth_werewolf,
+            setup.trait.mouth_foxkin,
             setup.trait.mouth_dragonkin,
           ], true)
         ],
@@ -134,6 +135,7 @@ setup.SexActionClass.NibbleNeck = class NibbleNeck extends setup.SexAction {
 
     const is_thickfur = them.isHasAnyTraitExact([
       setup.trait.body_werewolf,
+      setup.trait.body_foxkin,
       setup.trait.body_neko,
       setup.trait.body_dragonkin,
     ])

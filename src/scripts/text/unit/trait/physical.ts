@@ -663,7 +663,7 @@ setup.Text.Unit.Trait.feet = function (unit, is_with_equipment, is_singular) {
   let skin = ''
 
   if (legtrait) {
-    if (legtrait == setup.trait.legs_werewolf) {
+    if (legtrait == setup.trait.legs_werewolf || legtrait == setup.trait.legs_fox) {
       skin = 'digitrade'
     } else if (legtrait == setup.trait.legs_dragonkin || legtrait == setup.trait.legs_neko) {
       skin = 'clawed'

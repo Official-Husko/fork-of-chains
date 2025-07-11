@@ -18,6 +18,7 @@ setup.SexBodypartClass.Tail = class Tail extends setup.SexBodypart {
   getTraitSizeMap() {
     return {
       tail_werewolf: 4,
+      tail_foxkin: 3,
       tail_neko: 3,
       tail_dragonkin: 6,
       tail_demon: 4,
@@ -93,6 +94,8 @@ setup.SexBodypartClass.Tail = class Tail extends setup.SexBodypart {
   repTip(unit, sex) {
     if (unit.isHasTrait('tail_werewolf')) {
       return `fluffy tip`
+    } else if (unit.isHasTrait('tail_foxkin')) {
+      return `soft, bushy tip`
     } else if (unit.isHasTrait('tail_neko')) {
       return `tip`
     } else if (unit.isHasTrait('tail_dragonkin')) {
@@ -138,6 +141,8 @@ setup.SexBodypartClass.Tail = class Tail extends setup.SexBodypart {
       let mult = ``
       if (unit.isHasTrait('tail_werewolf')) {
         mult = `, all the fluffs included,`
+      } else if (unit.isHasTrait('tail_foxkin')) {
+        mult = `, the soft fur teasing every inch,`
       } else if (unit.isHasTrait('tail_neko')) {
         // no special text for cats
       } else if (unit.isHasTrait('tail_dragonkin')) {
@@ -199,6 +204,12 @@ setup.SexBodypartClass.Tail = class Tail extends setup.SexBodypart {
         `The fluffy tail ${adj} tickles the inner walls of b|rep.`,
         `b|Rep b|let out b|a_moan as b|they feel b|their ${hole} stimulated by a|reps fluffy tail, which ${adj} tickles its innner walls.`,
         `a|Rep can feel their a|tail as it ${adj} penetrate and tickles the inner walls of b|rep.`,
+      ]
+    } else if (unit.isHasTrait('tail_foxkin')) {
+      t = [
+        `The soft, bushy tail ${adj} brushes and teases every sensitive spot inside b|rep.`,
+        `b|Rep b|shiver as a|reps plush fox tail ${adj} caresses the inner walls of b|their ${hole}, sending waves of pleasure.`,
+        `a|Rep can feel their a|tail as it ${adj} stirs up warmth and longing deep within b|rep, every motion gentle and inviting.`,
       ]
     } else if (unit.isHasTrait('tail_neko')) {
       // TODO: ??? what do neko tail do

@@ -815,6 +815,7 @@ export const team_noun = [
   'weed',
   'weight',
   'werewolf',
+  'fox',
   'wheat',
   'whisky',
   'win',
