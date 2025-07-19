@@ -6,6 +6,8 @@
  * @returns {setup.DOM.Node}
  */
 setup.DOM.Card.author = function (author) {
+
+  console.log('[DOM.Card.author] author:', author)
   const fragments = []
 
   if (setup.isString(author)) {
