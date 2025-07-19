@@ -35,7 +35,7 @@ export class UnitPoolTraitAlloc extends TwineClass {
     for (let [trait_key, value] of objectEntries(trait_preferences)) {
       if (!(trait_key in setup.trait))
         throw new Error(
-          `Unknown trait key in preference unit pool trait alloc: ${trait_key}`,
+          `[UnitPoolTraitAlloc] Unknown trait key in preference unit pool trait alloc: ${trait_key}`,
         );
       if (typeof value === "string") {
         const num = (Constants as any)[value];
@@ -47,8 +47,20 @@ export class UnitPoolTraitAlloc extends TwineClass {
       }
       if (typeof value !== "number")
         throw new Error(
-          `Found invalid value ${value} for trait ${trait_key} in triat alloc!`,
+          `[UnitPoolTraitAlloc] Found invalid value ${value} for trait ${trait_key} in trait alloc!`,
         );
+    }
+
+    // Log a warning for missing backgrounds (should be defined with 0)
+    for (const trait of Object.values(setup.trait).filter((t) =>
+      t.getTags().includes("bg"),
+    )) {
+      if (!(trait.key in trait_preferences)) {
+        console.warn(
+          `[UnitPoolTraitAlloc] Missing background trait '${trait.key}' in trait_preferences`,
+        );
+        //trait_preferences[trait.key] = 0;
+      }
     }
 
     // check all bg traits are there
