@@ -24,7 +24,6 @@ export const DEFINITION_SUBRACE_FOXKIN: SubraceDefinition = {
     bg_courtesan: "POOL_BG_UNCOMMON_2",
     bg_whore: "POOL_BG_UNCOMMON_2",
     bg_pet: "POOL_BG_RARE_3",
-    bg_companion: "POOL_BG_RARE_3",
     bg_laborer: "POOL_BG_UNCOMMON_2",
     bg_unemployed: "POOL_BG_UNCOMMON_2",
     bg_nomad: "POOL_BG_RARE_3",
@@ -39,8 +38,6 @@ export const DEFINITION_SUBRACE_FOXKIN: SubraceDefinition = {
     /* =========== */
     per_submissive: "POOL_PER_COMMON_1",
     per_loyal: "POOL_PER_COMMON_1",
-    per_affectionate: "POOL_PER_COMMON_1",
-    per_social: "POOL_PER_UNCOMMON_2",
     per_chaste: "POOL_PER_UNCOMMON_2",
     per_sexaddict: "POOL_PER_RARE_3",
     per_calm: "POOL_PER_UNCOMMON_2",
@@ -50,21 +47,13 @@ export const DEFINITION_SUBRACE_FOXKIN: SubraceDefinition = {
     /* =========== */
     /* MAGIC */
     /* =========== */
-    magic_emotion: 0.5,
     skill_seductive: 0.5,
-    skill_domestic: 0.5,
-    skill_breeding: 0.5,
     magic_water: 0.1,
 
     /* =========== */
     /* PHYSICAL */
     /* =========== */
-    androgynous: 0.3,
-    soft_body: 0.5,
-    high_libido: 0.5,
-    fertile: 0.5,
-    muscle_weak: 0.3,
-    muscle_average: 0.5,
+    muscle_thin: 0.3,
     muscle_strong: 0.05,
     breast_small: 0.2,
     breast_medium: 0.2,
