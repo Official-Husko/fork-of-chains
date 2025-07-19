@@ -62,9 +62,12 @@ export default {
   eyes_foxkin: {
     name: "eyes (fox)",
     description:
-      "Possess playful amber eyes with sharp slitted pupils. Good at reading emotions.",
+      "Large, luminous, and full of expression. The irises shine in vivid colors with sharp slitted pupils, often rimmed with a darker ring that makes their gaze pop. Long lashes give their eyes a gentle foxy charm. Good at reading emotions.",
     slave_value: 0,
-    skill_bonuses: {},
+    skill_bonuses: {
+      social: +0.35,
+      sex: +0.25,
+    },
     tags: ["eyes", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
@@ -154,9 +157,12 @@ export default {
   ears_foxkin: {
     name: "ears (fox)",
     description:
-      "Possess large perky fox-like ears, sensitive to sound and praise.",
+      "Impossibly soft—velvety triangular ears that perks and swivels with every breath of sound or teasing whisper. Just one touch makes them shudder, their whole body shivering from the sensitive, plush, furry tips that begs to be stroked.",
     slave_value: 0,
-    skill_bonuses: {},
+    skill_bonuses: {
+      survival: +0.25,
+      sex: +0.25,
+    },
     tags: ["ears", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
@@ -237,9 +243,12 @@ export default {
   mouth_foxkin: {
     name: "mouth (fox)",
     description:
-      "Possess a soft narrow muzzle with sensitive lips and thin fangs.",
+      "A soft narrow muzzle with velvet—soft, slender lips curled in a playful smirk, always just a breath away from a pout or a purr. When they spoke, it was with honeyed words and a teasing lilt that made your ears twitch. And when they bit their lower lip, those dainty fangs peek through~",
     slave_value: Constants.MONEY_TRAIT_RARE,
-    skill_bonuses: {},
+    skill_bonuses: {
+      sex: +0.35,
+      social: +0.25,
+    },
     tags: ["mouth", "skin", "genderless", "rare", "fangs", "skin_foxkin"],
   },
 
@@ -311,9 +320,11 @@ export default {
   body_foxkin: {
     name: "body (fox)",
     description:
-      "Possess a slim and soft-furred body made for pleasure and attention.",
+      "Slender and shapely, with a soft, tapered waist that gives their body a gentle hourglass or lean athletic form, Their chest is covered in plush, fine fur, thicker around the upper chest and belly, soft to the touch, and sensitive in all the right places.",
     slave_value: Constants.MONEY_TRAIT_RARE,
-    skill_bonuses: {},
+    skill_bonuses: {
+      sex: +0.25,
+    },
     tags: ["body", "skin", "genderless", "rare", "furry", "skin_foxkin"],
   },
 
@@ -412,9 +423,13 @@ export default {
   },
   arms_foxkin: {
     name: "arms (fox)",
-    description: "Possess a delicate pair of furred arms with soft claws.",
+    description:
+      "Silky fur drapes along slender, toned arms. Their fur flows from shoulder to paw, Their paws end in dainty, dexterous fingers, each tipped with a glossy black claw curved just enough to give a playful scratch or a light trace down someone’s spine.",
     slave_value: 0,
-    skill_bonuses: {},
+    skill_bonuses: {
+      sex: +0.1,
+      intrigue: +0.25,
+    },
     tags: ["arms", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
@@ -462,9 +477,13 @@ export default {
   },
   legs_foxkin: {
     name: "legs (fox)",
-    description: "Possess digitigrade legs with soft fur and dainty paws.",
+    description:
+      "Digitigrade and finely toned from a life of leaping through forests and darting across rooftops, their legs carry the quiet power of a dancer and their thighs, slightly thicker from constant motion, are warm, plush, and strong—often peeked at beneath short tribal wraps or traveling cloaks~",
     slave_value: 0,
-    skill_bonuses: {},
+    skill_bonuses: {
+      sex: +0.15,
+      survival: +0.2,
+    },
     tags: ["legs", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
@@ -527,7 +546,7 @@ export default {
   tail_foxkin: {
     name: "tail (fox)",
     description:
-      "Possess a long bushy tail that twitches with emotion — often used for teasing.",
+      "Fluffy and full forming a gentle crescent or an arcing brush depending on their posture. Fur is densest at the base and fans outward into an impossibly plush plume irresistible to fingers and faces alike.",
     slave_value: Constants.MONEY_TRAIT_RARE,
     skill_bonuses: {
       sex: +0.15,
@@ -579,9 +598,11 @@ export default {
   dick_foxkin: {
     name: "dick (fox)",
     description:
-      "Possess a slim, lightly knotted cock. Easily aroused and quick to breed.",
+      "Cock is sheathed when soft, hidden beneath a small, fur-lined slit just above the base of the pelvis. When aroused, it emerges fully—sleek, tapered, and lightly textured. The tip is slightly pointed, flaring gently at the base into a modest knot, which swells when pleasure peaks. Its coloration can vary often a flushed pink or deep reddish hue, contrasting with the soft fur surrounding it. Sensitive ridges line the underside, designed to stimulate both partners during mating~",
     slave_value: 0,
-    skill_bonuses: {},
+    skill_bonuses: {
+      sex: +0.25,
+    },
     tags: ["dickshape", "skin", "needdick", "medium", "skin_foxkin"],
   },
 
@@ -592,7 +613,7 @@ export default {
   vagina_foxkin: {
     name: "vagina (fox)",
     description:
-      "A slit beneath the tail, just below the anus, During estrus, the vulva swells slightly and may become more pinkish, signaling readiness to mate. Occasional beads of translucent girl-cum drip from their cunny.",
+      "Hidden within the soft fur between the thighs, just below the arch of the tailbone. The labial folds are slender and smooth, typically a shade darker than the surrounding fur—a dusky rose or muted bronze. Slick, glistening secretion is naturally produced—rich in scent, a mix of earthy sweetness and spiced pheromones. The vaginal canal is warm, ribbed, and flexible, lined with soft, muscular walls that can accommodate mates of various species~",
     slave_value: 0,
     skill_bonuses: {},
     tags: ["vaginashape", "skin", "needvagina", "medium", "skin_foxkin"],
