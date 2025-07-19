@@ -11,17 +11,25 @@ setup.UnitPoolTraitAlloc = class UnitPoolTraitAlloc extends setup.TwineClass {
     this.trait_dispreferences = trait_dispreferences
 
     for (const trait_key in trait_preferences) {
-      if (!(trait_key in setup.trait)) throw new Error(`Unknown trait key in preference unit pool trait alloc: ${trait_key}`)
-      if (trait_preferences[trait_key] === undefined) throw new Error(`Unedfined value for trait ${trait_key} in triat alloc!`)
+      if (!(trait_key in setup.trait)) throw new Error(`[UnitPoolTraitAlloc] Unknown trait key in preference unit pool trait alloc: ${trait_key}`)
+      if (trait_preferences[trait_key] === undefined) throw new Error(`[UnitPoolTraitAlloc] Unedfined value for trait ${trait_key} in triat alloc!`)
     }
 
-    // check all bg traits are tehre
+    // Patch: auto-add missing bg traits with 0, but log a warning
     for (const trait of Object.values(setup.trait).filter(t => t.getTags().includes('bg'))) {
-      if (!(trait.key in trait_preferences)) throw new Error(`Missing background trait from unit pool trait alloc: ${trait.key}`)
+      if (!(trait.key in trait_preferences)) {
+        console.warn && console.warn(`[UnitPoolTraitAlloc] Missing background trait '${trait.key}' in trait_preferences, auto-assigning 0.`)
+        trait_preferences[trait.key] = 0;
+      }
+    }
+
+    // check all bg traits are there
+    for (const trait of Object.values(setup.trait).filter(t => t.getTags().includes('bg'))) {
+      if (!(trait.key in trait_preferences)) throw new Error(`[UnitPoolTraitAlloc] Missing background trait from unit pool trait alloc: ${trait.key}`)
     }
 
     for (const trait_key in trait_dispreferences) {
-      if (!(trait_key in setup.trait)) throw new Error(`Unknown trait key in dispreference unit pool trait alloc: ${trait_key}`)
+      if (!(trait_key in setup.trait)) throw new Error(`[UnitPoolTraitAlloc] Unknown trait key in dispreference unit pool trait alloc: ${trait_key}`)
     }
   }
 
