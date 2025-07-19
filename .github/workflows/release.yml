@@ -17,6 +17,25 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Parse branch from tag and checkout branch if present
+        run: |
+          TAG_NAME="${GITHUB_REF##*/}"
+          BRANCH_NAME=""
+          if [[ "$TAG_NAME" == *_* ]]; then
+            BRANCH_NAME="${TAG_NAME#*_}"
+            RELEASE_VERSION="${TAG_NAME%%_*}"
+            echo "Detected branch name: $BRANCH_NAME"
+            echo "Detected release version: $RELEASE_VERSION"
+            git fetch origin "$BRANCH_NAME":"refs/remotes/origin/$BRANCH_NAME"
+            git checkout "$BRANCH_NAME"
+            git reset --hard "origin/$BRANCH_NAME"
+          else
+            RELEASE_VERSION="$TAG_NAME"
+            echo "No branch name detected. Using tag commit."
+            echo "Detected release version: $RELEASE_VERSION"
+          fi
+          echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
+
       - name: Show current commit and branch
         run: |
           echo "Commit: $(git rev-parse HEAD)"
