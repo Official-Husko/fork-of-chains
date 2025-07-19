@@ -65,7 +65,7 @@ export default {
       "Possess playful amber eyes with sharp slitted pupils. Good at reading emotions.",
     slave_value: 0,
     skill_bonuses: {},
-    tags: ["medium", "skin_foxkin"],
+    tags: ["eyes", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
   //
@@ -157,7 +157,7 @@ export default {
       "Possess large perky fox-like ears, sensitive to sound and praise.",
     slave_value: 0,
     skill_bonuses: {},
-    tags: ["medium", "skin_foxkin"],
+    tags: ["ears", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
   //
@@ -240,7 +240,7 @@ export default {
       "Possess a soft narrow muzzle with sensitive lips and thin fangs.",
     slave_value: Constants.MONEY_TRAIT_RARE,
     skill_bonuses: {},
-    tags: ["rare", "fangs", "skin_foxkin"],
+    tags: ["mouth", "skin", "genderless", "rare", "fangs", "skin_foxkin"],
   },
 
   //
@@ -314,7 +314,7 @@ export default {
       "Possess a slim and soft-furred body made for pleasure and attention.",
     slave_value: Constants.MONEY_TRAIT_RARE,
     skill_bonuses: {},
-    tags: ["rare", "furry", "skin_foxkin"],
+    tags: ["body", "skin", "genderless", "rare", "furry", "skin_foxkin"],
   },
 
   //
@@ -415,7 +415,7 @@ export default {
     description: "Possess a delicate pair of furred arms with soft claws.",
     slave_value: 0,
     skill_bonuses: {},
-    tags: ["medium", "skin_foxkin"],
+    tags: ["arms", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
   //
@@ -465,7 +465,7 @@ export default {
     description: "Possess digitigrade legs with soft fur and dainty paws.",
     slave_value: 0,
     skill_bonuses: {},
-    tags: ["medium", "skin_foxkin"],
+    tags: ["legs", "skin", "genderless", "medium", "skin_foxkin"],
   },
 
   //
@@ -532,7 +532,7 @@ export default {
     skill_bonuses: {
       sex: +0.15,
     },
-    tags: ["rare", "skin_foxkin"],
+    tags: ["tail", "skin", "genderless", "rare", "skin_foxkin"],
   },
 
   //
@@ -582,12 +582,19 @@ export default {
       "Possess a slim, lightly knotted cock. Easily aroused and quick to breed.",
     slave_value: 0,
     skill_bonuses: {},
-    tags: ["medium", "skin_foxkin"],
+    tags: ["dickshape", "skin", "needdick", "medium", "skin_foxkin"],
   },
 
   //
   // VAGINA_SHAPE
   //
 
-  // TODO
+  vagina_foxkin: {
+    name: "vagina (fox)",
+    description:
+      "A slit beneath the tail, just below the anus, During estrus, the vulva swells slightly and may become more pinkish, signaling readiness to mate. Occasional beads of translucent girl-cum drip from their cunny.",
+    slave_value: 0,
+    skill_bonuses: {},
+    tags: ["vaginashape", "skin", "needvagina", "medium", "skin_foxkin"],
+  },
 } satisfies TraitOrGroupDefinitions;
