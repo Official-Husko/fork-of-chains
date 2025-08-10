@@ -1,9 +1,99 @@
+#ui-bar-history {
+  display: inline-block !important;
+  align-items: center;
+  gap: 0;
+  margin-left: 0.5em;
+  margin-top: 1rem !important;
+}
+#ui-bar-history button {
+  background: var(--color-surface-alt) !important;
+  color: var(--color-accent) !important;
+  border: none !important;
+  font-size: 1.1em;
+  font-weight: 600;
+  padding: 0.5em 1em !important;
+  margin: 0;
+  box-shadow: 0 1px 4px 0 rgba(20,30,60,0.10);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, border 0.15s;
+  cursor: pointer;
+  border-radius: 0;
+  position: relative;
+  z-index: 1;
+}
+#ui-bar-history button:first-child {
+  border-top-left-radius: var(--radius-main);
+  border-bottom-left-radius: var(--radius-main);
+  border-right: 1.5px solid var(--color-border-light);
+  z-index: 2;
+}
+#ui-bar-history button:last-child {
+  border-top-right-radius: var(--radius-main);
+  border-bottom-right-radius: var(--radius-main);
+  border-left: none;
+  margin-left: -1.5px;
+  z-index: 2;
+}
+#ui-bar-history button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--color-bg-alt);
+  color: var(--color-text-muted);
+}
+#ui-bar-history button:hover:not(:disabled) {
+  background: var(--color-accent-hover) !important;
+  color: #fff !important;
+  z-index: 3;
+}
+/* === Monobrow History Navigation Buttons === */
+#ui-bar-history {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: 0.5em;
+}
+#ui-bar-history button {
+  background: var(--color-surface-alt);
+  color: var(--color-accent);
+  border: 1.5px solid var(--color-border-light);
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 0.35em 1.1em 0.35em 1.1em;
+  margin: 0;
+  box-shadow: 0 1px 4px 0 rgba(20,30,60,0.10);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, border 0.15s;
+  cursor: pointer;
+  border-radius: 0;
+  position: relative;
+  z-index: 1;
+}
+#ui-bar-history button:first-child {
+  border-top-left-radius: var(--radius-main);
+  border-bottom-left-radius: var(--radius-main);
+  border-right: none;
+  z-index: 2;
+}
+#ui-bar-history button:last-child {
+  border-top-right-radius: var(--radius-main);
+  border-bottom-right-radius: var(--radius-main);
+  border-left: 1.5px solid var(--color-border-light);
+  margin-left: -1.5px;
+  z-index: 2;
+}
+#ui-bar-history button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--color-bg-alt);
+  color: var(--color-text-muted);
+}
+#ui-bar-history button:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  color: #fff;
+  z-index: 3;
+}
 :root {
   color-scheme: dark;
-}
+@import url('./base.css');
 
-#story-title {
-  display: none;
   /* StoryDisplayTitle is used only for titlebar, so hide it in the sidebar */
 }
 
@@ -11,6 +101,14 @@
   font-size: 162.5%;
   /* make it look like as if it was #story-title */
   font-weight: bold;
+}
+
+#menu-core {
+  border: none !important;
+}
+
+#menu-item-settings, #menu-item-restart, #menu-item-share {
+  border-top: none !important;
 }
 
 a {
