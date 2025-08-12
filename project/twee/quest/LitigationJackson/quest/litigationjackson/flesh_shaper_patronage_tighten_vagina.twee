@@ -1,0 +1,199 @@
+:: QuestSetup_flesh_shaper_temple_patronage_tighten_vagina [nobr quest]
+
+
+
+
+
+<<set _criteriapatron = new setup.UnitCriteria(
+null, /* key */
+'Patron', /* name */
+[
+  setup.trait.bg_artist,
+  setup.trait.bg_entertainer,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_active,
+  setup.trait.per_gregarious,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.skill_connected,
+  setup.trait.skill_entertain,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_calm,
+  setup.trait.per_humble,
+  setup.trait.per_studious,
+  setup.trait.per_loner,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1,
+  social: 1,
+  sex: 1,
+}
+)>>
+
+<<run new setup.QuestTemplate(
+'flesh_shaper_temple_patronage_tighten_vagina', /* key */
+"Flesh Shaper Temple: Patronage - Tighten Vagina", /* Title */
+{ /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+[ /* tags */
+  'transformation',
+  'vale',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'patron': [ _criteriapatron, 1.5],
+  'escort': [ setup.qu.guard, 1.5],
+},
+{ /* actors */
+  'apprentice': 'quest_humanvale_mystic',
+  'leader': 'quest_humanvale_mysticleader',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1000),
+],
+'Quest_flesh_shaper_temple_patronage_tighten_vagina',
+setup.qdiff.easy50, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_flesh_shaper_temple_patronage_tighten_vaginaCrit',
+    [
+      setup.qc.TraitDecrease('patron', setup.trait.vagina_tight),
+      setup.qc.TraitDecrease('patron', setup.trait.vagina_tight),
+    ],
+  ],
+  [
+    'Quest_flesh_shaper_temple_patronage_tighten_vaginaCrit',
+    [
+      setup.qc.TraitDecrease('patron', setup.trait.vagina_tight),
+    ],
+  ],
+  [
+    'Quest_flesh_shaper_temple_patronage_tighten_vaginaCrit',
+    [
+      setup.qc.TraitDecrease('patron', setup.trait.vagina_tight),
+      setup.qc.Injury('patron', 4),
+    ],
+  ],
+  [
+    'Quest_flesh_shaper_temple_patronage_tighten_vaginaDisaster',
+    [
+      setup.qc.MoneyCustom(-1500),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+],
+[ /* restrictions */
+  setup.qres.Actor('patron', setup.qres.AnyTrait([setup.trait.vagina_tight, setup.trait.vagina_loose, setup.trait.vagina_gape], true)),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_flesh_shaper_temple_patronage_tighten_vagina [nobr]
+<p>
+    Send a slaver with a loose vagina to patronize the temple.
+</p>
+
+
+:: Quest_flesh_shaper_temple_patronage_tighten_vaginaCrit [nobr]
+<<set _u = setup.getUnit({duty: 'doctor'})>>
+<<set _p = setup.getAnySlaver()>>
+<p>
+    <<Rep $g.patron>> and <<rep $g.escort>> set off from the fort to the Flesh Shaper temple. <<Yourrep $g.patron>> patron|was eager to have <<their $g.patron>> <<uvagina $g.patron>> returned to its former tightness.
+</p>
+
+<p>
+    The pair arrived at the temple and paid their tribute, waiting outside for their turn with a small crowd of mostly Northerners, with a few more exotic types among them. When <<their $g.patron>> name was called, <<rep $g.escort>> wished <<rep $g.patron>> good luck with the ritual as an acolyte led <<therace $g.patron>> out of sight into the temple.
+</p>
+
+<p>
+    <<Rep $g.patron>> patron|was led to a chamber inside the temple with a raised square bed of stone, and a thin layer of water filling the top of it. <<Theslaver $g.patron>> was directed to disrobe and lie down on the stone, and <<they $g.patron>> complied, with the acolyte leaving the chamber soon after.
+</p>
+
+<p>
+    The water in the basin and the cold air of the temple served to chill <<theslaver $g.patron>> to the bone, and within a few minutes <<they $g.patron>> patron|was shivering uncontrollably and feeling a bit exposed, seemingly on display in the middle of the chamber. A few minutes later, and the Flesh Shaper Master <<rep $g.leader>> and <<their $g.leader>> assistant <<rep $g.apprentice>> entered the chamber.
+    <<dialogue $g.leader>>
+        We're doing your vagina today, right?
+    <</dialogue>>
+    <<Rep $g.patron>> swallowed, and nodded silently at <<them $g.leader>>.
+    <<dialogue $g.leader>>
+        Right, <<rep $g.apprentice>> get <<them $g.patron>> prepped for me please.
+    <</dialogue>>
+    The apprentice nodded, and approached the basin <<theslaver $g.patron>> patron|is laying in.
+</p>
+
+<p>
+    The assistant repositioned <<reps $g.patron>> knees to get a better look at <<their $g.patron>> <<uvagina $g.patron>>. Feeling <<therace $g.patron>> shivering under <<their $g.apprentice>> touch, the apprentice shot <<them $g.patron>> an apologetic look, before sticking <<their $g.apprentice>> hand in the water. Almost instantly the temperature rose, relieving <<reps $g.patron>> discomfort. <<Rep $g.apprentice>> retrieved <<their $g.apprentice>> hand from the water, and used a finger to apply the now warm liquid onto <<reps $g.patron>> slit in one well practiced swipe. <<Theslaver $g.patron>> patron|was able to keep the jolt of pleasure concealed, but by the 8th time the assistant had done it, <<their $g.patron>> toes had begun to curl and <<therace $g.patron>> was squirming at the apprentice's touch.
+</p>
+
+<p>
+    <<dialogue $g.apprentice>>
+        She's ready.
+    <</dialogue>>
+    The master came over to take a position next to the apprentice, and <<reps $g.patron>> <<uvagina $g.patron>> began to tingle from the magical power being channeled into it.
+    <<dialogue $g.leader>>
+        This part will take a while, try to relax. You will also feel a slight itch coming from the affected area, that's quite normal.
+    <</dialogue>>
+    <<Theslaver $g.patron>> laid <<their $g.patron>> head back into the pleasant water and closed <<their $g.patron>> eyes. <<They $g.patron>> would have almost been able to fall asleep if it weren't for that itch the head mystic mentioned.
+</p>
+
+<p>
+    30 minutes later, and what began as a minor itch was now a red hot throbbing pressure encompassing every inch of <<reps $g.patron>> cunt. <<Therace $g.patron>> was practicing calm breathing, as the mix of pain and pleasure from the ritual made <<their $g.patron>> swollen pussy leak a nearly steady stream of juice down into the basin. <<Theslaver $g.patron>> remembered the head mystic saying <<they $g.leader>> was almost done, and used every remaining ounce of willpower to keep <<themselves $g.patron>> together.
+</p>
+
+<p>
+    Mercifully the ritual was over shortly after. <<Reps $g.patron>> knees gave out, and <<they $g.patron>> flopped down into the basin exhausted, sending the water inside flying all over the chamber. The head ritualist checked <<their $g.leader>> work with a probing finger, sending <<theslaver $g.patron>> over the edge, shuddering in orgasm. Seemingly satisfied, the pair left the chamber leaving <<rep $g.patron>> alone in the basin of rapidly cooling water, the cool air soothing <<their $g.patron>> still glistening pussy.
+</p>
+
+<p>
+    <<Rep $g.escort>> saw <<their $g.escort>> shivering partner exit the Flesh Shaper temple's entrance. <<Yourrep $g.escort>> helped the sore and exhausted <<rep $g.patron>> to the mounts, but <<rep $g.patron>> begged to ride with <<rep $g.escort>> instead.
+    <<if $gOutcome == 'failure'>>
+        After arriving at the fort, <<reps $g.patron>> swelling still hadn't gone down.
+        <<if _u>>
+            Your doctor, <<Rep _u>> had a look at the poor abused cunt, and mandated bed rest for <<yourrep $g.patron>>.
+        <<else>>
+            <<Rep _p>> had a look at <<reps $g.patron>> poor abused cunt, and suggested <<they $g.patron>> take some time off to recover.
+        <</if>>
+    <</if>>
+</p>
+
+
+
+:: Quest_flesh_shaper_temple_patronage_tighten_vaginaDisaster [nobr]
+<p>
+    <<Rep $g.patron>> and <<rep $g.escort>> set off from the fort to the Flesh Shaper temple. <<Yourrep $g.patron>> patron|was eager to have <<their $g.patron>> <<uvagina $g.patron>> returned to its former tightness.
+</p>
+
+<p>
+    Unfortunately, the pair were waylaid by highwaymen on the way to the temple. The slavers were unharmed, but with the tribute money gone, they decided to turn around and return to the fort.
+</p>
+
+
+
+

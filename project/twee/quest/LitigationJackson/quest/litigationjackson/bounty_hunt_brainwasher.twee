@@ -1,0 +1,286 @@
+:: QuestSetup_bounty_hunt_brainwasher [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"bounty_hunt_brainwasher0",
+"brainwasher victim",
+'deep_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Mindbreak('unit'),
+],
+)>>
+
+
+
+<<set _criteriamerc1 = new setup.UnitCriteria(
+null, /* key */
+'Mercenary', /* name */
+[
+  setup.trait.race_greenskin,
+  setup.trait.per_smart,
+  setup.trait.per_chaste,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.race_elf,
+  setup.trait.subrace_humandesert,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_slow,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 3,
+}
+)>>
+
+<<set _criteriamerc2 = new setup.UnitCriteria(
+null, /* key */
+'Mercenary', /* name */
+[
+  setup.trait.race_greenskin,
+  setup.trait.per_smart,
+  setup.trait.per_chaste,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+],
+[
+  setup.trait.race_elf,
+  setup.trait.subrace_humandesert,
+  setup.trait.vagina_gape,
+  setup.trait.anus_gape,
+  setup.trait.per_slow,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_submissive,
+  setup.trait.per_masochistic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'bounty_hunt_brainwasher', /* key */
+"Bounty Hunt: Brainwasher", /* Title */
+{ /* Author */
+  name: "LitigationJackson",
+  url: "",
+},
+[ /* tags */
+  'money',
+  'favor',
+  'deep',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'negotiator': [ setup.qu.negotiator, 1],
+  'merc1': [ _criteriamerc1, 1],
+  'merc2': [ _criteriamerc2, 1],
+},
+{ /* actors */
+  'victim': 'bounty_hunt_brainwasher0',
+},
+[ /* costs */
+],
+'Quest_bounty_hunt_brainwasher',
+setup.qdiff.harder38, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_bounty_hunt_brainwasherCrit',
+    [
+      setup.qc.MoneyCrit(),
+      setup.qc.Favor('drow', 10),
+      setup.qc.Favor('kobold', 10),
+      setup.qc.Slave('victim', "a|was retrieved from the lair of a Brainwasher", undefined),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_brainwasherSuccess',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.Favor('drow', 10),
+      setup.qc.Favor('kobold', 10),
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_brainwasherFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_bounty_hunt_brainwasherDisaster',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.TraumatizeRandom('negotiator', 5),
+      setup.qc.TraumatizeRandom('merc1', 5),
+      setup.qc.TraumatizeRandom('merc2', 5),
+      setup.qc.OneRandomSeed([
+setup.qc.Sluttify('negotiator'),
+setup.qc.Sluttify('merc1'),
+setup.qc.Sluttify('merc2')
+]),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.deep, setup.rarity.rare],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_bounty_hunt_brainwasher [nobr]
+<p>
+    Crawling around in the depths of <<lore region_deep>> are creatures both vile and disturbing. One of these creatures is the Brainwasher, a slick, inky black creature which looks similar to a leech if you stretched it out to 6 meters long. Instead of feeding on blood, however, this despicable creature has evolved to feed on the thoughts and fluids of its victims. Its purple interior appendage on one end, presses against its victims forehead, where the Brainwasher will consume the victim's rational thoughts, as well as feed back baser, more primal sexual desires. The purple appendage on the other end of the creature is inserted into one of the victim's holes to absorb the secretions. The stakes certainly are high, if you agree to accept this bounty.
+</p>
+
+
+:: Quest_bounty_hunt_brainwasherCrit [nobr]
+<p>
+    Your slavers managed to track the creature down to a dark, damp side passage well away from civilization. They had the good fortune to encounter the creature while it was feeding, its fore appendage glowing faintly, pressed against the forehead of a <<urace $g.victim>>. The creature's inky black body was wrapped around the <<woman $g.victim>>'s body, with the creature's rear appendage digging deep into <<therace $g.victim>>'s <<ugenital $g.victim>>.
+</p>
+<p>
+    Thankful to have caught the creature at such a vulnerable moment, but eager to be rid of this thing, <<rep $g.merc1>> stepped forward to chop the thing to bits with <<their $g.merc1>> trusty <<uweapon $g.merc1>>. The thing fell to the cave floor lifeless, and <<rep $g.merc2>> stepped forward to collect proof of having claimed the bounty. <<Therace $g.victim>> stood there looking forward blankly, and despite <<reps $g.negotiator>> best efforts, it seemed no stimulus could wake <<them $g.victim>> from <<their $g.victim>> stupor. <<Rep $g.negotiator>> looked at the other two and shrugged, leading <<therace $g.victim>> back the way the party had come, deciding it would be more merciful to take <<them $g.victim>> as a slave than leave the thoughtless <<woman $g.victim>> behind.
+</p>
+
+
+
+:: Quest_bounty_hunt_brainwasherSuccess [nobr]
+<p>
+    Your slavers managed to track the creature down to a dark, damp side passage well away from civilization. They carefully crept through the pitch black, their way lit only by <<set _unit = setup.selectUnit([$g.negotiator, $g.merc1, $g.merc2], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+    <<if _unit>>
+        <<Reps _unit>> magical fire, and
+    <</if>>
+    the torches they brought. <<Rep $g.merc1>> had sworn <<they $g.merc1>> saw movement in the edge of dim half-light flickering around them, so the trio pressed onward with an abundance of caution.
+</p>
+<p>
+    Suddenly, a writhing black mass fell from above, and landed on
+    <<if $gQuest.getSeed() % 3 == 0>>
+        <<yourrep $g.negotiator>>, quickly coiling around <<their $g.negotiator>> body.
+    <<elseif $gQuest.getSeed() % 3 == 1>>
+        <<yourrep $g.merc1>>, quickly coiling around <<their $g.merc1>> body.
+    <<elseif $gQuest.getSeed() % 3 == 2>>
+        <<yourrep $g.merc2>>, quickly coiling around <<their $g.merc2>> body.
+    <</if>>
+    The other two sprung into action, pulling at the creature and hacking into it with weapons. The creature was thankfully not very durable, and after briefly disentangling their compatriot, the trio felt much more relaxed as they gathered the remains to collect the bounty.
+</p>
+
+
+
+:: Quest_bounty_hunt_brainwasherFailure [nobr]
+<p>
+    Your slavers looked all over the area of the <<lore region_deep>> the creature was sighted, but found no signs of where it was nested. Eventually they gave up and returned to the fort.
+</p>
+
+
+
+:: Quest_bounty_hunt_brainwasherDisaster [nobr]
+<p>
+    Your slavers managed to track the creature down to a dark, damp side passage well away from civilization. They carefully crept through the pitch black, their way lit only by <<set _unit = setup.selectUnit([$g.negotiator, $g.merc1, $g.merc2], {anytrait: ['magic_fire', 'magic_fire_master']})>>
+    <<if _unit>>
+        <<Reps _unit>> magical fire, and
+    <</if>>
+    the torches they brought. <<Rep $g.merc1>> had sworn <<they $g.merc1>> saw movement in the edge of dim half-light flickering around them, so the trio pressed onward with an abundance of caution.
+</p>
+<p>
+    They pressed further on, going deeper and deeper, following the twists and turns, through narrow and branching passages, until they finally hit a dead end.
+    <<if $gQuest.getSeed() % 3 == 0>>
+        <<dialogue $g.merc1>>
+            Huh, dead end, and we didn't even find the damned thing.
+        <</dialogue>>
+        <<dialogue $g.merc2>>
+            Maybe it's in one of those side passages. Man, what a pain in the ass.
+        <</dialogue>>
+        The two slavers turned around and started to backtrack, when they were struck by a sudden and terrible realization.
+        <<dialogue $g.merc2>>
+            <<Rep $g.merc1>>... where's <<name $g.negotiator>>?
+        <</dialogue>>
+        Their blood ran cold, and they rushed back the way they came, frantically calling out <<reps $g.negotiator>> name. Tensions rose with every second, and the two were nearly screaming the name of their missing comrade, when eventually they entered one of the side passages and caught a glimpse of <<rep $g.negotiator>>, wrapped up in the slick inky black form of their target, the Brainwasher. The purple appendages at each end of the creature glowed slightly, one end pressed against <<reps $g.negotiator>> forehead, with the other one pumping slowly in and out of <<reps $g.negotiator>> <<ugenital $g.negotiator>>.
+        <p>
+            <<Rep $g.merc1>> and <<rep $g.merc2>> practically lept upon their ensnared friend, pulling and hacking at the disgusting creature until it finally fell to the cave floor in pieces. <<Rep $g.merc2>> shook <<rep $g.negotiator>> to <<their $g.negotiator>> senses, trying to wake <<them $g.negotiator>> from <<their $g.negotiator>> stupor.
+            <<dialogue $g.negotiator>>
+                H-huh? I was just having the best dream... two
+                <<if $g.negotiator.isHasDick()>>
+                    busty elves
+                <<else>>
+                    burly orcs
+                <</if>>
+                ...
+            <</dialogue>>
+            <<Rep $g.merc2>> and <<rep $g.merc1>> lifted the half delirious <<rep $g.negotiator>> by <<their $g.negotiator>> arms, and carried <<them $g.negotiator>> out of the cave. <<Rep $g.negotiator>> stayed mostly silent for the ride back, and occasionally rubbed <<their $g.negotiator>> <<ugenital $g.negotiator>> through <<their $g.negotiator>> <<uequipslot $g.negotiator 'legs'>> while <<they $g.negotiator>> recovered from the ordeal.
+        </p>
+    <<elseif $gQuest.getSeed() % 3 == 1>>
+        <<dialogue $g.negotiator>>
+            Huh, dead end, and we didn't even find the damned thing.
+        <</dialogue>>
+        <<dialogue $g.merc2>>
+            Maybe it's in one of those side passages. Man, what a pain in the ass.
+        <</dialogue>>
+        The two slavers turned around and started to backtrack, when they were struck by a sudden and terrible realization.
+        <<dialogue $g.merc2>>
+            <<Rep $g.negotiator>>... where's <<name $g.merc1>>?
+        <</dialogue>>
+        Their blood ran cold, and they rushed back the way they came, frantically calling out <<reps $g.merc1>> name. Tensions rose with every second, and the two were nearly screaming the name of their missing comrade, when eventually they entered one of the side passages and caught a glimpse of <<rep $g.merc1>>, wrapped up in the slick inky black form of their target, the Brainwasher. The purple appendages at each end of the creature glowed slightly, one end pressed against <<reps $g.merc1>> forehead, with the other one pumping slowly in and out of <<reps $g.merc1>> <<ugenital $g.merc1>>.
+        <p>
+            <<Rep $g.negotiator>> and <<rep $g.merc2>> practically lept upon their ensnared friend, pulling and hacking at the disgusting creature until it finally fell to the cave floor in pieces. <<Rep $g.merc2>> shook <<rep $g.merc1>> to <<their $g.merc1>> senses, trying to wake <<them $g.merc1>> from <<their $g.merc1>> stupor.
+            <<dialogue $g.merc1>>
+                H-huh? I was just having the best dream... two
+                <<if $g.merc1.isHasDick()>>
+                    busty elves
+                <<else>>
+                    burly orcs
+                <</if>>
+                ...
+            <</dialogue>>
+            <<Rep $g.merc2>> and <<rep $g.negotiator>> lifted the half delirious <<rep $g.merc1>> by <<their $g.merc1>> arms, and carried <<them $g.merc1>> out of the cave. <<Rep $g.merc1>> stayed mostly silent for the ride back, and occasionally rubbed <<their $g.merc1>> <<ugenital $g.merc1>> through <<their $g.merc1>> <<uequipslot $g.merc1 'legs'>> while <<they $g.merc1>> recovered from the ordeal.
+        </p>
+    <<elseif $gQuest.getSeed() % 3 == 2>>
+        <<dialogue $g.merc1>>
+            Huh, dead end, and we didn't even find the damned thing.
+        <</dialogue>>
+        <<dialogue $g.negotiator>>
+            Maybe it's in one of those side passages. Man, what a pain in the ass.
+        <</dialogue>>
+        The two slavers turned around and started to backtrack, when they were struck by a sudden and terrible realization.
+        <<dialogue $g.negotiator>>
+            <<Rep $g.merc1>>... where's <<name $g.merc2>>?
+        <</dialogue>>
+        Their blood ran cold, and they rushed back the way they came, frantically calling out <<reps $g.merc2>> name. Tensions rose with every second, and the two were nearly screaming the name of their missing comrade, when eventually they entered one of the side passages and caught a glimpse of <<rep $g.merc2>>, wrapped up in the slick inky black form of their target, the Brainwasher. The purple appendages at each end of the creature glowed slightly, one end pressed against <<reps $g.merc2>> forehead, with the other one pumping slowly in and out of <<reps $g.merc2>> <<ugenital $g.merc2>>.
+        <p>
+            <<Rep $g.merc1>> and <<rep $g.negotiator>> practically lept upon their ensnared friend, pulling and hacking at the disgusting creature until it finally fell to the cave floor in pieces. <<Rep $g.negotiator>> shook <<rep $g.merc2>> to <<their $g.merc2>> senses, trying to wake <<them $g.merc2>> from <<their $g.merc2>> stupor.
+            <<dialogue $g.merc2>>
+                H-huh? I was just having the best dream... two
+                <<if $g.merc2.isHasDick()>>
+                    busty elves
+                <<else>>
+                    burly orcs
+                <</if>>
+                ...
+            <</dialogue>>
+            <<Rep $g.negotiator>> and <<rep $g.merc1>> lifted the half delirious <<rep $g.merc2>> by <<their $g.merc2>> arms, and carried <<them $g.merc2>> out of the cave. <<Rep $g.merc2>> stayed mostly silent for the ride back, and occasionally rubbed <<their $g.merc2>> <<ugenital $g.merc2>> through <<their $g.merc2>> <<uequipslot $g.merc2 'legs'>> while <<they $g.merc2>> recovered from the ordeal.
+        </p>
+    <</if>>
+</p>
+
+
+
+

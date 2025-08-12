@@ -1,0 +1,58 @@
+:: ActivitySetup_service_pimp_greeting [nobr activity]
+
+
+
+<<run new setup.ActivityTemplate({
+key: 'service_pimp_greeting',
+name: "Service Pimp Greeting", /* Title */
+author: { /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.OnDuty('servicepimp'),
+  ],
+},
+critical_traits: [
+],
+disaster_traits: [
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.rare,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "Welcome, Sir. Have a seat right over here.",
+      "Welcome, Ma\'am. We have a seat right here.",
+    ],
+    bold: [
+      "Sit down right here, I\'ll come by for your order.",
+      "Table\'s right over there.",
+    ],
+    cool: [
+      "Hey how\'s it going, what can I getcha?",
+      "Make yourselves comfortable folks.",
+    ],
+    witty: [
+      "Welcome, Sir. Have a seat right over here.",
+      "Welcome, Ma\'am. We have a seat right here.",
+    ],
+    debauched: [
+      "If there\'s an issue let me know, I\'ll make it right.",
+      "I\'m taking a break soon, meet me around back.",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.recreationwingservice,
+],
+})>>
+

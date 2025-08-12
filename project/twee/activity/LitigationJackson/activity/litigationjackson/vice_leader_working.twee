@@ -1,0 +1,59 @@
+:: ActivitySetup_vice_leader_working [nobr activity]
+
+
+
+<<run new setup.ActivityTemplate({
+key: 'vice_leader_working',
+name: "Vice Leader working", /* Title */
+author: { /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+tags: [ /* tags */
+],
+actor_unitgroups: { /* actors */
+  'a': [
+    setup.qres.OnDuty('viceleader'),
+  ],
+},
+critical_traits: [
+],
+disaster_traits: [
+],
+restrictions: [ /* restrictions */
+],
+rarity: setup.rarity.common,
+dialogues: [
+{ /* Dialogue #1: */
+  actor: "a",
+  texts: {
+    friendly: [
+      "<<ubusyshort $g.a>>. I wish these people would just get along.",
+      "<<ugreetingshort $g.a>> anything I can do for you?",
+    ],
+    bold: [
+      "<<ubusyshort $g.a>>. You wouldn\'t believe the dumb shit these people bring to me.",
+      "<<ugreetingshort $g.a>> would you like to look over some of these complaints with me?",
+      "Want to take a break and grab lunch?",
+    ],
+    cool: [
+      "<<ubusyshort $g.a>>. Lots of paperwork to do.",
+      "<<ugreetingshort $g.a>> whaddaya need?",
+    ],
+    witty: [
+      "<<ubusyshort $g.a>>. Maybe I should lock these two slavers in a room naked and let them sort their problem out that way.",
+      "<<ugreetingshort $g.a>> how do you think we should handle this? Public flogging?",
+    ],
+    debauched: [
+      "<<ugreetingshort $g.a>> now\'s a good time for me to take a break if you want to fool around for a bit.",
+      "<<ugreetingshort $g.a>> close that door behind you, I\'ve already got my pants off.",
+      "Why don\'t we summon this slaver to my office, we can \"discipline\" them right now.",
+    ],
+  },
+}, /* End of Dialogue #1 */
+],
+room_templates: [
+  setup.roomtemplate.viceleaderoffice,
+],
+})>>
+

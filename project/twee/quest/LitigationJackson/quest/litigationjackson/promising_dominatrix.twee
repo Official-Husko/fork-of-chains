@@ -1,0 +1,166 @@
+:: QuestSetup_promising_dominatrix [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"promising_dominatrix0",
+"City Dominatrix",
+'city_allfemale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_whore),
+  setup.qc.TraitReplace('unit', setup.trait.per_dominant),
+],
+)>>
+
+
+<<set _criteriaclient = new setup.UnitCriteria(
+null, /* key */
+'Client', /* name */
+[
+  setup.trait.per_calm,
+  setup.trait.per_humble,
+  setup.trait.per_active,
+  setup.trait.per_attentive,
+  setup.trait.per_curious,
+  setup.trait.per_submissive,
+],
+[
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_dreamy,
+  setup.trait.per_stubborn,
+  setup.trait.per_lunatic,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 1,
+  social: 1,
+  sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'promising_dominatrix', /* key */
+"Promising Dominatrix", /* Title */
+{ /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+[ /* tags */
+  'city',
+  'unit',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'client': [ _criteriaclient, 1],
+  'guard1': [ setup.qu.guard, 1],
+  'guard2': [ setup.qu.guard, 1],
+},
+{ /* actors */
+  'dominatrix': 'promising_dominatrix0',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-1000),
+],
+'Quest_promising_dominatrix',
+setup.qdiff.harder34, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_promising_dominatrixCrit',
+    [
+      setup.qc.Slaver('dominatrix', "a|was a Dominatrix in the City of Lucgate", true, 1),
+    ],
+  ],
+  [
+    'Quest_promising_dominatrixCrit',
+    [
+      setup.qc.Slaver('dominatrix', "a|was a Dominatrix in the City of Lucgate", true, 1.5),
+    ],
+  ],
+  [
+    'Quest_promising_dominatrixCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_promising_dominatrixCrit',
+    [
+      setup.qc.Sluttify('client'),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.city, setup.rarity.uncommon],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_promising_dominatrix [nobr]
+<p>
+    Rumors are circulating in the <<lore region_city>>. They say in the seedy underbelly where women are regularly selling their bodies, there is a stand-out new dominatrix on the scene. She's rising in popularity, with a few nobles already having been caught seeing her in secret. If she really is as good as they say, she may make one hell of a slaver. You might consider booking a session with her and sending a slaver to convince her to join you.
+</p>
+
+
+
+:: Quest_promising_dominatrixCrit [nobr]
+<p>
+    Your slavers arrive at the city, and immediately set out to find lodging. <<Rep $g.client>> could hardly sleep, staring at the ceiling
+    <<if $g.client.isSubmissive()>>
+        buzzing with excitement,
+    <</if>>
+    as <<they $g.client>> client|contemplate spending the next week with this dominatrix. Eventually <<rep $g.guard1>> rolled over in <<their $g.guard1>> sleep and put <<their $g.guard1>> arm around <<rep $g.client>>, soothing <<their $g.client>> nerves and allowing <<them $g.client>> to slumber.
+</p>
+<p>
+    The next morning, your slavers went to visit the dominatrix, <<rep $g.dominatrix>>. The trio came upon the address they were looking for, a squat, unremarkable house in the seedy part of town. The windows were blacked out, and smoke was rising out of the chimney. <<Rep $g.client>> collected <<themselves $g.client>> and stepped up to the door, and knocked. Moments later, <<rep $g.dominatrix>> opened the door, clad only in a leather corset which pushed up her bare <<ubreasts $g.dominatrix>>. She eyed <<rep $g.client>> up and down, licking her lips as she appraised <<theslaver $g.client>> like a piece of meat.
+    <<dialogue $g.dominatrix>>
+        So this is the bitch huh? Get your cute little ass in here, you're aaaall mine for a whole week.
+    <</dialogue>>
+    She winked at <<rep $g.guard2>> and grabbed <<reps $g.client>> wrist, pulling <<them $g.client>> into her abode and shutting the door in the other slavers' faces.
+</p>
+<p>
+    <<Rep $g.guard1>> and <<rep $g.guard2>> looked at each other and shrugged, leaving to go get shitfaced. Inside the house, <<rep $g.client>> client|was quickly stripped, leaving <<their $g.client>> <<ubreasts $g.client>> and <<ugenital $g.client>> bare for <<rep $g.dominatrix>> to leer at.
+    <<dialogue $g.dominatrix>>
+        Okay, bitch <<girl $g.client>>, drop to your knees this instant. You're gonna lick my cunt while I list all the reasons I'm superior to you.
+    <</dialogue>>
+    <<Rep $g.client>>
+    <<if $g.client.isSubmissive()>>
+        eagerly
+    <</if>>
+    obeyed, watching the dominatrix's slick <<uvagina $g.dominatrix>> approach <<their $g.client>> face. <<Reps $g.client>> tongue lapped against the wet slit, and <<reps $g.dominatrix>> hand held <<reps $g.client>> <<uhead $g.client>> in place.
+    <<dialogue $g.dominatrix>>
+        Mmmm, maybe you're not so worthless after all. Keep this up and you might end up my favorite toy.
+    <</dialogue>>
+</p>
+<p>
+    One week later, <<rep $g.guard1>> and <<rep $g.guard2>> arrived to pick <<rep $g.client>> up. <<They $g.client>> looked tired and <<their $g.client>> clothes were disheveled and wrinkled. <<They $g.client>> walked awkwardly out to meet the two, <<their $g.client>> <<uanus $g.client>> stretched and sore.
+    <<if $gOutcome == 'crit'>>
+        <<dialogue $g.client>>
+            It... went well. She... she said she would consider an offer from our company.
+        <</dialogue>>
+    <<elseif $gOutcome == 'success'>>
+        <<dialogue $g.client>>
+            It... went well. She... she said she would consider an offer from our company.
+        <</dialogue>>
+    <<elseif $gOutcome == 'failure'>>
+        <<dialogue $g.client>>
+            Let's... let's just go back to the fort.
+        <</dialogue>>
+    <<elseif $gOutcome == 'disaster'>>
+        <<dialogue $g.guard1>>
+            Well? How did it go?
+        <</dialogue>>
+        <<Reps $g.client>> gaze flickered up to meet <<theirs $g.guard1>>, but quickly flicked away. <<Rep $g.client>> rubbed <<their $g.client>> thighs together, trying to suppress the lingering lust.
+        <<dialogue $g.client>>
+            C-can we... uh... h-head back to the f-fort, please?
+        <</dialogue>>
+    <</if>>
+    <<Rep $g.guard2>> nodded and put <<their $g.guard2>> arm around <<rep $g.client>>. The slavers made for the city gates and returned to your fort.
+</p>

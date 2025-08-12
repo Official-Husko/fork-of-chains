@@ -1,0 +1,139 @@
+:: OpportunitySetup_flesh_shaper_temple_patronage_genitals [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'flesh_shaper_temple_patronage_genitals', /* key */
+"Flesh Shaper Temple: Patronage - Genitals", /* Title */
+{ /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+[ /* tags */
+  'transformation',
+  'vale',
+  'rare',
+  'veteran',
+  'trait',
+],
+1, /* expiration weeks */
+'Opportunity_flesh_shaper_temple_patronage_genitals',
+setup.qdiff.easy50, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_flesh_shaper_temple_patronage_genitals_0',
+    outcome_passage: 'Opportunity_flesh_shaper_temple_patronage_genitals_0_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.SetCooldownOpportunity(null, 50),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_flesh_shaper_temple_patronage_genitals_1',
+    outcome_passage: 'Opportunity_flesh_shaper_temple_patronage_genitals_1_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('flesh_shaper_temple_patronage_tighten_anus', null),
+      setup.qc.SetCooldownOpportunity(null, 50),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_flesh_shaper_temple_patronage_genitals_2',
+    outcome_passage: 'Opportunity_flesh_shaper_temple_patronage_genitals_2_flavor',
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.QuestDirect('flesh_shaper_temple_patronage_tighten_vagina', null),
+      setup.qc.SetCooldownOpportunity(null, 50),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.Building(setup.buildingtemplate.veteranhall),
+  setup.qres.HasItem(setup.item.rear_technology),
+],
+{ /* actors */
+  'watermage': [
+    setup.qres.AnyTrait([setup.trait.magic_water, setup.trait.magic_water_master], true),
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Home(),
+  ],
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_flesh_shaper_temple_patronage_genitals [nobr]
+<<dialogue $g.watermage>>
+    It looks like one of the Flesh Shaper temples is doing outreach and inviting the locals to have their holes tightened up.
+<</dialogue>>
+<<if $g.watermage.isYou()>>
+    <<set _u = setup.getAnySlaver()>>
+    <p>
+        "That's nice" <<name _u>> says. "I can think of a couple people who could take advantage of that."<br>
+        You nod. "Really, we can do that here." you say <<uadv $unit.player>>. "But they won't let me near them. Have I ever messed it up on a slave?"<br>
+        <<Rep _u>> silently looks back at you.<br>
+    </p>
+    <p>
+        You didn't want to admit it, but <<they _u>> was right. With the facilities and the talent here at the fort, your slavers are reluctant to have any flesh shaping done on them. Perhaps sending them to the professionals would put them more at ease. Perhaps it was worth a little time and treasure to improve the morale of your slavers fighting under you. You sit back in your chair and consider the opportunity before you.
+    </p>
+
+
+<<else>>
+    <p>
+        "Why won't they let you?" you asked. "I know you can do it.<br>
+        You were standing in the hallway, talking to one of your resident flesh shapers, <<rep $g.watermage>> outside the <<rep setup.buildingtemplate.biolab>>.<br>
+        <<name $g.watermage>> shrugs, "Guess they just don't trust me, <<unickname $g.watermage>>."<br>
+        You clench your jaw and give an understanding nod. <br>
+        "Maybe they would okay with the mystics at the temple doing it, it's really all they do after all."<br>
+        "That's a good point. I'll think about it." You say.<br>
+    </p>
+    <p>
+        <<name $g.watermage>> was right. With the facilities and the talent here at the fort, your slavers are reluctant to have any flesh shaping done on them. Perhaps sending them to the professionals would put them more at ease. Perhaps it was worth a little time and treasure to improve the morale of your slavers fighting under you. You return to your office and consider the opportunity before you.
+    </p>
+<</if>>
+
+
+
+:: Opportunity_flesh_shaper_temple_patronage_genitals_0 [nobr]
+Ignore the opportunity
+
+
+:: Opportunity_flesh_shaper_temple_patronage_genitals_0_flavor [nobr]
+While a few of your slavers have had complaints about their body, you can't really justify the cost and loss of manpower to send people on this endeavor.
+
+
+:: Opportunity_flesh_shaper_temple_patronage_genitals_1 [nobr]
+Tighten a slaver's anus
+
+
+:: Opportunity_flesh_shaper_temple_patronage_genitals_1_flavor [nobr]
+Your slavers don't feel like letting <<rep $g.watermage>> play with their assholes for some reason. Maybe sending them to the professionals would put their concerns to rest.
+
+
+:: Opportunity_flesh_shaper_temple_patronage_genitals_2 [nobr]
+Tighten a slaver's vagina
+
+
+:: Opportunity_flesh_shaper_temple_patronage_genitals_2_flavor [nobr]
+Your slavers don't feel like letting <<rep $g.watermage>> play with their pussies for some reason. Maybe sending them to the professionals would put their concerns to rest.

@@ -1,0 +1,305 @@
+:: QuestSetup_harem_infiltration [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"harem_infiltration_wip0",
+"Sultan",
+'subrace_humandesert_male', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_royal),
+],
+)>> <<run new setup.UnitGroup(
+"harem_infiltration_wip1",
+"Desert Dancers",
+'desert_all', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.Trait('unit', setup.trait.face_attractive),
+  setup.qc.Trait('unit', setup.trait.skill_entertain),
+],
+)>>
+
+
+<<set _criteriadancer = new setup.UnitCriteria(
+null, /* key */
+'Dancer', /* name */
+[
+  setup.trait.gender_female,
+  setup.trait.bg_courtesan,
+  setup.trait.bg_monk,
+  setup.trait.bg_entertainer,
+  setup.trait.bg_whore,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.tough_nimble,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_active,
+  setup.trait.per_gregarious,
+  setup.trait.per_playful,
+  setup.trait.per_lustful,
+  setup.trait.skill_entertain,
+  setup.trait.eq_slutty,
+  setup.trait.eq_veryslutty,
+],
+[
+  setup.trait.bg_mist,
+  setup.trait.bg_wildman,
+  setup.trait.bg_nomad,
+  setup.trait.tough_tough,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_cautious,
+  setup.trait.per_loner,
+  setup.trait.per_dreamy,
+  setup.trait.per_serious,
+  setup.trait.per_chaste,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 2,
+  sex: 1,
+}
+)>>
+
+
+<<run new setup.QuestTemplate(
+'harem_infiltration', /* key */
+"Harem Infiltration", /* Title */
+{ /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'unit',
+  'femaleonly',
+],
+2, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'dancer': [ _criteriadancer, 1],
+  'kidnapper': [ setup.qu.kidnapper, 1],
+  'guard': [ setup.qu.guard, 1],
+},
+{ /* actors */
+  'sultan': 'harem_infiltration_wip0',
+  'haremslave': 'subrace_humandesert_female',
+  'rival': 'harem_infiltration_wip1',
+},
+[ /* costs */
+],
+'Quest_harem_infiltration',
+setup.qdiff.hard40, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_harem_infiltrationCrit',
+    [
+      setup.qc.MoneyCrit(),
+      setup.qc.Slave('haremslave', "a|was a slave in the Sultan\'s harem.", undefined),
+    ],
+  ],
+  [
+    'Quest_harem_infiltrationCrit',
+    [
+      setup.qc.MoneyNormal(),
+    ],
+  ],
+  [
+    'Quest_harem_infiltrationCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_harem_infiltrationCrit',
+    [
+      setup.qc.Leave('dancer', "a|is being punished in the Sultan\'s dungeon", 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.epic],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_harem_infiltration [nobr]
+<p>
+    The Sultan <<Rep $g.sultan>> of one of the Sultanates in the <<lore region_desert>> is throwing a festival. Your contact writes that dancers from all over the region will be attending in an effort to display their skills to the royal. The Sultan is said to pick his favorite dancer and reward them quite lavishly.
+</p>
+
+<p>
+    <<Rep $unit.player>> aren't sure about your slavers' odds in winning a dance competition against the entire Eastern Deserts community, but <<rep $unit.player>> do know this Sultan has a rather expansive harem of extremely valuable slaves. The festival is the perfect excuse to send a group of slavers to infiltrate the palace and relieve this Sultan of one of his harem girls.
+</p>
+
+<p>
+    He probably won't notice, anyway.
+</p>
+
+
+:: Quest_harem_infiltrationCrit [nobr]
+<p>
+    After the long, uncomfortable journey, your slavers were ecstatic to finally see the towers of the city on the horizon. <<Yourrep $g.dancer>>
+    <<if $g.dancer.isHasAnyTraitExact(["per_lustful", "per_sexaddict"])>>
+        masturbated late into the night in excitement, and was awoken in the morning by <<rep $g.guard>>, anxious to get to the relative safety of the city walls.
+    <<else>>
+        dancer|was the first to wake up, and immediately changed into <<their $g.dancer>> dancer outfit. <<Yourrep $g.kidnapper>> and <<rep $g.guard>> awoke to the smell of cooking breakfast, and the sight of <<reps $g.dancer>> tight ass visible through the sheer pants <<they $g.dancer>> was wearing
+        <<if $g.dancer.isHasTail()>>
+            , <<their $g.dancer>> <<utail $g.dancer>> stuck through the waistband pulling it down suggestively
+        <</if>>
+        .
+    <</if>>
+</p>
+
+<p>
+    <<Rep $g.dancer>> dancer|was a social butterfly, and under <<reps $g.guard>> watchful gaze, <<they $g.dancer>> struck up conversations with the other dancers about where they were performing, techniques, and so on.
+    <<if $g.guard.isHasAnyTraitExact(["per_lustful", "per_sexaddict"])>>
+        The sight of seemingly endless beautiful dancers wearing practically nothing, or see through garments,
+        <<if $g.guard.isHasDick()>>
+            gave <<rep $g.guard>> a raging hard on, making it hard for <<therace $g.guard>> to keep focused or even just stand still.
+        <<else>>
+            made <<reps $g.guard>> <<uvagina $g.guard>> dripping wet, making it hard for <<therace $g.guard>> to keep focused or even just stand still.
+        <</if>>
+    <</if>>
+    After some sly negotiation, <<rep $g.kidnapper>> kidnapper|was able to secure the team lodging even in such a booked out town. The competition didn't begin until tomorrow, so the slavers took the opportunity to carouse that evening before retiring to their accommodations.
+</p>
+
+<p>
+    <<if $g.guard.isHasAnyTraitExact(["per_lustful", "per_sexaddict"]) && $g.dancer.isHasAnyTraitExact(["per_lustful", "per_sexaddict"])>>
+        <<Rep $g.guard>> and <<rep $g.dancer>> entered the privacy of the rented room and immediately stripped. <<Reps $g.guard>>
+        <<if $g.guard.isHasDick()>>
+            <<udick $g.guard>> standing at attention, its tip slick with precum
+        <<else>>
+            <<uvagina $g.guard>> slick and dripping with arousal
+        <</if>>
+        and <<reps $g.dancer>>
+        <<if $g.dancer.isHasDick()>>
+            <<udick $g.dancer>> swollen and throbbing.
+        <<else>>
+            entire crotch sticky with vaginal fluids.
+        <</if>>
+        In their drunkenness and lust, the two slavers embraced each other and began kissing. With <<ubreasts $g.guard>> to <<ubreasts $g.dancer>>, their nipples rubbed together as they shuffled their way over to the mattress on the ground. The two flopped onto the mattress, with <<rep $g.guard>> landing on top. <<Theslaver $g.guard>> reached <<their $g.guard>> <<uhand $g.guard>> down and
+        <<if $g.dancer.isHasDick()>>
+            stroked the length of <<reps $g.dancer>> <<udick $g.dancer>> before grabbing it and pumping it a few times.
+        <<else>>
+            stroked the outside of <<reps $g.dancer>> <<uvagina $g.dancer>> before pushing a couple fingers inside.
+        <</if>>
+        <<Rep $g.dancer>> moaned in pleasure, bringing <<their $g.dancer>> hands up to <<their $g.dancer>> chest and playing with <<their $g.dancer>> <<unipples $g.dancer>>. <br>
+
+        <<if $g.guard.isHasDick()>>
+            <<if $g.dancer.isHasDick()>>
+                <<Rep $g.guard>> pulled <<their $g.guard>> hand away from <<reps $g.dancer>> dick to line up <<their $g.guard>> <<udick $g.guard>> with <<reps $g.dancer>> <<uanus $g.dancer>>. <<Yourrep $g.guard>> slowly pushed <<themselves $g.guard>> inside <<therace $g.dancer>> eliciting a long whine until <<rep $g.guard>> finally bottomed out. <<Rep $g.dancer>> grabbed <<their $g.dancer>> <<udick $g.dancer>> and furiously stroked themselves while the party's guard pumped in and out of <<their $g.dancer>> <<uanus $g.dancer>>. <<Rep $g.dancer>> came first, shooting goo all over <<their $g.dancer>> belly, with <<rep $g.guard>> redoubling <<their $g.guard>> efforts and slamming <<themselves $g.guard>> in faster and faster. <<Therace $g.guard>> finally reached <<their $g.guard>> limit, and as <<their $g.guard>> thrusts were becoming erratic, <<rep $g.dancer>> wrapped <<their $g.dancer>> <<ulegs $g.dancer>> around <<reps $g.guard>> waist. <<Reps $g.guard>> <<udick $g.guard>> throbbed as <<they $g.guard>> deposited load after load deep inside <<reps $g.dancer>> ass.<br>
+                The two flopped over sideways and spooned for a while, <<reps $g.guard>> <<udick $g.guard>> still inside <<therace $g.dancer>>, until they eventually fell asleep.
+            <<else>>
+                <<Rep $g.guard>> pulled <<their $g.guard>> hand away from <<reps $g.dancer>> slit to line up <<their $g.guard>> <<udick $g.guard>> with <<reps $g.dancer>> <<uvagina $g.dancer>>. <<Yourrep $g.guard>> slowly pushed <<themselves $g.guard>> inside <<therace $g.dancer>> eliciting a long whine until <<rep $g.guard>> finally bottomed out. <<Rep $g.dancer>> wrapped <<their $g.dancer>> <<uarms $g.dancer>> around <<rep $g.guard>>, pushing <<their $g.dancer>> <<ubreasts $g.dancer>> against <<theslaver $g.guard>> as <<they $g.dancer>> whispered encouragement into <<their $g.guard>> ear. <<Rep $g.guard>> redoubled <<their $g.guard>> efforts, and started slamming <<themselves $g.guard>> in faster and faster. <<Therace $g.guard>> finally reached <<their $g.guard>> limit, and as <<their $g.guard>> thrusts were becoming erratic, <<rep $g.dancer>> pushed <<rep $g.guard>> back into a sitting position and jerked <<them $g.guard>> to completion. <<Reps $g.guard>> <<udick $g.guard>> throbbed as <<they $g.guard>> sprayed load after load onto <<reps $g.dancer>> <<ubreasts $g.dancer>> and <<uface $g.dancer>>.<br>
+                <<Rep $g.dancer>> giggled and began to clean the cum off her face. <<Rep $g.guard>> helped as well, gathering fingerfuls of cum off <<their $g.dancer>> chest, and letting <<them $g.dancer>> suck it all off <<their $g.guard>> finger. The two laid down afterwards and spooned for a while, until falling asleep.
+            <</if>>
+        <<else>>
+            <<if $g.dancer.isHasDick()>>
+                <<Rep $g.guard>> straddled <<reps $g.dancer>> hips, pinning <<their $g.dancer>> <<udick $g.dancer>> against <<their $g.dancer>> belly. <<Rep $g.guard>> bent over to plant a kiss on <<reps $g.dancer>> <<umouth $g.dancer>>, then grabbed <<reps $g.dancer>> now slick <<udick $g.dancer>> and pushed it inside <<themselves $g.guard>>. <<Therace $g.guard>> bit <<their $g.guard>> lower lip as <<they $g.guard>> started bouncing up and down on the rock hard <<udick $g.dancer>>. One <<uhand $g.guard>> went up to play with <<their $g.guard>> nipple, while the other went downwards to stimulate <<their $g.guard>> clit. <<Therace $g.guard>> guard|was impaling <<themselves $g.guard>> on the swollen member for nearly a minute, before <<they $g.guard>> noticed their partner approaching climax. <<Yourrep $g.guard>> guard|was not quite finished yet, so <<they $g.guard>> turned <<themselves $g.guard>> around to reverse and grabbed <<reps $g.dancer>> <<uballs $g.dancer>> at the top and squeezed. <<Rep $g.dancer>> grimaced in pain and pleasure as <<their $g.dancer>> <<uballs $g.dancer>> were being squeezed, and <<rep $g.guard>> was still fucking <<themselves $g.guard>> on <<reps $g.dancer>> <<udick $g.dancer>>. <<Therace $g.guard>> didn't go that much longer before bringing <<themselves $g.guard>> to satisfaction on <<their $g.guard>> partner's <<udick $g.dancer>>. To make up for the discomfort <<they $g.guard>> caused, <<rep $g.guard>> slid <<themselves $g.guard>> backwards into a 69, taking <<therace $g.dancer>> into <<their $g.guard>> <<umouth $g.guard>> and releasing <<their $g.guard>> grip on <<their $g.dancer>> balls. Immediately, <<reps $g.guard>> mouth was filled with cum, which <<they $g.guard>> swallowed almost apologetically.<br>
+                <<Rep $g.guard>> reoriented <<themselves $g.guard>> and spooned <<rep $g.dancer>> for a while, massaging <<their $g.dancer>> sore <<uballs $g.dancer>> until eventually they fell asleep.
+            <<else>>
+                <<Rep $g.dancer>> writhed and moaned from the stimulation. <<Rep $g.guard>> settled <<their $g.guard>> body down on top of <<therace $g.dancer>> and began a new series of kisses. <<Rep $g.dancer>> wrapped <<their $g.dancer>> <<uarms $g.dancer>> around <<rep $g.guard>> and returned the kisses, sloppily making out with the <<uadjphys $g.guard>> <<therace $g.guard>>. <<Rep $g.guard>> removed <<their $g.guard>> fingers from <<reps $g.dancer>> <<uvagina $g.dancer>> and repositioned <<themselves $g.guard>> to sit on <<reps $g.dancer>> <<uface $g.dancer>>. <<Therace $g.dancer>> eagerly got to work, pushing <<their $g.dancer>> tongue up inside <<rep $g.guard>> before bringing it back and licking around the outside. <<Rep $g.guard>> played with <<their $g.guard>> <<unipples $g.guard>> for a few moments just enjoying the sensations, before bending over and returning the favor. The two serviced each other with tongue and finger for several minutes before <<rep $g.guard>> finished, filling <<reps $g.dancer>> <<umouth $g.dancer>> with girlcum. <<Theslaver $g.dancer>> finished not long after that, and the two cuddled together for a while before finally falling asleep in each other's arms.
+            <</if>>
+        <</if>>
+        <br>
+        <<if $g.kidnapper.isHasAnyTraitExact(["per_lustful", "per_sexaddict"])>>
+            <<Rep $g.kidnapper>> kidnapper|was watching the whole thing from <<their $g.kidnapper>> bed, constantly stroking <<their $g.kidnapper>> <<ugenital $g.kidnapper>>. <<They $g.kidnapper>> came, making <<their $g.kidnapper>> <<uhand $g.kidnapper>> completely sticky with <<ucum $g.kidnapper>>, but the show wasn't over so <<they $g.kidnapper>> kept going. By the time the other two had finished, <<therace $g.kidnapper>> had nothing left in <<them $g.kidnapper>> but a thin watery discharge, and <<they $g.kidnapper>> fell asleep completely exhausted.
+        <<else>>
+            <<Rep $g.kidnapper>> rolled over in <<their $g.kidnapper>> bed and wrapped <<their $g.kidnapper>> <<uhead $g.kidnapper>> in <<their $g.kidnapper>> pillow. <<They $g.kidnapper>> kidnapper|was exhausted and just wanted to get to sleep. <<Theslaver $g.kidnapper>> finally drifted off to a dreamless sleep as his two noisy roommates were still fucking each other's brains out.
+        <</if>>
+    <</if>>
+</p>
+<p>
+    The slavers woke up in the morning and wasted no time, hurrying over to the opulent palace along with the throngs of other participants. The dancers were led to a separate room, and <<rep $g.dancer>> gave <<rep $g.kidnapper>> a knowing nod, before disappearing into that gathering room. The room was filled with women, and even a few men, all of whom were absolutely gorgeous. Sat in a chair overlooking the gathering, was the Sultan himself, <<rep $g.sultan>>, flanked by several palace guards. The Sultan cast his gaze about the room, rubbing his cock through his baggy white pants without a hint of shame or restraint. He indicated to his guards, who stepped forward and took charge of organizing the mob of dancers. Dancers approached the Sultan two at a time, dancing in a head to head fashion, with the Sultan deciding who was the winner. Eventually it was <<reps $g.dancer>> turn. Stepping up to compete, was <<therace $g.rival>> <<Rep $g.rival>>, who gave <<rep $g.dancer>> a smug, self assured smile.
+    <<if $g.dancer.isHasTrait('face_beautiful')>>
+        <<Rep $g.dancer>> flashed back a dazzling smile, confident in <<their $g.dancer>> superior good looks.
+    <</if>>
+    <<if !$g.dancer.isHasTrait('skill_entertain')>>
+        The two launched into their dance routines, and it's fairly obvious that <<rep $g.rival>> was the superior dancer. <<Their $g.rival>> moves were so smooth and skillful, <<therace $g.dancer>> saw the Sultan's eyes being drawn to <<their $g.dancer>> rival and knew <<they $g.dancer>> had to act fast. Switching tactics, <<yourrep $g.dancer>> started pulling at <<their $g.dancer>> clothing and exposing a little more skin, visibly exciting the Sultan, much to the chagrin of <<rep $g.rival>>.
+    <<else>>
+        The two launched into their dance routines, both participants equally skilled, with the Sultan's eyes flicking between <<therace $g.dancer>> on his left, and <<therace $g.rival>> on his right. He squeezed his <<udick $g.sultan>> through his pants as he appreciated the skillful displays in front of him.
+    <</if>>
+    The Sultan <<rep $g.sultan>> was obviously hot and bothered as the two routines finished up, a faint wet spot formed on the front of his pants.
+    <<dialogue $g.sultan>>
+        Guards, inform the rest of the dancers that I am taking a short recess. I find it hard to choose between these two, and I will need a more... private showing.
+    <</dialogue>>
+    The powerful <<urace $g.sultan>> stood and indicated at <<rep $g.rival>> and <<rep $g.dancer>> to follow, as he retreated back into his chambers.
+</p>
+
+<p>
+    Meanwhile, <<yourrep $g.kidnapper>> took advantage of the hubbub
+    <<if $g.kidnapper.isHasAnyTraitExact(["magic_dark", "magic_dark_master"])>>
+        and a cover of magical darkness,
+    <</if>>
+    to sneak into the private chambers of the Sultan. <<Theslaver $g.kidnapper>> snuck past several guards, successfully stuffing <<themselves $g.kidnapper>> into dark corners or under benches to avoid detection. <<Rep $g.kidnapper>> was stuck in one such dark corner, when he heard the Sultan himself walking down the hall, flanked on either side by <<their $g.kidnapper>> comrade <<rep $g.dancer>>, and an unfamiliar <<urace $g.rival>>. Much to <<reps $g.kidnapper>> annoyance, the trio entered the kidnapper's destination: the Harem room itself. <<Theslaver $g.kidnapper>> cursed to <<themselves $g.kidnapper>>, and continued to explore the palace, eventually finding a servant's entrance to the room and slipping <<their $g.kidnapper>> way inside. The room was naturally quite opulent, with silks and cushions covering nearly every square inch of the floor. The Sultan <<rep $g.sultan>> was sat up against a rather large cushion, his <<udick $g.sultan>> free from its confines, and the twin tongues of <<rep $g.dancer>> and <<rep $g.rival>> lavishing attention up and down the slick shaft, still obviously vying for the Sultan's favor. On the other end of the room was <<reps $g.kidnapper>> prize, the Sultan's harem. Some of them were sleeping, some were eating, and other still were playing with each other's bodies. <<Theslaver $g.kidnapper>> located an isolated woman, currently bathing herself with a rag.
+</p>
+
+<p>
+    <<Rep $g.kidnapper>> approached the isolated woman, and covered her mouth with <<their $g.kidnapper>> hand, pulling the new slave off balance and beginning to bind her hands and feet. Unfortunately, <<therace $g.haremslave>> managed to squeak out a sound of surprise, which drew the Sultan's attention. <<Reps $g.dancer>> blood ran cold, and <<they $g.dancer>> acted fast to distract the Sultan, quickly taking the man's cock to the base, filling <<their $g.dancer>> throat and tickling <<their $g.dancer>> nose with the Sultan's pubes.
+    <<if $gOutcome == 'crit'>>
+        <<Rep $g.sultan>> was sufficiently distracted, moaning at the sudden deep penetration and warmth of <<reps $g.dancer>> throat. He rested his hand on the slaver's head, pumping his shaft in and out of <<their $g.dancer>> face, with the rival <<rep $g.rival>> pouting in obvious jealousy. <<Rep $g.kidnapper>> breathed out a sigh of relief, and hoisted up the bound slave, wrapping her up in one of the fine silks, and slipping back out of the servant's entrance, the wet sounds of <<reps $g.dancer>> throatfucking filling the chamber.
+
+        <p>
+            Later that evening, the trio met back up in their rented room. <<Rep $g.dancer>> looked a bit disheveled, but otherwise not worse for wear. They came to the conclusion that it wouldn't take the Sultan long to notice the missing harem slave, and that it would be prudent to leave town that night.
+        </p>
+    <<elseif $gOutcome == 'success'>>
+        <<Rep $g.sultan>> moaned at the sudden deep penetration and warmth of <<reps $g.dancer>> throat. He rested his hand on the slaver's head, pumping his shaft in and out of <<their $g.dancer>> face, with the rival <<rep $g.rival>> pouting in obvious jealousy.
+        <<dialogue $g.sultan>>
+            Mmmm... it was probably nothing... ohh... I'll have a guard check it out...
+        <</dialogue>>
+        <<Rep $g.kidnapper>> cursed, and dropped the harem slave, instead making <<their $g.kidnapper>> way to the servants entrance, sparing one last glance to see <<reps $g.dancer>> face getting fucked by the Sultan. <<Theslaver $g.kidnapper>> made <<their $g.kidnapper>> way back through the halls towards the entrance <<they $g.kidnapper>> used to gain access, but made sure to stuff several valuable looking things into <<their $g.kidnapper>> pockets so <<they $g.kidnapper>> at least wasn't leaving empty handed.
+
+        <p>
+            Later that evening, the trio met back up in their rented room. <<Rep $g.dancer>> looked a bit disheveled, but otherwise not worse for wear. They lamented their inability to collect the real prize, but were consoled by the valuables <<rep $g.kidnapper>> kidnapper|was able to abscond with. They decided they would leave in the morning after a night of celebratory drinking.
+        </p>
+    <<elseif $gOutcome == 'failure'>>
+        <<Rep $g.sultan>> moaned at the sudden deep penetration and warmth of <<reps $g.dancer>> throat. He rested his hand on the slaver's head, pumping his shaft in and out of <<their $g.dancer>> face, with the rival <<rep $g.rival>> pouting in obvious jealousy.
+        <<dialogue $g.sultan>>
+            Mmmm... it was probably nothing... ohh... I'll have a guard check it out...
+        <</dialogue>>
+        <<Rep $g.kidnapper>> cursed, and dropped the harem slave, instead making <<their $g.kidnapper>> way to the servants entrance, sparing one last glance to see <<reps $g.dancer>> face getting fucked by the Sultan. <<Theslaver $g.kidnapper>> made <<their $g.kidnapper>> way back through the halls towards the entrance <<they $g.kidnapper>> used to gain access, but along the way, <<they $g.kidnapper>> kidnapper|was spotted by a guard. A chase ensued, which <<therace $g.kidnapper>> barely escaped from.
+
+        <p>
+            Later that evening, the trio met back up in their rented room. <<Rep $g.dancer>> looked a bit disheveled, but otherwise not worse for wear. <<Rep $g.kidnapper>> informed the group that <<they $g.kidnapper>> had been seen by the guards, and the group decided not to waste any time, and to leave immediately.
+        </p>
+    <<elseif $gOutcome == 'disaster'>>
+        <<Rep $g.sultan>> moaned at the sudden deep penetration and warmth of <<reps $g.dancer>> throat. He rested his hand on the slaver's head, pumping his shaft in and out of <<their $g.dancer>> face. The rival dancer <<rep $g.rival>> however, spotted <<rep $g.kidnapper>> trying to tie up the harem slave.
+        <<dialogue $g.rival>>
+            Your Highness! Intruder!
+        <</dialogue>>
+        The Sultan pulled out of <<reps $g.dancer>> throat with a pop, and sprang to his feet.
+        <<dialogue $g.sultan>>
+            Guards! Intruder!
+        <</dialogue>>
+        <<Rep $g.kidnapper>> immediately dropped the harem slave and bolted for the door. Almost immediately, the corridors were swarmed with guards, and <<yourrep $g.kidnapper>> made a mad dash, just barely escaping as <<they $g.kidnapper>> threw <<themselves $g.kidnapper>> out of a window, landing in a roll and dashing off into the town.
+
+        <p>
+            Later that evening, <<rep $g.guard>> and <<rep $g.kidnapper>> met up in their rented room, with <<rep $g.dancer>> nowhere to be found. <<Rep $g.kidnapper>> told <<rep $g.guard>> about <<their $g.kidnapper>> narrow escape, and suggested <<rep $g.dancer>> may not have made it out. The two debated springing a rescue operation, but decided to instead head back to the fort immediately to plan it properly.
+        </p>
+
+        <p>
+            <<dialogue $g.sultan>>
+                You think you can steal from the Sultan <<name $g.sultan>>?
+            <</dialogue>>
+            The Sultan hissed at <<rep $g.dancer>>, gagged and bound, bent over a wooden frame. The Sultan was balls deep inside <<reps $g.dancer>> <<uhole $g.dancer>>, and slapped the poor <<urace $g.dancer>>'s already reddened ass. He beckoned at a guard, who came forward with his big dick already rigid in his hand. The guard slipped <<reps $g.dancer>> gag down and stuffed his prick down <<their $g.dancer>> throat, spitroasting <<theslaver $g.dancer>>. The Sultan groaned as he went over the edge, his thrusts becoming irregular as he started to spurt his pearly white cum from his <<udick $g.sultan>>. He deposited the load deep inside <<yourrep $g.dancer>>, and stepped away. Immediately another guard stepped up to replace him, this one jamming his dick into <<reps $g.dancer>> <<uanus $g.dancer>>.
+            <<dialogue $g.sultan>>
+                Perhaps you will gain some wisdom from this, thief. If your mind survives the ordeal.
+            <</dialogue>>
+            The Sultan laughed and left the dark room, leaving <<rep $g.dancer>> alone with the procession of guards waiting to extract their revenge. <<Yourrep $g.dancer>> stumbled through the gates of your fort a week after the other two returned. <<They $g.dancer>> dancer|was exhausted and thirsty, proceeding directly to <<their $g.dancer>> room and collapsing into a deep sleep.
+        </p>
+    <</if>>
+</p>
+
+
+
+

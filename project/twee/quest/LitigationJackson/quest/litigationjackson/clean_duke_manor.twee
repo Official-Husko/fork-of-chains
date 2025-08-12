@@ -1,0 +1,250 @@
+:: QuestSetup_cleaning_the_duke_s_manor [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"cleaning_the_duke_s_manor0",
+"Human (Vale): Male duke",
+'subrace_humanvale_male', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_noble),
+],
+)>> <<run new setup.UnitGroup(
+"cleaning_the_duke_s_manor1",
+"Human (Vale): maid",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_maid),
+  setup.qc.Trait('unit', setup.trait.muscle_thin),
+],
+)>>
+
+
+
+
+<<run new setup.QuestTemplate(
+'cleaning_the_duke_s_manor', /* key */
+"Cleaning the Duke\'s Manor", /* Title */
+{ /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'money',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'leadmaid': [ setup.qu.housekeeper, 1],
+  'submaid': [ setup.qu.housekeeper, 1],
+  'thief': [ setup.qu.thief, 1],
+},
+{ /* actors */
+  'valeduke': 'cleaning_the_duke_s_manor0',
+  'manormaid': 'cleaning_the_duke_s_manor1',
+},
+[ /* costs */
+],
+'Quest_cleaning_the_duke_s_manor',
+setup.qdiff.easier4, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_cleaning_the_duke_s_manorCrit',
+    [
+      setup.qc.MoneyCrit(),
+      setup.qc.MoneyCustom(1500),
+      setup.qc.Equipment(setup.equipmentpool.all_combat),
+      setup.qc.Favor('humanvale', 10),
+    ],
+  ],
+  [
+    'Quest_cleaning_the_duke_s_manorCrit',
+    [
+      setup.qc.MoneyNormal(),
+      setup.qc.MoneyCustom(1500),
+      setup.qc.Favor('humanvale', 10),
+    ],
+  ],
+  [
+    'Quest_cleaning_the_duke_s_manorFailure',
+    [
+      setup.qc.Ire('humanvale', 1),
+    ],
+  ],
+  [
+    'Quest_cleaning_the_duke_s_manorDisaster',
+    [
+      setup.qc.Injury('thief', 2),
+      setup.qc.Ire('humanvale', 1),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.common],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_cleaning_the_duke_s_manor [nobr]
+<<questimage 'clean_duke_manor.jpg'>>
+
+<p>
+    The Duke <<Rep $g.valeduke>> in the <<lore region_vale>> is hiring seasonal help to keep his manor clean.
+    It seems an easy enough job for your slavers to accomplish,
+    plus this Duke is certain to have valuables laying around somewhere.
+</p>
+
+
+:: Quest_cleaning_the_duke_s_manorCrit [nobr]
+<p>
+    Your slavers arrived at the manor and got to work immediately after changing into their maid uniforms. The three of them split up and began casing
+    the place. After an hour, they reconvene and <<rep $g.thief>> informed the group <<they $g.thief>> spotted a jewelry box in the master bedroom that <<they $g.thief>> thief|think <<they $g.thief>> can break into.
+</p>
+
+<p>
+    At the end of the week, they spring their plan into action. <<Rep $g.leadmaid>> entered the Duke's office to clean it, feeling the Duke's gaze follow <<them $g.leadmaid>> around the room as <<they $g.leadmaid>> stretched up to dust the high up spaces, or bent down to clean the floor. <<Rep $g.leadmaid>> teased the Duke for minutes on end, before <<uadv $g.leadmaid>> claiming <<they $g.leadmaid>> needed to clean under the Duke's desk.
+</p>
+
+<p>
+    Underneath the desk, <<therace $g.leadmaid>> steeled <<their $g.leadmaid>> resolve as <<they $g.leadmaid>> slipped the Duke's pants down, gaining a glimpse of his <<udick $g.valeduke>>. <<Theslaver $g.leadmaid>> took the Duke's <<udick $g.valeduke>> into <<their $g.leadmaid>> <<umouth $g.leadmaid>>, softly suckling at the tip, before taking the Duke deeper. The estimate <<rep $g.thief>> gave was 20 minutes, so <<rep $g.leadmaid>> knew <<they $g.leadmaid>> had <<their $g.leadmaid>> work cut out for <<them $g.leadmaid>>.
+</p>
+<<if $gOutcome == 'crit'>>
+    <p>
+        Unfortunately, the Duke didn't last that long. After about 5 minutes, he grabbed <<rep $g.leadmaid>> by the hair and hilted himself in <<their $g.leadmaid>> throat, cumming directly into <<their $g.leadmaid>> stomach. <<Rep $g.leadmaid>> pulled <<themselves $g.leadmaid>> off the Duke's <<udick $g.valeduke>> coughing and sputtering, but most of all worried that <<Rep $g.thief>> didn't have enough time to get the goods and get out.
+    </p>
+
+    <p>
+        Thinking quickly, <<Rep $g.leadmaid>> hopped up onto the desk and hiked <<their $g.leadmaid>> maid uniform's skirt up past <<their $g.leadmaid>> knees and said
+        <<dialogue $g.leadmaid>>
+            Please, <<rep $g.valeduke>>, I've been so attracted to you since we got here. Please before it's time for us to go, please fill me up!
+        <</dialogue>>
+    </p>
+
+    <p>
+        The Duke found it hard to resist a temptation such as this. He stroked himself a few times while thinking, then came to a decision. He removed <<reps $g.leadmaid>> panties, giving them a sniff before putting them in a pocket. He then grabbed <<reps $g.leadmaid>> thighs before pushing himself into <<their $g.leadmaid>> <<uhole $g.leadmaid>>.
+    </p>
+
+    <p>
+        The Duke remained in his office with <<rep $g.leadmaid>> for hours, leaving only once to retrieve refreshments before going back in. It was nightfall before the group reunited for the trip back home. <<Rep $g.leadmaid>> leadmaid|was holding a wrapped up package when <<they $g.leadmaid>> finally showed up, and informed the group that the Duke was going to be paying them a bonus.
+    </p>
+
+    <p>
+        The trip back was uneventful, with <<rep $g.leadmaid>> sleeping nearly the entire way. The group found time to stop at a town on the way back to fence their stolen goods, netting them a neat profit, after expenses.
+    </p>
+<<elseif $gOutcome == 'success'>>
+    <p>
+        23 minutes later, your slavers began their journey back to the fort, stopping at a town on the way to fence their stolen goods, netting you a tidy sum after expenses, which were mostly drunk by <<rep $g.leadmaid>> to get the taste out of <<their $g.leadmaid>> mouth.
+    </p>
+
+<</if>>
+
+
+
+:: Quest_cleaning_the_duke_s_manorFailure [nobr]
+<p>
+    Your slavers arrived at the manor and got to work immediately after changing into their maid uniforms. The three of them split up and began casing
+    the place. After an hour, they reconvene and <<Rep $g.thief>> informs the group <<they $g.thief>> was able to spot a jewelry box in the master bedroom that <<they $g.thief>> thinks <<they $g.thief>> can break in to.
+</p>
+
+<p>
+    Later that day, <<Rep $g.leadmaid>> and <<rep $g.submaid>> stood guard outside the door to the master bedroom, while <<Rep $g.thief>> thief|was inside picking the lock. The lookouts were approached by another maid carrying linens meant for the master bedroom.
+</p>
+<<unitcard $g.manormaid 1>>
+<p>
+    The lookouts stopped the maid, telling <<them $g.manormaid>> that the master bedroom was undergoing a deep cleaning, and that <<they $g.manormaid>> couldn't go inside. The <<girl $g.manormaid>> regarded the two with suspicion, before pushing past them and stepping inside. The maid got a look at <<Rep $g.thief>> working the lock for half a second, before <<yourrep $g.submaid>> grabbed the <<girl $g.manormaid>> from behind, cupping a <<uhand $g.submaid>> over <<their $g.manormaid>> mouth.
+</p>
+
+<p>
+    <<Rep $g.submaid>> overpowered the maid and wrestled <<them $g.manormaid>> to the ground, before stuffing a gag in <<their $g.manormaid>> mouth. The maid was still struggling, so <<rep $g.submaid>> pulled <<their $g.submaid>> <<udickorstrap $g.submaid>> out and lined it up with the <<girl $g.manormaid>>'s <<uhole $g.manormaid>>. <<Rep $g.submaid>> pushed the maid's face into the stone, pulled the maid's panties aside and pushed <<their $g.submaid>> dry <<udickorstrap $g.submaid>> into the maid's <<uhole $g.manormaid>>. The maid screamed uselessly into <<their $g.manormaid>> gag while the <<udickorstrap $g.submaid>> stretched <<their $g.manormaid>> hole.
+</p>
+
+<p>
+    It only took about 6 thrusts before the maid got the picture and ceased to struggle.
+    <<if $g.submaid.isHasAnyTraitExact(["per_dominant", "per_evil", "per_cruel"])>>
+        <<Rep $g.submaid>> didn't seem to care, and continued thrusting anyway. The maid sobbed with tears running down <<their $g.manormaid>> face as <<their $g.manormaid>> aching <<uhole $g.manormaid>> was violated. By the time <<rep $g.thief>> had finished with the lock and was stuffing jewelry into <<their $g.thief>> bag as quickly as <<they $g.thief>> could,
+        <<if $g.submaid.isHasDick()>>
+            the maid's <<uhole $g.manormaid>> was now slick with <<reps $g.submaid>> cum, dulling the pain. The maid <<themselves $g.manormaid>> had even managed to achieve climax, to <<their $g.manormaid>> own embarrassment. <<Rep $g.submaid>> pulled <<their $g.submaid>> <<udick $g.submaid>> from the poor maid's <<uhole $g.manormaid>> and signaled <<rep $g.leadmaid>> they were done in there.
+        <<else>>
+            the maid's <<uhole $g.manormaid>> was swollen and red. <<Rep $g.submaid>> pushed <<themselves $g.submaid>> all the way in one final time, eliciting one more scream from the maid as <<they $g.manormaid>> came from the experience, losing <<themselves $g.manormaid>> in pleasure, pain and shame. <<Rep $g.submaid>> pulled <<their $g.submaid>> <<udickorstrap $g.submaid>> out from the poor <<girl $g.manormaid>>'s hole, its still dry surface tugging on the maid's insides. <<Rep $g.submaid>> signaled to <<rep $g.leadmaid>> that it was time to go.
+        <</if>>
+    <<else>>
+        <<Rep $g.submaid>> kept that <<udickorstrap $g.submaid>> lodged in the maid's insides, moving it occasionally as a reminder what would happen if <<they $g.manormaid>> struggled. The maid watched <<rep $g.thief>> as <<they $g.thief>> finally worked the lock open and began stuffing jewelry into <<their $g.thief>> bag as quickly as <<they $g.thief>> could. <<Rep $g.submaid>> pulled <<their $g.submaid>> <<udickorstrap $g.submaid>> out from the poor <<girl $g.manormaid>>'s hole, its still dry surface tugging on the maid's insides. <<Rep $g.submaid>> signaled to <<rep $g.leadmaid>> that it was time to go.
+    <</if>>
+</p>
+
+<p>
+    The group knew their cover was blown, so they didn't stop as they ran out the front door with their stolen goods. They rode full speed for an hour straight until they felt safe enough to slow down. They stopped at a town on the way to fence their stolen goods, but were too ashamed to ride back to the fort immediately. They spent the rest of the week lying low, and by the time they returned the funds were all gone.
+</p>
+
+
+
+:: Quest_cleaning_the_duke_s_manorDisaster [nobr]
+<p>
+    Your slavers arrived at the manor and got to work immediately after changing into their maid uniforms. The three of them split up and began casing
+    the place. After an hour, they reconvene and <<Rep $g.thief>> informs the group <<they $g.thief>> was able to spot a jewelry box in the master bedroom that <<they $g.thief>> thinks <<they $g.thief>> can break into.
+</p>
+
+<p>
+    At the end of the week, they spring their plan into action. <<Rep $g.leadmaid>> entered the Duke's office to clean it, feeling the Duke's gaze follow <<them $g.leadmaid>> around the room as <<they $g.leadmaid>> stretched up to dust the high up spaces, or bent down to clean the floor. <<Rep $g.leadmaid>> teased the Duke for minutes on end, before <<uadv $g.leadmaid>> claiming <<they $g.leadmaid>> needed to clean under the Duke's desk.
+</p>
+
+<p>
+    Underneath the desk, <<therace $g.leadmaid>> steeled <<their $g.leadmaid>> resolve as <<they $g.leadmaid>> slipped the Duke's pants down, gaining a glimpse of his <<udick $g.valeduke>>. <<Theslaver $g.leadmaid>> took the Duke's <<udick $g.valeduke>> into <<their $g.leadmaid>> <<umouth $g.leadmaid>>, softly suckling at the tip, before taking the Duke deeper. The estimate <<rep $g.thief>> gave was 20 minutes, so <<rep $g.leadmaid>> knew <<they $g.leadmaid>> had <<their $g.leadmaid>> work cut out for <<them $g.leadmaid>>.
+</p>
+
+<p>
+    Unfortunately, the Duke didn't last that long. After about 5 minutes, he grabbed <<rep $g.leadmaid>> by the hair and hilted himself in <<their $g.leadmaid>> throat, cumming directly into <<their $g.leadmaid>> stomach. <<Rep $g.leadmaid>> pulled <<themselves $g.leadmaid>> off the Duke's <<udick $g.valeduke>> coughing and sputtering, but most of all worried that <<Rep $g.thief>> didn't have enough time to get the goods and get out.
+</p>
+
+<p>
+    Thinking quickly, <<Rep $g.leadmaid>> hopped up onto the desk and hiked <<their $g.leadmaid>> maid uniform's skirt up past <<their $g.leadmaid>> knees and said
+    <<dialogue $g.leadmaid>>
+        Please, <<rep $g.valeduke>>, I've been so attracted to you since we got here. Please before it's time for us to go, please fill me up!
+    <</dialogue>>
+</p>
+
+<p>
+    The Duke found it hard to resist a temptation such as this. He stroked himself a few times while thinking, then came to a decision.
+    <<dialogue $g.valeduke>>
+        I'm afraid not, I've got very important court matters to attend to I'm afraid.
+    <</dialogue>>
+    He pulled his pants up and gave <<reps $g.leadmaid>> <<ugenital $g.leadmaid>> a quick loving stroke, before striding out of the office and down the hall.
+</p>
+
+<p>
+    <<Reps $g.thief>> thoughts were interrupted by the door to the master bedroom swinging open behind <<them $g.thief>>.
+    <<dialogue $g.valeduke>>
+        What in the hell? GUARDS! THIEF!
+    <</dialogue>>
+    The Duke yelled, as he threw himself at the unprepared thief. <<Rep $g.thief>> thief|was knocked to the ground as the Duke pounced on <<them $g.thief>>.
+    <<dialogue $g.valeduke>>
+        Think you can steal from me, eh?
+    <</dialogue>>
+    The Duke said as he hiked up <<reps $g.thief>> skirt and began to push a thumb inside <<their $g.thief>> <<uanus $g.thief>>.
+    <<dialogue $g.valeduke>>
+        I'll show you what we do to thieves around here..
+    <</dialogue>>
+    The Duke whispered into <<reps $g.thief>> ear. The distant sound of footsteps got louder as the Duke pulled his <<udick $g.valeduke>> free from his pants and began to push it into <<reps $g.thief>> <<uanus $g.thief>>. The Duke was laying fully on top of <<theslaver $g.thief>> pinning down every limb, as he began pounding into <<theslaver $g.thief>>'s <<uanus $g.thief>> without mercy.
+</p>
+
+<p>
+    The guards showed up almost a minute later to find their Duke still thrusting his <<udick $g.valeduke>> relentlessly into the would be thief's <<uanus $g.thief>>. It wasn't much longer before the Duke tensed up on top of <<theslaver $g.thief>> and pushed himself all the way in, depositing a load inside <<reps $g.thief>> <<uanus $g.thief>>.
+    <<dialogue $g.valeduke>>
+        Put this cretin in the stocks.
+    <</dialogue>>
+    The Duke said, the guards grabbing <<yourrep $g.thief>> and dragging <<them $g.thief>> across the floor, deeper into the manor.
+</p>
+
+<p>
+    Your other two slavers hid on the property until nightfall, witnessing the unlucky thief get repeatedly violated in the <<umouth $g.thief>> and <<uhole $g.thief>> by the guards and villagers going about their business. It wasn't until midnight they found the opportunity to retrieve their well used comrade. The trip home is uneventful, but the injuries sustained by <<rep $g.thief>> will put <<them $g.thief>> out of commission for a while.
+</p>
+
+
+
+

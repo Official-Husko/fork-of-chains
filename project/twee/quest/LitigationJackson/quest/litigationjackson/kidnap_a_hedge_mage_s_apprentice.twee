@@ -1,0 +1,224 @@
+:: QuestSetup_kidnap_a_hedge_mage_s_apprentice [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"kidnap_a_hedge_mage_s_apprentice0",
+"Vale Apprentice",
+'subrace_humanvale', /* pools */
+0, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_apprentice),
+  setup.qc.Trait('unit', setup.trait.magic_water),
+],
+)>>
+
+
+
+
+<<set _criteriadistraction = new setup.UnitCriteria(
+null, /* key */
+'Fast Talking Mage', /* name */
+[
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_playful,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_fire,
+  setup.trait.magic_fire_master,
+  setup.trait.magic_water,
+  setup.trait.magic_water_master,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+  setup.trait.magic_light,
+  setup.trait.magic_light_master,
+  setup.trait.magic_dark,
+  setup.trait.magic_dark_master,
+],
+[
+  setup.trait.bg_thug,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_serious,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 1.5,
+  arcane: 1.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'kidnap_a_hedge_mage_s_apprentice', /* key */
+"Kidnap a Hedge Mage\'s Apprentice", /* Title */
+{ /* Author */
+  name: "Litigation Jackson",
+  url: "",
+},
+[ /* tags */
+  'vale',
+  'unit',
+  'ire',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'kidnapper': [ setup.qu.kidnapper, 1],
+  'kidnapper2': [ setup.qu.kidnapper, 1],
+  'distraction': [ _criteriadistraction, 1],
+},
+{ /* actors */
+  'apprentice': 'kidnap_a_hedge_mage_s_apprentice0',
+},
+[ /* costs */
+],
+'Quest_kidnap_a_hedge_mage_s_apprentice',
+setup.qdiff.normal22, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_kidnap_a_hedge_mage_s_apprenticeCrit',
+    [
+      setup.qc.Slave('apprentice', "a|was a hedge mage\'s apprentice in the Vale, before running into your company.", undefined),
+      setup.qc.Trait('apprentice', setup.trait.per_lustful),
+      setup.qc.MoneyNormal(),
+      setup.qc.Favor('outlaws', 25),
+      setup.qc.Ire('humanvale', 1),
+    ],
+  ],
+  [
+    'Quest_kidnap_a_hedge_mage_s_apprenticeCrit',
+    [
+      setup.qc.Slave('apprentice', "a|was a hedge mage\'s apprentice in the Vale, before running into your company.", undefined),
+      setup.qc.MoneyNormal(),
+      setup.qc.Favor('outlaws', 25),
+      setup.qc.Ire('humanvale', 1),
+    ],
+  ],
+  [
+    'Quest_kidnap_a_hedge_mage_s_apprenticeFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_kidnap_a_hedge_mage_s_apprenticeDisaster',
+    [
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.vale, setup.rarity.rare],
+],
+[ /* restrictions */
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_kidnap_a_hedge_mage_s_apprentice [nobr]
+<p>
+    You've heard good things about a hedge mage working in a village out in the Vale. Apparently, this mage is doing well enough to have hired an apprentice. What an exciting opportunity for you.
+</p>
+
+
+:: Quest_kidnap_a_hedge_mage_s_apprenticeCrit [nobr]
+<p>
+    Your slavers came up with a plan. <<Rep $g.distraction>> would talk a little shop with the hedge mage, while <<rep $g.kidnapper>> and <<rep $g.kidnapper2>> would take advantage of the distraction to nab the apprentice.
+</p>
+
+<p>
+    The plan went off without a hitch, the mage engrossed in a conversation with <<yourrep $g.distraction>>, not noticing the other two slavers slipping in through the back door at all. <<Rep $g.apprentice>> was bent over a cauldron, diligently studying the reaction while gently stirring the solution. <<Them $g.apprentice>> attention was so focused, <<they $g.apprentice>> didn't have time to scream when <<rep $g.kidnapper>> put <<their $g.kidnapper>> <<uhand $g.kidnapper>> over <<their $g.apprentice>> mouth.
+</p>
+
+<p>
+    <<Rep $g.kidnapper2>> started to bind the apprentice's hands, when in <<their $g.apprentice>> panicked thrashing, <<they $g.apprentice>> kicked the cauldron over, sending the potion inside spilling out all over the floor. <<Rep $g.kidnapper>> quickly reacted, shoving <<rep $g.apprentice>> face first into the puddle on the ground and kneeling on <<their $g.apprentice>> neck. <<Rep $g.kidnapper2>> successfully bound the apprentice's limbs, <<therace $g.kidnapper2>> making the bindings particularly uncomfortable, before properly gagging the new slave and carrying <<them $g.apprentice>> back the way they came in.
+</p>
+
+<p>
+    The party regrouped at their camp outside of town.
+    <<if $gOutcome == 'crit'>>
+        The apprentice was a writhing mess. It turned out the potion <<they $g.apprentice>> was making was a concentrated aphrodisiac the mage was intending to sell. The <<girl $g.apprentice>>'s <<ugenital $g.apprentice>> was soaking <<their $g.apprentice>> clothes, and your slavers were certain <<they $g.apprentice>> was begging into the gag to have <<their $g.apprentice>> <<uhole $g.apprentice>> filled.
+    <</if>>
+    Your slavers took turns passing the bound <<rep $g.apprentice>> between them until they were satisfied, before heading back to the fort.
+</p>
+
+
+
+:: Quest_kidnap_a_hedge_mage_s_apprenticeFailure [nobr]
+<p>
+    Your slavers came up with a plan. <<Rep $g.distraction>> would talk a little shop with the hedge mage, while <<rep $g.kidnapper>> and <<rep $g.kidnapper2>> would take advantage of the distraction to nab the apprentice.
+</p>
+
+<p>
+    What your slavers were unaware of, apparently, was that this was the apprentice's day off. They had a look around for anything valuable, but the mage mostly made do with local ingredients that were practically worthless.
+</p>
+
+<p>
+    The party regrouped outside of town, and returned to the fort sheepishly.
+</p>
+
+
+
+:: Quest_kidnap_a_hedge_mage_s_apprenticeDisaster [nobr]
+<p>
+    Your slavers came up with a plan. <<Rep $g.distraction>> would talk a little shop with the hedge mage, while <<rep $g.kidnapper>> and <<rep $g.kidnapper2>> would take advantage of the distraction to nab the apprentice.
+</p>
+
+<p>
+    What <<yourrep $g.distraction>> distraction|was unable to communicate to your kidnappers, was that the shop was closed today due to a mishap in the back. <<Rep $g.kidnapper>> and <<rep $g.kidnapper2>> crept silently in through the back door. It was pitch black inside, and after waiting for their eyes to adjust, they noticed there was no apprentice to be found. The duo looked around, but after finding no-one they decided to search for valuables instead. While rummaging around,
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.kidnapper>>
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.kidnapper2>>
+    <</if>>
+    accidentally knocked a vial of something into a large black cauldron.
+</p>
+
+<p>
+    Immediately, the liquid inside started to glow a bright green. Your slavers were looking inside when glowing tendrils shot out and wrapped around each of their waists. Your slavers fought the urge to scream as more tendrils emerged from the pot and started to wrap around their limbs, while lifting them up into the air. As the slimy tendrils began to slip underneath their clothing and explore their bodies,
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<rep $g.kidnapper>>
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<rep $g.kidnapper2>>
+    <</if>>
+    realized the vial
+    <<if $gQuest.getSeed() % 2 == 0>>
+        <<they $g.kidnapper>>
+    <<elseif $gQuest.getSeed() % 2 == 1>>
+        <<they $g.kidnapper2>>
+    <</if>>
+    clumsily dropped must have been a sample from a slime.
+</p>
+
+<p>
+    The slime's tendrils wrapping around <<yourrep $g.kidnapper>> started to push their way into <<their $g.kidnapper>> mouth past <<their $g.kidnapper>> gritted teeth. Contact with <<their $g.kidnapper>> saliva sent a surge of slimy goo into <<their $g.kidnapper>> mouth, forcing <<their $g.kidnapper>> jaw open as the hungry slime searched for whatever sustenance it could find.
+</p>
+
+<p>
+    Opposite <<them $g.kidnapper>>, <<yourrep $g.kidnapper2>> was flinching and squirming from the slime's attention on <<their $g.kidnapper2>> <<unipples $g.kidnapper2>>, distracting <<them $g.kidnapper2>> from the tendrils making their way to <<their $g.kidnapper2>> nether regions. When the slime enveloped <<their $g.kidnapper2>> <<ugenital $g.kidnapper2>>, <<they $g.kidnapper2>> let out a gasp before <<they $g.kidnapper2>> remembered the situation they were in and shut <<their $g.kidnapper2>> mouth to endure the situation silently. <<Their $g.kidnapper2>> heightened arousal drew the attention of the hungry slime as it sent another wave of goo down its tendril, fully enveloping <<therace $g.kidnapper2>>'s groin, before firming up and pushing its way inside <<their $g.kidnapper2>> <<uhole $g.kidnapper2>>.
+</p>
+
+<p>
+    The tendrils widened their search on each of the slaver's bodies. It felt to each of them that a slimy tentacle had touched every part of their body at least once. The tendril in <<reps $g.kidnapper>> mouth was now reaching the back of <<their $g.kidnapper>> throat and threatening to keep going, while a wayward slimy appendage curiously stroked <<their $g.kidnapper>> <<ugenital $g.kidnapper>>. The tentacle exploring <<reps $g.kidnapper2>> <<uhole $g.kidnapper2>> now had a partner also invading <<their $g.kidnapper2>> <<uanus $g.kidnapper2>>. <<Rep $g.kidnapper2>> had tears streaming down <<their $g.kidnapper2>> face as <<they $g.kidnapper2>> tried as hard as <<they $g.kidnapper2>> could to keep inside the lewd noises <<they $g.kidnapper2>> so desperately wanted to make.
+</p>
+
+<p>
+    <<Rep $g.distraction>> finished the conversation <<they $g.distraction>> distraction|was having with the mage, and made <<their $g.distraction>> way around back to let the other team know the situation. Finding her comrades in the situation they were in, <<therace $g.distraction>> scrambled to assess the situation, before <<rep $g.kidnapper>> choked or <<rep $g.kidnapper2>> gave away the intrusion.
+</p>
+
+<p>
+    The <<uadjgood $g.distraction>> slaver remembered that slimes are quite fond of bodily fluids, and frantically looked through all the reagents and solutions the mage kept in the workshop. Finding a jar of what <<theslaver $g.distraction>> assumed was cum, <<they $g.distraction>> unscrewed the lid and rolled the open jar past the cauldron containing the awakened slime. The slime predictably investigated the disturbance, and found the meal it was looking for. The slime sent enough of its body mass after the easy meal that <<rep $g.distraction>> was able to pull the two trapped slavers away from the cauldron and out the door.
+</p>
+
+<p>
+    After an uncomfortable and squishy walk out of town, your slavers washed themselves in a stream before heading back to the fort; thoroughly embarrassed.
+</p>
+
+
+
+
