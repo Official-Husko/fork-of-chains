@@ -46,7 +46,7 @@ export default {
               /* show all = */ true,
             )}
           </div>
-          <div>${lore.getLoreText()}</div>
+          <div>${setup.DOM.Util.twee(lore.getLoreText())}</div>
         </div>
       </div>
     `;

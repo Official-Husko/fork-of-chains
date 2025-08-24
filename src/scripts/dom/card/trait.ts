@@ -24,7 +24,7 @@ function traitNameActionMenu(trait: Trait, show_actions?: boolean): JQuery[] {
 export function getTraitEtcFragment(trait: Trait): DOM.Node {
   const fragments: DOM.Attachable[] = [];
   fragments.push(html`
-    <div>${setup.DOM.Util.twine(trait.getDescription())}</div>
+    <div>${setup.DOM.Util.twee(trait.getDescription())}</div>
   `);
 
   if (trait.isHasSkillBonuses()) {

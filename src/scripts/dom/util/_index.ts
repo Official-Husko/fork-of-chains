@@ -20,7 +20,7 @@ import outcome from "./outcome";
 import prestige from "./prestige";
 import rep from "./rep";
 import table from "./table";
-import twine from "./twine";
+import twee from "./twee";
 
 /**
  * Stores util functions that returns another dom object
@@ -47,6 +47,6 @@ export const DOM_Util = {
   ...prestige,
   ...rep,
   ...table,
-  ...twine,
+  ...twee,
   interactiveSexTooltip,
 };

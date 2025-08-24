@@ -205,6 +205,7 @@ function renderSection<T extends ObjectWithKey, D = T>(section: Section<T, D>) {
   return setup.DOM.Util.filterAll({
     menu: section.menu,
     filter_objects: objects,
+    style_override: section.style_override,
     display_objects: section.get_display_object
       ? objects.map(section.get_display_object)
       : undefined,

@@ -26,11 +26,12 @@ export default {
   },
 
   /**
-   * String to twine fragment
+   * Renders a string with twee code (text potentially including macros and html)
+   * into a Document Fragment.
    */
-  twine(twine_string: string): DOM.Node {
+  twee(twee_text: string): DocumentFragment {
     const fragment = document.createDocumentFragment();
-    new Wikifier(fragment, setup.DevToolHelper.stripNewLine(twine_string));
+    new Wikifier(fragment, setup.DevToolHelper.stripNewLine(twee_text));
     return fragment;
   },
 };

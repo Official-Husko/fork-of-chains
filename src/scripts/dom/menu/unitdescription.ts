@@ -8,7 +8,7 @@ function getHistoryFragment(unit: Unit): DOM.Node {
   for (const history of unit.getHistory()) {
     inner_fragments.push(html`
       <div>
-        ${setup.DOM.Util.twine(
+        ${setup.DOM.Util.twee(
           setup.Text.replaceUnitMacros(history, { a: unit }),
         )}
       </div>
@@ -303,7 +303,7 @@ export const DOM_Menu_unitdescription = function (unit: Unit): DOM.Node {
     {
       /* title descriptions */
       fragments.push(html`
-        ${setup.DOM.Util.twine(setup.TitleHelper.unitTitleDescribe(unit))}
+        ${setup.DOM.Util.twee(setup.TitleHelper.unitTitleDescribe(unit))}
       `);
     }
 
@@ -606,7 +606,7 @@ export const DOM_Menu_unitdescription = function (unit: Unit): DOM.Node {
 
     const describe_all = setup.Text.Unit.Trait.describeAll(unit, "per");
     if (describe_all) {
-      fragments.push(html` ${setup.DOM.Util.twine(describe_all)} `);
+      fragments.push(html` ${setup.DOM.Util.twee(describe_all)} `);
     } else {
       if (unit.isMindbroken()) {
         fragments.push(html`
@@ -627,7 +627,7 @@ export const DOM_Menu_unitdescription = function (unit: Unit): DOM.Node {
     }
 
     fragments.push(html`
-      ${setup.DOM.Util.twine(setup.Text.Unit.Trait.describeAll(unit, "skill"))}
+      ${setup.DOM.Util.twee(setup.Text.Unit.Trait.describeAll(unit, "skill"))}
     `);
 
     if (State.variables.bodyshift.isBodyshifter(unit)) {
@@ -647,7 +647,7 @@ export const DOM_Menu_unitdescription = function (unit: Unit): DOM.Node {
           `Recent experiences have temporarily traumatized a|rep.`,
           `a|Rep a|have been recently traumatized.`,
         ])}
-        ${setup.DOM.Util.twine(trauma)}
+        ${setup.DOM.Util.twee(trauma)}
       `);
     }
 
@@ -669,7 +669,7 @@ export const DOM_Menu_unitdescription = function (unit: Unit): DOM.Node {
         `);
       }
 
-      fragments.push(html` ${setup.DOM.Util.twine(boon)} `);
+      fragments.push(html` ${setup.DOM.Util.twee(boon)} `);
     }
 
     if (unit.isSlaver()) {

@@ -84,7 +84,7 @@ function internalOutput(
   let raw = func(unit);
   if (article) raw = setup.Article(raw);
 
-  output.append(setup.DOM.Util.twine(raw));
+  output.append(setup.DOM.Util.twee(raw));
 }
 
 function internalOutputUnitTarget<T extends Unit | null>(
@@ -101,7 +101,7 @@ function internalOutputUnitTarget<T extends Unit | null>(
     target = null;
   }
   let raw = func({ unit: unit, target: target as T });
-  output.append(setup.DOM.Util.twine(raw));
+  output.append(setup.DOM.Util.twee(raw));
 }
 
 // each of this will be generated into two macros, one for naked desc and one for with equipment

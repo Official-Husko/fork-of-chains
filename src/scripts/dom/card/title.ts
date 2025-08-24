@@ -38,7 +38,7 @@ export default {
     }
 
     fragments.push(html`
-      <div>${setup.DOM.Util.twine(title.getDescription())}</div>
+      <div>${setup.DOM.Util.twee(title.getDescription())}</div>
     `);
 
     return setup.DOM.create(

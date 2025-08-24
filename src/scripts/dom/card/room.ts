@@ -231,7 +231,7 @@ function getRoomAndTemplateCommonFragment(
   const fragments: DOM.Attachable[] = [];
   const description = template.getDescription();
   if (description) {
-    fragments.push(setup.DOM.Util.twine(description));
+    fragments.push(setup.DOM.Util.twee(description));
   } else {
     const building = template.getBuildingTemplate();
     if (building) {

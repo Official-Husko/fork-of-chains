@@ -25,7 +25,7 @@ Macro.add("font", {
 
     const payload = this.payload[0].contents;
     this.output.append(
-      html`<span ${css_add}>${setup.DOM.Util.twine(payload)}</span>`,
+      html`<span ${css_add}>${setup.DOM.Util.twee(payload)}</span>`,
     );
   },
 });
@@ -48,7 +48,7 @@ Macro.add("fontsize", {
 
     const payload = this.payload[0].contents;
     this.output.append(
-      html`<span ${css_add}>${setup.DOM.Util.twine(payload)}</span>`,
+      html`<span ${css_add}>${setup.DOM.Util.twee(payload)}</span>`,
     );
   },
 });

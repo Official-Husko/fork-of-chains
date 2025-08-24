@@ -6,7 +6,7 @@
 Macro.add("printreplace", {
   handler() {
     const node = setup.DOM.Util.replaceUnitInFragment(
-      setup.DOM.Util.twine(this.args[0]),
+      setup.DOM.Util.twee(this.args[0]),
     );
     this.output.append(node);
   },

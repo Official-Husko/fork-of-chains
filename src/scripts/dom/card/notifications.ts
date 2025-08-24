@@ -13,7 +13,7 @@ export default {
 
     for (const notification of parsed_notifications) {
       fragments.push(
-        setup.DOM.create("div", {}, setup.DOM.Util.twine(notification)),
+        setup.DOM.create("div", {}, setup.DOM.Util.twee(notification)),
       );
     }
     if (fragments.length) {

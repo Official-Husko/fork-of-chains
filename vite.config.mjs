@@ -154,7 +154,6 @@ export default defineConfig(({ command, mode }) => {
             let hasTweeChanges = false
 
             server.watcher.on('change', (file) => {
-              console.log("CHANGED " + file);
               const isCodeFile = /\.(ts|tsx|css)$/.test(file);
               if (enableHotReload && isCodeFile) {
                 // Apply individual debounce for each file

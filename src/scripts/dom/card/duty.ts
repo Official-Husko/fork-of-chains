@@ -10,7 +10,7 @@ import { domCardRep } from "../util/cardnamerep";
 
 function dutyDescriptionFragment(duty: DutyInstance): DOM.Node {
   State.temporary.gDuty = duty;
-  return setup.DOM.Util.twine(duty.getTemplate().getDescription());
+  return setup.DOM.Util.twee(duty.getTemplate().getDescription());
 }
 
 function dutyStatusFragment(duty: DutyInstance): DOM.Attachable {

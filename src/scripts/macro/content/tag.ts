@@ -1,5 +1,5 @@
 Macro.add("tagcard", {
   handler() {
-    this.output.appendChild(setup.DOM.Util.twine(this.args[0]));
+    this.output.appendChild(setup.DOM.Util.twee(this.args[0]));
   },
 });

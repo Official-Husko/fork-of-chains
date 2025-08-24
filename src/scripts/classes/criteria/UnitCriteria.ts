@@ -109,9 +109,6 @@ export class UnitCriteria extends TwineClass {
         `Skill multis cannot be an empty array (you can use an empty object instead)`,
       );
     }
-    if (def.name === "Menial Slave Order") {
-      debugger;
-    }
 
     if (key) {
       if (key in setup.qu)

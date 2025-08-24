@@ -86,7 +86,7 @@ Macro.add("choose", {
         const fragment = html`
           <div>
             ${setup.DOM.Nav.button(
-              setup.DOM.Util.twine(this.payload[i].args[0]),
+              setup.DOM.Util.twee(this.payload[i].args[0]),
               replaceContainerContentCallback(
                 $container,
                 this.payload[i].contents,

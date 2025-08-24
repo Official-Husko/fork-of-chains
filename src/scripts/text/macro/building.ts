@@ -5,7 +5,7 @@
 Macro.add("inyourbuilding", {
   handler() {
     this.output.append(
-      setup.DOM.Util.twine(setup.Text.Building.inYourBuilding(this.args[0])),
+      setup.DOM.Util.twee(setup.Text.Building.inYourBuilding(this.args[0])),
     );
   },
 });
