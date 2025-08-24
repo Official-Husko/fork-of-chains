@@ -1,5 +1,18 @@
+/**
+ * This module provides rules and logic for generating narrative punishment reasons for slaver characters.
+ *
+ * Types:
+ * - Unit: Represents a slaver character (see game model for details)
+ * - PunishRule: Rule for evaluating slaver behavior and generating text
+ */
+
 import { PunishRule, evaluateRules } from "./rules";
 
+/**
+ * Array of rules for determining why a slaver might be punished.
+ * Each rule contains a check function and a text template function.
+ * @type {PunishRule[]}
+ */
 const slaverRules: PunishRule[] = [
   { check: u => u.isMasochistic(), text: (u, rep, their) => `the masochistic slaver ${rep} showed ${their} masochistic advances` },
   { check: u => u.getTraits().includes(setup.trait.per_loner), text: (u, rep, their) => `${rep} forgot ${their} manners` },
@@ -33,6 +46,13 @@ const slaverRules: PunishRule[] = [
   { check: u => u.getTraits().includes(setup.trait.per_active), text: (u, rep) => `${rep} refused to study` },
 ];
 
+/**
+ * Generates a list of narrative reasons for punishing a slaver character.
+ * Evaluates all rules and returns matching reason strings.
+ *
+ * @param {Unit} unit - The slaver character to evaluate.
+ * @returns {string[]} Array of punishment reason strings.
+ */
 export function getPunishReasonSlaver(unit: Unit): string[] {
   return evaluateRules(
     unit,
