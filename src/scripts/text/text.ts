@@ -1,7 +1,7 @@
 import type { Trait, TraitTexts } from "../classes/trait/Trait";
 import type { Unit } from "../classes/unit/Unit";
 import { DOM } from "../dom/DOM";
-import { TextDuty } from "./duty";
+import { TextDuty } from "./duty/_index";
 import { TextRace } from "./race";
 import { TOPIC_NOUN } from "./raw/banter/topic";
 import { TextBanter } from "./sentence/banter";
