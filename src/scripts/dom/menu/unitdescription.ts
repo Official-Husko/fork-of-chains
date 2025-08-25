@@ -1,7 +1,7 @@
 import {
   getFriendSlaveTitle,
   getFriendTitle,
-} from "../../text/macro/friendship";
+} from "../../text/macro/friendship/_index";
 
 function getHistoryFragment(unit: Unit): DOM.Node {
   const inner_fragments = [];

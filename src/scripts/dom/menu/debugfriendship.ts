@@ -1,5 +1,5 @@
 import type { Job } from "../../classes/job/Job";
-import { getFriend } from "../../text/macro/friendship";
+import { getFriend } from "../../text/macro/friendship/_index";
 
 const divnames = [
   `divdebugfriendshipcontainerslaver`,

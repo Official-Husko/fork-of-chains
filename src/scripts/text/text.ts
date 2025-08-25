@@ -13,7 +13,7 @@ import { TextHobby } from "./sentence/hobby";
 import { TextInsult } from "./sentence/insult";
 import { TextPet } from "./sentence/pet";
 import { TextPraise } from "./sentence/praise";
-import { TextPunish } from "./sentence/punish";
+import { TextPunish } from "./sentence/punish/_index";
 import { TextRescue } from "./sentence/rescue";
 import { TextSlave } from "./sentence/slave";
 import { TextStrip } from "./sentence/strip";
