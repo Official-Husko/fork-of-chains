@@ -177,4 +177,12 @@ export class Subrace extends TwineClass {
       }
     }
   }
+
+  static fromTrait(trait_or_key: Trait | TraitKey): Subrace {
+    const trait_key = resolveKey(trait_or_key);
+
+    // strip "subrace_" prefix from trait key to get the subrace key
+    const subrace_key = trait_key.substring(8) as unknown as SubraceKey;
+    return setup.subrace[subrace_key];
+  }
 }

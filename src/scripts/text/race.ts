@@ -1,10 +1,9 @@
-import type { SubraceKey } from "../classes/trait/Subrace";
+import { Subrace } from "../classes/trait/Subrace";
 
 export namespace TextRace {
-  export function region(race: Trait): string {
-    return (
-      setup.subrace[race.key as unknown as SubraceKey].homeland_region ?? "???"
-    );
+  export function region(subrace_trait: Trait): string {
+    const subrace = Subrace.fromTrait(subrace_trait);
+    return subrace.homeland_region ?? "???";
   }
 
   export const REGIONS = {

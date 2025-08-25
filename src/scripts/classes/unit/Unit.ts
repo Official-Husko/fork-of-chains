@@ -32,6 +32,7 @@ import type { Speech, SpeechKey } from "../Speech";
 import type { Team, TeamKey } from "../Team";
 import type { Title, TitleKey } from "../title/Title";
 import type { Perk } from "../trait/Perk";
+import { Subrace } from "../trait/Subrace";
 import { TraitHelper, type Trait, type TraitKey } from "../trait/Trait";
 import type { TraitGroup } from "../trait/TraitGroup";
 import { UnitSkillsHelper, type SkillBreakdown } from "./Unit_SkillsHelper";
@@ -1763,11 +1764,12 @@ export class Unit extends TwineClass {
     ) {
       return State.variables.company.outlaws;
     } else {
-      const subrace = this.getSubrace();
-      const company_key = subrace.getTexts().company_key;
+      const subrace_trait = this.getSubrace();
+      const subrace = Subrace.fromTrait(subrace_trait);
+      const company_key = subrace.company_key;
       if (!company_key || !(company_key in State.variables.company)) {
         throw new Error(
-          `Missing company key ${company_key} for race ${subrace.getName()}`,
+          `Missing company key ${company_key} for race ${subrace_trait.getName()}`,
         );
       }
 
