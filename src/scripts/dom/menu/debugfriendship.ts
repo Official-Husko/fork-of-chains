@@ -3,7 +3,7 @@ import { getFriend } from "../../text/macro/friendship";
 
 const divnames = [
   `divdebugfriendshipcontainerslaver`,
-  `divdebugfirendshipcontainerslave`,
+  `divdebugfriendshipcontainerslave`,
 ];
 
 function refreshAll() {
