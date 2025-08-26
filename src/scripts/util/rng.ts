@@ -122,4 +122,19 @@ export namespace rng {
     setup.rng.shuffleArray(arraycopy);
     return arraycopy.splice(0, choices);
   }
+
+  /** Return a float in [0, 1) */
+  export function float(): number {
+    return Math.random();
+  }
+
+  /** Return true with given probability (0..1) */
+  export function chance(prob: number): boolean {
+    return Math.random() < prob;
+  }
+
+  /** Random integer between min and max (inclusive) */
+  export function int(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 }
