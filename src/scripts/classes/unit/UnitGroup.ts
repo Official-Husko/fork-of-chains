@@ -349,7 +349,7 @@ export class UnitGroup extends TwineClass {
         (item) => item != unit.key,
       );
     }
-    unit.unit_group_key = null;
+    unit.unit_group_key = undefined;
     unit.checkDelete();
   }
 

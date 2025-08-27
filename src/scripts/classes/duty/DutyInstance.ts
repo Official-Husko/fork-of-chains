@@ -11,16 +11,16 @@ export class DutyInstance extends TwineClass {
   key: DutyInstanceKey;
   template_key: DutyTemplateKey;
 
-  unit_key: UnitKey | null = null;
+  unit_key: UnitKey | undefined = undefined;
 
   /** Whether unit on this duty can still go on quests. */
-  is_can_go_on_quests_auto = false;
+  is_can_go_on_quests_auto?: true;
 
   /**
    * Whether this duty remains active when unit is not available, at an upkeep.
    * Only for slaver duties.
    */
-  is_specialist_enabled = false;
+  is_specialist_enabled?: true;
 
   constructor({ duty_template }: { duty_template: DutyTemplate }) {
     super();
@@ -64,7 +64,7 @@ export class DutyInstance extends TwineClass {
       throw new Error(
         `Duty ${this.getTemplate().key} cannot be replaced with specialists`,
       );
-    this.is_specialist_enabled = !this.is_specialist_enabled;
+    this.is_specialist_enabled = !this.is_specialist_enabled || undefined;
   }
 
   isCanGoOnQuestsAuto(): boolean {
@@ -72,7 +72,7 @@ export class DutyInstance extends TwineClass {
   }
 
   toggleIsCanGoOnQuestsAuto() {
-    this.is_can_go_on_quests_auto = !this.is_can_go_on_quests_auto;
+    this.is_can_go_on_quests_auto = !this.is_can_go_on_quests_auto || undefined;
   }
 
   getImageRep(skip_tooltip?: boolean, big?: boolean): string {
@@ -204,8 +204,8 @@ export class DutyInstance extends TwineClass {
     if (unit) {
       this.getTemplate().onUnassign(this, unit);
 
-      this.unit_key = null;
-      unit.duty_key = null;
+      this.unit_key = undefined;
+      unit.duty_key = undefined;
 
       this.resetCache(unit);
     }

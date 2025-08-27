@@ -14,16 +14,20 @@ import {
   buildingTemplateNameFragment,
 } from "./building";
 
-function roomNameFragment(room: RoomInstance): DOM.Node {
+function roomNameFragment(room: RoomInstance, combined?: boolean): DOM.Node {
   const fragments: DOM.Attachable[] = [];
-  const roomTemplate = room.getTemplate();
-  if (roomTemplate) {
-    fragments.push(html`${roomTemplate.repTags()}`);
+  const room_template = room.getTemplate();
+  if (room_template) {
+    fragments.push(
+      html`${combined
+        ? room_template.repCombinedTags()
+        : room_template.repTags()}`,
+    );
   }
   fragments.push(html`${domCardRep(room)}`);
-  if (roomTemplate) {
+  if (room_template) {
     fragments.push(
-      html` (${roomTemplate.getWidth()}×${roomTemplate.getHeight()})`,
+      html` (${room_template.getWidth()}×${room_template.getHeight()})`,
     );
   }
   return setup.DOM.create("span", {}, fragments);
@@ -42,11 +46,12 @@ export function roomTemplateNameFragment(
 }
 
 function roomTemplateActionFragmentCommon(
-  template: RoomTemplate,
+  room_template: RoomTemplate,
   show_actions?: boolean,
+  combined?: boolean,
 ): JQuery[] {
   const menus = [];
-  const placed = State.variables.roomlist.getRoomCount(template);
+  const placed = State.variables.roomlist.getRoomCount(room_template);
   if (placed.placed + placed.unplaced) {
     let text;
     if (placed.placed && !placed.unplaced) {
@@ -63,8 +68,8 @@ function roomTemplateActionFragmentCommon(
     );
   }
 
-  const building = template.getBuildingTemplate();
-  if (building) {
+  const building = room_template.getBuildingTemplate();
+  if (building && !combined) {
     menus.push(
       menuItemText({
         text: buildingTemplateNameFragment(building),
@@ -96,9 +101,13 @@ function roomInstanceNameActionMenu(
 ): JQuery[] {
   const menus: JQuery[] = [];
 
+  const room_template = room.getTemplate();
+  const building = room_template.getBuildingTemplate();
+  const combined = !!building && building.key === room_template.key;
+
   menus.push(
     menuItemTitle({
-      text: roomNameFragment(room),
+      text: roomNameFragment(room, combined),
     }),
   );
 
@@ -116,8 +125,8 @@ function roomInstanceNameActionMenu(
           unplaced.resetRotation();
 
           State.variables.gFortGridPlaceRoomKey = unplaced.key;
-          State.variables.gFortGridControl!.mode = "place";
-          State.variables.gFortGridControl!.setRoom(
+          setup.gFortGridControl!.mode = "place";
+          setup.gFortGridControl!.setRoom(
             unplaced,
             /* save location = */ false,
           );
@@ -146,8 +155,8 @@ function roomInstanceNameActionMenu(
     show_actions &&
     !room.getTemplate().isFixed() &&
     State.variables.roomlist.getRoomCount(room.getTemplate()).placed &&
-    State.variables.gFortGridControl &&
-    State.variables.gFortGridControl.mode != "view"
+    setup.gFortGridControl &&
+    setup.gFortGridControl.mode != "view"
   ) {
     menus.push(
       menuItemAction({
@@ -170,7 +179,7 @@ function roomInstanceNameActionMenu(
               null,
               /* return obsolete = */ true,
             )!;
-            State.variables.gFortGridControl!.refreshTiles(tiles);
+            setup.gFortGridControl!.refreshTiles(tiles);
             placed.resetRotation();
             setup.DOM.Nav.goto();
           } else {
@@ -182,7 +191,11 @@ function roomInstanceNameActionMenu(
   }
 
   menus.push(
-    ...roomTemplateActionFragmentCommon(room.getTemplate(), show_actions),
+    ...roomTemplateActionFragmentCommon(
+      room.getTemplate(),
+      show_actions,
+      combined,
+    ),
   );
 
   return menus;
@@ -218,7 +231,7 @@ function artContributorWanted(template: RoomTemplate): DOM.Node {
 function getArtCreditFragment(room: RoomInstance): DOM.Node | null {
   const room_image = room.getImageObject();
   if (room_image) {
-    return setup.DOM.Util.Image.credits(room_image.info, "room");
+    return null; //setup.DOM.Util.Image.credits(room_image.info, "room");
   } else {
     return html`<br />${artContributorWanted(room.getTemplate())}`;
   }

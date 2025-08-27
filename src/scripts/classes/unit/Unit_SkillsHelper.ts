@@ -373,13 +373,13 @@ export namespace UnitSkillsHelper {
   export function setSkillFocus(this: Unit, index: number, skill: Skill): void {
     initSkillFocuses.call(this);
 
-    if (index < 0 || index >= this.skill_focus_keys.length) {
+    if (index < 0 || index >= this.skill_focus_keys!.length) {
       throw new Error(`index out of range for set skill focus`);
     }
     if (!skill) {
       throw new Error(`skill not found for set skill focus`);
     }
-    this.skill_focus_keys[index] = skill.key;
+    this.skill_focus_keys![index] = skill.key;
   }
 
   export function getRandomSkillIncreases(this: Unit): SkillValuesArray {
@@ -424,7 +424,7 @@ export namespace UnitSkillsHelper {
   export function getSkillFocuses(this: Unit, is_not_sort?: boolean) {
     initSkillFocuses.call(this);
 
-    const skill_focuses = this.skill_focus_keys.map(
+    const skill_focuses = this.skill_focus_keys!.map(
       (skill_focus_key) => setup.skill[skill_focus_key],
     );
     if (!is_not_sort) skill_focuses.sort(setup.Skill.cmp);
@@ -450,7 +450,7 @@ export namespace UnitSkillsHelper {
   function initSkillFocuses(this: Unit) {
     // compute initial skill focuses if it has not already been computed before.
 
-    if (this.skill_focus_keys && this.skill_focus_keys.length) {
+    if (this.skill_focus_keys?.length) {
       return;
     }
 

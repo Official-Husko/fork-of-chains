@@ -60,7 +60,14 @@ export class Trait extends TwineClass {
   skill_bonuses: number[];
   is_has_skill_bonuses: boolean;
 
-  static keygen = 1;
+  static order_gen = {
+    job: -5000,
+    gender: -4000,
+    race: -3000,
+    subrace: -2000,
+    bg: -1000,
+    "": 1,
+  };
 
   constructor(key_: string, def: Readonly<TraitDefinition>) {
     super();
@@ -115,7 +122,11 @@ export class Trait extends TwineClass {
       }
     }
 
-    this.order_no = Trait.keygen++;
+    const [prefix] = key.split("_");
+    const k = (
+      prefix in Trait.order_gen ? prefix : ""
+    ) as keyof typeof Trait.order_gen;
+    this.order_no = Trait.order_gen[k]++;
 
     this.trait_group_key = null;
 

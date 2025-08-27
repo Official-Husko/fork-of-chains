@@ -56,7 +56,7 @@ export const ImagePicker: Component<{ unit: Unit }> = (props) => {
     (props.unit && State.variables.unitimage.getImagePath(props.unit)) || null,
   );
   const [getCustomImagePath, setCustomImagePath] = createSignal(
-    props.unit.custom_image_name,
+    props.unit.custom_image_name || "",
   );
 
   const [getCustomImageIsInvalid, setCustomImageIsInvalid] =
@@ -565,9 +565,10 @@ export const ImagePicker: Component<{ unit: Unit }> = (props) => {
             disabled={getMode() === "custom" && !getCustomImagePath()}
             onClick={() => {
               if (getMode() === "custom" && getCustomImagePath()) {
-                props.unit.custom_image_name = getCustomImagePath();
+                props.unit.custom_image_name =
+                  getCustomImagePath() || undefined;
               } else {
-                props.unit.custom_image_name = "";
+                props.unit.custom_image_name = undefined;
                 State.variables.unitimage.setImage(
                   props.unit,
                   getPackImagePath()!,

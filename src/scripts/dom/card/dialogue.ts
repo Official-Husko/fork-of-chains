@@ -50,7 +50,7 @@ export default {
       ),
     );
 
-    fragments.push(setup.DOM.create("div", {}, html`${unit.repLong()}:`));
+    fragments.push(setup.DOM.create("div", {}, html`${unit.rep()}:`));
     fragments.push(
       setup.DOM.create(
         "div",

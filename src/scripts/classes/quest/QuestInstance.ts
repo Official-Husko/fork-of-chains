@@ -16,12 +16,12 @@ export class QuestInstance extends TwineClass {
   key: QuestInstanceKey;
   quest_template_key: QuestTemplateKey;
   actor_unit_key_map: { [actorname: string]: UnitKey } = {};
-  team_key: TeamKey | null = null;
+  team_key?: TeamKey;
   weeks_until_expired: number;
   elapsed_week: number = 0;
-  outcome: QuestOutcome | null = null;
-  is_team_forced_assigned = false;
-  seed: number | undefined;
+  outcome?: QuestOutcome;
+  is_team_forced_assigned?: true;
+  seed?: number;
 
   /**
    * score object is cached at the end of week 1.
@@ -39,8 +39,7 @@ export class QuestInstance extends TwineClass {
 
     for (let actor_key in actor_units) {
       let unit = actor_units[actor_key];
-      if (unit.quest_key !== null)
-        throw new Error(`unit is busy on another quest`);
+      if (unit.quest_key) throw new Error(`unit is busy on another quest`);
       if (unit.opportunity_key)
         throw new Error(`unit is busy on another opportunity`);
       this.actor_unit_key_map[actor_key] = unit.key;
@@ -89,7 +88,7 @@ export class QuestInstance extends TwineClass {
     // remove all associations of this quest with units
 
     // unassign teams
-    if (this.team_key !== null) {
+    if (this.team_key) {
       let team = State.variables.team[this.team_key];
       team.removeQuest(this);
       if (dont_disband) {
@@ -102,7 +101,7 @@ export class QuestInstance extends TwineClass {
     // unassign remaining actors
     let actor_objs = this.getActorObj();
     for (let actorname in actor_objs) {
-      actor_objs[actorname].quest_key = null;
+      actor_objs[actorname].quest_key = undefined;
       actor_objs[actorname].checkDelete();
     }
   }
@@ -124,7 +123,7 @@ export class QuestInstance extends TwineClass {
 
     let score_obj = this.getScoreObj();
 
-    this.outcome = setup.QuestDifficulty.rollOutcome(score_obj);
+    this.outcome = setup.QuestDifficulty.rollOutcome(score_obj) || undefined;
 
     if (this.outcome == "disaster") {
       // Reroll with blessing of luck.
@@ -148,7 +147,8 @@ export class QuestInstance extends TwineClass {
         }
 
         // reroll
-        this.outcome = setup.QuestDifficulty.rollOutcome(score_obj);
+        this.outcome =
+          setup.QuestDifficulty.rollOutcome(score_obj) || undefined;
       }
     }
 
@@ -172,7 +172,7 @@ export class QuestInstance extends TwineClass {
     }
   }
 
-  getOutcome(): QuestOutcome | null {
+  getOutcome(): QuestOutcome | undefined {
     return this.outcome;
   }
 
@@ -469,7 +469,7 @@ export class QuestInstance extends TwineClass {
 
     team.removeQuest(this);
     team.disband();
-    this.team_key = null;
+    this.team_key = undefined;
     this.elapsed_week = 0;
 
     let criterias = this.getTemplate().getUnitCriterias();
@@ -503,7 +503,7 @@ export class QuestInstance extends TwineClass {
   }
 
   isTeamForcedAssigned(): boolean {
-    return this.is_team_forced_assigned;
+    return !!this.is_team_forced_assigned;
   }
 
   debugKillActors() {
@@ -514,10 +514,10 @@ export class QuestInstance extends TwineClass {
     for (const [actor_name, actor_unit] of actor_list) {
       if (actor_unit instanceof setup.Unit) {
         if (actor_unit.isYourCompany()) {
-          actor_unit.quest_key = null;
-          actor_unit.opportunity_key = null;
-          actor_unit.market_key = null;
-          actor_unit.team_key = null;
+          actor_unit.quest_key = undefined;
+          actor_unit.opportunity_key = undefined;
+          actor_unit.market_key = undefined;
+          actor_unit.team_key = undefined;
         } else {
           actor_unit.delete();
         }

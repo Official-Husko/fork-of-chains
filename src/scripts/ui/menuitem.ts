@@ -154,6 +154,11 @@ export function menuItemDanger(args: MenuItemArgs) {
   return menuItem(args);
 }
 
+export function menuItemDebug(args: MenuItemArgs) {
+  args["cssclass"] = "submenu-debug";
+  return menuItem(args);
+}
+
 export function menuItemAction(args: MenuItemArgs) {
   args["cssclass"] = "submenu-action";
   return menuItem(args);

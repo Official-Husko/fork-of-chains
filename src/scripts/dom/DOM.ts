@@ -222,22 +222,24 @@ export namespace DOM {
   // Overloads for "renderComponent"
   //
   export function renderComponent<T extends {}>(
-    component: (props: { [k in keyof T]: never }) => JSX_Element,
+    component: Component<{ [k in keyof T]: never }>,
   ): HTMLElement;
   export function renderComponent<T extends {}>(
-    component: (props: T) => JSX_Element,
+    component: Component<T>,
     values: T,
-  ): HTMLElement;
-  export function renderComponent<T extends {}>(
-    component: (props: {}) => JSX_Element,
-    values?: {},
   ): HTMLElement;
 
   export function renderComponent(
-    component: (props: {}) => JSX_Element,
+    component: Component<any>,
     values?: {},
   ): HTMLElement {
+    let componentName = component.name || "unknown";
+    if (import.meta.hot && componentName.startsWith("[")) {
+      componentName = componentName.replace(/\[[^\]]+\]/g, "");
+    }
+
     const div = document.createElement("div");
+    div.setAttribute("data-component", componentName);
     render(() => createComponent(component, values || {}), div);
     return div;
   }

@@ -61,7 +61,7 @@ export class Party extends TwineClass {
         `${unit.name} party key is incorrect and cannot be removed`,
       );
     this.unit_keys = this.unit_keys.filter((unit_key) => unit_key != unit.key);
-    unit.party_key = null;
+    unit.party_key = undefined;
     setup.notify(`${unit.rep()} is removed from ${this.rep()}`);
   }
 

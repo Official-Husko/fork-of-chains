@@ -73,7 +73,10 @@ export namespace RestrictionLib {
   /**
    * Applies all cost effects in obj_list, with obj as the context parameter.
    */
-  export function applyAll<T extends CostContext>(obj_list: Cost[], obj: T) {
+  export function applyAll<T extends CostContext>(
+    obj_list: readonly Cost[],
+    obj: T,
+  ) {
     for (let i = 0; i < obj_list.length; ++i) {
       obj_list[i].apply(obj);
     }
@@ -82,7 +85,7 @@ export namespace RestrictionLib {
   export function isActorUnitGroupViable(
     actor_unit_group_map: Record<
       string,
-      ContactTemplate | UnitGroup | Restriction[]
+      ContactTemplate | UnitGroup | readonly Restriction[]
     >,
   ): boolean {
     for (const actor_unit_group of Object.values(actor_unit_group_map)) {

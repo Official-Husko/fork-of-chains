@@ -114,7 +114,7 @@ import { initializeRoomImageTable } from "../classes/room/RoomTemplate_initimage
 import { Tile } from "../classes/room/Tile.js";
 import { Settings, SETTINGS_GENDER_PREFERENCE } from "../classes/Settings.js";
 import { SexClasses } from "../classes/sex/_SexClasses.js";
-import { SexActionClass } from "../classes/sex/action/_index.js";
+import * as SexActionClass from "../classes/sex/action/_index.js";
 import { SexAction } from "../classes/sex/action/SexAction.js";
 import { SexPlanClass } from "../classes/sex/ai/plan/_index.js";
 import { SexPlan } from "../classes/sex/ai/plan/SexPlan.js";
@@ -589,8 +589,14 @@ const setup_ = {
 
   MacroUtil,
   ArgType,
+
+  gFortGridControl: undefined as FortGridController | undefined,
 };
 
 export type SetupType = typeof setup_;
 
 Object.assign(setup, setup_);
+
+Object.assign(globalThis, {
+  _DE: setup.deserializeClass,
+});

@@ -204,7 +204,7 @@ export namespace UnitTraitsHelper {
 
       if (!tag_limit_reached) {
         // Do the actual getting new trait code
-        this.trait_key_map[new_trait.key] = true;
+        this.trait_key_map[new_trait.key] = 1;
         assigned_trait = new_trait;
 
         // Hide traits added to mindbroken units.

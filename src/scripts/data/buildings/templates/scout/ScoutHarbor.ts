@@ -1,8 +1,9 @@
 export const ROOMS = definitions<RoomDefinition>()({
   shipyard: {
     tags: [],
-    description: "RoomShipyard",
-    name: "Where you maintain your vessels before they depart from your harbor.",
+    description:
+      "Where you maintain your vessels before they depart from your harbor.",
+    name: "Shipyard",
     width: 4,
     height: 4,
     door_column: 1,

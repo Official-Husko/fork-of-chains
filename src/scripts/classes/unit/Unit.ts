@@ -32,6 +32,7 @@ import type { Speech, SpeechKey } from "../Speech";
 import type { Team, TeamKey } from "../Team";
 import type { Title, TitleKey } from "../title/Title";
 import type { Perk } from "../trait/Perk";
+import { Subrace } from "../trait/Subrace";
 import { TraitHelper, type Trait, type TraitKey } from "../trait/Trait";
 import type { TraitGroup } from "../trait/TraitGroup";
 import { UnitSkillsHelper, type SkillBreakdown } from "./Unit_SkillsHelper";
@@ -64,48 +65,59 @@ export class Unit extends TwineClass {
   level: number;
   first_name: string;
   surname: string;
-  custom_image_name: string;
-  nickname: string;
+  nickname?: string;
+
+  /**
+   * Current used image from imagepacks, as the full image path
+   */
+  image?: string;
+
+  image_need_reset?: boolean;
+
+  /**
+   * Custom image path. Overrides the imagepack image if any.
+   */
+  custom_image_name?: string;
 
   /** Unit's traits */
-  trait_key_map: { [k in TraitKey]?: boolean } = {};
+  trait_key_map: { [k in TraitKey]?: 1 } = {};
 
   /** Unit's innate (skin) traits */
-  innate_trait_key_map: { [k in TraitKey]?: boolean } = {};
+  innate_trait_key_map: { [k in TraitKey]?: 1 } = {};
 
   /**
    * List of unit's extra perk choices.
    */
-  perk_keys_choices: TraitKey[] = [];
+  perk_keys_choices?: TraitKey[];
 
   /** Unit's speech type. */
-  speech_key: SpeechKey | null = null;
+  speech_key?: SpeechKey;
 
   job_key: JobKey = setup.job.unemployed.key;
 
   skills: SkillValuesArray = [];
 
   /** List of INVISIBLE tags. Useful for marking units for certain quests. */
-  tags: string[] = [];
+  tags?: string[];
 
   /** Skills at level 1. For implementing re-speccing later. */
   base_skills: SkillValuesArray = [];
 
   // this unit belongs to...
-  team_key: TeamKey | null = null;
-  party_key: PartyKey | null = null;
-  company_key: CompanyKey | null = null;
-  unit_group_key: UnitGroupKey | null = null;
-  duty_key: DutyInstanceKey | null = null;
-  contact_key: ContactKey | null = null;
+  team_key?: TeamKey;
+  party_key?: PartyKey;
+  company_key?: CompanyKey;
+  unit_group_key?: UnitGroupKey;
+  duty_key?: DutyInstanceKey;
+  contact_key?: ContactKey;
 
   // Current quest this unit is tied to. E.g., relevant mostly for actors
-  quest_key: QuestInstanceKey | null = null;
-  opportunity_key: OpportunityInstanceKey | null = null;
+  quest_key?: QuestInstanceKey = undefined;
+  opportunity_key?: OpportunityInstanceKey = undefined;
 
-  market_key: MarketKey | null = null;
+  market_key?: MarketKey = undefined;
 
-  equipment_set_key: EquipmentSetKey | null = null;
+  equipment_set_key?: EquipmentSetKey = undefined;
 
   exp = 0;
 
@@ -113,18 +125,16 @@ export class Unit extends TwineClass {
   weeks_with_you = 0;
 
   /** Flavor text to supplement unit origin */
-  origin = "";
+  origin?: string;
 
   /** The quest/event/interaction/etc that generates this unit. For debug only. */
-  debug_generator_type?: string | null = null;
+  debug_generator_type?: string;
   /** The quest/event/interaction/etc that generates this unit. For debug only. */
-  debug_generator_key?: string | null = null;
+  debug_generator_key?: string;
 
-  skill_focus_keys: SkillKey[] = [];
+  skill_focus_keys?: SkillKey[];
 
-  history: string[] = [];
-
-  is_speech_reset = true;
+  history?: string[];
 
   seed?: number;
 
@@ -156,19 +166,15 @@ export class Unit extends TwineClass {
     // some surname can be empty.
     this.surname = bothnamearray[1];
 
-    this.custom_image_name = "";
-
-    this.nickname = this.first_name;
-
     this.trait_key_map = {};
     this.innate_trait_key_map = {};
 
     for (const trait of traits) {
       if (!trait) throw new Error(`Unrecognized trait for unit ${this.name}`);
-      this.trait_key_map[trait.key] = true;
+      this.trait_key_map[trait.key] = 1;
       if (trait.getTags().includes("skin")) {
         // skin traits are innate
-        this.innate_trait_key_map[trait.key] = true;
+        this.innate_trait_key_map[trait.key] = 1;
       }
     }
 
@@ -214,7 +220,7 @@ export class Unit extends TwineClass {
    * Return list of all perks that this unit could possibly learn. Must re-check that the unit can actually learn it.
    */
   getPerkChoices(): Perk[] {
-    if (!this.perk_keys_choices.length) {
+    if (!this.perk_keys_choices?.length) {
       // generate extra perk choices.
 
       const perks: Perk[] = [];
@@ -291,7 +297,7 @@ export class Unit extends TwineClass {
     }
     // generate perks
     this.getPerkChoices();
-    if (this.perk_keys_choices.includes(trait.key)) {
+    if (this.perk_keys_choices!.includes(trait.key)) {
       // already know this perk
       if (this.isYourCompany()) {
         setup.notify(
@@ -302,7 +308,7 @@ export class Unit extends TwineClass {
       return false;
     }
 
-    this.perk_keys_choices.push(trait.key);
+    this.perk_keys_choices!.push(trait.key);
     if (this.isYourCompany()) {
       setup.notify(`a|Rep a|gain access to the ${trait.rep()} perk!`, {
         a: this,
@@ -314,7 +320,7 @@ export class Unit extends TwineClass {
   /**
    * Force remove a perk choice. Relevant for special perks.
    */
-  removePerkChoice(trait: Trait | Perk) {
+  removePerkChoice(trait: Trait | Perk): void {
     if (trait.getTags().includes("perkbasic")) {
       throw new Error(
         `Can only remove non-basic traits from perk choice, not ${trait.key}!`,
@@ -322,12 +328,12 @@ export class Unit extends TwineClass {
     }
     // generate perks
     this.getPerkChoices();
-    if (!this.perk_keys_choices.includes(trait.key)) {
+    if (!this.perk_keys_choices!.includes(trait.key)) {
       // does not know the perk
       return;
     }
 
-    this.perk_keys_choices = this.perk_keys_choices.filter(
+    this.perk_keys_choices = this.perk_keys_choices!.filter(
       (key) => key != trait.key,
     );
     if (this.isYourCompany()) {
@@ -363,7 +369,7 @@ export class Unit extends TwineClass {
     );
   }
 
-  delete() {
+  delete(): void {
     // there is a check here because sometimes the unit can be removed and then immediately added again
     // e.g., see Light in Darkness disaster results.
 
@@ -372,7 +378,6 @@ export class Unit extends TwineClass {
 
     if (check_obj && check_obj._isCanDelete()) {
       this.clearCache();
-      State.variables.unitimage.deleteUnit(this);
       State.variables.activitylist.removeUnitActivity(this);
       State.variables.hospital.deleteUnit(this);
       State.variables.friendship.deleteUnit(this);
@@ -387,7 +392,7 @@ export class Unit extends TwineClass {
     }
   }
 
-  checkDelete() {
+  checkDelete(): void {
     let check_obj = State.variables.unit[this.key];
     if (check_obj && check_obj._isCanDelete()) {
       setup.queueDelete(check_obj, "unit");
@@ -402,7 +407,7 @@ export class Unit extends TwineClass {
     return State.variables.retiredlist.getLiving(this);
   }
 
-  advanceWeek() {
+  advanceWeek(): void {
     if (this.isYourCompany()) {
       this.weeks_with_you += 1;
     }
@@ -414,32 +419,32 @@ export class Unit extends TwineClass {
     this.resetCache();
   }
 
-  reSeed() {
+  reSeed(): void {
     this.seed = Math.floor(Math.random() * 999999997);
   }
 
-  setName(firstname: string, surname: string) {
+  setName(firstname: string, surname: string): void {
     let changenick = this.nickname == this.first_name;
     this.first_name = firstname;
     this.surname = surname;
-    if (changenick) this.nickname = this.first_name;
+    if (changenick) this.nickname = undefined;
 
     this.resetCache();
   }
 
-  getWeeksWithCompany() {
+  getWeeksWithCompany(): number {
     return this.weeks_with_you;
   }
 
-  resetWeeksWithCompany() {
+  resetWeeksWithCompany(): void {
     this.weeks_with_you = 0;
   }
 
-  getOrigin() {
-    return setup.Text.replaceUnitMacros(this.origin, { a: this });
+  getOrigin(): string {
+    return setup.Text.replaceUnitMacros(this.origin || "", { a: this });
   }
 
-  setOrigin(origin_text: string) {
+  setOrigin(origin_text: string): void {
     this.origin = origin_text;
     this.resetCache();
   }
@@ -509,7 +514,7 @@ export class Unit extends TwineClass {
     return State.variables.cache.get("unitvalue", this.key) || 0;
   }
 
-  getSluttinessLimit() {
+  getSluttinessLimit(): number {
     if (this.isYou()) return setup.INFINITY;
 
     let base;
@@ -593,7 +598,7 @@ export class Unit extends TwineClass {
    * Get a pseudo-random number based on this unit's seed and the given string.
    * Useful for making the unit has certain property, e.g., which preferred weapon
    */
-  Seed(stringobj: string) {
+  Seed(stringobj: string): number {
     let t = `${stringobj}_${this.seed}`;
     let res = Math.abs(t.hashCode()) % 1000000009;
     return res;
@@ -602,7 +607,7 @@ export class Unit extends TwineClass {
   /**
    * Gets a random value between 0 and almost 1.0. Never returns 1.0
    */
-  seedFloat(stringobj: string) {
+  seedFloat(stringobj: string): number {
     const val = this.Seed(stringobj);
     return val / 1000000009.0;
   }
@@ -656,7 +661,7 @@ export class Unit extends TwineClass {
     return null;
   }
 
-  isUsableBy(unit: Unit) {
+  isUsableBy(unit: Unit): boolean {
     if (State.variables.hospital.isInjured(this)) return false;
     if (!this.isHome()) return false;
     let bedchamber = this.getBedchamber();
@@ -671,7 +676,7 @@ export class Unit extends TwineClass {
   /**
    * Clears this unit's cache.
    */
-  clearCache() {
+  clearCache(): void {
     this.resetTraitMapCache();
     this.resetSkillCache();
     // reset unit value cache
@@ -682,7 +687,7 @@ export class Unit extends TwineClass {
    * Resets this unit's cache, because something has changed.
    * resetImage can repopulate the cleared cache. Do not use this method when preparing to delete a unit.
    */
-  resetCache() {
+  resetCache(): void {
     this.clearCache();
     State.variables.unitimage.resetImage(this);
   }
@@ -737,7 +742,7 @@ export class Unit extends TwineClass {
     return true;
   }
 
-  setDebugInfo(content_template: ContentTemplate<string>) {
+  setDebugInfo(content_template: ContentTemplate<string>): void {
     if (!this.debug_generator_key) {
       this.debug_generator_key = content_template.key;
       this.debug_generator_type = content_template.TYPE;
@@ -767,7 +772,7 @@ export class Unit extends TwineClass {
   }
 
   getName(): string {
-    return this.nickname;
+    return this.nickname ?? this.first_name;
   }
 
   get name(): string {
@@ -883,7 +888,7 @@ export class Unit extends TwineClass {
     return setup.trait.training_mindbreak.key in this.trait_key_map;
   }
 
-  isDefiant() {
+  isDefiant(): boolean {
     return (
       this.isHasTrait("will_defiant") || this.isHasTrait("will_indomitable")
     );
@@ -951,7 +956,7 @@ export class Unit extends TwineClass {
     return State.variables.titlelist.isHasTitle(this, title);
   }
 
-  addTitle(title: Title) {
+  addTitle(title: Title): void {
     return State.variables.titlelist.addTitle(this, title);
   }
 
@@ -962,7 +967,7 @@ export class Unit extends TwineClass {
     );
   }
 
-  getGenitalCovering() {
+  getGenitalCovering(): Equipment | null {
     const legs = this.getEquipmentAt(setup.equipmentslot.legs);
     if (legs && legs.isCovering()) {
       return legs;
@@ -976,7 +981,7 @@ export class Unit extends TwineClass {
     return null;
   }
 
-  getChestCovering() {
+  getChestCovering(): Equipment | null {
     const torso = this.getEquipmentAt(setup.equipmentslot.torso);
     if (torso && torso.isCovering()) {
       return torso;
@@ -1007,7 +1012,7 @@ export class Unit extends TwineClass {
     return State.variables.friendship.getBestFriend(this);
   }
 
-  getOwnedBedchambers(): Bedchamber[] {
+  getOwnedBedchambers(): readonly Bedchamber[] {
     if (this.isSlaver()) {
       return State.variables.bedchamberlist.getBedchambers({
         slaver: this,
@@ -1018,11 +1023,11 @@ export class Unit extends TwineClass {
 
   // #region EXP & LEVEL
 
-  getLevel() {
+  getLevel(): number {
     return this.level;
   }
 
-  resetLevel() {
+  resetLevel(): void {
     this.level = 1;
     this.exp = 0;
     this.skills = setup.deepCopy(this.base_skills);
@@ -1032,7 +1037,7 @@ export class Unit extends TwineClass {
     this.resetCache();
   }
 
-  levelUp(levels: number = 1) {
+  levelUp(levels: number = 1): void {
     let skill_gains: SkillValuesArray = [];
     for (let i = 0; i < levels; ++i) {
       this.level += 1;
@@ -1084,11 +1089,11 @@ export class Unit extends TwineClass {
     this.resetCache();
   }
 
-  getExp() {
+  getExp(): number {
     return this.exp;
   }
 
-  getExpForNextLevel() {
+  getExpForNextLevel(): number {
     let level = this.getLevel();
     if (level < setup.LEVEL_PLATEAU) {
       let exponent = Math.pow(
@@ -1106,7 +1111,7 @@ export class Unit extends TwineClass {
     }
   }
 
-  getOnDutyExp() {
+  getOnDutyExp(): number {
     if (this.getLevel() >= setup.LEVEL_PLATEAU) {
       return Math.round(
         (setup.EXP_DUTY_MULTIPLIER * setup.EXP_LEVEL_PLATEAU) /
@@ -1128,11 +1133,11 @@ export class Unit extends TwineClass {
     trait: Trait | null,
     trait_group?: TraitGroup | null,
     is_replace?: boolean,
-  ) {
+  ): Trait | null {
     return UnitTraitsHelper.addTrait.call(this, trait, trait_group, is_replace);
   }
 
-  decreaseTrait(trait_group: TraitGroup) {
+  decreaseTrait(trait_group: TraitGroup): Trait | null {
     if (!trait_group) {
       throw new Error(`Missing trait group in decreaseTrait`);
     }
@@ -1156,7 +1161,7 @@ export class Unit extends TwineClass {
   /**
    * Set a trait as an innate trait, replacing all conflicting ones
    */
-  makeInnateTrait(trait: Trait, trait_group?: TraitGroup) {
+  makeInnateTrait(trait: Trait, trait_group?: TraitGroup): void {
     if (!trait.getTags().includes("skin"))
       throw new Error(`Can only make innate traits from skin traits`);
     trait_group = trait_group || trait.getTraitGroup();
@@ -1169,16 +1174,16 @@ export class Unit extends TwineClass {
     }
 
     // set the innate trait
-    this.innate_trait_key_map[trait.key] = true;
+    this.innate_trait_key_map[trait.key] = 1;
   }
 
   /**
    * Reset a unit's innate traits
    */
-  setInnateTraits(traits: Trait[]) {
+  setInnateTraits(traits: Trait[]): void {
     this.innate_trait_key_map = {};
     for (const trait of traits) {
-      this.innate_trait_key_map[trait.key] = true;
+      this.innate_trait_key_map[trait.key] = 1;
     }
   }
 
@@ -1342,7 +1347,7 @@ export class Unit extends TwineClass {
   /**
    * Remove all traits with this tag
    */
-  removeTraitsWithTag(trait_tag: string) {
+  removeTraitsWithTag(trait_tag: string): void {
     const to_remove = [];
     const traits = this.getTraits();
 
@@ -1590,7 +1595,7 @@ export class Unit extends TwineClass {
   }
 
   getSpeech(): Speech {
-    if (this.is_speech_reset) {
+    if (!this.speech_key) {
       this.recomputeSpeech();
     }
     return setup.speech[this.speech_key!];
@@ -1607,7 +1612,7 @@ export class Unit extends TwineClass {
 
   // recompute a unit's speech.
   resetSpeech(): void {
-    this.is_speech_reset = true;
+    this.speech_key = undefined;
   }
 
   recomputeSpeech(): void {
@@ -1618,7 +1623,7 @@ export class Unit extends TwineClass {
       // keep
       return;
     }
-    this.speech_key = null;
+    this.speech_key = undefined;
     let keys = objectKeys(scores);
     setup.rng.shuffleArray(keys);
     for (let i = 0; i < keys.length; ++i) {
@@ -1629,7 +1634,6 @@ export class Unit extends TwineClass {
       }
     }
     if (!this.speech_key) throw new Error(`??????`);
-    this.is_speech_reset = false;
   }
 
   isAllowedTalk(): boolean {
@@ -1763,11 +1767,12 @@ export class Unit extends TwineClass {
     ) {
       return State.variables.company.outlaws;
     } else {
-      const subrace = this.getSubrace();
-      const company_key = subrace.getTexts().company_key;
+      const subrace_trait = this.getSubrace();
+      const subrace = Subrace.fromTrait(subrace_trait);
+      const company_key = subrace.company_key;
       if (!company_key || !(company_key in State.variables.company)) {
         throw new Error(
-          `Missing company key ${company_key} for race ${subrace.getName()}`,
+          `Missing company key ${company_key} for race ${subrace_trait.getName()}`,
         );
       }
 
@@ -1966,7 +1971,7 @@ export class Unit extends TwineClass {
     return State.variables.unitimage.getImageObject(this).info;
   }
 
-  getCustomImageName(): string {
+  getCustomImageName(): string | undefined {
     return this.custom_image_name;
   }
 
@@ -1984,17 +1989,20 @@ export class Unit extends TwineClass {
   // #region Tags
 
   getTags(): string[] {
-    return this.tags;
+    return this.tags ?? [];
   }
 
   addTag(tag: string) {
-    this.tags.push(tag);
+    (this.tags ??= []).push(tag);
     this.resetCache();
   }
 
   removeTag(tag: string) {
     // if (!this.isHasTag(tag)) throw new Error(`Tag ${tag} not found in ${this.getName()}`)
-    this.tags = this.tags.filter((item) => item != tag);
+    this.tags = (this.tags ?? []).filter((item) => item != tag);
+    if (!this.tags.length) {
+      this.tags = undefined;
+    }
     this.resetCache();
   }
 

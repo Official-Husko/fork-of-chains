@@ -18,7 +18,7 @@ export class SexScene extends TwineClass {
   sex_ais: SexAI[];
 
   /**
-   * @param description_selector - Selector to append text into.
+   * @param callbackFn - Callback called to append new scene content to the output.
    */
   constructor(
     public sex: SexInstance,
@@ -132,7 +132,9 @@ export class SexScene extends TwineClass {
 
     if (State.variables.gDebug) {
       this.appendText(
-        `(Debug info: ${action.description(this.getSex())} ${action.desc()})`,
+        html` <span class="debug-info"
+          >(Debug: ${action.description(this.getSex())} ${action.desc()})</span
+        >`,
       );
     }
 

@@ -1,6 +1,5 @@
 import { TwineClass } from "../_TwineClass";
 import type { SkillValuesArray } from "../Skill";
-import type { UnitKey } from "../unit/Unit";
 import type { TileLocation } from "./FortGrid";
 import type { RoomTemplate, RoomTemplateKey } from "./RoomTemplate";
 
@@ -8,20 +7,25 @@ export type Rotation = 0 | 1 | 2 | 3;
 
 export type RoomInstanceKey = BrandedType<number, "RoomInstanceKey">;
 
+const CACHED_SKILL_BONUSES = Symbol("CACHED_SKILL_BONUSES");
+
 export class RoomInstance extends TwineClass {
   key: RoomInstanceKey;
   template_key: RoomTemplateKey;
 
-  owner_keys: UnitKey[] = [];
+  //owner_keys?: UnitKey[];
 
-  location: TileLocation | null = null;
+  location?: TileLocation;
 
   /**
-   * Number of times this building has been rotated clockwise 90 degrees
+   * Number of times this building has been rotated clockwise 90 degrees.
+   *
+   * Defaults to 0 (i.e. no rotation).
+   * When 0, undefined is stored instead (to try to save up save storage space).
    */
-  clockwise_rotations: Rotation = 0;
+  clockwise_rotations?: Exclude<Rotation, 0>;
 
-  cached_skill_bonuses: SkillValuesArray | null = null;
+  [CACHED_SKILL_BONUSES]?: SkillValuesArray;
 
   seed?: number;
 
@@ -41,7 +45,7 @@ export class RoomInstance extends TwineClass {
   }
 
   resetCache(): void {
-    this.cached_skill_bonuses = null;
+    this[CACHED_SKILL_BONUSES] = undefined;
     State.variables.roomlist.resetCache();
   }
 
@@ -67,40 +71,40 @@ export class RoomInstance extends TwineClass {
   }
 
   getSkillBonuses(): number[] {
-    if (!this.cached_skill_bonuses) {
+    if (!this[CACHED_SKILL_BONUSES]) {
       // compute the skill bonus first.
       if (
         !State.variables.fort.player.isHasBuilding(
           setup.buildingtemplate.landscapingoffice,
         )
       ) {
-        this.cached_skill_bonuses = Array(setup.skill.length).fill(0);
+        this[CACHED_SKILL_BONUSES] = Array(setup.skill.length).fill(0);
       } else if (!this.isPlaced()) {
-        this.cached_skill_bonuses = Array(setup.skill.length).fill(0);
+        this[CACHED_SKILL_BONUSES] = Array(setup.skill.length).fill(0);
       } else {
-        this.cached_skill_bonuses = State.variables.fortgrid.getAffectingRooms(
+        this[CACHED_SKILL_BONUSES] = State.variables.fortgrid.getAffectingRooms(
           this,
           this.getLocation(),
         ).skill_bonuses;
       }
     }
-    return this.cached_skill_bonuses;
+    return this[CACHED_SKILL_BONUSES];
   }
 
   getTemplate(): RoomTemplate {
     return setup.roomtemplate[this.template_key];
   }
 
-  getOwners(): Unit[] {
-    return this.owner_keys.map((key) => State.variables.unit[key]);
-  }
+  //getOwners(): Unit[] {
+  //  return this.owner_keys?.map((key) => State.variables.unit[key]) ?? [];
+  //}
 
   getName(): string {
     return this.getTemplate().getName();
   }
 
   isPlaced(): boolean {
-    return this.location != null;
+    return !!this.location;
   }
 
   getLocation(): TileLocation {
@@ -110,7 +114,7 @@ export class RoomInstance extends TwineClass {
   /**
    * Don't call directly. Use fortgrid.relocateRoom.
    */
-  _relocate(location_top_left: TileLocation | null) {
+  _relocate(location_top_left: TileLocation | null | undefined) {
     if (
       location_top_left &&
       State.variables.fortgrid.isRoomOutOfBounds(this, location_top_left)
@@ -120,7 +124,7 @@ export class RoomInstance extends TwineClass {
       );
     }
 
-    this.location = location_top_left;
+    this.location = location_top_left ?? undefined;
     delete this.seed;
 
     this.resetCache();
@@ -143,33 +147,36 @@ export class RoomInstance extends TwineClass {
   }
 
   getClockwiseRotations(): Rotation {
-    return this.clockwise_rotations;
+    return this.clockwise_rotations ?? 0;
   }
 
   rotate90anticlockwise() {
     if (this.getTemplate().isFixed())
       throw new Error(`Cannot rotate fixed room: ${this.key}`);
-    this.clockwise_rotations = ((this.clockwise_rotations + 3) % 4) as Rotation;
+    this.clockwise_rotations =
+      ((((this.clockwise_rotations ?? 0) + 3) % 4) as Rotation) || undefined;
   }
 
   rotate90clockwise() {
     if (this.getTemplate().isFixed())
       throw new Error(`Cannot rotate fixed room: ${this.key}`);
-    this.clockwise_rotations = ((this.clockwise_rotations + 1) % 4) as Rotation;
+    this.clockwise_rotations =
+      ((((this.clockwise_rotations ?? 0) + 1) % 4) as Rotation) || undefined;
   }
 
   rotate180() {
     if (this.getTemplate().isFixed())
       throw new Error(`Cannot rotate fixed room: ${this.key}`);
-    this.clockwise_rotations = ((this.clockwise_rotations + 2) % 4) as Rotation;
+    this.clockwise_rotations =
+      ((((this.clockwise_rotations ?? 0) + 2) % 4) as Rotation) || undefined;
   }
 
   setRotation(rotation: Rotation) {
-    this.clockwise_rotations = rotation;
+    this.clockwise_rotations = rotation || undefined;
   }
 
   resetRotation() {
-    this.clockwise_rotations = 0;
+    this.clockwise_rotations = undefined;
   }
 
   /**

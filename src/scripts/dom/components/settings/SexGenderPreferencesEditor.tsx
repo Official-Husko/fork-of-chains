@@ -129,25 +129,23 @@ export const SexGenderPreferencesEditor: Component<{
                 <span>{SEXGENDERS[sexgender].name}</span>
               </header>
               <span>
-                <Twee
-                  code={setup.trait[
-                    SEXGENDERS[sexgender].gender_trait_key
-                  ].rep()}
-                />
+                <Twee>
+                  {setup.trait[SEXGENDERS[sexgender].gender_trait_key].rep()}
+                </Twee>
               </span>
               <span>
                 <Show when={SEXGENDERS[sexgender].dick} fallback={<aside />}>
-                  <Twee code={setup.trait.dick_medium.rep()} />
+                  <Twee>{setup.trait.dick_medium.rep()}</Twee>
                 </Show>
               </span>
               <span>
                 <Show when={SEXGENDERS[sexgender].vagina} fallback={<aside />}>
-                  <Twee code={setup.trait.vagina_loose.rep()} />
+                  <Twee>{setup.trait.vagina_loose.rep()}</Twee>
                 </Show>
               </span>
               <span>
                 <Show when={SEXGENDERS[sexgender].breast} fallback={<aside />}>
-                  <Twee code={setup.trait.breast_medium.rep()} />
+                  <Twee>{setup.trait.breast_medium.rep()}</Twee>
                 </Show>
               </span>
               {TARGETS.map(([target]) => (

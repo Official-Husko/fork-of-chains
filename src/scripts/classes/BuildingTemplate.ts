@@ -7,11 +7,11 @@ import { BUILDING_TAGS, type BuildingTag } from "./tag/tag_building";
 
 export interface BuildingDefinition {
   name: string;
-  tags: BuildingTag[];
+  tags: readonly BuildingTag[];
   description: string;
-  costs: Array<Cost[]>;
-  restrictions: Array<Restriction[]>;
-  on_build?: Array<Cost[]>;
+  costs: ReadonlyArray<Cost[]>;
+  restrictions: ReadonlyArray<Restriction[]>;
+  on_build?: ReadonlyArray<Cost[]>;
   main_room_template_key: RoomTemplateKey;
   sub_room_template_key?: RoomTemplateKey;
 }
@@ -24,9 +24,9 @@ export class BuildingTemplate extends TwineClass {
   name: string;
   tags: string[];
   description: string;
-  costs: Array<Cost[]>;
-  prerequisites: Array<Restriction[]>;
-  on_build: Array<Cost[]>;
+  costs: ReadonlyArray<Cost[]>;
+  prerequisites: ReadonlyArray<Restriction[]>;
+  on_build: ReadonlyArray<Cost[]>;
   main_room_template_key: RoomTemplateKey;
   sub_room_template_key?: RoomTemplateKey;
 
@@ -38,24 +38,25 @@ export class BuildingTemplate extends TwineClass {
     // on_build: optional, these are run right after building is built. E.g., add duty slot, etc.
     this.key = key as BuildingTemplateKey;
     this.name = def.name;
-    this.tags = def.tags;
+    this.tags = [...def.tags];
     if (!Array.isArray(def.tags)) {
       throw new Error(`${key} building tags must be array`);
     }
-    for (let i = 0; i < def.tags.length; ++i) {
-      if (!(def.tags[i] in BUILDING_TAGS))
-        throw new Error(`Building ${key} tag ${def.tags[i]} not recognized`);
+    this.tags.sort();
+
+    for (let i = 0; i < this.tags.length; ++i) {
+      if (!(this.tags[i] in BUILDING_TAGS))
+        throw new Error(`Building ${key} tag ${this.tags[i]} not recognized`);
     }
 
     // check exactly one type tag
-    const type_tags = def.tags.filter(
-      (tag) => BUILDING_TAGS[tag].type == "type",
+    const type_tags = this.tags.filter(
+      (tag) => BUILDING_TAGS[tag as keyof typeof BUILDING_TAGS].type == "type",
     );
     if (type_tags.length != 1) {
       throw new Error(`Building ${key} must have exactly one type tag`);
     }
 
-    this.tags.sort();
     this.description = def.description;
     this.costs = def.costs;
     this.prerequisites = def.restrictions;
@@ -114,11 +115,11 @@ export class BuildingTemplate extends TwineClass {
     return this.description;
   }
 
-  getTags(): string[] {
+  getTags(): readonly string[] {
     return this.tags;
   }
 
-  getOnBuildForLevel(level: number): Cost[] {
+  getOnBuildForLevel(level: number): readonly Cost[] {
     if (this.on_build && this.on_build.length > level) {
       return this.on_build[level];
     } else {
@@ -126,7 +127,7 @@ export class BuildingTemplate extends TwineClass {
     }
   }
 
-  getOnBuild(): Cost[][] {
+  getOnBuild(): readonly Cost[][] {
     return this.on_build;
   }
 
@@ -138,12 +139,12 @@ export class BuildingTemplate extends TwineClass {
     return this.name;
   }
 
-  getCost(current_level: number): Cost[] {
+  getCost(current_level: number): readonly Cost[] {
     if (current_level) return this.costs[current_level];
     return this.costs[0];
   }
 
-  getPrerequisite(current_level: number): Restriction[] {
+  getPrerequisite(current_level: number): readonly Restriction[] {
     if (current_level) return this.prerequisites[current_level];
     return this.prerequisites[0];
   }

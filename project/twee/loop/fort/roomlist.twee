@@ -2,8 +2,10 @@
 
 <<set $gMenuVisible = true>>
 
-<<focbutton 'Fort' 'FortGrid'>>
+<<focbutton 'Back to Fort' 'FortGrid'>>
 <</focbutton>>
+
+<hr/>
 
 <<set _dom = setup.DOM.Menu.roomlist()>>
 <<attach _dom>>
@@ -17,7 +19,7 @@
   setup.DOM.Nav.link(
     'Back',
     () => {
-      State.variables.gFortGridControl.mode = 'edit';
+      setup.gFortGridControl.mode = 'edit';
     },
     'FortGridRenovate',
   )
@@ -26,7 +28,7 @@
 <div>
   Select room to build:
   <<foclink '(back)' 'FortGridRenovate'>>
-    <<set State.variables.gFortGridControl.mode = 'edit'>>
+    <<set setup.gFortGridControl.mode = 'edit'>>
   <</foclink>>
 </div>
 

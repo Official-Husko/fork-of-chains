@@ -62,7 +62,7 @@ function buildingInstanceNameActionMenu(
             const room = building.getUpgradeRoom();
             if (room) {
               State.variables.gFortGridBuildRoomKey = room.key;
-              delete State.variables.gFortGridControl;
+              delete setup.gFortGridControl;
               setup.DOM.Nav.goto("FortGridBuild");
             } else {
               building.upgrade();
@@ -158,7 +158,7 @@ function buildingTemplateNameActionMenu(
             const room = State.variables.fort.player.getBuildRoom(template);
             if (room) {
               State.variables.gFortGridBuildRoomKey = room.key;
-              delete State.variables.gFortGridControl;
+              delete setup.gFortGridControl;
               setup.DOM.Nav.goto("FortGridBuild");
             } else {
               State.variables.fort.player.build(template);

@@ -136,7 +136,7 @@ export default defineConfig(({ command, mode }) => {
            * SKIP_TWEE env var: Set to skip compiling .twee files (for JS/CSS-only builds).
            */
           async configureServer(server) {
-            const enableHotReload = (server.config.env['HOT_RELOAD'] ?? '0') !== '0';
+            const enableHotReload = (process.env['HOT_RELOAD'] ?? '0') !== '0';
             if (enableHotReload) {
               config.logger.warn('\x1b[35m' + 'Enabled EXPERIMENTAL hot-reload mode' + '\x1b[0m');
             }
@@ -157,20 +157,20 @@ export default defineConfig(({ command, mode }) => {
               const isCodeFile = /\.(ts|tsx|css)$/.test(file);
               if (enableHotReload && isCodeFile) {
                 // Apply individual debounce for each file
-                clearTimeout(tsHotReloadTimeouts[file])
-                tsHotReloadTimeouts[file] = setTimeout(() => {
-                  // Compile only the changed file to JS using tsc
-                  const tsc = child_process.spawn('npx', ['tsc', file, '--outDir', path.dirname(file), '--target', 'ESNext', '--module', 'ESNext', '--moduleResolution', 'node', '--esModuleInterop', '--skipLibCheck', '--noEmit', 'false', '--pretty', 'false'], {
-                    stdio: ['ignore', 'inherit', 'inherit']
-                  })
-                  tsc.on('exit', (code) => {
-                    if (code === 0) {
-                      server.ws.send({ type: 'full-reload' })
-                    } else {
-                      console.error('TypeScript compile failed for', file)
-                    }
-                  })
-                }, 200) // 200ms debounce
+                //clearTimeout(tsHotReloadTimeouts[file])
+                //tsHotReloadTimeouts[file] = setTimeout(() => {
+                //  // Compile only the changed file to JS using tsc
+                //  const tsc = child_process.spawn('npx', ['tsc', file, '--outDir', path.dirname(file), '--target', 'ESNext', '--module', 'ESNext', '--moduleResolution', 'node', '--esModuleInterop', '--skipLibCheck', '--noEmit', 'false', '--pretty', 'false'], {
+                //    stdio: ['ignore', 'inherit', 'inherit']
+                //  })
+                //  tsc.on('exit', (code) => {
+                //    if (code === 0) {
+                //      server.ws.send({ type: 'full-reload' })
+                //    } else {
+                //      console.error('TypeScript compile failed for', file)
+                //    }
+                //  })
+                //}, 200) // 200ms debounce
               } else {
                 const isTweeFile = file.endsWith('.twee')
                 if (isTweeFile || isCodeFile) {

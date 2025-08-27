@@ -106,7 +106,7 @@ export class Team extends TwineClass {
       let unit = units[i];
       if (!unit.quest_key) throw new Error(`Unit not on a quest`);
       if (unit.quest_key != quest.key) throw new Error(`Wrong quest`);
-      unit.quest_key = null;
+      unit.quest_key = undefined;
     }
   }
 
@@ -119,7 +119,7 @@ export class Team extends TwineClass {
 
   _removeUnitAssociation(unit: Unit) {
     if (unit.team_key == this.key) {
-      unit.team_key = null;
+      unit.team_key = undefined;
     }
   }
 

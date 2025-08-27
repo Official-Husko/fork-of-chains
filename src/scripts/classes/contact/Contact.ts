@@ -71,7 +71,7 @@ export class Contact extends TwineClass {
   delete(): void {
     const unit = this.getUnit();
     if (unit) {
-      unit.contact_key = null;
+      unit.contact_key = undefined;
       unit.checkDelete();
     }
     delete State.variables.contact[this.key];

@@ -4,6 +4,9 @@ import type { RoomInstance } from "./RoomInstance";
 import type { RoomTemplateKey } from "./RoomTemplate";
 import type { Tile } from "./Tile";
 
+export const CACHED_TILES = Symbol("CACHED_TILES");
+export const CACHED_ARE_PATHS_COMPUTED = Symbol("CACHED_ARE_PATHS_COMPUTED");
+
 /**
  * The grid representing your fort. Does not actually get stored,
  * but gets recomputed each time.
@@ -19,16 +22,16 @@ export abstract class FortGridBase extends TwineClass {
    */
   outdoor_expansions = 0;
 
-  is_paths_computed = false;
-
-  cached_tiles: Tile[][] | null = null;
+  // Using symbols because they won't be serialized
+  [CACHED_ARE_PATHS_COMPUTED]?: true;
+  [CACHED_TILES]?: Tile[][];
 
   constructor() {
     super();
   }
 
   resetCache() {
-    this.cached_tiles = null;
+    this[CACHED_TILES] = undefined;
   }
 
   // initialize with default buildings
@@ -149,8 +152,7 @@ export abstract class FortGridBase extends TwineClass {
    * This is opposite of the usual coordinates (x, y) system
    */
   getTiles(): Tile[][] {
-    if (!this.cached_tiles) this.recomputeTiles();
-    return this.cached_tiles!;
+    return this[CACHED_TILES] ?? this.recomputeTiles();
   }
 
   translateLocationToArrayIndex(location: TileLocation): {
@@ -195,7 +197,7 @@ export abstract class FortGridBase extends TwineClass {
     is_return_obsolete_tiles?: boolean,
   ): TileLocation[] | null {
     this.getTiles();
-    this.is_paths_computed = false;
+    this[CACHED_ARE_PATHS_COMPUTED] = undefined;
 
     let past_location = room.getLocation();
     let path_cache: number[][];
@@ -422,7 +424,7 @@ export abstract class FortGridBase extends TwineClass {
     }
   }
 
-  abstract recomputeTiles(): void;
+  abstract recomputeTiles(): Tile[][];
 
   abstract cachePaths(): number[][];
 

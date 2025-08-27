@@ -526,15 +526,6 @@ img {
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2V0h2v20h2v2H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2z' fill='%23986300' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
-.interactive-sex-action-card {
-  border: 5px outset #ff0000;
-  background-color: #000000;
-}
-
-.interactive-sex-description-card {
-  border: 5px outset #00ec20;
-}
-
 .card {
   padding: 8px 12px 5px 12px;
   margin: 3px 1px 3px 1px;
@@ -694,9 +685,32 @@ img {
 .dialogue-card-unit-left {
   float: left;
 }
-
 .dialogue-card-unit-right {
   float: right;
+}
+
+.dialogue-card-unit-left ~ .dialogue-card-text::before,
+.dialogue-card-unit-right ~ .dialogue-card-text::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+
+  transform: scaleX(2) rotate(45deg);
+  top: calc(50% - 6px);
+}
+.dialogue-card-unit-left ~ .dialogue-card-text::before {
+  left: -8px;
+  border-right: none;
+  border-top: none;
+}
+.dialogue-card-unit-right ~ .dialogue-card-text::before {
+  right: -8px;
+  border-left: none;
+  border-bottom: none;
 }
 
 .dialogue-card-unit img {
@@ -721,12 +735,15 @@ img {
   display: flex;
   position: relative;
   border-radius: 10px;
+  background-color: var(--bg-color);
+  --border-color: #333;
+  border: 1px solid var(--border-color);
 }
 
 .dialogue-card-text-gender_male {
-  background: rgb(0, 26, 65);
+  --bg-color: rgb(0, 26, 65);
 }
 
 .dialogue-card-text-gender_female {
-  background: rgb(58, 0, 70);
+  --bg-color: rgb(58, 0, 70);
 }

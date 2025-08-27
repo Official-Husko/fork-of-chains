@@ -22,7 +22,7 @@ const FORTGRID_TITLEBAR_DIV_ID = "fortgrid-titlebar-div";
 function return_callback() {
   setup.DevToolHelper.saveScrollPos();
   if (State.variables.fortgrid.isRoomPlacementsValid()) {
-    const cost = State.variables.gFortGridControl!.getRenovateCost();
+    const cost = setup.gFortGridControl!.getRenovateCost();
     if (cost) {
       setup.qc.Money(-cost).apply();
     }
@@ -32,7 +32,7 @@ function return_callback() {
       title: `Invalid room placements`,
       content: html`<p>You must place all mandatory rooms inside the fort.</p>`,
     });
-    State.variables.gFortGridControl!.refreshToolbar();
+    setup.gFortGridControl!.refreshToolbar();
   }
 }
 
@@ -128,7 +128,7 @@ export class FortGridController extends TwineClass {
         (current && !original_location) ||
         (original_location && original_location.row != current.row) ||
         (original_location && original_location.col != current.col) ||
-        this.reset_data[room.key].clockwise_rotations !=
+        (this.reset_data[room.key].clockwise_rotations ?? 0) !=
           room.getClockwiseRotations()
       ) {
         // room was moved or rotated
@@ -230,7 +230,6 @@ export class FortGridController extends TwineClass {
         const elem = setup.DOM.create(
           "td",
           {
-            // @ts-ignore
             rowspan: rowspan,
             colspan: colspan,
             class: "tile-event-listen",
@@ -481,13 +480,13 @@ that you can play the game without even bothering with this bonus if you prefer.
     } else if (["delete"].includes(this.mode)) {
       menus.push(
         menuItemText({
-          text: `Click to remove`,
+          text: `Click a room to remove`,
         }),
       );
     } else if (["edit"].includes(this.mode) && this.is_show_renovation) {
       menus.push(
         menuItemText({
-          text: `Click to move`,
+          text: `Click a room to move`,
         }),
       );
     }
@@ -584,7 +583,7 @@ that you can play the game without even bothering with this bonus if you prefer.
       const unplaced = State.variables.roomlist.getUnplacedRooms().length;
       menus.push(
         menuItemAction({
-          text: `View / Upgrade`,
+          text: `View/upgrade buildings`,
           tooltip: `See all buildings as well as upgrade existing ones`,
           callback: () => {
             setup.DevToolHelper.saveScrollPos();
@@ -611,13 +610,13 @@ that you can play the game without even bothering with this bonus if you prefer.
           },
         }),
         menuItemAction({
-          text: this.is_show_renovation ? `Renovate / Expand` : `Expand`,
+          text: this.is_show_renovation ? `Relocate / Expand` : `Expand`,
           tooltip: this.is_show_renovation
             ? `Expand the size of your fort as well as move rooms around`
             : `Expand the size of your fort either inwards or outwards`,
           callback: () => {
             setup.DevToolHelper.saveScrollPos();
-            delete State.variables.gFortGridControl;
+            delete setup.gFortGridControl;
             setup.DOM.Nav.goto("FortGridRenovate");
           },
         }),
@@ -758,7 +757,7 @@ that you can play the game without even bothering with this bonus if you prefer.
 }
 
 function show_adjacencies(room: RoomInstance, location: TileLocation) {
-  const control = State.variables.gFortGridControl!;
+  const control = setup.gFortGridControl!;
 
   if (!control.is_show_bonus) {
     return;
@@ -777,15 +776,15 @@ function show_adjacencies(room: RoomInstance, location: TileLocation) {
 
 function on_mouse_enter_callback(tile: Tile) {
   return () => {
-    if (!State.variables.gFortGridControl) return;
-    const mode = State.variables.gFortGridControl.mode;
+    if (!setup.gFortGridControl) return;
+    const mode = setup.gFortGridControl.mode;
 
-    const control = State.variables.gFortGridControl;
+    const control = setup.gFortGridControl;
     control.current_mouse_enter_tile = tile;
     control.clearClasses();
 
     if (["place", "build"].includes(mode)) {
-      const room = State.variables.gFortGridControl.getRoom()!;
+      const room = setup.gFortGridControl.getRoom()!;
       const reason = State.variables.fortgrid.checkRoomCanRelocateTo(
         room,
         tile.getLocation(),
@@ -873,7 +872,7 @@ export function show_reason(
 }
 
 function on_build_success(room: RoomInstance, to_update: TileLocation[]) {
-  const control = State.variables.gFortGridControl!;
+  const control = setup.gFortGridControl!;
   const mode = control.mode;
   if (mode == "build") {
     // built successfully. Ask player to confirm
@@ -898,7 +897,7 @@ function on_build_success(room: RoomInstance, to_update: TileLocation[]) {
 
 function on_click_callback(tile: Tile) {
   return () => {
-    const control = State.variables.gFortGridControl!;
+    const control = setup.gFortGridControl!;
     const mode = control.mode;
     if (["place", "build"].includes(mode)) {
       const room = control.getRoom()!;
@@ -947,10 +946,7 @@ function on_click_callback(tile: Tile) {
           content: `${room.rep()} cannot be moved.`,
         });
       }
-    } else if (
-      mode == "edit" &&
-      State.variables.gFortGridControl!.is_show_renovation
-    ) {
+    } else if (mode == "edit" && setup.gFortGridControl!.is_show_renovation) {
       const room = tile.getRoomInstance();
       if (room && !room.getTemplate().isFixed()) {
         control.mode = "place";
@@ -995,7 +991,7 @@ function get_expansion_row_content(is_indoor: boolean): DOM.Node {
     direction = "outdoors";
   }
 
-  if (State.variables.gFortGridControl!.mode == "edit") {
+  if (setup.gFortGridControl!.mode == "edit") {
     if (State.variables.company.player.getMoney() >= cost) {
       content = setup.DOM.Nav.button(
         html`Expand ${direction} for ${setup.DOM.Util.money(cost)}`,
@@ -1005,7 +1001,7 @@ function get_expansion_row_content(is_indoor: boolean): DOM.Node {
           } else {
             State.variables.fortgrid.expandOutdoors();
           }
-          State.variables.gFortGridControl!.refreshAll();
+          setup.gFortGridControl!.refreshAll();
         },
       );
     } else {
@@ -1061,13 +1057,10 @@ export const DOM_Menu_fortgrid = function ({
   mode: FortGridMode;
   room_key?: RoomInstanceKey;
 }): DOM.Node {
-  if (State.variables.gFortGridControl) {
+  if (setup.gFortGridControl) {
     // Resume existing one.
   } else {
-    State.variables.gFortGridControl = new setup.FortGridController(
-      mode,
-      room_key,
-    );
+    setup.gFortGridControl = new setup.FortGridController(mode, room_key);
   }
 
   const fragments: DOM.Attachable[] = [];
@@ -1080,7 +1073,7 @@ export const DOM_Menu_fortgrid = function ({
       },
       () =>
         setup.DOM.Util.menuItemToolbar(
-          State.variables.gFortGridControl!.getTitleToolbar(),
+          setup.gFortGridControl!.getTitleToolbar(),
         ),
     ),
   );
@@ -1093,9 +1086,7 @@ export const DOM_Menu_fortgrid = function ({
         class: "tagtoolbarsticky",
       },
       () =>
-        setup.DOM.Util.menuItemToolbar(
-          State.variables.gFortGridControl!.getToolbars(),
-        ),
+        setup.DOM.Util.menuItemToolbar(setup.gFortGridControl!.getToolbars()),
     ),
   );
 
@@ -1110,7 +1101,7 @@ export const DOM_Menu_fortgrid = function ({
         {
           id: FORTGRID_GRID_DIV_ID,
         },
-        () => State.variables.gFortGridControl!.drawTiles(),
+        () => setup.gFortGridControl!.drawTiles(),
         true,
       ),
     ),

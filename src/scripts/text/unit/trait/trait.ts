@@ -1,4 +1,4 @@
-import type { SubraceKey } from "../../../classes/trait/Subrace";
+import { Subrace } from "../../../classes/trait/Subrace";
 import type { Trait } from "../../../classes/trait/Trait";
 import type { Unit } from "../../../classes/unit/Unit";
 
@@ -52,7 +52,8 @@ export const TextUnitTrait_Base = {
 
   noun(unit: Unit, trait: Trait): string {
     if (trait.key.startsWith("subrace_")) {
-      return setup.subrace[trait.key as unknown as SubraceKey].noun;
+      const subrace = Subrace.fromTrait(trait);
+      return subrace.noun;
     }
     return trait.text()?.noun || "";
   },
@@ -111,7 +112,7 @@ export const TextUnitTrait_Base = {
   },
 
   race(unit: Unit): string {
-    return this.noun(unit, unit.getSubrace()) ?? "";
+    return setup.Text.Unit.Trait.noun(unit, unit.getSubrace()) ?? "";
   },
 
   homeland(unit: Unit): string {

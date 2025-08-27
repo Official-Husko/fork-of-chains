@@ -16,6 +16,13 @@ export class Cache extends TwineClass {
 
   constructor() {
     super();
+    this.cache ??= {};
+  }
+
+  override toJSON(): {} {
+    // Don't let the cache data be serialized into the state,
+    // by passing an empty object as the data to store
+    return Serial.createReviver(`new setup.Cache()`);
   }
 
   /**

@@ -20,11 +20,11 @@ export class EquipmentSet extends TwineClass {
   key: EquipmentSetKey;
 
   name: string;
-  unit_key: UnitKey | null = null;
-  is_default = false;
+  unit_key: UnitKey | undefined = undefined;
 
-  slot_equipment_key_map: Record<EquipmentSlotKey, EquipmentKey | null> =
-    {} as any;
+  slot_equipment_key_map: { [k in EquipmentSlotKey]?: EquipmentKey } = {};
+
+  declare is_default?: boolean;
 
   constructor(
     copy_from?: Partial<EquipmentSet>,
@@ -37,10 +37,6 @@ export class EquipmentSet extends TwineClass {
       (State.variables.EquipmentSet_keygen++ as EquipmentSetKey);
 
     this.name = `Equipment Set ${this.key}`;
-
-    for (let slot_key of objectKeys(setup.equipmentslot)) {
-      this.slot_equipment_key_map[slot_key] = null;
-    }
 
     if (!copy_from) {
       if (this.key in State.variables.equipmentset)
@@ -95,8 +91,8 @@ export class EquipmentSet extends TwineClass {
     if (!unit.equipment_set_key) throw new Error(`Unit not equipping this`);
     if (unit.getEquipmentSet() != this) throw new Error(`Unit wrong equip`);
 
-    this.unit_key = null;
-    unit.equipment_set_key = null;
+    this.unit_key = undefined;
+    unit.equipment_set_key = undefined;
 
     unit.resetCache();
 
@@ -221,11 +217,11 @@ export class EquipmentSet extends TwineClass {
 
   _removeEquipment(equipment: Equipment): void {
     let slot_key = equipment.getSlot().key;
-    if (!(slot_key in this.slot_equipment_key_map))
-      throw new Error(`Unknown key ${slot_key}`);
+    if (!(slot_key in setup.equipmentslot))
+      throw new Error(`Unknown equipment slot ${slot_key}`);
     if (this.slot_equipment_key_map[slot_key] != equipment.key)
       throw new Error(`Wrong equipment to unequip?`);
-    this.slot_equipment_key_map[slot_key] = null;
+    delete this.slot_equipment_key_map[slot_key];
   }
 
   removeEquipment(equipment: Equipment): void {
@@ -241,8 +237,8 @@ export class EquipmentSet extends TwineClass {
     }
 
     const slot_key = new_equipment.getSlot().key;
-    if (!(slot_key in this.slot_equipment_key_map))
-      throw new Error(`Unknown key ${slot_key}`);
+    if (!(slot_key in setup.equipmentslot))
+      throw new Error(`Unknown equipment slot ${slot_key}`);
     if (this.slot_equipment_key_map[slot_key])
       throw new Error(`Already has equipment in slot ${slot_key}`);
 
@@ -568,7 +564,7 @@ export class EquipmentSet extends TwineClass {
 
   static initDefaultEquipmentSets() {
     const sets = setup.EquipmentSet.createDefaultEquipmentSets();
-    for (const [k, set] of objectEntries(sets)) {
+    for (const set of Object.values(sets)) {
       set.is_default = true;
       Object.freeze(set.slot_equipment_key_map);
       Object.freeze(set); // prevent accidental modifications

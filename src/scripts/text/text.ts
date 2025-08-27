@@ -54,6 +54,9 @@ export namespace Text {
   export const Duty = TextDuty;
   export const Building = TextBuilding;
 
+  /** @depracted kept for backwards compatibility */
+  export const genital = TextUnit_genital;
+
   /** Get a random noun */
   export function topicnoun() {
     return setup.rng.choice(TOPIC_NOUN);

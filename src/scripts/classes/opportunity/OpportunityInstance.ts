@@ -16,7 +16,7 @@ export class OpportunityInstance extends TwineClass {
   opportunity_template_key: OpportunityTemplateKey;
 
   actor_unit_key_map: ActorUnitKeyMap = {};
-  option_number_selected: number | null = null;
+  option_number_selected?: number;
   weeks_until_expired: number;
   seed?: number;
 
@@ -33,10 +33,12 @@ export class OpportunityInstance extends TwineClass {
 
     for (let actor_key in actor_units) {
       let unit = actor_units[actor_key];
-      if (unit.quest_key !== null)
+      if (unit.quest_key) {
         throw new Error(`unit is busy on another quest`);
-      if (unit.opportunity_key)
+      }
+      if (unit.opportunity_key) {
         throw new Error(`unit is busy on another opportunity`);
+      }
       this.actor_unit_key_map[actor_key] = unit.key;
       unit.opportunity_key = this.key;
 
@@ -68,7 +70,7 @@ export class OpportunityInstance extends TwineClass {
     // unassign remaining actors
     let actor_objs = this.getActorObj();
     for (const unit of Object.values(actor_objs)) {
-      unit.opportunity_key = null;
+      unit.opportunity_key = undefined;
       unit.checkDelete();
     }
   }

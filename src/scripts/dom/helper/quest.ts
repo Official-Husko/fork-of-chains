@@ -19,11 +19,9 @@ export default {
   ) {
     State.variables.g = quest.getActorObj();
     State.variables.gQuest = quest;
-    if (quest instanceof QuestInstance) {
-      State.variables.gOutcome = quest.outcome;
-    }
-    if ("getTeam" in quest) {
-      State.variables.gTeam = quest.getTeam();
-    }
+    State.variables.gOutcome =
+      (quest instanceof QuestInstance && quest.outcome) || undefined;
+    State.variables.gTeam =
+      ("getTeam" in quest && quest.getTeam()) || undefined;
   },
 };

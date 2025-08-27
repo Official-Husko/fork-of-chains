@@ -14,7 +14,7 @@ import type { JSX } from "solid-js/jsx-runtime";
  */
 Macro.add("component", {
   handler() {
-    const componentFn = this.args[0] as (props: {}) => JSX.Element;
+    let component = this.args[0] as ((props: {}) => JSX.Element) | string;
 
     let props: Record<string, any> = {};
     if (this.args.length >= 3) {
@@ -25,13 +25,18 @@ Macro.add("component", {
       props = this.args[1];
     }
 
-    if (!componentFn || !(typeof componentFn === "function")) {
+    if (typeof component === "string") {
+      component =
+        setup.DOM.Component[component as keyof typeof setup.DOM.Component];
+    }
+
+    if (!component || !(typeof component === "function")) {
       return this.error("No component specified or it is not a function");
     }
 
     let rendered_element: JSX.Element;
     try {
-      rendered_element = setup.DOM.renderComponent(componentFn, props);
+      rendered_element = setup.DOM.renderComponent(component, props);
     } catch (ex) {
       console.error(`Error rendering <<component ${this.args.full}>>`, ex);
       return this.error(

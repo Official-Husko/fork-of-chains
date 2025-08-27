@@ -13,6 +13,7 @@ import type { SexScene } from "../../classes/sex/engine/SexScene";
 import type { SexLocation } from "../../classes/sex/location/SexLocation";
 import type { sexposition } from "../../classes/sex/position/_index";
 import { menuItem, menuItemText } from "../../ui/menuitem";
+import { InteractiveSexParticipantCards } from "../components/sex/InteractiveSexStatusView";
 
 /**
  * Begin interactive sex with these units
@@ -21,7 +22,7 @@ import { menuItem, menuItemText } from "../../ui/menuitem";
 export const DOM_Menu_interactivesex = function (
   units: Unit[],
   location?: SexLocation,
-): DOM.Node {
+) {
   // Get init values
   const participants = SexInstance.initParticipants(units);
 
@@ -39,330 +40,31 @@ export const DOM_Menu_interactivesex = function (
     sex.setLocation(new_location);
   }
 
-  // Check if player is here and want to change things.
-  if (units.includes(State.variables.unit.player)) {
-    // They are here. In this case, return a setup
-    return interactiveSexSetup(sex, !!location);
-  } else {
-    return interactiveSexDo(sex);
-  }
+  State.temporary.gSex = sex;
 };
-
-function interactiveSexDoneButton(): DOM.Node {
-  return html`
-    ${setup.DOM.Nav.link("(Finish sex)", () => {
-      setup.SexInstance.cleanup();
-      delete State.variables.gInteractiveSexUnitIds;
-      setup.DOM.Nav.gotoreturn();
-    })}
-  `;
-}
-
-/**
- * Lists all the participants and their current states.
- */
-function participantsDisplayInternal(
-  sex: SexInstance,
-  positions: SexPosition[],
-): DOM.Node {
-  const fragments: DOM.Attachable[] = [];
-  for (const position of positions) {
-    const unit = sex.getUnitAtPosition(position);
-    if (unit) {
-      fragments.push(html`
-        <div>${sex.repUnit(unit)} (${sex.getPace(unit).rep()})</div>
-        <div>
-          ${setup.SexUtil.repArousal(sex.getArousal(unit))}
-          ${setup.SexUtil.repDiscomfort(sex.getDiscomfort(unit))}
-          ${setup.SexUtil.repEnergy(sex.getEnergy(unit))}
-        </div>
-      `);
-    }
-  }
-  return setup.DOM.create("div", {}, fragments);
-}
-
-/**
- * Lists all the participants and their current states.
- */
-function participantsDisplay(sex: SexInstance): DOM.Node {
-  return participantsDisplayInternal(sex, setup.SexClasses.getAllPositions());
-}
-
-/**
- * Draw the current formation of the participants
- */
-function participantsDraw(sex: SexInstance): DOM.Node {
-  const fragments: DOM.Attachable[] = [];
-  for (const position of [
-    setup.sexposition.front,
-    setup.sexposition.center,
-    setup.sexposition.back,
-  ]) {
-    const unit = sex.getUnitAtPosition(position);
-
-    let image = null;
-    let tooltip_positions = [position];
-    if (unit) {
-      if (unit.isYou()) {
-        image = sex.getPose(unit).repBigPlayer(position, sex);
-      } else {
-        image = sex.getPose(unit).repBig(position, sex);
-      }
-    }
-
-    if (position == setup.sexposition.center) {
-      const top = setup.sexposition.top;
-      const topunit = sex.getUnitAtPosition(top);
-      if (topunit) {
-        // topunit dominates the image
-        if (topunit.isYou()) {
-          image = sex.getPose(topunit).repBigPlayer(position, sex);
-        } else {
-          image = sex.getPose(topunit).repBig(position, sex);
-        }
-        tooltip_positions = [top].concat(tooltip_positions);
-      }
-    }
-
-    if (image) {
-      const tooltip = `<<attach setup.DOM.Util.interactiveSexTooltip(${tooltip_positions.map((a) => `'${a.key}'`).join(",")})>>`;
-      fragments.push(html`
-        <span data-tooltip=${JSON.stringify(tooltip)}> ${image} </span>
-      `);
-    } else {
-      fragments.push(html`${setup.SexPose.repBigNone()}`);
-    }
-  }
-  return setup.DOM.create("div", {}, fragments);
-}
 
 export function interactiveSexTooltip(
   ...args: Array<keyof typeof sexposition>
 ) {
-  return participantsDisplayInternal(
-    State.temporary.gSex,
-    args.map((key) => setup.sexposition[key]),
-  );
-}
-
-function infoDisplay(sex: SexInstance) {
-  setup.DOM.Helper.replace(
-    "#menudiv",
-    setup.DOM.create("div", {}, [
-      participantsDisplay(sex),
-      participantsDraw(sex),
-      html` <div>Location: ${sex.getLocation().rep()}</div> `,
-    ]),
-  );
-}
-
-/**
- * Whether this action should be hidden from the choices
- */
-function isHideAction(action: SexAction): boolean {
-  if (action instanceof DoNothing) return true;
-  if (action instanceof SexEnd) return true;
-  if (action instanceof PoseChange) return true;
-  if (action instanceof PoseChangeOther) return true;
-  if (action instanceof PositionChange) return true;
-  if (action instanceof PositionChangeOther) return true;
-  if (action instanceof UnequipSelf) return true;
-  if (action instanceof UnequipOther) return true;
-  if (action instanceof EquipStrapon) return true;
-  return false;
-}
-
-/**
- * See if player want to change things first before moving on.
- */
-function interactiveSexSetup(
-  sex: SexInstance,
-  is_location_fixed?: boolean,
-): DOM.Node {
-  const div_id = "interactive_sex_setup_div";
-  return setup.DOM.createRefreshable("div", { id: div_id }, () => {
-    const fragments: DOM.Attachable[] = [];
-
-    /* return button */
-    fragments.push(html` <div>${interactiveSexDoneButton()}</div> `);
-
-    /* participants */
-    // without this it does not work on first load because the ele has not been created yet.
-    setTimeout(() => {
-      infoDisplay(sex);
-    }, 1);
-
-    if (!is_location_fixed) {
-      /* location */
-      let chosen_location: SexLocation | null = null;
-
-      function locationCallback(location: SexLocation) {
-        return () => {
-          chosen_location = location;
-          Dialog.close();
-        };
-      }
-
-      const allowed = setup.SexClasses.getAllAllowedLocations(sex);
-      fragments.push(html`
-        <div>
-          Location: ${sex.getLocation().rep()}
-          ${setup.DOM.Nav.link("(change)", () => {
-            const inner_fragments = [];
-            for (const location of allowed) {
-              inner_fragments.push(html`
-                <div>
-                  ${setup.DOM.Nav.button("Select", locationCallback(location))}
-                  ${location.rep()}
-                </div>
-              `);
-            }
-
-            setup.Dialogs.open({
-              title: "Pick location",
-              classnames: "",
-              content: html`${setup.DOM.create("div", {}, inner_fragments)}`,
-            }).then(() => {
-              if (chosen_location) {
-                sex.setLocation(chosen_location);
-                setup.DOM.refresh(`#${div_id}`);
-              }
-            });
-          })}
-        </div>
-      `);
-    }
-
-    /* your pace */
-
-    let chosen_pace: SexPace | null = null;
-
-    function paceCallback(pace: SexPace) {
-      return () => {
-        chosen_pace = pace;
-        Dialog.close();
-      };
-    }
-
-    const allowed_pace = setup.SexPace.getPaceChances(
-      State.variables.unit.player,
-    )
-      .filter((ch) => ch[1])
-      .map((ch) => ch[0]);
-    fragments.push(html`
-      <div>
-        Your mood: ${sex.getPace(State.variables.unit.player).rep()}
-        ${setup.DOM.Nav.link("(change)", () => {
-          const inner_fragments = [];
-          for (const pace of allowed_pace) {
-            inner_fragments.push(html`
-              <div>
-                ${setup.DOM.Nav.button("Select", paceCallback(pace))}
-                ${pace.rep()}
-              </div>
-            `);
-          }
-
-          setup.Dialogs.open({
-            title: "Pick mood",
-            classnames: "",
-            content: html`${setup.DOM.create("div", {}, inner_fragments)}`,
-          }).then(() => {
-            if (chosen_pace) {
-              sex.setPace(State.variables.unit.player, chosen_pace);
-              setup.DOM.refresh(`#${div_id}`);
-            }
-          });
-        })}
-      </div>
-    `);
-
-    // Start button
-
-    function startCallback() {
-      setup.DOM.Helper.replace(`#${div_id}`, interactiveSexDo(sex));
-    }
-
-    fragments.push(html`
-      <div>${setup.DOM.Nav.button("Begin", startCallback)}</div>
-    `);
-
-    setup.DOM.Nav.topLeftNavigation(
-      setup.DOM.Nav.link(`Begin [space]`, startCallback),
-    );
-
-    return setup.DOM.create(
-      "div",
-      { id: "interactive-sex-setup-container" },
-      fragments,
-    );
+  return setup.DOM.renderComponent(InteractiveSexParticipantCards, {
+    sex: State.temporary.gSex,
+    positions: args.map((key) => setup.sexposition[key]),
   });
 }
 
 function selectAction(
   scene: SexScene,
   action: SexAction,
-  interface_div_id: string,
+  callback: (action?: string) => void,
 ) {
   scene.advanceTurn(action);
-  setup.DOM.refresh(`#${interface_div_id}`);
-}
-
-function getPlayerActionsFragment(
-  sex: SexInstance,
-  scene: SexScene,
-  interface_div_id: string,
-) {
-  function actionCallback(action: SexAction) {
-    return () => {
-      selectAction(scene, action, interface_div_id);
-    };
-  }
-
-  const allowed_actions = scene.getPossibleActions(State.variables.unit.player);
-
-  const can_select = allowed_actions.filter((action) => !isHideAction(action));
-
-  const to_pick = Math.min(
-    setup.SexConstants.UI_PLAYER_ACTIONS,
-    can_select.length,
-  );
-
-  let actions = setup.rng.choicesRandom(can_select, to_pick);
-
-  // If the action taken last turn is still available, put it on top
-  const latest = sex.getLatestAction(State.variables.unit.player);
-  if (latest) {
-    const latest_copy = can_select.filter(
-      (action) => action instanceof latest.constructor,
-    );
-    if (latest_copy.length) {
-      actions = actions.filter((action) => action != latest_copy[0]);
-      if (actions.length > to_pick) {
-        actions.splice(actions.length - 1, 1);
-      }
-      actions = [latest_copy[0]].concat(actions);
-    }
-  }
-
-  const fragments: DOM.Attachable[] = [];
-  for (const action of actions) {
-    fragments.push(html`
-      <div>
-        ${setup.DOM.Nav.button("Select", actionCallback(action))}
-        ${setup.TagHelper.getTagsRep("sexaction", action.getTags())}
-        ${action.rep(sex)}
-      </div>
-    `);
-  }
-  return setup.DOM.create("div", {}, fragments);
+  callback("action_selected");
 }
 
 function getActionsMenuItem(
   sex: SexInstance,
   scene: SexScene,
-  interface_div_id: string,
+  callback: (action?: string) => void,
   actions: SexAction[],
   menu_name: string,
 ) {
@@ -373,7 +75,7 @@ function getActionsMenuItem(
         menuItem({
           text: `${action.title(sex)}`,
           callback: () => {
-            selectAction(scene, action, interface_div_id);
+            selectAction(scene, action, callback);
           },
         }),
       );
@@ -395,7 +97,7 @@ function sexMenuFragmentUnit(
   unit: Unit,
   sex: SexInstance,
   scene: SexScene,
-  interface_div_id: string,
+  callback: () => void,
 ) {
   const menu_items: (JQuery | JQuery[])[] = [];
 
@@ -406,7 +108,7 @@ function sexMenuFragmentUnit(
       getActionsMenuItem(
         sex,
         scene,
-        interface_div_id,
+        callback,
         allowed_actions.filter((a) => a instanceof PoseChange),
         "Pose",
       ),
@@ -416,7 +118,7 @@ function sexMenuFragmentUnit(
       getActionsMenuItem(
         sex,
         scene,
-        interface_div_id,
+        callback,
         allowed_actions.filter((a) => a instanceof PositionChange),
         "Position",
       ),
@@ -427,7 +129,7 @@ function sexMenuFragmentUnit(
       getActionsMenuItem(
         sex,
         scene,
-        interface_div_id,
+        callback,
         allowed_actions.filter(
           (a) => a instanceof UnequipSelf || a instanceof EquipStrapon,
         ),
@@ -441,7 +143,7 @@ function sexMenuFragmentUnit(
       getActionsMenuItem(
         sex,
         scene,
-        interface_div_id,
+        callback,
         allowed_actions.filter(
           (a) => a instanceof PoseChangeOther && a.getActorUnit("b") == unit,
         ),
@@ -453,7 +155,7 @@ function sexMenuFragmentUnit(
       getActionsMenuItem(
         sex,
         scene,
-        interface_div_id,
+        callback,
         allowed_actions.filter(
           (a) =>
             a instanceof PositionChangeOther && a.getActorUnit("b") == unit,
@@ -466,7 +168,7 @@ function sexMenuFragmentUnit(
       getActionsMenuItem(
         sex,
         scene,
-        interface_div_id,
+        callback,
         allowed_actions.filter(
           (a) => a instanceof UnequipOther && a.getActorUnit("b") == unit,
         ),
@@ -498,19 +200,29 @@ function sexMenuFragmentUnit(
   });
 }
 
-function sexMenuFragment(
+export function sexMenuFragment(
   sex: SexInstance,
   scene: SexScene,
-  interface_div_id: string,
+  callback: (action?: string) => void,
 ) {
   const menu_items = [];
 
   const allowed_actions = scene.getPossibleActions(State.variables.unit.player);
   for (const unit of sex.getUnits()) {
     menu_items.push(
-      sexMenuFragmentUnit(allowed_actions, unit, sex, scene, interface_div_id),
+      sexMenuFragmentUnit(allowed_actions, unit, sex, scene, callback),
     );
   }
+
+  menu_items.push(
+    menuItem({
+      text: `<span data-tooltip="Reroll actions" data-tooltip-noclick><i class='sfa sfa-sync-alt'></i></span>`,
+      is_no_close: true,
+      callback() {
+        callback("reroll");
+      },
+    }),
+  );
 
   const do_nothing = allowed_actions.filter(
     (action) => action instanceof DoNothing,
@@ -519,8 +231,9 @@ function sexMenuFragment(
     menu_items.push(
       menuItem({
         text: `<span data-tooltip="Do nothing"><i class='sfa sfa-pause'></i></span>`,
+        is_no_close: true,
         callback() {
-          selectAction(scene, do_nothing[0], interface_div_id);
+          selectAction(scene, do_nothing[0], callback);
         },
       }),
     );
@@ -528,12 +241,13 @@ function sexMenuFragment(
 
   function doRandomCallback() {
     scene.advanceTurn();
-    setup.DOM.refresh(`#${interface_div_id}`);
+    callback();
   }
 
   menu_items.push(
     menuItem({
       text: `<span data-tooltip="Random"><i class='sfa sfa-play'></i></span>`,
+      is_no_close: true,
       callback: doRandomCallback,
     }),
   );
@@ -546,18 +260,10 @@ function sexMenuFragment(
   menu_items.push(
     menuItem({
       text: `<span data-tooltip="Random x100"><i class='sfa sfa-forward'></i></span>`,
+      is_no_close: true,
       callback() {
         scene.advanceTurns(100);
-        setup.DOM.refresh(`#${interface_div_id}`);
-      },
-    }),
-  );
-
-  menu_items.push(
-    menuItem({
-      text: `<span data-tooltip="Reroll"><i class='sfa sfa-sync-alt'></i></span>`,
-      callback() {
-        setup.DOM.refresh(`#${interface_div_id}`);
+        callback();
       },
     }),
   );
@@ -566,9 +272,10 @@ function sexMenuFragment(
   if (end_sex.length) {
     menu_items.push(
       menuItem({
-        text: `<span data-tooltip="End sex"><i class='sfa sfa-power-off'></i></span>`,
+        text: `<span data-tooltip="End sex"><i class='sfa sfa-stop'></i></span>`,
+        is_no_close: true,
         callback() {
-          selectAction(scene, end_sex[0], interface_div_id);
+          selectAction(scene, end_sex[0], callback);
         },
       }),
     );
@@ -577,6 +284,7 @@ function sexMenuFragment(
   menu_items.push(
     menuItem({
       text: `<i class='sfa sfa-cog'></i><i class='sfa sfa-caret-down'></i>`,
+      is_no_close: true,
       children: [
         menuItem({
           text: `Mobile mode`,
@@ -584,86 +292,12 @@ function sexMenuFragment(
           callback: () => {
             State.variables.settings.mobilemode =
               !State.variables.settings.mobilemode;
-            setup.DOM.refresh(`#${interface_div_id}`);
+            callback();
           },
         }),
       ],
     }),
   );
 
-  return setup.DOM.Util.menuItemToolbar(menu_items);
-}
-
-/**
- * Begin sex!
- */
-function interactiveSexDo(sex: SexInstance): DOM.Node {
-  const description_div_id = "interactive_sex_description_div";
-  const scene = new setup.SexScene(sex, `#${description_div_id}`);
-  setTimeout(() => {
-    scene.appendInitText();
-  }, 1);
-
-  const fragments: DOM.Attachable[] = [];
-
-  /* abort button */
-  fragments.push(interactiveSexDoneButton());
-
-  /* Text container: */
-  fragments.push(html`
-    <div
-      class="interactive-sex-description-card card"
-      id="${description_div_id}"
-    ></div>
-  `);
-
-  /* Interface */
-  const interface_div_id = "interactive_sex_interface_div";
-  fragments.push(
-    setup.DOM.createRefreshable(
-      "div",
-      {
-        class: "interactive-sex-action-card card",
-        id: interface_div_id,
-      },
-      () => {
-        while (true) {
-          // First, populate text until it's the player's turn, while keep checking for end game.
-          if (scene.isEnded()) {
-            // Finish. Show done button.
-            infoDisplay(sex);
-            scene.appendEndText();
-
-            // Finish sex button
-            setup.DOM.Nav.topLeftNavigation(interactiveSexDoneButton());
-
-            return interactiveSexDoneButton();
-          }
-
-          const turn_unit = scene.getTurnUnit();
-          if (!turn_unit.isYou()) {
-            scene.advanceTurn();
-          } else {
-            break;
-          }
-        }
-
-        // now it's your turn.
-        const ref_fragments = [];
-        ref_fragments.push(sexMenuFragment(sex, scene, interface_div_id));
-        ref_fragments.push(
-          getPlayerActionsFragment(sex, scene, interface_div_id),
-        );
-
-        // Show other infos below
-
-        /* participants */
-        infoDisplay(sex);
-
-        return setup.DOM.create("div", {}, ref_fragments);
-      },
-    ),
-  );
-
-  return setup.DOM.create("div", {}, fragments);
+  return menu_items;
 }

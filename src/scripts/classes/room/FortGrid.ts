@@ -1,5 +1,9 @@
 import type { SkillValuesArray } from "../Skill";
-import { FortGridBase } from "./FortGridBase";
+import {
+  CACHED_ARE_PATHS_COMPUTED,
+  CACHED_TILES,
+  FortGridBase,
+} from "./FortGridBase";
 import type { RoomInstance, RoomInstanceKey, Rotation } from "./RoomInstance";
 import type { RoomTemplateKey } from "./RoomTemplate";
 import type { Tile } from "./Tile";
@@ -94,7 +98,7 @@ export class FortGrid extends FortGridBase {
         console.info(
           `Removing ${room.getTemplate().key} because its location is no longer valid`,
         );
-        room._relocate(null);
+        room._relocate(undefined);
       }
     }
 
@@ -109,7 +113,7 @@ export class FortGrid extends FortGridBase {
       for (const room of State.variables.roomlist
         .getRoomInstances()
         .filter((room) => room.isPlaced() && !room.getTemplate().isFixed())) {
-        room._relocate(null);
+        room._relocate(undefined);
       }
       State.variables.roomlist.resetCacheAll();
       this.recomputeTiles();
@@ -145,10 +149,11 @@ export class FortGrid extends FortGridBase {
   }
 
   override recomputeTiles() {
-    this.is_paths_computed = false;
+    this[CACHED_ARE_PATHS_COMPUTED] = undefined;
     const result = this._makeEmptyTiles();
     this._fillTilesWithRooms(result);
-    this.cached_tiles = result;
+    this[CACHED_TILES] = result;
+    return result;
   }
 
   _makeDFSGraph(
@@ -347,7 +352,8 @@ export class FortGrid extends FortGridBase {
       !is_skip_pathing &&
       !this.isEmptySpaceRemainsConnected(room, location_top_left)
     ) {
-      return `Room cannot divide the remaining empty spaces into two or more parts`;
+      //return `Room cannot divide the remaining empty spaces into two or more parts`;
+      return `Other rooms would become inaccessible`;
     }
 
     return null;
@@ -699,8 +705,8 @@ export class FortGrid extends FortGridBase {
   }
 
   override recomputePaths() {
-    if (this.is_paths_computed) return;
-    this.is_paths_computed = true;
+    if (this[CACHED_ARE_PATHS_COMPUTED]) return;
+    this[CACHED_ARE_PATHS_COMPUTED] = true;
 
     const room = State.variables.roomlist.getRoomInstances({
       template: setup.roomtemplate["roadindoor" as RoomTemplateKey],

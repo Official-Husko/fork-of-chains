@@ -22,10 +22,10 @@ function printStatistics() {
   ];
 
   const passage_containers = [
-    `getAllRegular`,
-    `getAllScript`,
-    `getAllStylesheet`,
-    `getAllWidget`,
+    `getNormals`,
+    `getScripts`,
+    `getStyles`,
+    `getWidgets`,
   ] as const;
   const passages: Passage[] = [];
   for (const cnt of passage_containers) {

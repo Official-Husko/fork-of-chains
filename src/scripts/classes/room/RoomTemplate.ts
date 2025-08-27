@@ -14,7 +14,7 @@ export interface RoomImageObject {
 }
 
 export interface RoomDefinition {
-  tags: string[];
+  tags: readonly string[];
   width: number;
   height: number;
   name?: string;
@@ -91,6 +91,7 @@ export class RoomTemplate extends TwineClass {
   image_list: ImageObject[] = [];
 
   cached_rep_tag: string | null = null;
+  cached_rep_combined_tag: string | null = null;
   cached_type_tag: string | null = null;
   max_room_count: number | null = null;
 
@@ -116,8 +117,9 @@ export class RoomTemplate extends TwineClass {
     this.key = key as RoomTemplateKey;
     this.name = name;
     this.description = description;
-    this.tags = tags;
-    if (!Array.isArray(tags)) throw new Error(`${key} room tags must be array`);
+    this.tags = [...tags];
+    if (!Array.isArray(this.tags))
+      throw new Error(`${key} room tags must be array`);
     this.tags.sort();
 
     this.width = width;
@@ -330,6 +332,22 @@ export class RoomTemplate extends TwineClass {
     ));
   }
 
+  /** Same as repTags but using the combined room & building tags */
+  repCombinedTags(): string {
+    if (!this.cached_rep_combined_tag) {
+      let tags = this.getTags();
+      const b = this.getBuildingTemplate();
+      if (b && b.key === this.key) {
+        tags = tags.concatUnique(b.tags).sort();
+      }
+      this.cached_rep_combined_tag = setup.TagHelper.getTagsRep(
+        "room_combined",
+        tags,
+      );
+    }
+    return this.cached_rep_combined_tag;
+  }
+
   getRepMacro() {
     return "roomtemplatecard";
   }
@@ -380,7 +398,9 @@ export class RoomTemplate extends TwineClass {
     const building = this.getBuildingTemplate();
     if (building) {
       const all_tags = setup.TagHelper.getTagsMap("room");
-      return tags.concat(building.getTags().filter((tag) => tag in all_tags));
+      return tags.concatUnique(
+        building.getTags().filter((tag) => tag in all_tags),
+      );
     }
     return tags;
   }

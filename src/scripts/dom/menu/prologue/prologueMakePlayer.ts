@@ -5,7 +5,6 @@ import type { TitleKey } from "../../../classes/title/Title";
  */
 export const DOM_Menu_prologueMakePlayer = function (unit: Unit): void {
   const past_image = State.variables.unitimage.getImagePath(unit);
-  State.variables.unitimage.deleteUnit(unit);
   delete State.variables.unit[unit.key];
   unit.key = "player" as UnitKey;
   State.variables.unit.player = unit;

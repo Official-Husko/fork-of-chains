@@ -32,15 +32,17 @@
   which usually attracts a slaver hopeful to this place each week.
 <</if>>
 <<set _favor = $favor.getFavor($company.royal)>>
-<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
-  A particularly capable slaver
-<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
-  A noticably skilled slaver
-<<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
-  An expert slaver
+<<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[0]>>
+  <<if _favor >= setup.FAVOR_EFFECT_THRESHOLDS[2]>>
+    A particularly capable slaver
+  <<elseif _favor >= setup.FAVOR_EFFECT_THRESHOLDS[1]>>
+    A noticably skilled slaver
+  <<else>>
+    An expert slaver
+  <</if>>
+    would occasionally appear here,
+    citing that they hear from some "very credible sources" there are lucrative work to be done here.
 <</if>>
-  would occasionally appear here,
-  citing that they hear from some "very credible sources" there are lucrative work to be done here.
 </p>
 
 <<set _dom = setup.DOM.Card.market({

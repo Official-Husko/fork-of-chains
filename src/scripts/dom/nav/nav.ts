@@ -197,7 +197,7 @@ export const DOM_Nav = {
   /**
    * Attach this to the op left navigation screen.
    */
-  topLeftNavigation(children: DOM.Node) {
+  topLeftNavigation(children: DOM.Attachable) {
     if (State.variables.gMenuVisible) {
       throw new Error(
         `Cannot have top left navigation when gMenuVisible is turned on.`,

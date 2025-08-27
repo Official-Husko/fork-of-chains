@@ -377,10 +377,6 @@ export abstract class SexAction extends TwineClassCustom {
     return setup.SexUtil.convert(this.rawStory(sex), this.getActorObj(), sex);
   }
 
-  rep(sex: SexInstance): string {
-    return `<span data-tooltip="${setup.escapeHtml(this.description(sex))}">${this.title(sex)}</span>`;
-  }
-
   /* =============================
       STATIC
   ============================= */

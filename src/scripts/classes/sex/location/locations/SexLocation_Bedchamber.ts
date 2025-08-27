@@ -20,6 +20,10 @@ export class SexLocation_Bedchamber extends SexLocation {
     this.is_high = is_high;
   }
 
+  override getUniqueKey(): string {
+    return `${this.key}|${this.bedchamber_key}`;
+  }
+
   getBedchamber(): Bedchamber {
     return State.variables.bedchamber[this.bedchamber_key];
   }

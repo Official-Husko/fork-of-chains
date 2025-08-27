@@ -1,4 +1,4 @@
-import type { MenuKey } from "../filter/_filter";
+import { TAG_KINDS, type TagKind } from "./_index";
 
 export interface TagMetadata {
   type: string;
@@ -11,72 +11,33 @@ export interface TagMetadata {
  * Static class to help tag related stuffs
  */
 export class TagHelper {
-  static TAG_INFO = {
-    quest: {
-      img_folder: "tag_quest",
-    },
-    opportunity: {
-      img_folder: "tag_quest",
-    },
-    buildingtemplate: {
-      img_folder: "tag_building",
-    },
-    buildinginstance: {
-      img_folder: "tag_building",
-    },
-    room: {
-      img_folder: "tag_room",
-    },
-    unitaction: {
-      img_folder: "tag_unitaction",
-    },
-    lore: {
-      img_folder: "tag_lore",
-    },
-    sexaction: {
-      img_folder: "tag_sexaction",
-    },
-    trait: {
-      img_folder: "tag_trait",
-    },
-  };
-
-  static getTagsMap(menu: MenuKey): Record<string, TagMetadata> {
-    const TAGS_map = {
-      quest: setup.QUESTTAGS,
-      opportunity: setup.QUESTTAGS,
-      buildingtemplate: setup.BUILDING_TAGS,
-      buildinginstance: setup.BUILDING_TAGS,
-      unitaction: setup.TAG_UNITACTION,
-      lore: setup.TAG_LORE,
-      sexaction: setup.TAG_SEXACTION,
-      trait: setup.TAG_TRAIT,
-      room: setup.TAG_ROOM,
-    } satisfies Record<string, Record<string, TagMetadata>>;
-    if (!(menu in TAGS_map))
-      throw new Error(`Unrecognized menu in tags: ${menu}`);
-    return TAGS_map[menu as keyof typeof TAGS_map];
+  static getTagsMap(tag_kind: TagKind): Record<string, TagMetadata> {
+    if (!(tag_kind in TAG_KINDS))
+      throw new Error(`Unrecognized tag kind: ${tag_kind}`);
+    return TAG_KINDS[tag_kind].tags;
   }
 
-  static getAllTagsOfType(menu: MenuKey, tag_type: string): string[] {
+  static getAllTagsOfType(tag_kind: TagKind, tag_type: string): string[] {
     const result = [];
-    const all_tags = setup.TagHelper.getTagsMap(menu);
+    const all_tags = TagHelper.getTagsMap(tag_kind);
     for (const tag in all_tags) {
       if (all_tags[tag].type == tag_type) result.push(tag);
     }
     return result;
   }
 
-  static tagRep(menu: MenuKey, tag: string, force?: boolean): string {
-    const tag_map = setup.TagHelper.getTagsMap(menu);
-    if (!(tag in tag_map)) throw new Error(`Unknown ${menu} tag: ${tag}`);
+  static tagRep(tag_kind: TagKind, tag: string, force?: boolean): string {
+    const tag_map = TagHelper.getTagsMap(tag_kind);
+    if (!(tag in tag_map)) throw new Error(`Unknown ${tag_kind} tag: ${tag}`);
 
     const tagobj = tag_map[tag];
     if (!force && tagobj.hide) return "";
 
-    const folder =
-      setup.TagHelper.TAG_INFO[menu as keyof typeof TagHelper.TAG_INFO]
-        .img_folder;
+    const info = TAG_KINDS[tag_kind];
+    let folder = info.img_folder;
+    if ("base" in info && tag in TAG_KINDS[info.base as TagKind].tags) {
+      folder = TAG_KINDS[info.base as TagKind].img_folder;
+    }
 
     return setup.repImg({
       imagepath: `img/${folder}/${tag}.svg`,
@@ -85,24 +46,24 @@ export class TagHelper {
     });
   }
 
-  static tagRepLong(menu: MenuKey, tag: string): string {
-    const tag_map = setup.TagHelper.getTagsMap(menu);
-    if (!(tag in tag_map)) throw new Error(`Unknown ${menu} tag: ${tag}`);
+  static tagRepLong(tag_kind: TagKind, tag: string): string {
+    const tag_map = TagHelper.getTagsMap(tag_kind);
+    if (!(tag in tag_map)) throw new Error(`Unknown ${tag_kind} tag: ${tag}`);
 
     const tagobj = tag_map[tag];
-    return `${setup.TagHelper.tagRep(menu, tag)}<span data-tooltip="${tagobj.description}">${tagobj.title}</span>`;
+    return `${TagHelper.tagRep(tag_kind, tag)}<span data-tooltip="${tagobj.description}">${tagobj.title}</span>`;
   }
 
-  static getTagsRep(menu: MenuKey, tags: readonly string[]): string {
-    const tag_map = setup.TagHelper.getTagsMap(menu);
+  static getTagsRep(tag_kind: TagKind, tags: readonly string[]): string {
+    const tag_map = TagHelper.getTagsMap(tag_kind);
     const taglist = Object.keys(tag_map);
-    const tag_copy = tags.filter((tag) => true);
+    const tag_copy = [...tags];
     tag_copy.sort((tag1, tag2) => {
       const idx1 = taglist.indexOf(tag1);
       const idx2 = taglist.indexOf(tag2);
       return idx1 - idx2;
     });
-    return tag_copy.map((tag) => setup.TagHelper.tagRep(menu, tag)).join("");
+    return tag_copy.map((tag) => TagHelper.tagRep(tag_kind, tag)).join("");
   }
 
   static getQuestCardClass(tags: readonly string[]): string {

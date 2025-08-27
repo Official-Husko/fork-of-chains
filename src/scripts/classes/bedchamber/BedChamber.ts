@@ -226,7 +226,7 @@ export class Bedchamber extends TwineClass {
   key: BedchamberKey;
   name: string;
 
-  furniture_map: { [k in FurnitureSlotKey]: ItemKey | null } = {} as any;
+  furniture_map: { [k in FurnitureSlotKey]?: ItemKey } = {};
 
   option_map: BedchamberOptions = {
     walk: "walk",
@@ -246,10 +246,6 @@ export class Bedchamber extends TwineClass {
     this.key = State.variables.Bedchamber_keygen++ as BedchamberKey;
 
     this.name = `Bedchamber ${this.key}`;
-
-    for (let slot_key of objectKeys(setup.furnitureslot)) {
-      this.furniture_map[slot_key] = null;
-    }
 
     this.slaver_key = State.variables.unit.player.key;
 
@@ -389,7 +385,7 @@ export class Bedchamber extends TwineClass {
       State.variables.notification.enable();
       this.furniture_map[slot.key] = furniture.key;
     } else {
-      this.furniture_map[slot.key] = null;
+      delete this.furniture_map[slot.key];
     }
     this.getSlaver().resetCache();
   }

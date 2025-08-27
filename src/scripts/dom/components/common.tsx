@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createEffect, createSignal, onMount } from "solid-js";
 import type { LoreKey } from "../../classes/Lore.js";
 import { unitRep } from "../../macro/content/rep.js";
 import { reload } from "../nav/nav.js";
@@ -10,16 +10,31 @@ export { DOM_Text as Text } from "../text/text.js";
  * Note that as it is rendered inside a tree of reactive JSX components,
  * the twee code might get evaluated multiple times, so we careful with possible side effects
  */
-export const Twee: Component<{ code: string }> = (props) => {
-  return (
-    <>
-      {(() => {
-        const container = document.createElement("div");
-        $(container).wiki(props.code);
-        return [...container.children];
-      })()}
-    </>
-  );
+export const Twee: Component<{ children: string }> = (props) => {
+  let divRef: HTMLDivElement | undefined;
+
+  onMount(() => {
+    new Wikifier(divRef!, props.children);
+  });
+
+  createEffect(() => {
+    while (divRef!.firstChild) {
+      divRef!.removeChild(divRef!.firstChild);
+    }
+    new Wikifier(divRef!, props.children);
+  });
+
+  return <div ref={divRef} />;
+
+  //return (
+  //  <>
+  //    {(() => {
+  //      const container = document.createElement("div");
+  //      new Wikifier(container, props.children);
+  //      return [...container.children];
+  //    })()}
+  //  </>
+  //);
 };
 
 export const Message: Component<ParentProps<{ label: string }>> = (props) => {
@@ -153,6 +168,35 @@ export const Icon: Component<{ icon: string; text: string }> = (props) => {
   );
 };
 
+export const Image: Component<{
+  imagepath: string;
+  tooltip_content?: string;
+  tooltip_noclick?: boolean;
+  extra_class?: string;
+}> = (props) => {
+  return (
+    <Show
+      when={props.tooltip_content || props.extra_class}
+      fallback={<img src={setup.resolveImageUrl(props.imagepath)} />}
+    >
+      <span
+        data-tooltip={props.tooltip_content || undefined}
+        data-tooltip-noclick={props.tooltip_noclick || undefined}
+        class={props.extra_class || undefined}
+      >
+        <img src={setup.resolveImageUrl(props.imagepath)} />
+      </span>
+    </Show>
+  );
+};
+
+export const ImageIcon: Component<{
+  imagepath: string;
+  tooltip_content?: string;
+}> = (props) => {
+  return <Image {...props} extra_class="trait" />;
+};
+
 export const Rep = <T extends { rep(arg: any): any }>(props: {
   of: T | null | undefined;
   arg?: any;
@@ -168,7 +212,7 @@ export const Rep = <T extends { rep(arg: any): any }>(props: {
   return (
     <span>
       <Show when={props.of} fallback={<>(none)</>}>
-        <Twee code={getTweeCode()} />
+        <Twee>{getTweeCode()}</Twee>
       </Show>
     </span>
   );

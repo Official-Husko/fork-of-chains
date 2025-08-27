@@ -1,5 +1,4 @@
 import type { TraitKey } from "../trait/Trait";
-import { SexConstants } from "./SexConstants";
 import type { SexInstance } from "./engine/SexInstance";
 
 import text from "./action/text";
@@ -74,33 +73,6 @@ namespace SexUtil_ {
     }
 
     return setup.Text.replaceUnitMacros(chosen, unit_map);
-  }
-
-  export function repArousal(value: number): string {
-    const r = Math.round(((1000 - value) / 1000) * 255);
-    return `<span
-    style="color:rgb(${r}, 255, ${r})"
-    data-tooltip="Arousal: How close this unit is to climax">
-      ${(value / 10).toFixed(1)} ${setup.repImgIcon(SexConstants.AROUSAL_ICON)}
-    </span>`;
-  }
-
-  export function repDiscomfort(value: number): string {
-    const r = Math.round(((1000 - value) / 1000) * 255);
-    return `<span
-    style="color:rgb(255, 255, ${r})"
-    data-tooltip="Discomfort: Amount of discomfort this unit is having from this intercourse">
-      ${(value / 10).toFixed(1)} ${setup.repImgIcon(SexConstants.DISCOMFORT_ICON)}
-    </span>`;
-  }
-
-  export function repEnergy(value: number): string {
-    const r = Math.round(((1000 - value) / 1000) * 255);
-    return `<span
-    style="color:rgb(${r}, ${r}, 255)"
-    data-tooltip="Energy: How much energy left in this unit for sex action">
-      ${(value / 10).toFixed(1)} ${setup.repImgIcon(SexConstants.ENERGY_ICON)}
-    </span>`;
   }
 
   export function sumTraitMultipliers(

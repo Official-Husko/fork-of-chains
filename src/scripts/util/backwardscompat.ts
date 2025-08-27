@@ -109,7 +109,7 @@ export namespace BackwardsCompat {
             for (const duty of to_remove) {
               const unit_key = duty.unit_key;
               if (unit_key) {
-                sv.unit![unit_key].duty_key = null;
+                sv.unit![unit_key].duty_key = undefined;
               }
               delete sv.duty[duty.key];
               sv.dutylist!.duty_keys = sv.dutylist!.duty_keys.filter(
@@ -170,9 +170,9 @@ export namespace BackwardsCompat {
       }
 
       /* image need reset v1.6.2 */
-      if (!sv.unitimage!.image_need_reset) {
-        sv.unitimage!.image_need_reset = {};
-      }
+      //if (!sv.unitimage!.image_need_reset) {
+      //  sv.unitimage!.image_need_reset = {};
+      //}
 
       //if (
       //  isOlderThan(
@@ -207,6 +207,101 @@ export namespace BackwardsCompat {
         sv.settings!.gender_preference.slaver = {
           ...P[sv.settings!.gender_preference.slaver as unknown as K].chances,
         };
+      }
+
+      // Cleanup unnecessary fields
+      delete (sv as any).gFortGridControl;
+      if (sv.fortgrid) {
+        delete (sv.fortgrid as any).cached_tiles;
+        delete (sv.fortgrid as any).is_paths_computed;
+      }
+      for (const inst of Object.values(sv.equipmentset ?? {})) {
+        if (Object.hasOwn(inst, "is_default")) {
+          delete (inst as any).is_default;
+        }
+      }
+      for (const inst of Object.values(sv.buildinginstance ?? {})) {
+        delete (inst as any).fort_key;
+      }
+      for (const company of Object.values(sv.company ?? {})) {
+        company.name ||= undefined;
+        if (!company.unit_keys?.length) company.unit_keys = undefined;
+        if (!company.team_keys?.length) company.team_keys = undefined;
+        if (!company.quest_keys?.length) company.quest_keys = undefined;
+        if (!Object.keys(company.ignored_quest_template_keys ?? {}).length)
+          company.ignored_quest_template_keys = undefined;
+      }
+      for (const duty of Object.values(sv.duty ?? {})) {
+        duty.unit_key ||= undefined;
+        duty.is_specialist_enabled ||= undefined;
+        duty.is_can_go_on_quests_auto ||= undefined;
+      }
+      if ("unit_image_map" in sv.unitimage!) {
+        for (const [k, v] of Object.entries(
+          (sv.unitimage as any).unit_image_map ?? {},
+        )) {
+          const unit = sv.unit![k as UnitKey];
+          if (v && unit) {
+            unit.image = v as any;
+          }
+        }
+        for (const [k, v] of Object.entries(
+          (sv.unitimage as any).image_need_reset ?? {},
+        )) {
+          const unit = sv.unit![k as UnitKey];
+          if (v && unit) {
+            unit.image_need_reset = true;
+          }
+        }
+        delete (sv.unitimage as any).unit_image_map;
+        delete (sv.unitimage as any).image_need_reset;
+      }
+      for (const k of objectKeys(sv.statistics!.acquired_item_keys)) {
+        sv.statistics!.acquired_item_keys[k] = 1;
+      }
+      for (const k of objectKeys(sv.statistics!.alchemist_item_keys)) {
+        sv.statistics!.alchemist_item_keys[k] = 1;
+      }
+      for (const room of Object.values(sv.roominstance ?? {})) {
+        delete (room as any).owner_keys;
+        delete (room as any).cached_skill_bonuses;
+        room.location ||= undefined;
+        room.clockwise_rotations ||= undefined;
+      }
+      for (const unit of Object.values(sv.unit!)) {
+        delete unit.debug_generator_type;
+        delete unit.debug_generator_key;
+        if ((unit as any).is_speech_reset) {
+          unit.speech_key = undefined;
+        }
+        delete (unit as any).is_speech_reset;
+        if (Object.hasOwn(unit, "name")) {
+          delete (unit as any).name;
+        }
+        if (!unit.tags?.length) unit.tags = undefined;
+        if (!unit.history?.length) unit.history = undefined;
+        if (!unit.perk_keys_choices?.length) unit.perk_keys_choices = undefined;
+        if (!unit.skill_focus_keys?.length) unit.skill_focus_keys = undefined;
+        if (!unit.nickname || unit.nickname === unit.first_name)
+          unit.nickname = undefined;
+        unit.custom_image_name ||= undefined;
+        unit.origin ||= undefined;
+        unit.team_key ||= undefined;
+        unit.party_key ||= undefined;
+        unit.company_key ||= undefined;
+        unit.unit_group_key ||= undefined;
+        unit.duty_key ||= undefined;
+        unit.contact_key ||= undefined;
+        unit.quest_key ||= undefined;
+        unit.opportunity_key ||= undefined;
+        unit.market_key ||= undefined;
+        unit.equipment_set_key ||= undefined;
+        for (const k of objectKeys(unit.trait_key_map)) {
+          unit.trait_key_map[k] = 1;
+        }
+        for (const k of objectKeys(unit.innate_trait_key_map)) {
+          unit.innate_trait_key_map[k] = 1;
+        }
       }
 
       ////////////////////////////
@@ -381,5 +476,5 @@ export function updatePostProcess() {
   // Finish up
   ////////////////////////////
 
-  State.variables.gUpdatePostProcess = false;
+  delete State.variables.gUpdatePostProcess;
 }

@@ -157,9 +157,6 @@ export namespace SaveGlobalFunctions {
       if (save.state.history[i].variables.fortgrid) {
         save.state.history[i].variables.fortgrid.resetCache();
       }
-      if (save.state.history[i].variables.gFortGridControl) {
-        save.state.history[i].variables.gFortGridControl.resetCache();
-      }
       if (save.state.history[i].variables.roomlist) {
         save.state.history[i].variables.roomlist.resetCache();
       }
@@ -250,20 +247,17 @@ export namespace SaveGlobalFunctions {
   export function toJsonHelper(classname: string, obj: {}, container?: string) {
     let dataobj = { ...obj };
     if (!container) {
-      return Serial.createReviver(
-        `setup.deserializeClass("${classname}", $ReviveData$)`,
-        dataobj,
-      );
+      return Serial.createReviver(`_DE("${classname}", $ReviveData$)`, dataobj);
     } else {
       return Serial.createReviver(
-        `setup.deserializeClass("${classname}", $ReviveData$, "${container}")`,
+        `_DE("${classname}", $ReviveData$, "${container}")`,
         dataobj,
       );
     }
   }
 
   export function deleteEndOfWeekCaches() {
-    delete State.variables.gFortGridControl;
+    delete setup.gFortGridControl;
     State.variables.fortgrid.resetCache();
   }
 }

@@ -76,7 +76,7 @@ export interface StateVariables
     | ActivityInstance
     | InteractionInstance
     | UnitAction;
-  gTeam?: Team | null;
+  gTeam?: Team;
   gUnit_key?: UnitKey;
   gParty_key?: PartyKey;
   gPartySelected_key?: PartyKey;

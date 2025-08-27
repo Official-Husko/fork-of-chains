@@ -1,6 +1,5 @@
 import { TwineClass } from "./_TwineClass";
 import type { BuildingTemplate, BuildingTemplateKey } from "./BuildingTemplate";
-import type { Fort, FortKey } from "./Fort";
 import type { RoomInstance } from "./room/RoomInstance";
 
 export type BuildingInstanceKey = BrandedType<number, "BuildingInstanceKey">;
@@ -11,8 +10,6 @@ export class BuildingInstance extends TwineClass {
 
   /** upgrade level */
   level = 0;
-
-  fort_key: FortKey | null = null;
 
   constructor(template: BuildingTemplate) {
     super();
@@ -35,10 +32,6 @@ export class BuildingInstance extends TwineClass {
     return this.getTemplate().getName();
   }
 
-  getFort(): Fort {
-    return State.variables.fort[this.fort_key!];
-  }
-
   getLevel(): number {
     return this.level;
   }
@@ -52,12 +45,12 @@ export class BuildingInstance extends TwineClass {
     return this.level < template.getMaxLevel();
   }
 
-  getUpgradeCost(): Cost[] {
+  getUpgradeCost(): readonly Cost[] {
     let template = this.getTemplate();
     return template.getCost(this.level);
   }
 
-  getUpgradePrerequisite(): Restriction[] {
+  getUpgradePrerequisite(): readonly Restriction[] {
     let template = this.getTemplate();
     return template.getPrerequisite(this.level);
   }

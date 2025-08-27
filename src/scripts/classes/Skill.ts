@@ -265,7 +265,7 @@ export namespace SkillHelper {
         } else {
           val = Math.round(skill_array[i]);
         }
-        texts.push(`${val} ${image_rep}`);
+        texts.push(`<span>${val} ${image_rep}</span>`);
       }
     }
     return texts.join("║");

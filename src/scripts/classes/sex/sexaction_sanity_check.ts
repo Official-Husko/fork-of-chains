@@ -1,4 +1,4 @@
-import { SexActionClass } from "./action/_index";
+import * as SexActionClass from "./action/_index";
 
 // Sanity check the sex actions, make sure all their parameters are ok.
 export function sexSanityChecks() {

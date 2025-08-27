@@ -17,9 +17,7 @@ abstract class SetCooldown<T extends ContentTemplate> extends Cost {
     this.cooldown = cooldown;
   }
 
-  getTemplate(): T | null {
-    return null;
-  }
+  abstract getTemplate(): T | null;
 
   override apply(context: CostContext) {
     let template: ContentTemplate | null = this.getTemplate();
@@ -45,7 +43,7 @@ export class SetCooldownQuest extends SetCooldown<QuestTemplate> {
     return `setup.qc.SetCooldownQuest(${this.template_key ? `'${this.template_key}'` : `null`}, ${this.cooldown})`;
   }
 
-  getTemplate() {
+  override getTemplate() {
     if (this.template_key) {
       return setup.questtemplate[this.template_key];
     } else {
@@ -59,7 +57,7 @@ export class SetCooldownOpportunity extends SetCooldown<OpportunityTemplate> {
     return `setup.qc.SetCooldownOpportunity(${this.template_key ? `'${this.template_key}'` : `null`}, ${this.cooldown})`;
   }
 
-  getTemplate() {
+  override getTemplate() {
     if (this.template_key) {
       return setup.opportunitytemplate[this.template_key];
     } else {
@@ -73,7 +71,7 @@ export class SetCooldownEvent extends SetCooldown<EventTemplate> {
     return `setup.qc.SetCooldownEvent(${this.template_key ? `'${this.template_key}'` : `null`}, ${this.cooldown})`;
   }
 
-  getTemplate() {
+  override getTemplate() {
     if (this.template_key) {
       return setup.event[this.template_key];
     } else {

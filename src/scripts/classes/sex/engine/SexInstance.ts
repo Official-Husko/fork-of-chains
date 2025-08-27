@@ -73,7 +73,9 @@ export class SexInstance extends TwineClass {
   is_ended = false;
 
   // will be set later
-  scene: SexScene = null as unknown as SexScene;
+  scene: SexScene | null = null;
+
+  is_location_fixed = false;
 
   /**
    * @param Location Where the sex takes place
@@ -128,7 +130,7 @@ export class SexInstance extends TwineClass {
   ============================= */
 
   getScene(): SexScene {
-    return this.scene;
+    return this.scene!;
   }
 
   isParticipant(unit: Unit): boolean {

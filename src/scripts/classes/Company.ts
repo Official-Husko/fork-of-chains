@@ -14,16 +14,16 @@ export class Company extends TwineClass {
   key: CompanyKey;
   template_key: CompanyTemplateKey;
 
-  name: string | null = null;
+  name?: string;
 
   money = 0;
-  unit_keys: UnitKey[] = [];
-  team_keys: TeamKey[] = [];
-  quest_keys: QuestInstanceKey[] = [];
-  ignored_quest_template_keys: { [k in QuestTemplateKey]?: boolean } = {};
+  unit_keys?: UnitKey[];
+  team_keys?: TeamKey[];
+  quest_keys?: QuestInstanceKey[];
+  ignored_quest_template_keys?: { [k in QuestTemplateKey]?: 1 };
 
   prestige = 0;
-  is_favor_active = true;
+  is_favor_active: 0 | 1 = 1;
 
   /**
    * Create a new company instance.
@@ -40,49 +40,41 @@ export class Company extends TwineClass {
     //}
   }
 
-  getRepMacro() {
+  getRepMacro(): string {
     return "companycard";
   }
 
-  rep() {
+  rep(): string {
     return setup.repMessage(this);
   }
 
-  isFavorActive() {
-    return this.is_favor_active;
+  isFavorActive(): boolean {
+    return !!this.is_favor_active;
   }
 
-  toggleIsFavorActive() {
-    this.is_favor_active = !this.is_favor_active;
+  toggleIsFavorActive(): void {
+    this.is_favor_active = this.is_favor_active ? 0 : 1;
   }
 
-  getTemplate() {
+  getTemplate(): CompanyTemplate {
     return setup.companytemplate[this.template_key];
   }
 
-  getName() {
-    if (this.name) {
-      return this.name;
-    } else {
-      return this.getTemplate().getName();
-    }
+  getName(): string {
+    return this.name ?? this.getTemplate().getName();
   }
 
-  getFort() {
-    return State.variables.fort.player;
+  getMaxUnitOfJob(job: Job): number {
+    return State.variables.fort.player.getMaxUnitOfJob(job);
   }
 
-  getMaxUnitOfJob(job: Job) {
-    return this.getFort().getMaxUnitOfJob(job);
-  }
-
-  isCanAddUnitWithJob(job: Job) {
+  isCanAddUnitWithJob(job: Job): boolean {
     let exists = this.getUnits({ job: job });
     let limit = this.getMaxUnitOfJob(job);
     return exists.length < limit;
   }
 
-  addPrestige(prestige_amt: number) {
+  addPrestige(prestige_amt: number): void {
     if (prestige_amt == 0) return;
     this.prestige += prestige_amt;
 
@@ -104,8 +96,8 @@ export class Company extends TwineClass {
     return wage_total;
   }
 
-  addQuest(quest: QuestInstance) {
-    this.quest_keys.unshift(quest.key);
+  addQuest(quest: QuestInstance): void {
+    (this.quest_keys ??= []).unshift(quest.key);
 
     State.variables.statistics.setMax(
       "quest_max_simultaneous_have",
@@ -122,9 +114,9 @@ export class Company extends TwineClass {
   }
 
   // DONT CALL THIS DIRECTLY. use quest.expire() or quest.finalize()
-  archiveQuest(quest: QuestInstance) {
+  archiveQuest(quest: QuestInstance): void {
     // this.archived_quest_keys.push(quest.key)
-    this.quest_keys = this.quest_keys.filter((item) => item != quest.key);
+    this.quest_keys = this.quest_keys?.filter((item) => item != quest.key);
     setup.queueDelete(quest, "questinstance");
   }
 
@@ -132,22 +124,29 @@ export class Company extends TwineClass {
    * Ignore all occurrences of this quest template.
    */
   ignoreQuestTemplate(quest_template: QuestTemplate) {
+    this.ignored_quest_template_keys ??= {};
     if (quest_template.key in this.ignored_quest_template_keys)
       throw new Error(`Quest ${quest_template.key} is already ignored`);
-    this.ignored_quest_template_keys[quest_template.key] = true;
+    this.ignored_quest_template_keys[quest_template.key] = 1;
   }
 
   /**
    * Unignore this quest template.
    */
-  unignoreQuestTemplate(quest_template: QuestTemplate) {
-    if (!(quest_template.key in this.ignored_quest_template_keys))
+  unignoreQuestTemplate(quest_template: QuestTemplate): void {
+    if (
+      !this.ignored_quest_template_keys ||
+      quest_template.key in this.ignored_quest_template_keys
+    )
       throw new Error(`Quest ${quest_template.key} is not ignored`);
     delete this.ignored_quest_template_keys[quest_template.key];
   }
 
   isIgnored(quest_template: QuestTemplate): boolean {
-    return quest_template.key in this.ignored_quest_template_keys;
+    return (
+      !!this.ignored_quest_template_keys &&
+      quest_template.key in this.ignored_quest_template_keys
+    );
   }
 
   getOpenQuests(): QuestInstance[] {
@@ -172,8 +171,8 @@ export class Company extends TwineClass {
       | "durationup";
   }): QuestInstance[] {
     let result: QuestInstance[] = [];
-    for (let i = 0; i < this.quest_keys.length; ++i) {
-      let quest = State.variables.questinstance[this.quest_keys[i]];
+    for (const quest_key of this.quest_keys ?? []) {
+      let quest = State.variables.questinstance[quest_key];
       if (
         filter_obj &&
         filter_obj.tag &&
@@ -263,11 +262,11 @@ export class Company extends TwineClass {
   }
 
   addTeam(team: Team) {
-    this.team_keys.push(team.key);
+    (this.team_keys ??= []).push(team.key);
   }
 
   removeTeam(team: Team) {
-    if (!this.team_keys.includes(team.key))
+    if (!this.team_keys?.includes(team.key))
       throw new Error(`Team ${team.key} not found`);
     this.team_keys = this.team_keys.filter((key) => key != team.key);
   }
@@ -284,11 +283,7 @@ export class Company extends TwineClass {
   }
 
   getTeams(): Team[] {
-    let result: Team[] = [];
-    this.team_keys.forEach((team_key) => {
-      result.push(State.variables.team[team_key]);
-    });
-    return result;
+    return (this.team_keys ?? []).map((key) => State.variables.team[key]);
   }
 
   addUnit(unit: Unit, job: Job) {
@@ -305,7 +300,7 @@ export class Company extends TwineClass {
     }
     unit.job_key = job.key;
     unit.company_key = this.key;
-    this.unit_keys.push(unit.key);
+    (this.unit_keys ??= []).push(unit.key);
 
     State.variables.statistics.setMax(
       "slavers_max",
@@ -342,7 +337,7 @@ export class Company extends TwineClass {
    * DONT CHECK FOR DELETION HERE. Removed unit should be moved to a unit group.
    */
   removeUnit(unit: Unit) {
-    if (!this.unit_keys.includes(unit.key)) throw new Error(`Unit not found`);
+    if (!this.unit_keys?.includes(unit.key)) throw new Error(`Unit not found`);
     if (unit == State.variables.unit.player) {
       throw new Error(
         `Player character is removed from the game. Should not happen`,
@@ -428,9 +423,9 @@ export class Company extends TwineClass {
     // remove from activity
     State.variables.activitylist.removeUnitActivity(unit);
 
-    unit.company_key = null;
+    unit.company_key = undefined;
     unit.job_key = setup.job.unemployed.key;
-    this.unit_keys = this.unit_keys.filter((item) => item != unit.key);
+    this.unit_keys = this.unit_keys!.filter((item) => item != unit.key);
 
     // traumatize friends
     for (let i = 0; i < trauma_list.length; ++i) {
@@ -533,7 +528,7 @@ export class Company extends TwineClass {
 
     const job = options.job ? resolveObject(options.job, setup.job) : null;
 
-    this.unit_keys.forEach((unit_key) => {
+    this.unit_keys?.forEach((unit_key) => {
       if (!(unit_key in State.variables.unit))
         throw new Error(`unit ${unit_key} not found`);
       let unit = State.variables.unit[unit_key];

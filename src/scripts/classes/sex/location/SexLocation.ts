@@ -37,6 +37,10 @@ export abstract class SexLocation extends TwineClassCustom {
     return `setup.SexBodypartClass`;
   }
 
+  getUniqueKey(): string {
+    return this.key;
+  }
+
   getTags(): string[] {
     return this.tags;
   }

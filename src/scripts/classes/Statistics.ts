@@ -247,18 +247,18 @@ export class Statistics extends TwineClass {
 
   /**
    * All items that you have ever acquired.
-   * item_key: boolean
+   * item_key: 1
    */
   acquired_item_keys: {
-    [k in ItemKey]?: boolean;
+    [k in ItemKey]?: 1;
   } = {};
 
   /**
    * All items that are already in the alchemist shop
-   * item_key: boolean
+   * item_key: 1
    */
   alchemist_item_keys: {
-    [k in ItemKey]?: boolean;
+    [k in ItemKey]?: 1;
   } = {};
 
   //////////////////////////////////////////////////
@@ -270,11 +270,11 @@ export class Statistics extends TwineClass {
   }
 
   acquireItem(item: Item) {
-    this.acquired_item_keys[item.key] = true;
+    this.acquired_item_keys[item.key] = 1;
   }
 
   putInAlchemistShop(item: Item) {
-    this.alchemist_item_keys[item.key] = true;
+    this.alchemist_item_keys[item.key] = 1;
   }
 
   isItemAcquired(item: Item) {

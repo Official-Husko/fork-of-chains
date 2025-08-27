@@ -18,30 +18,25 @@ const DEFAULT_ROOM_COUNT = Object.freeze({
  * this is $roomlist
  */
 export class RoomList extends TwineClass {
-  cached_unplaced_room_keys: RoomInstanceKey[] | null = null;
+  cached_unplaced_room_keys?: RoomInstanceKey[];
 
-  cached_skill_bonuses: SkillValuesArray | null = Array(
-    setup.skill.length,
-  ).fill(0);
+  cached_skill_bonuses?: SkillValuesArray = Array(setup.skill.length).fill(0);
 
-  cached_room_count:
-    | {
-        [k in RoomTemplateKey]?: { placed: number; unplaced: number };
-      }
-    | null = null;
+  cached_room_count?: {
+    [k in RoomTemplateKey]?: { placed: number; unplaced: number };
+  };
 
-  cached_template_key_to_room_key: Record<string, RoomInstanceKey[]> | null =
-    null;
+  cached_template_key_to_room_key?: Record<string, RoomInstanceKey[]>;
 
   constructor() {
     super();
   }
 
   resetCache(): void {
-    this.cached_unplaced_room_keys = null;
-    this.cached_skill_bonuses = null;
-    this.cached_room_count = null;
-    this.cached_template_key_to_room_key = null;
+    this.cached_unplaced_room_keys = undefined;
+    this.cached_skill_bonuses = undefined;
+    this.cached_room_count = undefined;
+    this.cached_template_key_to_room_key = undefined;
   }
 
   resetCacheAll(): void {
