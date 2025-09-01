@@ -6,6 +6,7 @@ import type {
 import type { TRAIT_GROUP_DEFINITIONS } from "./_traitgroups";
 import type { PERK_DEFINTIONS } from "./perks/traits_perk";
 
+import traits_skin_rabbitkin from "./skin/traits_skin_rabbitkin";
 import traits_background from "./traits_background";
 import traits_blessing from "./traits_blessing";
 import traits_computed from "./traits_computed";
@@ -39,6 +40,7 @@ export const TRAIT_DEFINITIONS = {
   ...traits_skill,
   ...traits_training,
   ...traits_skin,
+  ...traits_skin_rabbitkin,
   ...traits_equipment,
   ...traits_computed,
   ...traits_blessing,
