@@ -1,0 +1,88 @@
+:: OpportunitySetup_hooded_feline [nobr opportunity]
+
+
+
+
+<<run new setup.OpportunityTemplate(
+'hooded_feline', /* key */
+"Hooded Feline", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'unit',
+],
+1, /* expiration weeks */
+'Opportunity_hooded_feline',
+setup.qdiff.normal22, /* difficulty */
+[ /* options */
+  {
+    description_passage: 'Opportunity_hooded_feline_0',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Slaver('hooded', "a|was the famous hooded thief of the woods.", undefined),
+      setup.qc.RemoveFromUnitGroup('hooded'),
+      setup.qc.SetCooldownQuest('the_hooded_purrglars', 3),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+  {
+    description_passage: 'Opportunity_hooded_feline_1',
+    outcome_passage: null,
+    costs: [ /* costs */
+    ],
+    restrictions: [ /* restrictions */
+    ],
+    outcomes: [ /* outcomes */
+      setup.qc.Slave('hooded', "a|was the famous hooded thief of the woods.", undefined),
+      setup.qc.RemoveFromUnitGroup('hooded'),
+      setup.qc.SetCooldownQuest('the_hooded_purrglars', 3),
+    ],
+    visibility_restrictions: [
+    ],
+  },
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.never],
+],
+[ /* restrictions */
+  setup.qres.OpportunityUnique(),
+  setup.qres.NoQuest('the_hooded_purrglars'),
+],
+{ /* actors */
+  'hooded': 'the_hooded_purrglars',
+},
+[ /* expiration outcomes */
+
+],
+true, /* is must be answered */
+)>>
+
+:: Opportunity_hooded_feline [nobr]
+<p>
+    In front of you is <<rep $g.hooded>>, the famous hood-wearing neko thief that assaulted the slave traders' caravans traveling through the <<lore region_forest>>.
+</p>
+<p>
+    <<They $g.hooded>> offered <<themselves $g.hooded>> in exchange for the freedom of the rest of <<their $g.hooded>> group, and even agreed to join your company under the condition that you don't hurt <<their $g.hooded>> friends. This means that it wouldn't be a good idea to let <<them $g.hooded>> know if you ever decide to trick the neko burglars again. And you are sure another chance to do so will present itself in no time: after all, there's always someone willing to wear the hood to try and bring justice to the people of the woods.
+</p>
+<p>
+    On the other hand, there are a lot of people interested in owning such a renowned slave, and with a bit of training <<rep $g.hooded>> could get to be worth <<their $g.hooded>> weight in gold sacks.
+</p>
+<p>
+    Choices, choices.
+</p>
+
+
+:: Opportunity_hooded_feline_0 [nobr]
+Keep the neko as a slaver.
+
+
+
+:: Opportunity_hooded_feline_1 [nobr]
+Keep the neko as a slave.

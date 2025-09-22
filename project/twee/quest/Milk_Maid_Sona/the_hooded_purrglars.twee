@@ -1,0 +1,273 @@
+:: QuestSetup_the_hooded_purrglars [nobr quest]
+
+
+<<run new setup.UnitGroup(
+"the_hooded_purrglars",
+"Hooded Purrglars",
+'subrace_neko', /* pools */
+1, /* reuse chance */
+[ /* unit post process */
+  setup.qc.BgTraitReset('unit', setup.trait.bg_thief),
+],
+)>>
+
+
+<<run new setup.Title(
+"quest_the_hooded_burglar", /* key */
+"The Hooded Burglar", /* name */
+"Ex-leader of a group of neko thieves", /* description */
+null, /* unit text */
+500, /* slave value */
+{ /* skill additives */
+},
+{
+ is_negative: false,
+},
+)
+>>
+
+
+<<set _criteriaslaver = new setup.UnitCriteria(
+null, /* key */
+'Slave Capturer', /* name */
+[
+  setup.trait.bg_slaver,
+  setup.trait.tough_nimble,
+  setup.trait.per_aggressive,
+  setup.trait.per_active,
+  setup.trait.per_stubborn,
+  setup.trait.per_evil,
+  setup.trait.magic_wind,
+  setup.trait.magic_wind_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.tough_tough,
+  setup.trait.per_calm,
+  setup.trait.per_studious,
+  setup.trait.per_curious,
+  setup.trait.per_honorable,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTitle('quest_the_hooded_burglar'),
+],
+{
+  brawn: 0.5,
+  slaving: 2.5,
+}
+)>>
+
+<<set _criteriafighter1 = new setup.UnitCriteria(
+null, /* key */
+'Fighter', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_soldier,
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_brave,
+  setup.trait.per_attentive,
+  setup.trait.per_serious,
+  setup.trait.per_chaste,
+  setup.trait.skill_ambidextrous,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_cautious,
+  setup.trait.per_gregarious,
+  setup.trait.per_dreamy,
+  setup.trait.per_playful,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTitle('quest_the_hooded_burglar'),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criteriafighter2 = new setup.UnitCriteria(
+null, /* key */
+'Fighter', /* name */
+[
+  setup.trait.bg_adventurer,
+  setup.trait.bg_mercenary,
+  setup.trait.bg_soldier,
+  setup.trait.height_tall,
+  setup.trait.height_giant,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_brave,
+  setup.trait.per_attentive,
+  setup.trait.per_serious,
+  setup.trait.per_chaste,
+  setup.trait.skill_ambidextrous,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.per_cautious,
+  setup.trait.per_gregarious,
+  setup.trait.per_dreamy,
+  setup.trait.per_playful,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+  setup.qres.NoTitle('quest_the_hooded_burglar'),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'the_hooded_purrglars', /* key */
+"The Hooded Purrglars", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'unit',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'slaver': [ _criteriaslaver, 1],
+  'fighter1': [ _criteriafighter1, 1],
+  'fighter2': [ _criteriafighter2, 1],
+},
+{ /* actors */
+  'hooded': 'the_hooded_purrglars',
+},
+[ /* costs */
+  setup.qc.MoneyCustom(-500),
+],
+'Quest_the_hooded_purrglars',
+setup.qdiff.normal22, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_the_hooded_purrglarsCrit',
+    [
+      setup.qc.AddTitle('hooded', 'quest_the_hooded_burglar'),
+      setup.qc.Opportunity('hooded_feline', null),
+      setup.qc.MoneyCustom(500),
+    ],
+  ],
+  [
+    'Quest_the_hooded_purrglarsCrit',
+    [
+      setup.qc.Slave('hooded', "a|was part of a group of neko thieves.", undefined),
+      setup.qc.RemoveFromUnitGroup('hooded'),
+      setup.qc.MoneyCustom(500),
+    ],
+  ],
+  [
+    'Quest_the_hooded_purrglarsCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_the_hooded_purrglarsCrit',
+    [
+      setup.qc.Injury('slaver', 1),
+      setup.qc.Injury('fighter1', 1),
+      setup.qc.Injury('fighter2', 1),
+      setup.qc.MoneyCustom(-500),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_the_hooded_purrglars [nobr]
+<p>
+    It's common to hear about mysterious groups of thieves attacking lonely travelers and caravans all over the place, from the plains near Lucgate to the mountains in the Northern Vales, but one specific report caught your attention.
+</p>
+<p>
+    Apparently one of these groups resides in the <<lore region_forest>>, close to one of the roads that many shady dealers use to move not-so-legal merchandise. But the interesting part, besides their particular tastes for targets, is that the group is made out entirely of Neko and it's led by an enigmatic hooded figure.
+</p>
+<p>
+    The plan is simple: rent a caravan with the kind of “merchandise” that would attract this band of thieves and pass by the place the hooded individual was last seen according to the reports. Once the burglars appear and try to grab the booty, a couple soldiers, hidden among the slaves, will take them by surprise and try to submit them. If you are lucky, their leader will be among the neko you capture, but even if they aren't, slaving a neko without pissing off the inhabitants of the woods is definitely worth the risk.
+</p>
+
+
+:: Quest_the_hooded_purrglarsCrit [nobr]
+<p>
+    After hiring a caravan and paying them some gold as insurance <<rep $g.fighter1>> and <<rep $g.fighter2>> sat among the slaves, trying to keep a low profile and ignore the appetizingly naked and chained bodies around them while <<rep $g.slaver>> took a seat right by the driver.
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        While they were traveling, <<rep $g.slaver>> noticed a strange hooded figure at the side of road that kept staring at their cart and even tried to get a look at the slaves they had hidden in the back. With a quick gesture, the <<urace $g.slaver>> signaled <<their $g.slaver>> companions to pay attention and be ready to act. And as <<they $g.slaver>> had predicted, a couple minutes later an arrow hit the side of the car, making it stop. <<rep $g.fighter1>> and <<rep $g.fighter2>> tried to stay calm and not drawn any attention, waiting for the multiple neko to show themselves from among the tress and approach the group. A couple of them got into the cart and started examining the slaves one by one; it seemed like the thieves only wanted to take the neko. When they found one, they called the rest of the group to get in there and help them unchained the feline. Seeing this as the perfect opportunity, the two hidden fighters took the thieves by surprise, knocking out most of them while <<rep $g.slaver>> took advantage of the chaos created by <<their $g.slaver>> accomplices to take out one of the neko watching the outside of the caravan. The three slavers took care of the bandits quick and easy and got ready to examine the spoils of their good work, looking to take the ones that would fetch the best prices.
+    </p>
+    <p>
+        But before <<rep $g.slaver>> could pull down the pants of one of the thieves to check the quality of its goods, a hooded figured walking out of the woods caught their attention. It was carrying a bow, clearly the source of the arrow that had stopped the caravan, and when it took down its hood, <<they $g.hooded>> revealed <<their $g.hooded>> slitted pupils and long feline ears. The neko proclaimed <<themselves $g.hooded>> as the leader of the burglars and offered the slavers a deal: in exchange of letting all <<their $g.hooded>> friends go, <<they $g.hooded>> would let them do whatever they wanted with <<them $g.hooded>>; <<they $g.hooded>> was even willing to work for their group, as long as they could guaranteed the safety of <<their $g.hooded>> companions.
+    </p>
+    <p>
+        <<Reps $g.fighter1>> and <<rep $g.fighter2>> mocked the neko: why would they let half a dozen go in exchange for a single one, specially when they could just attack <<them $g.hooded>> and take the whole bunch back? But <<rep $g.slaver>> actually considered the offer. The hooded neko could easily escape, and to try and chase <<them $g.hooded>> through an unknown patch of the woods was a fool's errand. Besides, <<they $g.slaver>> could think of several people that would pay a pretty coin to have the famous “hooded thief” as their personal plaything. Shortly after, after <<rep $g.slaver>> convinced <<their $g.slaver>> hardheaded colleagues, the three slaver were on their way back to the fort with <<rep $g.hooded>> chained behind them. Now it was just a matter of choosing what to do with <<them $g.hooded>>.
+    </p>
+
+<<elseif $gOutcome == 'success'>>
+    <p>
+        Halfway the trip, right in one of the thickest parts of the Western Forests, <<rep $g.slaver>> noticed movement among the trees, but before <<they $g.slaver>> could let <<their $g.slaver>> companions, an arrow lodged itself between <<them $g.slaver>> and the driver, suddenly stopping the cart. Half a dozen neko showed up from among the bushes at the sides of the road and quickly closed in on the cart, claiming that as long as the merchants didn't offer any resistance, no one would be hurt. The hidden slavers readied their weapons and when a couple thieves approached to take one of the slaves, they attacked and submitted them. The rest of the neko pulled out their weapons and got ready to fight, but a mysterious whistle echoed across the road that made them go back to the shadows of the trees.
+    </p>
+    <p>
+        Distracted by the whistle and the neko's strange behavior, <<rep $g.fighter1>> and <<rep $g.fighter2>> forgot about their recently captured bandits and one of them managed to get away, leaving the group with a single neko to show for their troubles. Even thought the slavers tried to make <<rep $g.hooded>> talk on the way back, not even <<reps $g.slaver>> <<uadj $g.slaver>> caresses managed to make <<them $g.hooded>> reveal the location of their hideout or the identity of the hooded figure that everyone was talking about.
+    </p>
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        While they were crossing the woods, <<rep $g.slaver>> fell asleep, which prevented <<them $g.slaver>> from seeing all the signs that someone bad was about to happen. When a stray arrow made the caravan come to a sudden halt, <<therace $g.slaver>> barely avoided falling on <<their $g.slaver>> face, and when <<they $g.slaver>> shook off <<their $g.slaver>> drowsiness, <<they $g.slaver>> finally noticed a dozen nekos surrounding them, with a few pointing their swords and laces at them. Meanwhile, inside the cart, the two fighters were confused by the sudden stop until they saw a couple neko jump inside and start checking the slaves. <<rep $g.fighter1>> barely managed to pull out his <<uweapon $g.fighter1>> before one of the bandits noticed <<them $g.fighter1>>, while <<rep $g.fighter2>> started struggling with the other thief. Seeing as these two weren't slaves, the neko left the cart and got ready to face the slavers. But for some reason, despite outnumbering the slavers 5 to 1, they kept their distance, only attacking when one of their opponents lowered their guard. Just when <<rep $g.fighter2>> signaled <<rep $g.fighter1>> to bum-rush the thieves, they quickly retreated, leaving the slavers dumbfounded. The reason of their escape was made evident soon enough: while most of the neko were keeping them busy, a couple of them had gone back into the car and took several slaves before leaving.
+    </p>
+    <p>
+        Despite losing part of their merchandise, the owner of the slaves wasn't too bothered; after all, your company had already paid a insurance quota beforehand. It would be best to send a better trained team next time if you want to capture these elusive tricksters.
+    </p>
+<<elseif $gOutcome == 'disaster'>>
+    <p>
+        Sadly, the team focused in everything except in what they should have: <<rep $g.slaver>> fell deeply asleep at the front of the caravan, while the slavers trapped between the multiple slaves got carried away by their horniness and started molesting them. When an arrow came out of nowhere and made the caravan stop on its tracks, <<rep $g.slaver>> fell face first onto the floor, hitting <<themselves $g.slaver>> all the way down, bouncing between the horses' backs and the metal wheels. And when the thieves got into the back of the cart, they found themselves staring at depraved scene:
+        <<if $g.fighter2.isHasDick()>>
+            <<rep $g.fighter2>> fighter2|was forcing his penis down the throat of one of the slaves, while another one tossed his salad,
+        <<else>>
+            <<rep $g.fighter2>> fighter2|was taking the whole length of a particularly well endowed slave in their pussy while forcefully sucking another one,
+        <</if>>
+        and
+        <<if $g.fighter1.isHasDick()>>
+            <<rep $g.fighter1>> fighter1|was crushing the big boobs of a crying slave while assaulting the anus of another one precariously placed underneath.
+        <<else>>
+            <<rep $g.fighter1>> fighter1|was taking it really hard in both her holes at the same time in the back of cart.
+        <</if>>
+        <br>
+        Disgusted by the orgy happening in front of them, the neko took their time beating the perverted slavers until they were satisfied, after which they took most of the slaves with them.
+    </p>
+    <p>
+        Furious at your company's unprofessional slavers and at the use of their merchandise without their permission, <<rep $company.player>> was forced to pay the merchant a compensation additionally to the insurance fee that had been paid beforehand. The only thing to do now was for the slavers to lick their wounds and maybe avoid this road in the near future.
+    </p>
+<</if>>

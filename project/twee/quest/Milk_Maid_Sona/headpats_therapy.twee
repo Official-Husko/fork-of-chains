@@ -1,0 +1,261 @@
+:: QuestSetup_headpats_therapy [nobr quest]
+
+<<set _criteriasalesman = new setup.UnitCriteria(
+null, /* key */
+'Salesman', /* name */
+[
+  setup.trait.subrace_neko,
+  setup.trait.bg_merchant,
+  setup.trait.per_calm,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_attentive,
+  setup.trait.per_empath,
+  setup.trait.eq_valuable,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_aggressive,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_dreamy,
+  setup.trait.per_logical,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 3,
+}
+)>>
+
+<<set _criteriapatter1 = new setup.UnitCriteria(
+null, /* key */
+'Headpatter', /* name */
+[
+  setup.trait.subrace_neko,
+  setup.trait.bg_healer,
+  setup.trait.bg_courtesan,
+  setup.trait.per_calm,
+  setup.trait.per_gregarious,
+  setup.trait.per_kind,
+  setup.trait.per_playful,
+  setup.trait.per_empath,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_hypnotic,
+],
+[
+  setup.trait.bg_metalworker,
+  setup.trait.bg_laborer,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_aggressive,
+  setup.trait.per_active,
+  setup.trait.per_loner,
+  setup.trait.per_stubborn,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.arms_werewolf,
+  setup.trait.arms_dragonkin,
+  setup.trait.arms_demon,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  aid: 2,
+  sex: 1,
+}
+)>>
+
+<<set _criteriapatter2 = new setup.UnitCriteria(
+null, /* key */
+'Headpatter', /* name */
+[
+  setup.trait.subrace_neko,
+  setup.trait.bg_healer,
+  setup.trait.bg_courtesan,
+  setup.trait.per_calm,
+  setup.trait.per_gregarious,
+  setup.trait.per_kind,
+  setup.trait.per_playful,
+  setup.trait.per_empath,
+  setup.trait.skill_ambidextrous,
+  setup.trait.skill_hypnotic,
+],
+[
+  setup.trait.bg_metalworker,
+  setup.trait.bg_laborer,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_aggressive,
+  setup.trait.per_active,
+  setup.trait.per_loner,
+  setup.trait.per_stubborn,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.arms_werewolf,
+  setup.trait.arms_dragonkin,
+  setup.trait.arms_demon,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  aid: 2,
+  sex: 1,
+}
+)>>
+<<run new setup.QuestTemplate(
+'headpats_therapy', /* key */
+"Headpats Therapy", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'money',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'salesman': [ _criteriasalesman, 1],
+  'patter1': [ _criteriapatter1, 1],
+  'patter2': [ _criteriapatter2, 1],
+},
+{ /* actors */
+  'rumor': [
+    setup.qres.Job(setup.job.slaver),
+    setup.qres.Home(),
+  ],
+},
+[ /* costs */
+],
+'Quest_headpats_therapy',
+setup.qdiff.normal25, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_headpats_therapyCrit',
+    [
+      setup.qc.MoneyCrit(),
+    ],
+  ],
+  [
+    'Quest_headpats_therapyCrit',
+    [
+      setup.qc.MoneyNormal(),
+    ],
+  ],
+  [
+    'Quest_headpats_therapyCrit',
+    [
+    ],
+  ],
+  [
+    'Quest_headpats_therapyCrit',
+    [
+      setup.qc.Injury('salesman', 4),
+      setup.qc.TraumatizeRandom('salesman', 4),
+      setup.qc.Injury('patter1', 4),
+      setup.qc.TraumatizeRandom('patter1', 4),
+      setup.qc.Injury('patter2', 4),
+      setup.qc.TraumatizeRandom('patter2', 4),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_headpats_therapy [nobr]
+<p>
+    The <<lore race_neko>> are a pretty peculiar group. While sharing the same viewpoints as the rest of the races in <<lore geo_mestia>>, they also have a set of quite unique quirks. The most interesting of them being the more feral ones they share with other, more animal-like, felines, further pushing the narrative that the two may be distant cousins, separated a many years ago for unknown reasons. Maybe it was the work of gods or demons? Ancient science or perhaps magic? Or simply a human sticking himself where he shouldn't a long time ago. The world may never know.
+</p>
+<p>
+    But meanwhile, taking advantage of one of these quirks to make some easy money will have to suffice. One of the fort's many visitors started telling <<rep $g.rumor>> about one of its many stories about their travels through the Western Forests in an effort to impress <<them $g.rumor>> and maybe get lucky. According to the traveler, they managed to survive the ambush of a group of feral neko after accidentally touching the head of one of them, that fell into the floor purring and rubbing itself against the traveler's leg, looking for more physical contact. With a flurry of caresses, pets and fondles, they managed to make the whole group fall at its feet like a bunch of helpless kittens and get out of the woods unharmed.
+</p>
+<p>
+    While <<rep $g.rumor>> doubted the visitor was completely honest, the <<uadj $g.rumor>> slaver came up with the idea of setting a stand in a forest clearing, near to several towns and villages inhabited by neko, and promoting a headpat sale to anyone that could be interested in it, boasting having the firmest and more delicate hands that they had ever felt before. Truly, this plan is crazy and dumb enough to actually work, and hey, if it does, you'll easily gain a deeper knowledge about the Neko, and perhaps even a decent pile of gold. Your company should definitely try it. For science, of course.
+</p>
+
+
+:: Quest_headpats_therapyCrit [nobr]
+<p>
+    After a short trip, the three slavers found the clearing the scouts told them would be the best spot to set up their new business. It wasn't long before they had built a simple wooden stand where <<rep $g.patter1>> and <<rep $g.patter2>> were at the right height in order to have access to all the heads and ears that presented themselves to them, and <<rep $g.salesman>> had the idea of adapting a couple of tree stumps nearby so the headpatters could sit down and take care of any clients that wanted to sit in their lap. For an higher price, of course.
+</p>
+<p>
+    When <<they $g.salesman>> salesman|was done with all the building, <<rep $g.salesman>> went out to tout to the nearby towns, promoting the recently arrived business, brought in by the two best headpatters in the region, renowned in all the continent and capable of curing the every-day stress and anguish in a single patting session. While people didn't pay much attention at the beginning, curiosity finally struck them, specially when <<rep $g.salesman>> mentioned the single-day limited time offers they had. After all, it was worth a try if it only cost a couple coins.
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        The neko started to pour in bit by bit and the slavers put hands to work. The first client was really nervous when it came closer to <<rep $g.patter1>>, but a few sweet words and the sensation of the <<urace $g.patter1>>'s hands in its head relaxed it until the long awaited purring started. This sound turn out to be like a signal that immediately ignited the interest of every neko nearby and in minutes a long line had formed in front of the booth, full with very excited neko. <<rep $g.patter2>> looked at <<their $g.patter2>> partner and let out a sigh. This was gonna be a long day.
+    </p>
+    <p>
+        Hours later, <<rep $g.salesman>> had become the organizer and unofficial money collector, fully dedicated to keep the order in the huge line that crossed the entire forest clearing and kept going in-between the trees and bushes. It hadn't been necessary to go back to the towns to keep promoting their business: the clients themselves had spread the word around and attracted new customers. While <<rep $g.salesman>> negotiated with a stubborn neko that wanted an extra long two-handed session, <<rep $g.patter1>> patter1|was sitting in one of the tree stumps, grooming a neko that somehow had managed to fit itself fully in the slaver's lap after paying for the premium deluxe patting package, and <<rep $g.patter2>> patter2|was taking care of two female neko twins at the same time, touching and scritching every inch of their heads and fluffy ears, while the two girls hugged each other and let the slaver do <<their $g.patter2>> magic.
+    </p>
+    <p>
+        This kept going until nightfall, when <<rep $g.salesman>> had to turn away the neko that were still waiting in line, despite their complains, since the famous headpatters couldn't keep working in the dark and needed to rest to resume their journey across the continent. <<rep $g.patter1>> and <<rep $g.patter2>> laid in the floor, exhausted and with severe hands pain; for some reason, they felt extremely filthy and slutty, more so than after any other mission they had been involved in, after having so much unprotected headpatting with oh so many strangers in a single day.
+    </p>
+
+<<elseif $gOutcome == 'success'>>
+    <p>
+        The three slavers turn themselves into an efficient headpatting machine thorough the entire day: the neko approached them, the two headpatters negotiated the terms, conditions, duration and price for each session and did the neko right there, in front of everyone, or took it to the back (log) to do them in a more comfortable and intimate position. From time to time <<rep $g.salesman>> intervened to negotiate a better (or more expensive) deal or to stop a session when the time ran out, and whenever <<they $g.salesman>> saw the waiting line was about to disappear, <<they $g.salesman>> left to one of the nearby villages to promote their shop again and attract new customers.
+    </p>
+    <p>
+        This keep going until <<rep $g.salesman>> noticed that despite the number of offers <<they $g.salesman>> offered, the neko weren't interested anymore, and went back to the clearing to report it to the tired headpatters that it was time to close shop and count the profit. Even with all the discounts they had to give, the amount collected was really respectable for a single day of hard and honest work. It certainly beat the feeling of having to prostitute themselves like basic whores… right?
+    </p>
+
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        A few neko came to the booth and the first of them approached <<rep $g.patter1>> to start their session while another one negotiated with <<rep $g.patter2>> on how much it was willing to pay for a deep massage with a special emphasis in the back of their cat-like ears. Trusting that <<their $g.salesman>> partners had everything under control, <<rep $g.salesman>> noticed a couple of neko hidding among the trees, curious about what was happening in the middle of the forest clearing but unsure if they should trust a group of complete strangers. Seeing the opportunity to seize a couple of new clients, <<they $g.salesman>> slowly approach the nervous neko. Despite retreating a bit after seeing the
+        <<if $g.salesman.isHasTrait('subrace_neko')>>
+            unknown
+        <<else>>
+        <</if>>
+        <<urace $g.salesman>> get near them, bit by bit the <<uadj $g.salesman>> slaver salesman|was convincing them…until the noise of a commotion caught their attention and scared the potential customers away.
+    </p>
+    <p>
+        Apparently <<rep $g.patter1>> had applied more pressure than appropriate when touching the head of <<their $g.patter1>> client and this one had screamed out of pain, accusing the slaver of hurting it and claiming to want its money back. The neko negotiating with <<rep $g.patter2>> joined the argument, saying that the supposedly legendary headpatter was trying to swindle it with higher prices than what the other person promoting the place had offered them when visiting their village. The fight escalated before <<rep $g.salesman>> salesman|was able to run back to try to disarm it, and by then the neko had turn into a small screaming mob. Seeing this, the three slavers decided to leave before things turned out violent. Seems like the neko science experiment will have to wait for another day.
+    </p>
+
+<<elseif $gOutcome == 'disaster'>>
+    <p>
+        Confident that <<they $g.salesman>> had convinced them, <<rep $g.salesman>> came back to <<rep $g.patter1>>> and <<rep $g.patter2>> to discuss how they would handle the clients and what to do in case they needed help or a pause to rest their wrists after some intense and sweaty session of hardcore head patting. But for a long while, the three slavers hadn't received a single client, leaving their spirits on the ground and their temperaments an inch from violently exploding in fit of rage. Finally, a lonely neko came from between the trees and approached the group, that delighted about their very first customer, overwhelmed it with attention, each one asking it different questions and confusing the poor kitten. When it finally got through the aggressive interrogation, it asked the group for a simple and short session of headpats, that <<rep $g.patter1>> excitedly offered to do. So excited indeed that, as soon as <<they $g.patter1>> put <<their $g.patter1>> hands over the client's head, <<they $g.patter1>> managed to use enough force to make the neko's forehead hit the front of the wooden stand, making it let out a single pained scream before falling unconscious.
+    </p>
+    <p>
+        The scream was strong enough to agitate the leaves of the trees surrounding the clearing… except it wasn't the scream that moved them, but instead the multiple neko hidden among the trees, that had sent one of them to see if these “legendary headpatters” were real. And since that neko now laid out cold on the floor, they had their answer. The last thing the slavers saw before being bum-rushed by a very angry group of neko were dozens of eyes looking at them from the thickets.
+        <<if $g.salesman.isYou() or $g.patter1.isYou() or $g.patter2.isYou()>>
+            <<set _notyou = []>>
+            <<if !$g.salesman.isYou()>>
+                <<run _notyou.push($g.salesman)>>
+            <</if>>
+            <<if !$g.patter1.isYou()>>
+                <<run _notyou.push($g.patter1)>>
+            <</if>>
+            <<if !$g.patter2.isYou()>>
+                <<run _notyou.push($g.patter2)>>
+            <</if>>
+            <<set _o1 = _notyou[0]>>
+            <<set _o2 = _notyou[1]>>
+        <<else>>
+            While they were being treated for their multiple wounds, you questioned them about the details of the mission, about what had happen and how they managed to get away with their lives, to which <<rep $g.patter2>> simply stayed silent, probably trying to forget what they had just gone through.
+        <</if>>
+    </p>
+    <p>
+        Well, according to the results of this experiment, it is possible to give headpats the wrong way. Good to know.
+    </p>
+<</if>>

@@ -1,0 +1,331 @@
+:: QuestSetup_matter_of_purrnciples [nobr quest]
+
+<<set _criteriascout = new setup.UnitCriteria(
+null, /* key */
+'Scout', /* name */
+[
+  setup.trait.bg_wildman,
+  setup.trait.bg_hunter,
+  setup.trait.bg_woodsman,
+  setup.trait.per_cautious,
+  setup.trait.per_loner,
+  setup.trait.per_attentive,
+  setup.trait.skill_animal,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.per_brave,
+  setup.trait.per_gregarious,
+  setup.trait.per_dreamy,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  survival: 3,
+}
+)>>
+
+<<set _criteriaguard = new setup.UnitCriteria(
+null, /* key */
+'Guard', /* name */
+[
+  setup.trait.bg_soldier,
+  setup.trait.muscle_strong,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.tough_tough,
+  setup.trait.per_brave,
+  setup.trait.per_active,
+  setup.trait.per_loyal,
+  setup.trait.per_stubborn,
+  setup.trait.per_serious,
+  setup.trait.skill_ambidextrous,
+],
+[
+  setup.trait.height_dwarf,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.per_cautious,
+  setup.trait.per_studious,
+  setup.trait.per_independent,
+  setup.trait.per_kind,
+  setup.trait.per_playful,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  combat: 2,
+  brawn: 1,
+}
+)>>
+
+<<set _criterianegotiator = new setup.UnitCriteria(
+null, /* key */
+'Negotiator', /* name */
+[
+  setup.trait.bg_merchant,
+  setup.trait.per_smart,
+  setup.trait.per_calm,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_attentive,
+  setup.trait.per_logical,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.per_slow,
+  setup.trait.per_aggressive,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_dreamy,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  social: 3,
+}
+)>>
+<<run new setup.QuestTemplate(
+'matter_of_purrnciples', /* key */
+"Matter of Purrnciples", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'order',
+],
+1, /* weeks */
+setup.QUEST_DEFAULT_EXPIRATION, /* expiration weeks */
+{ /* roles */
+  'scout': [ _criteriascout, 1],
+  'guard': [ _criteriaguard, 1],
+  'negotiator': [ _criterianegotiator, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_matter_of_purrnciples',
+setup.qdiff.normal19, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_matter_of_purrnciplesCrit',
+    [
+      setup.qc.SlaveOrderFlex(
+'An obedient slave', /* name */
+'neko', /* company */
+8, /* expires in */
+0, /* base price */
+50, /* trait multi */
+0.6, /* value multi */
+[ /* crit traits */
+setup.trait.bg_laborer,
+setup.trait.bg_farmer,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.tough_tough,
+setup.trait.per_loyal,
+setup.trait.skill_ambidextrous,
+],
+[ /* disaster traits */
+setup.trait.height_dwarf,
+setup.trait.height_short,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_thin,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_stubborn,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.training_obedience_basic, setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+      setup.qc.SlaveOrderFlex(
+'An obedient slave', /* name */
+'neko', /* company */
+8, /* expires in */
+0, /* base price */
+50, /* trait multi */
+0.6, /* value multi */
+[ /* crit traits */
+setup.trait.bg_laborer,
+setup.trait.bg_farmer,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.tough_tough,
+setup.trait.per_loyal,
+setup.trait.skill_ambidextrous,
+],
+[ /* disaster traits */
+setup.trait.height_dwarf,
+setup.trait.height_short,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_thin,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_stubborn,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.training_obedience_basic, setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+    ],
+  ],
+  [
+    'Quest_matter_of_purrnciplesSuccess',
+    [
+      setup.qc.SlaveOrderFlex(
+'An obedient slave', /* name */
+'neko', /* company */
+8, /* expires in */
+0, /* base price */
+50, /* trait multi */
+0.6, /* value multi */
+[ /* crit traits */
+setup.trait.bg_laborer,
+setup.trait.bg_farmer,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.tough_tough,
+setup.trait.per_loyal,
+setup.trait.skill_ambidextrous,
+],
+[ /* disaster traits */
+setup.trait.height_dwarf,
+setup.trait.height_short,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.muscle_thin,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_stubborn,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AnyTrait([setup.trait.training_obedience_basic, setup.trait.training_obedience_advanced, setup.trait.training_obedience_master], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+],
+),
+    ],
+  ],
+  [
+    'Quest_matter_of_purrnciplesFailure',
+    [
+    ],
+  ],
+  [
+    'Quest_matter_of_purrnciplesDisaster',
+    [
+      setup.qc.Injury('scout', 2),
+      setup.qc.Injury('guard', 2),
+      setup.qc.Injury('negotiator', 2),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.common],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+  setup.qres.Cooldown(3), 
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_matter_of_purrnciples [nobr]
+<p>
+    Quick money is quick money. Although chasing dragons and infiltrating banks it's exciting (and highly lucrative), it is also dangerous and takes too long, not to mention the chance of ending up with something sticking where it shouldn't. Besides, this is supposed to be a slaving company, so it's weird you end up dedicating so much time and resources helping farmhands with their crops or hunting bears and boars. It's a matter of principles, really.
+</p>
+<p>
+    Lucky for you, a chance to get some easy gold just crossed your doors. A neko has come representing its village in order to buy workers to help them rebuild after a nearby river overflowed, destroying a bunch of houses and business. While this kind of work is usually covered by your orders for menial slaves, the neko is specifically looking for obedient slaves that are capable of following orders.
+</p>
+<p>
+    Unfortunately the traveler doesn't have the money in hand to pay for a slave, so it will be necessary to send a group of slavers to the small town in order to get the details of the request and settle the price; while annoying, this means you'll be able to charge them an extra fee for the time the group spends traveling. If they make it to the clients, of course.
+</p>
+
+
+:: Quest_matter_of_purrnciplesCrit [nobr]
+<p>
+    Thanks to <<reps $g.scout>> abilities and <<reps $g.guard>> strength, the group ended up finding the small village, not without having to face a couple of wild bears and a swarm of giant mosquitoes. How did the small neko managed to travel all the way from here to your fort by itself it's a complete mystery.
+</p>
+<p>
+    Once there, <<rep $g.negotiator>> took a look at the town's condition. Several building in ruins were scattered all around the place, the clear result of a huge flood. Although the rebuild efforts were already underway, a big part of the town's population are kids and elderly folks, that despite their best efforts aren't able to keep up with the work needed. Sadly, this also means the town didn't have much money left to buy the slave so the pay wasn't too high, but something is better than nothing, specially after going all the way there.
+</p>
+<p>
+    Even so, somehow <<rep $g.negotiator>> managed to convince the old town chief not to order one, but two slaves to help them rebuild. The reason why made itself evident later: it was no coincidence that the town had contacted a company like <<rep $company.player>>, which specialized in slaves with sexual training. Apparently, once the reconstruction were to be completed, the neko would use the slaves' other “skills” to raise the town's morale in order to recoup the costs as soon as possible. It was a win-win for everyone involved.
+</p>
+
+
+
+:: Quest_matter_of_purrnciplesSuccess [nobr]
+<p>
+    After a hard trip where <<rep $g.guard>> had to face endless waves of wild animals, giant insects and man-eating plants, <<rep $g.scout>> finally found the small town in the bank of a big river that ran among the forest's trees. How was that they hadn't managed to find it before will remain a mystery to be solved after a good rest back at the fort.
+</p>
+<p>
+    After talking with the town's mayor, <<rep $g.negotiator>> managed to close a deal for one slave with basic obedience training. While they are willing to take a more qualified or better trained slave, they wouldn't be able to afford it, so sending them one of your best specimens might be a waste. An easy sale and a decent amount of gold beat having a bunch of slaves sitting inside the cells with nothing to do, anyway.
+</p>
+
+
+
+:: Quest_matter_of_purrnciplesFailure [nobr]
+<p>
+    Turns out the Western Forests were more dangerous than expected, and finding a small neko town in the middle of them was like finding a furry needle in a haystack. Except the haystack is also the home for giant spiders and carnivorous plants.
+</p>
+<p>
+    After spending several days wandering through the forest and facing everything it decided to throw at their face, the group had to come back to the fort empty-handed. An unfortunate waste of time and resources. If the small neko comes back to the fort, it will be necessary to ask for more precise directions to its village, and if the giant spiders are a part of the course of just the result of <<reps $g.scout>> incompetence.
+</p>
+
+
+
+:: Quest_matter_of_purrnciplesDisaster [nobr]
+<p>
+    The dense Western Forests, west of the City of Lucgate and south from your fort are inhabited by the elven and neko people. But also by what seems like a endless amount of creatures that have developed a taste for blood. Between wolfs, bears, giant spiders, swarms of insects, carnivorous plants and even traps set by hunters, <<rep $g.guard>> did the best to defend <<they $g.guard>> could to protect the group while <<rep $g.scout>> tried to find <<their $g.scout>> bearings in the sea of trees, but after several days and multiple wounds, the three slavers found themselves back at the doors of the fort, hurt, tired and empty-handed. Pretty depressing that a lonely neko managed to complete the journey yet the group could not.
+</p>

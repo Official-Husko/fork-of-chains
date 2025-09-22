@@ -1,0 +1,412 @@
+:: QuestSetup_a_delicate_meowtter [nobr quest]
+
+
+
+
+
+<<set _criterianegotiator = new setup.UnitCriteria(
+null, /* key */
+'Negotiator', /* name */
+[
+  setup.trait.bg_merchant,
+  setup.trait.per_smart,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_attentive,
+  setup.trait.per_serious,
+  setup.trait.per_logical,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.bg_unemployed,
+  setup.trait.bg_slave,
+  setup.trait.per_slow,
+  setup.trait.per_aggressive,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_dreamy,
+  setup.trait.per_playful,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  social: 2,
+}
+)>>
+
+<<set _criteriaseducer = new setup.UnitCriteria(
+null, /* key */
+'Seducer', /* name */
+[
+  setup.trait.subrace_neko,
+  setup.trait.bg_courtesan,
+  setup.trait.bg_whore,
+  setup.trait.muscle_extremelythin,
+  setup.trait.muscle_verythin,
+  setup.trait.muscle_thin,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_sly,
+  setup.trait.per_gregarious,
+  setup.trait.per_playful,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.eq_slutty,
+  setup.trait.eq_veryslutty,
+  setup.trait.eq_valuable,
+  setup.trait.eq_veryvaluable,
+],
+[
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_direct,
+  setup.trait.per_loner,
+  setup.trait.per_stubborn,
+  setup.trait.per_cruel,
+  setup.trait.per_serious,
+  setup.trait.per_chaste,
+  setup.trait.per_submissive,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 0.5,
+  social: 0.5,
+  sex: 2,
+}
+)>>
+
+<<set _criteriatrainer = new setup.UnitCriteria(
+null, /* key */
+'Slave Trainer', /* name */
+[
+  setup.trait.subrace_orc,
+  setup.trait.bg_slaver,
+  setup.trait.muscle_verystrong,
+  setup.trait.muscle_extremelystrong,
+  setup.trait.per_direct,
+  setup.trait.per_gregarious,
+  setup.trait.per_cruel,
+  setup.trait.per_logical,
+  setup.trait.per_dominant,
+  setup.trait.per_evil,
+  setup.trait.skill_intimidating,
+  setup.trait.skill_hypnotic,
+  setup.trait.magic_earth,
+  setup.trait.magic_earth_master,
+],
+[
+  setup.trait.bg_slave,
+  setup.trait.per_loner,
+  setup.trait.per_dreamy,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_submissive,
+  setup.trait.per_honorable,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  brawn: 0.5,
+  slaving: 2,
+  social: 0.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'a_delicate_meowtter', /* key */
+"A Delicate Meowtter", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'desert',
+  'veteran',
+  'order',
+],
+2, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'negotiator': [ _criterianegotiator, 1],
+  'seducer': [ _criteriaseducer, 1],
+  'trainer': [ _criteriatrainer, 1],
+},
+{ /* actors */
+  'chief': 'subrace_orc',
+},
+[ /* costs */
+],
+'Quest_a_delicate_meowtter',
+setup.qdiff.harder45, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_a_delicate_meowtterCrit',
+    [
+      setup.qc.SlaveOrderFlex(
+'A delicate neko for the orcs', /* name */
+'orc', /* company */
+3, /* expires in */
+1000, /* base price */
+250, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.dick_huge,
+setup.trait.dick_titanic,
+setup.trait.balls_huge,
+setup.trait.balls_titanic,
+setup.trait.breast_huge,
+setup.trait.breast_titanic,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.tough_nimble,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.training_obedience_master,
+setup.trait.training_endurance_master,
+setup.trait.training_oral_advanced,
+setup.trait.training_oral_master,
+setup.trait.training_vagina_advanced,
+setup.trait.training_vagina_master,
+setup.trait.training_anal_advanced,
+setup.trait.training_anal_master,
+setup.trait.training_masochist_advanced,
+setup.trait.training_masochist_master,
+],
+[ /* disaster traits */
+setup.trait.dick_tiny,
+setup.trait.dick_small,
+setup.trait.balls_tiny,
+setup.trait.balls_small,
+setup.trait.breast_tiny,
+setup.trait.breast_small,
+setup.trait.vagina_gape,
+setup.trait.anus_gape,
+setup.trait.height_giant,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.training_dominance_basic,
+setup.trait.training_dominance_advanced,
+setup.trait.training_dominance_master,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AllTraits([setup.trait.subrace_neko, setup.trait.muscle_thin, setup.trait.training_obedience_advanced, setup.trait.training_endurance_advanced], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+setup.qc.Ire('orc', 10),
+],
+),
+      setup.qc.SetCooldownQuest(null, 16),
+    ],
+  ],
+  [
+    'Quest_a_delicate_meowtterCrit',
+    [
+      setup.qc.SlaveOrderFlex(
+'A delicate neko for the orcs', /* name */
+'orc', /* company */
+8, /* expires in */
+0, /* base price */
+250, /* trait multi */
+1, /* value multi */
+[ /* crit traits */
+setup.trait.dick_huge,
+setup.trait.dick_titanic,
+setup.trait.balls_huge,
+setup.trait.balls_titanic,
+setup.trait.breast_huge,
+setup.trait.breast_titanic,
+setup.trait.vagina_tight,
+setup.trait.anus_tight,
+setup.trait.muscle_extremelythin,
+setup.trait.muscle_verythin,
+setup.trait.tough_nimble,
+setup.trait.face_attractive,
+setup.trait.face_beautiful,
+setup.trait.per_lustful,
+setup.trait.per_sexaddict,
+setup.trait.per_submissive,
+setup.trait.per_masochistic,
+setup.trait.training_obedience_master,
+setup.trait.training_endurance_master,
+setup.trait.training_oral_advanced,
+setup.trait.training_oral_master,
+setup.trait.training_vagina_advanced,
+setup.trait.training_vagina_master,
+setup.trait.training_anal_advanced,
+setup.trait.training_anal_master,
+setup.trait.training_masochist_advanced,
+setup.trait.training_masochist_master,
+],
+[ /* disaster traits */
+setup.trait.dick_tiny,
+setup.trait.dick_small,
+setup.trait.balls_tiny,
+setup.trait.balls_small,
+setup.trait.breast_tiny,
+setup.trait.breast_small,
+setup.trait.vagina_gape,
+setup.trait.anus_gape,
+setup.trait.height_giant,
+setup.trait.muscle_strong,
+setup.trait.muscle_verystrong,
+setup.trait.muscle_extremelystrong,
+setup.trait.face_hideous,
+setup.trait.face_scary,
+setup.trait.corrupted,
+setup.trait.corruptedfull,
+setup.trait.per_chaste,
+setup.trait.per_dominant,
+setup.trait.per_lunatic,
+setup.trait.training_dominance_basic,
+setup.trait.training_dominance_advanced,
+setup.trait.training_dominance_master,
+],
+[ /* restrictions */
+setup.qres.Job(setup.job.slave),
+setup.qres.AllTraits([setup.trait.subrace_neko, setup.trait.muscle_thin, setup.trait.training_obedience_advanced, setup.trait.training_endurance_advanced], true),
+],
+[ /* addons */
+],
+[ /* fulfilled outcomes */
+],
+[ /* unfulfilled outcomes */
+setup.qc.Ire('orc', 5),
+],
+),
+      setup.qc.SetCooldownQuest(null, 16),
+    ],
+  ],
+  [
+    'Quest_a_delicate_meowtterCrit',
+    [
+      setup.qc.Ire('orc', 2),
+    ],
+  ],
+  [
+    'Quest_a_delicate_meowtterCrit',
+    [
+      setup.qc.Ire('orc', 20),
+      setup.qc.Injury('negotiator', 8),
+      setup.qc.TraumatizeRandom('negotiator', 5),
+      setup.qc.Injury('seducer', 8),
+      setup.qc.TraumatizeRandom('seducer', 5),
+      setup.qc.Injury('trainer', 8),
+      setup.qc.TraumatizeRandom('trainer', 5),
+      setup.qc.SetCooldownQuest(null, 40),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.desert, setup.rarity.rare],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_a_delicate_meowtter [nobr]
+<p>
+    Weird requests have become something common for your company, thanks to the kind of missions and characters you are willing to take in. From working with a masochist noble, offering one of your slaves to be “hunted” for sport, or making a deal with a very horny river spirit, there's no corner of your hear or conscience you wouldn't turn over for profit. Even so, you had to read the letter you got twice just to make sure you really understood the opportunity that had just presented itself.
+</p>
+<p>
+    The war chief of one of the most violent groups of the Eastern Deserts had contacted your company with a very specific request, and quote: “My men broke their last stress reliever and are asking for something to replace it, which is why I'm specifically contacting your company, given your history and area of expertise, to provide a Neko with the most exquisite and tender complexion you can provide in a reasonable time span. The details and price shall be arranged in person with either you or the representative of <<rep $company.player>> you wish to send in your place, but I assure you, you will be properly rewarded. Just a warning, neither I nor my men are willing to make a deal with amateurs or swindlers, and trust me, you don't want to put that to the test.”
+</p>
+<p>
+    Seems like you got your work cut out for you. If you decided to take this offer, you better send a group of professional slavers that really know what they are doing to negotiate with the tribe, and if they manage to make a deal, the slave your send should probably be well trained and ready to take the “stress” of an entire orc's camp.
+</p>
+<p>
+    Although it seems like a lot of problems just to fulfill a single order, it's well known that this group in particular has an enormous war chest, so the potential profit for just one slave is pretty high.
+</p>
+
+
+:: Quest_a_delicate_meowtterCrit [nobr]
+<p>
+    After weeks of traveling through the Eastern Desert, the group finally found themselves at the outskirts of the orc encampment that had contacted <<rep $company.player>>. <<Rep $g.seducer>> got nervous after hearing the noises of weapons clashing, war cries and very upset orcs yelling order, but <<rep $g.negotiator>> calmed <<them $g.seducer>> down before approaching the guards: two huge orcs, each one holding a halberd with a blade the size of <<reps $g.trainer>> head. After explaining them why they were there and showing them the letter as evidence, the guards escorted the three slavers through the camp to the war chief's tent. On the way, <<rep $g.seducer>> noticed the heavy atmosphere around the place: no doubt, most of the orcs were in a bad mood, most likely because they lacked good ways to relieve their stress. If something wasn't done to solve this as soon as possible, all this accumulated tension could end bursting into a mutiny or something worse, which explained why the chief was desperate enough to contact a group of outsiders from so far away.
+</p>
+<p>
+    The war chief <<rep $g.chief>> welcomed the group with a big smile that let them see <<their $g.chief>> sharp fangs, and invited them for a drink after their long journey through the desert. Once they were more comfortable, <<rep $g.negotiator>> tried asking the orc about the details of the order, but <<they $g.chief>> shut <<them $g.negotiator>> up with a simple gesture. Before discussing business, the orc wanted to make sure that <<rep $company.player>>'s reputation was real, and there was no better way to do so than to personally watch the skills of its personnel and slave trainers. Therefore, the chief commanded that the slavers would stay a few days in the camp while <<they $g.chief>> judged their talents. Even though <<rep $g.negotiator>> tried to excuse them, saying they had other requests to attend to and that the rest of the company was waiting for them back at their fort, <<rep $g.chief>> simple blew <<them $g.negotiator>> off.
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        Over the next few days, each slaver dedicated themselves to show their skills to the orcs in the camp. <<Rep $g.negotiator>> spend most of <<their $g.negotiator>> time with the war chief, learning <<their $g.chief>> tells and trying to sell <<their $g.negotiator>> partners as the best at what they did, both the ones that came with <<them $g.negotiator>> and the ones that were staying back at <<rep $company.player>>'s headquarters. When the chief was busy, <<they $g.negotiator>> walked around the encampment, listening to random conversations and trying to learn as much as possible from the orcs that lived there.
+    </p>
+    <p>
+        Although <<rep $g.trainer>> trainer|wasn't sure on how to show <<their $g.trainer>> abilities before the orc chief, the perfect chance presented itself when a group of orcs came back to the camp with a fresh batch of “booty”: freshly captured slaves after assaulting a nearby human settlement. After being secured, the camp's slave trainers started breaking in the new goods in a very violent manner, true to their orcish nature. After a bit of convincing, <<rep $g.trainer>> borrowed one of their slaves and started teaching them different ways to “convince” the new arrival without having to ruin its holes or leave permanent marks in its skin. The trainers were so impressed by <<their $g.trainer>> techniques that they called the <<uadj $g.trainer>> slaver back the next day when one of the slaves tried to stir a commotion among the new arrivals and encourage its comrades to rebel against their captors, asking the slaver to punish them in front of the entire camp in order to deter the others to follow its example, which <<rep $g.trainer>> did in a masterful way.
+    </p>
+    <p>
+        After giving it some thought and talking with <<rep $g.negotiator>>, <<rep $g.seducer>> decided to take advantage of the mood around the camp and try to manipulate the more vocal orcs so they would pressure the war chief to close the deal with your company as soon as possible so they could get to use their new “toy”. This proved to be really easy for <<therace $g.seducer>>, since the camp was a single bad fight from falling into chaos, and it was just a matter of pressing the right buttons (and groins) so the frustrated orcs would look to vent out in any way possible; first by themselves, behind their tents, later on all over the floor with the help of <<reps $g.seducer>> skillful hand and finally by begging <<Rep $g.chief>> to consider getting a new neko as soon as possible.
+    </p>
+    <p>
+        Finally, after the slavers had their way with the camp, the war chief decided that their skills matched the company's reputation, and laid down the details and price of the slave order. Furthermore, since it was clear that <<their $g.chief>> men wouldn't be able to hold up for much longer, it was crucial that the slave would arrive before it was original was planned to, and <<rep $g.chief>> was willing to pay an additional fee to make it happen. Happy with what they had accomplished , the slavers thanked the orc for <<their $g.chief>> hospitality and set off back to the fort. Hopefully one of the slaves already fulfills the requirements for the order, otherwise it's gonna be almost impossible to get one in time.
+    </p>
+<<elseif $gOutcome == 'success'>>
+    <p>
+        The next few days were really stressing for the group, between living among orcs that were ready to go to war at a moment's notice and having to prove their “skills” to <<rep $g.chief>> without a clear explanation or indication on how to do it. Even so, the three slavers did the best they could to please the chief.
+    </p>
+    <p>
+        <<Rep $g.negotiator>> spend a big part of <<their $g.negotiator>> time trying to convince the chief to speak with <<them $g.negotiator>> and write down the order's details, without much success. Despite that, following the orc so close by allowed <<rep $g.negotiator>> to better understand <<them $g.chief>> and the camp as a whole, and after asking a couple of orc for a description of their last “toy”, <<rep $g.negotiator>> got a better idea of the kind of neko they were used to having around.
+    </p>
+    <p>
+        <<Rep $g.trainer>> had to ask the camp's slave trainers for access to one of their more rebellious slaves, and after a few days of hard work, <<they $g.trainer>> managed to make the unruly slave properly greet one of its owners. While it was clear the slave was still hostile, specially behind their backs, having accomplished so much in so few days was proof of <<reps $g.trainer>> abilities for handling and training unruly merchandise.
+    </p>
+    <p>
+        <<Reps $g.seducer>> had to be very careful: <<they $g.seducer>> had decided to try and convince the most orcs possible that the <<rep $company.player>> had exactly the kind of neko they so desperately desired, but that because of <<reps $g.chief>> insistence to put them through a test, they weren't able to report back to their headquarters in order to sent them the slave. While many of the warriors ignored <<them $g.seducer>>, since they trusted their chief's judgment, some of them actually agreed with the <<uadj $g.seducer>> <<urace $g.seducer>> and after a couple of days the increase of the camp's restlessness was obvious.
+    </p>
+    <p>
+        At the end, <<rep $g.chief>> managed to come to an agreement with the three slavers, after proclaiming that <<they $g.chief>> considered capable enough to bring them the high-quality neko the camp sorely needed. On the way back, <<rep $g.trainer>> wondered if this had been a one-time chance, but between laughs <<rep $g.negotiator>> assured <<them $g.trainer>> it wouldn't be long before a new request came to the doors of <<rep $company.player>>. It was clear that, no matter how resilient the new “stress reliever” was, the orcs would definitely break it after a short while and end up having to buy a new one.
+    </p>
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        With few clues to find out where to begin, the three slavers found themselves lost in the middle of encampment full with violent orcs that had no good way to relief their strains. Worried about their own safety, none of them did a good job showing their abilities before the war chief. <<Rep $g.negotiator>> tried to appear confident and interested in <<reps $g.chief>> and <<their $g.chief>> warrior's lives, but ended up being annoying and disrupting the day to day of the orcs that <<they $g.negotiator>> tried to speak to. Meanwhile, <<rep $g.trainer>> didn't know what to do without access to <<their $g.trainer>> slaves or the chance to get new ones, and ended up spending the whole day taking out <<their $g.trainer>> frustation with one of the orcs' already trained slaves, unknowing that they were planning to sell said slave in a couple days, and that now they had renegotiate a lower price thanks to the new bruises on the slave's skin. And despite <<rep $g.seducer>> trying <<their $g.seducer>> best to convince the orcs to pressure <<rep $g.chief>> to close the deal with them by using <<their $g.seducer>> charms and most suggestive postures, it was clear that this group had very specific tastes and weren't interested in <<rep $g.seducer>>
+        <<if $g.seducer.isHasTrait('subrace_neko')>>
+            , despite <<them $g.seducer>> being a neko.
+        <<else>>
+            .
+        <</if>>
+    </p>
+    <p>
+        Ultimately, <<rep $g.chief>> summoned the slavers back to <<their $g.chief>> tent and, clearly very upset, told them that <<they $g.chief>> didn't know what kind of hoax they had used to get such a reputation, but that it was very clear they didn't measure up to the kind of requests the camp needed. Before any of them could bring up their case and try to explain, the war chief hit the table before them really hard to make them shut up, and furious, ordered them to leave the camp immediately, before <<they $g.chief>> reconsidered letting them leave with their lives after they had wasted <<their $g.chief>> time, and to never show their faces back in the Eastern Deserts if they appreciated the fact that said faces were still attached to their bodies.
+    </p>
+<<elseif $gOutcome == 'disaster'>>
+    <p>
+        The following days just kept getting worse and worse. Somehow, the slavers managed to keep making their hosts angrier and angrier, between <<reps $g.negotiator>> constant nagging to try to get them to seal the deal and <<their $g.negotiator>> suspicious questioning around about what had happened to the last camp's toy, <<rep $g.trainer>> unwillingness to coexist with the orcs without one of <<their $g.trainer>> own personal slaves that <<they $g.trainer>> trainer|was so used to, making <<them $g.trainer>> look like a spoiled little brat, and to top it off, <<reps $g.seducer>> very obvious attempts to manipulate the orc warriors so they would convince their chief that the slavers were the best chance they had to get a new neko; in the worst case scenario, it was possible <<rep $g.chief>> saw all these awful efforts to impress and manipulate the members of <<their $g.chief>> tribe as attempts to destabilize <<their $g.chief>> encampment before the attacks of one of <<theirs $g.chief>> many rivals.
+    </p>
+    <p>
+        All this culminated on the night of the third day. While the slavers were asleep, a mob commanded by <<rep $g.chief>> gathered around their tent, and the last thing the group saw was the angry face of the war chief and <<their $g.chief>> huge axe.
+    </p>
+    <p>
+        No one at the fort knew what was going on with the three people in charge of contacting the orc tribe in the Eastern Desert until one day, out of nowhere, a caravan coming from the desert stopped at <<rep $company.player>> to drop a shocking delivery: <<rep $g.negotiator>>, <<rep $g.trainer>> and <<rep $g.seducer>>, badly hurt, with torn clothes and clear signs of having been abused in every one of their holes. In the forehead of one of them was a parchment with a short but staggering message: <<rep $g.chief>> and <<their $g.chief>> tribe sent their regards, with the hope of paying a visit to the fort in the near future and extend to the rest of the company the same kind of courtesies they had had with this group of frauds.
+    </p>
+<</if>>

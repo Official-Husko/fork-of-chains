@@ -1,0 +1,244 @@
+:: QuestSetup_cleansing_pawctrice [nobr quest]
+
+<<set _criteriaconvincer = new setup.UnitCriteria(
+null, /* key */
+'Convincer', /* name */
+[
+  setup.trait.subrace_neko,
+  setup.trait.per_smart,
+  setup.trait.per_calm,
+  setup.trait.per_humble,
+  setup.trait.per_sly,
+  setup.trait.per_attentive,
+  setup.trait.per_honorable,
+],
+[
+  setup.trait.corrupted,
+  setup.trait.corruptedfull,
+  setup.trait.per_slow,
+  setup.trait.per_aggressive,
+  setup.trait.per_proud,
+  setup.trait.per_direct,
+  setup.trait.per_cruel,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+  setup.trait.skill_intimidating,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 1,
+  social: 2,
+}
+)>>
+
+<<set _criteriarep1 = new setup.UnitCriteria(
+null, /* key */
+'Representative', /* name */
+[
+  setup.trait.subrace_neko,
+  setup.trait.subrace_tigerkin,
+  setup.trait.bg_healer,
+  setup.trait.bg_priest,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_brave,
+  setup.trait.per_humble,
+  setup.trait.per_loyal,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_chaste,
+  setup.trait.per_honorable,
+],
+[
+  setup.trait.bg_boss,
+  setup.trait.bg_assassin,
+  setup.trait.bg_slaver,
+  setup.trait.bg_thug,
+  setup.trait.bg_thief,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_aggressive,
+  setup.trait.per_sly,
+  setup.trait.per_loner,
+  setup.trait.per_cruel,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 0.5,
+  social: 1,
+  sex: 1.5,
+}
+)>>
+
+<<set _criteriarep2 = new setup.UnitCriteria(
+null, /* key */
+'Representative', /* name */
+[
+  setup.trait.subrace_neko,
+  setup.trait.subrace_tigerkin,
+  setup.trait.bg_healer,
+  setup.trait.bg_priest,
+  setup.trait.face_attractive,
+  setup.trait.face_beautiful,
+  setup.trait.per_brave,
+  setup.trait.per_humble,
+  setup.trait.per_loyal,
+  setup.trait.per_kind,
+  setup.trait.per_empath,
+  setup.trait.per_chaste,
+  setup.trait.per_honorable,
+],
+[
+  setup.trait.bg_boss,
+  setup.trait.bg_assassin,
+  setup.trait.bg_slaver,
+  setup.trait.bg_thug,
+  setup.trait.bg_thief,
+  setup.trait.face_hideous,
+  setup.trait.face_scary,
+  setup.trait.per_aggressive,
+  setup.trait.per_sly,
+  setup.trait.per_loner,
+  setup.trait.per_cruel,
+  setup.trait.per_lustful,
+  setup.trait.per_sexaddict,
+  setup.trait.per_dominant,
+  setup.trait.per_lunatic,
+  setup.trait.per_evil,
+],
+[
+  setup.qres.Job(setup.job.slaver),
+],
+{
+  intrigue: 0.5,
+  social: 1,
+  sex: 1.5,
+}
+)>>
+<<run new setup.QuestTemplate(
+'cleansing_pawctrice', /* key */
+"Cleansing Pawctrice", /* Title */
+{ /* Author */
+  name: "Milk Maid Sona",
+  url: "",
+},
+[ /* tags */
+  'forest',
+  'favor',
+],
+1, /* weeks */
+4, /* expiration weeks */
+{ /* roles */
+  'convincer': [ _criteriaconvincer, 1],
+  'rep1': [ _criteriarep1, 1],
+  'rep2': [ _criteriarep2, 1],
+},
+{ /* actors */
+},
+[ /* costs */
+],
+'Quest_cleansing_pawctrice',
+setup.qdiff.hard30, /* difficulty */
+[ /* outcomes */
+  [
+    'Quest_cleansing_pawctriceCrit',
+    [
+      setup.qc.Favor('neko', 150),
+    ],
+  ],
+  [
+    'Quest_cleansing_pawctriceCrit',
+    [
+      setup.qc.Favor('neko', 100),
+    ],
+  ],
+  [
+    'Quest_cleansing_pawctriceCrit',
+    [
+      setup.qc.Ire('neko', 5),
+    ],
+  ],
+  [
+    'Quest_cleansing_pawctriceCrit',
+    [
+      setup.qc.Ire('neko', 10),
+    ],
+  ],
+],
+[ /* quest pool and rarity */
+[setup.questpool.forest, setup.rarity.uncommon],
+],
+[ /* restrictions */
+  setup.qres.QuestUnique(),
+],
+[ /* expiration outcomes */
+
+],
+)>>
+
+:: Quest_cleansing_pawctrice [nobr]
+<p>
+    Several cultures live in the <<lore region_forest>>, from the common elves, now used to live with the rest of the world, to groups of neko, proud of their origins and mistrustful of strangers. Chances of establishing a bond with them are quite uncommon, so the report that <<rep $company.player>> just received is quite interesting.
+    A small neko town has recently designated a new leader with revolutionary ideas for its community, among which are creating new commercial and political connections with outsiders, and your company is one of the lucky chosen ones.
+</p>
+<p>
+    But, to make sure <<rep $company.player>> can be trusted, it is required that you send a couple of representatives to partake in some kind of ritual that will help determine the true intentions of the company. Considering the type of business you are running, you better send your two most innocent slavers, and while you are at it, someone that can help convince the townsfolk of your “good intentions”, if it proves necessary.
+</p>
+
+
+:: Quest_cleansing_pawctriceCrit [nobr]
+<p>
+    When your slavers got to the town, they were received by mixed reactions: half of the people looked at them with distaste,
+    <<set _unit = setup.selectUnit([$g.convincer, $g.rep1, $g.rep2], {trait: 'subrace_neko'})>>
+    <<if _unit>>
+        even when <<Rep _unit>> was a neko just like them,
+    <</if>>
+    while the other half cheerfully greeted them. Even small towns couldn't avoid this kind of fierce division, <<rep $g.convincer>> thought.
+</p>
+<p>
+    After a brief introduction with the town representatives, the details of the ritual were finally revealed: the two envoys would be “tasted” by all the local residents and the essence of their bodies would reveal if they could be trusted or not. Before they could argue how something so bizarre could work, <<rep $g.rep1>> and <<rep $g.rep2>> were forcefully taken to the town square and tied to a couple of wooden beams. All the neko quickly gathered around them, forming a circle around the two tied slavers, and they cautiously approached one by one. Soon enough, all the clothes of the poor slavers were in the ground and multiple tongues were attacking every part of their bodies. Some neko withdrew after one or two licks, their judgment of the two outsider already casted, while others needed to taste different areas to get a clearer image. Of course, several of them didn't really care about the ritual and were only looking to indulge themselves in the debauchery of the naked bodies of the tributes.
+</p>
+
+<<if $gOutcome == 'crit'>>
+    <p>
+        Several (blissful) minutes later, the town had come to an unanimous agreement. Thanks to the apparently good intentions of <<rep $g.rep1>> and <<rep $g.rep2>> and <<reps $g.convincer>> hard work with the more reluctant neko, <<rep $company.player>> was clearly a trustworthy group and exactly the kind of company the town's leader wanted a strong and long-lasting relationship with. After thanking them for their trust and time, <<rep $g.convincer>> started untying <<their $g.convincer>> companions off the beams, both unconscious after going through such a strong experience, while trying not to slip in the pools of fluids at <<their $g.convincer>> feet.
+    </p>
+
+<<elseif $gOutcome == 'success'>>
+    <p>
+        Several long and tortuous minutes later, most of the habitants had come to a consensus. Despite the disagreement of a few older, more traditional, neko, a relationship between the town and <<rep $company.player>> could be greatly beneficial for everyone involved. The ritual had changed the minds of a lot of the residents; mostly the ones that had fully abused of the unconscious bodies belonging to your slavers, that were now hanging off the beams, standing on top of pools of their own bodily fluids, their wet, slimy skins glittering under the sun. After loading them into a cart, <<rep $g.convincer>> thanked the town's chief for inviting them and set off back to the fort, where <<rep $g.rep1>> and <<rep $g.rep2>> woke up with a strong post-ritual hangover.
+    </p>
+
+<<elseif $gOutcome == 'failure'>>
+    <p>
+        A few minutes later, <<rep $g.rep1>> and <<rep $g.rep2>> laid down unconscious on top of small puddles made of their own fluids and a lot of saliva, with an euphoric expression on their faces. Unfortunately, the neko around them didn't share such expressions, instead talking and whispering among themselves things that <<rep $g.convincer>> didn't manage to hear. After failing to address a couple of them to maybe try to convince them in some other way, a group comprised of what seemed to be the old town representatives handed <<them $g.convincer>> <<their $g.convincer>> colleagues and thanked <<them $g.convincer>> for their visit, but that sadly <<rep $company.player>> weren't the right kind of people they wanted to make deals with.
+        And then things took a turn for the worse when <<rep $g.convincer>> made a couple of distasteful comments about all the different places where they could stick their tongues and opinions instead, forcing the group to run away while a mob of angry neko threw rocks and sticks at them. Seems like this mission ended up having the opposite effect you were hoping for.
+    </p>
+
+<<elseif $gOutcome == 'disaster'>>
+    <p>
+        In the middle of the slippery action, <<rep $g.rep1>> lost <<their $g.rep1>> temper and started trying to toss and turn in order to get away from the incessant attack of the dozens of cattish tongues touching every single sensitive part of <<their $g.rep1>> body, some going further than simple licks. Meanwhile, <<rep $g.rep2>> rep2|was struggling against <<their $g.rep2>> bindings too, not to escape the pleasure but to fully dive and indulge wholly in it. Driven mad by <<their $g.rep2>> horniness, <<they $g.rep2>> kept thrusting <<their $g.rep2>> hips to get the neko's tongues closer to it in order for them to pay more attention to <<their $g.rep2>>
+        <<if $g.rep2.isHasDick()>>
+            <<udick $g.rep2>>.
+        <<else>>
+            <<uvagina $g.rep2>>.
+        <</if>>
+        Unfortunately, the only thing <<they $g.rep2>> managed to do was to hit a couple of them instead, quickly turning the odd and lustful scene into an angry mob armed with very sharp claws.
+        Fortunately for the two, now scratching-poles to-be slavers, a fire started by <<rep $g.convincer>> caught the attention of the townsfolk long enough for <<them $g.convincer>> to untie <<their $g.convincer>> allies and escape the town, but the neko of the Western Forest won't forget this dreadful incident anytime soon.
+    </p>
+
+<</if>>
+
+
+
+
+
