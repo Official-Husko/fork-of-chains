@@ -9,7 +9,6 @@ export function createLevelOneUnitCopy(unit: Unit): Unit {
   const replace_over: (keyof Unit)[] = [
     "first_name",
     "surname",
-    "name",
     "custom_image_name",
     "nickname",
     "trait_key_map",

@@ -105,7 +105,11 @@ From now on, the player character will simply be referred to as "you".
 
 :: PrologueGenderPrefs [nobr]
 
-<h3>Game Settings</h3>
+<h3 style="margin-bottom: 0.25em">Game Settings</h3>
+
+<small style="opacity: 0.6">Note that all settings can be changed at any point in the game.</small>
+
+<hr/>
 
 <<component setup.DOM.Component.SexGenderPreferencesEditor char_creation true>>
 
@@ -114,13 +118,12 @@ From now on, the player character will simply be referred to as "you".
 <p>
   <div style="display: grid; grid-template-columns: 1fr auto; gap: 1em; align-items: center;">
     <p>
-      You can configure the <b>image packs</b> you wish to be available
-      to provide images to the units.
-      If this is the first time you are playing this game, you can skip this.
+      <b>Image packs configuration</b>: image packs provide portraits or full-body images to the units (slaves, slavers, etc.).
+      You can choose which ones you want to use, as they may have different art styles or sources.
     </p>
     <div>
       <!--<<attach setup.DOM.Menu.Settings.imagepacks()>>-->
-      <<button 'Configure image packs'>>
+      <<button 'Image packs settings'>>
         <<run setup.DOM.Menu.Settings.opendialog('imagepacks')>>
       <</button>>
     </div>
@@ -131,7 +134,7 @@ From now on, the player character will simply be referred to as "you".
 
 <p>
   <div style="margin-bottom: 0.5em">
-    You can choose to disable certain content (hover each for details):
+    <b>Disabled content:</b> you can choose to disable specific content you don't want to see: (hover them for details)
     <<message '(?)'>>
       <div class='helpcard'>
         Banning a content tag means that content involving it will not be generated in your playthrough.
@@ -148,7 +151,7 @@ From now on, the player character will simply be referred to as "you".
 <hr/>
 
 <p>
-You can <<link 'change other game settings too.'>>
+You can optionally change <<link 'some other settings.'>>
   <<run setup.DOM.Menu.Settings.opendialog('settings_general')>>
 <</link>>
 </p>
@@ -166,7 +169,7 @@ You can <<link 'change other game settings too.'>>
 <<set $i.trait_keys = []>>
 
 <p>
-You can either fully customize your player character:
+You can choose to fully customize your player character:
 <<message '(?)'>>
   <div class='helpcard'>
     Should you decide to fully customize your character, you will be asked to select
@@ -182,11 +185,11 @@ You can either fully customize your player character:
 </p>
 
 <p>
-or start with a preset one:
+Or instead use a character preset: <span class="lightgraytext">(each oriented to one skill)</span>
 </p>
 
-<<rep setup.skill.combat>>-oriented
-<<link 'brave desertfolk knight capable of using both arms equally well' 'PrologueGenerateChar'>>
+<<rep setup.skill.combat>> Combat:
+<<link 'A brave desertfolk knight capable of using both arms equally well' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_humandesert'>>
   <<set $i.trait_keys = [
     'bg_knight',
@@ -195,8 +198,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.brawn>>-oriented
-<<link 'blunt orc blacksmith with an intimidating posture' 'PrologueGenerateChar'>>
+<<rep setup.skill.brawn>> Brawn:
+<<link 'A blunt orc blacksmith with an intimidating posture' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_orc'>>
   <<set $i.trait_keys = [
     'bg_metalworker',
@@ -205,8 +208,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.survival>>-oriented
-<<link 'loner dragonkin wildman capable of flight' 'PrologueGenerateChar'>>
+<<rep setup.skill.survival>> Survival:
+<<link 'A loner dragonkin wildman capable of flight' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_dragonkin'>>
   <<set $i.trait_keys = [
     'bg_wildman',
@@ -215,8 +218,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.intrigue>>-oriented
-<<link 'sly human assassin with many connections' 'PrologueGenerateChar'>>
+<<rep setup.skill.intrigue>> Intrigue:
+<<link 'A sly human assassin with many connections' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_humankingdom'>>
   <<set $i.trait_keys = [
     'bg_assassin',
@@ -225,8 +228,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.slaving>>-oriented
-<<link 'cruel engineer from a faraway land beyond the southern seas with a hypnotizing gaze' 'PrologueGenerateChar'>>
+<<rep setup.skill.slaving>> Slaving:
+<<link 'A cruel engineer from a faraway land beyond the southern seas with a hypnotizing gaze' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_humansea'>>
   <<set $i.trait_keys = [
     'bg_engineer',
@@ -235,8 +238,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.knowledge>>-oriented
-<<link 'studious northerner scholar with a creative mind' 'PrologueGenerateChar'>>
+<<rep setup.skill.knowledge>> Knowledge:
+<<link 'A studious northerner scholar with a creative mind' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_humanvale'>>
   <<set $i.trait_keys = [
     'bg_scholar',
@@ -245,8 +248,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.social>>-oriented
-<<link 'silver-tongued neko noble with a divine voice' 'PrologueGenerateChar'>>
+<<rep setup.skill.social>> Social:
+<<link 'A silver-tongued neko noble with a divine voice' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_neko'>>
   <<set $i.trait_keys = [
     'bg_noble',
@@ -255,8 +258,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.aid>>-oriented
-<<link 'kind elven healer with vast knowledge on how to mix potions' 'PrologueGenerateChar'>>
+<<rep setup.skill.aid>> Aid:
+<<link 'A kind elven healer with vast knowledge on how to mix potions' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_elf'>>
   <<set $i.trait_keys = [
     'bg_healer',
@@ -265,8 +268,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.arcane>>-oriented
-<<link 'lavish demonkin mystic gifted in the domain of the dark magic' 'PrologueGenerateChar'>>
+<<rep setup.skill.arcane>> Arcane:
+<<link 'A lavish demonkin mystic gifted in the domain of the dark magic' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_demonkin'>>
   <<set $i.trait_keys = [
     'bg_mystic',
@@ -275,8 +278,8 @@ or start with a preset one:
   ]>>
 <</link>>
 <br/>
-<<rep setup.skill.sex>>-oriented
-<<link 'playful werewolf courtesan capable of communicating with animals' 'PrologueGenerateChar'>>
+<<rep setup.skill.sex>> Sex:
+<<link 'A playful werewolf courtesan capable of communicating with animals' 'PrologueGenerateChar'>>
   <<set $i.race_key = 'subrace_werewolf'>>
   <<set $i.trait_keys = [
     'bg_courtesan',
@@ -481,11 +484,11 @@ traits, they can be upgraded to a stronger version later in the game.)
 
 <<set _unitgroup = setup.unitgroup[$i.race_key]>>
 
-This is your unit:
+This will be your unit:
 /*
 (Note that the skill focuses i.e., the three icons next to your name
 like
-<<rep setup.skill.combat>><<rep setup.skill.brawn>><<rep setup.skill.intrigue>>
+<<rep setup.skill.combat>>Combat<<rep setup.skill.brawn>>Brawn<<rep setup.skill.intrigue>>Intrigue
 can be changed anytime later in the game. You can also change your player's portrait later.):
 */
 
@@ -534,7 +537,7 @@ can be changed anytime later in the game. You can also change your player's port
   <</replace>>
 <</link>>
 
-<<message '(custom portrait)'>>
+<<message '(set custom portrait)'>>
   Put your image in the
   <<successtext "dist/img/customunit">> folder.
   Then, enter the filename in the text box following this.
@@ -543,7 +546,7 @@ can be changed anytime later in the game. You can also change your player's port
   then enter in the following <<successtextlite 'girl.png'>>.
   Leave blank to use the default automatically-generated image.
   <br/>
-  <<textbox "_unit.custom_image_name" _unit.custom_image_name>>
+  <<textbox "_unit.custom_image_name" _unit.custom_image_name||''>>
   <<link 'Apply'>>
     <<replace '#genunitdiv'>>
       <<unitcard _unit>>
@@ -555,6 +558,13 @@ can be changed anytime later in the game. You can also change your player's port
   <<generatechar>>
 <</foctimed>>
 
+<br/>
+<br/>
+
+<div>
+It will be <b>your avatar</b> in the game, and the leader of the company.
+</div>
+You can reroll the stats and some of the traits, or also randomize the portrait. When you're ready click the button below to continue.
 <br/>
 <br/>
 <<button 'Proceed with this unit as your avatar' 'PrologueCompanyGenIntro'>>

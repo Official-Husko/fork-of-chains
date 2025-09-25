@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js";
+import { createSignal, For, Show } from "solid-js";
 import {
   type SexgenderDistribution,
   type SexgenderKey,
@@ -12,6 +12,12 @@ const TARGETS = [
   ["$settings.gender_preference.slaver", "Slaver"],
   ["$settings.other_gender_preference", "Other (NPCs, etc.)"],
 ];
+
+const PRESETS: Record<string, SexgenderDistribution> = {
+  "all male": { male: 1 },
+  "all female": { female: 1 },
+  "fifty-fifty male/female": { male: 0.5, female: 0.5 },
+};
 
 function initDistributions() {
   const distributions: Record<string, SexgenderDistribution> = {};
@@ -96,18 +102,45 @@ export const SexGenderPreferencesEditor: Component<{
   return (
     <>
       <div>
-        Gender preferences for units:
-        <Show when={props.char_creation}>
-          <span class="lightgraytext">
-            &nbsp;(can also be changed later in the game)
-          </span>
+        <Show
+          when={props.char_creation}
+          fallback={
+            <>
+              Sex/gender preferences for units:
+              <Message label="(?)">
+                <div class="helpcard">
+                  You can use this option to adjust the how often units of
+                  certain sex/gender will be encountered in the game.
+                </div>
+              </Message>
+            </>
+          }
+        >
+          <h4 style={{ margin: "0.5em 0" }}>Sex/gender ratios:</h4>
+          You can decide the proportion of sex or gender you want to see for
+          each character role in the game.
         </Show>
-        <Message label="(?)">
-          <div class="helpcard">
-            You can use this option to adjust the how often units of certain
-            gender will be encountered in the game.
-          </div>
-        </Message>
+        <div>
+          <b>Quick presets:</b>
+          <For each={Object.entries(PRESETS)}>
+            {([presetLabel, presetDistr]) => (
+              <a
+                style={{ "margin-left": "0.5em" }}
+                onClick={(ev) => {
+                  ev.preventDefault();
+
+                  setDistributions(
+                    Object.fromEntries(
+                      TARGETS.map(([target]) => [target, { ...presetDistr }]),
+                    ),
+                  );
+                }}
+              >
+                {`(${presetLabel})`}
+              </a>
+            )}
+          </For>
+        </div>
         <div
           class="SexGenderPreferencesEditor-table"
           style={{
@@ -125,7 +158,15 @@ export const SexGenderPreferencesEditor: Component<{
 
           {SEXGENDERS_KEYS.map((sexgender) => (
             <>
-              <header>
+              <header
+                style={
+                  Object.values(getDistributions()).some(
+                    (d) => (d[sexgender] ?? 0) > 0,
+                  )
+                    ? undefined
+                    : { opacity: 0.4 }
+                }
+              >
                 <span>{SEXGENDERS[sexgender].name}</span>
               </header>
               <span>

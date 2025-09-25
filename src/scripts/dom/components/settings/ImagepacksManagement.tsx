@@ -62,13 +62,14 @@ export const ImagepacksManagement: Component = () => {
   return (
     <>
       <div>
-        <b>Note:</b> image pack settings are shared by all saves
+        Image packs provide <b>portraits or full-body images for units</b>. Here
+        you can select which ones you want to use, which applies to all saves.
       </div>
 
       <p>
         <small>
-          The list below only shows image packs that comes shipped with the
-          game, and image packs that have been added. If you have a custom image
+          The list below only shows image packs that come shipped with the game,
+          and image packs that have been installed. If you have a custom image
           pack and it is {Text.danger("not installed")}, you have to manually
           add it by clicking (add image pack).
         </small>
@@ -148,7 +149,7 @@ export const ImagepacksManagement: Component = () => {
             setExampleImagesReroll(getExampleImagesReroll() + 1);
           }}
         >
-          (reroll example images)
+          (reroll sample images)
         </Link>
         <Show when={isLoading()}>
           <span>
